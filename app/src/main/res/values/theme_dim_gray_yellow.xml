@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="BaseThemeDimGrayYellow" parent="AppBaseThemeDark">
+        <item name="colorPrimary">@color/material_grey_800</item>
+        <item name="colorPrimaryDark">@color/background_material_dark</item>
+        <item name="colorAccent">#FBC02D</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/material_grey_600</item>
+    </style>
+
+    <style name="MainThemeDimGrayYellow" parent="BaseThemeDimGrayYellow">
+        <!-- No settings -->
+    </style>
+
+    <style name="SettingsThemeDimGrayYellow" parent="BaseThemeDimGrayYellow">
+        <!-- For preference activity, de-activate overlay -->
+        <item name="windowActionModeOverlay">false</item>
+    </style>
+
+</resources>

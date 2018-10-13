@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="BaseThemeBlackLime" parent="BaseThemeDark">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryDark">@color/background_material_dark</item>
+        <item name="colorAccent">#AFB42B</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/material_grey_300</item>
+    </style>
+
+    <style name="MainThemeBlackLime" parent="BaseThemeBlackLime">
+        <!-- No settings -->
+    </style>
+
+    <style name="SettingsThemeBlackLime" parent="BaseThemeBlackLime">
+        <!-- For preference activity, de-activate overlay -->
+        <item name="windowActionModeOverlay">false</item>
+    </style>
+
+</resources>

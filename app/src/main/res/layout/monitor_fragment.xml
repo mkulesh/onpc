@@ -1,0 +1,177 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mkulesh.onpc.MainActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_volume_mute"
+                android:tag="AMTTG" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_volume_down"
+                android:tag="MVLDOWN" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_volume_up"
+                android:tag="MVLUP" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_track"
+                style="@style/SecondaryTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="left" />
+
+            <TextView
+                style="@style/SecondaryTextViewStyle"
+                android:id="@+id/tv_file_format"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="right" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tv_cover_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/tv_cover"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:saveEnabled="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:id="@+id/tv_time_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <android.support.v7.widget.AppCompatSeekBar
+                    style="@style/SegBarStyle"
+                    android:id="@+id/progress_bar"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:min="0"
+                    android:max="1000" />
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:id="@+id/tv_time_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                style="@style/PrimaryTextViewStyle"
+                android:id="@+id/tv_artist"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <TextView
+                style="@style/PrimaryTextViewStyle"
+                android:id="@+id/tv_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <TextView
+                style="@style/PrimaryTextViewStyle"
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_repeat"
+                android:tag="REPEAT" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_previous"
+                android:tag="TRDN" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_stop"
+                android:tag="STOP" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_pause_play"
+                android:tag="PAUSE" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_next"
+                android:tag="TRUP" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_random"
+                android:tag="RANDOM" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

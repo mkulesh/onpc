@@ -1,0 +1,87 @@
+<resources>
+
+    <style name="BaseThemeLight" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/background_material_light</item>
+        <item name="themeActivityToolBar">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="themeActivityPopup">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:textColorTertiary">@android:color/white</item>
+        <item name="colorButtonEnabled">?android:attr/textColor</item>
+        <item name="colorButtonDisabled">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="BaseThemeDark" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/background_material_dark</item>
+        <item name="themeActivityToolBar">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="themeActivityPopup">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:textColorTertiary">@android:color/white</item>
+        <item name="colorButtonEnabled">?android:attr/textColor</item>
+        <item name="colorButtonDisabled">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="AppBaseThemeLight" parent="BaseThemeLight">
+        <!-- No settings -->
+    </style>
+
+    <style name="AppBaseThemeDark" parent="BaseThemeDark">
+        <!-- No settings -->
+    </style>
+
+    <!-- Custom styles -->
+
+    <style name="PrimaryTextViewStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">?android:attr/textColor</item>
+        <item name="android:textSize">@dimen/primary_text_size</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:gravity">left</item>
+        <item name="android:inputType">none</item>
+        <item name="android:focusable">false</item>
+        <item name="android:saveEnabled">false</item>
+    </style>
+
+    <style name="SecondaryTextViewStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textSize">@dimen/secondary_text_size</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:gravity">left</item>
+        <item name="android:inputType">none</item>
+        <item name="android:focusable">false</item>
+        <item name="android:saveEnabled">false</item>
+    </style>
+
+    <style name="HorizontalDividerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:saveEnabled">false</item>
+    </style>
+
+    <style name="ImageButtonStyle" parent="@style/Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">@dimen/btn_size</item>
+        <item name="android:layout_height">@dimen/btn_size</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">@dimen/btn_margin</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:longClickable">true</item>
+        <item name="android:saveEnabled">false</item>
+    </style>
+
+    <style name="CheckBoxStyle" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="buttonTint">?attr/colorAccent</item>
+        <item name="android:textColor">?android:attr/textColor</item>
+        <item name="android:textSize">@dimen/primary_text_size</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SegBarStyle" parent="@style/Widget.AppCompat.SeekBar">
+        <item name="android:saveEnabled">false</item>
+    </style>
+
+</resources>

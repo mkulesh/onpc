@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mkulesh.onpc.MainActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+            <LinearLayout
+                android:id="@+id/selector_palette"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <!-- Do not delete: buttons will be added programmatically -->
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <TextView
+            style="@style/SecondaryTextViewStyle"
+            android:id="@+id/items_list_title_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingBottom="2dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="2dp"
+            android:maxLines="9999" />
+
+        <View style="@style/HorizontalDividerStyle" />
+
+        <ListView
+            android:id="@+id/items_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawSelectorOnTop="false"
+            android:fastScrollEnabled="true"
+            android:dividerHeight="1dp"
+            android:longClickable="true" />
+    </LinearLayout>
+
+</RelativeLayout>

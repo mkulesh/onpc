@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="themeActivityToolBar" format="reference" />
+    <attr name="themeActivityPopup" format="reference" />
+    <attr name="colorButtonEnabled" format="color" />
+    <attr name="colorButtonDisabled" format="color" />
+
+</resources>

@@ -1,0 +1,129 @@
+package com.mkulesh.onpc.iscp.messages;
+
+import com.mkulesh.onpc.iscp.EISCPMessage;
+import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.utils.Utils;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+/*
+ * NET/USB List Info(All item, need processing XML data, for Network Control Only)
+ */
+public class XmlListInfoMsg extends ISCPMessage
+{
+    public final static String CODE = "NLA";
+
+    private final Character responceType;
+    private final int sequenceNumber;
+    private final Character status;
+
+    /*
+     * UI type '0' : List, '1' : Menu, '2' : Playback, '3' : Popup, '4' : Keyboard, "5" : Menu List
+     */
+    private enum UiType implements CharParameterIf
+    {
+        LIST('0'), MENU('1'), PLAYBACK('2'), POPUP('3'), KEYBOARD('4'), MENU_LIST('5');
+
+        final Character code;
+
+        UiType(Character code)
+        {
+            this.code = code;
+        }
+
+        public Character getCode()
+        {
+            return code;
+        }
+    }
+
+    private final UiType uiType;
+    private final String rawXml;
+
+    private final List<XmlListItemMsg> items = new ArrayList<>();
+
+    XmlListInfoMsg(EISCPMessage raw) throws Exception
+    {
+        super(raw);
+        // Format: "tzzzzsurr<.....>"
+        responceType = data.charAt(0);
+        sequenceNumber = Integer.parseInt(data.substring(1, 5), 16);
+        status = data.charAt(5);
+        uiType = (UiType) searchParameter(data.charAt(6), UiType.values(), UiType.LIST);
+        rawXml = data.substring(9);
+    }
+
+    @Override
+    public String toString()
+    {
+        return CODE + "[" + data.substring(0, 9) + "..."
+                + "; RESP=" + responceType
+                + "; SEQ_NR=" + sequenceNumber
+                + "; STATUS=" + status
+                + "; UI=" + uiType.toString()
+                + "; XML=" + rawXml
+                + "]";
+    }
+
+    public static String getListedData(int seqNumber, int layer, int startItem, int endItem)
+    {
+        return "L" + String.format("%04x", seqNumber) +
+                String.format("%02x", layer) +
+                String.format("%04x", startItem) +
+                String.format("%04x", endItem);
+    }
+
+    public List<XmlListItemMsg> parseXml(final int numberOfLayers) throws Exception
+    {
+        items.clear();
+        InputStream stream = new ByteArrayInputStream(rawXml.getBytes(Charset.forName("UTF-8")));
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilder builder = factory.newDocumentBuilder();
+        final Document doc = builder.parse(stream);
+        for (Node object = doc.getDocumentElement(); object != null; object = object.getNextSibling())
+        {
+            if (object instanceof Element)
+            {
+                final Element response = (Element) object;
+                if (!response.getTagName().equals("response") || !Utils.ensureAttribute(response, "status", "ok"))
+                {
+                    continue;
+                }
+
+                final List<Element> itemsTop = Utils.getElements(response, "items");
+                if (itemsTop.isEmpty())
+                {
+                    continue;
+                }
+
+                // Only process the first "items" element
+                Element itemsInfo = itemsTop.get(0);
+                if (itemsInfo == null || itemsInfo.getAttribute("offset") == null || itemsInfo.getAttribute("totalitems") == null)
+                {
+                    continue;
+                }
+                int offset = Integer.parseInt(itemsInfo.getAttribute("offset"));
+                final List<Element> elements = Utils.getElements(itemsInfo, "item");
+                int id = 0;
+                for (Element element : elements)
+                {
+                    items.add(new XmlListItemMsg(offset + id, numberOfLayers, element));
+                    id++;
+                }
+            }
+        }
+        stream.close();
+        return items;
+    }
+}

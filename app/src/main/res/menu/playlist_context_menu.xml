@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
+
+    <item
+        android:id="@+id/playlist_menu_add"
+        android:icon="@drawable/playlist_add"
+        android:title="@string/playlist_add" />
+    <item
+        android:id="@+id/playlist_menu_add_and_play"
+        android:icon="@drawable/playlist_add"
+        android:title="@string/playlist_add_and_play" />
+    <item
+        android:id="@+id/playlist_menu_remove"
+        android:icon="@drawable/playlist_remove"
+        android:title="@string/playlist_remove" />
+    <item
+        android:id="@+id/playlist_menu_remove_all"
+        android:icon="@drawable/playlist_remove_all"
+        android:title="@string/playlist_remove_all" />
+    <item
+        android:id="@+id/playlist_menu_move_from"
+        android:icon="@drawable/playlist_move_from"
+        android:title="@string/playlist_move_from" />
+    <item
+        android:id="@+id/playlist_menu_move_to"
+        android:icon="@drawable/playlist_move_to"
+        android:title="@string/playlist_move_to" />
+
+</menu>

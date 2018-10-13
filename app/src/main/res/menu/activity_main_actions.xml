@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
+
+    <item
+        android:id="@+id/action_app_power"
+        android:icon="@drawable/power_standby"
+        android:title="@string/action_app_power"
+        android:enabled="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_app_settings"
+        android:title="@string/action_app_settings"
+        app:showAsAction="never" />
+</menu>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Main view -->
+    <string name="app_name">Onkyo Network Player Control</string>
+    <string name="app_toolbar_title">Network Player</string>
+    <string name="app_description">Onkyo Network Player Remote Control</string>
+
+    <string name="action_app_power">On/Standby</string>
+    <string name="action_app_settings">App settings</string>
+    <string name="action_exit_confirm">Press back button again to exit</string>
+
+    <string name="title_monitor">Monitor</string>
+    <string name="title_media">Media</string>
+    <string name="title_device">Device</string>
+    <string name="not_connected">Not connected</string>
+
+    <!-- Application settings -->
+    <string name="pref_exit_confirm">Press back button twice for exit</string>
+    <string name="pref_app_theme">App theme</string>
+    <string-array name="pref_theme_names">
+        <item>Strong Dark (Black and Lime)</item>
+        <item>Dark (Dim Gray and Cyan)</item>
+        <item>Dark (Dim Gray and Yellow)</item>
+        <item>Light (Gray and Deep Purple)</item>
+        <item>Light (Indigo and Orange)</item>
+        <item>Light (Teal and Deep Orange)</item>
+    </string-array>
+
+    <string name="pref_default_theme_code" translatable="false">indigo-orange</string>
+    <string-array name="pref_theme_codes" translatable="false">
+        <item>black-lime</item>
+        <item>dim-gray-cyan</item>
+        <item>dim-gray-yellow</item>
+        <item>gray-deep-purple</item>
+        <item>indigo-orange</item>
+        <item>teal-deep-orange</item>
+    </string-array>
+
+    <array name="main_themes" translatable="false">
+        <item>@style/MainThemeBlackLime</item>
+        <item>@style/MainThemeDimGrayCyan</item>
+        <item>@style/MainThemeDimGrayYellow</item>
+        <item>@style/MainThemeGrayDeepPurple</item>
+        <item>@style/MainThemeIndigoOrange</item>
+        <item>@style/MainThemeTealDeepOrange</item>
+    </array>
+
+    <array name="settings_themes" translatable="false">
+        <item>@style/SettingsThemeBlackLime</item>
+        <item>@style/SettingsThemeDimGrayCyan</item>
+        <item>@style/SettingsThemeDimGrayYellow</item>
+        <item>@style/SettingsThemeGrayDeepPurple</item>
+        <item>@style/SettingsThemeIndigoOrange</item>
+        <item>@style/SettingsThemeTealDeepOrange</item>
+    </array>
+
+    <!-- Playback tab -->
+    <string name="tv_time_default" translatable="false">--:--</string>
+
+    <string name="amp_cmd_volume_up">Volume Level Up</string>
+    <string name="amp_cmd_volume_down">Volume Level Down</string>
+    <string name="amp_cmd_selector_up">Selector Position Wrap-Around Up</string>
+    <string name="amp_cmd_selector_down">Selector Position Wrap-Around Down</string>
+    <string name="amp_cmd_audio_mut_off">Audio Muting Off</string>
+    <string name="amp_cmd_audio_mut_on">Audio Muting On</string>
+    <string name="amp_cmd_audio_mut_toggle">Audio Muting On/Off toggle</string>
+    <string name="amp_cmd_system_on">System On</string>
+    <string name="amp_cmd_system_standby">System Standby</string>
+    <string name="amp_cmd_system_on_toggle">System On/Standby toggle</string>
+
+    <string name="cmd_description_play">Play</string>
+    <string name="cmd_description_stop">Stop</string>
+    <string name="cmd_description_pause">Pause</string>
+    <string name="cmd_description_p_p">Play/Pause</string>
+    <string name="cmd_description_trup">Track Up</string>
+    <string name="cmd_description_trdn">Track Down</string>
+    <string name="cmd_description_ff">FF Key(Continuous)</string>
+    <string name="cmd_description_rew">REW Key(Continuous)</string>
+    <string name="cmd_description_repeat">Repeat</string>
+    <string name="cmd_description_random">Random</string>
+    <string name="cmd_description_rep_shf">Repeat/Shuffle</string>
+    <string name="cmd_description_display">Display</string>
+    <string name="cmd_description_album">Album</string>
+    <string name="cmd_description_artist">Artist</string>
+    <string name="cmd_description_genre">Genre</string>
+    <string name="cmd_description_playlist">Playlist</string>
+    <string name="cmd_description_right">Right</string>
+    <string name="cmd_description_left">Left</string>
+    <string name="cmd_description_up">Up</string>
+    <string name="cmd_description_down">Down</string>
+    <string name="cmd_description_select">Select</string>
+    <string name="cmd_description_key_0">0</string>
+    <string name="cmd_description_key_1">1</string>
+    <string name="cmd_description_key_2">2</string>
+    <string name="cmd_description_key_3">3</string>
+    <string name="cmd_description_key_4">4</string>
+    <string name="cmd_description_key_5">5</string>
+    <string name="cmd_description_key_6">6</string>
+    <string name="cmd_description_key_7">7</string>
+    <string name="cmd_description_key_8">8</string>
+    <string name="cmd_description_key_9">9</string>
+    <string name="cmd_description_delete">Delete</string>
+    <string name="cmd_description_caps">Caps</string>
+    <string name="cmd_description_location">Location</string>
+    <string name="cmd_description_language">Language</string>
+    <string name="cmd_description_setup">Setup</string>
+    <string name="cmd_description_return">Return</string>
+    <string name="cmd_description_chup">Ch Up(For Iradio)</string>
+    <string name="cmd_description_chdn">Ch Down(For Iradio)</string>
+    <string name="cmd_description_menu">Menu</string>
+    <string name="cmd_description_top">Top Menu</string>
+    <string name="cmd_description_mode">Mode(For Ipod)</string>
+    <string name="cmd_description_list">List/Playback</string>
+    <string name="cmd_description_memory">Memory(Add Favorite)</string>
+    <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
+    <string name="cmd_description_f2">Negative Feed</string>
+
+    <!-- Media list tab -->
+    <string name="selector_usb_front">Front USB</string>
+    <string name="selector_usb_rear">Rear USB</string>
+    <string name="selector_net">Network</string>
+
+    <string name="medialist_items">item(s)</string>
+    <string name="medialist_processing">Processing…</string>
+
+    <string name="net_service_music_server">Music Server (DLNA)</string>
+    <string name="net_service_favorite">Favorite</string>
+    <string name="net_service_vtuner">vTuner</string>
+    <string name="net_service_siriusxm">SiriusXM</string>
+    <string name="net_service_pandora">Pandora</string>
+    <string name="net_service_rhapsody">Rhapsody</string>
+    <string name="net_service_last">Last.fm</string>
+    <string name="net_service_napster">Napster</string>
+    <string name="net_service_slacker">Slacker</string>
+    <string name="net_service_mediafly">Mediafly</string>
+    <string name="net_service_spotify">Spotify</string>
+    <string name="net_service_aupeo">AUPEO!</string>
+    <string name="net_service_radiko">Radiko</string>
+    <string name="net_service_e_onkyo">e-onkyo</string>
+    <string name="net_service_tunein_radio">TuneIn Radio</string>
+    <string name="net_service_mp3tunes">mp3tunes</string>
+    <string name="net_service_simfy">Simfy</string>
+    <string name="net_service_home_media">Home Media</string>
+    <string name="net_service_deezer">Deezer</string>
+    <string name="net_service_iheartradio">iHeartRadio</string>
+    <string name="net_service_airplay">AirPlay</string>
+    <string name="net_service_onkyo_music">Onkyo Music</string>
+    <string name="net_service_tidal">Tidal</string>
+    <string name="net_service_playqueue">Play Queue</string>
+    <string name="net_service_chromecast">Chromecast</string>
+    <string name="net_service_flareconnect">FlareConnect</string>
+    <string name="net_service_play_fi">Play-Fi</string>
+
+    <string name="playlist_add">Add to queue</string>
+    <string name="playlist_add_and_play">Add and play</string>
+    <string name="playlist_remove">Remove item</string>
+    <string name="playlist_remove_all">Remove all</string>
+    <string name="playlist_move_from">Move from</string>
+    <string name="playlist_move_to">Move to</string>
+
+    <!-- Device tab -->
+    <string name="device_connect">Connect device</string>
+    <string name="action_button_connect">Connect</string>
+    <string name="device_info">Device info</string>
+    <string name="device_brand">Brand</string>
+    <string name="device_model">Model</string>
+    <string name="device_year">Year</string>
+    <string name="device_firmware">Firmware</string>
+
+    <!-- Errors -->
+    <string name="error_connection_failed">Can not connect to %s</string>
+    <string name="error_connection_timeout">Server not found</string>
+
+</resources>

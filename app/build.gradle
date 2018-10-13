@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "com.mkulesh.onpc"
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def file = output.outputFile
+                    output.outputFile = new File(file.parent, "onpc-" + defaultConfig.versionName + ".apk")
+                }
+            }
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        disable "RtlHardcoded", "RtlSymmetry", "RtlEnabled"
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:27.1.0'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:design:27.1.0'
+}
