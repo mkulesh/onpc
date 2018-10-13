@@ -13,6 +13,7 @@ This app allows to remote control Onkyo Network Player like [ONKYO NS-6130](http
 
 ## Supported devices
 Currently, this app only tested on ONKYO NS-6130:
+
 ![NS-6130](https://github.com/mkulesh/onpc/blob/master/images/ns_6130.png)
 
 ## Limitations
