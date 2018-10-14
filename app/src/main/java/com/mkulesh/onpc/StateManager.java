@@ -24,6 +24,7 @@ import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
+import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -194,6 +195,8 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private void requestPowerState()
     {
         Logging.info(this, "requesting power state...");
+        messageChannel.sendMessage(
+                new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
         messageChannel.sendMessage(
                 new EISCPMessage('1', PowerStatusMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(

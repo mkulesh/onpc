@@ -30,6 +30,7 @@ import java.net.URL;
 public class JacketArtMsg extends ISCPMessage
 {
     public final static String CODE = "NJA";
+    public final static String TYPE_LINK = "LINK";
 
     /*
      * Image type 0:BMP, 1:JPEG, 2:URL, n:No Image

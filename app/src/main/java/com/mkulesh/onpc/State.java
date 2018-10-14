@@ -218,7 +218,6 @@ class State
 
     private boolean process(JacketArtMsg msg)
     {
-        cover = null;
         if (msg.getImageType() == JacketArtMsg.ImageType.URL)
         {
             Logging.info(msg, "<< " + msg.toString());
@@ -244,6 +243,10 @@ class State
                 coverBuffer = null;
                 return true;
             }
+        }
+        else
+        {
+            Logging.info(msg, "<< " + msg.toString());
         }
         return false;
     }
