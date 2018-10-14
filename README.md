@@ -1,4 +1,5 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
+[![Download unsigned APK](https://img.shields.io/badge/APK-1.0beta-blue.svg)](https://github.com/mkulesh/onpc/raw/master/release/onpc-1.0.apk)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> "Onkyo Network Player Remote Control"
 
