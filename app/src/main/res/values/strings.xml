@@ -27,6 +27,8 @@
     <string name="title_device">Device</string>
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
+    <string name="state_new_firmware">New version available</string>
+    <string name="update_firmware">Update firmware</string>
 
     <!-- Application settings -->
     <string name="pref_exit_confirm">Press back button twice for exit</string>

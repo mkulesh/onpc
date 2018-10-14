@@ -27,6 +27,8 @@ public class MessageFactory
         {
         case PowerStatusMsg.CODE:
             return new PowerStatusMsg(raw);
+        case FirmwareUpdateMsg.CODE:
+            return new FirmwareUpdateMsg(raw);
         case ReceiverInformationMsg.CODE:
             return new ReceiverInformationMsg(raw);
         case DeviceNameMsg.CODE:

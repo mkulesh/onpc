@@ -164,9 +164,18 @@
             <TextView
                 style="@style/PrimaryTextViewStyle"
                 android:id="@+id/device_firmware"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_firmware_update"
+                android:src="@drawable/firmware_update"
+                android:contentDescription="@string/update_firmware"
+                android:gravity="center"
+                android:visibility="gone"/>
         </LinearLayout>
 
     </LinearLayout>

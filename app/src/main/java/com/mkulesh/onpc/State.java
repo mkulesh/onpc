@@ -19,6 +19,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
+import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
@@ -45,6 +46,7 @@ class State
 {
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
+    boolean newFirmware = false;
     Map<String, String> deviceProperties = new HashMap<>();
     Bitmap deviceCover = null;
     List<ReceiverInformationMsg.Selector> deviceSelectors;
@@ -111,6 +113,10 @@ class State
         {
             return process((PowerStatusMsg) msg);
         }
+        if (msg instanceof FirmwareUpdateMsg)
+        {
+            return process((FirmwareUpdateMsg) msg);
+        }
         if (msg instanceof ReceiverInformationMsg)
         {
             return process((ReceiverInformationMsg) msg);
@@ -176,6 +182,13 @@ class State
     {
         final boolean changed = msg.getPowerStatus() != powerStatus;
         powerStatus = msg.getPowerStatus();
+        return changed;
+    }
+
+    private boolean process(FirmwareUpdateMsg msg)
+    {
+        final boolean changed = newFirmware != msg.isNewFirmware();
+        newFirmware = msg.isNewFirmware();
         return changed;
     }
 

@@ -22,6 +22,7 @@ import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
+import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -196,9 +197,18 @@ class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel.sendMessage(
                 new EISCPMessage('1', PowerStatusMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(
+                new EISCPMessage('1', FirmwareUpdateMsg.CODE, EISCPMessage.QUERY));
+        messageChannel.sendMessage(
                 new EISCPMessage('1', ReceiverInformationMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(
                 new EISCPMessage('1', InputSelectorMsg.CODE, EISCPMessage.QUERY));
+    }
+
+    public void requestFirmwareUpdate()
+    {
+        Logging.info(this, "requesting firmware update...");
+        messageChannel.sendMessage(
+                new EISCPMessage('1', FirmwareUpdateMsg.CODE, FirmwareUpdateMsg.UPD_NET));
     }
 
     private void requestPlayState()

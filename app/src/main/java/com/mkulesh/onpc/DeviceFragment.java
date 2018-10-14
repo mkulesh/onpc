@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mkulesh.onpc.utils.Utils;
 
 public class DeviceFragment extends BaseFragment implements View.OnClickListener
 {
@@ -55,6 +58,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         return rootView;
     }
 
+    @SuppressLint("ApplySharedPref")
     @Override
     public void onClick(View v)
     {
@@ -78,20 +82,17 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     protected void updateStandbyView(@Nullable final State state)
     {
         updateDeviceCover(state);
+        if (state != null)
+        {
+            updateDeviceProperties(state);
+        }
     }
 
     @Override
     protected void updateActiveView(@NonNull final State state)
     {
         updateDeviceCover(state);
-
-        if (!state.deviceProperties.isEmpty())
-        {
-            ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
-            ((TextView) rootView.findViewById(R.id.device_model)).setText(state.deviceProperties.get("model"));
-            ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
-            ((TextView) rootView.findViewById(R.id.device_firmware)).setText(state.deviceProperties.get("firmwareversion"));
-        }
+        updateDeviceProperties(state);
     }
 
     private void updateDeviceCover(@Nullable final State state)
@@ -105,6 +106,49 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         {
             deviceCover.setVisibility(View.GONE);
             deviceCover.setImageBitmap(null);
+        }
+    }
+
+    private void updateDeviceProperties(@NonNull final State state)
+    {
+        if (!state.deviceProperties.isEmpty())
+        {
+            ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
+            ((TextView) rootView.findViewById(R.id.device_model)).setText(state.deviceProperties.get("model"));
+            ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
+            final StringBuilder firmware = new StringBuilder();
+            firmware.append(state.deviceProperties.get("firmwareversion"));
+            if (state.newFirmware)
+            {
+                firmware.append(", ").append(activity.getResources().getString(R.string.state_new_firmware));
+                final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
+                b.setVisibility(View.VISIBLE);
+                b.setOnLongClickListener(new View.OnLongClickListener()
+                {
+                    @Override
+                    public boolean onLongClick(View v)
+                    {
+                        return Utils.showButtonDescription(activity, v);
+                    }
+                });
+                Utils.setImageButtonColorAttr(activity, b, R.attr.colorButtonEnabled);
+                b.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (activity.getStateManager() != null)
+                        {
+                            activity.getStateManager().requestFirmwareUpdate();
+                        }
+                    }
+                });
+            }
+            else
+            {
+                rootView.findViewById(R.id.btn_firmware_update).setVisibility(View.GONE);
+            }
+            ((TextView) rootView.findViewById(R.id.device_firmware)).setText(firmware.toString());
         }
     }
 }
