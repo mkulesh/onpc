@@ -16,6 +16,21 @@ Currently, this app only tested on ONKYO NS-6130 (Firmware version 2110-0000-000
 
 ![NS-6130](https://github.com/mkulesh/onpc/blob/master/images/ns_6130.png)
 
+## Screenshots
+* Playback screen in landscape orientation, Light (Teal and Deep Orange) theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/playback_horizontal.png" align="center" width="800">
+
+* Playback screen in portrait orientation, Strong Dark (Black and Lime) theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/playback_vertical.png" align="center" height="800">
+
+* Media list screen, Dark (Dim Gray and Cyan) theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/madia_list.png" align="center" height="800">
+
+* Device info screen, Light (Indigo and Orange) theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/device_info.png" align="center" height="800">
+
+For more screenshots, see directory images/screenshots.
+
 ## Limitations
 Some network services like Spotify, Deezer, AirPlay are currently not yet testet and may not work
 
