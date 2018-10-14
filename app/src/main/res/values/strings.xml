@@ -25,7 +25,8 @@
     <string name="title_monitor">Monitor</string>
     <string name="title_media">Media</string>
     <string name="title_device">Device</string>
-    <string name="not_connected">Not connected</string>
+    <string name="state_not_connected">Not connected</string>
+    <string name="state_standby">Standby</string>
 
     <!-- Application settings -->
     <string name="pref_exit_confirm">Press back button twice for exit</string>

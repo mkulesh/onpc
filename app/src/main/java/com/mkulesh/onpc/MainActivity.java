@@ -320,12 +320,18 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         if (state == null)
         {
             icon = Utils.getDrawable(this, R.drawable.device_disconnect);
-            toolbar.setSubtitle(R.string.not_connected);
+            toolbar.setSubtitle(R.string.state_not_connected);
         }
         else
         {
             icon = Utils.getDrawable(this, R.drawable.device_connect);
-            toolbar.setSubtitle(state.deviceProperties.get("model"));
+            final StringBuilder subTitle = new StringBuilder();
+            subTitle.append(state.deviceProperties.get("model"));
+            if (!state.isOn())
+            {
+                subTitle.append(" (").append(getResources().getString(R.string.state_standby)).append(")");
+            }
+            toolbar.setSubtitle(subTitle.toString());
         }
         Utils.setDrawableColorAttr(this, icon, android.R.attr.textColorTertiary);
         if (getSupportActionBar() != null)
