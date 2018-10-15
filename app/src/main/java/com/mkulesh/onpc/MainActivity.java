@@ -43,7 +43,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener
 {
-    private final static boolean ENABLE_MOCKUP = true;
+    private final static boolean ENABLE_MOCKUP = false;
     private static final int SETTINGS_ACTIVITY_REQID = 256;
     public static final String EXIT_CONFIRM = "exit_confirm";
 
