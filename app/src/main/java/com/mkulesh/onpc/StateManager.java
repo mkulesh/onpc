@@ -207,7 +207,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', InputSelectorMsg.CODE, EISCPMessage.QUERY));
     }
 
-    public void requestFirmwareUpdate()
+    void requestFirmwareUpdate()
     {
         Logging.info(this, "requesting firmware update...");
         messageChannel.sendMessage(
@@ -238,6 +238,10 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', TimeInfoMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(
                 new EISCPMessage('1', MenuStatusMsg.CODE, EISCPMessage.QUERY));
+        if (state.isMediaEmpty())
+        {
+            requestListState();
+        }
     }
 
     private void requestListState()

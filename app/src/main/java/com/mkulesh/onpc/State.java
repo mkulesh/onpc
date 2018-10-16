@@ -69,11 +69,12 @@ class State
     // Navigation
     ListTitleInfoMsg.ServiceType serviceType = null;
     ListTitleInfoMsg.LayerInfo layerInfo = null;
+    private ListTitleInfoMsg.UIType uiType = null;
     int numberOfLayers = 0;
     int numberOfItems = 0;
     String titleBar = "";
-    List<XmlListItemMsg> mediaItems = null;
-    List<NetworkServiceMsg> serviceItems = null;
+    protected final List<XmlListItemMsg> mediaItems = new ArrayList<>();
+    protected final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
     boolean itemsChanged = false;
 
     State()
@@ -320,14 +321,19 @@ class State
         if (serviceType != msg.getServiceType())
         {
             serviceType = msg.getServiceType();
-            mediaItems = null;
-            serviceItems = null;
+            mediaItems.clear();
+            serviceItems.clear();
             itemsChanged = true;
             changed = true;
         }
         if (layerInfo != msg.getLayerInfo())
         {
             layerInfo = msg.getLayerInfo();
+            changed = true;
+        }
+        if (uiType != msg.getUiType())
+        {
+            uiType = msg.getUiType();
             changed = true;
         }
         if (!titleBar.equals(msg.getTitleBar()))
@@ -352,13 +358,14 @@ class State
     {
         try
         {
-            Logging.info(msg, "processig XmlListInfoMsg");
-            mediaItems = msg.parseXml(numberOfLayers);
+            Logging.info(msg, "processing XmlListInfoMsg");
+            msg.parseXml(mediaItems, numberOfLayers);
             itemsChanged = true;
             return true;
         }
         catch (Exception e)
         {
+            mediaItems.clear();
             Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
         }
         return false;
@@ -372,10 +379,6 @@ class State
         }
         if (serviceType == ListTitleInfoMsg.ServiceType.NET)
         {
-            if (serviceItems == null)
-            {
-                serviceItems = new ArrayList<>();
-            }
             for (NetworkServiceMsg i : serviceItems)
             {
                 if (i.getService().getCode().toUpperCase().equals(msg.getListedData().toUpperCase()))
@@ -404,5 +407,28 @@ class State
             }
         }
         return null;
+    }
+
+    boolean isTopLayer()
+    {
+        if (uiType != ListTitleInfoMsg.UIType.PLAYBACK)
+        {
+            if (serviceType == ListTitleInfoMsg.ServiceType.NET &&
+                    layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP)
+            {
+                return true;
+            }
+            if (layerInfo == ListTitleInfoMsg.LayerInfo.SERVICE_TOP)
+            {
+                return serviceType == ListTitleInfoMsg.ServiceType.USB_FRONT
+                        || serviceType == ListTitleInfoMsg.ServiceType.USB_REAR;
+            }
+        }
+        return false;
+    }
+
+    public boolean isMediaEmpty()
+    {
+        return mediaItems.isEmpty() && serviceItems.isEmpty();
     }
 }

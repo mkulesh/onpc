@@ -139,7 +139,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 return true;
             case R.id.playlist_menu_move_from:
                 moveFrom = idx;
-                updateListView(state.mediaItems, state.serviceItems);
+                updateListView(state);
                 return true;
             case R.id.playlist_menu_move_to:
                 if (isMoveToValid(idx))
@@ -180,8 +180,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         if (state.itemsChanged)
         {
             moveFrom = -1;
-            updateTitle(state, state.numberOfItems > 0 && state.mediaItems == null && state.serviceItems == null);
-            updateListView(state.mediaItems, state.serviceItems);
+            updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
+            updateListView(state);
             state.itemsChanged = false;
         }
     }
@@ -264,15 +264,20 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
     }
 
-    private void updateListView(final List<XmlListItemMsg> mediaItems, final List<NetworkServiceMsg> serviceItems)
+    private void updateListView(@NonNull final State state)
     {
         listView.clearChoices();
         listView.invalidate();
+        final List<XmlListItemMsg> mediaItems = state.mediaItems;
+        final List<NetworkServiceMsg> serviceItems = state.serviceItems;
 
         ArrayList<ISCPMessage> newItems = new ArrayList<>();
-        newItems.add(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
+        if (!state.isTopLayer())
+        {
+            newItems.add(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
+        }
         int playing = -1;
-        if (mediaItems != null)
+        if (!mediaItems.isEmpty())
         {
             Logging.info(this, "Updating media items list: " + mediaItems.size());
             for (XmlListItemMsg i : mediaItems)
@@ -284,7 +289,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
             }
         }
-        else if (serviceItems != null)
+        else if (!serviceItems.isEmpty())
         {
             Logging.info(this, "Updating service items list: " + serviceItems.size());
             for (NetworkServiceMsg i : serviceItems)
@@ -389,7 +394,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
                 tvTitle.setText(msg.getTitle());
                 tvTitle.setTextColor(Utils.getThemeColorAttr(activity,
-                        moveFrom == msg.getMessageId() ? android.R.attr.textColorSecondary : android.R.attr.textColor));
+                        (moveFrom == msg.getMessageId() || !msg.isSelectable()) ?
+                                android.R.attr.textColorSecondary : android.R.attr.textColor));
             }
             else if (item instanceof NetworkServiceMsg)
             {

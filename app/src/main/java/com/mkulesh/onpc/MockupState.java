@@ -24,8 +24,6 @@ import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 
-import java.util.ArrayList;
-
 class MockupState extends State
 {
     MockupState(Context context)
@@ -64,7 +62,6 @@ class MockupState extends State
         numberOfLayers = 0;
         numberOfItems = 9;
         titleBar = "Net";
-        serviceItems = new ArrayList<>();
         serviceItems.add(new NetworkServiceMsg("Music Server"));
         serviceItems.add(new NetworkServiceMsg("SPOTIFY"));
         serviceItems.add(new NetworkServiceMsg("TuneIn"));

@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -64,8 +63,6 @@ public class XmlListInfoMsg extends ISCPMessage
     private final UiType uiType;
     private final String rawXml;
 
-    private final List<XmlListItemMsg> items = new ArrayList<>();
-
     XmlListInfoMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
@@ -97,7 +94,7 @@ public class XmlListInfoMsg extends ISCPMessage
                 String.format("%04x", endItem);
     }
 
-    public List<XmlListItemMsg> parseXml(final int numberOfLayers) throws Exception
+    public List<XmlListItemMsg> parseXml(final List<XmlListItemMsg> items, final int numberOfLayers) throws Exception
     {
         items.clear();
         InputStream stream = new ByteArrayInputStream(rawXml.getBytes(Charset.forName("UTF-8")));
