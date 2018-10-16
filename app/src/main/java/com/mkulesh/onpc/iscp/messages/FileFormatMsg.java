@@ -36,7 +36,19 @@ public class FileFormatMsg extends ISCPMessage
 
     public String getFullFormat()
     {
-        return format + "/" + sampleFrequency + "/" + bitRate;
+        final StringBuilder str = new StringBuilder();
+        str.append(format);
+        if (!str.toString().isEmpty() && !sampleFrequency.isEmpty())
+        {
+            str.append("/");
+        }
+        str.append(sampleFrequency);
+        if (!str.toString().isEmpty() && !bitRate.isEmpty())
+        {
+            str.append("/");
+        }
+        str.append(bitRate);
+        return str.toString();
     }
 
     @Override
