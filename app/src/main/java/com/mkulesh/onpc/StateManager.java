@@ -49,6 +49,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private final State state;
     private final MainActivity activity;
     private final AtomicBoolean active = new AtomicBoolean();
+    private AtomicBoolean returnFromPlayback = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
     private final MessageChannel messageChannel;
     private int xmlReqId = 0;
@@ -263,7 +264,10 @@ class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "requesting XML list state");
         if (liMsg.getUiType() == ListTitleInfoMsg.UIType.PLAYBACK)
         {
-            navigateTo(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
+            if (returnFromPlayback.get())
+            {
+                navigateTo(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
+            }
         }
         else if (liMsg.getNumberOfLayers() > 0)
         {
@@ -271,10 +275,12 @@ class StateManager extends AsyncTask<Void, Void, Void>
                     new EISCPMessage('1', XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
                             xmlReqId++, liMsg.getNumberOfLayers(), 0, liMsg.getNumberOfItems())));
         }
+        returnFromPlayback.set(false);
     }
 
     void navigateTo(final ISCPMessage msg)
     {
+        returnFromPlayback.set(true);
         circlePlayQueueMsg = null;
         Logging.info(this, "selecting: " + msg.toString());
         final EISCPMessage cmdMsg = msg.getCmdMsg();

@@ -69,7 +69,7 @@ class State
     // Navigation
     ListTitleInfoMsg.ServiceType serviceType = null;
     ListTitleInfoMsg.LayerInfo layerInfo = null;
-    private ListTitleInfoMsg.UIType uiType = null;
+    ListTitleInfoMsg.UIType uiType = null;
     int numberOfLayers = 0;
     int numberOfItems = 0;
     String titleBar = "";
@@ -321,9 +321,7 @@ class State
         if (serviceType != msg.getServiceType())
         {
             serviceType = msg.getServiceType();
-            mediaItems.clear();
-            serviceItems.clear();
-            itemsChanged = true;
+            clearItems();
             changed = true;
         }
         if (layerInfo != msg.getLayerInfo())
@@ -351,7 +349,18 @@ class State
             numberOfItems = msg.getNumberOfItems();
             changed = true;
         }
+        if (uiType == ListTitleInfoMsg.UIType.MENU)
+        {
+            clearItems();
+        }
         return changed;
+    }
+
+    private void clearItems()
+    {
+        mediaItems.clear();
+        serviceItems.clear();
+        itemsChanged = true;
     }
 
     private boolean process(XmlListInfoMsg msg)

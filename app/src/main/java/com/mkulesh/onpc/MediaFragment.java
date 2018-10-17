@@ -176,11 +176,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             addSelectorButtons(state);
         }
         updateSelectorButtons(state);
-
+        updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
         if (state.itemsChanged)
         {
             moveFrom = -1;
-            updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
             updateListView(state);
             state.itemsChanged = false;
         }
@@ -341,16 +340,27 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private void updateTitle(@NonNull final State state, boolean processing)
     {
         final StringBuilder title = new StringBuilder();
-        title.append(state.titleBar);
-        if (state.numberOfItems > 0)
+        if (state.uiType == ListTitleInfoMsg.UIType.PLAYBACK ||
+                state.uiType == ListTitleInfoMsg.UIType.MENU)
         {
-            title.append("/").append(state.numberOfItems).append(" ").append(
-                    activity.getResources().getString(R.string.medialist_items));
+            title.append(state.title);
+        }
+        else
+        {
+            title.append(state.titleBar);
+            if (state.numberOfItems > 0)
+            {
+                title.append("/").append(state.numberOfItems).append(" ").append(
+                        activity.getResources().getString(R.string.medialist_items));
+            }
         }
         if (processing)
         {
-            title.append(". ").append(
-                    activity.getResources().getString(R.string.medialist_processing));
+            if (!title.toString().isEmpty())
+            {
+                title.append(". ");
+            }
+            title.append(activity.getResources().getString(R.string.medialist_processing));
         }
         titleBar.setText(title.toString());
     }
