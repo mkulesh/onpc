@@ -225,7 +225,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 {
                     if (activity.getStateManager() != null)
                     {
-                        activity.getStateManager().navigateTo(msg);
+                        activity.getStateManager().sendMessage(msg);
                     }
                 }
             });
@@ -314,7 +314,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 moveFrom = -1;
                 updateTitle(activity.getStateManager().getState(), true);
-                activity.getStateManager().navigateTo(selectedItem);
+                activity.getStateManager().sendMessage(selectedItem);
             }
         }
     }

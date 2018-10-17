@@ -266,7 +266,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         {
             if (returnFromPlayback.get())
             {
-                navigateTo(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
+                sendMessage(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
             }
         }
         else if (liMsg.getNumberOfLayers() > 0)
@@ -278,11 +278,11 @@ class StateManager extends AsyncTask<Void, Void, Void>
         returnFromPlayback.set(false);
     }
 
-    void navigateTo(final ISCPMessage msg)
+    void sendMessage(final ISCPMessage msg)
     {
         returnFromPlayback.set(true);
         circlePlayQueueMsg = null;
-        Logging.info(this, "selecting: " + msg.toString());
+        Logging.info(this, "sending message: " + msg.toString());
         final EISCPMessage cmdMsg = msg.getCmdMsg();
         if (cmdMsg != null)
         {

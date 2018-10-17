@@ -134,7 +134,7 @@ public class MonitorFragment extends BaseFragment
             {
                 if (activity.getStateManager() != null)
                 {
-                    activity.getStateManager().navigateTo(msg);
+                    activity.getStateManager().sendMessage(msg);
                 }
             }
         });
@@ -280,7 +280,7 @@ public class MonitorFragment extends BaseFragment
             final TimeSeekMsg msg = new TimeSeekMsg(hour, min, sec);
             state.currentTime = msg.getTimeAsString();
             ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
-            activity.getStateManager().navigateTo(msg);
+            activity.getStateManager().sendMessage(msg);
         }
     }
 }

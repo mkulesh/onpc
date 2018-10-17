@@ -107,11 +107,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             {
                 if (getStateManager().getState().isOn())
                 {
-                    getStateManager().navigateTo(new PowerStatusMsg(PowerStatusMsg.PowerStatus.STB));
+                    getStateManager().sendMessage(new PowerStatusMsg(PowerStatusMsg.PowerStatus.STB));
                 }
                 else
                 {
-                    getStateManager().navigateTo(new PowerStatusMsg(PowerStatusMsg.PowerStatus.ON));
+                    getStateManager().sendMessage(new PowerStatusMsg(PowerStatusMsg.PowerStatus.ON));
                 }
             }
             return true;
