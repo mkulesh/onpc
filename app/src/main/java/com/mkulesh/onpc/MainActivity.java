@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     {
         switch (menuItem.getItemId())
         {
-        case R.id.action_app_power:
+        case R.id.menu_power_standby:
             if (getStateManager() != null)
             {
                 if (getStateManager().getState().isOn())
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 }
             }
             return true;
-        case R.id.action_app_settings:
+        case R.id.menu_app_settings:
         {
             Intent settings = new Intent(this, SettingsActivity.class);
             startActivityForResult(settings, SETTINGS_ACTIVITY_REQID);
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             for (int i = 0; i < mainMenu.size(); i++)
             {
                 final MenuItem m = mainMenu.getItem(i);
-                if (m.getItemId() == R.id.action_app_power)
+                if (m.getItemId() == R.id.menu_power_standby)
                 {
                     m.setEnabled(state != null);
                     Utils.updateMenuIconColor(this, m);

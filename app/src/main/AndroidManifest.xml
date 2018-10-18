@@ -29,7 +29,7 @@
 
         <activity
             android:name="com.mkulesh.onpc.SettingsActivity"
-            android:label="@string/action_app_settings"
+            android:label="@string/menu_app_settings"
             android:parentActivityName="com.mkulesh.onpc.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

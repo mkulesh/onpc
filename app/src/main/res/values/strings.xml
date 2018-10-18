@@ -18,8 +18,8 @@
     <string name="app_toolbar_title">Network Player</string>
     <string name="app_description">Onkyo Network Player Remote Control</string>
 
-    <string name="action_app_power">On/Standby</string>
-    <string name="action_app_settings">App settings</string>
+    <string name="menu_power_power">On/Standby</string>
+    <string name="menu_app_settings">App settings</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
 
     <string name="title_monitor">Monitor</string>

@@ -17,13 +17,13 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/action_app_power"
-        android:icon="@drawable/power_standby"
-        android:title="@string/action_app_power"
+        android:id="@+id/menu_power_standby"
+        android:icon="@drawable/menu_power_standby"
+        android:title="@string/menu_power_power"
         android:enabled="false"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_app_settings"
-        android:title="@string/action_app_settings"
+        android:id="@+id/menu_app_settings"
+        android:title="@string/menu_app_settings"
         app:showAsAction="never" />
 </menu>
