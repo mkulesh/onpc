@@ -109,6 +109,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.playlist_menu_move_from).setVisible(isQueue);
                     menu.findItem(R.id.playlist_menu_move_to).setVisible(
                             isQueue && isMoveToValid(selectedItem.getMessageId()));
+
+                    final boolean isRadio = state.serviceType == ListTitleInfoMsg.ServiceType.TUNEIN_RADIO;
+                    menu.findItem(R.id.playlist_track_menu).setVisible(isRadio &&
+                            selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY);
                 }
             }
         }
@@ -147,6 +151,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     activity.getStateManager().sendPlayQueueMsg(new PlayQueueReorderMsg(moveFrom, idx), false);
                     moveFrom = -1;
                 }
+                return true;
+            case R.id.playlist_track_menu:
+                activity.getStateManager().sendMessage(new OperationCommandMsg(OperationCommandMsg.Command.MENU));
                 return true;
             }
         }

@@ -173,6 +173,7 @@
     <string name="playlist_remove_all">Remove all</string>
     <string name="playlist_move_from">Move from</string>
     <string name="playlist_move_to">Move to</string>
+    <string name="playlist_track_menu">Track menu</string>
 
     <!-- Device tab -->
     <string name="device_connect">Connect device</string>

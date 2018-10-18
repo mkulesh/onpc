@@ -280,9 +280,10 @@ class StateManager extends AsyncTask<Void, Void, Void>
 
     void sendMessage(final ISCPMessage msg)
     {
+        Logging.info(this, "sending message: " + msg.toString());
         returnFromPlayback.set(true);
         circlePlayQueueMsg = null;
-        Logging.info(this, "sending message: " + msg.toString());
+        state.serviceType = null; // request update of List Title Info
         final EISCPMessage cmdMsg = msg.getCmdMsg();
         if (cmdMsg != null)
         {
