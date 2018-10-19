@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
+import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
@@ -283,7 +284,10 @@ class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "sending message: " + msg.toString());
         returnFromPlayback.set(true);
         circlePlayQueueMsg = null;
-        state.serviceType = null; // request update of List Title Info
+        if (!(msg instanceof AmpOperationCommandMsg))
+        {
+            state.serviceType = null; // request update of List Title Info
+        }
         final EISCPMessage cmdMsg = msg.getCmdMsg();
         if (cmdMsg != null)
         {

@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -32,7 +33,7 @@ public class ListTitleInfoMsg extends ISCPMessage
      */
     public enum ServiceType implements StringParameterIf
     {
-        MUSIC_SERVER("00"),
+        MUSIC_SERVER("00", R.drawable.media_item_server),
         FAVORITE("01"),
         VTUNER("02"),
         SIRIUSXM("03"),
@@ -46,7 +47,7 @@ public class ListTitleInfoMsg extends ISCPMessage
         AUPEO("0B"),
         RADIKO("0C"),
         E_ONKYO("0D"),
-        TUNEIN_RADIO("0E"),
+        TUNEIN_RADIO("0E", R.drawable.media_item_radio),
         MP3TUNES("0F"),
         SIMFY("10"),
         HOME_MEDIA("11"),
@@ -55,23 +56,37 @@ public class ListTitleInfoMsg extends ISCPMessage
         AIRPLAY("18"),
         ONKYO_MUSIC("1A"),
         TIDAL("1B"),
-        PLAYQUEUE("1D"),
+        PLAYQUEUE("1D", R.drawable.media_item_playqueue),
         FIRECONNECT("41"),
-        USB_REAR("F1"),
+        USB_REAR("F1", R.drawable.media_item_usb),
         INTERNET_RADIO("F2"),
-        USB_FRONT("F0"),
+        USB_FRONT("F0", R.drawable.media_item_usb),
         NET("F3"),
         NONE("FF");
+
         final String code;
+        final int imageId;
+
+        ServiceType(String code, int imageId)
+        {
+            this.code = code;
+            this.imageId = imageId;
+        }
 
         ServiceType(String code)
         {
             this.code = code;
+            this.imageId = R.drawable.media_item_unknown;
         }
 
         public String getCode()
         {
             return code;
+        }
+
+        public int getImageId()
+        {
+            return imageId;
         }
     }
 

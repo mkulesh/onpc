@@ -27,7 +27,7 @@ public class NetworkServiceMsg extends ISCPMessage
     public enum Service implements StringParameterIf
     {
         UNKNOWN("", "", -1),
-        MUSIC_SERVER("Music Server", "00", R.string.net_service_music_server),
+        MUSIC_SERVER("Music Server", "00", R.string.net_service_music_server, R.drawable.media_item_server),
         FAVORITE("Favorite", "01", R.string.net_service_favorite),
         VTUNER("vTuner", "02", R.string.net_service_vtuner),
         SIRIUSXM("SiriusXM", "03", R.string.net_service_siriusxm),
@@ -41,7 +41,7 @@ public class NetworkServiceMsg extends ISCPMessage
         AUPEO("AUPEO!", "0B", R.string.net_service_aupeo),
         RADIKO("Radiko", "0C", R.string.net_service_radiko),
         E_ONKYO("e-onkyo", "0D", R.string.net_service_e_onkyo),
-        TUNEIN_RADIO("TuneIn", "0E", R.string.net_service_tunein_radio),
+        TUNEIN_RADIO("TuneIn", "0E", R.string.net_service_tunein_radio, R.drawable.media_item_radio),
         MP3TUNES("mp3tunes", "0F", R.string.net_service_mp3tunes),
         SIMFY("Simfy", "10", R.string.net_service_simfy),
         HOME_MEDIA("Home Media", "11", R.string.net_service_home_media),
@@ -50,7 +50,7 @@ public class NetworkServiceMsg extends ISCPMessage
         AIRPLAY("Airplay", "18", R.string.net_service_airplay),
         ONKYO_MUSIC("onkyo music", "1A", R.string.net_service_onkyo_music),
         TIDAL("Tidal", "1B", R.string.net_service_tidal),
-        PLAYQUEUE("Play Queue", "1D", R.string.net_service_playqueue),
+        PLAYQUEUE("Play Queue", "1D", R.string.net_service_playqueue, R.drawable.media_item_playqueue),
         CHROMECAST("Chromecast built-in", "40", R.string.net_service_chromecast),
         FLARECONNECT("FlareConnect", "43", R.string.net_service_flareconnect),
         PLAY_FI("Play-Fi", "42", R.string.net_service_play_fi);
@@ -59,6 +59,14 @@ public class NetworkServiceMsg extends ISCPMessage
         final String id;
         final int descriptionId;
         final int imageId;
+
+        Service(final String code, final String id, final int descriptionId, final int imageId)
+        {
+            this.code = code;
+            this.id = id;
+            this.descriptionId = descriptionId;
+            this.imageId = imageId;
+        }
 
         Service(final String code, final String id, final int descriptionId)
         {

@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -160,7 +162,11 @@ public class MonitorFragment extends BaseFragment
                 activity.getResources().getString(R.string.tv_time_default));
         ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(
                 activity.getResources().getString(R.string.tv_time_default));
-        ((TextView) rootView.findViewById(R.id.tv_track)).setText("");
+
+        TextView track = rootView.findViewById(R.id.tv_track);
+        track.setText("");
+        track.setCompoundDrawables(null, null, null, null);
+
         ((TextView) rootView.findViewById(R.id.tv_album)).setText("");
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText("");
         ((TextView) rootView.findViewById(R.id.tv_title)).setText("");
@@ -184,11 +190,28 @@ public class MonitorFragment extends BaseFragment
         // Text
         ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
         ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(state.maxTime);
-        ((TextView) rootView.findViewById(R.id.tv_track)).setText(state.trackInfo);
         ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(state.title);
         ((TextView) rootView.findViewById(R.id.tv_file_format)).setText(state.fileFormat);
+
+        // service icon and track
+        {
+            TextView track = rootView.findViewById(R.id.tv_track);
+            if (state.serviceType != null)
+            {
+                final Drawable bg = Utils.getDrawable(activity, state.serviceType.getImageId());
+                Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
+                track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);
+                track.setText(state.serviceType != ListTitleInfoMsg.ServiceType.TUNEIN_RADIO?
+                        state.trackInfo : "");
+            }
+            else
+            {
+                track.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                track.setText("");
+            }
+        }
 
         // cover
         if (state.cover == null)
