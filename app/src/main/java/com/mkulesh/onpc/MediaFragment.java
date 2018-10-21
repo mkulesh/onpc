@@ -13,10 +13,11 @@
 
 package com.mkulesh.onpc;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -26,8 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -52,10 +51,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 {
     private TextView titleBar;
     private ListView listView;
-    private XmListItemMsgAdapter listViewAdapter;
+    private MediaListAdapter listViewAdapter;
     private LinearLayout selectorPaletteLayout = null;
     private XmlListItemMsg selectedItem = null;
-    private int moveFrom = -1;
+    private int selectorButtonSize = 0;
+    private int selectorButtonMargin = 0;
+    int moveFrom = -1;
 
     public MediaFragment()
     {
@@ -74,6 +75,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.setFocusableInTouchMode(true);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemClickListener(this);
+
+        selectorButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.btn_size);
+        selectorButtonMargin = activity.getResources().getDimensionPixelSize(R.dimen.btn_margin);
 
         registerForContextMenu(listView);
 
@@ -172,7 +176,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         titleBar.setText("");
         listView.clearChoices();
         listView.invalidate();
-        listView.setAdapter(new XmListItemMsgAdapter(activity, new ArrayList<ISCPMessage>()));
+        listView.setAdapter(new MediaListAdapter(this, activity, new ArrayList<ISCPMessage>()));
     }
 
     @Override
@@ -204,8 +208,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         selectorPaletteLayout.removeAllViews();
 
-        final int buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.btn_size);
-        final int buttonMargin = activity.getResources().getDimensionPixelSize(R.dimen.btn_margin);
+        // Top menu button
+        {
+            final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.TOP);
+            selectorPaletteLayout.addView(createSelectorButton(0, selectorButtonMargin,
+                    msg.getCommand(), msg, msg.getCommand().getDescriptionId(), msg.getCommand().getImageId()));
+        }
+
+        // Selectors
         final int selNumber = state.deviceSelectors.size();
         for (int i = 0; i < selNumber; i++)
         {
@@ -215,43 +225,52 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 continue;
             }
-            final AppCompatImageButton b = new AppCompatImageButton(activity);
-            final ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(buttonSize, buttonSize);
-            lp.setMargins((i == 0 ? 0 : buttonMargin), buttonMargin, (i == selNumber - 1 ? 0 : buttonMargin), buttonMargin);
-            b.setLayoutParams(lp);
-            b.setTag(msg.getInputType());
-
-            TypedValue outValue = new TypedValue();
-            activity.getTheme().resolveAttribute(R.attr.selectableItemBackground, outValue, true);
-            b.setBackgroundResource(outValue.resourceId);
-
-            b.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (activity.getStateManager() != null)
-                    {
-                        activity.getStateManager().sendMessage(msg);
-                    }
-                }
-            });
-
-            b.setContentDescription(activity.getResources().getString(msg.getInputType().getDescriptionId()));
-            b.setLongClickable(true);
-            b.setOnLongClickListener(new View.OnLongClickListener()
-            {
-                @Override
-                public boolean onLongClick(View v)
-                {
-                    return Utils.showButtonDescription(activity, v);
-                }
-            });
-
-            b.setImageResource(msg.getInputType().getImageId());
-
-            selectorPaletteLayout.addView(b);
+            selectorPaletteLayout.addView(createSelectorButton(
+                    selectorButtonMargin, (i == selNumber - 1 ? 0 : selectorButtonMargin),
+                    msg.getInputType(), msg, msg.getInputType().getDescriptionId(), msg.getInputType().getImageId()));
         }
+    }
+
+    private AppCompatImageButton createSelectorButton(
+            int leftMargin, int rightMargin,
+            Object tag, final ISCPMessage msg,
+            @StringRes int descriptionId, @DrawableRes int imageId)
+    {
+        final AppCompatImageButton b = new AppCompatImageButton(activity);
+        final ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(selectorButtonSize, selectorButtonSize);
+        lp.setMargins(leftMargin, selectorButtonMargin, rightMargin, selectorButtonMargin);
+        b.setLayoutParams(lp);
+        b.setTag(tag);
+
+        TypedValue outValue = new TypedValue();
+        activity.getTheme().resolveAttribute(R.attr.selectableItemBackground, outValue, true);
+        b.setBackgroundResource(outValue.resourceId);
+
+        b.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (activity.getStateManager() != null)
+                {
+                    activity.getStateManager().sendMessage(msg);
+                }
+            }
+        });
+
+        b.setContentDescription(activity.getResources().getString(descriptionId));
+        b.setLongClickable(true);
+        b.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                return Utils.showButtonDescription(activity, v);
+            }
+        });
+
+        b.setImageResource(imageId);
+        return b;
     }
 
     private void updateSelectorButtons(@NonNull final State state)
@@ -265,7 +284,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (selectorPaletteLayout.getChildAt(i) instanceof AppCompatImageButton)
             {
                 final AppCompatImageButton b = (AppCompatImageButton) selectorPaletteLayout.getChildAt(i);
-                setButtonSelected(b, state.inputType == b.getTag());
+                if (b.getTag() instanceof InputSelectorMsg.InputType)
+                {
+                    setButtonSelected(b, b.getTag() == state.inputType);
+                }
+                if (b.getTag() instanceof OperationCommandMsg.Command)
+                {
+                    setButtonEnabled(b, b.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
+                }
             }
         }
     }
@@ -303,7 +329,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 newItems.add(new NetworkServiceMsg(i));
             }
         }
-        listViewAdapter = new XmListItemMsgAdapter(activity, newItems);
+        listViewAdapter = new MediaListAdapter(this, activity, newItems);
         listView.setAdapter(listViewAdapter);
         if (playing >= 0)
         {
@@ -370,72 +396,5 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             title.append(activity.getResources().getString(R.string.medialist_processing));
         }
         titleBar.setText(title.toString());
-    }
-
-    private final class XmListItemMsgAdapter extends ArrayAdapter<ISCPMessage>
-    {
-        XmListItemMsgAdapter(Context context, ArrayList<ISCPMessage> list)
-        {
-            super(context, 0, list);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent)
-        {
-            // Get the data item for this position
-            ISCPMessage item = getItem(position);
-
-            // Check if an existing view is being reused, otherwise inflate the view
-            if (convertView == null)
-            {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.media_item, parent, false);
-            }
-
-            final ImageView icon = convertView.findViewById(R.id.media_item_icon);
-            final TextView tvTitle = convertView.findViewById(R.id.media_item_title);
-
-            if (item instanceof XmlListItemMsg)
-            {
-                final XmlListItemMsg msg = (XmlListItemMsg) item;
-                if (msg.getIcon() != XmlListItemMsg.Icon.UNKNOWN)
-                {
-                    icon.setImageResource(msg.getIcon().getImageId());
-                    icon.setVisibility(View.VISIBLE);
-                    Utils.setImageViewColorAttr(activity, icon, R.attr.colorButtonDisabled);
-                }
-                else if (!msg.isSelectable())
-                {
-                    icon.setImageDrawable(null);
-                    icon.setVisibility(View.GONE);
-                }
-                tvTitle.setText(msg.getTitle());
-                tvTitle.setTextColor(Utils.getThemeColorAttr(activity,
-                        (moveFrom == msg.getMessageId() || !msg.isSelectable()) ?
-                                android.R.attr.textColorSecondary : android.R.attr.textColor));
-            }
-            else if (item instanceof NetworkServiceMsg)
-            {
-                final NetworkServiceMsg msg = (NetworkServiceMsg) item;
-                if (msg.getService().isImageValid())
-                {
-                    icon.setImageResource(msg.getService().getImageId());
-                    Utils.setImageViewColorAttr(activity, icon, R.attr.colorButtonDisabled);
-                }
-                tvTitle.setText(msg.getService().getDescriptionId());
-            }
-            else if (item instanceof OperationCommandMsg)
-            {
-                final OperationCommandMsg msg = (OperationCommandMsg) item;
-                if (msg.getCommand().isImageValid())
-                {
-                    icon.setImageResource(msg.getCommand().getImageId());
-                    Utils.setImageViewColorAttr(activity, icon, android.R.attr.textColor);
-                }
-                tvTitle.setText(msg.getCommand().getDescriptionId());
-            }
-
-            return convertView;
-        }
     }
 }

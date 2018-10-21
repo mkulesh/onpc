@@ -66,7 +66,7 @@ public class OperationCommandMsg extends ISCPMessage
         CHUP("CHUP", R.string.cmd_description_chup),
         CHDN("CHDN", R.string.cmd_description_chdn),
         MENU("MENU", R.string.cmd_description_menu),
-        TOP("TOP", R.string.cmd_description_top),
+        TOP("TOP", R.string.cmd_description_top, R.drawable.cmd_top),
         MODE("MODE", R.string.cmd_description_mode),
         LIST("LIST", R.string.cmd_description_list),
         MEMORY("MEMORY", R.string.cmd_description_memory),
