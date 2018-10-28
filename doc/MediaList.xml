@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response status="ok">
+    <items offset="0" totalitems="9">
+        <item icontype="F" iconid="29" title="My Presets" selectable="1" />
+        <item icontype="F" iconid="29" title="Local Radio" selectable="1" />
+        <item icontype="F" iconid="29" title="Music" selectable="1" />
+        <item icontype="F" iconid="29" title="Talk" selectable="1" />
+        <item icontype="F" iconid="29" title="Sports" selectable="1" />
+        <item icontype="F" iconid="29" title="By Location" selectable="1" />
+        <item icontype="F" iconid="29" title="By Language" selectable="1" />
+        <item icontype="F" iconid="29" title="Podcasts" selectable="1" />
+        <item icontype="F" iconid="29" title="Login" selectable="1" />
+    </items>
+</response>
