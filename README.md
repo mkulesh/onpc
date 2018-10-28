@@ -38,6 +38,10 @@ Some network services like Spotify, Deezer, AirPlay are currently not yet testet
 ## Documentation
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in this repository on in 'doc' directory.
 
+## Publications:
+
+* [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985/)
+
 ## License
 
 This software is published under the *GNU General Public License, Version 3*
