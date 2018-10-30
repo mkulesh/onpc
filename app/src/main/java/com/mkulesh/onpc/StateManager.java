@@ -22,6 +22,7 @@ import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
+import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
@@ -281,10 +282,20 @@ class StateManager extends AsyncTask<Void, Void, Void>
 
     void sendMessage(final ISCPMessage msg)
     {
+        sendMessage(msg, true);
+    }
+
+    void sendMessage(final ISCPMessage msg, boolean returnFromPlbk)
+    {
         Logging.info(this, "sending message: " + msg.toString());
-        returnFromPlayback.set(true);
+        returnFromPlayback.set(returnFromPlbk);
         circlePlayQueueMsg = null;
-        if (!(msg instanceof AmpOperationCommandMsg))
+        if ((msg instanceof AmpOperationCommandMsg) ||
+                (msg instanceof DisplayModeMsg && state.uiType == ListTitleInfoMsg.UIType.PLAYBACK))
+        {
+            // do not update List Title Info
+        }
+        else
         {
             state.serviceType = null; // request update of List Title Info
         }

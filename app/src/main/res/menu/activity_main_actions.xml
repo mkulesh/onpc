@@ -23,6 +23,12 @@
         android:enabled="false"
         app:showAsAction="always" />
     <item
+        android:id="@+id/menu_display_mode"
+        android:icon="@drawable/menu_display_mode"
+        android:title="@string/menu_display_mode"
+        android:enabled="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_app_settings"
         android:title="@string/menu_app_settings"
         app:showAsAction="never" />

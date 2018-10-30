@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.iscp.MessageChannel;
+import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.utils.AppTheme;
 import com.mkulesh.onpc.utils.Utils;
@@ -113,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 {
                     getStateManager().sendMessage(new PowerStatusMsg(PowerStatusMsg.PowerStatus.ON));
                 }
+            }
+            return true;
+        case R.id.menu_display_mode:
+            if (getStateManager() != null && getStateManager().getState().isOn())
+            {
+                getStateManager().sendMessage(new DisplayModeMsg(DisplayModeMsg.TOGGLE), /*returnFromPlayback=*/ false);
             }
             return true;
         case R.id.menu_app_settings:
@@ -347,6 +354,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 if (m.getItemId() == R.id.menu_power_standby)
                 {
                     m.setEnabled(state != null);
+                    Utils.updateMenuIconColor(this, m);
+                }
+                if (m.getItemId() == R.id.menu_display_mode)
+                {
+                    m.setEnabled(state != null && state.isOn());
                     Utils.updateMenuIconColor(this, m);
                 }
             }

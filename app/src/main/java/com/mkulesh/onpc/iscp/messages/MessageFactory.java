@@ -61,6 +61,8 @@ public class MessageFactory
             return new MenuStatusMsg(raw);
         case XmlListInfoMsg.CODE:
             return new XmlListInfoMsg(raw);
+        case DisplayModeMsg.CODE:
+            return new DisplayModeMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

@@ -19,6 +19,7 @@
     <string name="app_description">Onkyo Network Player Remote Control</string>
 
     <string name="menu_power_power">On/Standby</string>
+    <string name="menu_display_mode">Display mode</string>
     <string name="menu_app_settings">App settings</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
 
