@@ -16,6 +16,7 @@ package com.mkulesh.onpc;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
@@ -27,6 +28,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.utils.Utils;
 
 public class DeviceFragment extends BaseFragment implements View.OnClickListener
@@ -53,6 +56,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
                 DeviceFragment.SERVER_PORT, 60128)));
 
         deviceCover = rootView.findViewById(R.id.device_cover);
+
+        prepareSettingsButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
 
         update(null);
         return rootView;
@@ -150,5 +155,37 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             }
             ((TextView) rootView.findViewById(R.id.device_firmware)).setText(firmware.toString());
         }
+
+        // Dimmer level
+        {
+            ((TextView)rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
+            final AppCompatImageButton b = rootView.findViewById(R.id.device_dimmer_level_toggle);
+            b.setEnabled(state.isOn());
+            Utils.setImageButtonColorAttr(activity, b, b.isEnabled()? R.attr.colorButtonEnabled :  R.attr.colorButtonDisabled);
+        }
+    }
+
+    private void prepareSettingsButton(@IdRes int buttonId, final ISCPMessage msg)
+    {
+        final AppCompatImageButton b = rootView.findViewById(buttonId);
+        b.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                return Utils.showButtonDescription(activity, v);
+            }
+        });
+        b.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (activity.getStateManager() != null)
+                {
+                    activity.getStateManager().sendMessage(msg, /*returnFromPlayback=*/ false);
+                }
+            }
+        });
     }
 }

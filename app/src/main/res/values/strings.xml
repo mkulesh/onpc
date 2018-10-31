@@ -177,13 +177,20 @@
     <string name="playlist_track_menu">Track menu</string>
 
     <!-- Device tab -->
-    <string name="device_connect">Connect device</string>
+    <string name="device_connect">Device</string>
     <string name="action_button_connect">Connect</string>
     <string name="device_info">Device info</string>
     <string name="device_brand">Brand</string>
     <string name="device_model">Model</string>
     <string name="device_year">Year</string>
     <string name="device_firmware">Firmware</string>
+    <string name="device_settings">Settings</string>
+    <string name="device_dimmer_level">Dimmer level</string>
+    <string name="device_dimmer_level_none">N/A</string>
+    <string name="device_dimmer_level_light">Light</string>
+    <string name="device_dimmer_level_dark">Dark</string>
+    <string name="device_dimmer_level_off">Off</string>
+    <string name="device_dimmer_level_toggle">Sets dimmer level wrap-around up</string>
 
     <!-- Errors -->
     <string name="error_connection_failed">Can not connect to %s</string>

@@ -17,167 +17,193 @@
     android:layout_height="match_parent"
     tools:context="com.mkulesh.onpc.MainActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/SecondaryTextViewStyle"
-            android:text="@string/device_connect"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/device_field_height"
-            android:baselineAligned="true"
-            android:gravity="start"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/device_cover"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center" />
-
-            <EditText
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/device_name"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:inputType="text">
-
-                <requestFocus />
-            </EditText>
-
-            <EditText
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/device_port"
-                android:layout_width="80dp"
-                android:layout_height="fill_parent"
-                android:inputType="numberDecimal" />
-
-            <Button
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/device_connect"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:text="@string/action_button_connect" />
-        </LinearLayout>
-
-        <TextView
-            style="@style/SecondaryTextViewStyle"
-            android:text="@string/device_info"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/device_info_column_padding"
-            android:layout_gravity="left" />
+        android:layout_height="fill_parent">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/device_info_column_padding"
-            android:baselineAligned="true"
-            android:orientation="horizontal"
-            android:gravity="left">
+            android:orientation="vertical">
 
             <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:text="@string/device_brand"
-                android:layout_width="@dimen/device_info_column_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
+                style="@style/DeviceLabelViewStyle"
+                android:text="@string/device_connect" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/device_field_height"
+                android:baselineAligned="true"
+                android:gravity="start"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/device_cover"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center" />
+
+                <EditText
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_name"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:inputType="text">
+
+                    <requestFocus />
+                </EditText>
+
+                <EditText
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_port"
+                    android:layout_width="80dp"
+                    android:layout_height="fill_parent"
+                    android:inputType="numberDecimal" />
+
+                <Button
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_connect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="@string/action_button_connect" />
+            </LinearLayout>
 
             <TextView
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/device_brand"
-                android:layout_width="wrap_content"
+                style="@style/DeviceLabelViewStyle"
+                android:text="@string/device_info"
+                android:paddingTop="@dimen/device_info_column_padding" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left" />
+                android:paddingTop="@dimen/device_info_column_padding"
+                android:baselineAligned="true"
+                android:orientation="horizontal"
+                android:gravity="left">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_brand" />
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/device_info_column_padding"
+                android:baselineAligned="true"
+                android:orientation="horizontal"
+                android:gravity="left">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_model" />
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_model"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/device_info_column_padding"
+                android:baselineAligned="true"
+                android:orientation="horizontal"
+                android:gravity="left">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_year" />
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/device_info_column_padding"
+                android:paddingBottom="@dimen/device_info_column_padding"
+                android:baselineAligned="true"
+                android:orientation="horizontal"
+                android:gravity="left">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_firmware" />
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_firmware"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/btn_firmware_update"
+                    android:src="@drawable/firmware_update"
+                    android:contentDescription="@string/update_firmware"
+                    android:gravity="center"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <View style="@style/HorizontalDividerStyle" />
+
+            <TextView
+                style="@style/DeviceLabelViewStyle"
+                android:text="@string/device_settings"
+                android:paddingTop="@dimen/device_info_column_padding" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="true"
+                android:gravity="left"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:layout_height="match_parent"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/device_dimmer_level" />
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/device_dimmer_level"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="left" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/device_dimmer_level_toggle"
+                    android:src="@drawable/wrap_around"
+                    android:contentDescription="@string/device_dimmer_level_toggle"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/device_info_column_padding"
-            android:baselineAligned="true"
-            android:orientation="horizontal"
-            android:gravity="left">
-
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:text="@string/device_model"
-                android:layout_width="@dimen/device_info_column_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
-
-            <TextView
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/device_model"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/device_info_column_padding"
-            android:baselineAligned="true"
-            android:orientation="horizontal"
-            android:gravity="left">
-
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:text="@string/device_year"
-                android:layout_width="@dimen/device_info_column_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
-
-            <TextView
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/device_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/device_info_column_padding"
-            android:baselineAligned="true"
-            android:orientation="horizontal"
-            android:gravity="left">
-
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:text="@string/device_firmware"
-                android:layout_width="@dimen/device_info_column_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
-
-            <TextView
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/device_firmware"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left" />
-
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_firmware_update"
-                android:src="@drawable/firmware_update"
-                android:contentDescription="@string/update_firmware"
-                android:gravity="center"
-                android:visibility="gone"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
+import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
@@ -51,6 +52,7 @@ class State
     Bitmap deviceCover = null;
     List<ReceiverInformationMsg.Selector> deviceSelectors;
     InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
+    DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
 
     // Track info
     Bitmap cover = null;
@@ -125,6 +127,10 @@ class State
         if (msg instanceof InputSelectorMsg)
         {
             return process((InputSelectorMsg) msg);
+        }
+        if (msg instanceof DimmerLevelMsg)
+        {
+            return process((DimmerLevelMsg) msg);
         }
 
         // Track info
@@ -214,6 +220,13 @@ class State
     {
         final boolean changed = inputType != msg.getInputType();
         inputType = msg.getInputType();
+        return changed;
+    }
+
+    private boolean process(DimmerLevelMsg msg)
+    {
+        final boolean changed = dimmerLevel != msg.getLevel();
+        dimmerLevel = msg.getLevel();
         return changed;
     }
 

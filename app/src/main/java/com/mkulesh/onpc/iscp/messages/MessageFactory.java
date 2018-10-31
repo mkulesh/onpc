@@ -63,6 +63,8 @@ public class MessageFactory
             return new XmlListInfoMsg(raw);
         case DisplayModeMsg.CODE:
             return new DisplayModeMsg(raw);
+        case DimmerLevelMsg.CODE:
+            return new DimmerLevelMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }
