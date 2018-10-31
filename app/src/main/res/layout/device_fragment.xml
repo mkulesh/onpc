@@ -43,22 +43,21 @@
                     android:layout_height="32dp"
                     android:layout_gravity="center" />
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     style="@style/PrimaryTextViewStyle"
                     android:id="@+id/device_name"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:inputType="text">
+                    android:inputType="text"
+                    android:focusable="true" />
 
-                    <requestFocus />
-                </EditText>
-
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     style="@style/PrimaryTextViewStyle"
                     android:id="@+id/device_port"
                     android:layout_width="80dp"
                     android:layout_height="fill_parent"
+                    android:focusable="true"
                     android:inputType="numberDecimal" />
 
                 <Button
