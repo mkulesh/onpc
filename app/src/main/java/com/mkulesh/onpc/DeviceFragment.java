@@ -23,12 +23,12 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -47,8 +47,17 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     {
         initializeFragment(inflater, container, R.layout.device_fragment);
 
-        final Button buttonServerConnect = rootView.findViewById(R.id.device_connect);
-        buttonServerConnect.setOnClickListener(this);
+        final AppCompatImageButton btnConnect = rootView.findViewById(R.id.device_connect);
+        Utils.setImageButtonColorAttr(activity, btnConnect, R.attr.colorButtonEnabled);
+        btnConnect.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View v)
+            {
+                return Utils.showButtonDescription(activity, v);
+            }
+        });
+        btnConnect.setOnClickListener(this);
 
         ((EditText) rootView.findViewById(R.id.device_name)).setText(preferences.getString(
                 DeviceFragment.SERVER_NAME, "onkyo"));
@@ -58,6 +67,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         deviceCover = rootView.findViewById(R.id.device_cover);
 
         prepareSettingsButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
+        prepareSettingsButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
 
         update(null);
         return rootView;
@@ -121,11 +131,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
             ((TextView) rootView.findViewById(R.id.device_model)).setText(state.deviceProperties.get("model"));
             ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
-            final StringBuilder firmware = new StringBuilder();
-            firmware.append(state.deviceProperties.get("firmwareversion"));
             if (state.newFirmware)
             {
-                firmware.append(", ").append(activity.getResources().getString(R.string.state_new_firmware));
                 final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
                 b.setVisibility(View.VISIBLE);
                 b.setOnLongClickListener(new View.OnLongClickListener()
@@ -153,13 +160,21 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             {
                 rootView.findViewById(R.id.btn_firmware_update).setVisibility(View.GONE);
             }
-            ((TextView) rootView.findViewById(R.id.device_firmware)).setText(firmware.toString());
+            ((TextView) rootView.findViewById(R.id.device_firmware)).setText(state.deviceProperties.get("firmwareversion"));
         }
 
         // Dimmer level
         {
             ((TextView)rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
             final AppCompatImageButton b = rootView.findViewById(R.id.device_dimmer_level_toggle);
+            b.setEnabled(state.isOn());
+            Utils.setImageButtonColorAttr(activity, b, b.isEnabled()? R.attr.colorButtonEnabled :  R.attr.colorButtonDisabled);
+        }
+
+        // Digital filter
+        {
+            ((TextView)rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
+            final AppCompatImageButton b = rootView.findViewById(R.id.device_digital_filter_toggle);
             b.setEnabled(state.isOn());
             Utils.setImageButtonColorAttr(activity, b, b.isEnabled()? R.attr.colorButtonEnabled :  R.attr.colorButtonDisabled);
         }

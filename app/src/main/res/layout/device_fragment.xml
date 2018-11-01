@@ -26,16 +26,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                style="@style/DeviceLabelViewStyle"
-                android:text="@string/device_connect" />
+            <LinearLayout style="@style/DeviceRowStyle">
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/device_field_height"
-                android:baselineAligned="true"
-                android:gravity="start"
-                android:orientation="horizontal">
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_connect" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/device_cover"
@@ -44,11 +42,8 @@
                     android:layout_gravity="center" />
 
                 <android.support.v7.widget.AppCompatEditText
-                    style="@style/PrimaryTextViewStyle"
+                    style="@style/DeviceValueViewStyle"
                     android:id="@+id/device_name"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:inputType="text"
                     android:focusable="true" />
 
@@ -60,146 +55,113 @@
                     android:focusable="true"
                     android:inputType="numberDecimal" />
 
-                <Button
-                    style="@style/PrimaryTextViewStyle"
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
                     android:id="@+id/device_connect"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center"
-                    android:text="@string/action_button_connect" />
+                    android:src="@drawable/device_connect"
+                    android:contentDescription="@string/action_button_connect" />
+
             </LinearLayout>
 
-            <TextView
-                style="@style/DeviceLabelViewStyle"
-                android:text="@string/device_info"
-                android:paddingTop="@dimen/device_info_column_padding" />
+            <LinearLayout style="@style/DeviceRowStyle">
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/device_info_column_padding"
-                android:baselineAligned="true"
-                android:orientation="horizontal"
-                android:gravity="left">
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_info" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_brand" />
 
                 <TextView
-                    style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/device_brand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left" />
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/device_brand" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/device_info_column_padding"
-                android:baselineAligned="true"
-                android:orientation="horizontal"
-                android:gravity="left">
+            <LinearLayout style="@style/DeviceRowStyle">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_model" />
 
                 <TextView
-                    style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/device_model"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left" />
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/device_model" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/device_info_column_padding"
-                android:baselineAligned="true"
-                android:orientation="horizontal"
-                android:gravity="left">
+            <LinearLayout style="@style/DeviceRowStyle">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_year" />
 
                 <TextView
-                    style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/device_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left" />
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/device_year" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/device_info_column_padding"
-                android:paddingBottom="@dimen/device_info_column_padding"
-                android:baselineAligned="true"
-                android:orientation="horizontal"
-                android:gravity="left">
+            <LinearLayout style="@style/DeviceRowStyle">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_firmware" />
 
                 <TextView
-                    style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/device_firmware"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left" />
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/device_firmware" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     style="@style/ImageButtonStyle"
+                    android:visibility="gone"
                     android:id="@+id/btn_firmware_update"
                     android:src="@drawable/firmware_update"
-                    android:contentDescription="@string/update_firmware"
-                    android:gravity="center"
-                    android:visibility="gone" />
+                    android:contentDescription="@string/update_firmware" />
             </LinearLayout>
 
-            <View style="@style/HorizontalDividerStyle" />
-
-            <TextView
-                style="@style/DeviceLabelViewStyle"
-                android:text="@string/device_settings"
-                android:paddingTop="@dimen/device_info_column_padding" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="true"
-                android:gravity="left"
-                android:orientation="horizontal" >
+            <LinearLayout style="@style/DeviceRowStyle">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center_vertical"
+                    android:text="@string/device_settings" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_dimmer_level" />
 
                 <TextView
-                    style="@style/PrimaryTextViewStyle"
+                    style="@style/DeviceValueViewStyle"
                     android:id="@+id/device_dimmer_level"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_gravity="left" />
+                    android:gravity="center" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     style="@style/ImageButtonStyle"
                     android:id="@+id/device_dimmer_level_toggle"
                     android:src="@drawable/wrap_around"
-                    android:contentDescription="@string/device_dimmer_level_toggle"
+                    android:contentDescription="@string/device_dimmer_level_toggle" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_digital_filter" />
+
+                <TextView
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/device_digital_filter"
                     android:gravity="center" />
 
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/device_digital_filter_toggle"
+                    android:src="@drawable/wrap_around"
+                    android:contentDescription="@string/device_digital_filter_toggle" />
             </LinearLayout>
 
         </LinearLayout>

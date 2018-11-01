@@ -24,8 +24,7 @@
     <dimen name="btn_size">48dp</dimen>
     <dimen name="btn_margin">4dp</dimen>
 
-    <dimen name="device_field_height">42dp</dimen>
-    <dimen name="device_info_column_padding">16dp</dimen>
+    <dimen name="device_row_height">42dp</dimen>
     <dimen name="device_info_column_width">100dp</dimen>
 
 </resources>

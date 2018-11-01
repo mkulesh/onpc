@@ -65,10 +65,23 @@
         <item name="android:saveEnabled">false</item>
     </style>
 
+    <style name="DeviceRowStyle">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/device_row_height</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
     <style name="DeviceLabelViewStyle" parent="@style/SecondaryTextViewStyle">
         <item name="android:layout_width">@dimen/device_info_column_width</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">left</item>
+        <item name="android:layout_gravity">left|center_vertical</item>
+    </style>
+
+    <style name="DeviceValueViewStyle" parent="@style/PrimaryTextViewStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left|center_vertical</item>
     </style>
 
     <style name="HorizontalDividerStyle">

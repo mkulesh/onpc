@@ -185,12 +185,22 @@
     <string name="device_year">Year</string>
     <string name="device_firmware">Firmware</string>
     <string name="device_settings">Settings</string>
+
+    <!-- Dimmer Level -->
     <string name="device_dimmer_level">Dimmer level</string>
     <string name="device_dimmer_level_none">N/A</string>
     <string name="device_dimmer_level_light">Light</string>
     <string name="device_dimmer_level_dark">Dark</string>
     <string name="device_dimmer_level_off">Off</string>
-    <string name="device_dimmer_level_toggle">Sets dimmer level wrap-around up</string>
+    <string name="device_dimmer_level_toggle">Sets dimmer level wrap-around</string>
+
+    <!-- Digital Filter -->
+    <string name="device_digital_filter">Digital Filter</string>
+    <string name="device_digital_filter_none">N/A</string>
+    <string name="device_digital_filter_slow">Slow</string>
+    <string name="device_digital_filter_sharp">Sharp</string>
+    <string name="device_digital_filter_short">Short</string>
+    <string name="device_digital_filter_toggle">Sets digital filter wrap-around</string>
 
     <!-- Errors -->
     <string name="error_connection_failed">Can not connect to %s</string>

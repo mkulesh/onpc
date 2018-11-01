@@ -22,6 +22,7 @@ import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
+import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
@@ -211,6 +212,8 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', InputSelectorMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(
                 new EISCPMessage('1', DimmerLevelMsg.CODE, EISCPMessage.QUERY));
+        messageChannel.sendMessage(
+                new EISCPMessage('1', DigitalFilterMsg.CODE, EISCPMessage.QUERY));
     }
 
     void requestFirmwareUpdate()
@@ -294,7 +297,8 @@ class StateManager extends AsyncTask<Void, Void, Void>
         returnFromPlayback.set(returnFromPlbk);
         circlePlayQueueMsg = null;
         if ((msg instanceof AmpOperationCommandMsg) ||
-                (msg instanceof DisplayModeMsg && state.uiType == ListTitleInfoMsg.UIType.PLAYBACK))
+            (msg instanceof DisplayModeMsg && state.uiType == ListTitleInfoMsg.UIType.PLAYBACK) ||
+            (msg instanceof DimmerLevelMsg) || (msg instanceof DigitalFilterMsg))
         {
             // do not update List Title Info
         }
