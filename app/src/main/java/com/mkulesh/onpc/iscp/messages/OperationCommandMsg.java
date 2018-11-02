@@ -142,4 +142,10 @@ public class OperationCommandMsg extends ISCPMessage
     {
         return command == null ? null : new EISCPMessage('1', CODE, command.getCode());
     }
+
+    @Override
+    public boolean hasImpactOnMediaList()
+    {
+        return command != Command.REPEAT && command != Command.RANDOM;
+    }
 }

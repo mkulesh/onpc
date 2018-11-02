@@ -85,4 +85,10 @@ public class DigitalFilterMsg extends ISCPMessage
     {
         return new EISCPMessage('1', CODE, filter.getCode());
     }
+
+    @Override
+    public boolean hasImpactOnMediaList()
+    {
+        return false;
+    }
 }

@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -84,6 +83,7 @@ public class MonitorFragment extends BaseFragment
         {
             final OperationCommandMsg msg = new OperationCommandMsg((String) (b.getTag()));
             prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+            setButtonEnabled(b, false);
         }
 
         // Amplifier command Buttons
@@ -95,6 +95,7 @@ public class MonitorFragment extends BaseFragment
             {
                 final AmpOperationCommandMsg msg = new AmpOperationCommandMsg((String) (b.getTag()));
                 prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+                setButtonEnabled(b, false);
             }
         }
 
@@ -125,34 +126,6 @@ public class MonitorFragment extends BaseFragment
 
         update(null);
         return rootView;
-    }
-
-    private void prepareButton(AppCompatImageButton b, final ISCPMessage msg, final int imageId, final int descriptionId)
-    {
-        b.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (activity.getStateManager() != null)
-                {
-                    activity.getStateManager().sendMessage(msg);
-                }
-            }
-        });
-
-        b.setContentDescription(activity.getResources().getString(descriptionId));
-        b.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                return Utils.showButtonDescription(activity, v);
-            }
-        });
-
-        b.setImageResource(imageId);
-        setButtonEnabled(b, false);
     }
 
     @Override

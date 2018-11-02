@@ -56,4 +56,10 @@ public class TimeSeekMsg extends ISCPMessage
     {
         return new EISCPMessage('1', CODE, getTimeAsString());
     }
+
+    @Override
+    public boolean hasImpactOnMediaList()
+    {
+        return false;
+    }
 }

@@ -45,4 +45,10 @@ public class DisplayModeMsg extends ISCPMessage
     {
         return new EISCPMessage('1', CODE, data);
     }
+
+    @Override
+    public boolean hasImpactOnMediaList()
+    {
+        return false;
+    }
 }

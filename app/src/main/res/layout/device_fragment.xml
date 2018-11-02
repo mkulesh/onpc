@@ -118,7 +118,7 @@
                     android:visibility="gone"
                     android:id="@+id/btn_firmware_update"
                     android:src="@drawable/firmware_update"
-                    android:contentDescription="@string/update_firmware" />
+                    android:contentDescription="@string/device_firmware_net" />
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle">

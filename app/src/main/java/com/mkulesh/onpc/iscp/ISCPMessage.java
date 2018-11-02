@@ -106,4 +106,9 @@ public class ISCPMessage
     {
         return null;
     }
+
+    public boolean hasImpactOnMediaList()
+    {
+        return true;
+    }
 }

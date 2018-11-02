@@ -19,7 +19,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.AppCompatImageButton;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -42,7 +41,6 @@ import com.mkulesh.onpc.iscp.messages.PlayQueueReorderMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -241,35 +239,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         lp.setMargins(leftMargin, selectorButtonMargin, rightMargin, selectorButtonMargin);
         b.setLayoutParams(lp);
         b.setTag(tag);
-
-        TypedValue outValue = new TypedValue();
-        activity.getTheme().resolveAttribute(R.attr.selectableItemBackground, outValue, true);
-        b.setBackgroundResource(outValue.resourceId);
-
-        b.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (activity.getStateManager() != null)
-                {
-                    activity.getStateManager().sendMessage(msg);
-                }
-            }
-        });
-
-        b.setContentDescription(activity.getResources().getString(descriptionId));
-        b.setLongClickable(true);
-        b.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                return Utils.showButtonDescription(activity, v);
-            }
-        });
-
-        b.setImageResource(imageId);
+        prepareButton(b, msg, imageId, descriptionId);
+        setButtonEnabled(b, true);
         return b;
     }
 

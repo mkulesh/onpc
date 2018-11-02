@@ -92,4 +92,10 @@ public class AmpOperationCommandMsg extends ISCPMessage
     {
         return command == null ? null : new EISCPMessage('1', CODE, command.getCode());
     }
+
+    @Override
+    public boolean hasImpactOnMediaList()
+    {
+        return false;
+    }
 }

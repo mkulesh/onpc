@@ -16,7 +16,6 @@ package com.mkulesh.onpc;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
@@ -27,9 +26,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
+import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.utils.Utils;
 
 public class DeviceFragment extends BaseFragment implements View.OnClickListener
@@ -66,8 +65,9 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
 
         deviceCover = rootView.findViewById(R.id.device_cover);
 
-        prepareSettingsButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
-        prepareSettingsButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
+        prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
+        prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
+        prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
 
         update(null);
         return rootView;
@@ -131,76 +131,39 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
             ((TextView) rootView.findViewById(R.id.device_model)).setText(state.deviceProperties.get("model"));
             ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
-            if (state.newFirmware)
+            // Firmware version
+            {
+                StringBuilder version = new StringBuilder();
+                version.append(state.deviceProperties.get("firmwareversion"));
+                if (state.firmwareStatus != FirmwareUpdateMsg.Status.NONE)
+                {
+                    version.append(", ").append(
+                            activity.getResources().getString(state.firmwareStatus.getDescriptionId()));
+                }
+                ((TextView) rootView.findViewById(R.id.device_firmware)).setText(version.toString());
+            }
+            // Update button
             {
                 final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
-                b.setVisibility(View.VISIBLE);
-                b.setOnLongClickListener(new View.OnLongClickListener()
+                b.setVisibility(state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION?
+                        View.VISIBLE : View.GONE);
+                if (b.getVisibility() == View.VISIBLE)
                 {
-                    @Override
-                    public boolean onLongClick(View v)
-                    {
-                        return Utils.showButtonDescription(activity, v);
-                    }
-                });
-                Utils.setImageButtonColorAttr(activity, b, R.attr.colorButtonEnabled);
-                b.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (activity.getStateManager() != null)
-                        {
-                            activity.getStateManager().requestFirmwareUpdate();
-                        }
-                    }
-                });
+                    setButtonEnabled(b, true);
+                }
             }
-            else
-            {
-                rootView.findViewById(R.id.btn_firmware_update).setVisibility(View.GONE);
-            }
-            ((TextView) rootView.findViewById(R.id.device_firmware)).setText(state.deviceProperties.get("firmwareversion"));
         }
 
         // Dimmer level
         {
             ((TextView)rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
-            final AppCompatImageButton b = rootView.findViewById(R.id.device_dimmer_level_toggle);
-            b.setEnabled(state.isOn());
-            Utils.setImageButtonColorAttr(activity, b, b.isEnabled()? R.attr.colorButtonEnabled :  R.attr.colorButtonDisabled);
+            setButtonEnabled(R.id.device_dimmer_level_toggle, state.isOn());
         }
 
         // Digital filter
         {
             ((TextView)rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
-            final AppCompatImageButton b = rootView.findViewById(R.id.device_digital_filter_toggle);
-            b.setEnabled(state.isOn());
-            Utils.setImageButtonColorAttr(activity, b, b.isEnabled()? R.attr.colorButtonEnabled :  R.attr.colorButtonDisabled);
+            setButtonEnabled(R.id.device_digital_filter_toggle, state.isOn());
         }
-    }
-
-    private void prepareSettingsButton(@IdRes int buttonId, final ISCPMessage msg)
-    {
-        final AppCompatImageButton b = rootView.findViewById(buttonId);
-        b.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                return Utils.showButtonDescription(activity, v);
-            }
-        });
-        b.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (activity.getStateManager() != null)
-                {
-                    activity.getStateManager().sendMessage(msg, /*returnFromPlayback=*/ false);
-                }
-            }
-        });
     }
 }

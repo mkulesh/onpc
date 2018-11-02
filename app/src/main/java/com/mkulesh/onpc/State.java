@@ -48,7 +48,7 @@ class State
 {
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
-    boolean newFirmware = false;
+    FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
     Map<String, String> deviceProperties = new HashMap<>();
     Bitmap deviceCover = null;
     List<ReceiverInformationMsg.Selector> deviceSelectors;
@@ -200,8 +200,8 @@ class State
 
     private boolean process(FirmwareUpdateMsg msg)
     {
-        final boolean changed = newFirmware != msg.isNewFirmware();
-        newFirmware = msg.isNewFirmware();
+        final boolean changed = firmwareStatus != msg.getStatus();
+        firmwareStatus = msg.getStatus();
         return changed;
     }
 

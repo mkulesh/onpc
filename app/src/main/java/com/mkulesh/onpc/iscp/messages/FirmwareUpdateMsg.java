@@ -13,6 +13,9 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.StringRes;
+
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -22,23 +25,70 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 public class FirmwareUpdateMsg extends ISCPMessage
 {
     public final static String CODE = "UPD";
-    public final static String UPD_NET = "NET";
-    private final boolean newFirmware;
+
+    public enum Status implements StringParameterIf
+    {
+        NONE("N/A", R.string.device_firmware_none),
+        ACTUAL("00", R.string.device_firmware_actual),
+        NEW_VERSION("01", R.string.device_firmware_new_version),
+        UPDATE_COMPLETE("CMP", R.string.device_firmware_update_complete),
+        NET("NET", R.string.device_firmware_net);
+
+        final String code;
+        final int descriptionId;
+
+        Status(final String code, final int descriptionId)
+        {
+            this.code = code;
+            this.descriptionId = descriptionId;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        @StringRes
+        public int getDescriptionId()
+        {
+            return descriptionId;
+        }
+    }
+
+    private final Status status;
 
     FirmwareUpdateMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
-        newFirmware = ("01".equals(data) || "02".equals(data));
+        status = (Status) searchParameter(data, Status.values(), Status.NONE);
     }
 
-    public boolean isNewFirmware()
+    public FirmwareUpdateMsg(Status status)
     {
-        return newFirmware;
+        super(0, null);
+        this.status = status;
+    }
+
+    public Status getStatus()
+    {
+        return status;
     }
 
     @Override
     public String toString()
     {
-        return CODE + "[NEW_VERSION=" + newFirmware + "]";
+        return CODE + "[" + data + "; STATUS=" + status.getCode() + "]";
+    }
+
+    @Override
+    public EISCPMessage getCmdMsg()
+    {
+        return new EISCPMessage('1', CODE, status.getCode());
+    }
+
+    @Override
+    public boolean hasImpactOnMediaList()
+    {
+        return false;
     }
 }

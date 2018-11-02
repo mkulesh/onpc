@@ -29,7 +29,6 @@
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
     <string name="state_new_firmware">New version available</string>
-    <string name="update_firmware">Update firmware</string>
 
     <!-- Application settings -->
     <string name="pref_exit_confirm">Press back button twice for exit</string>
@@ -183,8 +182,15 @@
     <string name="device_brand">Brand</string>
     <string name="device_model">Model</string>
     <string name="device_year">Year</string>
-    <string name="device_firmware">Firmware</string>
     <string name="device_settings">Settings</string>
+
+    <!-- Firmware -->
+    <string name="device_firmware">Firmware</string>
+    <string name="device_firmware_none">N/A</string>
+    <string name="device_firmware_actual">Latest version</string>
+    <string name="device_firmware_new_version">New version exists</string>
+    <string name="device_firmware_update_complete">Update completed</string>
+    <string name="device_firmware_net">Start device update via network</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Dimmer level</string>
@@ -195,7 +201,7 @@
     <string name="device_dimmer_level_toggle">Sets dimmer level wrap-around</string>
 
     <!-- Digital Filter -->
-    <string name="device_digital_filter">Digital Filter</string>
+    <string name="device_digital_filter">Digital filter</string>
     <string name="device_digital_filter_none">N/A</string>
     <string name="device_digital_filter_slow">Slow</string>
     <string name="device_digital_filter_sharp">Sharp</string>

@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         case R.id.menu_display_mode:
             if (getStateManager() != null && getStateManager().getState().isOn())
             {
-                getStateManager().sendMessage(new DisplayModeMsg(DisplayModeMsg.TOGGLE), /*returnFromPlayback=*/ false);
+                getStateManager().sendMessage(new DisplayModeMsg(DisplayModeMsg.TOGGLE));
             }
             return true;
         case R.id.menu_app_settings:

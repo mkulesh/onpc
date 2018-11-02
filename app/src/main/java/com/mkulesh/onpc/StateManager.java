@@ -20,7 +20,6 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
-import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -216,13 +215,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', DigitalFilterMsg.CODE, EISCPMessage.QUERY));
     }
 
-    void requestFirmwareUpdate()
-    {
-        Logging.info(this, "requesting firmware update...");
-        messageChannel.sendMessage(
-                new EISCPMessage('1', FirmwareUpdateMsg.CODE, FirmwareUpdateMsg.UPD_NET));
-    }
-
     private void requestPlayState()
     {
         Logging.info(this, "requesting play state...");
@@ -288,21 +280,11 @@ class StateManager extends AsyncTask<Void, Void, Void>
 
     void sendMessage(final ISCPMessage msg)
     {
-        sendMessage(msg, true);
-    }
-
-    void sendMessage(final ISCPMessage msg, boolean returnFromPlbk)
-    {
         Logging.info(this, "sending message: " + msg.toString());
-        returnFromPlayback.set(returnFromPlbk);
+        returnFromPlayback.set(msg.hasImpactOnMediaList());
         circlePlayQueueMsg = null;
-        if ((msg instanceof AmpOperationCommandMsg) ||
-            (msg instanceof DisplayModeMsg && state.uiType == ListTitleInfoMsg.UIType.PLAYBACK) ||
-            (msg instanceof DimmerLevelMsg) || (msg instanceof DigitalFilterMsg))
-        {
-            // do not update List Title Info
-        }
-        else
+        if (msg.hasImpactOnMediaList() ||
+           (msg instanceof DisplayModeMsg && state.uiType != ListTitleInfoMsg.UIType.PLAYBACK))
         {
             state.serviceType = null; // request update of List Title Info
         }

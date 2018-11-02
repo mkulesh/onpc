@@ -85,4 +85,10 @@ public class DimmerLevelMsg extends ISCPMessage
     {
         return new EISCPMessage('1', CODE, level.getCode());
     }
+
+    @Override
+    public boolean hasImpactOnMediaList()
+    {
+        return false;
+    }
 }
