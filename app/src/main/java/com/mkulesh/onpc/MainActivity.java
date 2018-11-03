@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     private class SectionsPagerAdapter extends FragmentStatePagerAdapter
     {
-        private SparseArray<Fragment> registeredFragments = new SparseArray<>();
+        private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
         SectionsPagerAdapter(FragmentManager fm)
         {

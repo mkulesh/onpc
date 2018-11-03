@@ -45,8 +45,8 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnPausePlay;
     private AppCompatImageButton btnNext;
     private AppCompatImageButton btnRandom;
-    private List<AppCompatImageButton> cmdButtons = new ArrayList<>();
-    private List<AppCompatImageButton> ampButtons = new ArrayList<>();
+    private final List<AppCompatImageButton> cmdButtons = new ArrayList<>();
+    private final List<AppCompatImageButton> ampButtons = new ArrayList<>();
     private ImageView cover;
     private AppCompatSeekBar seekBar;
 

@@ -53,7 +53,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private final State state;
     private final MainActivity activity;
     private final AtomicBoolean active = new AtomicBoolean();
-    private AtomicBoolean returnFromPlayback = new AtomicBoolean();
+    private final AtomicBoolean returnFromPlayback = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
     private final MessageChannel messageChannel;
     private int xmlReqId = 0;

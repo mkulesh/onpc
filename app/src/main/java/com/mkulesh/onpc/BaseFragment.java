@@ -14,7 +14,6 @@
 package com.mkulesh.onpc;
 
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -43,7 +42,6 @@ abstract public class BaseFragment extends Fragment
     protected MainActivity activity;
     protected SharedPreferences preferences;
     protected View rootView = null;
-    protected int fragmentNumber = -1;
 
     public BaseFragment()
     {
@@ -55,8 +53,6 @@ abstract public class BaseFragment extends Fragment
         activity = (MainActivity) getActivity();
         preferences = PreferenceManager.getDefaultSharedPreferences(activity);
         rootView = inflater.inflate(layoutId, container, false);
-        Bundle args = getArguments();
-        fragmentNumber = args != null ? args.getInt(FRAGMENT_NUMBER) : 0;
     }
 
     public void update(final State state)
