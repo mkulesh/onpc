@@ -67,6 +67,8 @@ public class MessageFactory
             return new DimmerLevelMsg(raw);
         case DigitalFilterMsg.CODE:
             return new DigitalFilterMsg(raw);
+        case AudioMutingMsg.CODE:
+            return new AudioMutingMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

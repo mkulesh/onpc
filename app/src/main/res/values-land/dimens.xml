@@ -13,7 +13,7 @@
 
 <resources>
 
-    <dimen name="activity_horizontal_margin">128dp</dimen>
+    <dimen name="activity_horizontal_margin">100dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
     <dimen name="activity_tab_height">32dp</dimen>
 

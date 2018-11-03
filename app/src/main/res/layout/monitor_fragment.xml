@@ -30,17 +30,21 @@
 
             <android.support.v7.widget.AppCompatImageButton
                 style="@style/ImageButtonStyle"
-                android:id="@+id/btn_volume_mute"
+                android:id="@+id/btn_device_audio_muting" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonStyle"
+                android:id="@+id/btn_amp_audio_muting"
                 android:tag="AMTTG" />
 
             <android.support.v7.widget.AppCompatImageButton
                 style="@style/ImageButtonStyle"
-                android:id="@+id/btn_volume_down"
+                android:id="@+id/btn_amp_volume_down"
                 android:tag="MVLDOWN" />
 
             <android.support.v7.widget.AppCompatImageButton
                 style="@style/ImageButtonStyle"
-                android:id="@+id/btn_volume_up"
+                android:id="@+id/btn_amp_volume_up"
                 android:tag="MVLUP" />
 
         </LinearLayout>

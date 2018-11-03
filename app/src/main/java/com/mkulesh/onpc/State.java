@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
+import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
@@ -55,6 +56,7 @@ class State
     InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
     DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
     DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
+    AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
 
     // Track info
     Bitmap cover = null;
@@ -137,6 +139,10 @@ class State
         if (msg instanceof DigitalFilterMsg)
         {
             return process((DigitalFilterMsg) msg);
+        }
+        if (msg instanceof AudioMutingMsg)
+        {
+            return process((AudioMutingMsg) msg);
         }
 
         // Track info
@@ -240,6 +246,13 @@ class State
     {
         final boolean changed = digitalFilter != msg.getFilter();
         digitalFilter = msg.getFilter();
+        return changed;
+    }
+
+    private boolean process(AudioMutingMsg msg)
+    {
+        final boolean changed = audioMuting != msg.getStatus();
+        audioMuting = msg.getStatus();
         return changed;
     }
 

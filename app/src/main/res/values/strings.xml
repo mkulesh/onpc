@@ -73,16 +73,23 @@
     <!-- Playback tab -->
     <string name="tv_time_default" translatable="false">--:--</string>
 
-    <string name="amp_cmd_volume_up">Volume Level Up</string>
-    <string name="amp_cmd_volume_down">Volume Level Down</string>
-    <string name="amp_cmd_selector_up">Selector Position Wrap-Around Up</string>
-    <string name="amp_cmd_selector_down">Selector Position Wrap-Around Down</string>
-    <string name="amp_cmd_audio_mut_off">Audio Muting Off</string>
-    <string name="amp_cmd_audio_mut_on">Audio Muting On</string>
-    <string name="amp_cmd_audio_mut_toggle">Audio Muting On/Off toggle</string>
-    <string name="amp_cmd_system_on">System On</string>
-    <string name="amp_cmd_system_standby">System Standby</string>
-    <string name="amp_cmd_system_on_toggle">System On/Standby toggle</string>
+    <!-- Amplifier commands -->
+    <string name="amp_cmd_volume_up">Volume level up</string>
+    <string name="amp_cmd_volume_down">Volume level down</string>
+    <string name="amp_cmd_selector_up">Selector position wrap-around up</string>
+    <string name="amp_cmd_selector_down">Selector position wrap-around down</string>
+    <string name="amp_cmd_audio_muting_off">Amplifier audio muting off</string>
+    <string name="amp_cmd_audio_muting_on">Amplifier audio muting on</string>
+    <string name="amp_cmd_audio_muting_toggle">Sets amplifier audio muting wrap-around</string>
+    <string name="amp_cmd_system_on">Amplifier on</string>
+    <string name="amp_cmd_system_standby">Amplifier standby</string>
+    <string name="amp_cmd_system_on_toggle">Amplifier on/standby toggle</string>
+
+    <!-- Device audio muting, duplicate some amplifier commands -->
+    <string name="audio_muting_none">N/A</string>
+    <string name="audio_muting_off">Player audio muting off</string>
+    <string name="audio_muting_on">Player audio muting on</string>
+    <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
 
     <string name="cmd_description_play">Play</string>
     <string name="cmd_description_stop">Stop</string>

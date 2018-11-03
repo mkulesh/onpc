@@ -26,13 +26,13 @@ public class AmpOperationCommandMsg extends ISCPMessage
 
     public enum Command implements StringParameterIf
     {
-        MVLUP(R.string.amp_cmd_volume_up, R.drawable.volume_up),
-        MVLDOWN(R.string.amp_cmd_volume_down, R.drawable.volume_down),
+        MVLUP(R.string.amp_cmd_volume_up, R.drawable.volume_amp_up),
+        MVLDOWN(R.string.amp_cmd_volume_down, R.drawable.volume_amp_down),
         SLIUP(R.string.amp_cmd_selector_up),
         SLIDOWN(R.string.amp_cmd_selector_down),
-        AMTON(R.string.amp_cmd_audio_mut_off),
-        AMTOFF(R.string.amp_cmd_audio_mut_on),
-        AMTTG(R.string.amp_cmd_audio_mut_toggle, R.drawable.volume_mute),
+        AMTON(R.string.amp_cmd_audio_muting_off),
+        AMTOFF(R.string.amp_cmd_audio_muting_on),
+        AMTTG(R.string.amp_cmd_audio_muting_toggle, R.drawable.volume_amp_muting),
         PWRON(R.string.amp_cmd_system_on),
         PWROFF(R.string.amp_cmd_system_standby),
         PWRTG(R.string.amp_cmd_system_on_toggle);
