@@ -22,6 +22,7 @@ import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
@@ -216,6 +217,8 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', DigitalFilterMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(
                 new EISCPMessage('1', AudioMutingMsg.CODE, EISCPMessage.QUERY));
+        messageChannel.sendMessage(
+                new EISCPMessage('1', AutoPowerMsg.CODE, EISCPMessage.QUERY));
     }
 
     private void requestPlayState()

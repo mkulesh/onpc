@@ -215,6 +215,13 @@
     <string name="device_digital_filter_short">Short</string>
     <string name="device_digital_filter_toggle">Sets digital filter wrap-around</string>
 
+    <!-- Auto power commands -->
+    <string name="device_auto_power">Auto power</string>
+    <string name="device_auto_power_none">N/A</string>
+    <string name="device_auto_power_off">Off</string>
+    <string name="device_auto_power_on">On</string>
+    <string name="device_auto_power_toggle">Sets auto power wrap-around</string>
+
     <!-- Errors -->
     <string name="error_connection_failed">Can not connect to %s</string>
     <string name="error_connection_timeout">Server not found</string>

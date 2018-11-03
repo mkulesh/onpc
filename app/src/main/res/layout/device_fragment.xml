@@ -164,6 +164,24 @@
                     android:contentDescription="@string/device_digital_filter_toggle" />
             </LinearLayout>
 
+            <LinearLayout style="@style/DeviceRowStyle">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_auto_power" />
+
+                <TextView
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/device_auto_power"
+                    android:gravity="center" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/device_auto_power_toggle"
+                    android:src="@drawable/wrap_around"
+                    android:contentDescription="@string/device_auto_power_toggle" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

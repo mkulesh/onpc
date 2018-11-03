@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
@@ -65,9 +66,10 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
 
         deviceCover = rootView.findViewById(R.id.device_cover);
 
+        prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
-        prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
+        prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
 
         update(null);
         return rootView;
@@ -164,6 +166,12 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         {
             ((TextView)rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
             setButtonEnabled(R.id.device_digital_filter_toggle, state.isOn());
+        }
+
+        // Auto power
+        {
+            ((TextView)rootView.findViewById(R.id.device_auto_power)).setText(state.autoPower.getDescriptionId());
+            setButtonEnabled(R.id.device_auto_power_toggle, state.isOn());
         }
     }
 }

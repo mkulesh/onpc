@@ -19,6 +19,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
@@ -57,6 +58,7 @@ class State
     DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
     DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
     AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
+    AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
 
     // Track info
     Bitmap cover = null;
@@ -143,6 +145,10 @@ class State
         if (msg instanceof AudioMutingMsg)
         {
             return process((AudioMutingMsg) msg);
+        }
+        if (msg instanceof AutoPowerMsg)
+        {
+            return process((AutoPowerMsg) msg);
         }
 
         // Track info
@@ -253,6 +259,13 @@ class State
     {
         final boolean changed = audioMuting != msg.getStatus();
         audioMuting = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(AutoPowerMsg msg)
+    {
+        final boolean changed = autoPower != msg.getStatus();
+        autoPower = msg.getStatus();
         return changed;
     }
 
