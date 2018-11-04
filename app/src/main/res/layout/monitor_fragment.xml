@@ -106,7 +106,7 @@
                     android:id="@+id/progress_bar"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="16dp"
+                    android:layout_height="wrap_content"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:min="0"

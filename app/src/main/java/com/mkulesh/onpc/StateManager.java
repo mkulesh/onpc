@@ -15,6 +15,7 @@ package com.mkulesh.onpc;
 
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -55,6 +56,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private final MainActivity activity;
     private final AtomicBoolean active = new AtomicBoolean();
     private final AtomicBoolean returnFromPlayback = new AtomicBoolean();
+    private final AtomicBoolean requestXmlList = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
     private final MessageChannel messageChannel;
     private int xmlReqId = 0;
@@ -91,6 +93,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         requestPowerState();
         final BlockingQueue<Timer> timerQueue = new ArrayBlockingQueue<>(1, true);
         skipNextTimeMsg.set(0);
+        requestXmlList.set(false);
         while (true)
         {
             try
@@ -104,61 +107,13 @@ class StateManager extends AsyncTask<Void, Void, Void>
                     }
                 }
 
-                final PlayStatusMsg.PlayStatus playStatus = state.playStatus;
                 final ISCPMessage msg = messageChannel.getInputQueue().take();
-                boolean changed = false;
-                if (msg != null)
+                if (msg == null)
                 {
-                    if (msg instanceof TimeInfoMsg && skipNextTimeMsg.get() > 0)
-                    {
-                        // skip time message
-                        skipNextTimeMsg.set(Math.max(0, skipNextTimeMsg.get() - 1));
-                    }
-                    else
-                    {
-                        changed = state.update(msg);
-                    }
+                    continue;
                 }
 
-                if (changed && state.isOn())
-                {
-                    if (msg instanceof PowerStatusMsg)
-                    {
-                        requestPlayState();
-                        requestListState();
-                    }
-                    else if (msg instanceof PlayStatusMsg && playStatus != state.playStatus)
-                    {
-                        if (state.isPlaying())
-                        {
-                            requestTrackState();
-                        }
-                        else
-                        {
-                            requestListState();
-                        }
-                    }
-                    else if (msg instanceof TrackInfoMsg)
-                    {
-                        if (((TrackInfoMsg) msg).isValidTrack())
-                        {
-                            requestListState();
-                        }
-                    }
-                    else if (msg instanceof ListTitleInfoMsg)
-                    {
-                        final ListTitleInfoMsg liMsg = (ListTitleInfoMsg) msg;
-                        if (circlePlayQueueMsg != null && liMsg.getNumberOfItems() > 0)
-                        {
-                            sendPlayQueueMsg(circlePlayQueueMsg, true);
-                        }
-                        else
-                        {
-                            circlePlayQueueMsg = null;
-                            requestXmlListState(liMsg);
-                        }
-                    }
-                }
+                final boolean changed = processMessage(msg);
 
                 if (changed && timerQueue.isEmpty())
                 {
@@ -190,6 +145,80 @@ class StateManager extends AsyncTask<Void, Void, Void>
         }
         Logging.info(this, "stopped");
         return null;
+    }
+
+    private boolean processMessage(@NonNull ISCPMessage msg)
+    {
+        // skip time message, is necessary
+        if (msg instanceof TimeInfoMsg && skipNextTimeMsg.get() > 0)
+        {
+            skipNextTimeMsg.set(Math.max(0, skipNextTimeMsg.get() - 1));
+            return false;
+        }
+
+        final PlayStatusMsg.PlayStatus playStatus = state.playStatus;
+        final boolean changed = state.update(msg);
+
+        // no message handling, if power off
+        if (!state.isOn())
+        {
+            return changed;
+        }
+
+        if (!changed)
+        {
+            if (msg instanceof ListTitleInfoMsg && requestXmlList.get())
+            {
+                requestXmlListState((ListTitleInfoMsg) msg);
+            }
+            return false;
+        }
+
+        if (msg instanceof PowerStatusMsg)
+        {
+            requestPlayState();
+            requestListState();
+            return true;
+        }
+
+        if (msg instanceof PlayStatusMsg && playStatus != state.playStatus)
+        {
+            if (state.isPlaying())
+            {
+                requestTrackState();
+            }
+            else
+            {
+                requestListState();
+            }
+            return true;
+        }
+
+        if (msg instanceof TrackInfoMsg)
+        {
+            if (((TrackInfoMsg) msg).isValidTrack())
+            {
+                requestListState();
+            }
+            return true;
+        }
+
+        if (msg instanceof ListTitleInfoMsg)
+        {
+            final ListTitleInfoMsg liMsg = (ListTitleInfoMsg) msg;
+            if (circlePlayQueueMsg != null && liMsg.getNumberOfItems() > 0)
+            {
+                sendPlayQueueMsg(circlePlayQueueMsg, true);
+            }
+            else
+            {
+                circlePlayQueueMsg = null;
+                requestXmlListState(liMsg);
+            }
+            return true;
+        }
+
+        return true;
     }
 
     @Override
@@ -254,13 +283,14 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private void requestListState()
     {
         Logging.info(this, "requesting list state...");
-        state.serviceType = null; // request update of List Title Info
+        requestXmlList.set(true);
         messageChannel.sendMessage(
                 new EISCPMessage('1', ListTitleInfoMsg.CODE, EISCPMessage.QUERY));
     }
 
     private void requestXmlListState(final ListTitleInfoMsg liMsg)
     {
+        requestXmlList.set(false);
         if (liMsg.getServiceType() == ListTitleInfoMsg.ServiceType.NET
                 && liMsg.getLayerInfo() == ListTitleInfoMsg.LayerInfo.NET_TOP)
         {
@@ -292,7 +322,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         if (msg.hasImpactOnMediaList() ||
            (msg instanceof DisplayModeMsg && state.uiType != ListTitleInfoMsg.UIType.PLAYBACK))
         {
-            state.serviceType = null; // request update of List Title Info
+            requestXmlList.set(true);
         }
         final EISCPMessage cmdMsg = msg.getCmdMsg();
         if (cmdMsg != null)
@@ -312,7 +342,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
             Logging.info(this, "starting repeat mode: " + msg.toString());
             circlePlayQueueMsg = msg;
         }
-        state.serviceType = null; // request update of List Title Info
+        requestXmlList.set(true);
         messageChannel.sendMessage(msg.getCmdMsg());
     }
 

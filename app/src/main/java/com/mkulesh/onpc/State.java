@@ -438,6 +438,10 @@ class State
         {
             return false;
         }
+        if (!isTopLayer())
+        {
+            return false;
+        }
         if (serviceType == ListTitleInfoMsg.ServiceType.NET)
         {
             for (NetworkServiceMsg i : serviceItems)
@@ -470,6 +474,12 @@ class State
         return null;
     }
 
+    boolean isUsb()
+    {
+        return serviceType == ListTitleInfoMsg.ServiceType.USB_FRONT
+                || serviceType == ListTitleInfoMsg.ServiceType.USB_REAR;
+    }
+
     boolean isTopLayer()
     {
         if (uiType != ListTitleInfoMsg.UIType.PLAYBACK)
@@ -481,14 +491,13 @@ class State
             }
             if (layerInfo == ListTitleInfoMsg.LayerInfo.SERVICE_TOP)
             {
-                return serviceType == ListTitleInfoMsg.ServiceType.USB_FRONT
-                        || serviceType == ListTitleInfoMsg.ServiceType.USB_REAR;
+                return isUsb() || serviceType == ListTitleInfoMsg.ServiceType.NONE;
             }
         }
         return false;
     }
 
-    public boolean isMediaEmpty()
+    boolean isMediaEmpty()
     {
         return mediaItems.isEmpty() && serviceItems.isEmpty();
     }
