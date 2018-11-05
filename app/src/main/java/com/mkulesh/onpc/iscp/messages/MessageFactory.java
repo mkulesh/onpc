@@ -71,6 +71,8 @@ public class MessageFactory
             return new AudioMutingMsg(raw);
         case AutoPowerMsg.CODE:
             return new AutoPowerMsg(raw);
+        case CustomPopupMsg.CODE:
+            return new CustomPopupMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

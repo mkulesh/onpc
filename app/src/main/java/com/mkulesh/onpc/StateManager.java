@@ -24,6 +24,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
@@ -216,6 +217,31 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 requestXmlListState(liMsg);
             }
             return true;
+        }
+
+        // popup auto-responses for DEEZER
+        if (state.serviceType == ListTitleInfoMsg.ServiceType.DEEZER && msg instanceof CustomPopupMsg)
+        {
+            CustomPopupMsg pMsg = (CustomPopupMsg)msg;
+            try
+            {
+                Logging.info(msg, "generating auto-response for popup...");
+                pMsg.generateAutoResponse(1, "OK", true);
+                if (pMsg.getResponse() != null)
+                {
+                    final EISCPMessage cmdMsg = pMsg.getCmdMsg();
+                    if (cmdMsg != null)
+                    {
+                        requestXmlList.set(true);
+                        messageChannel.sendMessage(cmdMsg);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.info(msg, "Can not auto-response XML: " + e.getLocalizedMessage());
+            }
+            return false;
         }
 
         return true;

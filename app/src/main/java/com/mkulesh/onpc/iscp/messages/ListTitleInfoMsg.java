@@ -51,7 +51,7 @@ public class ListTitleInfoMsg extends ISCPMessage
         MP3TUNES("0F"),
         SIMFY("10"),
         HOME_MEDIA("11"),
-        DEEZER("12"),
+        DEEZER("12", R.drawable.media_item_deezer),
         IHEARTRADIO("13"),
         AIRPLAY("18"),
         ONKYO_MUSIC("1A"),

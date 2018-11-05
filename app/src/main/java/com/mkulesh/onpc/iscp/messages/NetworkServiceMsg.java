@@ -45,7 +45,7 @@ public class NetworkServiceMsg extends ISCPMessage
         MP3TUNES("mp3tunes", "0F", R.string.net_service_mp3tunes),
         SIMFY("Simfy", "10", R.string.net_service_simfy),
         HOME_MEDIA("Home Media", "11", R.string.net_service_home_media),
-        DEEZER("Deezer", "12", R.string.net_service_deezer),
+        DEEZER("Deezer", "12", R.string.net_service_deezer, R.drawable.media_item_deezer),
         IHEARTRADIO("iHeartRadio", "13", R.string.net_service_iheartradio),
         AIRPLAY("Airplay", "18", R.string.net_service_airplay),
         ONKYO_MUSIC("onkyo music", "1A", R.string.net_service_onkyo_music),

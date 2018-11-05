@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
@@ -199,6 +200,10 @@ class State
         if (msg instanceof XmlListInfoMsg)
         {
             return process((XmlListInfoMsg) msg);
+        }
+        if (msg instanceof CustomPopupMsg)
+        {
+            return process((CustomPopupMsg) msg);
         }
         return msg instanceof ListInfoMsg && process((ListInfoMsg) msg);
     }
@@ -458,6 +463,22 @@ class State
             }
             itemsChanged = true;
             return true;
+        }
+        return false;
+    }
+
+    private boolean process(CustomPopupMsg msg)
+    {
+        try
+        {
+            if (msg.parseXml())
+            {
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
+            Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
         }
         return false;
     }

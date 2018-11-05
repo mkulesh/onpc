@@ -5,7 +5,19 @@
             align="left" uri="resource:///popup/label/line:0" order="0" />
     </label>
     <buttongroup title="" align="center" total="1" uri="resource:///popup/buttongroup:0">
-        <button text="OK"
-            align="center" uri="/button:0" selected="false" index="0" www="" order="1" />
+        <button text="OK" align="center" uri="/button:0" selected="false" index="0" www=""
+            order="1" />
     </buttongroup>
 </popup>
+
+<popup title="Please log in to continue." align="center" type="custom" time="0" uri="resource:///popup">
+    <label title="" align="center" total="1" uri="resource:///popup/label:0">
+        <line
+            text="If you don&apos;t have a Deezer account,please go to http://www.deezer.com/premium/onkyo"
+            align="left" uri="resource:///popup/label/line:0" order="0" />
+    </label>
+    <buttongroup title="" align="center" total="1" uri="resource:///popup/buttongroup:0">
+        <button text="OK" align="center" uri="/button:0" selected="false" index="0" www="" order="1" />
+    </buttongroup>
+</popup>
+
