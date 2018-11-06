@@ -44,12 +44,17 @@ public class CustomPopupMsg extends ISCPMessage
 
     private final String rawXml;
     private Document doc = null;
-    private String response = null;
+    private String title = null, response = null;
 
     CustomPopupMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
         rawXml = data.substring(1);
+    }
+
+    public String getTitle()
+    {
+        return title;
     }
 
     public String getResponse()
@@ -73,8 +78,9 @@ public class CustomPopupMsg extends ISCPMessage
         final Element popup = getPopup();
         if (popup != null)
         {
-            Logging.info(this, "received popup: " + popup.getAttribute("title"));
-            retValue = true;
+            title = popup.getAttribute("title");
+            Logging.info(this, "received popup: " + title);
+            retValue = title != null;
         }
         stream.close();
         return retValue;

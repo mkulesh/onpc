@@ -21,3 +21,15 @@
     </buttongroup>
 </popup>
 
+<popup title="Deezer Login" align="center" type="custom" time="0" uri="resource:///popup">
+    <textboxgroup title="" align="center" total="1" uri="resource:///popup/textboxgroup:0">
+        <textbox text="Enter your Email address" align="left"
+            uri="resource:///popup/textboxgroup:0/textbox:0" value="" type="plain" order="0" />
+    </textboxgroup>
+    <buttongroup title="" align="center" total="2" uri="resource:///popup/buttongroup:0">
+        <button text="OK" align="center" uri="resource:///popup/buttongroup:0/button:0" selected="false"
+            index="0" www="" order="1" />
+        <button text="Back" align="center" uri="resource:///popup/buttongroup:0/button:1"
+            selected="false" index="1" www="" order="2" />
+    </buttongroup>
+</popup>

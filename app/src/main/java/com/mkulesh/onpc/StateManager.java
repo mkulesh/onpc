@@ -225,16 +225,11 @@ class StateManager extends AsyncTask<Void, Void, Void>
             CustomPopupMsg pMsg = (CustomPopupMsg)msg;
             try
             {
-                Logging.info(msg, "generating auto-response for popup...");
-                pMsg.generateAutoResponse(1, "OK", true);
-                if (pMsg.getResponse() != null)
+                if (pMsg.getTitle() != null && pMsg.getTitle().equals("Try Deezer Premium+"))
                 {
-                    final EISCPMessage cmdMsg = pMsg.getCmdMsg();
-                    if (cmdMsg != null)
-                    {
-                        requestXmlList.set(true);
-                        messageChannel.sendMessage(cmdMsg);
-                    }
+                    Logging.info(msg, "generating auto-response for popup: " + pMsg.getTitle());
+                    pMsg.generateAutoResponse(1, "OK", true);
+                    sendPopupMsg(pMsg);
                 }
             }
             catch (Exception e)
@@ -375,5 +370,18 @@ class StateManager extends AsyncTask<Void, Void, Void>
     void requestSkipNextTimeMsg(final int number)
     {
         skipNextTimeMsg.set(number);
+    }
+
+    private void sendPopupMsg(CustomPopupMsg pMsg)
+    {
+        if (pMsg.getResponse() != null)
+        {
+            final EISCPMessage cmdMsg = pMsg.getCmdMsg();
+            if (cmdMsg != null)
+            {
+                requestXmlList.set(true);
+                messageChannel.sendMessage(cmdMsg);
+            }
+        }
     }
 }

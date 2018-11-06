@@ -473,7 +473,7 @@ class State
         {
             if (msg.parseXml())
             {
-                return true;
+                return msg.getTitle() != null;
             }
         }
         catch (Exception e)
