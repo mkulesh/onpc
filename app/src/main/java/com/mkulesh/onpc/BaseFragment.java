@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -28,6 +29,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.PopupBuilder;
+import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
+import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
+import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 abstract public class BaseFragment extends Fragment
@@ -64,6 +69,36 @@ abstract public class BaseFragment extends Fragment
         else
         {
             updateActiveView(state);
+        }
+        if (activity.getStateManager() != null && state != null && state.popup != null)
+        {
+            final CustomPopupMsg inMsg = state.popup;
+            state.popup = null;
+            processPopup(inMsg, state.serviceType);
+        }
+    }
+
+    private void processPopup(CustomPopupMsg inMsg, final ListTitleInfoMsg.ServiceType serviceType)
+    {
+        try
+        {
+            PopupBuilder builder = new PopupBuilder(activity, serviceType, new PopupBuilder.ButtonListener()
+            {
+                @Override
+                public void onButtonSelected(final CustomPopupMsg outMsg)
+                {
+                    activity.getStateManager().sendPopupMsg(outMsg);
+                }
+            });
+            final AlertDialog alertDialog = builder.build(inMsg);
+            if (alertDialog != null)
+            {
+                alertDialog.show();
+            }
+        }
+        catch (Exception e)
+        {
+            Logging.info(this, "Can not create popup dialog: " + e.getLocalizedMessage());
         }
     }
 

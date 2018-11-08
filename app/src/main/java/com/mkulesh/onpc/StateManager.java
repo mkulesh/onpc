@@ -219,26 +219,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
             return true;
         }
 
-        // popup auto-responses for DEEZER
-        if (state.serviceType == ListTitleInfoMsg.ServiceType.DEEZER && msg instanceof CustomPopupMsg)
-        {
-            CustomPopupMsg pMsg = (CustomPopupMsg)msg;
-            try
-            {
-                if (pMsg.getTitle() != null && pMsg.getTitle().equals("Try Deezer Premium+"))
-                {
-                    Logging.info(msg, "generating auto-response for popup: " + pMsg.getTitle());
-                    pMsg.generateAutoResponse(1, "OK", true);
-                    sendPopupMsg(pMsg);
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.info(msg, "Can not auto-response XML: " + e.getLocalizedMessage());
-            }
-            return false;
-        }
-
         return true;
     }
 
@@ -372,16 +352,13 @@ class StateManager extends AsyncTask<Void, Void, Void>
         skipNextTimeMsg.set(number);
     }
 
-    private void sendPopupMsg(CustomPopupMsg pMsg)
+    void sendPopupMsg(CustomPopupMsg pMsg)
     {
-        if (pMsg.getResponse() != null)
+        final EISCPMessage cmdMsg = pMsg.getCmdMsg();
+        if (cmdMsg != null)
         {
-            final EISCPMessage cmdMsg = pMsg.getCmdMsg();
-            if (cmdMsg != null)
-            {
-                requestXmlList.set(true);
-                messageChannel.sendMessage(cmdMsg);
-            }
+            requestXmlList.set(true);
+            messageChannel.sendMessage(cmdMsg);
         }
     }
 }

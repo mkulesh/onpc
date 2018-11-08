@@ -112,8 +112,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.playlist_menu_move_to).setVisible(
                             isQueue && isMoveToValid(selectedItem.getMessageId()));
 
-                    final boolean isRadio = state.serviceType == ListTitleInfoMsg.ServiceType.TUNEIN_RADIO;
-                    menu.findItem(R.id.playlist_track_menu).setVisible(isRadio &&
+                    final boolean isTrackMenu = state.serviceType == ListTitleInfoMsg.ServiceType.TUNEIN_RADIO ||
+                            state.serviceType == ListTitleInfoMsg.ServiceType.DEEZER;
+                    menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu &&
                             selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY);
                 }
             }

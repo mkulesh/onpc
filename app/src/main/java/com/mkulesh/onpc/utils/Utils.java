@@ -15,6 +15,7 @@ package com.mkulesh.onpc.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -62,20 +64,6 @@ public class Utils
         }
     }
 
-    public static String byteArrayToHex(byte[] a)
-    {
-        if (a == null)
-        {
-            return "null";
-        }
-        StringBuilder sb = new StringBuilder(a.length * 3);
-        for (byte b : a)
-        {
-            sb.append(String.format("%02x", b)).append(" ");
-        }
-        return sb.toString();
-    }
-
     public static byte[] streamToByteArray(InputStream stream) throws IOException
     {
         byte[] buffer = new byte[1024];
@@ -97,6 +85,22 @@ public class Utils
     public static boolean ensureAttribute(Element e, String type, String s)
     {
         return e.getAttribute(type) != null && e.getAttribute(type).equals(s);
+    }
+
+    public static Element getElement(final Document doc, final String name)
+    {
+        for (Node object = doc.getDocumentElement(); object != null; object = object.getNextSibling())
+        {
+            if (object instanceof Element)
+            {
+                final Element popup = (Element) object;
+                if (popup.getTagName().equals(name))
+                {
+                    return popup;
+                }
+            }
+        }
+        return null;
     }
 
     public static List<Element> getElements(final Element e, final String name)
@@ -206,4 +210,13 @@ public class Utils
             return -1;
         }
     }
+
+    /**
+     * Procedure checks whether the hard keyboard is available
+     */
+    public static boolean isHardwareKeyboardAvailable(Context context)
+    {
+        return context.getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS;
+    }
+
 }

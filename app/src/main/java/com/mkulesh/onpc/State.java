@@ -86,6 +86,9 @@ class State
     protected final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
     boolean itemsChanged = false;
 
+    // Popup
+    CustomPopupMsg popup = null;
+
     State()
     {
         deviceSelectors = new ArrayList<>();
@@ -469,18 +472,8 @@ class State
 
     private boolean process(CustomPopupMsg msg)
     {
-        try
-        {
-            if (msg.parseXml())
-            {
-                return msg.getTitle() != null;
-            }
-        }
-        catch (Exception e)
-        {
-            Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
-        }
-        return false;
+        popup = msg;
+        return true;
     }
 
     ReceiverInformationMsg.Selector getActualSelector()
