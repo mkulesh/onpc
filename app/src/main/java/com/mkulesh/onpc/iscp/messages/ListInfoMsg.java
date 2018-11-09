@@ -135,6 +135,11 @@ public class ListInfoMsg extends ISCPMessage
         return listedData;
     }
 
+    public int getLineInfo()
+    {
+        return lineInfo;
+    }
+
     @Override
     public String toString()
     {

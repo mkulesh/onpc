@@ -446,10 +446,6 @@ class State
         {
             return false;
         }
-        if (!isTopLayer())
-        {
-            return false;
-        }
         if (serviceType == ListTitleInfoMsg.ServiceType.NET)
         {
             for (NetworkServiceMsg i : serviceItems)
@@ -464,6 +460,20 @@ class State
             {
                 serviceItems.add(nsMsg);
             }
+            itemsChanged = true;
+            return true;
+        }
+        if (uiType == ListTitleInfoMsg.UIType.MENU)
+        {
+            for (XmlListItemMsg i : mediaItems)
+            {
+                if (i.getTitle().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                {
+                    return false;
+                }
+            }
+            final XmlListItemMsg nsMsg = new XmlListItemMsg(msg.getLineInfo(), 0, msg.getListedData());
+            mediaItems.add(nsMsg);
             itemsChanged = true;
             return true;
         }

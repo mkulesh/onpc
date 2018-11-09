@@ -67,6 +67,17 @@ public class XmlListItemMsg extends ISCPMessage
         selectable = Utils.ensureAttribute(src, "selectable", "1");
     }
 
+    public XmlListItemMsg(final int id, final int numberOfLayers, final String title)
+    {
+        super(id, null);
+        this.numberOfLayers = numberOfLayers;
+        this.title = title;
+        iconType = "";
+        iconId = Icon.UNKNOWN.getCode();
+        icon = Icon.UNKNOWN;
+        selectable = true;
+    }
+
     public XmlListItemMsg(XmlListItemMsg other)
     {
         super(other);

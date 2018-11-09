@@ -298,7 +298,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
             Logging.info(this, "requesting XML list state skipped");
             return;
         }
-        Logging.info(this, "requesting XML list state");
         if (liMsg.getUiType() == ListTitleInfoMsg.UIType.PLAYBACK)
         {
             if (returnFromPlayback.get())
@@ -306,8 +305,14 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 sendMessage(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
             }
         }
+        else if (liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU)
+        {
+            Logging.info(this, "requesting XML list state skipped");
+            return;
+        }
         else if (liMsg.getNumberOfLayers() > 0)
         {
+            Logging.info(this, "requesting XML list state");
             messageChannel.sendMessage(
                     new EISCPMessage('1', XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
                             xmlReqId++, liMsg.getNumberOfLayers(), 0, liMsg.getNumberOfItems())));
