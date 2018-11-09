@@ -3,17 +3,17 @@
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> "Onkyo Network Player Remote Control"
 
-This app allows to remote control Onkyo Network Player like [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) over the network using "Integra Serial Communication Protocol":
-* Full playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-* Control Onkyo amplifier if it is attached to the player using RI interface
-* Select the media to be played, full support of Tuneln Radio and Deezer
-* Play queue support (add, remove, clear, reorder)
-* Show information about the device and control some device settings (dimmer level, digital filter, auto power)
-* The app supports different color themes, works on smartphone or tablet in portrait and landscape mode
-* The app only needs network permission in order to communicate with target device
+This app allows to remote control Onkyo Network Player like [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) over the network using "Integra Serial Communication Protocol". The following features are currently implemented:
+- Full playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
+- Control Onkyo amplifier if it is attached to the player using RI interface
+- Select the media to be played, full support of Tuneln Radio and Deezer
+- Play queue support (add, remove, clear, change the order of tracks)
+- Show information about the device and control some device settings (dimmer level, digital filter, auto power)
+- Support of different color themes, working on smartphone or tablet in portrait and landscape mode
+- The app only needs network permission in order to communicate with target device
 
 ## Supported devices
-Currently, this app only tested on ONKYO NS-6130 (Firmware version 2110-0000-0000-0010-0000, 2120-1000-0000-0010-0000, ...):
+Currently, this app is only tested with ONKYO NS-6130 (Firmware version 2110-0000-0000-0010-0000, 2120-1000-0000-0010-0000, ...):
 
 ![NS-6130](https://github.com/mkulesh/onpc/blob/master/images/ns_6130.png)
 
