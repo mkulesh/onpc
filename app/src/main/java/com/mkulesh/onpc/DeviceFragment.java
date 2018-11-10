@@ -147,7 +147,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             // Update button
             {
                 final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
-                b.setVisibility(state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION?
+                b.setVisibility(state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION ?
                         View.VISIBLE : View.GONE);
                 if (b.getVisibility() == View.VISIBLE)
                 {
@@ -158,19 +158,19 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
 
         // Dimmer level
         {
-            ((TextView)rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
+            ((TextView) rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
             setButtonEnabled(R.id.device_dimmer_level_toggle, state.isOn());
         }
 
         // Digital filter
         {
-            ((TextView)rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
+            ((TextView) rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
             setButtonEnabled(R.id.device_digital_filter_toggle, state.isOn());
         }
 
         // Auto power
         {
-            ((TextView)rootView.findViewById(R.id.device_auto_power)).setText(state.autoPower.getDescriptionId());
+            ((TextView) rootView.findViewById(R.id.device_auto_power)).setText(state.autoPower.getDescriptionId());
             setButtonEnabled(R.id.device_auto_power_toggle, state.isOn());
         }
     }

@@ -159,7 +159,7 @@ public class MonitorFragment extends BaseFragment
         seekBar.setProgress(0);
         for (AppCompatImageButton b : ampButtons)
         {
-            b.setVisibility(b.getId() == R.id.btn_device_audio_muting? View.GONE : View.VISIBLE);
+            b.setVisibility(b.getId() == R.id.btn_device_audio_muting ? View.GONE : View.VISIBLE);
             setButtonEnabled(b, state != null);
         }
         for (AppCompatImageButton b : cmdButtons)
@@ -187,7 +187,7 @@ public class MonitorFragment extends BaseFragment
                 final Drawable bg = Utils.getDrawable(activity, state.serviceType.getImageId());
                 Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
                 track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);
-                track.setText(state.serviceType != ListTitleInfoMsg.ServiceType.TUNEIN_RADIO?
+                track.setText(state.serviceType != ListTitleInfoMsg.ServiceType.TUNEIN_RADIO ?
                         state.trackInfo : "");
             }
             else
@@ -226,7 +226,7 @@ public class MonitorFragment extends BaseFragment
         // buttons
         for (AppCompatImageButton b : ampButtons)
         {
-            b.setVisibility(b.getId() == R.id.btn_amp_audio_muting? View.GONE : View.VISIBLE);
+            b.setVisibility(b.getId() == R.id.btn_amp_audio_muting ? View.GONE : View.VISIBLE);
             setButtonEnabled(b, true);
             if (b.getId() == R.id.btn_device_audio_muting)
             {

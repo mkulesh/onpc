@@ -326,7 +326,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         returnFromPlayback.set(msg.hasImpactOnMediaList());
         circlePlayQueueMsg = null;
         if (msg.hasImpactOnMediaList() ||
-           (msg instanceof DisplayModeMsg && state.uiType != ListTitleInfoMsg.UIType.PLAYBACK))
+                (msg instanceof DisplayModeMsg && state.uiType != ListTitleInfoMsg.UIType.PLAYBACK))
         {
             requestXmlList.set(true);
         }
