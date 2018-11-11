@@ -26,7 +26,7 @@ public class MenuStatusMsg extends ISCPMessage
     /*
      * Track Menu: "M": Menu is enable, "x": Menu is disable
      */
-    private enum TrackMenu implements CharParameterIf
+    public enum TrackMenu implements CharParameterIf
     {
         ENABLE('M'), DISABLE('x');
         final Character code;
@@ -202,6 +202,11 @@ public class MenuStatusMsg extends ISCPMessage
             timeDisplay = (TimeDisplay) searchParameter(data.charAt(6), TimeDisplay.values(), timeDisplay);
             serviceIcon = (ServiceIcon) searchParameter(data.substring(7, 9), ServiceIcon.values(), serviceIcon);
         }
+    }
+
+    public TrackMenu getTrackMenu()
+    {
+        return trackMenu;
     }
 
     public TimeSeek getTimeSeek()

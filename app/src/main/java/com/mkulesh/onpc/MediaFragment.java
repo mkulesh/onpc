@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
+import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueAddMsg;
@@ -112,8 +113,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.playlist_menu_move_to).setVisible(
                             isQueue && isMoveToValid(selectedItem.getMessageId()));
 
-                    final boolean isTrackMenu = state.serviceType == ListTitleInfoMsg.ServiceType.TUNEIN_RADIO ||
-                            state.serviceType == ListTitleInfoMsg.ServiceType.DEEZER;
+                    final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE;
                     menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu &&
                             selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY);
                 }

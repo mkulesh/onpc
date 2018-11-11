@@ -74,6 +74,7 @@ class State
     PlayStatusMsg.RepeatStatus repeatStatus = PlayStatusMsg.RepeatStatus.OFF;
     PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
     MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
+    MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
 
     // Navigation
     ListTitleInfoMsg.ServiceType serviceType = null;
@@ -384,8 +385,10 @@ class State
 
     private boolean process(MenuStatusMsg msg)
     {
-        final boolean changed = msg.getTimeSeek() != timeSeek;
+        final boolean changed = timeSeek != msg.getTimeSeek()
+                || trackMenu != msg.getTrackMenu();
         timeSeek = msg.getTimeSeek();
+        trackMenu = msg.getTrackMenu();
         return changed;
     }
 
