@@ -26,7 +26,7 @@ public class TrackInfoMsg extends ISCPMessage
     /*
      * (Current Track/Toral Track Max 9999. If Track is unknown, this response is ----)
      */
-    private String currentTrack, maxTrack;
+    private Integer currentTrack, maxTrack;
 
     TrackInfoMsg(EISCPMessage raw) throws Exception
     {
@@ -36,23 +36,41 @@ public class TrackInfoMsg extends ISCPMessage
         {
             throw new Exception("Can not find parameter split character in message " + raw.toString());
         }
-        currentTrack = pars[0];
-        maxTrack = pars[1];
+        try
+        {
+            currentTrack = Integer.parseInt(pars[0]);
+        }
+        catch (Exception e)
+        {
+            currentTrack = null;
+        }
+        try
+        {
+            maxTrack = Integer.parseInt(pars[1]);
+        }
+        catch (Exception e)
+        {
+            maxTrack = null;
+        }
     }
 
-    public String getCurrentTrack()
+    public Integer getCurrentTrack()
     {
         return currentTrack;
     }
 
-    public String getMaxTrack()
+    public Integer getMaxTrack()
     {
         return maxTrack;
     }
 
-    public boolean isValidTrack()
+    public static String getTrackInfo(Integer currentTrack, Integer maxTrack)
     {
-        return currentTrack != null && !currentTrack.equals("----");
+        StringBuilder str = new StringBuilder();
+        str.append(currentTrack != null ? Integer.toString(currentTrack) : "----");
+        str.append("/");
+        str.append(maxTrack != null ? Integer.toString(maxTrack) : "----");
+        return str.toString();
     }
 
     @Override

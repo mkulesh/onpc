@@ -16,6 +16,9 @@ package com.mkulesh.onpc;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
+import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
+import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -39,6 +42,9 @@ class MockupState extends State
         deviceSelectors.add(new ReceiverInformationMsg.Selector("29", "Front USB", "29", true));
         deviceSelectors.add(new ReceiverInformationMsg.Selector("2A", "Rear USB", "2A", true));
         inputType = InputSelectorMsg.InputType.NET;
+        dimmerLevel = DimmerLevelMsg.Level.L01;
+        digitalFilter = DigitalFilterMsg.Filter.F01;
+        autoPower = AutoPowerMsg.Status.ON;
 
         // Track info
         cover = null;
@@ -47,7 +53,8 @@ class MockupState extends State
         title = "Long title of song";
         currentTime = "00:00:59";
         maxTime = "00:10:15";
-        trackInfo = "0001/0022";
+        currentTrack = 1;
+        maxTrack = 10;
         fileFormat = "FLAC/44hHz/16b";
 
         // Playback

@@ -65,7 +65,7 @@ class State
     Bitmap cover = null;
     String album = "", artist = "", title = "";
     String currentTime = "", maxTime = "";
-    String trackInfo = "";
+    Integer currentTrack = null, maxTrack = null;
     String fileFormat = "";
     private ByteArrayOutputStream coverBuffer = null;
 
@@ -344,10 +344,24 @@ class State
 
     private boolean process(TrackInfoMsg msg)
     {
-        final String newInfo = msg.getCurrentTrack() + "/" + msg.getMaxTrack();
-        final boolean changed = !newInfo.equals(trackInfo);
-        trackInfo = newInfo;
+        final boolean changed = !isEqual(currentTrack, msg.getCurrentTrack())
+                || !isEqual(maxTrack, msg.getMaxTrack());
+        currentTrack = msg.getCurrentTrack();
+        maxTrack = msg.getMaxTrack();
         return changed;
+    }
+
+    private boolean isEqual(Integer a, Integer b)
+    {
+        if (a == null && b == null)
+        {
+            return true;
+        }
+        if ((a == null && b != null) || (a != null && b == null))
+        {
+            return false;
+        }
+        return a.equals(b);
     }
 
     private boolean process(FileFormatMsg msg)
@@ -429,6 +443,11 @@ class State
         {
             Logging.info(msg, "processing XmlListInfoMsg");
             msg.parseXml(mediaItems, numberOfLayers);
+            if (serviceType == ListTitleInfoMsg.ServiceType.PLAYQUEUE &&
+                    (currentTrack == null || maxTrack == null))
+            {
+                trackInfoFromList(mediaItems);
+            }
             itemsChanged = true;
             return true;
         }
@@ -438,6 +457,20 @@ class State
             Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
         }
         return false;
+    }
+
+    private void trackInfoFromList(final List<XmlListItemMsg> list)
+    {
+        for (int i = 0; i < list.size(); i++)
+        {
+            final XmlListItemMsg m = list.get(i);
+            if (m.getIcon() == XmlListItemMsg.Icon.PLAY)
+            {
+                currentTrack = i + 1;
+                maxTrack = list.size();
+                return;
+            }
+        }
     }
 
     private boolean process(ListInfoMsg msg)

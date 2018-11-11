@@ -166,6 +166,13 @@ class StateManager extends AsyncTask<Void, Void, Void>
             return changed;
         }
 
+        // on TrackInfoMsg, always do XML state request upon the next ListTitleInfoMsg
+        if (msg instanceof TrackInfoMsg)
+        {
+            requestXmlList.set(true);
+            return true;
+        }
+
         if (!changed)
         {
             if (msg instanceof ListTitleInfoMsg && requestXmlList.get())
@@ -189,15 +196,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 requestTrackState();
             }
             else
-            {
-                requestListState();
-            }
-            return true;
-        }
-
-        if (msg instanceof TrackInfoMsg)
-        {
-            if (((TrackInfoMsg) msg).isValidTrack())
             {
                 requestListState();
             }

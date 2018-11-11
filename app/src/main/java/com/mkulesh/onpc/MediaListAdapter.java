@@ -65,7 +65,7 @@ final class MediaListAdapter extends ArrayAdapter<ISCPMessage>
                 icon.setVisibility(View.VISIBLE);
                 boolean isPlaying = msg.getIcon() == XmlListItemMsg.Icon.PLAY;
                 Utils.setImageViewColorAttr(mediaFragment.activity, icon,
-                        isPlaying? R.attr.colorAccent : R.attr.colorButtonDisabled);
+                        isPlaying ? R.attr.colorAccent : R.attr.colorButtonDisabled);
             }
             else if (!msg.isSelectable())
             {

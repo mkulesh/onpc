@@ -33,6 +33,7 @@ import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
+import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
@@ -188,7 +189,7 @@ public class MonitorFragment extends BaseFragment
                 Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
                 track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);
                 track.setText(state.serviceType != ListTitleInfoMsg.ServiceType.TUNEIN_RADIO ?
-                        state.trackInfo : "");
+                        TrackInfoMsg.getTrackInfo(state.currentTrack, state.maxTrack) : "");
             }
             else
             {
