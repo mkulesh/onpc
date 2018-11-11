@@ -51,7 +51,7 @@ public class NetworkServiceMsg extends ISCPMessage
         ONKYO_MUSIC("onkyo music", "1A", R.string.net_service_onkyo_music),
         TIDAL("Tidal", "1B", R.string.net_service_tidal, R.drawable.media_item_tidal),
         PLAYQUEUE("Play Queue", "1D", R.string.net_service_playqueue, R.drawable.media_item_playqueue),
-        CHROMECAST("Chromecast built-in", "40", R.string.net_service_chromecast),
+        CHROMECAST("Chromecast built-in", "40", R.string.net_service_chromecast, R.drawable.media_item_chromecast),
         FLARECONNECT("FlareConnect", "43", R.string.net_service_flareconnect),
         PLAY_FI("Play-Fi", "42", R.string.net_service_play_fi);
 
