@@ -31,59 +31,75 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
  */
 public enum ServiceType implements ISCPMessage.StringParameterIf
 {
-    UNKNOWN("XX", R.drawable.media_item_unknown),
-    MUSIC_SERVER("00", R.drawable.media_item_server),
-    FAVORITE("01"),
-    VTUNER("02"),
-    SIRIUSXM("03"),
-    PANDORA("04"),
-    RHAPSODY("05"),
-    LAST_FM("06"),
-    NAPSTER("07"),
-    SLACKER("08"),
-    MEDIAFLY("09"),
-    SPOTIFY("0A", R.drawable.media_item_spotify),
-    AUPEO("0B"),
-    RADIKO("0C"),
-    E_ONKYO("0D"),
-    TUNEIN_RADIO("0E", R.drawable.media_item_tunein),
-    MP3TUNES("0F"),
-    SIMFY("10"),
-    HOME_MEDIA("11"),
-    DEEZER("12", R.drawable.media_item_deezer),
-    IHEARTRADIO("13"),
-    AIRPLAY("18", R.drawable.media_item_airplay),
-    ONKYO_MUSIC("1A"),
-    TIDAL("1B", R.drawable.media_item_tidal),
-    PLAYQUEUE("1D", R.drawable.media_item_playqueue),
-    CHROMECAST("40", R.drawable.media_item_chromecast),
-    FIRECONNECT("41"),
-    PLAY_FI("42"),
-    FLARECONNECT("43"),
-    USB_FRONT("F0", R.drawable.media_item_usb),
-    USB_REAR("F1", R.drawable.media_item_usb),
-    INTERNET_RADIO("F2"),
-    NET("F3"),
-    BLUETOOTH("F4");
+    UNKNOWN("XX", "", R.drawable.media_item_unknown),
+    MUSIC_SERVER("00", "Music Server", R.string.service_music_server, R.drawable.media_item_server),
+    FAVORITE("01", "Favorite", R.string.service_favorite),
+    VTUNER("02", "vTuner", R.string.service_vtuner),
+    SIRIUSXM("03", "SiriusXM", R.string.service_siriusxm),
+    PANDORA("04", "Pandora", R.string.service_pandora),
+    RHAPSODY("05", "Rhapsody", R.string.service_rhapsody),
+    LAST_FM("06", "Last.fm", R.string.service_last),
+    NAPSTER("07", "Napster", R.string.service_napster),
+    SLACKER("08", "Slacker", R.string.service_slacker),
+    MEDIAFLY("09", "Mediafly", R.string.service_mediafly),
+    SPOTIFY("0A", "Spotify", R.string.service_spotify, R.drawable.media_item_spotify),
+    AUPEO("0B", "AUPEO!", R.string.service_aupeo),
+    RADIKO("0C", "Radiko", R.string.service_radiko),
+    E_ONKYO("0D", "e-onkyo", R.string.service_e_onkyo),
+    TUNEIN_RADIO("0E", "TuneIn", R.string.service_tunein_radio, R.drawable.media_item_tunein),
+    MP3TUNES("0F", "mp3tunes", R.string.service_mp3tunes),
+    SIMFY("10", "Simfy", R.string.service_simfy),
+    HOME_MEDIA("11", "Home Media", R.string.service_home_media),
+    DEEZER("12", "Deezer", R.string.service_deezer, R.drawable.media_item_deezer),
+    IHEARTRADIO("13", "iHeartRadio", R.string.service_iheartradio),
+    AIRPLAY("18", "Airplay", R.string.service_airplay, R.drawable.media_item_airplay),
+    ONKYO_MUSIC("1A", "onkyo music", R.string.service_onkyo_music),
+    TIDAL("1B", "Tidal", R.string.service_tidal, R.drawable.media_item_tidal),
+    PLAYQUEUE("1D", "Play Queue", R.string.service_playqueue, R.drawable.media_item_playqueue),
+    CHROMECAST("40", "Chromecast built-in", R.string.service_chromecast, R.drawable.media_item_chromecast),
+    FIRECONNECT("41", "FireConnect", R.string.service_fireconnect),
+    PLAY_FI("42", "Play-Fi", R.string.service_play_fi),
+    FLARECONNECT("43", "FlareConnect", R.string.service_flareconnect),
+    USB_FRONT("F0", "USB(F)", R.string.service_usb_front, R.drawable.selector_usb_front),
+    USB_REAR("F1", "USB(R)", R.string.service_usb_rear, R.drawable.selector_usb_rear),
+    INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio),
+    NET("F3", "NET", R.string.service_net, R.drawable.selector_net),
+    BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth);
 
     final String code;
+    final String name;
+    final int descriptionId;
     final int imageId;
 
-    ServiceType(String code, final int imageId)
+    ServiceType(final String code, final String name, final int descriptionId, final int imageId)
     {
         this.code = code;
+        this.name = name;
+        this.descriptionId = descriptionId;
         this.imageId = imageId;
     }
 
-    ServiceType(String code)
+    ServiceType(final String code, final String name, final int descriptionId)
     {
         this.code = code;
+        this.name = name;
+        this.descriptionId = descriptionId;
         this.imageId = R.drawable.media_item_unknown;
     }
 
     public String getCode()
     {
         return code;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public int getDescriptionId()
+    {
+        return descriptionId;
     }
 
     public int getImageId()

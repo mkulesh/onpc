@@ -490,13 +490,13 @@ class State
         {
             for (NetworkServiceMsg i : serviceItems)
             {
-                if (i.getService().getCode().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                if (i.getService().getName().toUpperCase().equals(msg.getListedData().toUpperCase()))
                 {
                     return false;
                 }
             }
             final NetworkServiceMsg nsMsg = new NetworkServiceMsg(msg.getListedData());
-            if (nsMsg.getService() != NetworkServiceMsg.Service.UNKNOWN)
+            if (nsMsg.getService() != ServiceType.UNKNOWN)
             {
                 serviceItems.add(nsMsg);
             }
