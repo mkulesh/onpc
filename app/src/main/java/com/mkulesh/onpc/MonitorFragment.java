@@ -31,7 +31,6 @@ import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
-import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.utils.Utils;
@@ -182,20 +181,11 @@ public class MonitorFragment extends BaseFragment
 
         // service icon and track
         {
-            TextView track = rootView.findViewById(R.id.tv_track);
-            if (state.serviceType != null)
-            {
-                final Drawable bg = Utils.getDrawable(activity, state.serviceType.getImageId());
-                Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
-                track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);
-                track.setText(state.serviceType != ServiceType.TUNEIN_RADIO ?
-                        TrackInfoMsg.getTrackInfo(state.currentTrack, state.maxTrack) : "");
-            }
-            else
-            {
-                track.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                track.setText("");
-            }
+            final TextView track = rootView.findViewById(R.id.tv_track);
+            final Drawable bg = Utils.getDrawable(activity, state.serviceIcon.getImageId());
+            Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
+            track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);
+            track.setText(TrackInfoMsg.getTrackInfo(state.currentTrack, state.maxTrack));
         }
 
         // cover

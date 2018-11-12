@@ -156,6 +156,11 @@ public class MenuStatusMsg extends ISCPMessage
         return timeSeek;
     }
 
+    public ServiceType getServiceIcon()
+    {
+        return serviceIcon;
+    }
+
     @Override
     public String toString()
     {

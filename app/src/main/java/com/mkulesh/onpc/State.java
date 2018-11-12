@@ -76,9 +76,10 @@ class State
     PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
     MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
     MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
+    ServiceType serviceIcon = ServiceType.UNKNOWN; // service that is currently playing
 
     // Navigation
-    ServiceType serviceType = null;
+    ServiceType serviceType = null; // service that is currently selected (may differs from currently playing)
     ListTitleInfoMsg.LayerInfo layerInfo = null;
     ListTitleInfoMsg.UIType uiType = null;
     int numberOfLayers = 0;
@@ -387,9 +388,11 @@ class State
     private boolean process(MenuStatusMsg msg)
     {
         final boolean changed = timeSeek != msg.getTimeSeek()
-                || trackMenu != msg.getTrackMenu();
+                || trackMenu != msg.getTrackMenu()
+                || serviceIcon != msg.getServiceIcon();
         timeSeek = msg.getTimeSeek();
         trackMenu = msg.getTrackMenu();
+        serviceIcon = msg.getServiceIcon();
         return changed;
     }
 
