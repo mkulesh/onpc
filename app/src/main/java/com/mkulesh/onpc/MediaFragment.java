@@ -40,6 +40,7 @@ import com.mkulesh.onpc.iscp.messages.PlayQueueAddMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueRemoveMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueReorderMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
 
@@ -106,7 +107,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.playlist_menu_add).setVisible(selector.isAddToQueue());
                     menu.findItem(R.id.playlist_menu_add_and_play).setVisible(selector.isAddToQueue());
 
-                    final boolean isQueue = state.serviceType == ListTitleInfoMsg.ServiceType.PLAYQUEUE;
+                    final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE;
                     menu.findItem(R.id.playlist_menu_remove).setVisible(isQueue);
                     menu.findItem(R.id.playlist_menu_remove_all).setVisible(isQueue);
                     menu.findItem(R.id.playlist_menu_move_from).setVisible(isQueue);

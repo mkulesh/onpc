@@ -26,7 +26,7 @@ public class NetworkServiceMsg extends ISCPMessage
 
     public enum Service implements StringParameterIf
     {
-        UNKNOWN("", "", -1),
+        UNKNOWN("", "", R.drawable.media_item_unknown),
         MUSIC_SERVER("Music Server", "00", R.string.net_service_music_server, R.drawable.media_item_server),
         FAVORITE("Favorite", "01", R.string.net_service_favorite),
         VTUNER("vTuner", "02", R.string.net_service_vtuner),
@@ -37,7 +37,7 @@ public class NetworkServiceMsg extends ISCPMessage
         NAPSTER("Napster", "07", R.string.net_service_napster),
         SLACKER("Slacker", "08", R.string.net_service_slacker),
         MEDIAFLY("Mediafly", "09", R.string.net_service_mediafly),
-        SPOTIFY("Spotify", "0A", R.string.net_service_spotify),
+        SPOTIFY("Spotify", "0A", R.string.net_service_spotify, R.drawable.media_item_spotify),
         AUPEO("AUPEO!", "0B", R.string.net_service_aupeo),
         RADIKO("Radiko", "0C", R.string.net_service_radiko),
         E_ONKYO("e-onkyo", "0D", R.string.net_service_e_onkyo),
@@ -47,13 +47,14 @@ public class NetworkServiceMsg extends ISCPMessage
         HOME_MEDIA("Home Media", "11", R.string.net_service_home_media),
         DEEZER("Deezer", "12", R.string.net_service_deezer, R.drawable.media_item_deezer),
         IHEARTRADIO("iHeartRadio", "13", R.string.net_service_iheartradio),
-        AIRPLAY("Airplay", "18", R.string.net_service_airplay),
+        AIRPLAY("Airplay", "18", R.string.net_service_airplay, R.drawable.media_item_airplay),
         ONKYO_MUSIC("onkyo music", "1A", R.string.net_service_onkyo_music),
         TIDAL("Tidal", "1B", R.string.net_service_tidal, R.drawable.media_item_tidal),
         PLAYQUEUE("Play Queue", "1D", R.string.net_service_playqueue, R.drawable.media_item_playqueue),
         CHROMECAST("Chromecast built-in", "40", R.string.net_service_chromecast, R.drawable.media_item_chromecast),
-        FLARECONNECT("FlareConnect", "43", R.string.net_service_flareconnect),
-        PLAY_FI("Play-Fi", "42", R.string.net_service_play_fi);
+        FIRECONNECT("FireConnect", "41", R.string.net_service_fireconnect),
+        PLAY_FI("Play-Fi", "42", R.string.net_service_play_fi),
+        FLARECONNECT("FlareConnect", "43", R.string.net_service_flareconnect);
 
         final String code;
         final String id;
@@ -94,11 +95,6 @@ public class NetworkServiceMsg extends ISCPMessage
         public int getImageId()
         {
             return imageId;
-        }
-
-        public boolean isImageValid()
-        {
-            return imageId != -1;
         }
     }
 

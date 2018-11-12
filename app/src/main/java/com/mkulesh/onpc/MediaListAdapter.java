@@ -80,11 +80,8 @@ final class MediaListAdapter extends ArrayAdapter<ISCPMessage>
         else if (item instanceof NetworkServiceMsg)
         {
             final NetworkServiceMsg msg = (NetworkServiceMsg) item;
-            if (msg.getService().isImageValid())
-            {
-                icon.setImageResource(msg.getService().getImageId());
-                Utils.setImageViewColorAttr(mediaFragment.activity, icon, R.attr.colorButtonDisabled);
-            }
+            icon.setImageResource(msg.getService().getImageId());
+            Utils.setImageViewColorAttr(mediaFragment.activity, icon, R.attr.colorButtonDisabled);
             tvTitle.setText(msg.getService().getDescriptionId());
         }
         else if (item instanceof OperationCommandMsg)

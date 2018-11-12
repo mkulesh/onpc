@@ -13,7 +13,6 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -24,73 +23,7 @@ public class ListTitleInfoMsg extends ISCPMessage
 {
     public final static String CODE = "NLT";
 
-    /*
-     * Service Type
-     * 00 : Music Server (DLNA), 01 : Favorite, 02 : vTuner, 03 : SiriusXM, 04 : Pandora, 05 : Rhapsody, 06 : Last.fm,
-     * 07 : Napster, 08 : Slacker, 09 : Mediafly, 0A : Spotify, 0B : AUPEO!, 0C : radiko, 0D : e-onkyo,
-     * 0E : TuneIn Radio, 0F : MP3tunes, 10 : Simfy, 11:Home Media, 12:Deezer, 13:iHeartRadio, 18:Airplay, 1A:onkyo music, 1B:TIDAL, 41:FireConnect,
-     *  F0 : USB/USB(Front) F1 : USB(Rear), F2 : Internet Radio, F3 : NET, FF : None
-     */
-    public enum ServiceType implements StringParameterIf
-    {
-        MUSIC_SERVER("00", R.drawable.media_item_server),
-        FAVORITE("01"),
-        VTUNER("02"),
-        SIRIUSXM("03"),
-        PANDORA("04"),
-        RHAPSODY("05"),
-        LAST_FM("06"),
-        NAPSTER("07"),
-        SLACKER("08"),
-        MEDIAFLY("09"),
-        SPOTIFY("0A"),
-        AUPEO("0B"),
-        RADIKO("0C"),
-        E_ONKYO("0D"),
-        TUNEIN_RADIO("0E", R.drawable.media_item_tunein),
-        MP3TUNES("0F"),
-        SIMFY("10"),
-        HOME_MEDIA("11"),
-        DEEZER("12", R.drawable.media_item_deezer),
-        IHEARTRADIO("13"),
-        AIRPLAY("18"),
-        ONKYO_MUSIC("1A"),
-        TIDAL("1B", R.drawable.media_item_tidal),
-        PLAYQUEUE("1D", R.drawable.media_item_playqueue),
-        FIRECONNECT("41"),
-        USB_REAR("F1", R.drawable.media_item_usb),
-        INTERNET_RADIO("F2"),
-        USB_FRONT("F0", R.drawable.media_item_usb),
-        NET("F3"),
-        NONE("FF");
-
-        final String code;
-        final int imageId;
-
-        ServiceType(String code, int imageId)
-        {
-            this.code = code;
-            this.imageId = imageId;
-        }
-
-        ServiceType(String code)
-        {
-            this.code = code;
-            this.imageId = R.drawable.media_item_unknown;
-        }
-
-        public String getCode()
-        {
-            return code;
-        }
-
-        public int getImageId()
-        {
-            return imageId;
-        }
-    }
-
-    private ServiceType serviceType = ServiceType.NONE;
+    private ServiceType serviceType = ServiceType.UNKNOWN;
 
     /*
      * UI Type 0 : List, 1 : Menu, 2 : Playback, 3 : Popup, 4 : Keyboard, "5" : Menu List

@@ -171,6 +171,7 @@
     <string name="net_service_tidal">Tidal</string>
     <string name="net_service_playqueue">Play Queue</string>
     <string name="net_service_chromecast">Chromecast</string>
+    <string name="net_service_fireconnect">FireConnect</string>
     <string name="net_service_flareconnect">FlareConnect</string>
     <string name="net_service_play_fi">Play-Fi</string>
 

@@ -120,65 +120,7 @@ public class MenuStatusMsg extends ISCPMessage
     }
 
     private TimeDisplay timeDisplay = TimeDisplay.DISABLE;
-
-    /*
-     * Service icon
-     * "00":Music Server (DLNA), "01":My Favorite, "02":vTuner,
-     * "03":SiriusXM, "04":Pandora,
-     * "05":Rhapsody, "06":Last.fm, "07":Napster, "08":Slacker, "09":Mediafly,
-     * "0A":Spotify, "0B":AUPEO!,
-     * "0C":radiko, "0D":e-onkyo, "0E":TuneIn, "0F":MP3tunes, "10":Simfy,
-     * "11":Home Media, "12":Deezer, "13":iHeartRadio, "18":Airplay,
-     * “1A”: onkyo Music, “1B”:TIDAL, “41”:FireConnect,
-     * "F0": USB/USB(Front), "F1: USB(Rear), "F2":Internet Radio
-     * "F3":NET, "F4":Bluetooth
-     */
-    private enum ServiceIcon implements StringParameterIf
-    {
-        MUSIC_SERVER("00"),
-        MY_FAVORITE("01"),
-        VTUNER("02"),
-        SIRIUSXM("03"),
-        PANDORA("04"),
-        RHAPSODY("05"),
-        LAST_FM("06"),
-        NAPSTER("07"),
-        SLACKER("08"),
-        MEDIAFLY("09"),
-        SPOTIFY("0A"),
-        AUPEO("0B"),
-        RADIKO("0C"),
-        E_ONKYO("0D"),
-        TUNEIN("0E"),
-        MP3TUNES("0F"),
-        SIMFY("10"),
-        HOME_MEDIA("11"),
-        DEEZER("12"),
-        IHEARTRADIO("13"),
-        AIRPLAY("18"),
-        ONKYO_MUSIC("1A"),
-        TIDAL("1B"),
-        FIRECONNECT("41"),
-        USB_FRONT("F0"),
-        USB_REAR("F1"),
-        INTERNET_RADIO("F2"),
-        NET("F3"),
-        BLUETOOTH("F4"),
-        NONE("XX");
-        final String code;
-
-        ServiceIcon(String code)
-        {
-            this.code = code;
-        }
-
-        public String getCode()
-        {
-            return code;
-        }
-    }
-
-    private ServiceIcon serviceIcon = ServiceIcon.NONE;
+    private ServiceType serviceIcon = ServiceType.UNKNOWN;
 
     MenuStatusMsg(EISCPMessage raw) throws Exception
     {
@@ -200,7 +142,7 @@ public class MenuStatusMsg extends ISCPMessage
             negativeFeed = (Feed) searchParameter(data.substring(3, 5), Feed.values(), negativeFeed);
             timeSeek = (TimeSeek) searchParameter(data.charAt(5), TimeSeek.values(), timeSeek);
             timeDisplay = (TimeDisplay) searchParameter(data.charAt(6), TimeDisplay.values(), timeDisplay);
-            serviceIcon = (ServiceIcon) searchParameter(data.substring(7, 9), ServiceIcon.values(), serviceIcon);
+            serviceIcon = (ServiceType) searchParameter(data.substring(7, 9), ServiceType.values(), serviceIcon);
         }
     }
 

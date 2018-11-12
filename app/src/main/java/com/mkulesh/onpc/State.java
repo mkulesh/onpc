@@ -34,6 +34,7 @@ import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
@@ -77,7 +78,7 @@ class State
     MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
 
     // Navigation
-    ListTitleInfoMsg.ServiceType serviceType = null;
+    ServiceType serviceType = null;
     ListTitleInfoMsg.LayerInfo layerInfo = null;
     ListTitleInfoMsg.UIType uiType = null;
     int numberOfLayers = 0;
@@ -446,7 +447,7 @@ class State
         {
             Logging.info(msg, "processing XmlListInfoMsg");
             msg.parseXml(mediaItems, numberOfLayers);
-            if (serviceType == ListTitleInfoMsg.ServiceType.PLAYQUEUE &&
+            if (serviceType == ServiceType.PLAYQUEUE &&
                     (currentTrack == null || maxTrack == null))
             {
                 trackInfoFromList(mediaItems);
@@ -482,7 +483,7 @@ class State
         {
             return false;
         }
-        if (serviceType == ListTitleInfoMsg.ServiceType.NET)
+        if (serviceType == ServiceType.NET)
         {
             for (NetworkServiceMsg i : serviceItems)
             {
@@ -536,22 +537,22 @@ class State
 
     boolean isUsb()
     {
-        return serviceType == ListTitleInfoMsg.ServiceType.USB_FRONT
-                || serviceType == ListTitleInfoMsg.ServiceType.USB_REAR;
+        return serviceType == ServiceType.USB_FRONT
+                || serviceType == ServiceType.USB_REAR;
     }
 
     boolean isTopLayer()
     {
         if (uiType != ListTitleInfoMsg.UIType.PLAYBACK)
         {
-            if (serviceType == ListTitleInfoMsg.ServiceType.NET &&
+            if (serviceType == ServiceType.NET &&
                     layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP)
             {
                 return true;
             }
             if (layerInfo == ListTitleInfoMsg.LayerInfo.SERVICE_TOP)
             {
-                return isUsb() || serviceType == ListTitleInfoMsg.ServiceType.NONE;
+                return isUsb() || serviceType == ServiceType.UNKNOWN;
             }
         }
         return false;

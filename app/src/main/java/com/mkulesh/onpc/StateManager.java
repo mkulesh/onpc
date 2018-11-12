@@ -38,6 +38,7 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
@@ -290,7 +291,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private void requestXmlListState(final ListTitleInfoMsg liMsg)
     {
         requestXmlList.set(false);
-        if (liMsg.getServiceType() == ListTitleInfoMsg.ServiceType.NET
+        if (liMsg.getServiceType() == ServiceType.NET
                 && liMsg.getLayerInfo() == ListTitleInfoMsg.LayerInfo.NET_TOP)
         {
             Logging.info(this, "requesting XML list state skipped");

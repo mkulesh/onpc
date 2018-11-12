@@ -35,7 +35,7 @@ import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
-import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -62,11 +62,11 @@ public class PopupBuilder
     }
 
     private final Context context;
-    private final ListTitleInfoMsg.ServiceType serviceType;
+    private final ServiceType serviceType;
     private final ButtonListener buttonListener;
 
     public PopupBuilder(final @NonNull Context context,
-                        final ListTitleInfoMsg.ServiceType serviceType,
+                        final ServiceType serviceType,
                         final @NonNull ButtonListener buttonListener)
     {
         this.context = context;

@@ -26,6 +26,7 @@ import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 
 class MockupState extends State
 {
@@ -64,7 +65,7 @@ class MockupState extends State
         timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
 
         // Navigation
-        serviceType = ListTitleInfoMsg.ServiceType.NET;
+        serviceType = ServiceType.NET;
         layerInfo = ListTitleInfoMsg.LayerInfo.NET_TOP;
         numberOfLayers = 0;
         numberOfItems = 9;
