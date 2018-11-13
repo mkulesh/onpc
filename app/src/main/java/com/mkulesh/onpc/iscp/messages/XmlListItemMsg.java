@@ -28,6 +28,7 @@ public class XmlListItemMsg extends ISCPMessage
         USB("31", R.drawable.media_item_usb),
         FOLDER("29", R.drawable.media_item_folder),
         MUSIC("2d", R.drawable.media_item_music),
+        SEARCH("2F", R.drawable.media_item_search),
         PLAY("36", R.drawable.media_item_play);
         final String code;
         final int imageId;

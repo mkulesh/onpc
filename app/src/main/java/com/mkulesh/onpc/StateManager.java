@@ -258,6 +258,10 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', AudioMutingMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(
                 new EISCPMessage('1', AutoPowerMsg.CODE, EISCPMessage.QUERY));
+        messageChannel.sendMessage(
+                new EISCPMessage('1', GoogleCastVersionMsg.CODE, EISCPMessage.QUERY));
+        messageChannel.sendMessage(
+                new EISCPMessage('1', GoogleCastAnalyticsMsg.CODE, EISCPMessage.QUERY));
     }
 
     private void requestPlayState()
@@ -265,10 +269,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "requesting play state...");
         messageChannel.sendMessage(
                 new EISCPMessage('1', PlayStatusMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', GoogleCastVersionMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', GoogleCastAnalyticsMsg.CODE, EISCPMessage.QUERY));
     }
 
     private void requestTrackState()
