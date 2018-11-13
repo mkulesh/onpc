@@ -163,6 +163,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             }
         }
 
+        ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
+
         // Dimmer level
         {
             ((TextView) rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());

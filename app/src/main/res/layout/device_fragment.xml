@@ -125,6 +125,17 @@
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
+                    android:text="@string/google_cast_version" />
+
+                <TextView
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/google_cast_version" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_settings" />
             </LinearLayout>
 

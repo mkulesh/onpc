@@ -73,6 +73,8 @@ public class MessageFactory
             return new AutoPowerMsg(raw);
         case CustomPopupMsg.CODE:
             return new CustomPopupMsg(raw);
+        case GoogleCastVersionMsg.CODE:
+            return new GoogleCastVersionMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

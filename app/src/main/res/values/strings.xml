@@ -191,6 +191,7 @@
     <string name="device_brand">Brand</string>
     <string name="device_model">Model</string>
     <string name="device_year">Year</string>
+    <string name="google_cast_version">Google Cast</string>
     <string name="device_settings">Settings</string>
 
     <!-- Firmware -->
