@@ -270,18 +270,17 @@ public class MonitorFragment extends BaseFragment
         ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(state.maxTime);
         final int currTime = Utils.timeToSeconds(state.currentTime);
         final int maxTime = Utils.timeToSeconds(state.maxTime);
-        if (currTime >= 0 && maxTime >= 0 && state.timeSeek == MenuStatusMsg.TimeSeek.ENABLE)
+        if (currTime >= 0 && maxTime >= 0)
         {
-            seekBar.setEnabled(true);
             seekBar.setMax(maxTime);
             seekBar.setProgress(currTime);
         }
         else
         {
-            seekBar.setEnabled(false);
             seekBar.setMax(1000);
             seekBar.setProgress(0);
         }
+        seekBar.setEnabled(state.timeSeek == MenuStatusMsg.TimeSeek.ENABLE);
     }
 
     private void seekTime(int newSec)
