@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +41,7 @@ import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.utils.AppTheme;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.HashSet;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener
@@ -310,14 +312,17 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         stopThreads();
     }
 
-    public void updateCurrentFragment(State state)
+    public void updateCurrentFragment(State state, @Nullable final HashSet<State.ChangeType> eventChanges)
     {
         final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
         if (f != null)
         {
-            f.update(state);
+            f.update(state, eventChanges);
         }
-        updateToolbar(state);
+        if (eventChanges == null || eventChanges.contains(State.ChangeType.COMMON))
+        {
+            updateToolbar(state);
+        }
     }
 
     public void updateToolbar(State state)
@@ -382,6 +387,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public void onPageSelected(int p)
     {
-        updateCurrentFragment(stateManager == null ? null : stateManager.getState());
+        updateCurrentFragment(stateManager == null ? null : stateManager.getState(), null);
     }
 }

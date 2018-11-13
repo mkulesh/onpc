@@ -45,6 +45,7 @@ import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.utils.Logging;
 
+import java.util.HashSet;
 import java.util.Timer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -60,6 +61,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private final AtomicBoolean returnFromPlayback = new AtomicBoolean();
     private final AtomicBoolean requestXmlList = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
+    private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
     private final MessageChannel messageChannel;
     private int xmlReqId = 0;
     private ISCPMessage circlePlayQueueMsg = null;
@@ -159,12 +161,17 @@ class StateManager extends AsyncTask<Void, Void, Void>
         }
 
         final PlayStatusMsg.PlayStatus playStatus = state.playStatus;
-        final boolean changed = state.update(msg);
+        final State.ChangeType changed = state.update(msg);
+
+        if (changed != State.ChangeType.NONE)
+        {
+            eventChanges.add(changed);
+        }
 
         // no message handling, if power off
         if (!state.isOn())
         {
-            return changed;
+            return changed != State.ChangeType.NONE;
         }
 
         // on TrackInfoMsg, always do XML state request upon the next ListTitleInfoMsg
@@ -174,7 +181,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
             return true;
         }
 
-        if (!changed)
+        if (changed == State.ChangeType.NONE)
         {
             if (msg instanceof ListTitleInfoMsg && requestXmlList.get())
             {
@@ -224,7 +231,8 @@ class StateManager extends AsyncTask<Void, Void, Void>
     @Override
     protected void onProgressUpdate(Void... result)
     {
-        activity.updateCurrentFragment(state);
+        activity.updateCurrentFragment(state, eventChanges);
+        eventChanges.clear();
     }
 
     private void requestPowerState()

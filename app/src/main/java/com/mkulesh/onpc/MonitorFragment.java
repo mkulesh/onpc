@@ -33,9 +33,11 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
+import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class MonitorFragment extends BaseFragment
@@ -134,12 +136,12 @@ public class MonitorFragment extends BaseFragment
             }
         });
 
-        update(null);
+        update(null, null);
         return rootView;
     }
 
     @Override
-    protected void updateStandbyView(@Nullable final State state)
+    protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(
                 activity.getResources().getString(R.string.tv_time_default));
@@ -169,11 +171,17 @@ public class MonitorFragment extends BaseFragment
     }
 
     @Override
-    protected void updateActiveView(@NonNull final State state)
+    protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
+        // time seek only
+        if (eventChanges.size() == 1 && eventChanges.contains(State.ChangeType.TIME_SEEK))
+        {
+            updateProgressBar(state);
+            return;
+        }
+
+        Logging.info(this, "Updating playback monitor");
         // Text
-        ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
-        ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(state.maxTime);
         ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(state.title);
@@ -199,20 +207,7 @@ public class MonitorFragment extends BaseFragment
         }
 
         // progress bar
-        final int currTime = Utils.timeToSeconds(state.currentTime);
-        final int maxTime = Utils.timeToSeconds(state.maxTime);
-        if (currTime >= 0 && maxTime >= 0 && state.timeSeek == MenuStatusMsg.TimeSeek.ENABLE)
-        {
-            seekBar.setEnabled(true);
-            seekBar.setMax(maxTime);
-            seekBar.setProgress(currTime);
-        }
-        else
-        {
-            seekBar.setEnabled(false);
-            seekBar.setMax(1000);
-            seekBar.setProgress(0);
-        }
+        updateProgressBar(state);
 
         // buttons
         for (AppCompatImageButton b : ampButtons)
@@ -267,6 +262,26 @@ public class MonitorFragment extends BaseFragment
             break;
         }
         setButtonEnabled(btnPausePlay, state.isOn());
+    }
+
+    private void updateProgressBar(@NonNull final State state)
+    {
+        ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
+        ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(state.maxTime);
+        final int currTime = Utils.timeToSeconds(state.currentTime);
+        final int maxTime = Utils.timeToSeconds(state.maxTime);
+        if (currTime >= 0 && maxTime >= 0 && state.timeSeek == MenuStatusMsg.TimeSeek.ENABLE)
+        {
+            seekBar.setEnabled(true);
+            seekBar.setMax(maxTime);
+            seekBar.setProgress(currTime);
+        }
+        else
+        {
+            seekBar.setEnabled(false);
+            seekBar.setMax(1000);
+            seekBar.setProgress(0);
+        }
     }
 
     private void seekTime(int newSec)

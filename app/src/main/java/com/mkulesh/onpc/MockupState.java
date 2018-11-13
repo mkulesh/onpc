@@ -79,6 +79,5 @@ class MockupState extends State
         serviceItems.add(new NetworkServiceMsg("Chromecast built-in"));
         serviceItems.add(new NetworkServiceMsg("FlareConnect"));
         serviceItems.add(new NetworkServiceMsg("Play Queue"));
-        itemsChanged = true;
     }
 }

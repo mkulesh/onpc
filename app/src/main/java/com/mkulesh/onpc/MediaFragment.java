@@ -45,6 +45,7 @@ import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class MediaFragment extends BaseFragment implements AdapterView.OnItemClickListener
@@ -81,7 +82,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
         registerForContextMenu(listView);
 
-        update(null);
+        update(null, null);
         return rootView;
     }
 
@@ -165,7 +166,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     }
 
     @Override
-    protected void updateStandbyView(@Nullable final State state)
+    protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         moveFrom = -1;
         if (selectorPaletteLayout != null)
@@ -180,19 +181,19 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     }
 
     @Override
-    protected void updateActiveView(@NonNull final State state)
+    protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
-        if (selectorPaletteLayout == null)
+        if (eventChanges.contains(State.ChangeType.MEDIA_ITEMS))
         {
-            addSelectorButtons(state);
-        }
-        updateSelectorButtons(state);
-        updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
-        if (state.itemsChanged)
-        {
+            Logging.info(this, "Updating media fragment: " + state.mediaItems.size() + "/" + state.serviceItems.size());
+            if (selectorPaletteLayout == null)
+            {
+                addSelectorButtons(state);
+            }
             moveFrom = -1;
+            updateSelectorButtons(state);
+            updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
             updateListView(state);
-            state.itemsChanged = false;
         }
     }
 
@@ -284,7 +285,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         int playing = -1;
         if (!mediaItems.isEmpty())
         {
-            Logging.info(this, "Updating media items list: " + mediaItems.size());
             for (XmlListItemMsg i : mediaItems)
             {
                 newItems.add(new XmlListItemMsg(i));
@@ -296,7 +296,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (!serviceItems.isEmpty())
         {
-            Logging.info(this, "Updating service items list: " + serviceItems.size());
             for (NetworkServiceMsg i : serviceItems)
             {
                 newItems.add(new NetworkServiceMsg(i));

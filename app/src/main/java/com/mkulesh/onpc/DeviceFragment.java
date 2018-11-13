@@ -30,7 +30,10 @@ import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
+import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
+
+import java.util.HashSet;
 
 public class DeviceFragment extends BaseFragment implements View.OnClickListener
 {
@@ -71,7 +74,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
 
-        update(null);
+        update(null, null);
         return rootView;
     }
 
@@ -96,7 +99,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    protected void updateStandbyView(@Nullable final State state)
+    protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         updateDeviceCover(state);
         if (state != null)
@@ -106,10 +109,14 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    protected void updateActiveView(@NonNull final State state)
+    protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
-        updateDeviceCover(state);
-        updateDeviceProperties(state);
+        if (eventChanges.contains(State.ChangeType.COMMON))
+        {
+            Logging.info(this, "Updating device properties");
+            updateDeviceCover(state);
+            updateDeviceProperties(state);
+        }
     }
 
     private void updateDeviceCover(@Nullable final State state)

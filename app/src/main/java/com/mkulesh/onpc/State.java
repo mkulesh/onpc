@@ -50,6 +50,15 @@ import java.util.Map;
 
 class State
 {
+    // Changes
+    enum ChangeType
+    {
+        NONE,
+        COMMON,
+        TIME_SEEK,
+        MEDIA_ITEMS
+    }
+
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
     FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
@@ -87,7 +96,6 @@ class State
     String titleBar = "";
     protected final List<XmlListItemMsg> mediaItems = new ArrayList<>();
     protected final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
-    boolean itemsChanged = false;
 
     // Popup
     CustomPopupMsg popup = null;
@@ -117,7 +125,7 @@ class State
         return playStatus != PlayStatusMsg.PlayStatus.STOP;
     }
 
-    boolean update(ISCPMessage msg)
+    ChangeType update(ISCPMessage msg)
     {
         if (!(msg instanceof TimeInfoMsg) && !(msg instanceof JacketArtMsg))
         {
@@ -127,91 +135,100 @@ class State
         //Common
         if (msg instanceof PowerStatusMsg)
         {
-            return process((PowerStatusMsg) msg);
+            return isCommonChange(process((PowerStatusMsg) msg));
         }
         if (msg instanceof FirmwareUpdateMsg)
         {
-            return process((FirmwareUpdateMsg) msg);
+            return isCommonChange(process((FirmwareUpdateMsg) msg));
         }
         if (msg instanceof ReceiverInformationMsg)
         {
-            return process((ReceiverInformationMsg) msg);
+            return isCommonChange(process((ReceiverInformationMsg) msg));
         }
         if (msg instanceof InputSelectorMsg)
         {
-            return process((InputSelectorMsg) msg);
+            return isCommonChange(process((InputSelectorMsg) msg));
         }
         if (msg instanceof DimmerLevelMsg)
         {
-            return process((DimmerLevelMsg) msg);
+            return isCommonChange(process((DimmerLevelMsg) msg));
         }
         if (msg instanceof DigitalFilterMsg)
         {
-            return process((DigitalFilterMsg) msg);
+            return isCommonChange(process((DigitalFilterMsg) msg));
         }
         if (msg instanceof AudioMutingMsg)
         {
-            return process((AudioMutingMsg) msg);
+            return isCommonChange(process((AudioMutingMsg) msg));
         }
         if (msg instanceof AutoPowerMsg)
         {
-            return process((AutoPowerMsg) msg);
+            return isCommonChange(process((AutoPowerMsg) msg));
         }
 
         // Track info
         if (msg instanceof JacketArtMsg)
         {
-            return process((JacketArtMsg) msg);
+            return isCommonChange(process((JacketArtMsg) msg));
         }
         if (msg instanceof AlbumNameMsg)
         {
-            return process((AlbumNameMsg) msg);
+            return isCommonChange(process((AlbumNameMsg) msg));
         }
         if (msg instanceof ArtistNameMsg)
         {
-            return process((ArtistNameMsg) msg);
+            return isCommonChange(process((ArtistNameMsg) msg));
         }
         if (msg instanceof TitleNameMsg)
         {
-            return process((TitleNameMsg) msg);
+            return isCommonChange(process((TitleNameMsg) msg));
         }
         if (msg instanceof FileFormatMsg)
         {
-            return process((FileFormatMsg) msg);
+            return isCommonChange(process((FileFormatMsg) msg));
         }
         if (msg instanceof TimeInfoMsg)
         {
-            return process((TimeInfoMsg) msg);
+            return process((TimeInfoMsg) msg)? ChangeType.TIME_SEEK : ChangeType.NONE;
         }
         if (msg instanceof TrackInfoMsg)
         {
-            return process((TrackInfoMsg) msg);
+            return isCommonChange(process((TrackInfoMsg) msg));
         }
 
         // Playback
         if (msg instanceof PlayStatusMsg)
         {
-            return process((PlayStatusMsg) msg);
+            return isCommonChange(process((PlayStatusMsg) msg));
         }
         if (msg instanceof MenuStatusMsg)
         {
-            return process((MenuStatusMsg) msg);
+            return isCommonChange(process((MenuStatusMsg) msg));
         }
 
         // Navigation
+        if (msg instanceof CustomPopupMsg)
+        {
+            return isCommonChange(process((CustomPopupMsg) msg));
+        }
         if (msg instanceof ListTitleInfoMsg)
         {
-            return process((ListTitleInfoMsg) msg);
+            return process((ListTitleInfoMsg) msg)? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
         if (msg instanceof XmlListInfoMsg)
         {
-            return process((XmlListInfoMsg) msg);
+            return process((XmlListInfoMsg) msg)? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
-        if (msg instanceof CustomPopupMsg)
+        if (msg instanceof ListInfoMsg)
         {
-            return process((CustomPopupMsg) msg);
+            return process((ListInfoMsg) msg)? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
-        return msg instanceof ListInfoMsg && process((ListInfoMsg) msg);
+        return ChangeType.NONE;
+    }
+
+    private ChangeType isCommonChange(boolean change)
+    {
+        return change? ChangeType.COMMON : ChangeType.NONE;
     }
 
     private boolean process(PowerStatusMsg msg)
@@ -441,7 +458,6 @@ class State
     {
         mediaItems.clear();
         serviceItems.clear();
-        itemsChanged = true;
     }
 
     private boolean process(XmlListInfoMsg msg)
@@ -455,7 +471,6 @@ class State
             {
                 trackInfoFromList(mediaItems);
             }
-            itemsChanged = true;
             return true;
         }
         catch (Exception e)
@@ -500,7 +515,6 @@ class State
             {
                 serviceItems.add(nsMsg);
             }
-            itemsChanged = true;
             return true;
         }
         if (uiType == ListTitleInfoMsg.UIType.MENU)
@@ -514,7 +528,6 @@ class State
             }
             final XmlListItemMsg nsMsg = new XmlListItemMsg(msg.getLineInfo(), 0, msg.getListedData());
             mediaItems.add(nsMsg);
-            itemsChanged = true;
             return true;
         }
         return false;

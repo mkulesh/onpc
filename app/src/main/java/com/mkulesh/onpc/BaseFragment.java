@@ -35,6 +35,9 @@ import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.Collections;
+import java.util.HashSet;
+
 abstract public class BaseFragment extends Fragment
 {
     /**
@@ -60,15 +63,20 @@ abstract public class BaseFragment extends Fragment
         rootView = inflater.inflate(layoutId, container, false);
     }
 
-    public void update(final State state)
+    public void update(final State state, @Nullable HashSet<State.ChangeType> eventChanges)
     {
+        if (eventChanges == null)
+        {
+            eventChanges = new HashSet<>();
+            Collections.addAll(eventChanges, State.ChangeType.values());
+        }
         if (state == null || !state.isOn())
         {
-            updateStandbyView(state);
+            updateStandbyView(state, eventChanges);
         }
         else
         {
-            updateActiveView(state);
+            updateActiveView(state, eventChanges);
         }
         if (activity.getStateManager() != null && state != null && state.popup != null)
         {
@@ -102,9 +110,9 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    protected abstract void updateStandbyView(@Nullable final State state);
+    protected abstract void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges);
 
-    protected abstract void updateActiveView(@NonNull final State state);
+    protected abstract void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges);
 
     protected void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
     {
