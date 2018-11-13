@@ -30,6 +30,7 @@ import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
+import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
@@ -266,6 +267,8 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', PlayStatusMsg.CODE, EISCPMessage.QUERY));
         messageChannel.sendMessage(
                 new EISCPMessage('1', GoogleCastVersionMsg.CODE, EISCPMessage.QUERY));
+        messageChannel.sendMessage(
+                new EISCPMessage('1', GoogleCastAnalyticsMsg.CODE, EISCPMessage.QUERY));
     }
 
     private void requestTrackState()

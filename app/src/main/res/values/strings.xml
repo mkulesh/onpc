@@ -225,6 +225,13 @@
     <string name="device_auto_power_on">On</string>
     <string name="device_auto_power_toggle">Sets auto power wrap-around</string>
 
+    <!-- Auto power commands -->
+    <string name="google_cast_analytics">Google Cast analytics</string>
+    <string name="google_cast_analytics_none">N/A</string>
+    <string name="google_cast_analytics_off">Off</string>
+    <string name="google_cast_analytics_on">On</string>
+    <string name="google_cast_analytics_toggle">Sets Google Cast analytics wrap-around</string>
+
     <!-- Errors -->
     <string name="error_connection_failed">Can not connect to %s</string>
     <string name="error_connection_timeout">Server not found</string>

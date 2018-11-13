@@ -30,6 +30,7 @@ import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
+import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -181,6 +182,16 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         {
             ((TextView) rootView.findViewById(R.id.device_auto_power)).setText(state.autoPower.getDescriptionId());
             setButtonEnabled(R.id.device_auto_power_toggle, state.isOn());
+        }
+
+        // Google Cast analytics
+        {
+            ((TextView) rootView.findViewById(R.id.google_cast_analytics)).setText(state.googleCastAnalytics.getDescriptionId());
+            final GoogleCastAnalyticsMsg toggleMsg = new GoogleCastAnalyticsMsg(
+                    (state.googleCastAnalytics == GoogleCastAnalyticsMsg.Status.OFF)?
+                            GoogleCastAnalyticsMsg.Status.ON : GoogleCastAnalyticsMsg.Status.OFF);
+            prepareImageButton(R.id.google_cast_analytics_toggle,toggleMsg);
+            setButtonEnabled(R.id.google_cast_analytics_toggle, state.isOn());
         }
     }
 }

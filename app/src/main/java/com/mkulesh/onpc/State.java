@@ -25,6 +25,7 @@ import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
+import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
@@ -74,6 +75,7 @@ class State
 
     // Google cast
     String googleCastVersion = "N/A";
+    GoogleCastAnalyticsMsg.Status googleCastAnalytics = GoogleCastAnalyticsMsg.Status.NONE;
 
     // Track info
     Bitmap cover = null;
@@ -172,6 +174,10 @@ class State
         if (msg instanceof GoogleCastVersionMsg)
         {
             return isCommonChange(process((GoogleCastVersionMsg) msg));
+        }
+        if (msg instanceof GoogleCastAnalyticsMsg)
+        {
+            return isCommonChange(process((GoogleCastAnalyticsMsg) msg));
         }
 
         // Track info
@@ -309,6 +315,13 @@ class State
     {
         final boolean changed = !msg.getData().equals(googleCastVersion);
         googleCastVersion = msg.getData();
+        return changed;
+    }
+
+    private boolean process(GoogleCastAnalyticsMsg msg)
+    {
+        final boolean changed = googleCastAnalytics != msg.getStatus();
+        googleCastAnalytics = msg.getStatus();
         return changed;
     }
 
