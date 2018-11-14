@@ -102,6 +102,7 @@ class State
     String titleBar = "";
     protected final List<XmlListItemMsg> mediaItems = new ArrayList<>();
     protected final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
+    protected final List<String> listInfoItems = new ArrayList<>();
 
     // Popup
     CustomPopupMsg popup = null;
@@ -527,6 +528,7 @@ class State
     {
         if (msg.getInformationType() == ListInfoMsg.InformationType.CURSOR)
         {
+            listInfoItems.clear();
             return false;
         }
         if (serviceType == ServiceType.NET)
@@ -545,7 +547,16 @@ class State
             }
             return true;
         }
-        if (uiType == ListTitleInfoMsg.UIType.MENU)
+        else if (isUsb())
+        {
+            final String name = msg.getListedData();
+            if (!listInfoItems.contains(name))
+            {
+                listInfoItems.add(name);
+            }
+            return false;
+        }
+        else if (uiType == ListTitleInfoMsg.UIType.MENU)
         {
             for (XmlListItemMsg i : mediaItems)
             {
@@ -605,5 +616,24 @@ class State
     boolean isMediaEmpty()
     {
         return mediaItems.isEmpty() && serviceItems.isEmpty();
+    }
+
+    public boolean listInfoConsistent()
+    {
+        if (numberOfItems == 0 || numberOfLayers == 0 || listInfoItems.isEmpty())
+        {
+            return true;
+        }
+        for (String s : listInfoItems)
+        {
+            for (XmlListItemMsg i : mediaItems)
+            {
+                if (i.getTitle().toUpperCase().equals(s.toUpperCase()))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

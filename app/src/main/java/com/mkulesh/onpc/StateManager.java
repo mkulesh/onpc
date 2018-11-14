@@ -34,6 +34,7 @@ import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
+import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -126,16 +127,14 @@ class StateManager extends AsyncTask<Void, Void, Void>
                     final Timer t = new Timer();
                     timerQueue.add(t);
                     t.schedule(new java.util.TimerTask()
-                               {
-                                   @Override
-                                   public void run()
-                                   {
-                                       timerQueue.poll();
-                                       publishProgress();
-                                   }
-                               },
-                            GUI_UPDATE_DELAY
-                    );
+                    {
+                        @Override
+                        public void run()
+                        {
+                            timerQueue.poll();
+                            publishProgress();
+                        }
+                    }, GUI_UPDATE_DELAY);
                 }
             }
             catch (Exception e)
@@ -181,6 +180,18 @@ class StateManager extends AsyncTask<Void, Void, Void>
         {
             requestXmlList.set(true);
             return true;
+        }
+
+        // corner case: delayed USB initialization at power on
+        if (msg instanceof ListInfoMsg)
+        {
+            if (state.isUsb() && state.isTopLayer() && !state.listInfoConsistent())
+            {
+                Logging.info(this, "requesting XML list state for USB...");
+                messageChannel.sendMessage(
+                        new EISCPMessage('1', XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
+                                xmlReqId++, state.numberOfLayers, 0, state.numberOfItems)));
+            }
         }
 
         if (changed == State.ChangeType.NONE)
