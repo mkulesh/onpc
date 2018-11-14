@@ -1,0 +1,32 @@
+language: android
+
+jdk: oraclejdk8
+
+android:
+  components:
+  - platform-tools
+  - tools
+  - android-27
+  - build-tools-27.0.3
+  - extra-android-m2repository
+
+branches:
+  only:
+  - master
+
+before_install:
+- yes | sdkmanager "platforms;android-27"
+
+install:
+  - chmod +x ./gradlew
+
+script: ./gradlew clean assembleDebug
+
+after_success:
+    # Show apk
+    - ls -l app/build/outputs/apk
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
