@@ -204,7 +204,7 @@ class State
         }
         if (msg instanceof TimeInfoMsg)
         {
-            return process((TimeInfoMsg) msg)? ChangeType.TIME_SEEK : ChangeType.NONE;
+            return process((TimeInfoMsg) msg) ? ChangeType.TIME_SEEK : ChangeType.NONE;
         }
         if (msg instanceof TrackInfoMsg)
         {
@@ -228,22 +228,22 @@ class State
         }
         if (msg instanceof ListTitleInfoMsg)
         {
-            return process((ListTitleInfoMsg) msg)? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+            return process((ListTitleInfoMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
         if (msg instanceof XmlListInfoMsg)
         {
-            return process((XmlListInfoMsg) msg)? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+            return process((XmlListInfoMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
         if (msg instanceof ListInfoMsg)
         {
-            return process((ListInfoMsg) msg)? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+            return process((ListInfoMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
         return ChangeType.NONE;
     }
 
     private ChangeType isCommonChange(boolean change)
     {
-        return change? ChangeType.COMMON : ChangeType.NONE;
+        return change ? ChangeType.COMMON : ChangeType.NONE;
     }
 
     private boolean process(PowerStatusMsg msg)

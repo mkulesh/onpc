@@ -6,7 +6,7 @@
 
 This app allows to remote control Onkyo Network Player like [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) over the network using "Integra Serial Communication Protocol". The following features are currently implemented:
 - Full playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Control Onkyo amplifier if it is attached to the player using RI interface
+- Control Onkyo amplifier if it is attached to the player using RI interface (muting, volume, input selector)
 - Select the media to be played, full support of Tuneln Radio and Deezer
 - Play queue support (add, remove, clear, change the order of tracks)
 - Show information about the device and control some device settings (dimmer level, digital filter, auto power)

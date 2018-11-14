@@ -188,9 +188,9 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         {
             ((TextView) rootView.findViewById(R.id.google_cast_analytics)).setText(state.googleCastAnalytics.getDescriptionId());
             final GoogleCastAnalyticsMsg toggleMsg = new GoogleCastAnalyticsMsg(
-                    (state.googleCastAnalytics == GoogleCastAnalyticsMsg.Status.OFF)?
+                    (state.googleCastAnalytics == GoogleCastAnalyticsMsg.Status.OFF) ?
                             GoogleCastAnalyticsMsg.Status.ON : GoogleCastAnalyticsMsg.Status.OFF);
-            prepareImageButton(R.id.google_cast_analytics_toggle,toggleMsg);
+            prepareImageButton(R.id.google_cast_analytics_toggle, toggleMsg);
             setButtonEnabled(R.id.google_cast_analytics_toggle, state.isOn());
         }
     }

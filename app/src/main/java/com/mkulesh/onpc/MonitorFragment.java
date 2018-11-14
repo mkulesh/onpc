@@ -91,6 +91,7 @@ public class MonitorFragment extends BaseFragment
 
         // Amplifier command Buttons
         {
+            ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_amp_input_selector));
             ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_amp_volume_up));
             ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_amp_volume_down));
             ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_amp_audio_muting));
@@ -280,7 +281,7 @@ public class MonitorFragment extends BaseFragment
             seekBar.setMax(1000);
             seekBar.setProgress(0);
         }
-        seekBar.setEnabled(state.timeSeek == MenuStatusMsg.TimeSeek.ENABLE);
+        seekBar.setEnabled(state.isPlaying() && state.timeSeek == MenuStatusMsg.TimeSeek.ENABLE);
     }
 
     private void seekTime(int newSec)
