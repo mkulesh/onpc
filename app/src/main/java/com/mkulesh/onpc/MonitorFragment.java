@@ -27,7 +27,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
-import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -95,19 +94,10 @@ public class MonitorFragment extends BaseFragment
             ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_amp_volume_up));
             ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_amp_volume_down));
             ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_amp_audio_muting));
-            ampButtons.add((AppCompatImageButton) rootView.findViewById(R.id.btn_device_audio_muting));
             for (AppCompatImageButton b : ampButtons)
             {
-                if (b.getId() == R.id.btn_device_audio_muting)
-                {
-                    final AudioMutingMsg msg = new AudioMutingMsg(AudioMutingMsg.Status.TOGGLE);
-                    prepareButton(b, msg, R.drawable.volume_device_muting, msg.getStatus().getDescriptionId());
-                }
-                else
-                {
-                    final AmpOperationCommandMsg msg = new AmpOperationCommandMsg((String) (b.getTag()));
-                    prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
-                }
+                final AmpOperationCommandMsg msg = new AmpOperationCommandMsg((String) (b.getTag()));
+                prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
                 setButtonEnabled(b, false);
             }
         }
@@ -162,7 +152,7 @@ public class MonitorFragment extends BaseFragment
         seekBar.setProgress(0);
         for (AppCompatImageButton b : ampButtons)
         {
-            b.setVisibility(b.getId() == R.id.btn_device_audio_muting ? View.GONE : View.VISIBLE);
+            b.setVisibility(View.VISIBLE);
             setButtonEnabled(b, state != null);
         }
         for (AppCompatImageButton b : cmdButtons)
@@ -213,12 +203,8 @@ public class MonitorFragment extends BaseFragment
         // buttons
         for (AppCompatImageButton b : ampButtons)
         {
-            b.setVisibility(b.getId() == R.id.btn_amp_audio_muting ? View.GONE : View.VISIBLE);
+            b.setVisibility(View.VISIBLE);
             setButtonEnabled(b, true);
-            if (b.getId() == R.id.btn_device_audio_muting)
-            {
-                setButtonSelected(b, state.audioMuting == AudioMutingMsg.Status.ON);
-            }
         }
         for (AppCompatImageButton b : cmdButtons)
         {

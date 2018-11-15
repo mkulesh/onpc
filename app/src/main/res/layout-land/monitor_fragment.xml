@@ -139,10 +139,6 @@
 
             <android.support.v7.widget.AppCompatImageButton
                 style="@style/ImageButtonStyle"
-                android:id="@+id/btn_device_audio_muting" />
-
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
                 android:id="@+id/btn_amp_audio_muting"
                 android:tag="AMTTG" />
 
