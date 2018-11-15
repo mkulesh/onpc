@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -41,6 +42,7 @@ import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,6 +56,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private LinearLayout selectorPaletteLayout = null;
     private XmlListItemMsg selectedItem = null;
     int moveFrom = -1;
+    private AppCompatImageView progressIndicator;
 
     public MediaFragment()
     {
@@ -74,6 +77,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.setOnItemClickListener(this);
 
         registerForContextMenu(listView);
+
+        progressIndicator = rootView.findViewById(R.id.progress_indicator);
+        Utils.setImageViewColorAttr(activity, progressIndicator, R.attr.colorButtonDisabled);
 
         update(null, null);
         return rootView;
@@ -340,14 +346,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                         activity.getResources().getString(R.string.medialist_items));
             }
         }
-        if (processing)
-        {
-            if (!title.toString().isEmpty())
-            {
-                title.append(". ");
-            }
-            title.append(activity.getResources().getString(R.string.medialist_processing));
-        }
         titleBar.setText(title.toString());
+        progressIndicator.setVisibility(processing? View.VISIBLE : View.INVISIBLE);
     }
 }
