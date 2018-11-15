@@ -132,55 +132,52 @@
             android:orientation="horizontal"
             android:gravity="center">
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_input_selector"
-                android:tag="SLIDOWN" />
+            <LinearLayout
+                android:id="@+id/sound_control_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_audio_muting"
-                android:tag="AMTTG" />
+                <!-- Will be filled programmatically -->
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_volume_down"
-                android:tag="MVLDOWN" />
+            </LinearLayout>
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_volume_up"
-                android:tag="MVLUP" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_repeat"
-                android:tag="REPEAT" />
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/btn_repeat"
+                    android:tag="REPEAT" />
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_previous"
-                android:tag="TRDN" />
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/btn_previous"
+                    android:tag="TRDN" />
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_stop"
-                android:tag="STOP" />
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/btn_stop"
+                    android:tag="STOP" />
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_pause_play"
-                android:tag="PAUSE" />
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/btn_pause_play"
+                    android:tag="PAUSE" />
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_next"
-                android:tag="TRUP" />
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/btn_next"
+                    android:tag="TRUP" />
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_random"
-                android:tag="RANDOM" />
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonStyle"
+                    android:id="@+id/btn_random"
+                    android:tag="RANDOM" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

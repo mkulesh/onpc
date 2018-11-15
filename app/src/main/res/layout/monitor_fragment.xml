@@ -20,34 +20,17 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:id="@+id/sound_control_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
 
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_input_selector"
-                android:tag="SLIDOWN" />
-
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_audio_muting"
-                android:tag="AMTTG" />
-
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_volume_down"
-                android:tag="MVLDOWN" />
-
-            <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
-                android:id="@+id/btn_amp_volume_up"
-                android:tag="MVLUP" />
-
+            <!-- Will be filled programmatically -->
         </LinearLayout>
 
         <LinearLayout

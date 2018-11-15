@@ -14,10 +14,8 @@
 package com.mkulesh.onpc;
 
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -55,8 +53,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private MediaListAdapter listViewAdapter;
     private LinearLayout selectorPaletteLayout = null;
     private XmlListItemMsg selectedItem = null;
-    private int selectorButtonSize = 0;
-    private int selectorButtonMargin = 0;
     int moveFrom = -1;
 
     public MediaFragment()
@@ -76,9 +72,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.setFocusableInTouchMode(true);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemClickListener(this);
-
-        selectorButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.btn_size);
-        selectorButtonMargin = activity.getResources().getDimensionPixelSize(R.dimen.btn_margin);
 
         registerForContextMenu(listView);
 
@@ -212,8 +205,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         // Top menu button
         {
             final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.TOP);
-            selectorPaletteLayout.addView(createSelectorButton(0, selectorButtonMargin,
-                    msg.getCommand(), msg, msg.getCommand().getDescriptionId(), msg.getCommand().getImageId()));
+            selectorPaletteLayout.addView(createButton(
+                    msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
+                    msg, msg.getCommand(),
+                    0, selectorButtonMargin));
         }
 
         // Selectors
@@ -226,25 +221,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 continue;
             }
-            selectorPaletteLayout.addView(createSelectorButton(
-                    selectorButtonMargin, (i == selNumber - 1 ? 0 : selectorButtonMargin),
-                    msg.getInputType(), msg, msg.getInputType().getDescriptionId(), msg.getInputType().getImageId()));
+            selectorPaletteLayout.addView(createButton(
+                    msg.getInputType().getImageId(), msg.getInputType().getDescriptionId(),
+                    msg, msg.getInputType(),
+                    selectorButtonMargin, (i == selNumber - 1 ? 0 : selectorButtonMargin)));
         }
-    }
-
-    private AppCompatImageButton createSelectorButton(
-            int leftMargin, int rightMargin,
-            Object tag, final ISCPMessage msg,
-            @StringRes int descriptionId, @DrawableRes int imageId)
-    {
-        final AppCompatImageButton b = new AppCompatImageButton(activity);
-        final ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(selectorButtonSize, selectorButtonSize);
-        lp.setMargins(leftMargin, selectorButtonMargin, rightMargin, selectorButtonMargin);
-        b.setLayoutParams(lp);
-        b.setTag(tag);
-        prepareButton(b, msg, imageId, descriptionId);
-        setButtonEnabled(b, true);
-        return b;
     }
 
     private void updateSelectorButtons(@NonNull final State state)

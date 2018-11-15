@@ -51,6 +51,9 @@ abstract public class BaseFragment extends Fragment
     protected SharedPreferences preferences;
     protected View rootView = null;
 
+    protected int selectorButtonSize = 0;
+    protected int selectorButtonMargin = 0;
+
     public BaseFragment()
     {
         // Empty constructor required for fragment subclasses
@@ -61,6 +64,8 @@ abstract public class BaseFragment extends Fragment
         activity = (MainActivity) getActivity();
         preferences = PreferenceManager.getDefaultSharedPreferences(activity);
         rootView = inflater.inflate(layoutId, container, false);
+        selectorButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.btn_size);
+        selectorButtonMargin = activity.getResources().getDimensionPixelSize(R.dimen.btn_margin);
     }
 
     public void update(final State state, @Nullable HashSet<State.ChangeType> eventChanges)
@@ -113,6 +118,21 @@ abstract public class BaseFragment extends Fragment
     protected abstract void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges);
 
     protected abstract void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges);
+
+    protected AppCompatImageButton createButton(
+            @DrawableRes int imageId, @StringRes int descriptionId,
+            @NonNull final ISCPMessage msg, Object tag,
+            int leftMargin, int rightMargin)
+    {
+        final AppCompatImageButton b = new AppCompatImageButton(activity);
+        final ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(selectorButtonSize, selectorButtonSize);
+        lp.setMargins(leftMargin, selectorButtonMargin, rightMargin, selectorButtonMargin);
+        b.setLayoutParams(lp);
+        b.setTag(tag);
+        prepareButton(b, msg, imageId, descriptionId);
+        setButtonEnabled(b, true);
+        return b;
+    }
 
     protected void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
     {
