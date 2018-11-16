@@ -27,10 +27,12 @@
         android:title="@string/pref_exit_confirm"
         android:widgetLayout="@layout/settings_check_box" />
 
-    <com.mkulesh.onpc.widgets.MultilineCheckBoxPreference
-        android:defaultValue="false"
-        android:key="amplifier_control"
-        android:title="@string/pref_amplifier_control"
-        android:widgetLayout="@layout/settings_check_box" />
+    <ListPreference
+        android:defaultValue="@string/pref_default_sound_control"
+        android:entries="@array/pref_sound_control_names"
+        android:entryValues="@array/pref_sound_control_codes"
+        android:key="sound_control"
+        android:summary="%s"
+        android:title="@string/pref_sound_control" />
 
 </PreferenceScreen>

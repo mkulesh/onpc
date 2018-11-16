@@ -32,8 +32,23 @@
 
     <!-- Application settings -->
     <string name="pref_exit_confirm">Press back button twice for exit</string>
-    <string name="pref_amplifier_control">Show amplifier control panel</string>
 
+    <!-- Sound Control -->
+    <string name="pref_sound_control">Sound control</string>
+    <string-array name="pref_sound_control_names">
+        <item>None</item>
+        <item>External amplifier (RI)</item>
+        <item>Device</item>
+    </string-array>
+
+    <string name="pref_default_sound_control" translatable="false">device</string>
+    <string-array name="pref_sound_control_codes" translatable="false">
+        <item>none</item>
+        <item>external-amplifier</item>
+        <item>device</item>
+    </string-array>
+
+    <!-- App themes -->
     <string name="pref_app_theme">App theme</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Black and Lime)</item>
@@ -92,6 +107,12 @@
     <string name="audio_muting_off">Player audio muting off</string>
     <string name="audio_muting_on">Player audio muting on</string>
     <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
+
+    <!-- Master Volume Command  -->
+    <string name="master_volume_up">Sets volume level up</string>
+    <string name="master_volume_down">Sets volume level down</string>
+    <string name="master_volume_up1">Sets volume level up 1dB step</string>
+    <string name="master_volume_down1">Sets volume level down 1dB step</string>
 
     <string name="cmd_description_play">Play</string>
     <string name="cmd_description_stop">Stop</string>

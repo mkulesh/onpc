@@ -28,6 +28,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -42,15 +44,13 @@ import java.util.List;
 
 public class MonitorFragment extends BaseFragment
 {
-    public static final String AMPLIFIER_CONTROL = "amplifier_control";
-
     private AppCompatImageButton btnRepeat;
     private AppCompatImageButton btnPrevious;
     private AppCompatImageButton btnPausePlay;
     private AppCompatImageButton btnNext;
     private AppCompatImageButton btnRandom;
     private final List<AppCompatImageButton> cmdButtons = new ArrayList<>();
-    private final List<AppCompatImageButton> ampButtons = new ArrayList<>();
+    private final List<AppCompatImageButton> soundControlButtons = new ArrayList<>();
     private ImageView cover;
     private AppCompatSeekBar seekBar;
 
@@ -93,14 +93,21 @@ public class MonitorFragment extends BaseFragment
 
         // Amplifier command buttons
         LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
-        if (preferences.getBoolean(AMPLIFIER_CONTROL, false))
+        final String defaultSoundControl = preferences.getString(SettingsActivity.SOUND_CONTROL,
+                activity.getResources().getString(R.string.pref_default_sound_control));
+        switch (defaultSoundControl)
         {
-            soundControlLayout.setVisibility(View.VISIBLE);
-            addAmplifierCommands(soundControlLayout);
-        }
-        else
-        {
-            soundControlLayout.setVisibility(View.GONE);
+            case "none":
+                soundControlLayout.setVisibility(View.GONE);
+                break;
+            case "external-amplifier":
+                soundControlLayout.setVisibility(View.VISIBLE);
+                setSoundControlAmplifier(soundControlLayout);
+                break;
+            case "device":
+                soundControlLayout.setVisibility(View.VISIBLE);
+                setSoundControlDevice(soundControlLayout);
+                break;
         }
 
         cover = rootView.findViewById(R.id.tv_cover);
@@ -132,25 +139,59 @@ public class MonitorFragment extends BaseFragment
         return rootView;
     }
 
-    private void addAmplifierCommands(LinearLayout soundControlLayout)
+    private void setSoundControlAmplifier(LinearLayout soundControlLayout)
     {
         final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]
-                {
-                        AmpOperationCommandMsg.Command.SLIDOWN,
-                        AmpOperationCommandMsg.Command.AMTTG,
-                        AmpOperationCommandMsg.Command.MVLDOWN,
-                        AmpOperationCommandMsg.Command.MVLUP
-                };
+        {
+            AmpOperationCommandMsg.Command.SLIDOWN,
+            AmpOperationCommandMsg.Command.AMTTG,
+            AmpOperationCommandMsg.Command.MVLDOWN,
+            AmpOperationCommandMsg.Command.MVLUP
+        };
         for (AmpOperationCommandMsg.Command c : commands)
         {
-            final String tag = c.toString().toUpperCase();
-            final AmpOperationCommandMsg msg = new AmpOperationCommandMsg(tag);
-            final AppCompatImageButton b = createButton(
+            final AmpOperationCommandMsg msg = new AmpOperationCommandMsg(c.getCode());
+            soundControlButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, tag,
-                    selectorButtonMargin, selectorButtonMargin);
+                    msg, msg.getCommand().getCode(),
+                    selectorButtonMargin, selectorButtonMargin));
+        }
+        for (AppCompatImageButton b : soundControlButtons)
+        {
             soundControlLayout.addView(b);
-            ampButtons.add(b);
+            setButtonEnabled(b, false);
+        }
+    }
+
+    public void setSoundControlDevice(LinearLayout soundControlLayout)
+    {
+        // audio muting
+        {
+            final AudioMutingMsg msg = new AudioMutingMsg(AudioMutingMsg.Status.TOGGLE);
+            soundControlButtons.add(createButton(
+                    R.drawable.volume_amp_muting, msg.getStatus().getDescriptionId(),
+                    msg, msg.getStatus().getCode(),
+                    selectorButtonMargin, selectorButtonMargin));
+        }
+        // volume down
+        {
+            final MasterVolumeMsg msg = new MasterVolumeMsg(MasterVolumeMsg.Command.DOWN);
+            soundControlButtons.add(createButton(
+                    msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
+                    msg, msg.getCommand().getCode(),
+                    selectorButtonMargin, selectorButtonMargin));
+        }
+        // volume up
+        {
+            final MasterVolumeMsg msg = new MasterVolumeMsg(MasterVolumeMsg.Command.UP);
+            soundControlButtons.add(createButton(
+                    msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
+                    msg, msg.getCommand().getCode(),
+                    selectorButtonMargin, selectorButtonMargin));
+        }
+        for (AppCompatImageButton b : soundControlButtons)
+        {
+            soundControlLayout.addView(b);
             setButtonEnabled(b, false);
         }
     }
@@ -174,7 +215,7 @@ public class MonitorFragment extends BaseFragment
         cover.setImageResource(R.drawable.empty_cover);
         seekBar.setEnabled(false);
         seekBar.setProgress(0);
-        for (AppCompatImageButton b : ampButtons)
+        for (AppCompatImageButton b : soundControlButtons)
         {
             setButtonEnabled(b, state != null);
         }
@@ -224,7 +265,7 @@ public class MonitorFragment extends BaseFragment
         updateProgressBar(state);
 
         // buttons
-        for (AppCompatImageButton b : ampButtons)
+        for (AppCompatImageButton b : soundControlButtons)
         {
             setButtonEnabled(b, true);
         }

@@ -69,6 +69,8 @@ public class MessageFactory
             return new DigitalFilterMsg(raw);
         case AudioMutingMsg.CODE:
             return new AudioMutingMsg(raw);
+        case MasterVolumeMsg.CODE:
+            return new MasterVolumeMsg(raw);
         case AutoPowerMsg.CODE:
             return new AutoPowerMsg(raw);
         case CustomPopupMsg.CODE:

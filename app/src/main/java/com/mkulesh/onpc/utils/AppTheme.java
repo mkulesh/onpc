@@ -21,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.SettingsActivity;
 
 
 /*********************************************************
@@ -28,7 +29,6 @@ import com.mkulesh.onpc.R;
  *********************************************************/
 public final class AppTheme
 {
-    private static final String PREF_APP_THEME = "app_theme";
 
     public enum ThemeType
     {
@@ -41,7 +41,7 @@ public final class AppTheme
     {
         final Resources res = context.getResources();
         final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        final String themeCode = pref.getString(PREF_APP_THEME,
+        final String themeCode = pref.getString(SettingsActivity.APP_THEME,
                 res.getString(R.string.pref_default_theme_code));
 
         final CharSequence[] allThemes = context.getResources().getStringArray(R.array.pref_theme_codes);

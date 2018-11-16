@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 {
     private final static boolean ENABLE_MOCKUP = false;
     private static final int SETTINGS_ACTIVITY_REQID = 256;
-    public static final String EXIT_CONFIRM = "exit_confirm";
 
     private Toolbar toolbar;
     private SectionsPagerAdapter pagerAdapter;
@@ -139,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     public void onBackPressed()
     {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!preferences.getBoolean(EXIT_CONFIRM, false))
+        if (!preferences.getBoolean(SettingsActivity.EXIT_CONFIRM, false))
         {
             finish();
         }
