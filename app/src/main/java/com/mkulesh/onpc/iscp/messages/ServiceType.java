@@ -55,6 +55,7 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     AIRPLAY("18", "Airplay", R.string.service_airplay, R.drawable.media_item_airplay),
     ONKYO_MUSIC("1A", "onkyo music", R.string.service_onkyo_music),
     TIDAL("1B", "Tidal", R.string.service_tidal, R.drawable.media_item_tidal),
+    AMAZON_MUSIC("1C", "AmazonMusic", R.string.service_amazon_music),
     PLAYQUEUE("1D", "Play Queue", R.string.service_playqueue, R.drawable.media_item_playqueue),
     CHROMECAST("40", "Chromecast built-in", R.string.service_chromecast, R.drawable.media_item_chromecast),
     FIRECONNECT("41", "FireConnect", R.string.service_fireconnect),

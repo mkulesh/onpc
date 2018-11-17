@@ -188,6 +188,7 @@
     <string name="service_airplay">AirPlay</string>
     <string name="service_onkyo_music">Onkyo Music</string>
     <string name="service_tidal">Tidal</string>
+    <string name="service_amazon_music">Amazon Music</string>
     <string name="service_playqueue">Play Queue</string>
     <string name="service_chromecast">Chromecast</string>
     <string name="service_fireconnect">FireConnect</string>
