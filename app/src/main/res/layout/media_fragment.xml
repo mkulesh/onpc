@@ -57,12 +57,11 @@
                 android:maxLines="9999" />
 
             <android.support.v7.widget.AppCompatImageView
-                style="@style/ImageButtonStyle"
+                style="@style/ImageButtonNoMarginStyle"
                 android:id="@+id/progress_indicator"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/timer_sand"
-                android:scaleType="fitXY"
                 android:contentDescription="@string/medialist_processing"/>
 
         </LinearLayout>

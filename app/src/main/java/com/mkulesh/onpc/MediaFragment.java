@@ -214,7 +214,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             selectorPaletteLayout.addView(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand(),
-                    0, selectorButtonMargin));
+                    0, buttonMargin));
         }
 
         // Selectors
@@ -230,7 +230,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             selectorPaletteLayout.addView(createButton(
                     msg.getInputType().getImageId(), msg.getInputType().getDescriptionId(),
                     msg, msg.getInputType(),
-                    selectorButtonMargin, (i == selNumber - 1 ? 0 : selectorButtonMargin)));
+                    buttonMargin, (i == selNumber - 1 ? 0 : buttonMargin)));
         }
     }
 

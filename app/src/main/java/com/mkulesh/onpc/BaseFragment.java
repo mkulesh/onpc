@@ -27,6 +27,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.PopupBuilder;
@@ -51,8 +53,7 @@ abstract public class BaseFragment extends Fragment
     protected SharedPreferences preferences;
     protected View rootView = null;
 
-    protected int selectorButtonSize = 0;
-    protected int selectorButtonMargin = 0;
+    int buttonSize = 0, buttonMargin = 0, buttonPadding = 0;
 
     public BaseFragment()
     {
@@ -64,8 +65,10 @@ abstract public class BaseFragment extends Fragment
         activity = (MainActivity) getActivity();
         preferences = PreferenceManager.getDefaultSharedPreferences(activity);
         rootView = inflater.inflate(layoutId, container, false);
-        selectorButtonSize = activity.getResources().getDimensionPixelSize(R.dimen.btn_size);
-        selectorButtonMargin = activity.getResources().getDimensionPixelSize(R.dimen.btn_margin);
+
+        buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.button_size);
+        buttonMargin = activity.getResources().getDimensionPixelSize(R.dimen.button_margin);
+        buttonPadding = activity.getResources().getDimensionPixelSize(R.dimen.button_padding);
     }
 
     public void update(final State state, @Nullable HashSet<State.ChangeType> eventChanges)
@@ -124,11 +127,14 @@ abstract public class BaseFragment extends Fragment
             @NonNull final ISCPMessage msg, Object tag,
             int leftMargin, int rightMargin)
     {
-        final AppCompatImageButton b = new AppCompatImageButton(activity);
-        final ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(selectorButtonSize, selectorButtonSize);
-        lp.setMargins(leftMargin, selectorButtonMargin, rightMargin, selectorButtonMargin);
+        final AppCompatImageButton b = new AppCompatImageButton(activity, null, R.style.ImageButtonStyle);
+        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(buttonSize, buttonSize);
+        lp.setMargins(leftMargin, buttonMargin, rightMargin, buttonMargin);
         b.setLayoutParams(lp);
+        b.setPadding(buttonPadding, buttonPadding, buttonPadding, buttonPadding);
         b.setTag(tag);
+        b.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        b.setAdjustViewBounds(true);
         prepareButton(b, msg, imageId, descriptionId);
         setButtonEnabled(b, true);
         return b;

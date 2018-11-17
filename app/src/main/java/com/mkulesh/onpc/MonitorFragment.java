@@ -154,7 +154,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand().getCode(),
-                    selectorButtonMargin, selectorButtonMargin));
+                    buttonMargin, buttonMargin));
         }
         for (AppCompatImageButton b : soundControlButtons)
         {
@@ -171,7 +171,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     R.drawable.volume_amp_muting, msg.getStatus().getDescriptionId(),
                     msg, msg.getStatus().getCode(),
-                    selectorButtonMargin, selectorButtonMargin));
+                    buttonMargin, buttonMargin));
         }
         // volume down
         {
@@ -179,7 +179,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand().getCode(),
-                    selectorButtonMargin, selectorButtonMargin));
+                    buttonMargin, buttonMargin));
         }
         // volume up
         {
@@ -187,7 +187,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand().getCode(),
-                    selectorButtonMargin, selectorButtonMargin));
+                    buttonMargin, buttonMargin));
         }
         for (AppCompatImageButton b : soundControlButtons)
         {

@@ -13,8 +13,23 @@
 
 <resources>
 
+    <!-- Activity parameters -->
     <dimen name="activity_horizontal_margin">64dp</dimen>
-    <dimen name="activity_vertical_margin">4dp</dimen>
+    <dimen name="activity_vertical_margin">8dp</dimen>
     <dimen name="activity_tab_height">32dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="primary_text_size">18sp</dimen>
+    <dimen name="secondary_text_size">16sp</dimen>
+
+    <!-- Buttons and images -->
+    <dimen name="button_size">24dp</dimen>
+    <dimen name="button_padding">0dp</dimen>
+    <dimen name="button_margin">16dp</dimen>
+    <dimen name="cover_image_margin">8dp</dimen>
+
+    <!-- Device info fragment -->
+    <dimen name="device_info_row_height">42dp</dimen>
+    <dimen name="device_info_label_width">100dp</dimen>
 
 </resources>

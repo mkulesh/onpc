@@ -67,12 +67,12 @@
 
     <style name="DeviceRowStyle">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/device_row_height</item>
+        <item name="android:layout_height">@dimen/device_info_row_height</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="DeviceLabelViewStyle" parent="@style/SecondaryTextViewStyle">
-        <item name="android:layout_width">@dimen/device_info_column_width</item>
+        <item name="android:layout_width">@dimen/device_info_label_width</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">left|center_vertical</item>
     </style>
@@ -92,13 +92,20 @@
     </style>
 
     <style name="ImageButtonStyle" parent="@style/Widget.AppCompat.ImageButton">
-        <item name="android:layout_width">@dimen/btn_size</item>
-        <item name="android:layout_height">@dimen/btn_size</item>
+        <item name="android:layout_width">@dimen/button_size</item>
+        <item name="android:layout_height">@dimen/button_size</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">@dimen/btn_margin</item>
+        <item name="android:layout_margin">@dimen/button_margin</item>
+        <item name="android:padding">@dimen/button_padding</item>
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:longClickable">true</item>
         <item name="android:saveEnabled">false</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <style name="ImageButtonNoMarginStyle" parent="ImageButtonStyle">
+        <item name="android:layout_margin">0dp</item>
     </style>
 
     <style name="CheckBoxStyle" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
