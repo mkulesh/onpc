@@ -166,12 +166,17 @@
     <string name="medialist_processing">Processing…</string>
 
     <!-- Input selectors -->
-    <string name="input_selector_pc">PC</string>
+    <string name="input_selector_video1">Video 1: VCR/DVR</string>
+    <string name="input_selector_video2">Video 2: CBL/SAT</string>
+    <string name="input_selector_video3">Video 3: GAME/TV</string>
+    <string name="input_selector_video4">Video 4: AUX1/AUX</string>
+    <string name="input_selector_video5">Video 5: AUX2</string>
+    <string name="input_selector_video6">Video 6: PC</string>
     <string name="input_selector_video7">Video 7</string>
     <string name="input_selector_bd_dvd">BD/DVD</string>
     <string name="input_selector_strm_box">Streaming box</string>
     <string name="input_selector_tv">TV</string>
-    <string name="input_selector_tv_tape">TV/Tape</string>
+    <string name="input_selector_tape1">Tape 1: TV/TAPE</string>
     <string name="input_selector_tape2">Tape 2</string>
     <string name="input_selector_phono">Phono</string>
     <string name="input_selector_tv_cd">TV/CD</string>
@@ -186,16 +191,16 @@
     <string name="input_selector_usb_toggle">USB toggle</string>
     <string name="input_selector_airplay">AirPlay</string>
     <string name="input_selector_bluetooth">Bluetooth</string>
-    <string name="input_selector_usb_dac_in">USB DAC Input</string>
+    <string name="input_selector_usb_dac_in">USB DAC input</string>
     <string name="input_selector_line">Line</string>
     <string name="input_selector_line2">Line 2</string>
     <string name="input_selector_optical">Optical</string>
     <string name="input_selector_coaxial">Coaxial</string>
     <string name="input_selector_universal_port">Universal port</string>
     <string name="input_selector_multi_ch">Multi Ch</string>
-    <string name="input_selector_xm_1">XM 1</string>
-    <string name="input_selector_sirius_1">Sirius 1</string>
-    <string name="input_selector_dab_5">DAB 5</string>
+    <string name="input_selector_xm">XM</string>
+    <string name="input_selector_sirius">Sirius</string>
+    <string name="input_selector_dab">DAB</string>
     <string name="input_selector_hdmi_5">HDMI 5</string>
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
