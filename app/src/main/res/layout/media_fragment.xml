@@ -61,6 +61,8 @@
                 android:id="@+id/progress_indicator"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:padding="0dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/timer_sand"
                 android:contentDescription="@string/medialist_processing"/>
 

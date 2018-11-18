@@ -14,6 +14,7 @@
 package com.mkulesh.onpc;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -128,23 +129,14 @@ abstract public class BaseFragment extends Fragment
             @NonNull final ISCPMessage msg, Object tag,
             int leftMargin, int rightMargin)
     {
-        final AppCompatImageButton b = new AppCompatImageButton(activity, null, R.style.ImageButtonStyle);
+        final AppCompatImageButton b = new AppCompatImageButton(activity);
         final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(buttonSize, buttonSize);
         lp.setMargins(leftMargin, buttonMargin, rightMargin, buttonMargin);
         b.setLayoutParams(lp);
         b.setPadding(buttonPadding, buttonPadding, buttonPadding, buttonPadding);
         b.setTag(tag);
-        b.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        b.setAdjustViewBounds(true);
         prepareButton(b, msg, imageId, descriptionId);
-        setButtonEnabled(b, true);
         return b;
-    }
-
-    protected void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
-    {
-        final AppCompatImageButton b = rootView.findViewById(buttonId);
-        prepareButton(b, msg);
     }
 
     protected void prepareButton(
@@ -160,26 +152,32 @@ abstract public class BaseFragment extends Fragment
 
     protected void prepareButton(@NonNull View b, final ISCPMessage msg)
     {
+        b.setSaveEnabled(false);
+
         TypedValue outValue = new TypedValue();
         activity.getTheme().resolveAttribute(R.attr.selectableItemBackground, outValue, true);
         b.setBackgroundResource(outValue.resourceId);
 
-        b.setOnClickListener(new View.OnClickListener()
+        if (msg != null)
         {
-            @Override
-            public void onClick(View v)
+            b.setOnClickListener(new View.OnClickListener()
             {
-                if (activity.getStateManager() != null)
+                @Override
+                public void onClick(View v)
                 {
-                    activity.getStateManager().sendMessage(msg);
+                    if (activity.getStateManager() != null)
+                    {
+                        activity.getStateManager().sendMessage(msg);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         if (b instanceof AppCompatImageButton)
         {
-            b.setLongClickable(true);
-            b.setOnLongClickListener(new View.OnLongClickListener()
+            AppCompatImageButton bb = (AppCompatImageButton)b;
+            bb.setLongClickable(true);
+            bb.setOnLongClickListener(new View.OnLongClickListener()
             {
                 @Override
                 public boolean onLongClick(View v)
@@ -187,6 +185,12 @@ abstract public class BaseFragment extends Fragment
                     return Utils.showButtonDescription(activity, v);
                 }
             });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                bb.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                bb.setAdjustViewBounds(true);
+            }
+            setButtonEnabled(bb, false);
         }
     }
 

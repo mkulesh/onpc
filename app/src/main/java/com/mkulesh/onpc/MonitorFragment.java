@@ -89,7 +89,6 @@ public class MonitorFragment extends BaseFragment
         {
             final OperationCommandMsg msg = new OperationCommandMsg((String) (b.getTag()));
             prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
-            setButtonEnabled(b, false);
         }
 
         // Amplifier command buttons
@@ -160,7 +159,6 @@ public class MonitorFragment extends BaseFragment
         for (AppCompatImageButton b : soundControlButtons)
         {
             soundControlLayout.addView(b);
-            setButtonEnabled(b, false);
         }
     }
 
@@ -201,7 +199,6 @@ public class MonitorFragment extends BaseFragment
         for (AppCompatImageButton b : soundControlButtons)
         {
             soundControlLayout.addView(b);
-            setButtonEnabled(b, false);
         }
     }
 

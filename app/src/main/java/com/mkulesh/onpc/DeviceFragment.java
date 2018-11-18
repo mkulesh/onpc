@@ -16,6 +16,7 @@ package com.mkulesh.onpc;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
@@ -26,13 +27,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
 
@@ -51,16 +52,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     {
         initializeFragment(inflater, container, R.layout.device_fragment);
 
-        final AppCompatImageButton btnConnect = rootView.findViewById(R.id.device_connect);
-        Utils.setImageButtonColorAttr(activity, btnConnect, R.attr.colorButtonEnabled);
-        btnConnect.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                return Utils.showButtonDescription(activity, v);
-            }
-        });
+        final AppCompatImageButton btnConnect = prepareImageButton(R.id.device_connect, null);
+        setButtonEnabled(btnConnect, true);
         btnConnect.setOnClickListener(this);
 
         ((EditText) rootView.findViewById(R.id.device_name)).setText(preferences.getString(
@@ -74,6 +67,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
+        prepareImageButton(R.id.google_cast_analytics_toggle, null);
 
         update(null, null);
         return rootView;
@@ -193,5 +187,12 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             prepareImageButton(R.id.google_cast_analytics_toggle, toggleMsg);
             setButtonEnabled(R.id.google_cast_analytics_toggle, state.isOn());
         }
+    }
+
+    protected AppCompatImageButton prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
+    {
+        final AppCompatImageButton b = rootView.findViewById(buttonId);
+        prepareButton(b, msg);
+        return b;
     }
 }
