@@ -45,7 +45,6 @@ import org.w3c.dom.Element;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -77,7 +76,7 @@ public class PopupBuilder
     public AlertDialog build(final CustomPopupMsg pMsg) throws Exception
     {
         CustomPopupMsg.UiType uiType = null;
-        final Document document = xmlToDocument(pMsg.getXml().getBytes(Charset.forName("UTF-8")));
+        final Document document = xmlToDocument(pMsg.getXml().getBytes(ISCPMessage.UTF_8));
 
         final Element popup = Utils.getElement(document, "popup");
         if (popup == null)

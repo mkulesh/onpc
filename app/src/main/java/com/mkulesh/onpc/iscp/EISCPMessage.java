@@ -21,6 +21,8 @@ import java.util.Arrays;
 
 public class EISCPMessage
 {
+    public static final Charset UTF_8 = Charset.forName("UTF-8");
+
     private final static String MSG_START = "ISCP";
     private final static String INVALID_MSG = "INVALID";
     private final static int CR = 0x0D;
@@ -190,7 +192,7 @@ public class EISCPMessage
                     actualLength++;
                 }
                 final byte[] stringBytes = Utils.catBuffer(bytes, startIndex + headerSize, actualLength);
-                return new String(stringBytes, Charset.forName("UTF-8"));
+                return new String(stringBytes, UTF_8);
             }
         }
         catch (Exception e)
@@ -202,11 +204,14 @@ public class EISCPMessage
 
     byte[] getBytes()
     {
-        if (headerSize + dataSize < MIN_MSG_LENGTH)
+        byte parametersBin[] = parameters.getBytes(UTF_8);
+        int dSize = 2 + code.length() + parametersBin.length + 1;
+
+        if (headerSize + dSize < MIN_MSG_LENGTH)
         {
             return null;
         }
-        final byte[] bytes = new byte[headerSize + dataSize];
+        final byte[] bytes = new byte[headerSize + dSize];
         Arrays.fill(bytes, (byte) 0);
 
         // Message header
@@ -220,7 +225,7 @@ public class EISCPMessage
         System.arraycopy(size, 0, bytes, 4, size.length);
 
         // Data size
-        size = ByteBuffer.allocate(4).putInt(dataSize).array();
+        size = ByteBuffer.allocate(4).putInt(dSize).array();
         System.arraycopy(size, 0, bytes, 8, size.length);
 
         // Version
@@ -235,13 +240,10 @@ public class EISCPMessage
         }
 
         // Parameters
-        for (int i = 0; i < parameters.length(); i++)
-        {
-            bytes[i + 21] = (byte) parameters.charAt(i);
-        }
+        System.arraycopy(parametersBin, 0, bytes, 21, parametersBin.length);
 
         // End char
-        bytes[21 + parameters.length()] = (byte) LF;
+        bytes[21 + parametersBin.length] = (byte) LF;
         return bytes;
     }
 }

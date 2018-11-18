@@ -28,7 +28,6 @@ import org.w3c.dom.Node;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,7 +121,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     {
         deviceProperties.clear();
         deviceSelectors.clear();
-        InputStream stream = new ByteArrayInputStream(data.getBytes(Charset.forName("UTF-8")));
+        InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document doc = builder.parse(stream);

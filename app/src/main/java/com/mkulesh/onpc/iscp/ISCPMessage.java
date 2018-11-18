@@ -13,8 +13,11 @@
 
 package com.mkulesh.onpc.iscp;
 
+import java.nio.charset.Charset;
+
 public class ISCPMessage
 {
+    public static final Charset UTF_8 = Charset.forName("UTF-8");
     protected final static String PAR_SEP = "/";
 
     protected final int messageId;

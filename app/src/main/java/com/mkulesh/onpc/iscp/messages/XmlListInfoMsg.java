@@ -23,7 +23,6 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -97,7 +96,7 @@ public class XmlListInfoMsg extends ISCPMessage
     public List<XmlListItemMsg> parseXml(final List<XmlListItemMsg> items, final int numberOfLayers) throws Exception
     {
         items.clear();
-        InputStream stream = new ByteArrayInputStream(rawXml.getBytes(Charset.forName("UTF-8")));
+        InputStream stream = new ByteArrayInputStream(rawXml.getBytes(UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document doc = builder.parse(stream);

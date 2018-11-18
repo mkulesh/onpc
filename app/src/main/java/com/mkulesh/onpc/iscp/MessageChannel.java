@@ -109,7 +109,7 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
                     final byte[] bytes = m.getBytes();
                     if (bytes != null)
                     {
-                        final ByteBuffer messageBuffer = ByteBuffer.wrap(m.getBytes());
+                        final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
                         Logging.info(this, ">> sending: " + m.toString());
                         socket.write(messageBuffer);
                     }
