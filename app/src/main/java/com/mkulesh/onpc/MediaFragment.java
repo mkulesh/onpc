@@ -16,6 +16,7 @@ package com.mkulesh.onpc;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.ContextMenu;
@@ -227,10 +228,15 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 continue;
             }
-            selectorPaletteLayout.addView(createButton(
-                    msg.getInputType().getImageId(), msg.getInputType().getDescriptionId(),
-                    msg, msg.getInputType(),
-                    buttonMargin, (i == selNumber - 1 ? 0 : buttonMargin)));
+            final AppCompatButton b = new AppCompatButton(getContext());
+            final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, buttonSize);
+            lp.setMargins(0, 0, 0, 0);
+            b.setLayoutParams(lp);
+            b.setPadding(0, 0, 0, 0);
+            b.setText(msg.getInputType().getDescriptionId());
+            b.setTag(msg.getInputType());
+            prepareButton(b, msg);
+            selectorPaletteLayout.addView(b);
         }
     }
 
@@ -242,16 +248,21 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
         {
-            if (selectorPaletteLayout.getChildAt(i) instanceof AppCompatImageButton)
+            final View v = selectorPaletteLayout.getChildAt(i);
+            if (v instanceof AppCompatImageButton)
             {
-                final AppCompatImageButton b = (AppCompatImageButton) selectorPaletteLayout.getChildAt(i);
-                if (b.getTag() instanceof InputSelectorMsg.InputType)
-                {
-                    setButtonSelected(b, b.getTag() == state.inputType);
-                }
+                final AppCompatImageButton b = (AppCompatImageButton) v;
                 if (b.getTag() instanceof OperationCommandMsg.Command)
                 {
                     setButtonEnabled(b, b.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
+                }
+            }
+            if (v instanceof AppCompatButton)
+            {
+                final AppCompatButton b = (AppCompatButton) v;
+                if (b.getTag() instanceof InputSelectorMsg.InputType)
+                {
+                    setButtonSelected(b, b.getTag() == state.inputType);
                 }
             }
         }

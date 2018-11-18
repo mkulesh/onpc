@@ -43,11 +43,11 @@ public class InputSelectorMsg extends ISCPMessage
         FM("24", R.string.input_selector_fm),
         AM("25", R.string.input_selector_am),
         TUNER("26", R.string.input_selector_tuner),
-        MUSIC_SERVER("27", R.string.input_selector_music_server, R.drawable.input_selector_media_server),
+        MUSIC_SERVER("27", R.string.input_selector_music_server),
         INTERNET_RADIO("28", R.string.input_selector_internet_radio),
-        USB_FRONT("29", R.string.input_selector_usb_front, R.drawable.input_selector_usb_front),
-        USB_REAR("2A", R.string.input_selector_usb_rear, R.drawable.input_selector_usb_rear),
-        NET("2B", R.string.input_selector_net, R.drawable.input_selector_net),
+        USB_FRONT("29", R.string.input_selector_usb_front),
+        USB_REAR("2A", R.string.input_selector_usb_rear),
+        NET("2B", R.string.input_selector_net),
         USB_TOGGLE("2C", R.string.input_selector_usb_toggle),
         AIRPLAY("2D", R.string.input_selector_airplay),
         BLUETOOTH("2E", R.string.input_selector_bluetooth),
@@ -68,27 +68,17 @@ public class InputSelectorMsg extends ISCPMessage
 
         final String code;
         final int descriptionId;
-        final int imageId;
 
         InputType(String code)
         {
             this.code = code;
             this.descriptionId = -1;
-            this.imageId = R.drawable.media_item_unknown;
         }
 
         InputType(String code, final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
-            this.imageId = R.drawable.media_item_unknown;
-        }
-
-        InputType(String code, final int descriptionId, int imageId)
-        {
-            this.code = code;
-            this.descriptionId = descriptionId;
-            this.imageId = imageId;
         }
 
         public String getCode()
@@ -99,11 +89,6 @@ public class InputSelectorMsg extends ISCPMessage
         public int getDescriptionId()
         {
             return descriptionId;
-        }
-
-        public int getImageId()
-        {
-            return imageId;
         }
     }
 

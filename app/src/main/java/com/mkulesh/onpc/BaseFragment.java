@@ -22,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -143,7 +144,7 @@ abstract public class BaseFragment extends Fragment
     protected void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
     {
         final AppCompatImageButton b = rootView.findViewById(buttonId);
-        prepareImageButton(b, msg);
+        prepareButton(b, msg);
     }
 
     protected void prepareButton(
@@ -154,11 +155,10 @@ abstract public class BaseFragment extends Fragment
         {
             b.setContentDescription(activity.getResources().getString(descriptionId));
         }
-        prepareImageButton(b, msg);
+        prepareButton(b, msg);
     }
 
-    private void prepareImageButton(
-            @NonNull AppCompatImageButton b, final ISCPMessage msg)
+    protected void prepareButton(@NonNull View b, final ISCPMessage msg)
     {
         TypedValue outValue = new TypedValue();
         activity.getTheme().resolveAttribute(R.attr.selectableItemBackground, outValue, true);
@@ -176,15 +176,18 @@ abstract public class BaseFragment extends Fragment
             }
         });
 
-        b.setLongClickable(true);
-        b.setOnLongClickListener(new View.OnLongClickListener()
+        if (b instanceof AppCompatImageButton)
         {
-            @Override
-            public boolean onLongClick(View v)
+            b.setLongClickable(true);
+            b.setOnLongClickListener(new View.OnLongClickListener()
             {
-                return Utils.showButtonDescription(activity, v);
-            }
-        });
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    return Utils.showButtonDescription(activity, v);
+                }
+            });
+        }
     }
 
     protected void setButtonEnabled(@IdRes int buttonId, boolean isEnabled)
@@ -205,5 +208,11 @@ abstract public class BaseFragment extends Fragment
         b.setSelected(isSelected);
         Utils.setImageButtonColorAttr(activity, b,
                 b.isSelected() ? R.attr.colorAccent : R.attr.colorButtonEnabled);
+    }
+
+    protected void setButtonSelected(AppCompatButton b, boolean isEnabled)
+    {
+        final int c = Utils.getThemeColorAttr(activity, isEnabled? R.attr.colorAccent : R.attr.colorButtonEnabled);
+        b.setTextColor(c);
     }
 }
