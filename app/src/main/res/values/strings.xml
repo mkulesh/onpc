@@ -165,7 +165,42 @@
     <string name="medialist_items">item(s)</string>
     <string name="medialist_processing">Processing…</string>
 
-    <string name="service_music_server">Music Server (DLNA)</string>
+    <!-- Input selectors -->
+    <string name="input_selector_pc">PC</string>
+    <string name="input_selector_video7">Video 7</string>
+    <string name="input_selector_bd_dvd">BD/DVD</string>
+    <string name="input_selector_strm_box">Streaming box</string>
+    <string name="input_selector_tv">TV</string>
+    <string name="input_selector_tv_tape">TV/Tape</string>
+    <string name="input_selector_tape2">Tape 2</string>
+    <string name="input_selector_phono">Phono</string>
+    <string name="input_selector_tv_cd">TV/CD</string>
+    <string name="input_selector_fm">FM radio</string>
+    <string name="input_selector_am">AM radio</string>
+    <string name="input_selector_tuner">Tuner</string>
+    <string name="input_selector_music_server">Music Server (DLNA)</string>
+    <string name="input_selector_internet_radio">Internet radio</string>
+    <string name="input_selector_usb_front">Front USB</string>
+    <string name="input_selector_usb_rear">Rear USB</string>
+    <string name="input_selector_net">Network</string>
+    <string name="input_selector_usb_toggle">USB toggle</string>
+    <string name="input_selector_airplay">AirPlay</string>
+    <string name="input_selector_bluetooth">Bluetooth</string>
+    <string name="input_selector_usb_dac_in">USB DAC Input</string>
+    <string name="input_selector_line">Line</string>
+    <string name="input_selector_line2">Line 2</string>
+    <string name="input_selector_optical">Optical</string>
+    <string name="input_selector_coaxial">Coaxial</string>
+    <string name="input_selector_universal_port">Universal port</string>
+    <string name="input_selector_multi_ch">Multi Ch</string>
+    <string name="input_selector_xm_1">XM 1</string>
+    <string name="input_selector_sirius_1">Sirius 1</string>
+    <string name="input_selector_dab_5">DAB 5</string>
+    <string name="input_selector_hdmi_5">HDMI 5</string>
+    <string name="input_selector_hdmi_6">HDMI 6</string>
+    <string name="input_selector_hdmi_7">HDMI 7</string>
+
+    <!-- Services -->
     <string name="service_favorite">Favorite</string>
     <string name="service_vtuner">vTuner</string>
     <string name="service_siriusxm">SiriusXM</string>
@@ -185,7 +220,6 @@
     <string name="service_home_media">Home Media</string>
     <string name="service_deezer">Deezer</string>
     <string name="service_iheartradio">iHeartRadio</string>
-    <string name="service_airplay">AirPlay</string>
     <string name="service_onkyo_music">Onkyo Music</string>
     <string name="service_tidal">Tidal</string>
     <string name="service_amazon_music">Amazon Music</string>
@@ -194,11 +228,6 @@
     <string name="service_fireconnect">FireConnect</string>
     <string name="service_flareconnect">FlareConnect</string>
     <string name="service_play_fi">Play-Fi</string>
-    <string name="service_usb_front">Front USB</string>
-    <string name="service_usb_rear">Rear USB</string>
-    <string name="service_internet_radio">Internet Radio</string>
-    <string name="service_net">Network</string>
-    <string name="service_bluetooth">Bluetooth</string>
 
     <string name="playlist_add">Add to queue</string>
     <string name="playlist_add_and_play">Add and play</string>

@@ -26,39 +26,39 @@ public class InputSelectorMsg extends ISCPMessage
 
     public enum InputType implements StringParameterIf
     {
-        PC("05"),
-        VIDEO7("06"),
-        BD_DVD("10"),
-        STRM_BOX("11"),
-        TV("12"),
-        TV_TAPE("20"),
-        TAPE2("21"),
-        PHONO("22"),
-        TV_CD("23"),
-        FM("24"),
-        AM("25"),
-        TUNER("26"),
-        MUSIC_SERVER("27"),
-        INTERNET_RADIO("28"),
-        USB_FRONT("29", R.string.service_usb_front, R.drawable.selector_usb_front),
-        USB_REAR("2A", R.string.service_usb_rear, R.drawable.selector_usb_rear),
-        NET("2B", R.string.service_net, R.drawable.selector_net),
-        USB_TOGGLE("2C"),
-        AIRPLAY("2D"),
-        BLUETOOTH("2E"),
-        USB_DAC_IN("2F"),
-        LINE("41"),
-        LINE2("42"),
-        OPTICAL("44"),
-        COAXIAL("45"),
-        UNIVERSAL_PORT("40"),
-        MULTI_CH("30"),
-        XM_1("31"),
-        SIRIUS_1("32"),
-        DAB_5("33"),
-        HDMI_5("55"),
-        HDMI_6("56"),
-        HDMI_7("57"),
+        PC("05", R.string.input_selector_pc),
+        VIDEO7("06", R.string.input_selector_video7 ),
+        BD_DVD("10", R.string.input_selector_bd_dvd ),
+        STRM_BOX("11", R.string.input_selector_strm_box ),
+        TV("12", R.string.input_selector_tv ),
+        TV_TAPE("20", R.string.input_selector_tv_tape ),
+        TAPE2("21", R.string.input_selector_tape2 ),
+        PHONO("22", R.string.input_selector_phono ),
+        TV_CD("23", R.string.input_selector_tv_cd ),
+        FM("24", R.string.input_selector_fm ),
+        AM("25", R.string.input_selector_am ),
+        TUNER("26", R.string.input_selector_tuner ),
+        MUSIC_SERVER("27", R.string.input_selector_music_server , R.drawable.input_selector_media_server),
+        INTERNET_RADIO("28", R.string.input_selector_internet_radio ),
+        USB_FRONT("29", R.string.input_selector_usb_front , R.drawable.input_selector_usb_front),
+        USB_REAR("2A", R.string.input_selector_usb_rear , R.drawable.input_selector_usb_rear),
+        NET("2B", R.string.input_selector_net , R.drawable.input_selector_net),
+        USB_TOGGLE("2C", R.string.input_selector_usb_toggle ),
+        AIRPLAY("2D", R.string.input_selector_airplay ),
+        BLUETOOTH("2E", R.string.input_selector_bluetooth ),
+        USB_DAC_IN("2F", R.string.input_selector_usb_dac_in ),
+        LINE("41", R.string.input_selector_line ),
+        LINE2("42", R.string.input_selector_line2 ),
+        OPTICAL("44", R.string.input_selector_optical ),
+        COAXIAL("45", R.string.input_selector_coaxial ),
+        UNIVERSAL_PORT("40", R.string.input_selector_universal_port ),
+        MULTI_CH("30", R.string.input_selector_multi_ch ),
+        XM_1("31", R.string.input_selector_xm_1 ),
+        SIRIUS_1("32", R.string.input_selector_sirius_1 ),
+        DAB_5("33", R.string.input_selector_dab_5 ),
+        HDMI_5("55", R.string.input_selector_hdmi_5 ),
+        HDMI_6("56", R.string.input_selector_hdmi_6 ),
+        HDMI_7("57", R.string.input_selector_hdmi_7 ),
         NONE("XX");
 
         final String code;
@@ -69,6 +69,13 @@ public class InputSelectorMsg extends ISCPMessage
         {
             this.code = code;
             this.descriptionId = -1;
+            this.imageId = R.drawable.media_item_unknown;
+        }
+
+        InputType(String code, final int descriptionId)
+        {
+            this.code = code;
+            this.descriptionId = descriptionId;
             this.imageId = R.drawable.media_item_unknown;
         }
 

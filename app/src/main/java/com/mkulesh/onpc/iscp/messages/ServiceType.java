@@ -32,7 +32,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 public enum ServiceType implements ISCPMessage.StringParameterIf
 {
     UNKNOWN("XX", "", R.drawable.media_item_unknown),
-    MUSIC_SERVER("00", "Music Server", R.string.service_music_server, R.drawable.media_item_server),
+    MUSIC_SERVER("00", "Music Server", R.string.input_selector_music_server, R.drawable.input_selector_media_server),
     FAVORITE("01", "Favorite", R.string.service_favorite),
     VTUNER("02", "vTuner", R.string.service_vtuner),
     SIRIUSXM("03", "SiriusXM", R.string.service_siriusxm),
@@ -52,7 +52,7 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     HOME_MEDIA("11", "Home Media", R.string.service_home_media),
     DEEZER("12", "Deezer", R.string.service_deezer, R.drawable.media_item_deezer),
     IHEARTRADIO("13", "iHeartRadio", R.string.service_iheartradio),
-    AIRPLAY("18", "Airplay", R.string.service_airplay, R.drawable.media_item_airplay),
+    AIRPLAY("18", "Airplay", R.string.input_selector_airplay, R.drawable.input_selector_airplay),
     ONKYO_MUSIC("1A", "onkyo music", R.string.service_onkyo_music),
     TIDAL("1B", "Tidal", R.string.service_tidal, R.drawable.media_item_tidal),
     AMAZON_MUSIC("1C", "AmazonMusic", R.string.service_amazon_music),
@@ -61,11 +61,11 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     FIRECONNECT("41", "FireConnect", R.string.service_fireconnect),
     PLAY_FI("42", "Play-Fi", R.string.service_play_fi),
     FLARECONNECT("43", "FlareConnect", R.string.service_flareconnect),
-    USB_FRONT("F0", "USB(F)", R.string.service_usb_front, R.drawable.selector_usb_front),
-    USB_REAR("F1", "USB(R)", R.string.service_usb_rear, R.drawable.selector_usb_rear),
-    INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio),
-    NET("F3", "NET", R.string.service_net, R.drawable.selector_net),
-    BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth);
+    USB_FRONT("F0", "USB(F)", R.string.input_selector_usb_front, R.drawable.input_selector_usb_front),
+    USB_REAR("F1", "USB(R)", R.string.input_selector_usb_rear, R.drawable.input_selector_usb_rear),
+    INTERNET_RADIO("F2", "Internet radio", R.string.input_selector_internet_radio),
+    NET("F3", "NET", R.string.input_selector_net, R.drawable.input_selector_net),
+    BLUETOOTH("F4", "Bluetooth", R.string.input_selector_bluetooth);
 
     final String code;
     final String name;
