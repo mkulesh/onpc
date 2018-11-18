@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -165,6 +166,14 @@ public class MonitorFragment extends BaseFragment
 
     public void setSoundControlDevice(LinearLayout soundControlLayout)
     {
+        // listening mode
+        {
+            final ListeningModeMsg msg = new ListeningModeMsg(ListeningModeMsg.Mode.UP);
+            soundControlButtons.add(createButton(
+                    R.drawable.selector_output, msg.getMode().getDescriptionId(),
+                    msg, msg.getMode().getCode(),
+                    buttonMargin, buttonMargin));
+        }
         // audio muting
         {
             final AudioMutingMsg msg = new AudioMutingMsg(AudioMutingMsg.Status.TOGGLE);

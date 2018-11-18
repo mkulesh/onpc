@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
+import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -280,6 +281,8 @@ class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "requesting play state...");
         messageChannel.sendMessage(
                 new EISCPMessage('1', PlayStatusMsg.CODE, EISCPMessage.QUERY));
+        messageChannel.sendMessage(
+                new EISCPMessage('1', ListeningModeMsg.CODE, EISCPMessage.QUERY));
     }
 
     private void requestTrackState()
