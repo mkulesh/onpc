@@ -150,7 +150,10 @@ abstract public class BaseFragment extends Fragment
             @NonNull AppCompatImageButton b, final ISCPMessage msg, @DrawableRes final int imageId, @StringRes final int descriptionId)
     {
         b.setImageResource(imageId);
-        b.setContentDescription(activity.getResources().getString(descriptionId));
+        if (descriptionId != -1)
+        {
+            b.setContentDescription(activity.getResources().getString(descriptionId));
+        }
         prepareImageButton(b, msg);
     }
 
