@@ -28,8 +28,8 @@ public class AmpOperationCommandMsg extends ISCPMessage
     {
         MVLUP(R.string.amp_cmd_volume_up, R.drawable.volume_amp_up),
         MVLDOWN(R.string.amp_cmd_volume_down, R.drawable.volume_amp_down),
-        SLIUP(R.string.amp_cmd_selector_up, R.drawable.selector_amp),
-        SLIDOWN(R.string.amp_cmd_selector_down, R.drawable.selector_amp),
+        SLIUP(R.string.amp_cmd_selector_up, R.drawable.selector_input),
+        SLIDOWN(R.string.amp_cmd_selector_down, R.drawable.selector_input),
         AMTON(R.string.amp_cmd_audio_muting_on),
         AMTOFF(R.string.amp_cmd_audio_muting_off),
         AMTTG(R.string.amp_cmd_audio_muting_toggle, R.drawable.volume_amp_muting),
