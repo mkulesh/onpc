@@ -31,6 +31,7 @@ import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
+import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -71,6 +72,7 @@ class State
     DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
     DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
     AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
+    ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
     AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
 
     // Google cast
@@ -167,6 +169,10 @@ class State
         if (msg instanceof AudioMutingMsg)
         {
             return isCommonChange(process((AudioMutingMsg) msg));
+        }
+        if (msg instanceof ListeningModeMsg)
+        {
+            return isCommonChange(process((ListeningModeMsg) msg));
         }
         if (msg instanceof AutoPowerMsg)
         {
@@ -308,6 +314,13 @@ class State
     {
         final boolean changed = audioMuting != msg.getStatus();
         audioMuting = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(ListeningModeMsg msg)
+    {
+        final boolean changed = listeningMode != msg.getMode();
+        listeningMode = msg.getMode();
         return changed;
     }
 

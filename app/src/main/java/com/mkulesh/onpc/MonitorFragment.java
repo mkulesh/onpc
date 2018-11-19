@@ -17,11 +17,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -50,8 +52,9 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnPausePlay;
     private AppCompatImageButton btnNext;
     private AppCompatImageButton btnRandom;
-    private final List<AppCompatImageButton> cmdButtons = new ArrayList<>();
-    private final List<AppCompatImageButton> soundControlButtons = new ArrayList<>();
+    private final List<AppCompatImageButton> playbackButtons = new ArrayList<>();
+    private final List<AppCompatImageButton> amplifierButtons = new ArrayList<>();
+    private final List<View> deviceSoundButtons = new ArrayList<>();
     private ImageView cover;
     private AppCompatSeekBar seekBar;
 
@@ -68,45 +71,42 @@ public class MonitorFragment extends BaseFragment
 
         // Command Buttons
         btnRepeat = rootView.findViewById(R.id.btn_repeat);
-        cmdButtons.add(btnRepeat);
+        playbackButtons.add(btnRepeat);
 
         btnPrevious = rootView.findViewById(R.id.btn_previous);
-        cmdButtons.add(btnPrevious);
+        playbackButtons.add(btnPrevious);
 
         final AppCompatImageButton btnStop = rootView.findViewById(R.id.btn_stop);
-        cmdButtons.add(btnStop);
+        playbackButtons.add(btnStop);
 
         btnPausePlay = rootView.findViewById(R.id.btn_pause_play);
-        cmdButtons.add(btnPausePlay);
+        playbackButtons.add(btnPausePlay);
 
         btnNext = rootView.findViewById(R.id.btn_next);
-        cmdButtons.add(btnNext);
+        playbackButtons.add(btnNext);
 
         btnRandom = rootView.findViewById(R.id.btn_random);
-        cmdButtons.add(btnRandom);
+        playbackButtons.add(btnRandom);
 
-        for (AppCompatImageButton b : cmdButtons)
+        for (AppCompatImageButton b : playbackButtons)
         {
             final OperationCommandMsg msg = new OperationCommandMsg((String) (b.getTag()));
             prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
         }
 
         // Amplifier command buttons
-        LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
         final String defaultSoundControl = preferences.getString(SettingsActivity.SOUND_CONTROL,
                 activity.getResources().getString(R.string.pref_default_sound_control));
         switch (defaultSoundControl)
         {
             case "none":
-                soundControlLayout.setVisibility(View.GONE);
+                // nothing to do
                 break;
             case "external-amplifier":
-                soundControlLayout.setVisibility(View.VISIBLE);
-                setSoundControlAmplifier(soundControlLayout);
+                prepareAmplifierButtons();
                 break;
             case "device":
-                soundControlLayout.setVisibility(View.VISIBLE);
-                setSoundControlDevice(soundControlLayout);
+                prepareDeviceSoundButtons();
                 break;
         }
 
@@ -139,8 +139,11 @@ public class MonitorFragment extends BaseFragment
         return rootView;
     }
 
-    private void setSoundControlAmplifier(LinearLayout soundControlLayout)
+    private void prepareAmplifierButtons()
     {
+        final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
+        soundControlLayout.setVisibility(View.VISIBLE);
+
         final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]
         {
             AmpOperationCommandMsg.Command.SLIDOWN,
@@ -151,54 +154,75 @@ public class MonitorFragment extends BaseFragment
         for (AmpOperationCommandMsg.Command c : commands)
         {
             final AmpOperationCommandMsg msg = new AmpOperationCommandMsg(c.getCode());
-            soundControlButtons.add(createButton(
+            final AppCompatImageButton b = createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand().getCode(),
-                    buttonMarginHorizontal, buttonMarginHorizontal));
-        }
-        for (AppCompatImageButton b : soundControlButtons)
-        {
+                    msg, msg.getCommand().getCode());
             soundControlLayout.addView(b);
+            amplifierButtons.add(b);
         }
     }
 
-    public void setSoundControlDevice(LinearLayout soundControlLayout)
+    public void prepareDeviceSoundButtons()
     {
+        final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
+        soundControlLayout.setVisibility(View.VISIBLE);
+
         // listening mode
         {
             final ListeningModeMsg msg = new ListeningModeMsg(ListeningModeMsg.Mode.UP);
-            soundControlButtons.add(createButton(
+            deviceSoundButtons.add(createButton(
                     R.drawable.selector_output, msg.getMode().getDescriptionId(),
-                    msg, msg.getMode().getCode(),
-                    buttonMarginHorizontal, buttonMarginHorizontal));
+                    msg, msg.getMode()));
         }
         // audio muting
         {
             final AudioMutingMsg msg = new AudioMutingMsg(AudioMutingMsg.Status.TOGGLE);
-            soundControlButtons.add(createButton(
+            deviceSoundButtons.add(createButton(
                     R.drawable.volume_amp_muting, msg.getStatus().getDescriptionId(),
-                    msg, msg.getStatus().getCode(),
-                    buttonMarginHorizontal, buttonMarginHorizontal));
+                    msg, msg.getStatus()));
         }
         // volume down
         {
             final MasterVolumeMsg msg = new MasterVolumeMsg(MasterVolumeMsg.Command.DOWN);
-            soundControlButtons.add(createButton(
+            deviceSoundButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand().getCode(),
-                    buttonMarginHorizontal, buttonMarginHorizontal));
+                    msg, msg.getCommand()));
         }
         // volume up
         {
             final MasterVolumeMsg msg = new MasterVolumeMsg(MasterVolumeMsg.Command.UP);
-            soundControlButtons.add(createButton(
+            deviceSoundButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand().getCode(),
-                    buttonMarginHorizontal, buttonMarginHorizontal));
+                    msg, msg.getCommand()));
         }
-        for (AppCompatImageButton b : soundControlButtons)
+        for (View b : deviceSoundButtons)
         {
             soundControlLayout.addView(b);
+        }
+
+        // fast selector for listening mode
+        final HorizontalScrollView listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
+        listeningModeLayout.setVisibility(View.VISIBLE);
+        final ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
+        {
+            ListeningModeMsg.Mode.MODE_00,
+            ListeningModeMsg.Mode.MODE_01,
+            ListeningModeMsg.Mode.MODE_09,
+            ListeningModeMsg.Mode.MODE_08,
+            ListeningModeMsg.Mode.MODE_0A,
+            ListeningModeMsg.Mode.MODE_11,
+            ListeningModeMsg.Mode.MODE_0C
+        };
+        if (listeningModeLayout.getChildCount() == 1)
+        {
+            final LinearLayout l = (LinearLayout)listeningModeLayout.getChildAt(0);
+            for (ListeningModeMsg.Mode m : listeningModes)
+            {
+                final ListeningModeMsg msg = new ListeningModeMsg(m);
+                final AppCompatButton b = createButton(msg.getMode().getDescriptionId(), msg, msg.getMode());
+                l.addView(b);
+                deviceSoundButtons.add(b);
+            }
         }
     }
 
@@ -221,11 +245,15 @@ public class MonitorFragment extends BaseFragment
         cover.setImageResource(R.drawable.empty_cover);
         seekBar.setEnabled(false);
         seekBar.setProgress(0);
-        for (AppCompatImageButton b : soundControlButtons)
+        for (AppCompatImageButton b : amplifierButtons)
         {
             setButtonEnabled(b, state != null);
         }
-        for (AppCompatImageButton b : cmdButtons)
+        for (View b : deviceSoundButtons)
+        {
+            setButtonEnabled(b, false);
+        }
+        for (AppCompatImageButton b : playbackButtons)
         {
             setButtonEnabled(b, false);
         }
@@ -271,11 +299,27 @@ public class MonitorFragment extends BaseFragment
         updateProgressBar(state);
 
         // buttons
-        for (AppCompatImageButton b : soundControlButtons)
+        for (AppCompatImageButton b : amplifierButtons)
         {
             setButtonEnabled(b, true);
         }
-        for (AppCompatImageButton b : cmdButtons)
+        for (View b : deviceSoundButtons)
+        {
+            setButtonEnabled(b, true);
+            if (b.getTag() instanceof AudioMutingMsg.Status)
+            {
+                setButtonSelected(b, state.audioMuting == AudioMutingMsg.Status.ON);
+            }
+            if (b.getTag() instanceof ListeningModeMsg.Mode)
+            {
+                setButtonSelected(b, b.getTag() == state.listeningMode);
+                if (b.isSelected())
+                {
+                    b.getParent().requestChildFocus(b, b);
+                }
+            }
+        }
+        for (AppCompatImageButton b : playbackButtons)
         {
             setButtonEnabled(b, true);
         }

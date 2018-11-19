@@ -15,6 +15,7 @@ package com.mkulesh.onpc;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -124,14 +125,22 @@ abstract public class BaseFragment extends Fragment
 
     protected AppCompatImageButton createButton(
             @DrawableRes int imageId, @StringRes int descriptionId,
+            @NonNull final ISCPMessage msg, Object tag)
+    {
+        return createButton(imageId, descriptionId, msg, tag,
+                buttonMarginHorizontal, buttonMarginHorizontal, buttonMarginVertical);
+    }
+
+    protected AppCompatImageButton createButton(
+            @DrawableRes int imageId, @StringRes int descriptionId,
             @NonNull final ISCPMessage msg, Object tag,
-            int leftMargin, int rightMargin)
+            int leftMargin, int rightMargin, int verticalMargin)
     {
         ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.ImageButtonPrimaryStyle);
         final AppCompatImageButton b = new AppCompatImageButton(wrappedContext, null, 0);
 
         final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(buttonSize, buttonSize);
-        lp.setMargins(leftMargin, buttonMarginVertical, rightMargin, buttonMarginVertical);
+        lp.setMargins(leftMargin, verticalMargin, rightMargin, verticalMargin);
         b.setLayoutParams(lp);
 
         b.setTag(tag);
@@ -189,18 +198,32 @@ abstract public class BaseFragment extends Fragment
         setButtonEnabled(b, isEnabled);
     }
 
-    protected void setButtonEnabled(AppCompatImageButton b, boolean isEnabled)
+    protected void setButtonEnabled(View b, boolean isEnabled)
     {
+        @AttrRes int resId = isEnabled ? R.attr.colorButtonEnabled : R.attr.colorButtonDisabled;
         b.setEnabled(isEnabled);
-        Utils.setImageButtonColorAttr(activity, b,
-                b.isEnabled() ? R.attr.colorButtonEnabled : R.attr.colorButtonDisabled);
+        if (b instanceof AppCompatImageButton)
+        {
+            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton)b, resId);
+        }
+        if (b instanceof AppCompatButton)
+        {
+            ((AppCompatButton)b).setTextColor(Utils.getThemeColorAttr(activity, resId));
+        }
     }
 
-    protected void setButtonSelected(AppCompatImageButton b, boolean isSelected)
+    protected void setButtonSelected(View b, boolean isSelected)
     {
+        @AttrRes int resId = isSelected ? R.attr.colorAccent : R.attr.colorButtonEnabled;
         b.setSelected(isSelected);
-        Utils.setImageButtonColorAttr(activity, b,
-                b.isSelected() ? R.attr.colorAccent : R.attr.colorButtonEnabled);
+        if (b instanceof AppCompatImageButton)
+        {
+            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton)b, resId);
+        }
+        if (b instanceof AppCompatButton)
+        {
+            ((AppCompatButton)b).setTextColor(Utils.getThemeColorAttr(activity, resId));
+        }
     }
 
     protected AppCompatButton createButton(@StringRes int descriptionId, @NonNull final ISCPMessage msg, Object tag)
@@ -210,18 +233,12 @@ abstract public class BaseFragment extends Fragment
 
         final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, buttonSize);
-        lp.setMargins(0, 0, 0, 0);
+        lp.setMargins(buttonMarginHorizontal, 0, buttonMarginHorizontal, 0);
         b.setLayoutParams(lp);
 
         b.setText(descriptionId);
         b.setTag(tag);
         prepareButtonListeners(b, msg);
         return b;
-    }
-
-    protected void setButtonSelected(AppCompatButton b, boolean isEnabled)
-    {
-        final int c = Utils.getThemeColorAttr(activity, isEnabled? R.attr.colorAccent : R.attr.colorButtonEnabled);
-        b.setTextColor(c);
     }
 }

@@ -127,10 +127,10 @@ public class ListeningModeMsg extends ISCPMessage
         mode = (Mode) searchParameter(data, Mode.values(), Mode.MODE_FF);
     }
 
-    public ListeningModeMsg(Mode level)
+    public ListeningModeMsg(Mode mode)
     {
         super(0, null);
-        this.mode = level;
+        this.mode = mode;
     }
 
     public Mode getMode()

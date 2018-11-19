@@ -118,6 +118,11 @@
     <style name="TextButtonStyle" parent="@style/Widget.AppCompat.Button">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_margin">0dp</item>
+        <item name="android:paddingLeft">@dimen/button_padding</item>
+        <item name="android:paddingRight">@dimen/button_padding</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:minWidth">0dp</item>
         <item name="android:saveEnabled">false</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>

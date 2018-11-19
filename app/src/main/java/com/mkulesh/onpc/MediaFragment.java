@@ -214,8 +214,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.TOP);
             selectorPaletteLayout.addView(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand(),
-                    0, buttonMarginHorizontal));
+                    msg, msg.getCommand(), 0, buttonMarginHorizontal, 0));
         }
 
         // Selectors
@@ -227,7 +226,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
             {
                 selectorPaletteLayout.addView(createButton(
-                        msg.getInputType().getDescriptionId(), msg, msg.getInputType()));;
+                        msg.getInputType().getDescriptionId(), msg, msg.getInputType()));
             }
         }
     }
