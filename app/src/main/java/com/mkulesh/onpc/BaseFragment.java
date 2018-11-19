@@ -14,7 +14,6 @@
 package com.mkulesh.onpc;
 
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -23,13 +22,12 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -55,7 +53,7 @@ abstract public class BaseFragment extends Fragment
     protected SharedPreferences preferences;
     protected View rootView = null;
 
-    int buttonSize = 0, buttonMargin = 0, buttonPadding = 0;
+    int buttonSize = 0, buttonMarginHorizontal = 0, buttonMarginVertical = 0;
 
     public BaseFragment()
     {
@@ -69,8 +67,8 @@ abstract public class BaseFragment extends Fragment
         rootView = inflater.inflate(layoutId, container, false);
 
         buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.button_size);
-        buttonMargin = activity.getResources().getDimensionPixelSize(R.dimen.button_margin);
-        buttonPadding = activity.getResources().getDimensionPixelSize(R.dimen.button_padding);
+        buttonMarginHorizontal = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_horizontal);
+        buttonMarginVertical = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_vertical);
     }
 
     public void update(final State state, @Nullable HashSet<State.ChangeType> eventChanges)
@@ -129,11 +127,13 @@ abstract public class BaseFragment extends Fragment
             @NonNull final ISCPMessage msg, Object tag,
             int leftMargin, int rightMargin)
     {
-        final AppCompatImageButton b = new AppCompatImageButton(activity);
+        ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.ImageButtonPrimaryStyle);
+        final AppCompatImageButton b = new AppCompatImageButton(wrappedContext, null, 0);
+
         final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(buttonSize, buttonSize);
-        lp.setMargins(leftMargin, buttonMargin, rightMargin, buttonMargin);
+        lp.setMargins(leftMargin, buttonMarginVertical, rightMargin, buttonMarginVertical);
         b.setLayoutParams(lp);
-        b.setPadding(buttonPadding, buttonPadding, buttonPadding, buttonPadding);
+
         b.setTag(tag);
         prepareButton(b, msg, imageId, descriptionId);
         return b;
@@ -147,17 +147,12 @@ abstract public class BaseFragment extends Fragment
         {
             b.setContentDescription(activity.getResources().getString(descriptionId));
         }
-        prepareButton(b, msg);
+        prepareButtonListeners(b, msg);
+        setButtonEnabled(b, false);
     }
 
-    protected void prepareButton(@NonNull View b, final ISCPMessage msg)
+    protected void prepareButtonListeners(@NonNull View b, final ISCPMessage msg)
     {
-        b.setSaveEnabled(false);
-
-        TypedValue outValue = new TypedValue();
-        activity.getTheme().resolveAttribute(R.attr.selectableItemBackground, outValue, true);
-        b.setBackgroundResource(outValue.resourceId);
-
         if (msg != null)
         {
             b.setOnClickListener(new View.OnClickListener()
@@ -185,12 +180,6 @@ abstract public class BaseFragment extends Fragment
                     return Utils.showButtonDescription(activity, v);
                 }
             });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            {
-                bb.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                bb.setAdjustViewBounds(true);
-            }
-            setButtonEnabled(bb, false);
         }
     }
 
@@ -212,6 +201,22 @@ abstract public class BaseFragment extends Fragment
         b.setSelected(isSelected);
         Utils.setImageButtonColorAttr(activity, b,
                 b.isSelected() ? R.attr.colorAccent : R.attr.colorButtonEnabled);
+    }
+
+    protected AppCompatButton createButton(@StringRes int descriptionId, @NonNull final ISCPMessage msg, Object tag)
+    {
+        ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.TextButtonStyle);
+        final AppCompatButton b = new AppCompatButton(wrappedContext, null, 0);
+
+        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, buttonSize);
+        lp.setMargins(0, 0, 0, 0);
+        b.setLayoutParams(lp);
+
+        b.setText(descriptionId);
+        b.setTag(tag);
+        prepareButtonListeners(b, msg);
+        return b;
     }
 
     protected void setButtonSelected(AppCompatButton b, boolean isEnabled)

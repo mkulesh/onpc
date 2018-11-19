@@ -143,32 +143,32 @@
             android:gravity="center">
 
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
+                style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_repeat"
                 android:tag="REPEAT" />
 
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
+                style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_previous"
                 android:tag="TRDN" />
 
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
+                style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_stop"
                 android:tag="STOP" />
 
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
+                style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_pause_play"
                 android:tag="PAUSE" />
 
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
+                style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_next"
                 android:tag="TRUP" />
 
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonStyle"
+                style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_random"
                 android:tag="RANDOM" />
 

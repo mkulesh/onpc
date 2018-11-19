@@ -56,7 +56,7 @@
                     android:inputType="numberDecimal" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonNoMarginStyle"
+                    style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_connect"
                     android:src="@drawable/device_connect"
                     android:contentDescription="@string/action_button_connect" />
@@ -114,7 +114,7 @@
                     android:id="@+id/device_firmware" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonNoMarginStyle"
+                    style="@style/ImageButtonSecondaryStyle"
                     android:visibility="gone"
                     android:id="@+id/btn_firmware_update"
                     android:src="@drawable/firmware_update"
@@ -151,7 +151,7 @@
                     android:gravity="center" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonNoMarginStyle"
+                    style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_dimmer_level_toggle"
                     android:src="@drawable/wrap_around"
                     android:contentDescription="@string/device_dimmer_level_toggle" />
@@ -169,7 +169,7 @@
                     android:gravity="center" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonNoMarginStyle"
+                    style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_digital_filter_toggle"
                     android:src="@drawable/wrap_around"
                     android:contentDescription="@string/device_digital_filter_toggle" />
@@ -187,7 +187,7 @@
                     android:gravity="center" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonNoMarginStyle"
+                    style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_auto_power_toggle"
                     android:src="@drawable/wrap_around"
                     android:contentDescription="@string/device_auto_power_toggle" />
@@ -205,7 +205,7 @@
                     android:gravity="center" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonNoMarginStyle"
+                    style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/google_cast_analytics_toggle"
                     android:src="@drawable/wrap_around"
                     android:contentDescription="@string/google_cast_analytics_toggle" />

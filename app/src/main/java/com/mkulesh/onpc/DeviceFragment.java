@@ -192,7 +192,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     protected AppCompatImageButton prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
     {
         final AppCompatImageButton b = rootView.findViewById(buttonId);
-        prepareButton(b, msg);
+        prepareButtonListeners(b, msg);
+        setButtonEnabled(b, false);
         return b;
     }
 }

@@ -154,7 +154,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand().getCode(),
-                    buttonMargin, buttonMargin));
+                    buttonMarginHorizontal, buttonMarginHorizontal));
         }
         for (AppCompatImageButton b : soundControlButtons)
         {
@@ -170,7 +170,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     R.drawable.selector_output, msg.getMode().getDescriptionId(),
                     msg, msg.getMode().getCode(),
-                    buttonMargin, buttonMargin));
+                    buttonMarginHorizontal, buttonMarginHorizontal));
         }
         // audio muting
         {
@@ -178,7 +178,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     R.drawable.volume_amp_muting, msg.getStatus().getDescriptionId(),
                     msg, msg.getStatus().getCode(),
-                    buttonMargin, buttonMargin));
+                    buttonMarginHorizontal, buttonMarginHorizontal));
         }
         // volume down
         {
@@ -186,7 +186,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand().getCode(),
-                    buttonMargin, buttonMargin));
+                    buttonMarginHorizontal, buttonMarginHorizontal));
         }
         // volume up
         {
@@ -194,7 +194,7 @@ public class MonitorFragment extends BaseFragment
             soundControlButtons.add(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand().getCode(),
-                    buttonMargin, buttonMargin));
+                    buttonMarginHorizontal, buttonMarginHorizontal));
         }
         for (AppCompatImageButton b : soundControlButtons)
         {

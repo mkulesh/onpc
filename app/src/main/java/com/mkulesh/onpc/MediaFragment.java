@@ -215,7 +215,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             selectorPaletteLayout.addView(createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand(),
-                    0, buttonMargin));
+                    0, buttonMarginHorizontal));
         }
 
         // Selectors
@@ -224,19 +224,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             final ReceiverInformationMsg.Selector s = state.deviceSelectors.get(i);
             final InputSelectorMsg msg = new InputSelectorMsg(s.getId());
-            if (msg.getInputType() == InputSelectorMsg.InputType.NONE)
+            if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
             {
-                continue;
+                selectorPaletteLayout.addView(createButton(
+                        msg.getInputType().getDescriptionId(), msg, msg.getInputType()));;
             }
-            final AppCompatButton b = new AppCompatButton(getContext());
-            final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, buttonSize);
-            lp.setMargins(0, 0, 0, 0);
-            b.setLayoutParams(lp);
-            b.setPadding(0, 0, 0, 0);
-            b.setText(msg.getInputType().getDescriptionId());
-            b.setTag(msg.getInputType());
-            prepareButton(b, msg);
-            selectorPaletteLayout.addView(b);
         }
     }
 

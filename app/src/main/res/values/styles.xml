@@ -91,16 +91,35 @@
         <item name="android:saveEnabled">false</item>
     </style>
 
-    <style name="ImageButtonStyle" parent="@style/Widget.AppCompat.ImageButton">
+    <style name="ImageButtonPrimaryStyle" parent="@style/Widget.AppCompat.ImageButton">
         <item name="android:layout_width">@dimen/button_size</item>
         <item name="android:layout_height">@dimen/button_size</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">@dimen/button_margin</item>
+        <item name="android:layout_marginLeft">@dimen/button_margin_horizontal</item>
+        <item name="android:layout_marginRight">@dimen/button_margin_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/button_margin_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/button_margin_vertical</item>
         <item name="android:padding">@dimen/button_padding</item>
+        <item name="android:saveEnabled">false</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <style name="ImageButtonNoMarginStyle" parent="ImageButtonStyle">
+    <style name="ImageButtonSecondaryStyle" parent="@style/Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">@dimen/button_size</item>
+        <item name="android:layout_height">@dimen/button_size</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:layout_margin">0dp</item>
+        <item name="android:saveEnabled">false</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="TextButtonStyle" parent="@style/Widget.AppCompat.Button">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:saveEnabled">false</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
     <style name="CheckBoxStyle" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
