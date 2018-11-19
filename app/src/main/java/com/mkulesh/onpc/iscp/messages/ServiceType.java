@@ -61,8 +61,8 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     FIRECONNECT("41", "FireConnect", R.string.service_fireconnect),
     PLAY_FI("42", "Play-Fi", R.string.service_play_fi),
     FLARECONNECT("43", "FlareConnect", R.string.service_flareconnect),
-    USB_FRONT("F0", "USB(F)", R.string.service_usb_front, R.drawable.media_item_usb_front),
-    USB_REAR("F1", "USB(R)", R.string.service_usb_rear, R.drawable.media_item_usb_rear),
+    USB_FRONT("F0", "USB(F)", R.string.service_usb_front, R.drawable.media_item_usb),
+    USB_REAR("F1", "USB(R)", R.string.service_usb_rear, R.drawable.media_item_usb),
     INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio),
     NET("F3", "NET", R.string.service_net, R.drawable.media_item_net),
     BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth);
