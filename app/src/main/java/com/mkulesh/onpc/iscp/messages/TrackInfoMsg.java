@@ -66,7 +66,7 @@ public class TrackInfoMsg extends ISCPMessage
 
     public static String getTrackInfo(Integer currentTrack, Integer maxTrack)
     {
-        StringBuilder str = new StringBuilder();
+        final StringBuilder str = new StringBuilder();
         str.append(currentTrack != null ? Integer.toString(currentTrack) : "----");
         str.append("/");
         str.append(maxTrack != null ? Integer.toString(maxTrack) : "----");

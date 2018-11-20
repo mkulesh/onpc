@@ -254,6 +254,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 if (b.getTag() instanceof InputSelectorMsg.InputType)
                 {
                     setButtonSelected(b, b.getTag() == state.inputType);
+                    if (b.isSelected())
+                    {
+                        b.getParent().requestChildFocus(b, b);
+                    }
                 }
             }
         }

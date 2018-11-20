@@ -64,6 +64,7 @@
                 android:padding="0dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/timer_sand"
+                android:visibility="invisible"
                 android:contentDescription="@string/medialist_processing"/>
 
         </LinearLayout>
