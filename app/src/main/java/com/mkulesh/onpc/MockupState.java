@@ -43,7 +43,7 @@ class MockupState extends State
         deviceSelectors.add(new ReceiverInformationMsg.Selector("29", "Front USB", "29", true));
         deviceSelectors.add(new ReceiverInformationMsg.Selector("2A", "Rear USB", "2A", true));
         inputType = InputSelectorMsg.InputType.NET;
-        dimmerLevel = DimmerLevelMsg.Level.L01;
+        dimmerLevel = DimmerLevelMsg.Level.DIM;
         digitalFilter = DigitalFilterMsg.Filter.F01;
         autoPower = AutoPowerMsg.Status.ON;
 

@@ -269,7 +269,8 @@
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Dimmer level</string>
     <string name="device_dimmer_level_none">N/A</string>
-    <string name="device_dimmer_level_light">Light</string>
+    <string name="device_dimmer_level_bright">Bright</string>
+    <string name="device_dimmer_level_dim">Dim</string>
     <string name="device_dimmer_level_dark">Dark</string>
     <string name="device_dimmer_level_off">Off</string>
     <string name="device_dimmer_level_toggle">Sets dimmer level wrap-around</string>
