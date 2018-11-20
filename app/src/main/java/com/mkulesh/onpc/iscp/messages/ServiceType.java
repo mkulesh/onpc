@@ -33,10 +33,10 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
 {
     UNKNOWN("XX", "", R.drawable.media_item_unknown),
     MUSIC_SERVER("00", "Music Server", R.string.service_music_server, R.drawable.media_item_media_server),
-    FAVORITE("01", "Favorite", R.string.service_favorite),
+    FAVORITE("01", "Favorite", R.string.service_favorite, R.drawable.media_item_favorite),
     VTUNER("02", "vTuner", R.string.service_vtuner),
     SIRIUSXM("03", "SiriusXM", R.string.service_siriusxm),
-    PANDORA("04", "Pandora", R.string.service_pandora),
+    PANDORA("04", "Pandora", R.string.service_pandora, R.drawable.media_item_pandora),
     RHAPSODY("05", "Rhapsody", R.string.service_rhapsody),
     LAST_FM("06", "Last.fm", R.string.service_last),
     NAPSTER("07", "Napster", R.string.service_napster),
@@ -55,17 +55,17 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     AIRPLAY("18", "Airplay", R.string.service_airplay, R.drawable.media_item_airplay),
     ONKYO_MUSIC("1A", "onkyo music", R.string.service_onkyo_music),
     TIDAL("1B", "Tidal", R.string.service_tidal, R.drawable.media_item_tidal),
-    AMAZON_MUSIC("1C", "AmazonMusic", R.string.service_amazon_music),
+    AMAZON_MUSIC("1C", "AmazonMusic", R.string.service_amazon_music, R.drawable.media_item_amazon),
     PLAYQUEUE("1D", "Play Queue", R.string.service_playqueue, R.drawable.media_item_playqueue),
     CHROMECAST("40", "Chromecast built-in", R.string.service_chromecast, R.drawable.media_item_chromecast),
     FIRECONNECT("41", "FireConnect", R.string.service_fireconnect),
-    PLAY_FI("42", "Play-Fi", R.string.service_play_fi),
-    FLARECONNECT("43", "FlareConnect", R.string.service_flareconnect),
+    PLAY_FI("42", "Play-Fi", R.string.service_play_fi, R.drawable.media_item_play_fi),
+    FLARECONNECT("43", "FlareConnect", R.string.service_flareconnect, R.drawable.media_item_flare_connect),
     USB_FRONT("F0", "USB(F)", R.string.service_usb_front, R.drawable.media_item_usb),
     USB_REAR("F1", "USB(R)", R.string.service_usb_rear, R.drawable.media_item_usb),
-    INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio),
+    INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio, R.drawable.media_item_radio),
     NET("F3", "NET", R.string.service_net, R.drawable.media_item_net),
-    BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth);
+    BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth, R.drawable.media_item_bluetooth);
 
     final String code;
     final String name;

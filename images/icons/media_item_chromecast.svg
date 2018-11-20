@@ -5,15 +5,11 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="Layer_1"
    viewBox="0 0 23.999999 24"
    width="24"
    height="24"
-   version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="media_item_chromecast.svg">
+   version="1.1">
   <metadata
      id="metadata3035">
     <rdf:RDF>
@@ -27,32 +23,11 @@
   </metadata>
   <defs
      id="defs3033" />
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1680"
-     inkscape:window-height="951"
-     id="namedview3031"
-     showgrid="false"
-     inkscape:zoom="2.0985891"
-     inkscape:cx="-108.9688"
-     inkscape:cy="57.671898"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="Layer_1" />
   <style
      id="style3027">.st0{fill:#9d9d9d}</style>
   <path
      class="st0"
      d="m 2.0677993,17.619419 v 2.810123 h 2.7121 c -6.001e-4,-1.545718 -1.2209,-2.810123 -2.7121,-2.810123 z m 0,-3.722759 v 1.896867 c 2.5086,0 4.5423,2.107204 4.5423,4.706473 h 1.8307 c -0.068,-3.652923 -2.9156,-6.60334 -6.373,-6.60334 z M 18.4068,7.2932162 H 5.6606993 v 1.5457184 c 3.5935,1.1939474 6.4404997,4.1444684 7.5932997,7.8678494 H 18.3387 V 7.2932162 h 0.068 z M 2.0677993,10.10334 v 1.896971 c 4.5423,0 8.2032007,3.793216 8.2032007,8.499689 h 1.7627 c 0,-5.760645 -4.4748007,-10.39666 -9.9659007,-10.39666 z M 20.2369,3.5 H 3.8304993 c -1.0174,0 -1.8307,0.8426952 -1.8307,1.8968671 v 2.8102274 h 1.8307 V 5.3968671 H 20.1695 V 18.533193 h -6.373001 v 1.896971 H 20.1695 c 1.0168,0 1.8307,-0.842799 1.8307,-1.896971 V 5.3968671 C 21.999699,4.3426952 21.186299,3.5 20.236899,3.5 z"
      id="path3029"
-     inkscape:connector-curvature="0"
      style="fill:#000000;fill-opacity:1" />
 </svg>

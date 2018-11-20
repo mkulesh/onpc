@@ -1,53 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    id="Capa_1"
    x="0px"
    y="0px"
    viewBox="0 0 24 24"
    xml:space="preserve"
-   inkscape:version="0.48.4 r9939"
    width="100%"
-   height="100%"
-   sodipodi:docname="media_item_pandora.svg"><metadata
+   height="100%"><metadata
      id="metadata4061"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-     id="defs4059" /><sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1680"
-     inkscape:window-height="951"
-     id="namedview4057"
-     showgrid="false"
-     inkscape:zoom="7.375"
-     inkscape:cx="9.3576099"
-     inkscape:cy="-12.983814"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="Capa_1" /><g
+     id="defs4059" /><g
      id="g4021"
      transform="matrix(0.04017748,0,0,0.0390625,1.7145625,2)"><g
        id="g4023"><path
          d="M 479.098,173.216 C 469.85,76.064 382.554,0 280.442,0 H 47.994 c -8.832,0 -16,7.168 -16,16 v 480 c 0,8.832 7.168,16 16,16 h 112 c 17.632,0 32,-14.336 32,-32 v -96 h 96 c 53.984,0 105.792,-22.944 142.144,-62.848 36.8,-40.544 54.176,-93.088 48.96,-147.936 z M 406.426,299.584 C 376.154,332.896 332.986,352 287.994,352 h -112 c -8.832,0 -16,7.168 -16,16 v 112 h -96 V 32 h 216.448 c 85.792,0 159.072,63.36 166.752,144.224 4.384,45.792 -10.08,89.6 -40.768,123.36 z"
-         id="path4025"
-         inkscape:connector-curvature="0" /></g></g><g
+         id="path4025" /></g></g><g
      id="g4027"
      transform="translate(0,-488)" /><g
      id="g4029"
