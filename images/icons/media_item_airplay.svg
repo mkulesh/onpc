@@ -5,11 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="24"
    height="24"
    viewBox="0 0 24 24"
-   id="svg2">
+   id="svg2"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="media_item_airplay.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="951"
+     id="namedview4060"
+     showgrid="false"
+     inkscape:zoom="9.8333333"
+     inkscape:cx="-5.8474576"
+     inkscape:cy="12"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -24,6 +48,7 @@
   <defs
      id="defs8" />
   <path
-     d="M 6,22 H 18 L 12,16 z M 21,3 H 3 C 1.9,3 1,3.9 1,5 v 12 c 0,1.1 0.9,2 2,2 H 7 V 17 H 3 V 5 h 18 v 12 h -4 v 2 h 4 c 1.1,0 2,-0.9 2,-2 V 5 C 23,3.9 22.1,3 21,3 z"
-     id="path4" />
+     d="M 6.5454547,21 H 17.454546 L 12,15.315789 z M 20.181818,3 H 3.8181819 c -1,0 -1.8181817,0.8526316 -1.8181817,1.8947368 V 16.263158 c 0,1.042105 0.8181817,1.894737 1.8181817,1.894737 H 7.4545455 V 16.263158 H 3.8181819 V 4.8947368 H 20.181818 V 16.263158 h -3.636363 v 1.894737 h 3.636363 c 1,0 1.818182,-0.852632 1.818182,-1.894737 V 4.8947368 C 22,3.8526316 21.181818,3 20.181818,3 z"
+     id="path4"
+     inkscape:connector-curvature="0" />
 </svg>
