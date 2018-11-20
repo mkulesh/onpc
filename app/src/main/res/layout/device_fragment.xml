@@ -139,7 +139,8 @@
                     android:text="@string/device_settings" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle">
+            <LinearLayout style="@style/DeviceRowStyle"
+                android:id="@+id/device_dimmer_level_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -157,7 +158,8 @@
                     android:contentDescription="@string/device_dimmer_level_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle">
+            <LinearLayout style="@style/DeviceRowStyle"
+                android:id="@+id/device_digital_filter_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"

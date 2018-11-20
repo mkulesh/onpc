@@ -48,8 +48,10 @@ import com.mkulesh.onpc.utils.Logging;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 class State
 {
@@ -62,10 +64,16 @@ class State
         MEDIA_ITEMS
     }
 
+    // Device properties
+    public final static String CONTROL_DIMMER = "Dimmer";
+    public final static String CONTROL_DIGITAL_FILTER = "Digital Filter";
+
+    Map<String, String> deviceProperties = new HashMap<>();
+    Set<String> controlList = new HashSet<>();
+
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
     FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
-    Map<String, String> deviceProperties = new HashMap<>();
     Bitmap deviceCover = null;
     List<ReceiverInformationMsg.Selector> deviceSelectors;
     InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
@@ -278,6 +286,7 @@ class State
         {
             msg.parseXml();
             deviceProperties = msg.getDeviceProperties();
+            controlList = msg.getControlList();
             deviceCover = msg.getDeviceCover();
             deviceSelectors = msg.getDeviceSelectors();
             return true;
@@ -655,4 +664,10 @@ class State
         }
         return false;
     }
+
+    public boolean isControlExists(String control)
+    {
+        return controlList.contains(control);
+    }
+
 }

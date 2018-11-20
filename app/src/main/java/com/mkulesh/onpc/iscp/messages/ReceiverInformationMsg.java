@@ -30,8 +30,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -88,6 +90,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     private final HashMap<String, String> deviceProperties = new HashMap<>();
     private Bitmap deviceCover;
     private final List<Selector> deviceSelectors = new ArrayList<>();
+    private final Set<String> controlList = new HashSet<>();
 
     ReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
@@ -99,6 +102,11 @@ public class ReceiverInformationMsg extends ISCPMessage
     public Map<String, String> getDeviceProperties()
     {
         return deviceProperties;
+    }
+
+    public Set<String> getControlList()
+    {
+        return controlList;
     }
 
     public Bitmap getDeviceCover()
@@ -163,9 +171,22 @@ public class ReceiverInformationMsg extends ISCPMessage
                         else if ("selectorlist".equals(en.getTagName()))
                         {
                             final List<Element> elSelectors = Utils.getElements(en, "selector");
-                            for (Element Element : elSelectors)
+                            for (Element element : elSelectors)
                             {
-                                deviceSelectors.add(new Selector(Element));
+                                deviceSelectors.add(new Selector(element));
+                            }
+                        }
+                        else if ("controllist".equals(en.getTagName()))
+                        {
+                            final List<Element> elControls = Utils.getElements(en, "control");
+                            for (Element element : elControls)
+                            {
+                                final String id = element.getAttribute("id");
+                                final String value = element.getAttribute("value");
+                                if (id != null && value != null && Integer.parseInt(value) == 1)
+                                {
+                                    controlList.add(id);
+                                }
                             }
                         }
                     }
@@ -180,6 +201,10 @@ public class ReceiverInformationMsg extends ISCPMessage
         for (Selector s : deviceSelectors)
         {
             Logging.info(this, "    Selector: " + s.toString());
+        }
+        for (String s : controlList)
+        {
+            Logging.info(this, "    Control: " + s);
         }
 
         if (deviceProperties.containsKey("modeliconurl"))

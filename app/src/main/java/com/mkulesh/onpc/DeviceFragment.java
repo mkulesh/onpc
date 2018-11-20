@@ -161,15 +161,27 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
 
         // Dimmer level
+        if (state.isControlExists(state.CONTROL_DIMMER))
         {
+            rootView.findViewById(R.id.device_dimmer_level_layout).setVisibility(View.VISIBLE);
             ((TextView) rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
             setButtonEnabled(R.id.device_dimmer_level_toggle, state.isOn());
         }
+        else
+        {
+            rootView.findViewById(R.id.device_dimmer_level_layout).setVisibility(View.GONE);
+        }
 
         // Digital filter
+        if (state.isControlExists(state.CONTROL_DIGITAL_FILTER))
         {
+            rootView.findViewById(R.id.device_digital_filter_layout).setVisibility(View.VISIBLE);
             ((TextView) rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
             setButtonEnabled(R.id.device_digital_filter_toggle, state.isOn());
+        }
+        else
+        {
+            rootView.findViewById(R.id.device_digital_filter_layout).setVisibility(View.GONE);
         }
 
         // Auto power
