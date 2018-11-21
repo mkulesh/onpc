@@ -233,7 +233,7 @@ public class EISCPMessage
 
         // CMD
         bytes[16] = (byte) START_CHAR.charValue();
-        bytes[17] = (byte) '1';
+        bytes[17] = (byte) modelCategoryId.charValue();
         for (int i = 0; i < code.length(); i++)
         {
             bytes[i + 18] = (byte) code.charAt(i);

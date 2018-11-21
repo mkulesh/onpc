@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="UnusedAttribute,AllowBackup">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
