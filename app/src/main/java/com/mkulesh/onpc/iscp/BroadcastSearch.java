@@ -16,6 +16,7 @@ package com.mkulesh.onpc.iscp;
 import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 
 import com.mkulesh.onpc.utils.Logging;
@@ -24,22 +25,47 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.Arrays;
 
-public class BroadcastSearch
+public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 {
-    private final static int ISCP_PORT = 60128;
+    public interface SearchListener
+    {
+        void onDeviceFound(InetAddress deviceAddress, EISCPMessage response);
+
+        void noDevice();
+    }
+
+    public final static int ISCP_PORT = 60128;
 
     private final Context context;
+    private final SearchListener searchListener;
+    private final int timeout;
+    private final int numberQueries;
     private final InetAddress local;
     private final InetAddress target;
-    private EISCPMessage responseMsg = null;
-    private InetAddress responseAddr = null;
 
-    public BroadcastSearch(Context context) throws Exception
+    class Response
+    {
+        InetAddress deviceAddress;
+        EISCPMessage responseMessage;
+
+        Response()
+        {
+            deviceAddress = null;
+            responseMessage = null;
+        }
+    }
+
+    final Response retValue = new Response();
+
+    public BroadcastSearch(Context context, final SearchListener searchListener,
+                           final int timeout, final int numberQueries) throws Exception
     {
         this.context = context;
+        this.searchListener = searchListener;
+        this.timeout = timeout;
+        this.numberQueries = numberQueries;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -48,49 +74,70 @@ public class BroadcastSearch
         target = getBroadcastAddress();
     }
 
-    public void searchDevice() throws SocketException
+    @Override
+    protected Void doInBackground(Void... params)
     {
-        final DatagramSocket socket = new DatagramSocket(ISCP_PORT, local);
+        Logging.info(this, "started");
 
         try
         {
+            final DatagramSocket socket = new DatagramSocket(ISCP_PORT, local);
             socket.setBroadcast(true);
-            socket.setSoTimeout(5000);
+            socket.setSoTimeout(timeout);
 
-            new Thread(new Runnable()
+            for (int i = 0; i < numberQueries; i++)
             {
-                public void run()
+                try
                 {
-                    while (true)
+                    sendMessage(socket);
+                    if (waitForResponse(socket, retValue))
                     {
-                        try
-                        {
-                            responseMsg = null;
-                            responseAddr = null;
-                            sendMessage(socket);
-                            waitForResponse(socket);
-                            if (responseMsg != null && responseAddr != null)
-                            {
-                                Logging.info(this, "received response from: " + responseAddr.getHostAddress() + ":" + responseMsg.toString());
-                                socket.close();
-                                break;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Logging.info(this, "Can not receive response: " + e.toString());
-                        }
+                        break;
                     }
                 }
-            }).start();
+                catch (Exception e)
+                {
+                    Logging.info(BroadcastSearch.this, "Can not receive response: " + e.toString());
+                }
+            }
+            socket.close();
         }
         catch (Exception e)
         {
-            Logging.info(this, "Can not send broadcast: " + e.toString());
+            Logging.info(this, "Can not open socket: " + e.toString());
+        }
+
+        Logging.info(this, "stopped");
+        return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... result)
+    {
+        // empty
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid)
+    {
+        super.onPostExecute(aVoid);
+        if (searchListener != null)
+        {
+            if (retValue.deviceAddress != null && retValue.responseMessage != null)
+            {
+                Logging.info(BroadcastSearch.this, "Found device: " + retValue.deviceAddress.getHostAddress()
+                        + ":" + retValue.responseMessage.toString());
+                searchListener.onDeviceFound(retValue.deviceAddress, retValue.responseMessage);
+            }
+            else
+            {
+                Logging.info(BroadcastSearch.this, "search skipped, device not found");
+                searchListener.noDevice();
+            }
         }
     }
 
-    private void waitForResponse(DatagramSocket socket) throws IOException
+    private boolean waitForResponse(DatagramSocket socket, final Response retValue) throws IOException
     {
         while (true)
         {
@@ -105,13 +152,14 @@ public class BroadcastSearch
                 break;
             }
 
-            if (msg.getModelCategoryId() != 'x')
+            if (p2.getAddress() != null && msg.getModelCategoryId() != 'x')
             {
-                responseMsg = msg;
-                responseAddr = p2.getAddress();
-                break;
+                retValue.deviceAddress = p2.getAddress();
+                retValue.responseMessage = msg;
+                return true;
             }
         }
+        return false;
     }
 
     private EISCPMessage convertResponse(byte[] response)

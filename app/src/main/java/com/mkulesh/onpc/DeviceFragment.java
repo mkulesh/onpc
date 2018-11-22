@@ -15,6 +15,7 @@ package com.mkulesh.onpc;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -24,9 +25,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
@@ -35,11 +38,12 @@ import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.utils.Logging;
 
+import java.net.InetAddress;
 import java.util.HashSet;
 
 public class DeviceFragment extends BaseFragment implements View.OnClickListener
 {
-    private ImageView deviceCover = null;
+    private EditText deviceName, devicePort;
 
     public DeviceFragment()
     {
@@ -56,12 +60,15 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         setButtonEnabled(btnConnect, true);
         btnConnect.setOnClickListener(this);
 
-        ((EditText) rootView.findViewById(R.id.device_name)).setText(preferences.getString(
-                DeviceFragment.SERVER_NAME, "onkyo"));
-        ((EditText) rootView.findViewById(R.id.device_port)).setText(Integer.toString(preferences.getInt(
-                DeviceFragment.SERVER_PORT, 60128)));
+        deviceName = rootView.findViewById(R.id.device_name);
+        deviceName.setText(preferences.getString(DeviceFragment.SERVER_NAME, ""));
+        devicePort = rootView.findViewById(R.id.device_port);
+        devicePort.setText(Integer.toString(
+                preferences.getInt(DeviceFragment.SERVER_PORT, BroadcastSearch.ISCP_PORT)));
 
-        deviceCover = rootView.findViewById(R.id.device_cover);
+        final AppCompatImageButton btnSearchDevice = prepareImageButton(R.id.btn_search_device, null);
+        setButtonEnabled(btnSearchDevice, true);
+        btnSearchDevice.setOnClickListener(this);
 
         prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
@@ -91,12 +98,50 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
                 prefEditor.commit();
             }
         }
+        if (v.getId() == R.id.btn_search_device)
+        {
+            try
+            {
+                final BroadcastSearch bs = new BroadcastSearch(activity,
+                        new BroadcastSearch.SearchListener()
+                        {
+                            // These methods will be called from GUI thread
+                            @Override
+                            public void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
+                            {
+                                DeviceFragment.this.onDeviceFound(deviceAddress, response);
+                            }
+
+                            @Override
+                            public void noDevice()
+                            {
+                                DeviceFragment.this.noDevice();
+                            }
+                        }, 5000, 5);
+                bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+            }
+            catch (Exception e)
+            {
+                Logging.info(this, "Error by device search: " + e.getLocalizedMessage());
+                noDevice();
+            }
+        }
+    }
+
+    void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
+    {
+        deviceName.setText(deviceAddress.getHostAddress());
+        devicePort.setText(Integer.toString(BroadcastSearch.ISCP_PORT));
+    }
+
+    void noDevice()
+    {
+        Toast.makeText(activity, R.string.error_connection_timeout, Toast.LENGTH_LONG).show();
     }
 
     @Override
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
-        updateDeviceCover(state);
         if (state != null)
         {
             updateDeviceProperties(state);
@@ -109,22 +154,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         if (eventChanges.contains(State.ChangeType.COMMON))
         {
             Logging.info(this, "Updating device properties");
-            updateDeviceCover(state);
             updateDeviceProperties(state);
-        }
-    }
-
-    private void updateDeviceCover(@Nullable final State state)
-    {
-        if (state != null && state.deviceCover != null)
-        {
-            deviceCover.setVisibility(View.VISIBLE);
-            deviceCover.setImageBitmap(state.deviceCover);
-        }
-        else
-        {
-            deviceCover.setVisibility(View.GONE);
-            deviceCover.setImageBitmap(null);
         }
     }
 

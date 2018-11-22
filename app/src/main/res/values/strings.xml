@@ -370,6 +370,6 @@
 
     <!-- Errors -->
     <string name="error_connection_failed">Can not connect to %s</string>
-    <string name="error_connection_timeout">Server not found</string>
+    <string name="error_connection_timeout">Onkyo device not found</string>
 
 </resources>
