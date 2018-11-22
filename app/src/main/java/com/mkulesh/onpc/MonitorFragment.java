@@ -52,6 +52,7 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnPausePlay;
     private AppCompatImageButton btnNext;
     private AppCompatImageButton btnRandom;
+    private AppCompatImageButton btnTrackMenu;
     private final List<AppCompatImageButton> playbackButtons = new ArrayList<>();
     private final List<AppCompatImageButton> amplifierButtons = new ArrayList<>();
     private final List<View> deviceSoundButtons = new ArrayList<>();
@@ -135,6 +136,20 @@ public class MonitorFragment extends BaseFragment
             }
         });
 
+        // Track menu
+        {
+            btnTrackMenu = rootView.findViewById(R.id.btn_track_menu);
+            prepareButtonListeners(btnTrackMenu, new OperationCommandMsg(OperationCommandMsg.Command.MENU),
+                    new ButtonListener() {
+                        @Override
+                        public void onPostProcessing()
+                        {
+                            activity.selectRightTab();
+                        }
+                    });
+            setButtonEnabled(btnTrackMenu, false);
+        }
+
         update(null, null);
         return rootView;
     }
@@ -212,7 +227,8 @@ public class MonitorFragment extends BaseFragment
             for (ListeningModeMsg.Mode m : listeningModes)
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
-                final AppCompatButton b = createButton(msg.getMode().getDescriptionId(), msg, msg.getMode());
+                final AppCompatButton b = createButton(
+                        msg.getMode().getDescriptionId(), msg, msg.getMode(), null);
                 l.addView(b);
                 deviceSoundButtons.add(b);
             }
@@ -250,6 +266,7 @@ public class MonitorFragment extends BaseFragment
         {
             setButtonEnabled(b, false);
         }
+        btnTrackMenu.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -355,6 +372,14 @@ public class MonitorFragment extends BaseFragment
             break;
         }
         setButtonEnabled(btnPausePlay, state.isOn());
+
+        // Track menu
+        {
+            final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE &&
+                    state.playStatus != PlayStatusMsg.PlayStatus.STOP;
+            btnTrackMenu.setVisibility(isTrackMenu ? View.VISIBLE : View.INVISIBLE);
+            setButtonEnabled(btnTrackMenu, isTrackMenu);
+        }
     }
 
     private void updateProgressBar(@NonNull final State state)

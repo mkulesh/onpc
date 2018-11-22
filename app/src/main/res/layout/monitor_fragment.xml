@@ -58,7 +58,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tv_track"
@@ -67,6 +68,16 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:gravity="left" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonSecondaryStyle"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/btn_track_menu"
+                android:src="@drawable/track_menu"
+                android:contentDescription="@string/medialist_track_menu"
+                android:visibility="invisible"
+                android:tag="MENU" />
 
             <TextView
                 style="@style/SecondaryTextViewStyle"

@@ -32,6 +32,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -391,5 +392,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     public void onPageSelected(int p)
     {
         updateCurrentFragment(stateManager == null ? null : stateManager.getState(), null);
+    }
+
+    void selectRightTab()
+    {
+        viewPager.arrowScroll(View.FOCUS_RIGHT);
     }
 }

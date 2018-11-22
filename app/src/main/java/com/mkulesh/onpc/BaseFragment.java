@@ -56,6 +56,12 @@ abstract public class BaseFragment extends Fragment
 
     int buttonSize = 0, buttonMarginHorizontal = 0, buttonMarginVertical = 0;
 
+    public interface ButtonListener
+    {
+        void onPostProcessing();
+    }
+
+
     public BaseFragment()
     {
         // Empty constructor required for fragment subclasses
@@ -162,6 +168,11 @@ abstract public class BaseFragment extends Fragment
 
     protected void prepareButtonListeners(@NonNull View b, final ISCPMessage msg)
     {
+        prepareButtonListeners(b, msg, null);
+    }
+
+    protected void prepareButtonListeners(@NonNull View b, final ISCPMessage msg, final ButtonListener listener)
+    {
         if (msg != null)
         {
             b.setOnClickListener(new View.OnClickListener()
@@ -172,6 +183,10 @@ abstract public class BaseFragment extends Fragment
                     if (activity.getStateManager() != null)
                     {
                         activity.getStateManager().sendMessage(msg);
+                        if (listener != null)
+                        {
+                            listener.onPostProcessing();
+                        }
                     }
                 }
             });
@@ -226,7 +241,8 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    protected AppCompatButton createButton(@StringRes int descriptionId, @NonNull final ISCPMessage msg, Object tag)
+    protected AppCompatButton createButton(@StringRes int descriptionId,
+        @NonNull final ISCPMessage msg, Object tag, final ButtonListener listener)
     {
         ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.TextButtonStyle);
         final AppCompatButton b = new AppCompatButton(wrappedContext, null, 0);
@@ -238,7 +254,7 @@ abstract public class BaseFragment extends Fragment
 
         b.setText(descriptionId);
         b.setTag(tag);
-        prepareButtonListeners(b, msg);
+        prepareButtonListeners(b, msg, listener);
         return b;
     }
 }

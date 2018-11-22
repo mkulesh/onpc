@@ -163,6 +163,7 @@
     <!-- Media list tab -->
     <string name="medialist_items">item(s)</string>
     <string name="medialist_processing">Processing…</string>
+    <string name="medialist_track_menu">Track menu</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>
@@ -246,7 +247,6 @@
     <string name="playlist_remove_all">Remove all</string>
     <string name="playlist_move_from">Move from</string>
     <string name="playlist_move_to">Move to</string>
-    <string name="playlist_track_menu">Track menu</string>
 
     <!-- Device tab -->
     <string name="device_connect">Device</string>

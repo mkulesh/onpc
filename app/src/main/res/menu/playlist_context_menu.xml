@@ -42,6 +42,6 @@
     <item
         android:id="@+id/playlist_track_menu"
         android:icon="@drawable/track_menu"
-        android:title="@string/playlist_track_menu" />
+        android:title="@string/medialist_track_menu" />
 
 </menu>

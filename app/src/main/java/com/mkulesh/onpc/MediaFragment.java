@@ -225,8 +225,16 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final InputSelectorMsg msg = new InputSelectorMsg(s.getId());
             if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
             {
-                selectorPaletteLayout.addView(createButton(
-                        msg.getInputType().getDescriptionId(), msg, msg.getInputType()));
+                final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
+                        msg, msg.getInputType(), new ButtonListener()
+                        {
+                            @Override
+                            public void onPostProcessing()
+                            {
+                                progressIndicator.setVisibility(View.VISIBLE);
+                            }
+                        });
+                selectorPaletteLayout.addView(b);
             }
         }
     }
