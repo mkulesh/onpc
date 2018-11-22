@@ -167,13 +167,6 @@ public class MonitorFragment extends BaseFragment
         final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
         soundControlLayout.setVisibility(View.VISIBLE);
 
-        // listening mode
-        {
-            final ListeningModeMsg msg = new ListeningModeMsg(ListeningModeMsg.Mode.UP);
-            deviceSoundButtons.add(createButton(
-                    R.drawable.selector_output, msg.getMode().getDescriptionId(),
-                    msg, msg.getMode()));
-        }
         // audio muting
         {
             final AudioMutingMsg msg = new AudioMutingMsg(AudioMutingMsg.Status.TOGGLE);
