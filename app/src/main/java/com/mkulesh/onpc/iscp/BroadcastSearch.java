@@ -42,10 +42,8 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
     private final SearchListener searchListener;
     private final int timeout;
     private final int numberQueries;
-    private final InetAddress local;
-    private final InetAddress target;
 
-    class Response
+    private class Response
     {
         InetAddress deviceAddress;
         EISCPMessage responseMessage;
@@ -57,10 +55,10 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
         }
     }
 
-    final Response retValue = new Response();
+    private final Response retValue = new Response();
 
     public BroadcastSearch(Context context, final SearchListener searchListener,
-                           final int timeout, final int numberQueries) throws Exception
+                           final int timeout, final int numberQueries)
     {
         this.context = context;
         this.searchListener = searchListener;
@@ -69,9 +67,6 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        local = InetAddress.getByName("0.0.0.0");
-        target = getBroadcastAddress();
     }
 
     @Override
@@ -81,6 +76,9 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 
         try
         {
+            final InetAddress local = InetAddress.getByName("0.0.0.0");
+            final InetAddress target = getBroadcastAddress();
+
             final DatagramSocket socket = new DatagramSocket(ISCP_PORT, local);
             socket.setBroadcast(true);
             socket.setSoTimeout(timeout);
@@ -89,7 +87,7 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
             {
                 try
                 {
-                    sendMessage(socket);
+                    sendMessage(socket, target);
                     if (waitForResponse(socket, retValue))
                     {
                         break;
@@ -182,7 +180,7 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
         }
     }
 
-    private void sendMessage(DatagramSocket socket) throws IOException
+    private void sendMessage(DatagramSocket socket, final InetAddress target) throws IOException
     {
         final EISCPMessage m = new EISCPMessage('x', "ECN", "QSTN");
         final byte[] bytes = m.getBytes();

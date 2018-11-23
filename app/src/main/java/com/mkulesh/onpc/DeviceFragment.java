@@ -100,31 +100,23 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
         if (v.getId() == R.id.btn_search_device)
         {
-            try
-            {
-                final BroadcastSearch bs = new BroadcastSearch(activity,
-                        new BroadcastSearch.SearchListener()
-                        {
-                            // These methods will be called from GUI thread
-                            @Override
-                            public void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
-                            {
-                                DeviceFragment.this.onDeviceFound(deviceAddress, response);
-                            }
+            final BroadcastSearch bs = new BroadcastSearch(activity,
+                new BroadcastSearch.SearchListener()
+                {
+                    // These methods will be called from GUI thread
+                    @Override
+                    public void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
+                    {
+                        DeviceFragment.this.onDeviceFound(deviceAddress, response);
+                    }
 
-                            @Override
-                            public void noDevice()
-                            {
-                                DeviceFragment.this.noDevice();
-                            }
-                        }, 5000, 5);
-                bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-            }
-            catch (Exception e)
-            {
-                Logging.info(this, "Error by device search: " + e.getLocalizedMessage());
-                noDevice();
-            }
+                    @Override
+                    public void noDevice()
+                    {
+                        DeviceFragment.this.noDevice();
+                    }
+                }, 5000, 5);
+            bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         }
     }
 
@@ -191,7 +183,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
 
         // Dimmer level
-        if (state.isControlExists(state.CONTROL_DIMMER))
+        if (state.isControlExists(State.CONTROL_DIMMER))
         {
             rootView.findViewById(R.id.device_dimmer_level_layout).setVisibility(View.VISIBLE);
             ((TextView) rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
@@ -203,7 +195,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
 
         // Digital filter
-        if (state.isControlExists(state.CONTROL_DIGITAL_FILTER))
+        if (state.isControlExists(State.CONTROL_DIGITAL_FILTER))
         {
             rootView.findViewById(R.id.device_digital_filter_layout).setVisibility(View.VISIBLE);
             ((TextView) rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
