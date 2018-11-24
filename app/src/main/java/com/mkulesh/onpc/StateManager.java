@@ -70,6 +70,24 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private int xmlReqId = 0;
     private ISCPMessage circlePlayQueueMsg = null;
 
+    // Queries for different states
+    private final static String powerStateQueries [] = new String[] {
+        PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
+        InputSelectorMsg.CODE, DimmerLevelMsg.CODE, DigitalFilterMsg.CODE,
+        AudioMutingMsg.CODE, AutoPowerMsg.CODE, GoogleCastVersionMsg.CODE,
+        GoogleCastAnalyticsMsg.CODE
+    };
+
+    private final static String playStateQueries [] = new String[] {
+        PlayStatusMsg.CODE, ListeningModeMsg.CODE
+    };
+
+    private final static String trackStateQueries [] = new String[] {
+        ArtistNameMsg.CODE, AlbumNameMsg.CODE, TitleNameMsg.CODE,
+        FileFormatMsg.CODE, TrackInfoMsg.CODE, TimeInfoMsg.CODE,
+        MenuStatusMsg.CODE
+    };
+
     StateManager(MainActivity activity, MessageChannel messageChannel, boolean mockup)
     {
         this.activity = activity;
@@ -98,7 +116,10 @@ class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "started");
         active.set(true);
 
-        requestPowerState();
+        messageChannel.sendMessage(
+                new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
+        sendQueries(powerStateQueries, "requesting power state...");
+
         final BlockingQueue<Timer> timerQueue = new ArrayBlockingQueue<>(1, true);
         skipNextTimeMsg.set(0);
         requestXmlList.set(false);
@@ -206,7 +227,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof PowerStatusMsg)
         {
-            requestPlayState();
+            sendQueries(playStateQueries, "requesting play state...");
             requestListState();
             return true;
         }
@@ -215,7 +236,11 @@ class StateManager extends AsyncTask<Void, Void, Void>
         {
             if (state.isPlaying())
             {
-                requestTrackState();
+                sendQueries(trackStateQueries, "requesting track state...");
+                if (state.isMediaEmpty())
+                {
+                    requestListState();
+                }
             }
             else
             {
@@ -247,65 +272,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
     {
         activity.updateCurrentFragment(state, eventChanges);
         eventChanges.clear();
-    }
-
-    private void requestPowerState()
-    {
-        Logging.info(this, "requesting power state...");
-        messageChannel.sendMessage(
-                new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', PowerStatusMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', FirmwareUpdateMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', ReceiverInformationMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', InputSelectorMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', DimmerLevelMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', DigitalFilterMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', AudioMutingMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', AutoPowerMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', GoogleCastVersionMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', GoogleCastAnalyticsMsg.CODE, EISCPMessage.QUERY));
-    }
-
-    private void requestPlayState()
-    {
-        Logging.info(this, "requesting play state...");
-        messageChannel.sendMessage(
-                new EISCPMessage('1', PlayStatusMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', ListeningModeMsg.CODE, EISCPMessage.QUERY));
-    }
-
-    private void requestTrackState()
-    {
-        Logging.info(this, "requesting track state...");
-        messageChannel.sendMessage(
-                new EISCPMessage('1', ArtistNameMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', AlbumNameMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', TitleNameMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', FileFormatMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', TrackInfoMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', TimeInfoMsg.CODE, EISCPMessage.QUERY));
-        messageChannel.sendMessage(
-                new EISCPMessage('1', MenuStatusMsg.CODE, EISCPMessage.QUERY));
-        if (state.isMediaEmpty())
-        {
-            requestListState();
-        }
     }
 
     private void requestListState()
@@ -391,6 +357,16 @@ class StateManager extends AsyncTask<Void, Void, Void>
         {
             requestXmlList.set(true);
             messageChannel.sendMessage(cmdMsg);
+        }
+    }
+
+    private void sendQueries(final  String[] queries, final String purpose)
+    {
+        Logging.info(this, purpose);
+        for (String code : queries)
+        {
+            messageChannel.sendMessage(
+                    new EISCPMessage('1', code, EISCPMessage.QUERY));
         }
     }
 }
