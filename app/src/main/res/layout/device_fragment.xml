@@ -141,7 +141,8 @@
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/device_dimmer_level_layout">
+                android:id="@+id/device_dimmer_level_layout"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -160,7 +161,8 @@
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/device_digital_filter_layout">
+                android:id="@+id/device_digital_filter_layout"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -194,6 +196,26 @@
                     android:id="@+id/device_auto_power_toggle"
                     android:src="@drawable/wrap_around"
                     android:contentDescription="@string/device_auto_power_toggle" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle"
+                android:id="@+id/hdmi_cec_layout"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/hdmi_cec" />
+
+                <TextView
+                    style="@style/DeviceValueViewStyle"
+                    android:id="@+id/hdmi_cec"
+                    android:gravity="center" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonSecondaryStyle"
+                    android:id="@+id/hdmi_cec_toggle"
+                    android:src="@drawable/wrap_around"
+                    android:contentDescription="@string/hdmi_cec_toggle" />
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle">

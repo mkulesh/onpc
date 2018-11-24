@@ -81,6 +81,8 @@ public class MessageFactory
             return new GoogleCastAnalyticsMsg(raw);
         case ListeningModeMsg.CODE:
             return new ListeningModeMsg(raw);
+        case HdmiCecMsg.CODE:
+            return new HdmiCecMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

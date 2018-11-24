@@ -290,6 +290,13 @@
     <string name="device_auto_power_on">On</string>
     <string name="device_auto_power_toggle">Sets auto power wrap-around</string>
 
+    <!-- HDMI CEC settings -->
+    <string name="hdmi_cec">HDMI CEC</string>
+    <string name="hdmi_cec_none">N/A</string>
+    <string name="hdmi_cec_off">Off</string>
+    <string name="hdmi_cec_on">On</string>
+    <string name="hdmi_cec_toggle">Sets HDMI CEC wrap-around up</string>
+
     <!-- Auto power commands -->
     <string name="google_cast_analytics">Google Cast analytics</string>
     <string name="google_cast_analytics_none">N/A</string>

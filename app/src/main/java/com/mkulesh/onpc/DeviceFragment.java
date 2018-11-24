@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
+import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.net.InetAddress;
@@ -74,6 +75,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
+        prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
 
         update(null, null);
@@ -120,6 +122,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+    @SuppressLint("SetTextI18n")
     void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
     {
         deviceName.setText(deviceAddress.getHostAddress());
@@ -210,6 +213,18 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         {
             ((TextView) rootView.findViewById(R.id.device_auto_power)).setText(state.autoPower.getDescriptionId());
             setButtonEnabled(R.id.device_auto_power_toggle, state.isOn());
+        }
+
+        // HDMI CEC
+        if (state.isControlExists(State.CONTROL_BD_CEC) || state.isControlExists(State.CONTROL_TV_CEC))
+        {
+            rootView.findViewById(R.id.hdmi_cec_layout).setVisibility(View.VISIBLE);
+            ((TextView) rootView.findViewById(R.id.hdmi_cec)).setText(state.hdmiCec.getDescriptionId());
+            setButtonEnabled(R.id.hdmi_cec_toggle, state.isOn());
+        }
+        else
+        {
+            rootView.findViewById(R.id.hdmi_cec_layout).setVisibility(View.GONE);
         }
 
         // Google Cast analytics

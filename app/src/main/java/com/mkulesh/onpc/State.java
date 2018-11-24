@@ -27,6 +27,7 @@ import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
+import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
@@ -65,11 +66,13 @@ class State
     }
 
     // Device properties
-    public final static String CONTROL_DIMMER = "Dimmer";
-    public final static String CONTROL_DIGITAL_FILTER = "Digital Filter";
+    final static String CONTROL_DIMMER = "Dimmer";
+    final static String CONTROL_DIGITAL_FILTER = "Digital Filter";
+    final static String CONTROL_BD_CEC = "BD Control(CEC)";
+    final static String CONTROL_TV_CEC = "TV Control(CEC)";
 
     Map<String, String> deviceProperties = new HashMap<>();
-    Set<String> controlList = new HashSet<>();
+    private Set<String> controlList = new HashSet<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
@@ -82,6 +85,7 @@ class State
     AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
     ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
     AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
+    HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
 
     // Google cast
     String googleCastVersion = "N/A";
@@ -186,6 +190,12 @@ class State
         {
             return isCommonChange(process((AutoPowerMsg) msg));
         }
+        if (msg instanceof HdmiCecMsg)
+        {
+            return isCommonChange(process((HdmiCecMsg) msg));
+        }
+
+        // Google cast
         if (msg instanceof GoogleCastVersionMsg)
         {
             return isCommonChange(process((GoogleCastVersionMsg) msg));
@@ -337,6 +347,13 @@ class State
     {
         final boolean changed = autoPower != msg.getStatus();
         autoPower = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(HdmiCecMsg msg)
+    {
+        final boolean changed = hdmiCec != msg.getStatus();
+        hdmiCec = msg.getStatus();
         return changed;
     }
 
@@ -646,7 +663,7 @@ class State
         return mediaItems.isEmpty() && serviceItems.isEmpty();
     }
 
-    public boolean listInfoConsistent()
+    boolean listInfoConsistent()
     {
         if (numberOfItems == 0 || numberOfLayers == 0 || listInfoItems.isEmpty())
         {
@@ -665,7 +682,7 @@ class State
         return false;
     }
 
-    public boolean isControlExists(String control)
+    boolean isControlExists(String control)
     {
         return controlList.contains(control);
     }
