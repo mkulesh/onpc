@@ -32,6 +32,7 @@ import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
+import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
@@ -75,7 +76,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
         InputSelectorMsg.CODE, DimmerLevelMsg.CODE, DigitalFilterMsg.CODE,
         AudioMutingMsg.CODE, AutoPowerMsg.CODE, GoogleCastVersionMsg.CODE,
-        GoogleCastAnalyticsMsg.CODE
+        GoogleCastAnalyticsMsg.CODE, HdmiCecMsg.CODE
     };
 
     private final static String playStateQueries [] = new String[] {
