@@ -27,6 +27,8 @@ import com.mkulesh.onpc.widgets.AppCompatPreferenceActivity;
 
 public class SettingsActivity extends AppCompatPreferenceActivity
 {
+    public static final String SERVER_NAME = "server_name";
+    public static final String SERVER_PORT = "server_port";
     public static final String APP_THEME = "app_theme";
     public static final String EXIT_CONFIRM = "exit_confirm";
     public static final String SOUND_CONTROL = "sound_control";

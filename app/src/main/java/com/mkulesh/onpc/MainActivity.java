@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -36,12 +37,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.utils.AppTheme;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.net.InetAddress;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -251,7 +255,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
     }
 
-    public boolean connectToServer(String server, int port)
+    @SuppressLint("ApplySharedPref")
+    public boolean connectToDevice(final String server, final int port, final boolean saveAddress)
     {
         stopThreads();
         messageChannel = new MessageChannel(this);
@@ -260,6 +265,14 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             messageChannel.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
             stateManager = new StateManager(this, messageChannel, false);
             stateManager.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+            if (saveAddress)
+            {
+                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor prefEditor = preferences.edit();
+                prefEditor.putString(SettingsActivity.SERVER_NAME, server);
+                prefEditor.putInt(SettingsActivity.SERVER_PORT, port);
+                prefEditor.commit();
+            }
             return true;
         }
         else if (ENABLE_MOCKUP)
@@ -296,12 +309,34 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     protected void onResume()
     {
         super.onResume();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String serverName = preferences.getString(DeviceFragment.SERVER_NAME, "");
-        final int serverPort = preferences.getInt(DeviceFragment.SERVER_PORT, 0);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final String serverName = preferences.getString(SettingsActivity.SERVER_NAME, "");
+        final int serverPort = preferences.getInt(SettingsActivity.SERVER_PORT, 0);
         if (!serverName.isEmpty() && serverPort > 0)
         {
-            connectToServer(serverName, serverPort);
+            connectToDevice(serverName, serverPort, false);
+        }
+        else
+        {
+            final BroadcastSearch bs = new BroadcastSearch(this,
+                new BroadcastSearch.SearchListener()
+                {
+                    // These methods will be called from GUI thread
+                    @Override
+                    public void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
+                    {
+                        final String name = deviceAddress.getHostName() != null?
+                                deviceAddress.getHostName() : deviceAddress.getHostAddress();
+                        connectToDevice(name, BroadcastSearch.ISCP_PORT, true);
+                    }
+
+                    @Override
+                    public void noDevice()
+                    {
+                        // nothing to do
+                    }
+                }, 5000, 2);
+            bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         }
     }
 

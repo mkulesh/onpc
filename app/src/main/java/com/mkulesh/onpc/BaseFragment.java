@@ -47,8 +47,6 @@ abstract public class BaseFragment extends Fragment
      * Constants used to save/restore the instance state.
      */
     public static final String FRAGMENT_NUMBER = "fragment_number";
-    public static final String SERVER_NAME = "server_name";
-    public static final String SERVER_PORT = "server_port";
 
     protected MainActivity activity;
     protected SharedPreferences preferences;

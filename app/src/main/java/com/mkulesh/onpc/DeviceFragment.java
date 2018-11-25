@@ -14,7 +14,6 @@
 package com.mkulesh.onpc;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -51,7 +50,6 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         // Empty constructor required for fragment subclasses
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -62,10 +60,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         btnConnect.setOnClickListener(this);
 
         deviceName = rootView.findViewById(R.id.device_name);
-        deviceName.setText(preferences.getString(DeviceFragment.SERVER_NAME, ""));
         devicePort = rootView.findViewById(R.id.device_port);
-        devicePort.setText(Integer.toString(
-                preferences.getInt(DeviceFragment.SERVER_PORT, BroadcastSearch.ISCP_PORT)));
 
         final AppCompatImageButton btnSearchDevice = prepareImageButton(R.id.btn_search_device, null);
         setButtonEnabled(btnSearchDevice, true);
@@ -82,23 +77,14 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         return rootView;
     }
 
-    @SuppressLint("ApplySharedPref")
     @Override
     public void onClick(View v)
     {
         if (v.getId() == R.id.device_connect)
         {
-            final String serverName = ((EditText) rootView.findViewById(R.id.device_name)).getText().toString();
-            final String serverPortStr = ((EditText) rootView.findViewById(R.id.device_port)).getText()
-                    .toString();
-            final int serverPort = Integer.parseInt(serverPortStr);
-            if (activity.connectToServer(serverName, serverPort))
-            {
-                SharedPreferences.Editor prefEditor = preferences.edit();
-                prefEditor.putString(SERVER_NAME, serverName);
-                prefEditor.putInt(SERVER_PORT, serverPort);
-                prefEditor.commit();
-            }
+            final String serverName = deviceName.getText().toString();
+            final int serverPort = Integer.parseInt(devicePort.getText().toString());
+            activity.connectToDevice(serverName, serverPort, true);
         }
         if (v.getId() == R.id.btn_search_device)
         {
@@ -125,8 +111,14 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     @SuppressLint("SetTextI18n")
     void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
     {
-        deviceName.setText(deviceAddress.getHostAddress());
-        devicePort.setText(Integer.toString(BroadcastSearch.ISCP_PORT));
+        if (response != null)
+        {
+            final String name = deviceAddress.getHostName() != null ?
+                    deviceAddress.getHostName() : deviceAddress.getHostAddress();
+            deviceName.setText(name);
+            devicePort.setText(Integer.toString(BroadcastSearch.ISCP_PORT));
+            activity.connectToDevice(name, BroadcastSearch.ISCP_PORT, true);
+        }
     }
 
     void noDevice()
@@ -153,8 +145,19 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateDeviceProperties(@NonNull final State state)
     {
+        if (deviceName.getText().length() == 0)
+        {
+            deviceName.setText(preferences.getString(SettingsActivity.SERVER_NAME, ""));
+        }
+        if (devicePort.getText().length() == 0)
+        {
+            devicePort.setText(Integer.toString(
+                    preferences.getInt(SettingsActivity.SERVER_PORT, BroadcastSearch.ISCP_PORT)));
+        }
+
         if (!state.deviceProperties.isEmpty())
         {
             ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
