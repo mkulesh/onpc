@@ -13,7 +13,6 @@
 
 package com.mkulesh.onpc;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -38,7 +37,6 @@ import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.utils.Logging;
 
-import java.net.InetAddress;
 import java.util.HashSet;
 
 public class DeviceFragment extends BaseFragment implements View.OnClickListener
@@ -82,42 +80,42 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     {
         if (v.getId() == R.id.device_connect)
         {
-            final String serverName = deviceName.getText().toString();
-            final int serverPort = Integer.parseInt(devicePort.getText().toString());
-            activity.connectToDevice(serverName, serverPort, true);
+            final String device = deviceName.getText().toString();
+            final int port = Integer.parseInt(devicePort.getText().toString());
+            if (activity.connectToDevice(device, port))
+            {
+                activity.getConfiguration().saveDevice(device, port);
+            }
         }
         if (v.getId() == R.id.btn_search_device)
         {
             final BroadcastSearch bs = new BroadcastSearch(activity,
-                new BroadcastSearch.SearchListener()
-                {
-                    // These methods will be called from GUI thread
-                    @Override
-                    public void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
+                    new BroadcastSearch.SearchListener()
                     {
-                        DeviceFragment.this.onDeviceFound(deviceAddress, response);
-                    }
+                        // These methods will be called from GUI thread
+                        @Override
+                        public void onDeviceFound(final String device, final int port, EISCPMessage response)
+                        {
+                            DeviceFragment.this.onDeviceFound(device, port, response);
+                        }
 
-                    @Override
-                    public void noDevice()
-                    {
-                        DeviceFragment.this.noDevice();
-                    }
-                }, 5000, 5);
+                        @Override
+                        public void noDevice()
+                        {
+                            DeviceFragment.this.noDevice();
+                        }
+                    }, 5000, 5);
             bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
+    void onDeviceFound(final String device, final int port, EISCPMessage response)
     {
-        if (response != null)
+        if (response != null && activity.connectToDevice(device, port))
         {
-            final String name = deviceAddress.getHostName() != null ?
-                    deviceAddress.getHostName() : deviceAddress.getHostAddress();
-            deviceName.setText(name);
-            devicePort.setText(Integer.toString(BroadcastSearch.ISCP_PORT));
-            activity.connectToDevice(name, BroadcastSearch.ISCP_PORT, true);
+            activity.getConfiguration().saveDevice(device, port);
+            deviceName.setText(activity.getConfiguration().getDeviceName());
+            devicePort.setText(activity.getConfiguration().getDevicePortAsString());
         }
     }
 
@@ -145,17 +143,15 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private void updateDeviceProperties(@NonNull final State state)
     {
         if (deviceName.getText().length() == 0)
         {
-            deviceName.setText(preferences.getString(SettingsActivity.SERVER_NAME, ""));
+            deviceName.setText(activity.getConfiguration().getDeviceName());
         }
         if (devicePort.getText().length() == 0)
         {
-            devicePort.setText(Integer.toString(
-                    preferences.getInt(SettingsActivity.SERVER_PORT, BroadcastSearch.ISCP_PORT)));
+            devicePort.setText(activity.getConfiguration().getDevicePortAsString());
         }
 
         if (!state.deviceProperties.isEmpty())

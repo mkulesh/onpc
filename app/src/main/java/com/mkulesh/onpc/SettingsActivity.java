@@ -22,27 +22,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mkulesh.onpc.utils.AppTheme;
 import com.mkulesh.onpc.widgets.AppCompatPreferenceActivity;
 
 public class SettingsActivity extends AppCompatPreferenceActivity
 {
-    public static final String SERVER_NAME = "server_name";
-    public static final String SERVER_PORT = "server_port";
-    public static final String APP_THEME = "app_theme";
-    public static final String EXIT_CONFIRM = "exit_confirm";
-    public static final String SOUND_CONTROL = "sound_control";
 
     @Override
     @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState)
     {
-        setTheme(AppTheme.getTheme(this, AppTheme.ThemeType.SETTINGS_THEME));
+        final Configuration configuration = new Configuration(this);
+        setTheme(configuration.getTheme(Configuration.ThemeType.SETTINGS_THEME));
         super.onCreate(savedInstanceState);
         setupActionBar();
         addPreferencesFromResource(R.xml.preferences);
-        prepareListPreference((ListPreference) findPreference(APP_THEME));
-        prepareListPreference((ListPreference) findPreference(SOUND_CONTROL));
+        prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME));
+        prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL));
     }
 
     private void setupActionBar()

@@ -361,7 +361,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    private void sendQueries(final  String[] queries, final String purpose)
+    private void sendQueries(final String[] queries, final String purpose)
     {
         Logging.info(this, purpose);
         for (String code : queries)

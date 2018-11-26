@@ -31,7 +31,7 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 {
     public interface SearchListener
     {
-        void onDeviceFound(InetAddress deviceAddress, EISCPMessage response);
+        void onDeviceFound(final String device, final int port, EISCPMessage response);
 
         void noDevice();
     }
@@ -123,9 +123,11 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
         {
             if (retValue.deviceAddress != null && retValue.responseMessage != null)
             {
-                Logging.info(BroadcastSearch.this, "Found device: " + retValue.deviceAddress.getHostAddress()
+                final String device = retValue.deviceAddress.getHostName() != null ?
+                        retValue.deviceAddress.getHostName() : retValue.deviceAddress.getHostAddress();
+                Logging.info(BroadcastSearch.this, "Found device: " + device
                         + ":" + retValue.responseMessage.toString());
-                searchListener.onDeviceFound(retValue.deviceAddress, retValue.responseMessage);
+                searchListener.onDeviceFound(device, ISCP_PORT, retValue.responseMessage);
             }
             else
             {

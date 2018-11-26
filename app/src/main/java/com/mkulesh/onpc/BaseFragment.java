@@ -13,8 +13,6 @@
 
 package com.mkulesh.onpc;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
@@ -49,12 +47,11 @@ abstract public class BaseFragment extends Fragment
     public static final String FRAGMENT_NUMBER = "fragment_number";
 
     protected MainActivity activity;
-    protected SharedPreferences preferences;
     protected View rootView = null;
 
     int buttonSize = 0, buttonMarginHorizontal = 0, buttonMarginVertical = 0;
 
-    public interface ButtonListener
+    interface ButtonListener
     {
         void onPostProcessing();
     }
@@ -68,7 +65,6 @@ abstract public class BaseFragment extends Fragment
     public void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutId)
     {
         activity = (MainActivity) getActivity();
-        preferences = PreferenceManager.getDefaultSharedPreferences(activity);
         rootView = inflater.inflate(layoutId, container, false);
 
         buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.button_size);
@@ -192,7 +188,7 @@ abstract public class BaseFragment extends Fragment
 
         if (b instanceof AppCompatImageButton)
         {
-            AppCompatImageButton bb = (AppCompatImageButton)b;
+            AppCompatImageButton bb = (AppCompatImageButton) b;
             bb.setLongClickable(true);
             bb.setOnLongClickListener(new View.OnLongClickListener()
             {
@@ -217,11 +213,11 @@ abstract public class BaseFragment extends Fragment
         b.setEnabled(isEnabled);
         if (b instanceof AppCompatImageButton)
         {
-            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton)b, resId);
+            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton) b, resId);
         }
         if (b instanceof AppCompatButton)
         {
-            ((AppCompatButton)b).setTextColor(Utils.getThemeColorAttr(activity, resId));
+            ((AppCompatButton) b).setTextColor(Utils.getThemeColorAttr(activity, resId));
         }
     }
 
@@ -231,16 +227,16 @@ abstract public class BaseFragment extends Fragment
         b.setSelected(isSelected);
         if (b instanceof AppCompatImageButton)
         {
-            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton)b, resId);
+            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton) b, resId);
         }
         if (b instanceof AppCompatButton)
         {
-            ((AppCompatButton)b).setTextColor(Utils.getThemeColorAttr(activity, resId));
+            ((AppCompatButton) b).setTextColor(Utils.getThemeColorAttr(activity, resId));
         }
     }
 
     protected AppCompatButton createButton(@StringRes int descriptionId,
-        @NonNull final ISCPMessage msg, Object tag, final ButtonListener listener)
+                                           @NonNull final ISCPMessage msg, Object tag, final ButtonListener listener)
     {
         ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.TextButtonStyle);
         final AppCompatButton b = new AppCompatButton(wrappedContext, null, 0);

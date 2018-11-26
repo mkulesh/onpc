@@ -361,6 +361,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             }
         }
         titleBar.setText(title.toString());
-        progressIndicator.setVisibility(processing? View.VISIBLE : View.INVISIBLE);
+        progressIndicator.setVisibility(processing ? View.VISIBLE : View.INVISIBLE);
     }
 }

@@ -96,19 +96,17 @@ public class MonitorFragment extends BaseFragment
         }
 
         // Amplifier command buttons
-        final String defaultSoundControl = preferences.getString(SettingsActivity.SOUND_CONTROL,
-                activity.getResources().getString(R.string.pref_default_sound_control));
-        switch (defaultSoundControl)
+        switch (activity.getConfiguration().getDefaultSoundControl())
         {
-            case "none":
-                // nothing to do
-                break;
-            case "external-amplifier":
-                prepareAmplifierButtons();
-                break;
-            case "device":
-                prepareDeviceSoundButtons();
-                break;
+        case "none":
+            // nothing to do
+            break;
+        case "external-amplifier":
+            prepareAmplifierButtons();
+            break;
+        case "device":
+            prepareDeviceSoundButtons();
+            break;
         }
 
         cover = rootView.findViewById(R.id.tv_cover);
@@ -140,7 +138,8 @@ public class MonitorFragment extends BaseFragment
         {
             btnTrackMenu = rootView.findViewById(R.id.btn_track_menu);
             prepareButtonListeners(btnTrackMenu, new OperationCommandMsg(OperationCommandMsg.Command.MENU),
-                    new ButtonListener() {
+                    new ButtonListener()
+                    {
                         @Override
                         public void onPostProcessing()
                         {
@@ -223,7 +222,7 @@ public class MonitorFragment extends BaseFragment
         };
         if (listeningModeLayout.getChildCount() == 1)
         {
-            final LinearLayout l = (LinearLayout)listeningModeLayout.getChildAt(0);
+            final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
             for (ListeningModeMsg.Mode m : listeningModes)
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);

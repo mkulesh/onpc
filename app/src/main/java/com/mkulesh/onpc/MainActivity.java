@@ -13,13 +13,10 @@
 
 package com.mkulesh.onpc;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -42,18 +39,16 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
-import com.mkulesh.onpc.utils.AppTheme;
 import com.mkulesh.onpc.utils.Utils;
 
-import java.net.InetAddress;
 import java.util.HashSet;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener
 {
-    private final static boolean ENABLE_MOCKUP = false;
     private static final int SETTINGS_ACTIVITY_REQID = 256;
 
+    private Configuration configuration;
     private Toolbar toolbar;
     private SectionsPagerAdapter pagerAdapter;
     private ViewPager viewPager;
@@ -65,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        setTheme(AppTheme.getTheme(this, AppTheme.ThemeType.MAIN_THEME));
+        configuration = new Configuration(this);
+        setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -90,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         final TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
         updateToolbar(null);
+    }
+
+    public Configuration getConfiguration()
+    {
+        return configuration;
     }
 
     @Override
@@ -142,8 +143,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public void onBackPressed()
     {
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!preferences.getBoolean(SettingsActivity.EXIT_CONFIRM, false))
+        if (!configuration.isExitConfirm())
         {
             finish();
         }
@@ -255,27 +255,18 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
     }
 
-    @SuppressLint("ApplySharedPref")
-    public boolean connectToDevice(final String server, final int port, final boolean saveAddress)
+    public boolean connectToDevice(final String device, final int port)
     {
         stopThreads();
         messageChannel = new MessageChannel(this);
-        if (messageChannel.connectToServer(server, port))
+        if (messageChannel.connectToServer(device, port))
         {
             messageChannel.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
             stateManager = new StateManager(this, messageChannel, false);
             stateManager.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-            if (saveAddress)
-            {
-                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor prefEditor = preferences.edit();
-                prefEditor.putString(SettingsActivity.SERVER_NAME, server);
-                prefEditor.putInt(SettingsActivity.SERVER_PORT, port);
-                prefEditor.commit();
-            }
             return true;
         }
-        else if (ENABLE_MOCKUP)
+        else if (Configuration.ENABLE_MOCKUP)
         {
             stateManager = new StateManager(this, messageChannel, true);
             return true;
@@ -309,33 +300,31 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     protected void onResume()
     {
         super.onResume();
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String serverName = preferences.getString(SettingsActivity.SERVER_NAME, "");
-        final int serverPort = preferences.getInt(SettingsActivity.SERVER_PORT, 0);
-        if (!serverName.isEmpty() && serverPort > 0)
+        if (!configuration.getDeviceName().isEmpty() && configuration.getDevicePort() > 0)
         {
-            connectToDevice(serverName, serverPort, false);
+            connectToDevice(configuration.getDeviceName(), configuration.getDevicePort());
         }
         else
         {
             final BroadcastSearch bs = new BroadcastSearch(this,
-                new BroadcastSearch.SearchListener()
-                {
-                    // These methods will be called from GUI thread
-                    @Override
-                    public void onDeviceFound(InetAddress deviceAddress, EISCPMessage response)
+                    new BroadcastSearch.SearchListener()
                     {
-                        final String name = deviceAddress.getHostName() != null?
-                                deviceAddress.getHostName() : deviceAddress.getHostAddress();
-                        connectToDevice(name, BroadcastSearch.ISCP_PORT, true);
-                    }
+                        // These methods will be called from GUI thread
+                        @Override
+                        public void onDeviceFound(final String device, final int port, EISCPMessage response)
+                        {
+                            if (response != null && connectToDevice(device, port))
+                            {
+                                configuration.saveDevice(device, port);
+                            }
+                        }
 
-                    @Override
-                    public void noDevice()
-                    {
-                        // nothing to do
-                    }
-                }, 5000, 2);
+                        @Override
+                        public void noDevice()
+                        {
+                            // nothing to do
+                        }
+                    }, 5000, 2);
             bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         }
     }
