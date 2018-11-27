@@ -25,7 +25,7 @@ Currently, this app is only tested with ONKYO NS-6130 (Firmware version 2110-000
 * Playback screen in portrait orientation, Strong Dark (Black and Lime) theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/playback_vertical.png" align="center" height="800">
 
-* Media list screen, Dark (Dim Gray and Cyan) theme
+* Media list screen, Strong Dark (Black and Lime) theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/madia_list.png" align="center" height="800">
 
 * Device info screen, Light (Indigo and Orange) theme
