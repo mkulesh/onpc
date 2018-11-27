@@ -167,24 +167,21 @@ abstract public class BaseFragment extends Fragment
 
     protected void prepareButtonListeners(@NonNull View b, final ISCPMessage msg, final ButtonListener listener)
     {
-        if (msg != null)
-        {
             b.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
-                    if (activity.getStateManager() != null)
+                    if (activity.getStateManager() != null && msg != null)
                     {
-                        activity.getStateManager().sendMessage(msg);
-                        if (listener != null)
-                        {
-                            listener.onPostProcessing();
-                        }
+                       activity.getStateManager().sendMessage(msg);
+                    }
+                    if (listener != null)
+                    {
+                        listener.onPostProcessing();
                     }
                 }
             });
-        }
 
         if (b instanceof AppCompatImageButton)
         {

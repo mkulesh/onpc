@@ -370,4 +370,21 @@ class StateManager extends AsyncTask<Void, Void, Void>
                     new EISCPMessage('1', code, EISCPMessage.QUERY));
         }
     }
+
+    public void sendTrackCmd(OperationCommandMsg.Command menu, boolean doReturn)
+    {
+        Logging.info(this, "sending track cmd: " + menu.toString());
+        if (state.uiType != ListTitleInfoMsg.UIType.PLAYBACK)
+        {
+            messageChannel.sendMessage(
+                    new EISCPMessage('1', OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString()));
+        }
+        messageChannel.sendMessage(
+                new EISCPMessage('1', OperationCommandMsg.CODE, menu.getCode()));
+        if (doReturn)
+        {
+            messageChannel.sendMessage(
+                    new EISCPMessage('1', OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString()));
+        }
+    }
 }

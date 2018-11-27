@@ -146,6 +146,17 @@ public class OperationCommandMsg extends ISCPMessage
     @Override
     public boolean hasImpactOnMediaList()
     {
-        return command != Command.REPEAT && command != Command.RANDOM;
+        switch (command)
+        {
+        case REPEAT:
+        case RANDOM:
+        case F1:
+        case F2:
+        case MENU:
+        case LIST:
+            return false;
+        default:
+            return true;
+        }
     }
 }

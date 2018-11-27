@@ -105,6 +105,8 @@ class State
     PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
     MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
     MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
+    MenuStatusMsg.Feed positiveFeed = MenuStatusMsg.Feed.DISABLE;
+    MenuStatusMsg.Feed negativeFeed = MenuStatusMsg.Feed.DISABLE;
     ServiceType serviceIcon = ServiceType.UNKNOWN; // service that is currently playing
 
     // Navigation
@@ -480,10 +482,14 @@ class State
     {
         final boolean changed = timeSeek != msg.getTimeSeek()
                 || trackMenu != msg.getTrackMenu()
-                || serviceIcon != msg.getServiceIcon();
+                || serviceIcon != msg.getServiceIcon()
+                || positiveFeed != msg.getPositiveFeed()
+                || negativeFeed != msg.getNegativeFeed();
         timeSeek = msg.getTimeSeek();
         trackMenu = msg.getTrackMenu();
         serviceIcon = msg.getServiceIcon();
+        positiveFeed = msg.getPositiveFeed();
+        negativeFeed = msg.getNegativeFeed();
         return changed;
     }
 

@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -49,30 +50,43 @@ public class MenuStatusMsg extends ISCPMessage
      *       "05":episode, "06":ratings, "07":Ban(black), "08":Ban(white),
      *       "09":Favorite(black), "0A":Favorite(white), "0B":Favorite(yellow)
      */
-    private enum Feed implements StringParameterIf
+    public enum Feed implements StringParameterIf
     {
-        DISABLE("XX"),
-        LIKE("01"),
-        DONT_LIKE("02"),
-        LOVE("03"),
-        BAN("04"),
-        EPISODE("05"),
-        RATINGS("06"),
-        BAN_BLACK("07"),
-        BAN_WHITE("08"),
-        FAVORITE_BLACK("09"),
-        FAVORITE_WHITE("0A"),
-        FAVORITE_YELLOW("0B");
-        final String code;
+        DISABLE("XX", -1),
+        LIKE("01", R.drawable.feed_like),
+        DONT_LIKE("02", R.drawable.feed_dont_like),
+        LOVE("03", R.drawable.feed_love),
+        BAN("04", R.drawable.feed_ban),
+        EPISODE("05", -1),
+        RATINGS("06", -1),
+        BAN_BLACK("07", R.drawable.feed_ban),
+        BAN_WHITE("08", R.drawable.feed_ban),
+        FAVORITE_BLACK("09", R.drawable.feed_love),
+        FAVORITE_WHITE("0A", R.drawable.feed_love),
+        FAVORITE_YELLOW("0B", R.drawable.feed_love);
 
-        Feed(String code)
+        final String code;
+        final int imageId;
+
+        Feed(String code, final int imageId)
         {
             this.code = code;
+            this.imageId = imageId;
         }
 
         public String getCode()
         {
             return code;
+        }
+
+        public int getImageId()
+        {
+            return imageId;
+        }
+
+        public boolean isImageValid()
+        {
+            return imageId != -1;
         }
     }
 
@@ -159,6 +173,16 @@ public class MenuStatusMsg extends ISCPMessage
     public ServiceType getServiceIcon()
     {
         return serviceIcon;
+    }
+
+    public Feed getPositiveFeed()
+    {
+        return positiveFeed;
+    }
+
+    public Feed getNegativeFeed()
+    {
+        return negativeFeed;
     }
 
     @Override

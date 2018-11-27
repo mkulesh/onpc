@@ -55,6 +55,7 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnTrackMenu;
     private final List<AppCompatImageButton> playbackButtons = new ArrayList<>();
     private final List<AppCompatImageButton> amplifierButtons = new ArrayList<>();
+    private AppCompatImageButton positiveFeed, negativeFeed;
     private final List<View> deviceSoundButtons = new ArrayList<>();
     private ImageView cover;
     private AppCompatSeekBar seekBar;
@@ -137,17 +138,40 @@ public class MonitorFragment extends BaseFragment
         // Track menu
         {
             btnTrackMenu = rootView.findViewById(R.id.btn_track_menu);
-            prepareButtonListeners(btnTrackMenu, new OperationCommandMsg(OperationCommandMsg.Command.MENU),
+            prepareButtonListeners(btnTrackMenu, null,
                     new ButtonListener()
                     {
                         @Override
                         public void onPostProcessing()
                         {
+                            activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
                             activity.selectRightTab();
                         }
                     });
             setButtonEnabled(btnTrackMenu, false);
         }
+
+        // Feeds
+        positiveFeed = rootView.findViewById(R.id.btn_positive_feed);
+        prepareButtonListeners(positiveFeed, null,
+                new ButtonListener()
+                {
+                    @Override
+                    public void onPostProcessing()
+                    {
+                        activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F1, true);
+                    }
+                });
+        negativeFeed = rootView.findViewById(R.id.btn_negative_feed);
+        prepareButtonListeners(negativeFeed, null,
+                new ButtonListener()
+                {
+                    @Override
+                    public void onPostProcessing()
+                    {
+                        activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F2, true);
+                    }
+                });
 
         update(null, null);
         return rootView;
@@ -266,6 +290,8 @@ public class MonitorFragment extends BaseFragment
             setButtonEnabled(b, false);
         }
         btnTrackMenu.setVisibility(View.INVISIBLE);
+        positiveFeed.setVisibility(View.GONE);
+        negativeFeed.setVisibility(View.GONE);
     }
 
     @Override
@@ -378,6 +404,21 @@ public class MonitorFragment extends BaseFragment
                     state.playStatus != PlayStatusMsg.PlayStatus.STOP;
             btnTrackMenu.setVisibility(isTrackMenu ? View.VISIBLE : View.INVISIBLE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
+        }
+
+        // Feeds
+        updateFeedButton(positiveFeed, state.positiveFeed);
+        updateFeedButton(negativeFeed, state.negativeFeed);
+    }
+
+    private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)
+    {
+        btn.setVisibility(feed.isImageValid() ? View.VISIBLE : View.GONE);
+        if (feed.isImageValid())
+        {
+            btn.setImageResource(feed.getImageId());
+            setButtonEnabled(btn, true);
+            setButtonSelected(btn, feed == MenuStatusMsg.Feed.LOVE);
         }
     }
 
