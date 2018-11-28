@@ -320,7 +320,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         returnFromPlayback.set(msg.hasImpactOnMediaList());
         circlePlayQueueMsg = null;
         if (msg.hasImpactOnMediaList() ||
-                (msg instanceof DisplayModeMsg && state.uiType != ListTitleInfoMsg.UIType.PLAYBACK))
+                (msg instanceof DisplayModeMsg && !state.isPlaybackMode()))
         {
             requestXmlList.set(true);
         }
@@ -374,7 +374,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     public void sendTrackCmd(OperationCommandMsg.Command menu, boolean doReturn)
     {
         Logging.info(this, "sending track cmd: " + menu.toString());
-        if (state.uiType != ListTitleInfoMsg.UIType.PLAYBACK)
+        if (!state.isPlaybackMode())
         {
             messageChannel.sendMessage(
                     new EISCPMessage('1', OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString()));

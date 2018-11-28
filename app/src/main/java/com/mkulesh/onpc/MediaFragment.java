@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
-import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -302,6 +301,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 newItems.add(new NetworkServiceMsg(i));
             }
         }
+        else if (state.isPlaybackMode())
+        {
+            final XmlListItemMsg nsMsg = new XmlListItemMsg(-1, 0,
+                    activity.getResources().getString(R.string.medialist_playback_mode),
+                    XmlListItemMsg.Icon.PLAY, false);
+            newItems.add(nsMsg);
+        }
         listViewAdapter = new MediaListAdapter(this, activity, newItems);
         listView.setAdapter(listViewAdapter);
         if (playing >= 0)
@@ -319,6 +325,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (selectedItem != null)
             {
                 moveFrom = -1;
+                if (selectedItem instanceof XmlListItemMsg &&
+                        !((XmlListItemMsg) selectedItem).isSelectable())
+                {
+                    return;
+                }
                 updateTitle(activity.getStateManager().getState(), true);
                 activity.getStateManager().sendMessage(selectedItem);
             }
@@ -346,8 +357,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private void updateTitle(@NonNull final State state, boolean processing)
     {
         final StringBuilder title = new StringBuilder();
-        if (state.uiType == ListTitleInfoMsg.UIType.PLAYBACK ||
-                state.uiType == ListTitleInfoMsg.UIType.MENU)
+        if (state.isPlaybackMode() || state.isMenuMode())
         {
             title.append(state.title);
         }

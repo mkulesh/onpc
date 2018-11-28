@@ -112,7 +112,7 @@ class State
     // Navigation
     ServiceType serviceType = null; // service that is currently selected (may differs from currently playing)
     ListTitleInfoMsg.LayerInfo layerInfo = null;
-    ListTitleInfoMsg.UIType uiType = null;
+    private ListTitleInfoMsg.UIType uiType = null;
     int numberOfLayers = 0;
     int numberOfItems = 0;
     String titleBar = "";
@@ -146,6 +146,16 @@ class State
     boolean isPlaying()
     {
         return playStatus != PlayStatusMsg.PlayStatus.STOP;
+    }
+
+    public boolean isPlaybackMode()
+    {
+        return uiType == ListTitleInfoMsg.UIType.PLAYBACK;
+    }
+
+    public boolean isMenuMode()
+    {
+        return uiType == ListTitleInfoMsg.UIType.MENU;
     }
 
     ChangeType update(ISCPMessage msg)
@@ -527,7 +537,7 @@ class State
             numberOfItems = msg.getNumberOfItems();
             changed = true;
         }
-        if (uiType == ListTitleInfoMsg.UIType.MENU)
+        if (isMenuMode() || isPlaybackMode())
         {
             clearItems();
         }
@@ -607,7 +617,7 @@ class State
             }
             return false;
         }
-        else if (uiType == ListTitleInfoMsg.UIType.MENU)
+        else if (isMenuMode())
         {
             for (XmlListItemMsg i : mediaItems)
             {
@@ -616,7 +626,8 @@ class State
                     return false;
                 }
             }
-            final XmlListItemMsg nsMsg = new XmlListItemMsg(msg.getLineInfo(), 0, msg.getListedData());
+            final XmlListItemMsg nsMsg = new XmlListItemMsg(
+                    msg.getLineInfo(), 0, msg.getListedData(), XmlListItemMsg.Icon.UNKNOWN, true);
             mediaItems.add(nsMsg);
             return true;
         }
@@ -649,7 +660,7 @@ class State
 
     boolean isTopLayer()
     {
-        if (uiType != ListTitleInfoMsg.UIType.PLAYBACK)
+        if (!isPlaybackMode())
         {
             if (serviceType == ServiceType.NET &&
                     layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP)

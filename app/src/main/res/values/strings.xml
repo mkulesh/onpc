@@ -164,6 +164,7 @@
     <string name="medialist_items">item(s)</string>
     <string name="medialist_processing">Processing…</string>
     <string name="medialist_track_menu">Track menu</string>
+    <string name="medialist_playback_mode">Playback mode</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>
