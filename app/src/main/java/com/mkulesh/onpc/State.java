@@ -520,6 +520,7 @@ class State
         if (uiType != msg.getUiType())
         {
             uiType = msg.getUiType();
+            clearItems();
             changed = true;
         }
         if (!titleBar.equals(msg.getTitleBar()))
@@ -536,10 +537,6 @@ class State
         {
             numberOfItems = msg.getNumberOfItems();
             changed = true;
-        }
-        if (isMenuMode() || isPlaybackMode())
-        {
-            clearItems();
         }
         return changed;
     }

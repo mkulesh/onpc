@@ -70,8 +70,8 @@ public class OperationCommandMsg extends ISCPMessage
         MODE("MODE", R.string.cmd_description_mode),
         LIST("LIST", R.string.cmd_description_list),
         MEMORY("MEMORY", R.string.cmd_description_memory),
-        F1("F1", R.string.cmd_description_f1),
-        F2("F2", R.string.cmd_description_f2);
+        F1("F1", R.string.cmd_description_f1, R.drawable.feed_like),
+        F2("F2", R.string.cmd_description_f2, R.drawable.feed_dont_like);
 
         final String code;
         final int descriptionId;
@@ -152,8 +152,6 @@ public class OperationCommandMsg extends ISCPMessage
         case RANDOM:
         case F1:
         case F2:
-        case MENU:
-        case LIST:
             return false;
         default:
             return true;

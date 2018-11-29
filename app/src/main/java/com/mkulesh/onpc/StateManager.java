@@ -63,13 +63,14 @@ class StateManager extends AsyncTask<Void, Void, Void>
     private final State state;
     private final MainActivity activity;
     private final AtomicBoolean active = new AtomicBoolean();
-    private final AtomicBoolean returnFromPlayback = new AtomicBoolean();
     private final AtomicBoolean requestXmlList = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
     private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
     private final MessageChannel messageChannel;
     private int xmlReqId = 0;
     private ISCPMessage circlePlayQueueMsg = null;
+    private final EISCPMessage commandListMsg = new EISCPMessage('1',
+            OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString());
 
     // Queries for different states
     private final static String powerStateQueries [] = new String[] {
@@ -217,6 +218,11 @@ class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
+        if (msg instanceof PlayStatusMsg && state.isPlaybackMode() && state.isPlaying())
+        {
+            messageChannel.sendMessage(commandListMsg);
+        }
+
         if (changed == State.ChangeType.NONE)
         {
             if (msg instanceof ListTitleInfoMsg && requestXmlList.get())
@@ -290,19 +296,11 @@ class StateManager extends AsyncTask<Void, Void, Void>
                 && liMsg.getLayerInfo() == ListTitleInfoMsg.LayerInfo.NET_TOP)
         {
             Logging.info(this, "requesting XML list state skipped");
-            return;
         }
-        if (liMsg.getUiType() == ListTitleInfoMsg.UIType.PLAYBACK)
-        {
-            if (returnFromPlayback.get())
-            {
-                sendMessage(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
-            }
-        }
-        else if (liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU)
+        else if (liMsg.getUiType() == ListTitleInfoMsg.UIType.PLAYBACK
+                 || liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU)
         {
             Logging.info(this, "requesting XML list state skipped");
-            return;
         }
         else if (liMsg.getNumberOfLayers() > 0)
         {
@@ -311,13 +309,11 @@ class StateManager extends AsyncTask<Void, Void, Void>
                     new EISCPMessage('1', XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
                             xmlReqId++, liMsg.getNumberOfLayers(), 0, liMsg.getNumberOfItems())));
         }
-        returnFromPlayback.set(false);
     }
 
     void sendMessage(final ISCPMessage msg)
     {
         Logging.info(this, "sending message: " + msg.toString());
-        returnFromPlayback.set(msg.hasImpactOnMediaList());
         circlePlayQueueMsg = null;
         if (msg.hasImpactOnMediaList() ||
                 (msg instanceof DisplayModeMsg && !state.isPlaybackMode()))
@@ -371,20 +367,18 @@ class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    public void sendTrackCmd(OperationCommandMsg.Command menu, boolean doReturn)
+    void sendTrackCmd(OperationCommandMsg.Command menu, boolean doReturn)
     {
         Logging.info(this, "sending track cmd: " + menu.toString());
         if (!state.isPlaybackMode())
         {
-            messageChannel.sendMessage(
-                    new EISCPMessage('1', OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString()));
+            messageChannel.sendMessage(commandListMsg);
         }
-        messageChannel.sendMessage(
-                new EISCPMessage('1', OperationCommandMsg.CODE, menu.getCode()));
+        messageChannel.sendMessage(new EISCPMessage('1',
+                OperationCommandMsg.CODE, menu.getCode()));
         if (doReturn)
         {
-            messageChannel.sendMessage(
-                    new EISCPMessage('1', OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString()));
+            messageChannel.sendMessage(commandListMsg);
         }
     }
 }
