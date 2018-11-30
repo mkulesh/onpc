@@ -221,6 +221,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         for (int i = 0; i < selNumber; i++)
         {
             final ReceiverInformationMsg.Selector s = state.deviceSelectors.get(i);
+            if (!activity.getConfiguration().isSelectorVisible(s.getId()))
+            {
+                continue;
+            }
             final InputSelectorMsg msg = new InputSelectorMsg(s.getId());
             if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
             {

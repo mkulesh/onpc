@@ -11,7 +11,8 @@
   ~ Public License along with this program.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:icon="@null">
 
     <ListPreference
         android:defaultValue="@string/pref_default_theme_code"
@@ -21,7 +22,7 @@
         android:summary="%s"
         android:title="@string/pref_app_theme" />
 
-    <com.mkulesh.onpc.widgets.MultilineCheckBoxPreference
+    <com.mkulesh.onpc.config.MultilineCheckBoxPreference
         android:defaultValue="false"
         android:key="exit_confirm"
         android:title="@string/pref_exit_confirm"
@@ -34,5 +35,16 @@
         android:key="sound_control"
         android:summary="%s"
         android:title="@string/pref_sound_control" />
+
+    <PreferenceScreen
+        android:icon="@null"
+        android:key="input_selectors"
+        android:title="@string/pref_input_selectors" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.mkulesh.onpc"
+            android:targetClass="com.mkulesh.onpc.config.PreferencesDeviceSelectors" >
+        </intent>
+    </PreferenceScreen>
 
 </PreferenceScreen>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mkulesh.onpc.widgets;
+package com.mkulesh.onpc.config;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -25,8 +25,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.mkulesh.onpc.R;
 
 /**
  * A {@link PreferenceActivity} which implements and proxies the necessary calls
@@ -45,6 +48,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+        setupActionBar();
     }
 
     @Override
@@ -142,5 +146,38 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
             mDelegate = AppCompatDelegate.create(this, null);
         }
         return mDelegate;
+    }
+
+    protected void setupActionBar()
+    {
+        ViewGroup rootView = findViewById(R.id.action_bar_root); //id from appcompat
+        if (rootView != null)
+        {
+            View view = getLayoutInflater().inflate(R.layout.settings_toolbar, rootView, false);
+            rootView.addView(view, 0);
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
+        {
+            // Show the Up button in the action bar.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.menu_app_settings);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case android.R.id.home:
+            onBackPressed();
+            return true;
+        }
+        return (super.onOptionsItemSelected(item));
     }
 }

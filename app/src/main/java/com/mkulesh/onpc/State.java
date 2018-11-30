@@ -78,7 +78,7 @@ class State
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
     FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
     Bitmap deviceCover = null;
-    List<ReceiverInformationMsg.Selector> deviceSelectors;
+    List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
     InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
     DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
     DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
@@ -125,7 +125,7 @@ class State
 
     State()
     {
-        deviceSelectors = new ArrayList<>();
+        // empty
     }
 
     @Override

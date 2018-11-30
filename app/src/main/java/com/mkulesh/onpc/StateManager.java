@@ -193,7 +193,12 @@ class StateManager extends AsyncTask<Void, Void, Void>
             eventChanges.add(changed);
         }
 
-        // no message handling, if power off
+        if (msg instanceof ReceiverInformationMsg && !state.deviceSelectors.isEmpty())
+        {
+            activity.getConfiguration().setDeviceSelectors(state.deviceSelectors);
+        }
+
+        // no further message handling, if power off
         if (!state.isOn())
         {
             return changed != State.ChangeType.NONE;

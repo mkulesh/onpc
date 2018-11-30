@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.config;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,11 +20,16 @@ import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.utils.Logging;
 
-class Configuration
+import java.util.List;
+
+public class Configuration
 {
-    static final boolean ENABLE_MOCKUP = false;
+    public static final boolean ENABLE_MOCKUP = false;
 
     static final String APP_THEME = "app_theme";
 
@@ -32,11 +37,12 @@ class Configuration
     private static final String SERVER_PORT = "server_port";
     static final String SOUND_CONTROL = "sound_control";
     private static final String EXIT_CONFIRM = "exit_confirm";
+    static final String DEVICE_SELECTORS = "device_selectors";
 
     /*********************************************************
      * Handling of themes
      *********************************************************/
-    enum ThemeType
+    public enum ThemeType
     {
         MAIN_THEME,
         SETTINGS_THEME
@@ -50,8 +56,7 @@ class Configuration
     private final boolean exitConfirm;
     private final String defaultSoundControl;
 
-
-    Configuration(Context context)
+    public Configuration(Context context)
     {
         this.context = context;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -66,7 +71,7 @@ class Configuration
     }
 
     @StyleRes
-    int getTheme(ThemeType type)
+    public int getTheme(ThemeType type)
     {
         final String themeCode = preferences.getString(Configuration.APP_THEME,
                 context.getResources().getString(R.string.pref_default_theme_code));
@@ -98,23 +103,23 @@ class Configuration
         }
     }
 
-    String getDeviceName()
+    public String getDeviceName()
     {
         return deviceName;
     }
 
-    int getDevicePort()
+    public int getDevicePort()
     {
         return devicePort;
     }
 
     @SuppressLint("SetTextI18n")
-    String getDevicePortAsString()
+    public String getDevicePortAsString()
     {
         return Integer.toString(devicePort);
     }
 
-    void saveDevice(final String device, final int port)
+    public void saveDevice(final String device, final int port)
     {
         deviceName = device;
         devicePort = port;
@@ -124,13 +129,37 @@ class Configuration
         prefEditor.apply();
     }
 
-    boolean isExitConfirm()
+    public boolean isExitConfirm()
     {
         return exitConfirm;
     }
 
-    String getDefaultSoundControl()
+    public String getDefaultSoundControl()
     {
         return defaultSoundControl;
+    }
+
+    public void setDeviceSelectors(List<ReceiverInformationMsg.Selector> deviceSelectors)
+    {
+        final StringBuilder str = new StringBuilder();
+        for (ReceiverInformationMsg.Selector d : deviceSelectors)
+        {
+            if (!str.toString().isEmpty())
+            {
+                str.append(",");
+            }
+            str.append(d.getId());
+        }
+        String selectors = str.toString();
+
+        Logging.info(this, "Device selectors: " + selectors);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putString(DEVICE_SELECTORS, selectors);
+        prefEditor.apply();
+    }
+
+    public boolean isSelectorVisible(final String code)
+    {
+        return preferences.getBoolean(DEVICE_SELECTORS + "_" + code, true);
     }
 }

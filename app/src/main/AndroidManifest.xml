@@ -29,12 +29,21 @@
         </activity>
 
         <activity
-            android:name="com.mkulesh.onpc.SettingsActivity"
+            android:name="com.mkulesh.onpc.config.PreferencesMain"
             android:label="@string/menu_app_settings"
             android:parentActivityName="com.mkulesh.onpc.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mkulesh.onpc.MainActivity" />
+        </activity>
+
+        <activity
+            android:name="com.mkulesh.onpc.config.PreferencesDeviceSelectors"
+            android:label="@string/pref_input_selectors"
+            android:parentActivityName="com.mkulesh.onpc.config.PreferencesMain">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mkulesh.onpc.config.PreferencesMain" />
         </activity>
 
     </application>

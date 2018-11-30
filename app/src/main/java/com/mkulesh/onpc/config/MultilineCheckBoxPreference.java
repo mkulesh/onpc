@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc.widgets;
+package com.mkulesh.onpc.config;
 
 import android.content.Context;
 import android.preference.CheckBoxPreference;

@@ -34,6 +34,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.mkulesh.onpc.config.Configuration;
+import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             return true;
         case R.id.menu_app_settings:
         {
-            Intent settings = new Intent(this, SettingsActivity.class);
+            Intent settings = new Intent(this, PreferencesMain.class);
             startActivityForResult(settings, SETTINGS_ACTIVITY_REQID);
             return true;
         }
