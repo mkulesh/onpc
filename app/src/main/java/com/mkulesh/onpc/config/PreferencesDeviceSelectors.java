@@ -17,7 +17,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -33,8 +32,6 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        final Configuration configuration = new Configuration(this);
-        setTheme(configuration.getTheme(Configuration.ThemeType.SETTINGS_THEME));
         super.onCreate(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -56,11 +53,11 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
         {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences_empty);
-            prepare((PreferenceActivity)getActivity(), getPreferenceScreen());
+            prepare(getActivity(), getPreferenceScreen());
         }
     }
 
-    private static void prepare(final PreferenceActivity activity, final PreferenceScreen preferenceScreen)
+    private static void prepare(final Activity activity, final PreferenceScreen preferenceScreen)
     {
         final String deviceSelectors = PreferenceManager.getDefaultSharedPreferences(activity)
                 .getString(Configuration.DEVICE_SELECTORS, "");

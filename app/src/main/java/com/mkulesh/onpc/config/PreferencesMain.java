@@ -31,8 +31,6 @@ public class PreferencesMain extends AppCompatPreferenceActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        final Configuration configuration = new Configuration(this);
-        setTheme(configuration.getTheme(Configuration.ThemeType.SETTINGS_THEME));
         super.onCreate(savedInstanceState);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

@@ -45,6 +45,8 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        final com.mkulesh.onpc.config.Configuration configuration = new com.mkulesh.onpc.config.Configuration(this);
+        setTheme(configuration.getTheme(com.mkulesh.onpc.config.Configuration.ThemeType.SETTINGS_THEME));
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
@@ -165,7 +167,6 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
         {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(R.string.menu_app_settings);
         }
     }
 
