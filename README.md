@@ -14,27 +14,28 @@ This app allows to remote control Onkyo Network Player like [ONKYO NS-6130](http
 - The app only needs network permission in order to communicate with target device
 
 ## Supported devices
-Currently, this app is only tested with ONKYO NS-6130 (Firmware version 2110-0000-0000-0010-0000, 2120-1000-0000-0010-0000, ...):
-
+Currently, this app is only tested with following devices:
+- ONKYO NS-6130 (Firmware versions 2110-0000-0000-0010-0000, 2120-1000-0000-0010-0000, ...)
 ![NS-6130](https://github.com/mkulesh/onpc/blob/master/images/ns_6130.png)
+- ONKYO TX-NR676E (Firmware version 1091-1020-3050-0010-0000)
 
 ## Screenshots
 * Playback screen in landscape orientation, Light (Teal and Deep Orange) theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/playback_horizontal.png" align="center" width="800">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center" width="800">
 
 * Playback screen in portrait orientation, Strong Dark (Black and Lime) theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/playback_vertical.png" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_vert.png" align="center" height="800">
 
-* Media list screen, Strong Dark (Black and Lime) theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/madia_list.png" align="center" height="800">
+* Media list screen, Dark (Dim Gray and Yellow) theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/tablet_tx_nr676_media_hor.png" align="center" height="800">
 
 * Device info screen, Light (Indigo and Orange) theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/device_info.png" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_device_vert.png" align="center" height="800">
 
 For more screenshots, see directory images/screenshots.
 
 ## Limitations
-Some network services like Spotify, Tidal, AirPlay are currently not yet testet and may not work.
+Some network services like Spotify, Tidal, AirPlay are currently not yet tested and may not work.
 
 ## Documentation
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in this repository on in 'doc' directory.
