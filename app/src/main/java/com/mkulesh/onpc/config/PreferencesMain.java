@@ -13,7 +13,10 @@
 
 package com.mkulesh.onpc.config;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -23,6 +26,8 @@ import com.mkulesh.onpc.R;
 
 public class PreferencesMain extends AppCompatPreferenceActivity
 {
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -30,8 +35,17 @@ public class PreferencesMain extends AppCompatPreferenceActivity
         setTheme(configuration.getTheme(Configuration.ThemeType.SETTINGS_THEME));
         super.onCreate(savedInstanceState);
 
-        final MyPreferenceFragment pf = new MyPreferenceFragment();
-        getFragmentManager().beginTransaction().replace(android.R.id.content, pf).commit();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            getFragmentManager().beginTransaction().replace(
+                    android.R.id.content, new MyPreferenceFragment()).commit();
+        }
+        else
+        {
+            addPreferencesFromResource(R.xml.preferences_main);
+            prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), this);
+            prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
+        }
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment
@@ -41,43 +55,44 @@ public class PreferencesMain extends AppCompatPreferenceActivity
         {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences_main);
-            prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), getActivity().getIntent());
+            prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), getActivity());
             prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
         }
+    }
 
-        private void prepareListPreference(final ListPreference listPreference, final Intent intent)
+    private static void prepareListPreference(final ListPreference listPreference, final Activity activity)
+    {
+        if (listPreference == null)
         {
-            if (listPreference == null)
-            {
-                return;
-            }
-
-            if (listPreference.getValue() == null)
-            {
-                // to ensure we don't get a null value
-                // set first value by default
-                listPreference.setValueIndex(0);
-            }
-
-            if (listPreference.getEntry() != null)
-            {
-                listPreference.setSummary(listPreference.getEntry().toString());
-            }
-            listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-            {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue)
-                {
-                    listPreference.setValue(newValue.toString());
-                    preference.setSummary(listPreference.getEntry().toString());
-                    if (intent != null)
-                    {
-                        getActivity().finish();
-                        getActivity().startActivity(intent);
-                    }
-                    return true;
-                }
-            });
+            return;
         }
+
+        if (listPreference.getValue() == null)
+        {
+            // to ensure we don't get a null value
+            // set first value by default
+            listPreference.setValueIndex(0);
+        }
+
+        if (listPreference.getEntry() != null)
+        {
+            listPreference.setSummary(listPreference.getEntry().toString());
+        }
+        listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                listPreference.setValue(newValue.toString());
+                preference.setSummary(listPreference.getEntry().toString());
+                if (activity != null)
+                {
+                    final Intent intent = activity.getIntent();
+                    activity.finish();
+                    activity.startActivity(intent);
+                }
+                return true;
+            }
+        });
     }
 }

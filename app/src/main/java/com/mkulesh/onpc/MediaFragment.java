@@ -221,10 +221,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         for (int i = 0; i < selNumber; i++)
         {
             final ReceiverInformationMsg.Selector s = state.deviceSelectors.get(i);
-            if (!activity.getConfiguration().isSelectorVisible(s.getId()))
-            {
-                continue;
-            }
             final InputSelectorMsg msg = new InputSelectorMsg(s.getId());
             if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
             {
@@ -251,24 +247,27 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
         {
             final View v = selectorPaletteLayout.getChildAt(i);
-            if (v instanceof AppCompatImageButton)
+            if (v instanceof AppCompatImageButton && v.getTag() instanceof OperationCommandMsg.Command)
             {
                 final AppCompatImageButton b = (AppCompatImageButton) v;
-                if (b.getTag() instanceof OperationCommandMsg.Command)
-                {
-                    setButtonEnabled(b, b.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
-                }
+                setButtonEnabled(b, b.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
             }
-            if (v instanceof AppCompatButton)
+            if (v instanceof AppCompatButton && v.getTag() instanceof InputSelectorMsg.InputType)
             {
                 final AppCompatButton b = (AppCompatButton) v;
-                if (b.getTag() instanceof InputSelectorMsg.InputType)
+                final InputSelectorMsg.InputType s = (InputSelectorMsg.InputType)(b.getTag());
+                if (s == state.inputType || activity.getConfiguration().isSelectorVisible(s.getCode()))
                 {
-                    setButtonSelected(b, b.getTag() == state.inputType);
+                    b.setVisibility(View.VISIBLE);
+                    setButtonSelected(b, s == state.inputType);
                     if (b.isSelected())
                     {
                         b.getParent().requestChildFocus(b, b);
                     }
+                }
+                else
+                {
+                    b.setVisibility(View.GONE);
                 }
             }
         }

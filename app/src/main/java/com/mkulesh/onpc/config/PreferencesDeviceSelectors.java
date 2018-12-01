@@ -13,9 +13,11 @@
 
 package com.mkulesh.onpc.config;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -26,6 +28,8 @@ import com.mkulesh.onpc.utils.Logging;
 
 public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
 {
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -33,8 +37,16 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
         setTheme(configuration.getTheme(Configuration.ThemeType.SETTINGS_THEME));
         super.onCreate(savedInstanceState);
 
-        final MyPreferenceFragment pf = new MyPreferenceFragment();
-        getFragmentManager().beginTransaction().replace(android.R.id.content, pf).commit();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            getFragmentManager().beginTransaction().replace(
+                    android.R.id.content, new MyPreferenceFragment()).commit();
+        }
+        else
+        {
+            addPreferencesFromResource(R.xml.preferences_empty);
+            prepare(this, getPreferenceScreen());
+        }
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment
@@ -44,45 +56,48 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
         {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences_empty);
+            prepare((PreferenceActivity)getActivity(), getPreferenceScreen());
+        }
+    }
 
-            Context context = getActivity();
-            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            prepareSelectors(preferences.getString(Configuration.DEVICE_SELECTORS, ""));
+    private static void prepare(final PreferenceActivity activity, final PreferenceScreen preferenceScreen)
+    {
+        final String deviceSelectors = PreferenceManager.getDefaultSharedPreferences(activity)
+                .getString(Configuration.DEVICE_SELECTORS, "");
+        prepareSelectors(deviceSelectors, activity, preferenceScreen);
+    }
+
+    private static void prepareSelectors(final String deviceSelectors,
+                                         final Activity activity, final PreferenceScreen preferenceScreen)
+    {
+        if (deviceSelectors.isEmpty())
+        {
+            return;
+        }
+        String[] tokens = deviceSelectors.split(",");
+        if (tokens.length == 0)
+        {
+            return;
         }
 
-        private void prepareSelectors(final String deviceSelectors)
+        for (String s : tokens)
         {
-            if (deviceSelectors.isEmpty())
+            final InputSelectorMsg.InputType inputType =
+                    (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
+                            s, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
+            if (inputType == InputSelectorMsg.InputType.NONE)
             {
-                return;
-            }
-            String[] tokens = deviceSelectors.split(",");
-            if (tokens.length == 0)
-            {
-                return;
+                Logging.info(activity, "Input selector not known: " + s);
+                continue;
             }
 
-            Logging.info(this, "Device selectors: " + deviceSelectors);
-            PreferenceScreen preferenceScreen = this.getPreferenceScreen();
-            for (String s : tokens)
-            {
-                final InputSelectorMsg.InputType inputType =
-                        (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
-                                s, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
-                if (inputType == InputSelectorMsg.InputType.NONE)
-                {
-                    Logging.info(this, "Input selector not known: " + s);
-                    continue;
-                }
-
-                final MultilineCheckBoxPreference p =
-                        new MultilineCheckBoxPreference(preferenceScreen.getContext(), null);
-                p.setDefaultValue(true);
-                p.setWidgetLayoutResource(R.layout.settings_check_box);
-                p.setTitle(getString(inputType.getDescriptionId()));
-                p.setKey(Configuration.DEVICE_SELECTORS + "_" + s);
-                preferenceScreen.addPreference(p);
-            }
+            final MultilineCheckBoxPreference p =
+                    new MultilineCheckBoxPreference(preferenceScreen.getContext(), null);
+            p.setDefaultValue(true);
+            p.setWidgetLayoutResource(R.layout.settings_check_box);
+            p.setTitle(activity.getString(inputType.getDescriptionId()));
+            p.setKey(Configuration.DEVICE_SELECTORS + "_" + inputType.getCode());
+            preferenceScreen.addPreference(p);
         }
     }
 }
