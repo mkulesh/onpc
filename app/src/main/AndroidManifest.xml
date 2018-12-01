@@ -39,7 +39,16 @@
 
         <activity
             android:name="com.mkulesh.onpc.config.PreferencesDeviceSelectors"
-            android:label="@string/pref_input_selectors"
+            android:label="@string/pref_device_selectors"
+            android:parentActivityName="com.mkulesh.onpc.config.PreferencesMain">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mkulesh.onpc.config.PreferencesMain" />
+        </activity>
+
+        <activity
+            android:name="com.mkulesh.onpc.config.PreferencesListeningModes"
+            android:label="@string/pref_listening_modes"
             android:parentActivityName="com.mkulesh.onpc.config.PreferencesMain">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -234,25 +235,17 @@ public class MonitorFragment extends BaseFragment
         // fast selector for listening mode
         final HorizontalScrollView listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
         listeningModeLayout.setVisibility(View.VISIBLE);
-        final ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
-        {
-            ListeningModeMsg.Mode.MODE_00,
-            ListeningModeMsg.Mode.MODE_01,
-            ListeningModeMsg.Mode.MODE_09,
-            ListeningModeMsg.Mode.MODE_08,
-            ListeningModeMsg.Mode.MODE_0A,
-            ListeningModeMsg.Mode.MODE_11,
-            ListeningModeMsg.Mode.MODE_0C
-        };
         if (listeningModeLayout.getChildCount() == 1)
         {
             final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
-            for (ListeningModeMsg.Mode m : listeningModes)
+            for (ListeningModeMsg.Mode m : Configuration.getListeningModes())
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
                 final AppCompatButton b = createButton(
                         msg.getMode().getDescriptionId(), msg, msg.getMode(), null);
                 l.addView(b);
+                b.setVisibility(activity.getConfiguration().isListeningModeVisible(m.getCode())?
+                    View.VISIBLE : View.GONE);
                 deviceSoundButtons.add(b);
             }
         }
@@ -347,10 +340,19 @@ public class MonitorFragment extends BaseFragment
             }
             if (b.getTag() instanceof ListeningModeMsg.Mode)
             {
-                setButtonSelected(b, b.getTag() == state.listeningMode);
-                if (b.isSelected())
+                final ListeningModeMsg.Mode s = (ListeningModeMsg.Mode)(b.getTag());
+                if (s == state.listeningMode || activity.getConfiguration().isListeningModeVisible(s.getCode()))
                 {
-                    b.getParent().requestChildFocus(b, b);
+                    b.setVisibility(View.VISIBLE);
+                    setButtonSelected(b, s == state.listeningMode);
+                    if (b.isSelected())
+                    {
+                        b.getParent().requestChildFocus(b, b);
+                    }
+                }
+                else
+                {
+                    b.setVisibility(View.GONE);
                 }
             }
         }

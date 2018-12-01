@@ -38,12 +38,23 @@
 
     <PreferenceScreen
         android:icon="@null"
-        android:key="input_selectors"
-        android:title="@string/pref_input_selectors" >
+        android:key="device_selectors"
+        android:title="@string/pref_device_selectors" >
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.mkulesh.onpc"
             android:targetClass="com.mkulesh.onpc.config.PreferencesDeviceSelectors" >
+        </intent>
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="@null"
+        android:key="listening_modes"
+        android:title="@string/pref_listening_modes" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.mkulesh.onpc"
+            android:targetClass="com.mkulesh.onpc.config.PreferencesListeningModes" >
         </intent>
     </PreferenceScreen>
 

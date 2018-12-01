@@ -22,6 +22,7 @@ import android.support.annotation.StyleRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.Logging;
 
@@ -38,6 +39,18 @@ public class Configuration
     static final String SOUND_CONTROL = "sound_control";
     private static final String EXIT_CONFIRM = "exit_confirm";
     static final String DEVICE_SELECTORS = "device_selectors";
+    static final String LISTENING_MODES = "listening_modes";
+
+    private final static ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
+    {
+        ListeningModeMsg.Mode.MODE_00,
+        ListeningModeMsg.Mode.MODE_01,
+        ListeningModeMsg.Mode.MODE_09,
+        ListeningModeMsg.Mode.MODE_08,
+        ListeningModeMsg.Mode.MODE_0A,
+        ListeningModeMsg.Mode.MODE_11,
+        ListeningModeMsg.Mode.MODE_0C
+    };
 
     /*********************************************************
      * Handling of themes
@@ -161,5 +174,15 @@ public class Configuration
     public boolean isSelectorVisible(final String code)
     {
         return preferences.getBoolean(DEVICE_SELECTORS + "_" + code, true);
+    }
+
+    public static ListeningModeMsg.Mode[] getListeningModes()
+    {
+        return listeningModes;
+    }
+
+    public boolean isListeningModeVisible(final String code)
+    {
+        return preferences.getBoolean(LISTENING_MODES + "_" + code, true);
     }
 }
