@@ -26,7 +26,9 @@ import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.Logging;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Configuration
 {
@@ -39,6 +41,7 @@ public class Configuration
     static final String SOUND_CONTROL = "sound_control";
     private static final String EXIT_CONFIRM = "exit_confirm";
     static final String DEVICE_SELECTORS = "device_selectors";
+    static final String NETWORK_SERVICES = "network_services";
     static final String LISTENING_MODES = "listening_modes";
 
     private final static ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
@@ -174,6 +177,30 @@ public class Configuration
     public boolean isSelectorVisible(final String code)
     {
         return preferences.getBoolean(DEVICE_SELECTORS + "_" + code, true);
+    }
+
+    public void setNetworkServices(HashMap<String, String> networkServices)
+    {
+        final StringBuilder str = new StringBuilder();
+        for (Map.Entry<String, String> p : networkServices.entrySet())
+        {
+            if (!str.toString().isEmpty())
+            {
+                str.append(",");
+            }
+            str.append(p.getKey());
+        }
+        String selectors = str.toString();
+
+        Logging.info(this, "Network services: " + selectors);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putString(NETWORK_SERVICES, selectors);
+        prefEditor.apply();
+    }
+
+    public boolean isNetworkServiceVisible(final String code)
+    {
+        return preferences.getBoolean(NETWORK_SERVICES + "_" + code, true);
     }
 
     public static ListeningModeMsg.Mode[] getListeningModes()

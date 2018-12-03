@@ -58,4 +58,15 @@
         </intent>
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:icon="@null"
+        android:key="network_services"
+        android:title="@string/pref_network_services" >
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.mkulesh.onpc"
+            android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices" >
+        </intent>
+    </PreferenceScreen>
+
 </PreferenceScreen>

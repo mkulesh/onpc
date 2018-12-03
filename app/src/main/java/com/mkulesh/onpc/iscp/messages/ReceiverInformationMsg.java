@@ -89,6 +89,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     private String deviceId;
     private final HashMap<String, String> deviceProperties = new HashMap<>();
     private Bitmap deviceCover;
+    private final HashMap<String, String> networkServices = new HashMap<>();
     private final List<Selector> deviceSelectors = new ArrayList<>();
     private final Set<String> controlList = new HashSet<>();
 
@@ -114,6 +115,11 @@ public class ReceiverInformationMsg extends ISCPMessage
         return deviceCover;
     }
 
+    public HashMap<String, String> getNetworkServices()
+    {
+        return networkServices;
+    }
+
     public List<Selector> getDeviceSelectors()
     {
         return deviceSelectors;
@@ -128,7 +134,9 @@ public class ReceiverInformationMsg extends ISCPMessage
     public void parseXml() throws Exception
     {
         deviceProperties.clear();
+        networkServices.clear();
         deviceSelectors.clear();
+        controlList.clear();
         InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
@@ -168,6 +176,20 @@ public class ReceiverInformationMsg extends ISCPMessage
                         {
                             deviceProperties.put(en.getTagName(), en.getChildNodes().item(0).getNodeValue());
                         }
+                        else if ("netservicelist".equals(en.getTagName()))
+                        {
+                            final List<Element> elService = Utils.getElements(en, "netservice");
+                            for (Element element : elService)
+                            {
+                                final String id = element.getAttribute("id");
+                                final String value = element.getAttribute("value");
+                                final String name = element.getAttribute("name");
+                                if (id != null && value != null && Integer.parseInt(value) == 1 && name != null)
+                                {
+                                    networkServices.put(id.toUpperCase(), name);
+                                }
+                            }
+                        }
                         else if ("selectorlist".equals(en.getTagName()))
                         {
                             final List<Element> elSelectors = Utils.getElements(en, "selector");
@@ -197,6 +219,10 @@ public class ReceiverInformationMsg extends ISCPMessage
         for (Map.Entry<String, String> p : deviceProperties.entrySet())
         {
             Logging.info(this, "    Property: " + p.getKey() + "=" + p.getValue());
+        }
+        for (Map.Entry<String, String> p : networkServices.entrySet())
+        {
+            Logging.info(this, "    Service: " + p.getKey() + "=" + p.getValue());
         }
         for (Selector s : deviceSelectors)
         {

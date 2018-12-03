@@ -33,6 +33,7 @@
     <string name="pref_exit_confirm">Press back button twice for exit</string>
     <string name="pref_device_selectors">Device input selectors</string>
     <string name="pref_listening_modes">Listening modes</string>
+    <string name="pref_network_services">Network services</string>
 
     <!-- Sound Control -->
     <string name="pref_sound_control">Sound control</string>

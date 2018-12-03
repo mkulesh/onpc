@@ -71,14 +71,16 @@ class State
     final static String CONTROL_BD_CEC = "BD Control(CEC)";
     final static String CONTROL_TV_CEC = "TV Control(CEC)";
 
+    // Receiver Information
+    Bitmap deviceCover = null;
     Map<String, String> deviceProperties = new HashMap<>();
+    HashMap<String, String> networkServices = new HashMap<>();
+    List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
     private Set<String> controlList = new HashSet<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
     FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
-    Bitmap deviceCover = null;
-    List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
     InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
     DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
     DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
@@ -148,12 +150,12 @@ class State
         return playStatus != PlayStatusMsg.PlayStatus.STOP;
     }
 
-    public boolean isPlaybackMode()
+    boolean isPlaybackMode()
     {
         return uiType == ListTitleInfoMsg.UIType.PLAYBACK;
     }
 
-    public boolean isMenuMode()
+    boolean isMenuMode()
     {
         return uiType == ListTitleInfoMsg.UIType.MENU;
     }
@@ -307,10 +309,11 @@ class State
         try
         {
             msg.parseXml();
-            deviceProperties = msg.getDeviceProperties();
-            controlList = msg.getControlList();
             deviceCover = msg.getDeviceCover();
+            deviceProperties = msg.getDeviceProperties();
+            networkServices = msg.getNetworkServices();
             deviceSelectors = msg.getDeviceSelectors();
+            controlList = msg.getControlList();
             return true;
         }
         catch (Exception e)

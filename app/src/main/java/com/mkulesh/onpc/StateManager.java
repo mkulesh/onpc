@@ -193,9 +193,16 @@ class StateManager extends AsyncTask<Void, Void, Void>
             eventChanges.add(changed);
         }
 
-        if (msg instanceof ReceiverInformationMsg && !state.deviceSelectors.isEmpty())
+        if (msg instanceof ReceiverInformationMsg)
         {
-            activity.getConfiguration().setDeviceSelectors(state.deviceSelectors);
+            if (!state.deviceSelectors.isEmpty())
+            {
+                activity.getConfiguration().setDeviceSelectors(state.deviceSelectors);
+            }
+            if (!state.networkServices.isEmpty())
+            {
+                activity.getConfiguration().setNetworkServices(state.networkServices);
+            }
         }
 
         // no further message handling, if power off

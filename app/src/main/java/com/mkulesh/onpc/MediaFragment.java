@@ -301,7 +301,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             for (NetworkServiceMsg i : serviceItems)
             {
-                newItems.add(new NetworkServiceMsg(i));
+                if (i.getService() == state.serviceType
+                        || activity.getConfiguration().isNetworkServiceVisible(i.getService().getCode()))
+                {
+                    newItems.add(new NetworkServiceMsg(i));
+                }
             }
         }
         else if (state.isPlaybackMode())
