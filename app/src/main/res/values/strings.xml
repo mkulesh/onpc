@@ -18,8 +18,26 @@
     <string name="app_toolbar_title">Network Player</string>
     <string name="app_description">Onkyo Network Player Remote Control</string>
 
+    <string name="html_about"><![CDATA[
+    <p>This app allows to remote control Onkyo Network Player over the network</p>
+    <p>Copyright © 2018 by <b>Mikhail Kulesh</b></p>
+    <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
+    <h5>License</h5>
+    <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+       General Public License as published by the Free Software Foundation, either version 3 of the License,
+       or (at your option) any later version.</p>
+    <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+       even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+       GNU General Public License for more details. You should have received a copy of the GNU General
+       Public License along with this program.</p>
+    <h5>Used Open Source Libraries</h5>
+    <p>&#8226; <a href="http://materialdesignicons.com">Material Design Icons</a></p>
+    <p>&#8226; <a href="https://www.materialpalette.com">Material Design Palette</a></p>
+    ]]></string>
+
     <string name="menu_power_power">On/Standby</string>
     <string name="menu_app_settings">App settings</string>
+    <string name="menu_about">About</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
 
     <string name="title_monitor">Monitor</string>
