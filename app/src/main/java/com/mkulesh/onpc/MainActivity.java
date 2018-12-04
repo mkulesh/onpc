@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.config.Configuration;
@@ -66,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (configuration.isKeepScreenOn())
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_toolbar_title);

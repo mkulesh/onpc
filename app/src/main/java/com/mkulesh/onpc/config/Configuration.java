@@ -39,7 +39,10 @@ public class Configuration
     private static final String SERVER_NAME = "server_name";
     private static final String SERVER_PORT = "server_port";
     static final String SOUND_CONTROL = "sound_control";
+
+    private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String EXIT_CONFIRM = "exit_confirm";
+
     static final String DEVICE_SELECTORS = "device_selectors";
     static final String NETWORK_SERVICES = "network_services";
     static final String LISTENING_MODES = "listening_modes";
@@ -69,7 +72,7 @@ public class Configuration
 
     private String deviceName;
     private int devicePort;
-    private final boolean exitConfirm;
+    private final boolean keepScreenOn, exitConfirm;
     private final String defaultSoundControl;
 
     public Configuration(Context context)
@@ -80,6 +83,7 @@ public class Configuration
         deviceName = preferences.getString(Configuration.SERVER_NAME, "");
         devicePort = preferences.getInt(Configuration.SERVER_PORT, BroadcastSearch.ISCP_PORT);
 
+        keepScreenOn = preferences.getBoolean(Configuration.KEEP_SCREEN_ON, false);
         exitConfirm = preferences.getBoolean(Configuration.EXIT_CONFIRM, false);
 
         defaultSoundControl = preferences.getString(Configuration.SOUND_CONTROL,
@@ -143,6 +147,11 @@ public class Configuration
         prefEditor.putString(SERVER_NAME, device);
         prefEditor.putInt(SERVER_PORT, port);
         prefEditor.apply();
+    }
+
+    public boolean isKeepScreenOn()
+    {
+        return keepScreenOn;
     }
 
     public boolean isExitConfirm()
