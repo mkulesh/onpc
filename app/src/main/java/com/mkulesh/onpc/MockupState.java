@@ -14,7 +14,6 @@
 package com.mkulesh.onpc;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
@@ -38,7 +37,13 @@ class MockupState extends State
         deviceProperties.put("model", "NS-6130");
         deviceProperties.put("year", "2016");
         deviceProperties.put("firmwareversion", "1234-5678-910");
-        deviceCover = BitmapFactory.decodeResource(context.getResources(), R.drawable.device_connect);
+        networkServices.put("04", "Pandora");
+        networkServices.put("0A", "Spotify");
+        networkServices.put("0E", "TuneIn");
+        networkServices.put("12", "Deezer");
+        networkServices.put("18", "Airplay");
+        networkServices.put("1B", "Tidal");
+        networkServices.put("1D", "Play Queue");
         deviceSelectors.add(new ReceiverInformationMsg.Selector("2B", "Network", "2B", false));
         deviceSelectors.add(new ReceiverInformationMsg.Selector("29", "Front USB", "29", true));
         deviceSelectors.add(new ReceiverInformationMsg.Selector("2A", "Rear USB", "2A", true));

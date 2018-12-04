@@ -72,7 +72,6 @@ class State
     final static String CONTROL_TV_CEC = "TV Control(CEC)";
 
     // Receiver Information
-    Bitmap deviceCover = null;
     Map<String, String> deviceProperties = new HashMap<>();
     HashMap<String, String> networkServices = new HashMap<>();
     List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
@@ -309,7 +308,6 @@ class State
         try
         {
             msg.parseXml();
-            deviceCover = msg.getDeviceCover();
             deviceProperties = msg.getDeviceProperties();
             networkServices = msg.getNetworkServices();
             deviceSelectors = msg.getDeviceSelectors();

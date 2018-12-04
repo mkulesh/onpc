@@ -27,6 +27,7 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -167,27 +168,27 @@ abstract public class BaseFragment extends Fragment
 
     protected void prepareButtonListeners(@NonNull View b, final ISCPMessage msg, final ButtonListener listener)
     {
-            b.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    if (activity.getStateManager() != null && msg != null)
-                    {
-                       activity.getStateManager().sendMessage(msg);
-                    }
-                    if (listener != null)
-                    {
-                        listener.onPostProcessing();
-                    }
-                }
-            });
-
-        if (b instanceof AppCompatImageButton)
+        b.setClickable(true);
+        b.setOnClickListener(new View.OnClickListener()
         {
-            AppCompatImageButton bb = (AppCompatImageButton) b;
-            bb.setLongClickable(true);
-            bb.setOnLongClickListener(new View.OnLongClickListener()
+            @Override
+            public void onClick(View v)
+            {
+                if (activity.getStateManager() != null && msg != null)
+                {
+                   activity.getStateManager().sendMessage(msg);
+                }
+                if (listener != null)
+                {
+                    listener.onPostProcessing();
+                }
+            }
+        });
+
+        if (b instanceof AppCompatImageButton || b instanceof ImageView)
+        {
+            b.setLongClickable(true);
+            b.setOnLongClickListener(new View.OnLongClickListener()
             {
                 @Override
                 public boolean onLongClick(View v)

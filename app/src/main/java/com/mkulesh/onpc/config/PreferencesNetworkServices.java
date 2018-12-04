@@ -91,6 +91,7 @@ public class PreferencesNetworkServices extends AppCompatPreferenceActivity
             final MultilineCheckBoxPreference p =
                     new MultilineCheckBoxPreference(preferenceScreen.getContext(), null);
             p.setDefaultValue(true);
+            p.setIcon(serviceType.getImageId());
             p.setWidgetLayoutResource(R.layout.settings_check_box);
             p.setTitle(activity.getString(serviceType.getDescriptionId()));
             p.setKey(Configuration.NETWORK_SERVICES + "_" + serviceType.getCode());

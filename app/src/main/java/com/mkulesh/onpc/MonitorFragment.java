@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -112,6 +113,9 @@ public class MonitorFragment extends BaseFragment
         }
 
         cover = rootView.findViewById(R.id.tv_cover);
+        cover.setContentDescription(activity.getResources().getString(R.string.tv_display_mode));
+        prepareButtonListeners(cover, new DisplayModeMsg(DisplayModeMsg.TOGGLE));
+
         seekBar = rootView.findViewById(R.id.progress_bar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
@@ -267,6 +271,7 @@ public class MonitorFragment extends BaseFragment
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText("");
         ((TextView) rootView.findViewById(R.id.tv_title)).setText("");
         ((TextView) rootView.findViewById(R.id.tv_file_format)).setText("");
+        cover.setEnabled(false);
         cover.setImageResource(R.drawable.empty_cover);
         seekBar.setEnabled(false);
         seekBar.setProgress(0);
@@ -314,6 +319,7 @@ public class MonitorFragment extends BaseFragment
         }
 
         // cover
+        cover.setEnabled(true);
         if (state.cover == null)
         {
             cover.setImageResource(R.drawable.empty_cover);
