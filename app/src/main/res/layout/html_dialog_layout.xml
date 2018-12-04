@@ -27,7 +27,7 @@
 
             <TextView
                 style="@style/PrimaryTextViewStyle"
-                android:id="@+id/about_message"
+                android:id="@+id/text_message"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/secondary_text_size"/>

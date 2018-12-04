@@ -13,12 +13,9 @@
 
 package com.mkulesh.onpc;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,20 +25,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.config.Configuration;
@@ -50,6 +40,7 @@ import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
@@ -142,49 +133,13 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         case R.id.menu_about:
         {
-            showAbout();
+            HtmlDialogBuilder.buildDialog(this,
+                    R.mipmap.ic_launcher, R.string.app_name, R.string.html_about).show();
             return true;
         }
         default:
             return super.onOptionsItemSelected(menuItem);
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
-    private void showAbout()
-    {
-        final FrameLayout frameView = new FrameLayout(this);
-        final AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.app_name)
-                .setIcon(R.mipmap.ic_launcher)
-                .setCancelable(true)
-                .setView(frameView)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // empty
-                    }
-                }).create();
-
-        final LayoutInflater inflater = alertDialog.getLayoutInflater();
-        final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.html_dialog_layout, frameView);
-
-        Spanned result;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
-            result = Html.fromHtml(getResources().getString(R.string.html_about), Html.FROM_HTML_MODE_LEGACY);
-        }
-        else
-        {
-            result = Html.fromHtml(getResources().getString(R.string.html_about));
-        }
-
-        final TextView aboutMessage = dialogFrame.findViewById(R.id.about_message);
-        aboutMessage.setText(result);
-        aboutMessage.setMovementMethod(LinkMovementMethod.getInstance());
-
-        alertDialog.show();
     }
 
     @Override
