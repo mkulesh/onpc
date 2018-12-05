@@ -175,58 +175,85 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
     private void processInputData(ByteBuffer buffer)
     {
         buffer.flip();
+        final int incoming = buffer.remaining();
         byte[] bytes;
 
         if (packetJoinBuffer == null)
         {
             // A new buffer - just copy it
-            bytes = new byte[buffer.remaining()];
+            bytes = new byte[incoming];
             buffer.get(bytes);
         }
         else
         {
             // Remaining part of existing buffer - join it
             final int s1 = packetJoinBuffer.length;
-            final int s2 = buffer.remaining();
-            bytes = new byte[s1 + s2];
+            bytes = new byte[s1 + incoming];
             System.arraycopy(packetJoinBuffer, 0, bytes, 0, s1);
-            buffer.get(bytes, s1, s2);
+            buffer.get(bytes, s1, incoming);
             packetJoinBuffer = null;
         }
 
         int remaining = bytes.length;
         while (remaining > 0)
         {
-            EISCPMessage raw = null;
+            final int startIndex = EISCPMessage.getMsgStartIndex(bytes);
+            if (startIndex != 0)
+            {
+                Logging.info(this, "<< error: unexpected position of message start: " + startIndex + ", remaining=" + remaining + "B");
+            }
+
+            // convert header and data sizes
+            int hSize, dSize;
             try
             {
-                final int startIndex = EISCPMessage.getMsgStartIndex(bytes);
-                if (startIndex != 0)
-                {
-                    Logging.info(this, "unexpected position of start index: " + startIndex);
-                }
-
-                final int hSize = EISCPMessage.getHeaderSize(bytes, startIndex);
-                final int dSize = EISCPMessage.getDataSize(bytes, startIndex);
-                final int expectedSize = hSize + dSize;
-                if (expectedSize <= bytes.length)
-                {
-                    messageId++;
-                    raw = new EISCPMessage(messageId, bytes, startIndex, hSize, dSize);
-                    remaining = Math.max(0, bytes.length - raw.getMsgSize());
-                    inputQueue.add(MessageFactory.create(raw));
-                }
-                else
-                {
-                    packetJoinBuffer = bytes;
-                    return;
-                }
+                hSize = EISCPMessage.getHeaderSize(bytes, startIndex);
+                dSize = EISCPMessage.getDataSize(bytes, startIndex);
             }
             catch (Exception e)
             {
-                Logging.info(this, "Error: " + e.getLocalizedMessage() + ", message: "
-                        + (raw != null ? raw.toString() : "null"));
-                break;
+                Logging.info(this, "<< error: invalid expected size: " + e.getLocalizedMessage());
+                packetJoinBuffer = null;
+                return;
+            }
+
+            // inspect expected size
+            final int expectedSize = hSize + dSize;
+            if (hSize < 0 || dSize < 0 || expectedSize > remaining)
+            {
+                Logging.info(this, "<< message not complete, expected size=" + expectedSize + ", remaining=" + remaining + "B");
+                packetJoinBuffer = bytes;
+                return;
+            }
+
+            // try to convert raw message. In case of any errors, skip expectedSize
+            EISCPMessage raw = null;
+            try
+            {
+                messageId++;
+                raw = new EISCPMessage(messageId, bytes, startIndex, hSize, dSize);
+            }
+            catch (Exception e)
+            {
+                remaining = Math.max(0, bytes.length - expectedSize);
+                Logging.info(this, "<< error: invalid raw message: " + e.getLocalizedMessage() + ", remaining=" + remaining + "B");
+            }
+
+            if (raw != null)
+            {
+                remaining = Math.max(0, bytes.length - raw.getMsgSize());
+                try
+                {
+                    if (!"NTM".equals(raw.getCode()))
+                    {
+                        Logging.info(this, "<< new message " + raw.getCode() + ", size=" + raw.getMsgSize() + "B, remaining=" + remaining + "B");
+                    }
+                    inputQueue.add(MessageFactory.create(raw));
+                }
+                catch (Exception e)
+                {
+                    Logging.info(this, "<< error: ignored: " + e.getLocalizedMessage() + ": " + raw.toString());
+                }
             }
 
             if (remaining > 0)

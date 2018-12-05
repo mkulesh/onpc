@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 public class EISCPMessage
 {
-    public static final Charset UTF_8 = Charset.forName("UTF-8");
+    private static final Charset UTF_8 = Charset.forName("UTF-8");
 
     private final static String MSG_START = "ISCP";
     private final static String INVALID_MSG = "INVALID";
@@ -120,16 +120,16 @@ public class EISCPMessage
     static int getHeaderSize(byte[] bytes, int startIndex) throws Exception
     {
         // Header Size : 4 bytes after "ISCP"
-        try
+        if (startIndex + MSG_START.length() + 4 <= bytes.length)
         {
-            if (startIndex + MSG_START.length() + 4 <= bytes.length)
+            try
             {
                 return ByteBuffer.wrap(bytes, startIndex + MSG_START.length(), 4).getInt();
             }
-        }
-        catch (Exception e)
-        {
-            throw new Exception("Can not decode header size: " + e.getLocalizedMessage());
+            catch (Exception e)
+            {
+                throw new Exception("Can not decode header size: " + e.getLocalizedMessage());
+            }
         }
         return -1;
     }
@@ -137,16 +137,16 @@ public class EISCPMessage
     static int getDataSize(byte[] bytes, int startIndex) throws Exception
     {
         // Data Size : 4 bytes after Header Size
-        try
+        if (startIndex + MSG_START.length() + 8 <= bytes.length)
         {
-            if (startIndex + MSG_START.length() + 8 <= bytes.length)
+            try
             {
                 return ByteBuffer.wrap(bytes, startIndex + MSG_START.length() + 4, 4).getInt();
             }
-        }
-        catch (Exception e)
-        {
-            throw new Exception("Can not decode data size: " + e.getLocalizedMessage());
+            catch (Exception e)
+            {
+                throw new Exception("Can not decode data size: " + e.getLocalizedMessage());
+            }
         }
         return -1;
     }
