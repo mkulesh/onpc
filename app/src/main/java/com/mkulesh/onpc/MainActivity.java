@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         switch (menuItem.getItemId())
         {
         case R.id.menu_power_standby:
-            if (getStateManager() != null)
+            if (isConnected())
             {
                 if (getStateManager().getState().isOn())
                 {
@@ -298,6 +298,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         messageChannel = null;
         stateManager = null;
+    }
+
+    public boolean isConnected()
+    {
+        return stateManager != null;
     }
 
     public StateManager getStateManager()

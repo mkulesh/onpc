@@ -89,7 +89,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         selectedItem = null;
-        if (v.getId() == listView.getId() && activity.getStateManager() != null)
+        if (v.getId() == listView.getId() && activity.isConnected())
         {
             final State state = activity.getStateManager().getState();
             final ReceiverInformationMsg.Selector selector = state.getActualSelector();
@@ -125,7 +125,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     public boolean onContextItemSelected(MenuItem item)
     {
-        if (selectedItem != null && activity.getStateManager() != null)
+        if (selectedItem != null && activity.isConnected())
         {
             final State state = activity.getStateManager().getState();
             final int idx = selectedItem.getMessageId();
@@ -326,7 +326,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
     {
-        if (activity.getStateManager() != null && listViewAdapter != null && position < listViewAdapter.getCount())
+        if (activity.isConnected() && listViewAdapter != null && position < listViewAdapter.getCount())
         {
             final ISCPMessage selectedItem = listViewAdapter.getItem(position);
             if (selectedItem != null)

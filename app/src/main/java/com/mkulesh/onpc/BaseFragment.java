@@ -88,7 +88,7 @@ abstract public class BaseFragment extends Fragment
         {
             updateActiveView(state, eventChanges);
         }
-        if (activity.getStateManager() != null && state != null && state.popup != null)
+        if (activity.isConnected() && state != null && state.popup != null)
         {
             final CustomPopupMsg inMsg = state.popup;
             state.popup = null;
@@ -174,7 +174,7 @@ abstract public class BaseFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                if (activity.getStateManager() != null && msg != null)
+                if (activity.isConnected() && msg != null)
                 {
                    activity.getStateManager().sendMessage(msg);
                 }

@@ -133,7 +133,7 @@ public class MonitorFragment extends BaseFragment
 
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                if (activity.getStateManager() != null)
+                if (activity.isConnected())
                 {
                     seekTime(progressChanged);
                 }
