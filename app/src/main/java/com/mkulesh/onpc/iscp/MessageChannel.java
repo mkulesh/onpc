@@ -221,7 +221,6 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
             final int expectedSize = hSize + dSize;
             if (hSize < 0 || dSize < 0 || expectedSize > remaining)
             {
-                Logging.info(this, "<< message not complete, expected size=" + expectedSize + ", remaining=" + remaining + "B");
                 packetJoinBuffer = bytes;
                 return;
             }

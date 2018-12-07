@@ -105,7 +105,7 @@ abstract public class BaseFragment extends Fragment
                 @Override
                 public void onButtonSelected(final CustomPopupMsg outMsg)
                 {
-                    activity.getStateManager().sendPopupMsg(outMsg);
+                    activity.getStateManager().sendMessage(outMsg);
                 }
             });
             final AlertDialog alertDialog = builder.build(inMsg);

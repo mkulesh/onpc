@@ -211,9 +211,18 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         // Top menu button
         {
             final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.TOP);
-            selectorPaletteLayout.addView(createButton(
+            final AppCompatImageButton b = createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand(), 0, buttonMarginHorizontal, 0));
+                    msg, msg.getCommand(), 0, buttonMarginHorizontal, 0);
+            prepareButtonListeners(b, msg, new ButtonListener()
+                    {
+                        @Override
+                        public void onPostProcessing()
+                        {
+                            progressIndicator.setVisibility(View.VISIBLE);
+                        }
+                    });
+            selectorPaletteLayout.addView(b);
         }
 
         // Selectors
@@ -368,7 +377,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             title.append(state.title);
         }
-        else
+        else if (state.inputType.isMediaList())
         {
             title.append(state.titleBar);
             if (state.numberOfItems > 0)
@@ -377,7 +386,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                         activity.getResources().getString(R.string.medialist_items));
             }
         }
+        else
+        {
+            title.append(state.titleBar).append("/").append(
+                    activity.getResources().getString(R.string.medialist_no_items));
+        }
         titleBar.setText(title.toString());
-        progressIndicator.setVisibility(processing ? View.VISIBLE : View.INVISIBLE);
+        progressIndicator.setVisibility(state.inputType.isMediaList() && processing ? View.VISIBLE : View.INVISIBLE);
     }
 }

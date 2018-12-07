@@ -179,10 +179,6 @@ class State
         {
             return isCommonChange(process((ReceiverInformationMsg) msg));
         }
-        if (msg instanceof InputSelectorMsg)
-        {
-            return isCommonChange(process((InputSelectorMsg) msg));
-        }
         if (msg instanceof DimmerLevelMsg)
         {
             return isCommonChange(process((DimmerLevelMsg) msg));
@@ -263,6 +259,10 @@ class State
         {
             return isCommonChange(process((CustomPopupMsg) msg));
         }
+        if (msg instanceof InputSelectorMsg)
+        {
+            return process((InputSelectorMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+        }
         if (msg instanceof ListTitleInfoMsg)
         {
             return process((ListTitleInfoMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
@@ -325,6 +325,10 @@ class State
     {
         final boolean changed = inputType != msg.getInputType();
         inputType = msg.getInputType();
+        if (!inputType.isMediaList())
+        {
+            clearItems();
+        }
         return changed;
     }
 
@@ -550,6 +554,12 @@ class State
 
     private boolean process(XmlListInfoMsg msg)
     {
+        if (!inputType.isMediaList())
+        {
+            mediaItems.clear();
+            Logging.info(msg, "skipped: input channel " + inputType.toString() + " is not a media list");
+            return true;
+        }
         try
         {
             Logging.info(msg, "processing XmlListInfoMsg");

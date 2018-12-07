@@ -45,9 +45,9 @@ public class InputSelectorMsg extends ISCPMessage
         TUNER("26", R.string.input_selector_tuner),
         MUSIC_SERVER("27", R.string.input_selector_music_server),
         INTERNET_RADIO("28", R.string.input_selector_internet_radio),
-        USB_FRONT("29", R.string.input_selector_usb_front),
-        USB_REAR("2A", R.string.input_selector_usb_rear),
-        NET("2B", R.string.input_selector_net),
+        USB_FRONT("29", R.string.input_selector_usb_front, true),
+        USB_REAR("2A", R.string.input_selector_usb_rear, true),
+        NET("2B", R.string.input_selector_net, true),
         USB_TOGGLE("2C", R.string.input_selector_usb_toggle),
         AIRPLAY("2D", R.string.input_selector_airplay),
         BLUETOOTH("2E", R.string.input_selector_bluetooth),
@@ -64,21 +64,24 @@ public class InputSelectorMsg extends ISCPMessage
         HDMI_5("55", R.string.input_selector_hdmi_5),
         HDMI_6("56", R.string.input_selector_hdmi_6),
         HDMI_7("57", R.string.input_selector_hdmi_7),
-        NONE("XX");
+        NONE("XX", -1);
 
         final String code;
         final int descriptionId;
+        final boolean mediaList;
 
-        InputType(String code)
+        InputType(String code, final int descriptionId, final boolean mediaList)
         {
             this.code = code;
-            this.descriptionId = -1;
+            this.descriptionId = descriptionId;
+            this.mediaList = mediaList;
         }
 
         InputType(String code, final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
+            this.mediaList = false;
         }
 
         public String getCode()
@@ -89,6 +92,11 @@ public class InputSelectorMsg extends ISCPMessage
         public int getDescriptionId()
         {
             return descriptionId;
+        }
+
+        public boolean isMediaList()
+        {
+            return mediaList;
         }
     }
 

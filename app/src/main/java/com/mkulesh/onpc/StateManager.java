@@ -24,7 +24,6 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
-import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
@@ -357,16 +356,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
     void requestSkipNextTimeMsg(final int number)
     {
         skipNextTimeMsg.set(number);
-    }
-
-    void sendPopupMsg(CustomPopupMsg pMsg)
-    {
-        final EISCPMessage cmdMsg = pMsg.getCmdMsg();
-        if (cmdMsg != null)
-        {
-            requestXmlList.set(true);
-            messageChannel.sendMessage(cmdMsg);
-        }
     }
 
     private void sendQueries(final String[] queries, final String purpose)
