@@ -74,9 +74,12 @@ class StateManager extends AsyncTask<Void, Void, Void>
     // Queries for different states
     private final static String powerStateQueries [] = new String[] {
         PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
-        InputSelectorMsg.CODE, DimmerLevelMsg.CODE, DigitalFilterMsg.CODE,
-        AudioMutingMsg.CODE, AutoPowerMsg.CODE, GoogleCastVersionMsg.CODE,
-        GoogleCastAnalyticsMsg.CODE, HdmiCecMsg.CODE
+        InputSelectorMsg.CODE, AudioMutingMsg.CODE, GoogleCastVersionMsg.CODE
+    };
+
+    private final static String settingsQueries [] = new String[] {
+            DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
+            HdmiCecMsg.CODE, GoogleCastAnalyticsMsg.CODE
     };
 
     private final static String playStateQueries [] = new String[] {
@@ -120,6 +123,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel.sendMessage(
                 new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
         sendQueries(powerStateQueries, "requesting power state...");
+        sendQueries(settingsQueries, "requesting settings...");
 
         final BlockingQueue<Timer> timerQueue = new ArrayBlockingQueue<>(1, true);
         skipNextTimeMsg.set(0);
@@ -245,6 +249,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof PowerStatusMsg)
         {
+            sendQueries(settingsQueries, "requesting settings...");
             sendQueries(playStateQueries, "requesting play state...");
             requestListState();
             return true;

@@ -18,11 +18,13 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -185,55 +187,62 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
 
         // Dimmer level
-        if (state.isControlExists(State.CONTROL_DIMMER))
-        {
-            rootView.findViewById(R.id.device_dimmer_level_layout).setVisibility(View.VISIBLE);
-            ((TextView) rootView.findViewById(R.id.device_dimmer_level)).setText(state.dimmerLevel.getDescriptionId());
-            setButtonEnabled(R.id.device_dimmer_level_toggle, state.isOn());
-        }
-        else
-        {
-            rootView.findViewById(R.id.device_dimmer_level_layout).setVisibility(View.GONE);
-        }
+        prepareSettingPanel(state, state.dimmerLevel != DimmerLevelMsg.Level.NONE,
+                R.id.device_dimmer_level_layout, state.dimmerLevel.getDescriptionId(), null);
 
         // Digital filter
-        if (state.isControlExists(State.CONTROL_DIGITAL_FILTER))
-        {
-            rootView.findViewById(R.id.device_digital_filter_layout).setVisibility(View.VISIBLE);
-            ((TextView) rootView.findViewById(R.id.device_digital_filter)).setText(state.digitalFilter.getDescriptionId());
-            setButtonEnabled(R.id.device_digital_filter_toggle, state.isOn());
-        }
-        else
-        {
-            rootView.findViewById(R.id.device_digital_filter_layout).setVisibility(View.GONE);
-        }
+        prepareSettingPanel(state, state.digitalFilter != DigitalFilterMsg.Filter.NONE,
+                R.id.device_digital_filter_layout, state.digitalFilter.getDescriptionId(), null);
 
         // Auto power
-        {
-            ((TextView) rootView.findViewById(R.id.device_auto_power)).setText(state.autoPower.getDescriptionId());
-            setButtonEnabled(R.id.device_auto_power_toggle, state.isOn());
-        }
+        prepareSettingPanel(state, state.autoPower != AutoPowerMsg.Status.NONE,
+                R.id.device_auto_power_layout, state.autoPower.getDescriptionId(), null);
 
         // HDMI CEC
-        if (state.isControlExists(State.CONTROL_BD_CEC) || state.isControlExists(State.CONTROL_TV_CEC))
-        {
-            rootView.findViewById(R.id.hdmi_cec_layout).setVisibility(View.VISIBLE);
-            ((TextView) rootView.findViewById(R.id.hdmi_cec)).setText(state.hdmiCec.getDescriptionId());
-            setButtonEnabled(R.id.hdmi_cec_toggle, state.isOn());
-        }
-        else
-        {
-            rootView.findViewById(R.id.hdmi_cec_layout).setVisibility(View.GONE);
-        }
+        prepareSettingPanel(state, state.hdmiCec != HdmiCecMsg.Status.NONE,
+                R.id.hdmi_cec_layout, state.hdmiCec.getDescriptionId(), null);
 
         // Google Cast analytics
         {
-            ((TextView) rootView.findViewById(R.id.google_cast_analytics)).setText(state.googleCastAnalytics.getDescriptionId());
             final GoogleCastAnalyticsMsg toggleMsg = new GoogleCastAnalyticsMsg(
                     (state.googleCastAnalytics == GoogleCastAnalyticsMsg.Status.OFF) ?
                             GoogleCastAnalyticsMsg.Status.ON : GoogleCastAnalyticsMsg.Status.OFF);
-            prepareImageButton(R.id.google_cast_analytics_toggle, toggleMsg);
-            setButtonEnabled(R.id.google_cast_analytics_toggle, state.isOn());
+
+            prepareSettingPanel(state, state.googleCastAnalytics != GoogleCastAnalyticsMsg.Status.NONE,
+                    R.id.google_cast_analytics_layout, state.googleCastAnalytics.getDescriptionId(), toggleMsg);
+        }
+    }
+
+    private void prepareSettingPanel(@NonNull final State state, boolean visible, @IdRes int layoutId,
+                                     @StringRes int descriptionId, final ISCPMessage msg)
+    {
+        final LinearLayout layout = rootView.findViewById(layoutId);
+        if (!visible)
+        {
+            layout.setVisibility(View.GONE);
+            return;
+        }
+
+        layout.setVisibility(View.VISIBLE);
+        for (int i = 0; i < layout.getChildCount(); i++)
+        {
+            final View child = layout.getChildAt(i);
+            if (child instanceof TextView)
+            {
+                final TextView tv = (TextView) child;
+                if (tv.getTag() != null && "VALUE".equals(tv.getTag()))
+                {
+                    tv.setText(descriptionId);
+                }
+            }
+            if (child instanceof AppCompatImageButton)
+            {
+                if (msg != null)
+                {
+                    prepareButtonListeners(child, msg);
+                }
+                setButtonEnabled(child, state.isOn());
+            }
         }
     }
 

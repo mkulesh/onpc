@@ -49,10 +49,8 @@ import com.mkulesh.onpc.utils.Logging;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 class State
 {
@@ -65,17 +63,10 @@ class State
         MEDIA_ITEMS
     }
 
-    // Device properties
-    final static String CONTROL_DIMMER = "Dimmer";
-    final static String CONTROL_DIGITAL_FILTER = "Digital Filter";
-    final static String CONTROL_BD_CEC = "BD Control(CEC)";
-    final static String CONTROL_TV_CEC = "TV Control(CEC)";
-
     // Receiver Information
     Map<String, String> deviceProperties = new HashMap<>();
     HashMap<String, String> networkServices = new HashMap<>();
     List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
-    private Set<String> controlList = new HashSet<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
@@ -311,7 +302,6 @@ class State
             deviceProperties = msg.getDeviceProperties();
             networkServices = msg.getNetworkServices();
             deviceSelectors = msg.getDeviceSelectors();
-            controlList = msg.getControlList();
             return true;
         }
         catch (Exception e)
@@ -705,11 +695,6 @@ class State
             }
         }
         return false;
-    }
-
-    boolean isControlExists(String control)
-    {
-        return controlList.contains(control);
     }
 
 }
