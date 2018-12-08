@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.iscp;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -19,9 +19,6 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.mkulesh.onpc.iscp.EISCPMessage;
-import com.mkulesh.onpc.iscp.ISCPMessage;
-import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
@@ -58,11 +55,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class StateManager extends AsyncTask<Void, Void, Void>
+public class StateManager extends AsyncTask<Void, Void, Void>
 {
     private static final long GUI_UPDATE_DELAY = 500;
 
-    interface StateListener
+    public interface StateListener
     {
         void onStateChanged(State state, @Nullable final HashSet<State.ChangeType> eventChanges);
     }
@@ -101,7 +98,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         MenuStatusMsg.CODE
     };
 
-    StateManager(final Context context, final StateListener stateListener, final String device, final int port) throws Exception
+    public StateManager(final Context context, final StateListener stateListener, final String device, final int port) throws Exception
     {
         this.stateListener = stateListener;
 
@@ -119,7 +116,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
 
-    StateManager(final Context context, final StateListener stateListener)
+    public StateManager(final Context context, final StateListener stateListener)
     {
         this.stateListener = stateListener;
 
@@ -131,7 +128,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
 
-    void stop()
+    public void stop()
     {
         synchronized (active)
         {
@@ -140,7 +137,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel.stop();
     }
 
-    @NonNull final State getState()
+    public @NonNull final State getState()
     {
         return state;
     }
@@ -346,7 +343,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    void sendMessage(final ISCPMessage msg)
+    public void sendMessage(final ISCPMessage msg)
     {
         Logging.info(this, "sending message: " + msg.toString());
         circlePlayQueueMsg = null;
@@ -362,7 +359,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    void sendPlayQueueMsg(ISCPMessage msg, boolean repeat)
+    public void sendPlayQueueMsg(ISCPMessage msg, boolean repeat)
     {
         if (msg == null)
         {
@@ -377,7 +374,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel.sendMessage(msg.getCmdMsg());
     }
 
-    void requestSkipNextTimeMsg(final int number)
+    public void requestSkipNextTimeMsg(final int number)
     {
         skipNextTimeMsg.set(number);
     }
@@ -392,7 +389,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    void sendTrackCmd(OperationCommandMsg.Command menu, boolean doReturn)
+    public void sendTrackCmd(OperationCommandMsg.Command menu, boolean doReturn)
     {
         Logging.info(this, "sending track cmd: " + menu.toString());
         if (!state.isPlaybackMode())

@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.PopupBuilder;
+import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;

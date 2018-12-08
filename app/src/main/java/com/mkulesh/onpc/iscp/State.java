@@ -11,11 +11,10 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.iscp;
 
 import android.graphics.Bitmap;
 
-import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
@@ -52,10 +51,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class State
+public class State
 {
     // Changes
-    enum ChangeType
+    public enum ChangeType
     {
         NONE,
         COMMON,
@@ -65,56 +64,56 @@ class State
     }
 
     // Receiver Information
-    Map<String, String> deviceProperties = new HashMap<>();
-    HashMap<String, String> networkServices = new HashMap<>();
-    List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    public Map<String, String> deviceProperties = new HashMap<>();
+    public HashMap<String, String> networkServices = new HashMap<>();
+    public List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
-    FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
-    InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
-    DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
-    DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
-    AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
-    ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
-    AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
-    HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
+    public FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
+    public InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
+    public DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
+    public DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
+    public AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
+    public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
+    public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
+    public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
 
     // Google cast
-    String googleCastVersion = "N/A";
-    GoogleCastAnalyticsMsg.Status googleCastAnalytics = GoogleCastAnalyticsMsg.Status.NONE;
+    public String googleCastVersion = "N/A";
+    public GoogleCastAnalyticsMsg.Status googleCastAnalytics = GoogleCastAnalyticsMsg.Status.NONE;
 
     // Track info
-    Bitmap cover = null;
-    String album = "", artist = "", title = "";
-    String currentTime = "", maxTime = "";
-    Integer currentTrack = null, maxTrack = null;
-    String fileFormat = "";
+    public Bitmap cover = null;
+    public String album = "", artist = "", title = "";
+    public String currentTime = "", maxTime = "";
+    public Integer currentTrack = null, maxTrack = null;
+    public String fileFormat = "";
     private ByteArrayOutputStream coverBuffer = null;
 
     // Playback
-    PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
-    PlayStatusMsg.RepeatStatus repeatStatus = PlayStatusMsg.RepeatStatus.OFF;
-    PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
-    MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
-    MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
-    MenuStatusMsg.Feed positiveFeed = MenuStatusMsg.Feed.DISABLE;
-    MenuStatusMsg.Feed negativeFeed = MenuStatusMsg.Feed.DISABLE;
-    ServiceType serviceIcon = ServiceType.UNKNOWN; // service that is currently playing
+    public PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
+    public PlayStatusMsg.RepeatStatus repeatStatus = PlayStatusMsg.RepeatStatus.OFF;
+    public PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
+    public MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
+    public MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
+    public MenuStatusMsg.Feed positiveFeed = MenuStatusMsg.Feed.DISABLE;
+    public MenuStatusMsg.Feed negativeFeed = MenuStatusMsg.Feed.DISABLE;
+    public ServiceType serviceIcon = ServiceType.UNKNOWN; // service that is currently playing
 
     // Navigation
-    ServiceType serviceType = null; // service that is currently selected (may differs from currently playing)
+    public ServiceType serviceType = null; // service that is currently selected (may differs from currently playing)
     ListTitleInfoMsg.LayerInfo layerInfo = null;
     private ListTitleInfoMsg.UIType uiType = null;
     int numberOfLayers = 0;
-    int numberOfItems = 0;
-    String titleBar = "";
-    final List<XmlListItemMsg> mediaItems = new ArrayList<>();
-    final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
-    final List<String> listInfoItems = new ArrayList<>();
+    public int numberOfItems = 0;
+    public String titleBar = "";
+    public final List<XmlListItemMsg> mediaItems = new ArrayList<>();
+    public final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
+    private final List<String> listInfoItems = new ArrayList<>();
 
     // Popup
-    CustomPopupMsg popup = null;
+    public CustomPopupMsg popup = null;
 
     State()
     {
@@ -131,27 +130,27 @@ class State
                 + "; cover=" + ((cover != null) ? "YES" : "NO");
     }
 
-    boolean isOn()
+    public boolean isOn()
     {
         return powerStatus == PowerStatusMsg.PowerStatus.ON;
     }
 
-    boolean isPlaying()
+    public boolean isPlaying()
     {
         return playStatus != PlayStatusMsg.PlayStatus.STOP;
     }
 
-    boolean isPlaybackMode()
+    public boolean isPlaybackMode()
     {
         return uiType == ListTitleInfoMsg.UIType.PLAYBACK;
     }
 
-    boolean isMenuMode()
+    public boolean isMenuMode()
     {
         return uiType == ListTitleInfoMsg.UIType.MENU;
     }
 
-    ChangeType update(ISCPMessage msg)
+    public ChangeType update(ISCPMessage msg)
     {
         if (!(msg instanceof TimeInfoMsg) && !(msg instanceof JacketArtMsg))
         {
@@ -639,7 +638,7 @@ class State
         return true;
     }
 
-    ReceiverInformationMsg.Selector getActualSelector()
+    public ReceiverInformationMsg.Selector getActualSelector()
     {
         for (ReceiverInformationMsg.Selector s : deviceSelectors)
         {
@@ -651,13 +650,13 @@ class State
         return null;
     }
 
-    boolean isUsb()
+    public boolean isUsb()
     {
         return serviceType == ServiceType.USB_FRONT
                 || serviceType == ServiceType.USB_REAR;
     }
 
-    boolean isTopLayer()
+    public boolean isTopLayer()
     {
         if (!isPlaybackMode())
         {
@@ -674,7 +673,7 @@ class State
         return false;
     }
 
-    boolean isMediaEmpty()
+    public boolean isMediaEmpty()
     {
         return mediaItems.isEmpty() && serviceItems.isEmpty();
     }

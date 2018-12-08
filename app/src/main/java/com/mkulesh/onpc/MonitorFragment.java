@@ -30,6 +30,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.config.Configuration;
+import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
