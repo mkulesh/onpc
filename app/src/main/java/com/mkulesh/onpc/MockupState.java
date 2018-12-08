@@ -13,8 +13,6 @@
 
 package com.mkulesh.onpc;
 
-import android.content.Context;
-
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -29,7 +27,7 @@ import com.mkulesh.onpc.iscp.messages.ServiceType;
 
 class MockupState extends State
 {
-    MockupState(Context context)
+    MockupState()
     {
         //Common
         powerStatus = PowerStatusMsg.PowerStatus.ON;

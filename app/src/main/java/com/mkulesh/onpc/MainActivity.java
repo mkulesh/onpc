@@ -39,7 +39,6 @@ import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.EISCPMessage;
-import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Utils;
@@ -47,7 +46,7 @@ import com.mkulesh.onpc.utils.Utils;
 import java.util.HashSet;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements OnPageChangeListener
+public class MainActivity extends AppCompatActivity implements OnPageChangeListener, StateManager.StateListener
 {
     private static final int SETTINGS_ACTIVITY_REQID = 256;
 
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private Toolbar toolbar;
     private SectionsPagerAdapter pagerAdapter;
     private ViewPager viewPager;
-    private MessageChannel messageChannel = null;
     private Menu mainMenu;
     private StateManager stateManager = null;
     private Toast exitToast = null;
@@ -266,24 +264,21 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     public boolean connectToDevice(final String device, final int port)
     {
         stopThreads();
-        messageChannel = new MessageChannel(this);
-        if (messageChannel.connectToServer(device, port))
+        try
         {
-            messageChannel.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-            stateManager = new StateManager(this, messageChannel, false);
-            stateManager.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+            stateManager = new StateManager(this, this, device, port);
             return true;
         }
-        else if (Configuration.ENABLE_MOCKUP)
+        catch (Exception ex)
         {
-            stateManager = new StateManager(this, messageChannel, true);
-            configuration.setNetworkServices(stateManager.getState().networkServices);
-            return true;
+            if (Configuration.ENABLE_MOCKUP)
+            {
+                stateManager = new StateManager(this, this);
+                configuration.setNetworkServices(stateManager.getState().networkServices);
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private void stopThreads()
@@ -292,11 +287,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             stateManager.stop();
         }
-        if (messageChannel != null)
-        {
-            messageChannel.stop();
-        }
-        messageChannel = null;
         stateManager = null;
     }
 
@@ -350,8 +340,20 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         stopThreads();
     }
 
-    public void updateCurrentFragment(State state, @Nullable final HashSet<State.ChangeType> eventChanges)
+    @Override
+    public void onStateChanged(State state, @Nullable final HashSet<State.ChangeType> eventChanges)
     {
+        if (state != null && eventChanges != null && eventChanges.contains(State.ChangeType.RECEIVER_INFO))
+        {
+            if (!state.deviceSelectors.isEmpty())
+            {
+                configuration.setDeviceSelectors(state.deviceSelectors);
+            }
+            if (!state.networkServices.isEmpty())
+            {
+                configuration.setNetworkServices(state.networkServices);
+            }
+        }
         final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
         if (f != null)
         {
@@ -423,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public void onPageSelected(int p)
     {
-        updateCurrentFragment(stateManager == null ? null : stateManager.getState(), null);
+        onStateChanged(stateManager == null ? null : stateManager.getState(), null);
     }
 
     void selectRightTab()

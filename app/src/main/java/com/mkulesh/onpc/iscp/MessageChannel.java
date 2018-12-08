@@ -13,9 +13,9 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
@@ -39,7 +39,7 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
     private final static int QUEUE_SIZE = 4 * 1024;
     private final static int SOCKET_BUFFER = 4 * 1024;
 
-    private final FragmentActivity activity;
+    private final Context context;
     private final AtomicBoolean active = new AtomicBoolean();
     private SocketChannel socket = null;
 
@@ -49,9 +49,9 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
     private byte[] packetJoinBuffer = null;
     private int messageId = 0;
 
-    public MessageChannel(FragmentActivity activity)
+    public MessageChannel(Context context)
     {
-        this.activity = activity;
+        this.context = context;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -73,7 +73,7 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
     @Override
     protected Void doInBackground(Void... params)
     {
-        Logging.info(this, "started");
+        Logging.info(this, "started: " + toString());
 
         ByteBuffer buffer = ByteBuffer.allocate(SOCKET_BUFFER);
         while (true)
@@ -134,7 +134,7 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
         {
             active.set(false);
         }
-        Logging.info(this, "stopped");
+        Logging.info(this, "stopped: " + toString());
         return null;
     }
 
@@ -152,7 +152,7 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
                 final long currTime = Calendar.getInstance().getTimeInMillis();
                 if (currTime > startTime + CONNECTION_TIMEOUT)
                 {
-                    throw new Exception(activity.getResources().getString(R.string.error_connection_timeout));
+                    throw new Exception(context.getResources().getString(R.string.error_connection_timeout));
                 }
             }
             Logging.info(this, "connected to " + addr);
@@ -160,9 +160,9 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
         }
         catch (Exception e)
         {
-            String message = String.format(activity.getResources().getString(R.string.error_connection_failed), addr);
+            String message = String.format(context.getResources().getString(R.string.error_connection_failed), addr);
             Logging.info(this, message + ": " + e.getLocalizedMessage());
-            Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             for (StackTraceElement t : e.getStackTrace())
             {
                 Logging.info(this, t.toString());

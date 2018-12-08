@@ -60,7 +60,8 @@ class State
         NONE,
         COMMON,
         TIME_SEEK,
-        MEDIA_ITEMS
+        MEDIA_ITEMS,
+        RECEIVER_INFO
     }
 
     // Receiver Information
@@ -108,9 +109,9 @@ class State
     int numberOfLayers = 0;
     int numberOfItems = 0;
     String titleBar = "";
-    protected final List<XmlListItemMsg> mediaItems = new ArrayList<>();
-    protected final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
-    protected final List<String> listInfoItems = new ArrayList<>();
+    final List<XmlListItemMsg> mediaItems = new ArrayList<>();
+    final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
+    final List<String> listInfoItems = new ArrayList<>();
 
     // Popup
     CustomPopupMsg popup = null;
@@ -168,7 +169,7 @@ class State
         }
         if (msg instanceof ReceiverInformationMsg)
         {
-            return isCommonChange(process((ReceiverInformationMsg) msg));
+            return process((ReceiverInformationMsg) msg) ? ChangeType.RECEIVER_INFO : ChangeType.NONE;
         }
         if (msg instanceof DimmerLevelMsg)
         {

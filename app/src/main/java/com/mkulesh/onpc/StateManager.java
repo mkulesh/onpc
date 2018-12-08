@@ -13,9 +13,11 @@
 
 package com.mkulesh.onpc;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -59,13 +61,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 class StateManager extends AsyncTask<Void, Void, Void>
 {
     private static final long GUI_UPDATE_DELAY = 500;
+
+    interface StateListener
+    {
+        void onStateChanged(State state, @Nullable final HashSet<State.ChangeType> eventChanges);
+    }
+
+    private final StateListener stateListener;
+    private final MessageChannel messageChannel;
     private final State state;
-    private final MainActivity activity;
+
     private final AtomicBoolean active = new AtomicBoolean();
     private final AtomicBoolean requestXmlList = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
     private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
-    private final MessageChannel messageChannel;
     private int xmlReqId = 0;
     private ISCPMessage circlePlayQueueMsg = null;
     private final EISCPMessage commandListMsg = new EISCPMessage('1',
@@ -92,13 +101,34 @@ class StateManager extends AsyncTask<Void, Void, Void>
         MenuStatusMsg.CODE
     };
 
-    StateManager(MainActivity activity, MessageChannel messageChannel, boolean mockup)
+    StateManager(final Context context, final StateListener stateListener, final String device, final int port) throws Exception
     {
-        this.activity = activity;
-        this.messageChannel = messageChannel;
-        state = mockup ? new MockupState(activity) : new State();
+        this.stateListener = stateListener;
+
+        messageChannel = new MessageChannel(context);
+        state = new State();
+
+        if (!messageChannel.connectToServer(device, port))
+        {
+            throw new Exception("Cannot connect to server");
+        }
+
+        messageChannel.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+    }
+
+    StateManager(final Context context, final StateListener stateListener)
+    {
+        this.stateListener = stateListener;
+
+        messageChannel = new MessageChannel(context);
+        state = new MockupState();
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
 
     void stop()
@@ -107,9 +137,10 @@ class StateManager extends AsyncTask<Void, Void, Void>
         {
             active.set(false);
         }
+        messageChannel.stop();
     }
 
-    State getState()
+    @NonNull final State getState()
     {
         return state;
     }
@@ -117,7 +148,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     @Override
     protected Void doInBackground(Void... params)
     {
-        Logging.info(this, "started");
+        Logging.info(this, "started: " + toString());
         active.set(true);
 
         messageChannel.sendMessage(
@@ -175,7 +206,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
         {
             active.set(false);
         }
-        Logging.info(this, "stopped");
+        Logging.info(this, "stopped: " + toString());
         return null;
     }
 
@@ -194,18 +225,6 @@ class StateManager extends AsyncTask<Void, Void, Void>
         if (changed != State.ChangeType.NONE)
         {
             eventChanges.add(changed);
-        }
-
-        if (msg instanceof ReceiverInformationMsg)
-        {
-            if (!state.deviceSelectors.isEmpty())
-            {
-                activity.getConfiguration().setDeviceSelectors(state.deviceSelectors);
-            }
-            if (!state.networkServices.isEmpty())
-            {
-                activity.getConfiguration().setNetworkServices(state.networkServices);
-            }
         }
 
         // no further message handling, if power off
@@ -293,7 +312,7 @@ class StateManager extends AsyncTask<Void, Void, Void>
     @Override
     protected void onProgressUpdate(Void... result)
     {
-        activity.updateCurrentFragment(state, eventChanges);
+        stateListener.onStateChanged(state, eventChanges);
         eventChanges.clear();
     }
 

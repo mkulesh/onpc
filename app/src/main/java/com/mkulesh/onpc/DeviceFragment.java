@@ -138,7 +138,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     @Override
     protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
-        if (eventChanges.contains(State.ChangeType.COMMON))
+        if (eventChanges.contains(State.ChangeType.COMMON) ||
+                eventChanges.contains(State.ChangeType.RECEIVER_INFO))
         {
             Logging.info(this, "Updating device properties");
             updateDeviceProperties(state);
