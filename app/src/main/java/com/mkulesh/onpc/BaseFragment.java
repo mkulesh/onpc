@@ -34,7 +34,6 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.PopupBuilder;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
-import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -93,15 +92,15 @@ abstract public class BaseFragment extends Fragment
         {
             final CustomPopupMsg inMsg = state.popup;
             state.popup = null;
-            processPopup(inMsg, state.serviceType);
+            processPopup(inMsg, state);
         }
     }
 
-    private void processPopup(CustomPopupMsg inMsg, final ServiceType serviceType)
+    private void processPopup(CustomPopupMsg inMsg, @NonNull final State state)
     {
         try
         {
-            PopupBuilder builder = new PopupBuilder(activity, serviceType, new PopupBuilder.ButtonListener()
+            PopupBuilder builder = new PopupBuilder(activity, state, new PopupBuilder.ButtonListener()
             {
                 @Override
                 public void onButtonSelected(final CustomPopupMsg outMsg)

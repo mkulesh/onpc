@@ -62,14 +62,16 @@ public class PopupBuilder
 
     private final Context context;
     private final ServiceType serviceType;
+    private final String artist;
     private final ButtonListener buttonListener;
 
     public PopupBuilder(final @NonNull Context context,
-                        final ServiceType serviceType,
+                        final @NonNull State state,
                         final @NonNull ButtonListener buttonListener)
     {
         this.context = context;
-        this.serviceType = serviceType;
+        this.serviceType = state.serviceType;
+        this.artist = state.artist;
         this.buttonListener = buttonListener;
     }
 
@@ -180,7 +182,16 @@ public class PopupBuilder
         final AppCompatEditText tv = new AppCompatEditText(context);
         tv.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tv.setText(box.getAttribute("value"));
+        final String defValue = getDefaultValue(box);
+        if (defValue != null)
+        {
+            tv.setText(defValue);
+            box.setAttribute("value", defValue);
+        }
+        else
+        {
+            tv.setText(box.getAttribute("value"));
+        }
         tv.addTextChangedListener(new TextWatcher()
         {
 
@@ -204,6 +215,17 @@ public class PopupBuilder
         });
 
         return tv;
+    }
+
+    private String getDefaultValue(Element box)
+    {
+        final String text = box.getAttribute("text");
+        if (serviceType == ServiceType.DEEZER && text != null && "Search".equals(text)
+                && artist != null && !artist.isEmpty())
+        {
+            return artist.contains("(")? artist.substring(0, artist.indexOf("(")) : artist;
+        }
+        return null;
     }
 
     private AppCompatButton createButton(final AlertDialog alertDialog,
