@@ -105,16 +105,6 @@ public class ReceiverInformationMsg extends ISCPMessage
         return deviceProperties;
     }
 
-    public Set<String> getControlList()
-    {
-        return controlList;
-    }
-
-    public Bitmap getDeviceCover()
-    {
-        return deviceCover;
-    }
-
     public HashMap<String, String> getNetworkServices()
     {
         return networkServices;

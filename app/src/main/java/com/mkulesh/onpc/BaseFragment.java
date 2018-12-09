@@ -15,7 +15,6 @@ package com.mkulesh.onpc;
 
 import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -197,12 +196,6 @@ abstract public class BaseFragment extends Fragment
                 }
             });
         }
-    }
-
-    protected void setButtonEnabled(@IdRes int buttonId, boolean isEnabled)
-    {
-        final AppCompatImageButton b = rootView.findViewById(buttonId);
-        setButtonEnabled(b, isEnabled);
     }
 
     protected void setButtonEnabled(View b, boolean isEnabled)
