@@ -21,7 +21,7 @@ install:
   - chmod +x ./gradlew
   - chmod +x ./autobuild/push-apk.sh
 
-script: ./gradlew clean assembleDebug
+script: ./gradlew --version && ./gradlew clean assembleDebug
 
 after_success:
   - ./autobuild/push-apk.sh
