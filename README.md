@@ -4,20 +4,26 @@
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> "Onkyo Network Player Remote Control"
 
-This app allows to remote control Onkyo Network Player like [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) over the network using "Integra Serial Communication Protocol". The following features are currently implemented:
+This app allows to remote control Onkyo Network Player or a Network A/V Receiver like over the 
+network using "Integra Serial Communication Protocol". The app is primary invented to music control:
+navigation in the media library, playback control and sound tuning.
+
+## Benefits and features
+- The modern material design that supports different color themes and works on smartphone or tablet in portrait and landscape mode
+- Access to all functions with minimal number of clicks
 - Full playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Control Onkyo amplifier if it is attached to the player using RI interface (muting, volume, input selector)
+- Control Onkyo amplifier if attached to the player using RI interface (muting, volume, input selector)
 - Select the media to be played, full support of Tuneln Radio and Deezer
 - Play queue support (add, remove, clear, change the order of tracks)
 - Show information about the device and control some device settings (dimmer level, digital filter, auto power)
-- Support of different color themes, working on smartphone or tablet in portrait and landscape mode
 - The app only needs network permission in order to communicate with target device
 
 ## Supported devices
 Currently, this app is only tested with following devices:
-- ONKYO NS-6130 (Firmware versions 2110-0000-0000-0010-0000, 2120-1000-0000-0010-0000, ...)
+- [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) (Firmware versions 2110-0000-0000-0010-0000, 2120-1000-0000-0010-0000, ...)
 ![NS-6130](https://github.com/mkulesh/onpc/blob/master/images/ns_6130.png)
-- ONKYO TX-NR676E (Firmware version 1091-1020-3050-0010-0000)
+- [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html) (Firmware version 1091-1020-3050-0010-0000)
+![TX-NR676E](https://github.com/mkulesh/onpc/blob/master/images/tx_nr676e.png)
 
 ## Screenshots
 * Playback screen in landscape orientation, Light (Teal and Deep Orange) theme
@@ -48,7 +54,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright (C) 2014-2018 Mikhail Kulesh
+Copyright © 2018 by Mikhail Kulesh, Alexander Gomanuke
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

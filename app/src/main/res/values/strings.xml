@@ -20,7 +20,7 @@
 
     <string name="html_about"><![CDATA[
     <p>This app allows to remote control Onkyo Network Player over the network</p>
-    <p>Copyright © 2018 by <b>Mikhail Kulesh</b></p>
+    <p>Copyright © 2018 by <b>Mikhail Kulesh, Alexander Gomanuke</b></p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
     <h5>License</h5>
     <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU
