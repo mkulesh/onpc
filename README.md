@@ -64,4 +64,4 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses).
 
 ## Used Open Source Libraries
 * Material Design Icons: http://materialdesignicons.com
-* Material Design Palette: https://www.materialpalette.com/
+* Material Design Palette: https://www.materialpalette.com
