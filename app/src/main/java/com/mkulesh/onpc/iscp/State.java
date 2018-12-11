@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
@@ -82,6 +83,7 @@ public class State
     // Google cast
     public String googleCastVersion = "N/A";
     public GoogleCastAnalyticsMsg.Status googleCastAnalytics = GoogleCastAnalyticsMsg.Status.NONE;
+    public String privacyPolicy = PrivacyPolicyStatusMsg.Status.NONE.getCode();
 
     // Track info
     public Bitmap cover = null;
@@ -203,6 +205,10 @@ public class State
         if (msg instanceof GoogleCastAnalyticsMsg)
         {
             return isCommonChange(process((GoogleCastAnalyticsMsg) msg));
+        }
+        if (msg instanceof PrivacyPolicyStatusMsg)
+        {
+            return isCommonChange(process((PrivacyPolicyStatusMsg) msg));
         }
 
         // Track info
@@ -375,6 +381,13 @@ public class State
     {
         final boolean changed = googleCastAnalytics != msg.getStatus();
         googleCastAnalytics = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(PrivacyPolicyStatusMsg msg)
+    {
+        final boolean changed = !equals(msg.getData().equals(privacyPolicy));
+        privacyPolicy = msg.getData();
         return changed;
     }
 

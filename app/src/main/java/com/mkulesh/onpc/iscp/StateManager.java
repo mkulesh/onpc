@@ -40,6 +40,7 @@ import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
@@ -80,7 +81,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     // Queries for different states
     private final static String powerStateQueries [] = new String[] {
         PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
-        InputSelectorMsg.CODE, AudioMutingMsg.CODE, GoogleCastVersionMsg.CODE
+        InputSelectorMsg.CODE, AudioMutingMsg.CODE, GoogleCastVersionMsg.CODE,
+        PrivacyPolicyStatusMsg.CODE
     };
 
     private final static String settingsQueries [] = new String[] {
@@ -301,6 +303,19 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 requestXmlListState(liMsg);
             }
             return true;
+        }
+
+        if (msg instanceof PrivacyPolicyStatusMsg)
+        {
+            final PrivacyPolicyStatusMsg pMsg = (PrivacyPolicyStatusMsg) msg;
+            if (!pMsg.isPolicySet(PrivacyPolicyStatusMsg.Status.GOOGLE))
+            {
+                sendMessage(new PrivacyPolicyStatusMsg(PrivacyPolicyStatusMsg.Status.GOOGLE));
+            }
+            if (!pMsg.isPolicySet(PrivacyPolicyStatusMsg.Status.SUE))
+            {
+                sendMessage(new PrivacyPolicyStatusMsg(PrivacyPolicyStatusMsg.Status.SUE));
+            }
         }
 
         return true;
