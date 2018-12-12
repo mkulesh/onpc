@@ -2,14 +2,14 @@
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
 [![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.0.apk)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> "Open Onkyo Music Controller"
+# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="36" width="36"> "Open Onkyo Music Controller"
 
 *Remote controller for Onkyo devices: listen music properly*
 
 This app allows to remotely control Onkyo Network Player or a Network A/V Receiver over the home network by means of
 "Integra Serial Communication Protocol". The app is primary aimed to get a control over music playback and sound profiles.
 
-## Benefits and features.
+## Benefits and features
 - One-click access to music playback actions
 - The modern material design supports different color themes and works on smartphone or tablet in portrait and landscape mode
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
