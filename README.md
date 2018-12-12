@@ -6,6 +6,9 @@
 
 *Remote controller for Onkyo devices: listen music properly*
 
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+      alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
+
 This app allows to remotely control Onkyo Network Player or a Network A/V Receiver over the home network by means of
 "Integra Serial Communication Protocol". The app is primary aimed to get a control over music playback and sound profiles.
 
