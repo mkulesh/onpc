@@ -2,21 +2,21 @@
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
 [![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.0.apk)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> "Onkyo Network Player Remote Control"
+# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> "Open Onkyo Music Controller"
 
-This app allows to remote control Onkyo Network Player or a Network A/V Receiver like over the 
-network using "Integra Serial Communication Protocol". The app is primary invented to music control:
-navigation in the media library, playback control and sound tuning.
+*Remote controller for Onkyo devices: listen music properly*
 
-## Benefits and features
-- The modern material design that supports different color themes and works on smartphone or tablet in portrait and landscape mode
-- Access to all functions with minimal number of clicks
-- Full playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Control Onkyo amplifier if attached to the player using RI interface (muting, volume, input selector)
-- Select the media to be played, full support of Tuneln Radio and Deezer
-- Play queue support (add, remove, clear, change the order of tracks)
+This app allows to remotely control Onkyo Network Player or a Network A/V Receiver over the home network by means of
+"Integra Serial Communication Protocol". The app is primary aimed to get a control over music playback and sound profiles.
+
+## Benefits and features.
+- One-click access to music playback actions
+- The modern material design supports different color themes and works on smartphone or tablet in portrait and landscape mode
+- Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
+- Full support of Tuneln Radio and Deezer
+- Play queue support (add, remove, clear, change playback order)
 - Show information about the device and control some device settings (dimmer level, digital filter, auto power)
-- The app only needs network permission in order to communicate with target device
+- App doesn't need any special permissions
 
 ## Supported devices
 Currently, this app is only tested with following devices:
@@ -54,11 +54,14 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright © 2018 by Mikhail Kulesh, Alexander Gomanuke
+Copyright © 2018 by Mikhail Kulesh, Alexander Gomanyuk
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have
+received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses).
 

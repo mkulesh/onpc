@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.app_toolbar_title);
+        toolbar.setTitle(R.string.app_short_name);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
         {
-            getSupportActionBar().setTitle(R.string.app_toolbar_title);
+            getSupportActionBar().setTitle(R.string.app_short_name);
             getSupportActionBar().setElevation(5.0f);
         }
 

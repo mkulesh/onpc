@@ -20,7 +20,7 @@
 
         <activity
             android:name="com.mkulesh.onpc.MainActivity"
-            android:label="@string/app_name"
+            android:label="@string/app_short_name"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
