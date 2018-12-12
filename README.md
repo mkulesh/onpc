@@ -29,7 +29,7 @@ Currently, this app is only tested with following devices:
 ![TX-NR676E](https://github.com/mkulesh/onpc/blob/master/images/tx_nr676e.png)
 
 ## Screenshots
-* Playback screen in landscape orientation, Light (Teal and Deep Orange) theme
+* Playback screen in landscape orientation, Dark (Dim Gray and Cyan) theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center" width="800">
 
 * Playback screen in portrait orientation, Strong Dark (Black and Lime) theme
