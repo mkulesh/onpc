@@ -177,7 +177,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     continue;
                 }
 
-                final boolean changed = processMessage(msg);
+                boolean changed = false;
+
+                try
+                {
+                    changed = processMessage(msg);
+                }
+                catch (Exception e)
+                {
+                    Logging.info(this, "cannot process message: " + e.getLocalizedMessage());
+                }
 
                 if (changed && timerQueue.isEmpty())
                 {
