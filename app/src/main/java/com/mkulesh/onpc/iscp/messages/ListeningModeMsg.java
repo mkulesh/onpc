@@ -141,7 +141,7 @@ public class ListeningModeMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + mode.toString() + "]";
+        return CODE + "[" + data + "; MODE=" + mode.toString() + "]";
     }
 
     @Override
