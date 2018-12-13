@@ -14,7 +14,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Open Onkyo Music Controller</string>
+    <string name="app_name">Open Music Controller for Onkyo</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Remote controller for Onkyo devices: listen music properly</string>
 
