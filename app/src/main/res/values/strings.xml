@@ -408,6 +408,7 @@
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
 
     <!-- Errors -->
+    <string name="error_invalid_device_address">Invalid device name or port</string>
     <string name="error_connection_failed">Can not connect to %s</string>
     <string name="error_connection_timeout">Onkyo device not found</string>
 

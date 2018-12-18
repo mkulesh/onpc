@@ -83,11 +83,21 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     {
         if (v.getId() == R.id.device_connect)
         {
-            final String device = deviceName.getText().toString();
-            final int port = Integer.parseInt(devicePort.getText().toString());
-            if (activity.connectToDevice(device, port))
+            updateEmptyPort();
+            try
             {
-                activity.getConfiguration().saveDevice(device, port);
+                final String device = deviceName.getText().toString();
+                final int port = Integer.parseInt(devicePort.getText().toString());
+                if (activity.connectToDevice(device, port))
+                {
+                    activity.getConfiguration().saveDevice(device, port);
+                }
+            }
+            catch (Exception e)
+            {
+                String message = activity.getResources().getString(R.string.error_invalid_device_address);
+                Logging.info(this, message + ": " + e.getLocalizedMessage());
+                Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
             }
         }
         if (v.getId() == R.id.btn_search_device)
@@ -153,10 +163,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         {
             deviceName.setText(activity.getConfiguration().getDeviceName());
         }
-        if (devicePort.getText().length() == 0)
-        {
-            devicePort.setText(activity.getConfiguration().getDevicePortAsString());
-        }
+        updateEmptyPort();
 
         if (!state.deviceProperties.isEmpty())
         {
@@ -212,6 +219,20 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
 
             prepareSettingPanel(state, state.googleCastAnalytics != GoogleCastAnalyticsMsg.Status.NONE,
                     R.id.google_cast_analytics_layout, state.googleCastAnalytics.getDescriptionId(), toggleMsg);
+        }
+    }
+
+    private void updateEmptyPort()
+    {
+        // First, use port from configuration
+        if (devicePort.getText().length() == 0)
+        {
+            devicePort.setText(activity.getConfiguration().getDevicePortAsString());
+        }
+        // Second, fallback to standard port
+        if (devicePort.getText().length() == 0)
+        {
+            devicePort.setText(Integer.toString(BroadcastSearch.ISCP_PORT));
         }
     }
 
