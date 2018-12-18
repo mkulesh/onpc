@@ -8,8 +8,8 @@ android {
         applicationId "com.mkulesh.onpc"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 3
-        versionName "0.3"
+        versionCode 4
+        versionName "0.4"
     }
 
     buildTypes {
