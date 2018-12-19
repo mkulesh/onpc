@@ -140,6 +140,9 @@
 
     <style name="SegBarStyle" parent="@style/Widget.AppCompat.SeekBar">
         <item name="android:saveEnabled">false</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
     </style>
 
 </resources>
