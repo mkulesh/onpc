@@ -13,13 +13,12 @@
 
 package com.mkulesh.onpc.config;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -28,41 +27,25 @@ import com.mkulesh.onpc.utils.Logging;
 
 public class PreferencesNetworkServices extends AppCompatPreferenceActivity
 {
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            getFragmentManager().beginTransaction().replace(
-                    android.R.id.content, new MyPreferenceFragment()).commit();
-        }
-        else
-        {
-            addPreferencesFromResource(R.xml.preferences_empty);
-            prepare(this, getPreferenceScreen());
-        }
+        getSupportFragmentManager().beginTransaction().replace(
+                android.R.id.content, new MyPreferenceFragment()).commit();
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragment
+    public static class MyPreferenceFragment extends PreferenceFragmentCompat
     {
         @Override
-        public void onCreate(final Bundle savedInstanceState)
+        public void onCreatePreferences(Bundle bundle, String s)
         {
-            super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences_empty);
-            prepare(getActivity(), getPreferenceScreen());
+            final String networkServices = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                    .getString(Configuration.NETWORK_SERVICES, "");
+            prepareSelectors(networkServices, getActivity(), getPreferenceScreen());
+            tintIcons(getActivity(), getPreferenceScreen());
         }
-    }
-
-    private static void prepare(final Activity activity, final PreferenceScreen preferenceScreen)
-    {
-        final String networkServices = PreferenceManager.getDefaultSharedPreferences(activity)
-                .getString(Configuration.NETWORK_SERVICES, "");
-        prepareSelectors(networkServices, activity, preferenceScreen);
     }
 
     private static void prepareSelectors(final String networkServices,
@@ -88,11 +71,10 @@ public class PreferencesNetworkServices extends AppCompatPreferenceActivity
                 continue;
             }
 
-            final MultilineCheckBoxPreference p =
-                    new MultilineCheckBoxPreference(preferenceScreen.getContext(), null);
+            final SwitchPreferenceCompat p =
+                    new SwitchPreferenceCompat(preferenceScreen.getContext(), null);
             p.setDefaultValue(true);
             p.setIcon(serviceType.getImageId());
-            p.setWidgetLayoutResource(R.layout.settings_check_box);
             p.setTitle(activity.getString(serviceType.getDescriptionId()));
             p.setKey(Configuration.NETWORK_SERVICES + "_" + serviceType.getCode());
             preferenceScreen.addPreference(p);

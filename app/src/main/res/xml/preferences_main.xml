@@ -11,10 +11,12 @@
   ~ Public License along with this program.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:icon="@null">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
+        app:icon="@drawable/pref_app_theme"
         android:defaultValue="@string/pref_default_theme_code"
         android:entries="@array/pref_theme_names"
         android:entryValues="@array/pref_theme_codes"
@@ -22,19 +24,22 @@
         android:summary="%s"
         android:title="@string/pref_app_theme" />
 
-    <com.mkulesh.onpc.config.MultilineCheckBoxPreference
+    <SwitchPreferenceCompat
+        app:icon="@drawable/pref_keep_screen_on"
+        app:singleLineTitle="false"
         android:defaultValue="false"
         android:key="keep_screen_on"
-        android:title="@string/pref_keep_screen_on"
-        android:widgetLayout="@layout/settings_check_box" />
+        android:title="@string/pref_keep_screen_on"/>
 
-    <com.mkulesh.onpc.config.MultilineCheckBoxPreference
+    <SwitchPreferenceCompat
+        app:icon="@drawable/pref_exit_confirm"
+        app:singleLineTitle="false"
         android:defaultValue="false"
         android:key="exit_confirm"
-        android:title="@string/pref_exit_confirm"
-        android:widgetLayout="@layout/settings_check_box" />
+        android:title="@string/pref_exit_confirm"/>
 
     <ListPreference
+        app:icon="@drawable/pref_sound_control"
         android:defaultValue="@string/pref_default_sound_control"
         android:entries="@array/pref_sound_control_names"
         android:entryValues="@array/pref_sound_control_codes"
@@ -43,6 +48,7 @@
         android:title="@string/pref_sound_control" />
 
     <PreferenceScreen
+        app:icon="@drawable/pref_device_selectors"
         android:icon="@null"
         android:key="device_selectors"
         android:title="@string/pref_device_selectors" >
@@ -54,6 +60,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        app:icon="@drawable/pref_listening_modes"
         android:icon="@null"
         android:key="listening_modes"
         android:title="@string/pref_listening_modes" >
@@ -65,6 +72,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        app:icon="@drawable/pref_network_services"
         android:icon="@null"
         android:key="network_services"
         android:title="@string/pref_network_services" >

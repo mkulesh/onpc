@@ -13,48 +13,34 @@
 
 package com.mkulesh.onpc.config;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.mkulesh.onpc.R;
 
 public class PreferencesMain extends AppCompatPreferenceActivity
 {
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            getFragmentManager().beginTransaction().replace(
-                    android.R.id.content, new MyPreferenceFragment()).commit();
-        }
-        else
-        {
-            addPreferencesFromResource(R.xml.preferences_main);
-            prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), this);
-            prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
-        }
+        getSupportFragmentManager().beginTransaction().replace(
+                android.R.id.content, new MyPreferenceFragment()).commit();
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragment
+    public static class MyPreferenceFragment extends PreferenceFragmentCompat
     {
         @Override
-        public void onCreate(final Bundle savedInstanceState)
+        public void onCreatePreferences(Bundle bundle, String s)
         {
-            super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences_main);
             prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), getActivity());
             prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
+            tintIcons(getActivity(), getPreferenceScreen());
         }
     }
 
