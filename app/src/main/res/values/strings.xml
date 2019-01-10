@@ -45,6 +45,7 @@
 
     <string name="title_monitor">Monitor</string>
     <string name="title_media">Media</string>
+    <string name="title_remote_interface">RI</string>
     <string name="title_device">Device</string>
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
@@ -114,7 +115,7 @@
     <string name="tv_time_default" translatable="false">--:--</string>
     <string name="tv_display_mode">Display mode</string>
 
-    <!-- Amplifier commands -->
+    <!-- Amplifier commands (RI interface) -->
     <string name="amp_cmd_volume_up">Volume level up</string>
     <string name="amp_cmd_volume_down">Volume level down</string>
     <string name="amp_cmd_selector_up">Selector position wrap-around up</string>
@@ -126,6 +127,44 @@
     <string name="amp_cmd_system_standby">Amplifier standby</string>
     <string name="amp_cmd_system_on_toggle">Amplifier on/standby toggle</string>
 
+    <!-- CD player commands (RI interface) -->
+    <string name="cd_cmd_power">CD player on/standby toggle</string>
+    <string name="cd_cmd_track">Next track</string>
+    <string name="cd_cmd_play">Play</string>
+    <string name="cd_cmd_stop">Stop</string>
+    <string name="cd_cmd_pause">Pause</string>
+    <string name="cd_cmd_skip_f">Skip forward</string>
+    <string name="cd_cmd_skip_r">Skip backwards</string>
+    <string name="cd_cmd_memory">Memory</string>
+    <string name="cd_cmd_clear">Clear</string>
+    <string name="cd_cmd_repeat">Repeat</string>
+    <string name="cd_cmd_random">Random</string>
+    <string name="cd_cmd_disp">Display</string>
+    <string name="cd_cmd_d_mode">Disk mode</string>
+    <string name="cd_cmd_ff">FF key</string>
+    <string name="cd_cmd_rew">REW key</string>
+    <string name="cd_cmd_op_cl">Open/Close</string>
+    <string name="cd_cmd_number_1">Number 1</string>
+    <string name="cd_cmd_number_2">Number 2</string>
+    <string name="cd_cmd_number_3">Number 3</string>
+    <string name="cd_cmd_number_4">Number 4</string>
+    <string name="cd_cmd_number_5">Number 5</string>
+    <string name="cd_cmd_number_6">Number 6</string>
+    <string name="cd_cmd_number_7">Number 7</string>
+    <string name="cd_cmd_number_8">Number 8</string>
+    <string name="cd_cmd_number_9">Number 9</string>
+    <string name="cd_cmd_number_0">Number 0</string>
+    <string name="cd_cmd_number_10">Number 10</string>
+    <string name="cd_cmd_number_greater_10">Number greater 10</string>
+    <string name="cd_cmd_disc_f">Next Disk</string>
+    <string name="cd_cmd_disc_r">Previous disk</string>
+    <string name="cd_cmd_disc1">Disk 1</string>
+    <string name="cd_cmd_disc2">Disk 2</string>
+    <string name="cd_cmd_disc3">Disk 3</string>
+    <string name="cd_cmd_disc4">Disk 4</string>
+    <string name="cd_cmd_disc5">Disk 5</string>
+    <string name="cd_cmd_disc6">Disk 6</string>
+    
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
     <string name="audio_muting_off">Player audio muting off</string>
@@ -406,6 +445,16 @@
     <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff">Auto Surround</string>
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
+
+    <!-- Remote interface (RI) -->
+    <string name="remote_interface">Use devices connected via Remote Interface (RI)</string>
+    <string name="remote_interface_amp">Amplifier</string>
+    <string name="remote_interface_cd">CD Player</string>
+    <string name="remote_interface_power">Power</string>
+    <string name="remote_interface_common">Common</string>
+    <string name="remote_interface_input">Input</string>
+    <string name="remote_interface_volume">Volume</string>
+    <string name="remote_interface_playback">Playback</string>
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Invalid device name or port</string>

@@ -28,23 +28,17 @@ public class AmpOperationCommandMsg extends ISCPMessage
     {
         MVLUP(R.string.amp_cmd_volume_up, R.drawable.volume_amp_up),
         MVLDOWN(R.string.amp_cmd_volume_down, R.drawable.volume_amp_down),
-        SLIUP(R.string.amp_cmd_selector_up, R.drawable.selector_input),
-        SLIDOWN(R.string.amp_cmd_selector_down, R.drawable.selector_input),
-        AMTON(R.string.amp_cmd_audio_muting_on),
-        AMTOFF(R.string.amp_cmd_audio_muting_off),
+        SLIUP(R.string.amp_cmd_selector_up, R.drawable.input_selector_up),
+        SLIDOWN(R.string.amp_cmd_selector_down, R.drawable.input_selector_down),
+        AMTON(R.string.amp_cmd_audio_muting_on, R.drawable.volume_amp_muting),
+        AMTOFF(R.string.amp_cmd_audio_muting_off, R.drawable.volume_amp_muting),
         AMTTG(R.string.amp_cmd_audio_muting_toggle, R.drawable.volume_amp_muting),
-        PWRON(R.string.amp_cmd_system_on),
-        PWROFF(R.string.amp_cmd_system_standby),
-        PWRTG(R.string.amp_cmd_system_on_toggle);
+        PWRON(R.string.amp_cmd_system_on, R.drawable.menu_power_standby),
+        PWROFF(R.string.amp_cmd_system_standby, R.drawable.menu_power_standby),
+        PWRTG(R.string.amp_cmd_system_on_toggle, R.drawable.menu_power_standby);
 
         final int descriptionId;
         final int imageId;
-
-        Command(final int descriptionId)
-        {
-            this.descriptionId = descriptionId;
-            this.imageId = -1;
-        }
 
         Command(final int descriptionId, final int imageId)
         {

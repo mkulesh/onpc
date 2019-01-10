@@ -47,6 +47,10 @@ public class Configuration
     static final String NETWORK_SERVICES = "network_services";
     static final String LISTENING_MODES = "listening_modes";
 
+    private static final String REMOTE_INTERFACE = "remote_interface";
+    private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
+    private static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
+
     private final static ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
     {
         ListeningModeMsg.Mode.MODE_00,
@@ -75,6 +79,8 @@ public class Configuration
     private final boolean keepScreenOn, exitConfirm;
     private final String defaultSoundControl;
 
+    private final boolean remoteInterface, remoteInterfaceAmp, remoteInterfaceCd;
+
     public Configuration(Context context)
     {
         this.context = context;
@@ -88,6 +94,10 @@ public class Configuration
 
         defaultSoundControl = preferences.getString(Configuration.SOUND_CONTROL,
                 context.getResources().getString(R.string.pref_default_sound_control));
+
+        remoteInterface = preferences.getBoolean(Configuration.REMOTE_INTERFACE, false);
+        remoteInterfaceAmp = preferences.getBoolean(Configuration.REMOTE_INTERFACE_AMP, false);
+        remoteInterfaceCd = preferences.getBoolean(Configuration.REMOTE_INTERFACE_CD, false);
     }
 
     @StyleRes
@@ -220,5 +230,20 @@ public class Configuration
     public boolean isListeningModeVisible(final String code)
     {
         return preferences.getBoolean(LISTENING_MODES + "_" + code, true);
+    }
+
+    public boolean isRemoteInterface()
+    {
+        return isRemoteInterfaceAmp() || isRemoteInterfaceCd();
+    }
+
+    public boolean isRemoteInterfaceAmp()
+    {
+        return remoteInterface && remoteInterfaceAmp;
+    }
+
+    public boolean isRemoteInterfaceCd()
+    {
+        return remoteInterface && remoteInterfaceCd;
     }
 }

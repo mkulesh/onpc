@@ -187,28 +187,29 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private class SectionsPagerAdapter extends FragmentStatePagerAdapter
     {
         private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
+        private final int items;
 
         SectionsPagerAdapter(FragmentManager fm)
         {
             super(fm);
+            items = configuration.isRemoteInterface()? 4 : 3;
         }
 
         @Override
         public Fragment getItem(int position)
         {
-            Fragment fragment;
             switch (position)
             {
-            case 0:
-                fragment = new MonitorFragment();
-                break;
-            case 1:
-                fragment = new MediaFragment();
-                break;
-            default:
-                fragment = new DeviceFragment();
-                break;
+            case 0: return prepareFragment(new MonitorFragment(), position);
+            case 1: return prepareFragment(new MediaFragment(), position);
+            case 2: return prepareFragment(new DeviceFragment(), position);
+            case 3: return prepareFragment(new RemoteInterfaceFragment(), position);
             }
+            return null;
+        }
+
+        private Fragment prepareFragment(Fragment fragment, int position)
+        {
             Bundle args = new Bundle();
             args.putInt(BaseFragment.FRAGMENT_NUMBER, position);
             fragment.setArguments(args);
@@ -218,8 +219,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         @Override
         public int getCount()
         {
-            // Show 3 total pages.
-            return 3;
+            return items;
         }
 
         @Override
@@ -228,12 +228,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             Locale l = Locale.getDefault();
             switch (position)
             {
-            case 0:
-                return getString(R.string.title_monitor).toUpperCase(l);
-            case 1:
-                return getString(R.string.title_media).toUpperCase(l);
-            case 2:
-                return getString(R.string.title_device).toUpperCase(l);
+            case 0: return getString(R.string.title_monitor).toUpperCase(l);
+            case 1: return getString(R.string.title_media).toUpperCase(l);
+            case 2: return getString(R.string.title_device).toUpperCase(l);
+            case 3: return getString(R.string.title_remote_interface).toUpperCase(l);
             }
             return null;
         }

@@ -61,7 +61,6 @@
 
     <PreferenceScreen
         app:icon="@drawable/pref_listening_modes"
-        android:icon="@null"
         android:key="listening_modes"
         android:title="@string/pref_listening_modes" >
         <intent
@@ -73,7 +72,6 @@
 
     <PreferenceScreen
         app:icon="@drawable/pref_network_services"
-        android:icon="@null"
         android:key="network_services"
         android:title="@string/pref_network_services" >
         <intent
@@ -82,5 +80,28 @@
             android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices" >
         </intent>
     </PreferenceScreen>
+
+    <SwitchPreferenceCompat
+        app:icon="@drawable/pref_remote_interface"
+        app:singleLineTitle="false"
+        android:defaultValue="false"
+        android:key="remote_interface"
+        android:title="@string/remote_interface" />
+
+    <SwitchPreferenceCompat
+        android:dependency="remote_interface"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="true"
+        android:defaultValue="false"
+        android:key="remote_interface_amp"
+        android:title="@string/remote_interface_amp" />
+
+    <SwitchPreferenceCompat
+        android:dependency="remote_interface"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="true"
+        android:defaultValue="false"
+        android:key="remote_interface_cd"
+        android:title="@string/remote_interface_cd" />
 
 </PreferenceScreen>

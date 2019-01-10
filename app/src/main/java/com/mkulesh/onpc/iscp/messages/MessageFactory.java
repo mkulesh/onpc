@@ -85,6 +85,8 @@ public class MessageFactory
             return new HdmiCecMsg(raw);
         case PrivacyPolicyStatusMsg.CODE:
             return new PrivacyPolicyStatusMsg(raw);
+        case CdPlayerOperationCommandMsg.CODE:
+            return new CdPlayerOperationCommandMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

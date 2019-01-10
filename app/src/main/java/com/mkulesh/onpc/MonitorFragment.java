@@ -190,7 +190,6 @@ public class MonitorFragment extends BaseFragment
 
         final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]
         {
-            AmpOperationCommandMsg.Command.SLIDOWN,
             AmpOperationCommandMsg.Command.AMTTG,
             AmpOperationCommandMsg.Command.MVLDOWN,
             AmpOperationCommandMsg.Command.MVLUP
