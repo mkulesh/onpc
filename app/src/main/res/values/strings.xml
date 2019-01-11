@@ -20,6 +20,7 @@
 
     <string name="html_about"><![CDATA[
     <p>Remote controller for Onkyo devices: listen music properly</p>
+    <p>Version: <version/></p>
     <p>Copyright © 2018 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows to remotely control Onkyo Network Player or a Network A/V Receiver over the home network by means of
        "Integra Serial Communication Protocol". The app is primary aimed to get a control over music playback and sound profiles.</p>
