@@ -16,6 +16,8 @@ package com.mkulesh.onpc.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
@@ -31,6 +33,8 @@ import com.mkulesh.onpc.R;
 
 public class HtmlDialogBuilder
 {
+    private final static String VERSION_TAG = "<version/>";
+
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     public static AlertDialog buildDialog(Context context, @DrawableRes int icon,
@@ -55,14 +59,34 @@ public class HtmlDialogBuilder
         final LayoutInflater inflater = alertDialog.getLayoutInflater();
         final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.html_dialog_layout, frameView);
 
+        String htmlSource = context.getResources().getString(text);
+        if (htmlSource.isEmpty())
+        {
+            return alertDialog;
+        }
+
+        // Process app-specific tags like <version/>
+        if (htmlSource.contains(VERSION_TAG))
+        {
+            try
+            {
+                final PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                htmlSource = htmlSource.replace(VERSION_TAG, pi.versionName);
+            }
+            catch (PackageManager.NameNotFoundException e)
+            {
+                htmlSource = htmlSource.replace(VERSION_TAG, "unknown");
+            }
+        }
+
         Spanned result;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            result = Html.fromHtml(context.getResources().getString(text), Html.FROM_HTML_MODE_LEGACY);
+            result = Html.fromHtml(htmlSource, Html.FROM_HTML_MODE_LEGACY);
         }
         else
         {
-            result = Html.fromHtml(context.getResources().getString(text));
+            result = Html.fromHtml(htmlSource);
         }
 
         final TextView aboutMessage = dialogFrame.findViewById(R.id.text_message);
