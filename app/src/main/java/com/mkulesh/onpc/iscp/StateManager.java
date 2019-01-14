@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
+import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -82,16 +83,17 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final static String powerStateQueries [] = new String[] {
         PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
         InputSelectorMsg.CODE, AudioMutingMsg.CODE, GoogleCastVersionMsg.CODE,
-        PrivacyPolicyStatusMsg.CODE
+        PrivacyPolicyStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
     private final static String settingsQueries [] = new String[] {
             DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
-            HdmiCecMsg.CODE, GoogleCastAnalyticsMsg.CODE
+            HdmiCecMsg.CODE, GoogleCastAnalyticsMsg.CODE,
+            ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
     private final static String playStateQueries [] = new String[] {
-        PlayStatusMsg.CODE, ListeningModeMsg.CODE
+        PlayStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
     private final static String trackStateQueries [] = new String[] {
