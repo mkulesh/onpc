@@ -13,9 +13,6 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.content.Context;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 
@@ -29,17 +26,10 @@ import java.util.Arrays;
 
 public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 {
-    public interface SearchListener
-    {
-        void onDeviceFound(final String device, final int port, EISCPMessage response);
-
-        void noDevice();
-    }
-
     public final static int ISCP_PORT = 60128;
 
-    private final Context context;
-    private final SearchListener searchListener;
+    private final ConnectionState connectionState;
+    private final ConnectionState.StateListener stateListener;
     private final int timeout;
     private final int numberQueries;
 
@@ -57,11 +47,11 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 
     private final Response retValue = new Response();
 
-    public BroadcastSearch(Context context, final SearchListener searchListener,
+    public BroadcastSearch(final ConnectionState connectionState, final ConnectionState.StateListener stateListener,
                            final int timeout, final int numberQueries)
     {
-        this.context = context;
-        this.searchListener = searchListener;
+        this.connectionState = connectionState;
+        this.stateListener = stateListener;
         this.timeout = timeout;
         this.numberQueries = numberQueries;
 
@@ -72,12 +62,13 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
     @Override
     protected Void doInBackground(Void... params)
     {
-        Logging.info(this, "started");
+        Logging.info(this, "started, network=" + connectionState.isNetwork()
+                + ", wifi=" + connectionState.isWifi());
 
         try
         {
             final InetAddress local = InetAddress.getByName("0.0.0.0");
-            final InetAddress target = getBroadcastAddress();
+            final InetAddress target = connectionState.getBroadcastAddress();
 
             final DatagramSocket socket = new DatagramSocket(ISCP_PORT, local);
             socket.setBroadcast(true);
@@ -85,6 +76,11 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 
             for (int i = 0; i < numberQueries; i++)
             {
+                if (!connectionState.isNetwork() || !connectionState.isWifi())
+                {
+                    break;
+                }
+
                 try
                 {
                     sendMessage(socket, target);
@@ -119,7 +115,7 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
     protected void onPostExecute(Void aVoid)
     {
         super.onPostExecute(aVoid);
-        if (searchListener != null)
+        if (stateListener != null)
         {
             if (retValue.deviceAddress != null && retValue.responseMessage != null)
             {
@@ -127,12 +123,17 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
                         retValue.deviceAddress.getHostName() : retValue.deviceAddress.getHostAddress();
                 Logging.info(BroadcastSearch.this, "Found device: " + device
                         + ":" + retValue.responseMessage.toString());
-                searchListener.onDeviceFound(device, ISCP_PORT, retValue.responseMessage);
+                stateListener.onDeviceFound(device, ISCP_PORT, retValue.responseMessage);
             }
             else
             {
-                Logging.info(BroadcastSearch.this, "search skipped, device not found");
-                searchListener.noDevice();
+                final ConnectionState.FailureReason reason =
+                        !connectionState.isNetwork() ? ConnectionState.FailureReason.NO_NETWORK : (
+                                !connectionState.isWifi() ? ConnectionState.FailureReason.NO_WIFI :
+                                        ConnectionState.FailureReason.NO_DEVICE
+                        );
+                Logging.info(BroadcastSearch.this, "search skipped: " + reason.toString());
+                stateListener.noDevice(reason);
             }
         }
     }
@@ -190,22 +191,5 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
         DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
         socket.send(p);
         Logging.info(this, "message send to " + target);
-    }
-
-    private InetAddress getBroadcastAddress() throws Exception
-    {
-        final WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        final DhcpInfo dhcp = wifi.getDhcpInfo();
-        if (dhcp == null)
-        {
-            throw new Exception("can not access DHCP");
-        }
-        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-        byte[] quads = new byte[4];
-        for (int k = 0; k < 4; k++)
-        {
-            quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-        }
-        return InetAddress.getByAddress(quads);
     }
 }

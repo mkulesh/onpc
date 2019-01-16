@@ -13,7 +13,6 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -64,13 +63,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public interface StateListener
     {
         void onStateChanged(State state, @Nullable final HashSet<State.ChangeType> eventChanges);
+
+        void onManagerStopped();
+
+        void onDeviceDisconnected();
     }
 
     private final StateListener stateListener;
     private final MessageChannel messageChannel;
     private final State state;
 
-    private final AtomicBoolean active = new AtomicBoolean();
     private final AtomicBoolean requestXmlList = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
     private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
@@ -86,10 +88,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         PrivacyPolicyStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
-    private final static String settingsQueries [] = new String[] {
-            DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
-            HdmiCecMsg.CODE, GoogleCastAnalyticsMsg.CODE,
-            ListeningModeMsg.CODE, MasterVolumeMsg.CODE
+    private final static String settingsQueries[] = new String[]{
+        DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
+        HdmiCecMsg.CODE, GoogleCastAnalyticsMsg.CODE,
+        ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
     private final static String playStateQueries [] = new String[] {
@@ -102,11 +104,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         MenuStatusMsg.CODE
     };
 
-    public StateManager(final Context context, final StateListener stateListener, final String device, final int port) throws Exception
+    public StateManager(final ConnectionState connectionState, final StateListener stateListener, final String device, final int port) throws Exception
     {
         this.stateListener = stateListener;
 
-        messageChannel = new MessageChannel(context);
+        messageChannel = new MessageChannel(connectionState);
         state = new State();
 
         if (!messageChannel.connectToServer(device, port))
@@ -120,11 +122,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
 
-    public StateManager(final Context context, final StateListener stateListener)
+    public StateManager(final ConnectionState connectionState, final StateListener stateListener)
     {
         this.stateListener = stateListener;
 
-        messageChannel = new MessageChannel(context);
+        messageChannel = new MessageChannel(connectionState);
         state = new MockupState();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -134,14 +136,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     public void stop()
     {
-        synchronized (active)
-        {
-            active.set(false);
-        }
         messageChannel.stop();
     }
 
-    public @NonNull final State getState()
+    @NonNull
+    public final State getState()
     {
         return state;
     }
@@ -150,7 +149,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     protected Void doInBackground(Void... params)
     {
         Logging.info(this, "started: " + toString());
-        active.set(true);
 
         messageChannel.sendMessage(
                 new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
@@ -164,13 +162,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             try
             {
-                synchronized (active)
+                if (!messageChannel.isActive())
                 {
-                    if (!active.get() || isCancelled())
-                    {
-                        Logging.info(this, "cancelled");
-                        break;
-                    }
+                    Logging.info(this, "message channel stopped");
+                    break;
                 }
 
                 final ISCPMessage msg = messageChannel.getInputQueue().take();
@@ -212,12 +207,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
-        synchronized (active)
-        {
-            active.set(false);
-        }
         Logging.info(this, "stopped: " + toString());
+        stateListener.onManagerStopped();
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid)
+    {
+        super.onPostExecute(aVoid);
+        stateListener.onDeviceDisconnected();
     }
 
     private boolean processMessage(@NonNull ISCPMessage msg)

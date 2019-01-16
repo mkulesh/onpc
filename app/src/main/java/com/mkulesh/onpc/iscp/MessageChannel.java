@@ -13,7 +13,6 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.Toast;
@@ -33,13 +32,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MessageChannel extends AsyncTask<Void, Void, Void>
+class MessageChannel extends AsyncTask<Void, Void, Void>
 {
     private final static long CONNECTION_TIMEOUT = 5000;
     private final static int QUEUE_SIZE = 4 * 1024;
     private final static int SOCKET_BUFFER = 4 * 1024;
 
-    private final Context context;
+    private final ConnectionState connectionState;
     private final AtomicBoolean active = new AtomicBoolean();
     private SocketChannel socket = null;
 
@@ -49,9 +48,9 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
     private byte[] packetJoinBuffer = null;
     private int messageId = 0;
 
-    public MessageChannel(Context context)
+    MessageChannel(final ConnectionState connectionState)
     {
-        this.context = context;
+        this.connectionState = connectionState;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -62,10 +61,14 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
         {
             active.set(false);
         }
-        inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
     }
 
-    public BlockingQueue<ISCPMessage> getInputQueue()
+    boolean isActive()
+    {
+        return active.get();
+    }
+
+    BlockingQueue<ISCPMessage> getInputQueue()
     {
         return inputQueue;
     }
@@ -87,6 +90,12 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
                         Logging.info(this, "cancelled");
                         break;
                     }
+                }
+
+                if (!connectionState.isNetwork())
+                {
+                    Logging.info(this, "no network");
+                    break;
                 }
 
                 // process input messages
@@ -135,12 +144,21 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
             active.set(false);
         }
         Logging.info(this, "stopped: " + toString());
+        inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
         return null;
     }
 
-    public boolean connectToServer(String server, int port)
+    boolean connectToServer(String server, int port)
     {
         final String addr = server + ":" + Integer.toString(port);
+        active.set(false);
+
+        if (!connectionState.isNetwork())
+        {
+            connectionState.showFailure(ConnectionState.FailureReason.NO_NETWORK);
+            return active.get();
+        }
+
         try
         {
             socket = SocketChannel.open();
@@ -152,7 +170,7 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
                 final long currTime = Calendar.getInstance().getTimeInMillis();
                 if (currTime > startTime + CONNECTION_TIMEOUT)
                 {
-                    throw new Exception(context.getResources().getString(R.string.error_connection_timeout));
+                    throw new Exception("connection timeout");
                 }
             }
             Logging.info(this, "connected to " + addr);
@@ -160,14 +178,14 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
         }
         catch (Exception e)
         {
-            String message = String.format(context.getResources().getString(R.string.error_connection_failed), addr);
+            String message = String.format(connectionState.getContext().getResources().getString(
+                    R.string.error_connection_no_response), addr);
             Logging.info(this, message + ": " + e.getLocalizedMessage());
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(connectionState.getContext(), message, Toast.LENGTH_LONG).show();
             for (StackTraceElement t : e.getStackTrace())
             {
                 Logging.info(this, t.toString());
             }
-            active.set(false);
         }
         return active.get();
     }
@@ -268,7 +286,7 @@ public class MessageChannel extends AsyncTask<Void, Void, Void>
         // empty
     }
 
-    public void sendMessage(EISCPMessage eiscpMessage)
+    void sendMessage(EISCPMessage eiscpMessage)
     {
         outputQueue.add(eiscpMessage);
     }

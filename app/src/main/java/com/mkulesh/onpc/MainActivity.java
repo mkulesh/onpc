@@ -38,11 +38,14 @@ import android.widget.Toast;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.State;
+import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
+import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
@@ -57,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private SectionsPagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private Menu mainMenu;
-    private StateManager stateManager = null;
+    private ConnectionState connectionState;
+    private final StateHolder stateHolder = new StateHolder();
     private Toast exitToast = null;
 
     @Override
@@ -93,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
         final TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
+        connectionState = new ConnectionState(this);
         updateToolbar(null);
     }
 
@@ -263,41 +269,39 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     public boolean connectToDevice(final String device, final int port)
     {
-        stopThreads();
+        stateHolder.release(false);
+        stateHolder.waitForRelease();
+        onStateChanged(stateHolder.getState(), null);
         try
         {
-            stateManager = new StateManager(this, this, device, port);
+            stateHolder.setStateManager(new StateManager(connectionState, this, device, port));
             return true;
         }
         catch (Exception ex)
         {
             if (Configuration.ENABLE_MOCKUP)
             {
-                stateManager = new StateManager(this, this);
-                configuration.setNetworkServices(stateManager.getState().networkServices);
+                stateHolder.setStateManager(new StateManager(connectionState, this));
+                configuration.setNetworkServices(stateHolder.getState().networkServices);
                 return true;
             }
         }
         return false;
     }
 
-    private void stopThreads()
-    {
-        if (stateManager != null)
-        {
-            stateManager.stop();
-        }
-        stateManager = null;
-    }
-
     public boolean isConnected()
     {
-        return stateManager != null;
+        return stateHolder.getStateManager() != null;
     }
 
     public StateManager getStateManager()
     {
-        return stateManager;
+        return stateHolder.getStateManager();
+    }
+
+    public ConnectionState getConnectionState()
+    {
+        return connectionState;
     }
 
     @Override
@@ -310,8 +314,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         else
         {
-            final BroadcastSearch bs = new BroadcastSearch(this,
-                    new BroadcastSearch.SearchListener()
+            final BroadcastSearch bs = new BroadcastSearch(connectionState,
+                    new ConnectionState.StateListener()
                     {
                         // These methods will be called from GUI thread
                         @Override
@@ -324,9 +328,9 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                         }
 
                         @Override
-                        public void noDevice()
+                        public void noDevice(ConnectionState.FailureReason reason)
                         {
-                            // nothing to do
+                            connectionState.showFailure(reason);
                         }
                     }, 5000, 2);
             bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
@@ -337,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     protected void onPause()
     {
         super.onPause();
-        stopThreads();
+        stateHolder.release(true);
     }
 
     @Override
@@ -362,6 +366,22 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         if (eventChanges == null || eventChanges.contains(State.ChangeType.COMMON))
         {
             updateToolbar(state);
+        }
+    }
+
+    @Override
+    public void onManagerStopped()
+    {
+        stateHolder.setStateManager(null);
+    }
+
+    @Override
+    public void onDeviceDisconnected()
+    {
+        Logging.info(this, "device disconnected");
+        if (!stateHolder.isAppExit())
+        {
+            onStateChanged(stateHolder.getState(), null);
         }
     }
 
@@ -425,7 +445,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public void onPageSelected(int p)
     {
-        onStateChanged(stateManager == null ? null : stateManager.getState(), null);
+        onStateChanged(stateHolder.getState(), null);
     }
 
     void selectRightTab()

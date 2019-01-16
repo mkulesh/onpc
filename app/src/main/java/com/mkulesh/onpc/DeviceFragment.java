@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
@@ -102,8 +103,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
         if (v.getId() == R.id.btn_search_device)
         {
-            final BroadcastSearch bs = new BroadcastSearch(activity,
-                    new BroadcastSearch.SearchListener()
+            final BroadcastSearch bs = new BroadcastSearch(activity.getConnectionState(),
+                    new ConnectionState.StateListener()
                     {
                         // These methods will be called from GUI thread
                         @Override
@@ -113,9 +114,9 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
                         }
 
                         @Override
-                        public void noDevice()
+                        public void noDevice(ConnectionState.FailureReason reason)
                         {
-                            DeviceFragment.this.noDevice();
+                            activity.getConnectionState().showFailure(reason);
                         }
                     }, 5000, 5);
             bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
@@ -130,11 +131,6 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
             deviceName.setText(activity.getConfiguration().getDeviceName());
             devicePort.setText(activity.getConfiguration().getDevicePortAsString());
         }
-    }
-
-    void noDevice()
-    {
-        Toast.makeText(activity, R.string.error_connection_timeout, Toast.LENGTH_LONG).show();
     }
 
     @Override

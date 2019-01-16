@@ -459,7 +459,9 @@
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Invalid device name or port</string>
-    <string name="error_connection_failed">Can not connect to %s</string>
-    <string name="error_connection_timeout">Onkyo device not found</string>
+    <string name="error_connection_no_network">No connection to the network</string>
+    <string name="error_connection_no_wifi">No connection to Wi-Fi. Please input Onkyo device IP and port manually</string>
+    <string name="error_connection_no_device">Onkyo device not found</string>
+    <string name="error_connection_no_response">Onkyo device %s not responding</string>
 
 </resources>
