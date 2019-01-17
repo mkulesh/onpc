@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
 [![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v0.5.apk)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="36" width="36"> Open Music Controller for Onkyo
+# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Open Music Controller for Onkyo
 
 *Remote controller for Onkyo devices: listen music properly*
 
