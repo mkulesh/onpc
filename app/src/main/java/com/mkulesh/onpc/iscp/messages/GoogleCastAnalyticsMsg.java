@@ -28,9 +28,9 @@ public class GoogleCastAnalyticsMsg extends ISCPMessage
 
     public enum Status implements StringParameterIf
     {
-        NONE("N/A", R.string.google_cast_analytics_none),
-        OFF("00", R.string.google_cast_analytics_off),
-        ON("01", R.string.google_cast_analytics_on);
+        NONE("N/A", R.string.device_two_way_switch_none),
+        OFF("00", R.string.device_two_way_switch_off),
+        ON("01", R.string.device_two_way_switch_on);
 
         final String code;
         final int descriptionId;

@@ -43,6 +43,8 @@ import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
+import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
+import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
@@ -90,7 +92,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private final static String settingsQueries[] = new String[]{
         DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
-        HdmiCecMsg.CODE, GoogleCastAnalyticsMsg.CODE,
+        HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE, GoogleCastAnalyticsMsg.CODE,
         ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018. Mikhail Kulesh
+ * Copyright (C) 2019. Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -20,18 +20,18 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 /*
- * Auto Power Command
+ * Speaker B Command
  */
-public class AutoPowerMsg extends ISCPMessage
+public class SpeakerBCommandMsg extends ISCPMessage
 {
-    public final static String CODE = "APD";
+    public final static String CODE = "SPB";
 
     public enum Status implements StringParameterIf
     {
         NONE("N/A", R.string.device_two_way_switch_none),
         OFF("00", R.string.device_two_way_switch_off),
         ON("01", R.string.device_two_way_switch_on),
-        TOGGLE("UP", R.string.device_auto_power_toggle);
+        TOGGLE("UP", R.string.speaker_b_command_toggle);
 
         final String code;
         final int descriptionId;
@@ -56,13 +56,13 @@ public class AutoPowerMsg extends ISCPMessage
 
     private final Status status;
 
-    AutoPowerMsg(EISCPMessage raw) throws Exception
+    SpeakerBCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
         status = (Status) searchParameter(data, Status.values(), Status.NONE);
     }
 
-    public AutoPowerMsg(Status level)
+    public SpeakerBCommandMsg(Status level)
     {
         super(0, null);
         this.status = level;

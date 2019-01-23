@@ -28,9 +28,9 @@ public class HdmiCecMsg extends ISCPMessage
 
     public enum Status implements StringParameterIf
     {
-        NONE("N/A", R.string.hdmi_cec_none),
-        OFF("00", R.string.hdmi_cec_off),
-        ON("01", R.string.hdmi_cec_on),
+        NONE("N/A", R.string.device_two_way_switch_none),
+        OFF("00", R.string.device_two_way_switch_off),
+        ON("01", R.string.device_two_way_switch_on),
         TOGGLE("UP", R.string.hdmi_cec_toggle);
 
         final String code;

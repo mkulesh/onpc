@@ -39,6 +39,8 @@ import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
+import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
+import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
@@ -79,6 +81,8 @@ public class State
     public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
+    public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
+    public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
 
     // Google cast
     public String googleCastVersion = "N/A";
@@ -188,6 +192,8 @@ public class State
         {
             return isCommonChange(process((ListeningModeMsg) msg));
         }
+
+        // Common settings
         if (msg instanceof AutoPowerMsg)
         {
             return isCommonChange(process((AutoPowerMsg) msg));
@@ -195,6 +201,14 @@ public class State
         if (msg instanceof HdmiCecMsg)
         {
             return isCommonChange(process((HdmiCecMsg) msg));
+        }
+        if (msg instanceof SpeakerACommandMsg)
+        {
+            return isCommonChange(process((SpeakerACommandMsg) msg));
+        }
+        if (msg instanceof SpeakerBCommandMsg)
+        {
+            return isCommonChange(process((SpeakerBCommandMsg) msg));
         }
 
         // Google cast
@@ -367,6 +381,20 @@ public class State
     {
         final boolean changed = hdmiCec != msg.getStatus();
         hdmiCec = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(SpeakerACommandMsg msg)
+    {
+        final boolean changed = speakerA != msg.getStatus();
+        speakerA = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(SpeakerBCommandMsg msg)
+    {
+        final boolean changed = speakerB != msg.getStatus();
+        speakerB = msg.getStatus();
         return changed;
     }
 

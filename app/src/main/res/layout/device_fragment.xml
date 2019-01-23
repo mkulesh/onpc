@@ -221,6 +221,46 @@
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle"
+                android:id="@+id/speaker_a_layout"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/speaker_a_command" />
+
+                <TextView
+                    style="@style/DeviceValueViewStyle"
+                    android:tag="VALUE"
+                    android:gravity="center" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonSecondaryStyle"
+                    android:id="@+id/speaker_a_command_toggle"
+                    android:src="@drawable/wrap_around"
+                    android:contentDescription="@string/speaker_a_command_toggle" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle"
+                android:id="@+id/speaker_b_layout"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/speaker_b_command" />
+
+                <TextView
+                    style="@style/DeviceValueViewStyle"
+                    android:tag="VALUE"
+                    android:gravity="center" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonSecondaryStyle"
+                    android:id="@+id/speaker_b_command_toggle"
+                    android:src="@drawable/wrap_around"
+                    android:contentDescription="@string/speaker_b_command_toggle" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle"
                 android:id="@+id/google_cast_analytics_layout"
                 android:visibility="gone">
 
