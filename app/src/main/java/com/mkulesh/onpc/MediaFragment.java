@@ -342,11 +342,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (selectedItem != null)
             {
                 moveFrom = -1;
-                if (selectedItem instanceof XmlListItemMsg &&
-                        !((XmlListItemMsg) selectedItem).isSelectable())
-                {
-                    return;
-                }
+                // #6: Unable to play music from NAS: allow to select not selectable items as well
                 updateTitle(activity.getStateManager().getState(), true);
                 activity.getStateManager().sendMessage(selectedItem);
             }
