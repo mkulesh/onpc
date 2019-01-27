@@ -92,8 +92,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private final static String settingsQueries[] = new String[]{
         DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
-        HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE, GoogleCastAnalyticsMsg.CODE,
-        ListeningModeMsg.CODE, MasterVolumeMsg.CODE
+        HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE, GoogleCastAnalyticsMsg.CODE
     };
 
     private final static String playStateQueries [] = new String[] {
