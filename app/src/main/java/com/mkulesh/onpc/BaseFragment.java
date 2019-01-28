@@ -175,7 +175,7 @@ abstract public class BaseFragment extends Fragment
             {
                 if (activity.isConnected() && msg != null)
                 {
-                   activity.getStateManager().sendMessage(msg);
+                    activity.getStateManager().sendMessage(msg);
                 }
                 if (listener != null)
                 {

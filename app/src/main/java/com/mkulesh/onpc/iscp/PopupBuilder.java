@@ -223,7 +223,7 @@ public class PopupBuilder
         if (serviceType == ServiceType.DEEZER && text != null && "Search".equals(text)
                 && artist != null && !artist.isEmpty())
         {
-            return artist.contains("(")? artist.substring(0, artist.indexOf("(")) : artist;
+            return artist.contains("(") ? artist.substring(0, artist.indexOf("(")) : artist;
         }
         return null;
     }

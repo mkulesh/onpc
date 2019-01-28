@@ -216,13 +216,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand(), 0, buttonMarginHorizontal, 0);
             prepareButtonListeners(b, msg, new ButtonListener()
-                    {
-                        @Override
-                        public void onPostProcessing()
-                        {
-                            progressIndicator.setVisibility(View.VISIBLE);
-                        }
-                    });
+            {
+                @Override
+                public void onPostProcessing()
+                {
+                    progressIndicator.setVisibility(View.VISIBLE);
+                }
+            });
             selectorPaletteLayout.addView(b);
         }
 
@@ -265,7 +265,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (v instanceof AppCompatButton && v.getTag() instanceof InputSelectorMsg.InputType)
             {
                 final AppCompatButton b = (AppCompatButton) v;
-                final InputSelectorMsg.InputType s = (InputSelectorMsg.InputType)(b.getTag());
+                final InputSelectorMsg.InputType s = (InputSelectorMsg.InputType) (b.getTag());
                 if (s == state.inputType || activity.getConfiguration().isSelectorVisible(s.getCode()))
                 {
                     b.setVisibility(View.VISIBLE);

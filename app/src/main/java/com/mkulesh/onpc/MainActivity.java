@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         SectionsPagerAdapter(FragmentManager fm)
         {
             super(fm);
-            items = configuration.isRemoteInterface()? 4 : 3;
+            items = configuration.isRemoteInterface() ? 4 : 3;
         }
 
         @Override
@@ -219,10 +219,14 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             switch (position)
             {
-            case 0: return prepareFragment(new MonitorFragment(), position);
-            case 1: return prepareFragment(new MediaFragment(), position);
-            case 2: return prepareFragment(new DeviceFragment(), position);
-            case 3: return prepareFragment(new RemoteInterfaceFragment(), position);
+            case 0:
+                return prepareFragment(new MonitorFragment(), position);
+            case 1:
+                return prepareFragment(new MediaFragment(), position);
+            case 2:
+                return prepareFragment(new DeviceFragment(), position);
+            case 3:
+                return prepareFragment(new RemoteInterfaceFragment(), position);
             }
             return null;
         }
@@ -247,10 +251,14 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             Locale l = Locale.getDefault();
             switch (position)
             {
-            case 0: return getString(R.string.title_monitor).toUpperCase(l);
-            case 1: return getString(R.string.title_media).toUpperCase(l);
-            case 2: return getString(R.string.title_device).toUpperCase(l);
-            case 3: return getString(R.string.title_remote_interface).toUpperCase(l);
+            case 0:
+                return getString(R.string.title_monitor).toUpperCase(l);
+            case 1:
+                return getString(R.string.title_media).toUpperCase(l);
+            case 2:
+                return getString(R.string.title_device).toUpperCase(l);
+            case 3:
+                return getString(R.string.title_remote_interface).toUpperCase(l);
             }
             return null;
         }

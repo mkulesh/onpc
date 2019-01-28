@@ -84,25 +84,25 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString());
 
     // Queries for different states
-    private final static String powerStateQueries [] = new String[] {
-        PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
-        InputSelectorMsg.CODE, AudioMutingMsg.CODE, GoogleCastVersionMsg.CODE,
-        PrivacyPolicyStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
+    private final static String powerStateQueries[] = new String[]{
+            PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
+            InputSelectorMsg.CODE, AudioMutingMsg.CODE, GoogleCastVersionMsg.CODE,
+            PrivacyPolicyStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
     private final static String settingsQueries[] = new String[]{
-        DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
-        HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE, GoogleCastAnalyticsMsg.CODE
+            DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
+            HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE, GoogleCastAnalyticsMsg.CODE
     };
 
-    private final static String playStateQueries [] = new String[] {
-        PlayStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
+    private final static String playStateQueries[] = new String[]{
+            PlayStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
-    private final static String trackStateQueries [] = new String[] {
-        ArtistNameMsg.CODE, AlbumNameMsg.CODE, TitleNameMsg.CODE,
-        FileFormatMsg.CODE, TrackInfoMsg.CODE, TimeInfoMsg.CODE,
-        MenuStatusMsg.CODE
+    private final static String trackStateQueries[] = new String[]{
+            ArtistNameMsg.CODE, AlbumNameMsg.CODE, TitleNameMsg.CODE,
+            FileFormatMsg.CODE, TrackInfoMsg.CODE, TimeInfoMsg.CODE,
+            MenuStatusMsg.CODE
     };
 
     public StateManager(final ConnectionState connectionState, final StateListener stateListener, final String device, final int port) throws Exception
@@ -356,7 +356,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             Logging.info(this, "requesting XML list state skipped");
         }
         else if (liMsg.getUiType() == ListTitleInfoMsg.UIType.PLAYBACK
-                 || liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU)
+                || liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU)
         {
             Logging.info(this, "requesting XML list state skipped");
         }

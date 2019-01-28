@@ -255,8 +255,8 @@ public class MonitorFragment extends BaseFragment
                 final AppCompatButton b = createButton(
                         msg.getMode().getDescriptionId(), msg, msg.getMode(), null);
                 l.addView(b);
-                b.setVisibility(activity.getConfiguration().isListeningModeVisible(m.getCode())?
-                    View.VISIBLE : View.GONE);
+                b.setVisibility(activity.getConfiguration().isListeningModeVisible(m.getCode()) ?
+                        View.VISIBLE : View.GONE);
                 deviceSoundButtons.add(b);
             }
         }
@@ -290,7 +290,7 @@ public class MonitorFragment extends BaseFragment
         {
             if (isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton)b, MasterVolumeMsg.NO_LEVEL);
+                updateVolumeLevel((AppCompatButton) b, MasterVolumeMsg.NO_LEVEL);
             }
             else
             {
@@ -360,7 +360,7 @@ public class MonitorFragment extends BaseFragment
             }
             else if (b.getTag() instanceof ListeningModeMsg.Mode)
             {
-                final ListeningModeMsg.Mode s = (ListeningModeMsg.Mode)(b.getTag());
+                final ListeningModeMsg.Mode s = (ListeningModeMsg.Mode) (b.getTag());
                 if (s == state.listeningMode || activity.getConfiguration().isListeningModeVisible(s.getCode()))
                 {
                     b.setVisibility(View.VISIBLE);
@@ -377,7 +377,7 @@ public class MonitorFragment extends BaseFragment
             }
             else if (isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton)b, state.volumeLevel);
+                updateVolumeLevel((AppCompatButton) b, state.volumeLevel);
             }
         }
         for (AppCompatImageButton b : playbackButtons)
@@ -445,7 +445,7 @@ public class MonitorFragment extends BaseFragment
     @SuppressLint("SetTextI18n")
     private void updateVolumeLevel(AppCompatButton b, int volumeLevel)
     {
-        b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL? View.VISIBLE : View.GONE);
+        b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL ? View.VISIBLE : View.GONE);
         b.setText(Integer.toString(volumeLevel));
         setButtonEnabled(b, false);
     }

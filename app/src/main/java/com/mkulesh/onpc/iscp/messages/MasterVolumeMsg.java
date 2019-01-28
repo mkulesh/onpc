@@ -93,7 +93,7 @@ public class MasterVolumeMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "; LEVEL=" + volumeLevel + "; CMD=" + (command != null? command.toString() : "null") + "]";
+        return CODE + "[" + data + "; LEVEL=" + volumeLevel + "; CMD=" + (command != null ? command.toString() : "null") + "]";
     }
 
     @Override
