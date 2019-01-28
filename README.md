@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
-[![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v0.6.apk)
+[![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v0.7.apk)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Open Music Controller for Onkyo
 
@@ -54,6 +54,13 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 * [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985/)
 
+## Used Open Source Libraries
+* Material Design Icons: http://materialdesignicons.com
+* Material Design Palette: https://www.materialpalette.com
+
+## Acknowledgement
+* Thank to [Tebriz](https://github.com/tebriz159) for Logo design
+
 ## License
 
 This software is published under the *GNU General Public License, Version 3*
@@ -68,10 +75,3 @@ of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Pub
 received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses).
-
-## Used Open Source Libraries
-* Material Design Icons: http://materialdesignicons.com
-* Material Design Palette: https://www.materialpalette.com
-
-## Acknowledgement
-* Thank to [Tebriz](https://github.com/tebriz159) for Logo design
