@@ -17,7 +17,6 @@ package com.mkulesh.onpc.config;
 
 import android.content.Context;
 import android.os.Bundle;
-
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.Preference;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mkulesh.onpc.R;
-import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 public abstract class AppCompatPreferenceActivity extends AppCompatActivity
@@ -47,7 +45,6 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
 
     protected static void tintIcons(final Context c, Preference preference)
     {
-        Logging.info(c, preference.toString());
         if (preference instanceof PreferenceGroup)
         {
             PreferenceGroup group = ((PreferenceGroup) preference);

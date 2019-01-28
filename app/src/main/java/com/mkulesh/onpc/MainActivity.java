@@ -14,6 +14,8 @@
 package com.mkulesh.onpc;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -72,6 +74,16 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try
+        {
+            final PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+            Logging.info(this, "Starting application: " + pi.versionName);
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            Logging.info(this, "Starting application");
+        }
+
         if (configuration.isKeepScreenOn())
         {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -122,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem)
     {
+        Logging.info(this, "Selected main menu: " + menuItem.getTitle());
         switch (menuItem.getItemId())
         {
         case R.id.menu_power_standby:
