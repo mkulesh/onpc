@@ -227,7 +227,7 @@ abstract public class BaseFragment extends Fragment
     }
 
     protected AppCompatButton createButton(@StringRes int descriptionId,
-                                           @NonNull final ISCPMessage msg, Object tag, final ButtonListener listener)
+                                           final ISCPMessage msg, Object tag, final ButtonListener listener)
     {
         ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.TextButtonStyle);
         final AppCompatButton b = new AppCompatButton(wrappedContext, null, 0);

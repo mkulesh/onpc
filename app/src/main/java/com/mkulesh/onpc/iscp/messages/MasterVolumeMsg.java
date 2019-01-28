@@ -23,6 +23,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 public class MasterVolumeMsg extends ISCPMessage
 {
     public final static String CODE = "MVL";
+    public final static int NO_LEVEL = -1;
 
     public enum Command implements StringParameterIf
     {
@@ -57,10 +58,19 @@ public class MasterVolumeMsg extends ISCPMessage
     }
 
     private final Command command;
+    private int volumeLevel = NO_LEVEL;
 
     MasterVolumeMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
+        try
+        {
+            volumeLevel = Integer.parseInt(data, 16);
+        }
+        catch (Exception e)
+        {
+            // nothing to do
+        }
         command = null;
     }
 
@@ -75,10 +85,15 @@ public class MasterVolumeMsg extends ISCPMessage
         return command;
     }
 
+    public int getVolumeLevel()
+    {
+        return volumeLevel;
+    }
+
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "; CMD=" + (command != null? command.toString() : "null") + "]";
+        return CODE + "[" + data + "; LEVEL=" + volumeLevel + "; CMD=" + (command != null? command.toString() : "null") + "]";
     }
 
     @Override

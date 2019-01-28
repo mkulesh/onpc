@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -224,6 +225,12 @@ public class MonitorFragment extends BaseFragment
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand()));
         }
+        // master volume label
+        {
+            final AppCompatButton b = createButton(R.string.dashed_string, null, MasterVolumeMsg.CODE, null);
+            b.setVisibility(View.GONE);
+            deviceSoundButtons.add(b);
+        }
         // volume up
         {
             final MasterVolumeMsg msg = new MasterVolumeMsg(MasterVolumeMsg.Command.UP);
@@ -281,7 +288,14 @@ public class MonitorFragment extends BaseFragment
         }
         for (View b : deviceSoundButtons)
         {
-            setButtonEnabled(b, false);
+            if (isVolumeLevel(b))
+            {
+                updateVolumeLevel((AppCompatButton)b, MasterVolumeMsg.NO_LEVEL);
+            }
+            else
+            {
+                setButtonEnabled(b, false);
+            }
         }
         for (AppCompatImageButton b : playbackButtons)
         {
@@ -344,7 +358,7 @@ public class MonitorFragment extends BaseFragment
             {
                 setButtonSelected(b, state.audioMuting == AudioMutingMsg.Status.ON);
             }
-            if (b.getTag() instanceof ListeningModeMsg.Mode)
+            else if (b.getTag() instanceof ListeningModeMsg.Mode)
             {
                 final ListeningModeMsg.Mode s = (ListeningModeMsg.Mode)(b.getTag());
                 if (s == state.listeningMode || activity.getConfiguration().isListeningModeVisible(s.getCode()))
@@ -360,6 +374,10 @@ public class MonitorFragment extends BaseFragment
                 {
                     b.setVisibility(View.GONE);
                 }
+            }
+            else if (isVolumeLevel(b))
+            {
+                updateVolumeLevel((AppCompatButton)b, state.volumeLevel);
             }
         }
         for (AppCompatImageButton b : playbackButtons)
@@ -417,6 +435,19 @@ public class MonitorFragment extends BaseFragment
         // Feeds
         updateFeedButton(positiveFeed, state.positiveFeed);
         updateFeedButton(negativeFeed, state.negativeFeed);
+    }
+
+    private boolean isVolumeLevel(View b)
+    {
+        return b.getTag() != null && b.getTag() instanceof String && MasterVolumeMsg.CODE.equals(b.getTag());
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateVolumeLevel(AppCompatButton b, int volumeLevel)
+    {
+        b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL? View.VISIBLE : View.GONE);
+        b.setText(Integer.toString(volumeLevel));
+        setButtonEnabled(b, false);
     }
 
     private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)

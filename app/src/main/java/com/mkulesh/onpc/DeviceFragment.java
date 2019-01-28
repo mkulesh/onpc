@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -228,6 +229,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateEmptyPort()
     {
         // First, use port from configuration

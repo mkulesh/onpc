@@ -13,6 +13,8 @@
 
 <resources>
 
+    <string name="dashed_string" translatable="false">---</string>
+
     <!-- Main view -->
     <string name="app_name">Open Music Controller for Onkyo</string>
     <string name="app_short_name">Music Control</string>

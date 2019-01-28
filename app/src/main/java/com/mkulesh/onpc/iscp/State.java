@@ -32,6 +32,7 @@ import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
+import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -79,6 +80,7 @@ public class State
     public DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
     public AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
     public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
+    public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
@@ -87,7 +89,7 @@ public class State
     // Google cast
     public String googleCastVersion = "N/A";
     public GoogleCastAnalyticsMsg.Status googleCastAnalytics = GoogleCastAnalyticsMsg.Status.NONE;
-    public String privacyPolicy = PrivacyPolicyStatusMsg.Status.NONE.getCode();
+    private String privacyPolicy = PrivacyPolicyStatusMsg.Status.NONE.getCode();
 
     // Track info
     public Bitmap cover = null;
@@ -192,6 +194,11 @@ public class State
         {
             return isCommonChange(process((ListeningModeMsg) msg));
         }
+        if (msg instanceof MasterVolumeMsg)
+        {
+            return isCommonChange(process((MasterVolumeMsg) msg));
+        }
+
 
         // Common settings
         if (msg instanceof AutoPowerMsg)
@@ -370,6 +377,13 @@ public class State
         return changed;
     }
 
+    private boolean process(MasterVolumeMsg msg)
+    {
+        final boolean changed = volumeLevel != msg.getVolumeLevel();
+        volumeLevel = msg.getVolumeLevel();
+        return changed;
+    }
+
     private boolean process(AutoPowerMsg msg)
     {
         final boolean changed = autoPower != msg.getStatus();
@@ -414,7 +428,7 @@ public class State
 
     private boolean process(PrivacyPolicyStatusMsg msg)
     {
-        final boolean changed = !equals(msg.getData().equals(privacyPolicy));
+        final boolean changed = !msg.getData().equals(privacyPolicy);
         privacyPolicy = msg.getData();
         return changed;
     }
