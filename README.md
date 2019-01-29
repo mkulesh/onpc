@@ -53,6 +53,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 ## Publications:
 
 * [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985/)
+* [Logo design for Open Music Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
 
 ## Used Open Source Libraries
 * Material Design Icons: http://materialdesignicons.com
