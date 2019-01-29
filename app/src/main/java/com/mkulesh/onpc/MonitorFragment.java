@@ -228,6 +228,8 @@ public class MonitorFragment extends BaseFragment
         // master volume label
         {
             final AppCompatButton b = createButton(R.string.dashed_string, null, MasterVolumeMsg.CODE, null);
+            ((LinearLayout.LayoutParams)b.getLayoutParams()).setMargins(0,0,0,0);
+            b.setPadding(0,0,0,0);
             b.setVisibility(View.GONE);
             deviceSoundButtons.add(b);
         }

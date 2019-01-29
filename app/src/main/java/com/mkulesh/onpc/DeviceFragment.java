@@ -145,6 +145,14 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         {
             updateDeviceProperties(state);
         }
+        else
+        {
+            if (deviceName.getText().length() == 0)
+            {
+                deviceName.setText(activity.getConfiguration().getDeviceName());
+            }
+            updateEmptyPort();
+        }
     }
 
     @Override
