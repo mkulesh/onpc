@@ -69,11 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        configuration = new Configuration(this);
-        setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         try
         {
             final PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -83,6 +78,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             Logging.info(this, "Starting application");
         }
+
+        configuration = new Configuration(this);
+        setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         if (configuration.isKeepScreenOn())
         {
@@ -331,6 +331,8 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         super.onResume();
         if (!configuration.getDeviceName().isEmpty() && configuration.getDevicePort() > 0)
         {
+            Logging.info(this, "use stored connection data: "
+                    + configuration.getDeviceName() + "/" + configuration.getDevicePort());
             connectToDevice(configuration.getDeviceName(), configuration.getDevicePort());
         }
         else

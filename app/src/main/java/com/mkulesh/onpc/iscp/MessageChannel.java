@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 class MessageChannel extends AsyncTask<Void, Void, Void>
 {
+    private final static long NETWORK_TIMEOUT = 1000;
     private final static long CONNECTION_TIMEOUT = 5000;
     private final static int QUEUE_SIZE = 4 * 1024;
     private final static int SOCKET_BUFFER = 4 * 1024;
@@ -153,7 +154,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
         final String addr = server + ":" + Integer.toString(port);
         active.set(false);
 
-        if (!connectionState.isNetwork())
+        if (!waitForNetwork())
         {
             connectionState.showFailure(ConnectionState.FailureReason.NO_NETWORK);
             return active.get();
@@ -188,6 +189,25 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
             }
         }
         return active.get();
+    }
+
+    private boolean waitForNetwork()
+    {
+        long startTime = System.currentTimeMillis();
+        while (true)
+        {
+            if (connectionState.isNetwork())
+            {
+                return true;
+            }
+            long currTime = System.currentTimeMillis();
+            if (currTime - startTime > NETWORK_TIMEOUT)
+            {
+                Logging.info(this, "timeout for network connection: " + NETWORK_TIMEOUT + "ms");
+                break;
+            }
+        }
+        return false;
     }
 
     private void processInputData(ByteBuffer buffer)
