@@ -43,6 +43,9 @@ public class Configuration
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String EXIT_CONFIRM = "exit_confirm";
 
+    static final String ACTIVE_ZONE = "active_zone";
+    static final String ZONES = "zones";
+
     static final String DEVICE_SELECTORS = "device_selectors";
     static final String NETWORK_SERVICES = "network_services";
     static final String LISTENING_MODES = "listening_modes";
@@ -172,6 +175,49 @@ public class Configuration
     public String getDefaultSoundControl()
     {
         return defaultSoundControl;
+    }
+
+    public void setZones(List<ReceiverInformationMsg.Zone> deviceZones)
+    {
+        final StringBuilder str = new StringBuilder();
+        for (ReceiverInformationMsg.Zone z : deviceZones)
+        {
+            if (!str.toString().isEmpty())
+            {
+                str.append(",");
+            }
+            str.append(z.getName());
+        }
+        String zones = str.toString();
+
+        Logging.info(this, "Zones: " + zones);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putString(ZONES, zones);
+        prefEditor.apply();
+    }
+
+    public void initActiveZone(int defaultActiveZone)
+    {
+        final String activeZone = preferences.getString(ACTIVE_ZONE, "");
+        if (activeZone.isEmpty())
+        {
+            SharedPreferences.Editor prefEditor = preferences.edit();
+            prefEditor.putString(ACTIVE_ZONE, Integer.toString(defaultActiveZone));
+            prefEditor.apply();
+        }
+    }
+
+    public int getZone()
+    {
+        try
+        {
+            final String activeZone = preferences.getString(ACTIVE_ZONE, "");
+            return (activeZone.isEmpty()) ? ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE : Integer.parseInt(activeZone);
+        }
+        catch (Exception e)
+        {
+            return ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
+        }
     }
 
     public void setDeviceSelectors(List<ReceiverInformationMsg.Selector> deviceSelectors)

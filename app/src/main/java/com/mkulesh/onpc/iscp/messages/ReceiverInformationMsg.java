@@ -44,6 +44,41 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class ReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "NRI";
+    public final static int DEFAULT_ACTIVE_ZONE = 0;
+
+    public static class Zone
+    {
+        final String id;
+        final String name;
+
+        Zone(Element e)
+        {
+            id = e.getAttribute("id").toUpperCase();
+            name = e.getAttribute("name");
+        }
+
+        public Zone(final String id, final String name)
+        {
+            this.id = id;
+            this.name = name;
+        }
+
+        public String getId()
+        {
+            return id;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return id + "(" + name + ")";
+        }
+    }
 
     public static class Selector
     {
@@ -90,6 +125,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     private final HashMap<String, String> deviceProperties = new HashMap<>();
     private Bitmap deviceCover;
     private final HashMap<String, String> networkServices = new HashMap<>();
+    private final List<Zone> zones = new ArrayList<>();
     private final List<Selector> deviceSelectors = new ArrayList<>();
     private final Set<String> controlList = new HashSet<>();
 
@@ -110,6 +146,18 @@ public class ReceiverInformationMsg extends ISCPMessage
         return networkServices;
     }
 
+    public static List<Zone> getDefaultZones()
+    {
+        List<ReceiverInformationMsg.Zone> defaultZones = new ArrayList<>();
+        defaultZones.add(new Zone("1", "Main"));
+        return defaultZones;
+    }
+
+    public List<Zone> getZones()
+    {
+        return zones;
+    }
+
     public List<Selector> getDeviceSelectors()
     {
         return deviceSelectors;
@@ -125,6 +173,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     {
         deviceProperties.clear();
         networkServices.clear();
+        zones.clear();
         deviceSelectors.clear();
         controlList.clear();
         InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
@@ -180,6 +229,19 @@ public class ReceiverInformationMsg extends ISCPMessage
                                 }
                             }
                         }
+                        else if ("zonelist".equals(en.getTagName()))
+                        {
+                            final List<Element> elZone = Utils.getElements(en, "zone");
+                            for (Element element : elZone)
+                            {
+                                final String id = element.getAttribute("id");
+                                final String value = element.getAttribute("value");
+                                if (id != null && value != null && Integer.parseInt(value) == 1)
+                                {
+                                    zones.add(new Zone(element));
+                                }
+                            }
+                        }
                         else if ("selectorlist".equals(en.getTagName()))
                         {
                             final List<Element> elSelectors = Utils.getElements(en, "selector");
@@ -213,6 +275,10 @@ public class ReceiverInformationMsg extends ISCPMessage
         for (Map.Entry<String, String> p : networkServices.entrySet())
         {
             Logging.info(this, "    Service: " + p.getKey() + "=" + p.getValue());
+        }
+        for (Zone s : zones)
+        {
+            Logging.info(this, "    Zone: " + s.toString());
         }
         for (Selector s : deviceSelectors)
         {

@@ -24,11 +24,15 @@ import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
+import com.mkulesh.onpc.utils.Logging;
 
 class MockupState extends State
 {
-    MockupState()
+    MockupState(int zone)
     {
+        super(zone);
+        Logging.info(this, "Used mockup state");
+
         //Common
         powerStatus = PowerStatusMsg.PowerStatus.ON;
         deviceProperties.put("brand", "Onkyo");
@@ -42,6 +46,8 @@ class MockupState extends State
         networkServices.put("18", "Airplay");
         networkServices.put("1B", "Tidal");
         networkServices.put("1D", "Play Queue");
+        zones.add(new ReceiverInformationMsg.Zone("0", "Main"));
+        zones.add(new ReceiverInformationMsg.Zone("2", "Zone2"));
         deviceSelectors.add(new ReceiverInformationMsg.Selector("2B", "Network", "2B", false));
         deviceSelectors.add(new ReceiverInformationMsg.Selector("29", "Front USB", "29", true));
         deviceSelectors.add(new ReceiverInformationMsg.Selector("2A", "Rear USB", "2A", true));

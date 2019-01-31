@@ -70,6 +70,8 @@ public class State
     // Receiver Information
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, String> networkServices = new HashMap<>();
+    private final int activeZone;
+    public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
 
     //Common
@@ -123,9 +125,9 @@ public class State
     // Popup
     public CustomPopupMsg popup = null;
 
-    State()
+    State(int activeZone)
     {
-        // empty
+        this.activeZone = activeZone;
     }
 
     @Override
@@ -136,6 +138,16 @@ public class State
                 + "; " + currentTime + "/" + maxTime
                 + "; " + playStatus.toString() + "/" + repeatStatus.toString() + "/" + shuffleStatus.toString()
                 + "; cover=" + ((cover != null) ? "YES" : "NO");
+    }
+
+    public int getActiveZone()
+    {
+        return activeZone;
+    }
+
+    public boolean isExtendedZone()
+    {
+        return activeZone < zones.size() && activeZone != ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
     }
 
     public boolean isOn()
@@ -328,6 +340,7 @@ public class State
             msg.parseXml();
             deviceProperties = msg.getDeviceProperties();
             networkServices = msg.getNetworkServices();
+            zones = msg.getZones();
             deviceSelectors = msg.getDeviceSelectors();
             return true;
         }

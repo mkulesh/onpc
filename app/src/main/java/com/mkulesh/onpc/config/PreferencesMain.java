@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 
 import com.mkulesh.onpc.R;
 
@@ -38,9 +39,53 @@ public class PreferencesMain extends AppCompatPreferenceActivity
         public void onCreatePreferences(Bundle bundle, String s)
         {
             addPreferencesFromResource(R.xml.preferences_main);
-            prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), getActivity());
-            prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
-            tintIcons(getActivity(), getPreferenceScreen());
+            final Activity activity = getActivity();
+            if (activity != null)
+            {
+                prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), activity);
+                prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
+
+                final ListPreference activeZone = (ListPreference) findPreference(Configuration.ACTIVE_ZONE);
+                final String zones = PreferenceManager.getDefaultSharedPreferences(activity)
+                        .getString(Configuration.ZONES, "");
+                fillZones(activeZone, zones);
+
+                tintIcons(activity, getPreferenceScreen());
+            }
+        }
+    }
+
+    private static void fillZones(ListPreference listPreference, String zones)
+    {
+        if (listPreference == null)
+        {
+            return;
+        }
+
+        if (zones.isEmpty())
+        {
+            return;
+        }
+        String[] tokens = zones.split(",");
+        if (tokens.length == 0)
+        {
+            return;
+        }
+
+        final CharSequence[] entryValues = new CharSequence[tokens.length];
+        final CharSequence[] entries = new CharSequence[tokens.length];
+        for (int i = 0; i < tokens.length; i++)
+        {
+            entryValues[i] = Integer.toString(i);
+            entries[i] = tokens[i];
+        }
+        listPreference.setEntryValues(entryValues);
+        listPreference.setEntries(entries);
+        listPreference.setDefaultValue(entryValues[0]);
+        listPreference.setVisible(tokens.length > 1);
+        if (listPreference.isVisible())
+        {
+            prepareListPreference(listPreference, null);
         }
     }
 

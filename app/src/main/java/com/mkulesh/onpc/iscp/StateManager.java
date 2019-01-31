@@ -105,12 +105,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             MenuStatusMsg.CODE
     };
 
-    public StateManager(final ConnectionState connectionState, final StateListener stateListener, final String device, final int port) throws Exception
+    public StateManager(final ConnectionState connectionState, final StateListener stateListener, final String device, final int port, final int zone) throws Exception
     {
         this.stateListener = stateListener;
 
         messageChannel = new MessageChannel(connectionState);
-        state = new State();
+        state = new State(zone);
 
         if (!messageChannel.connectToServer(device, port))
         {
@@ -123,12 +123,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
 
-    public StateManager(final ConnectionState connectionState, final StateListener stateListener)
+    public StateManager(final ConnectionState connectionState, final StateListener stateListener, final int zone)
     {
         this.stateListener = stateListener;
 
         messageChannel = new MessageChannel(connectionState);
-        state = new MockupState();
+        state = new MockupState(zone);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

@@ -46,6 +46,7 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -111,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         tabLayout.setupWithViewPager(viewPager);
 
         connectionState = new ConnectionState(this);
+
+        // Initially reset zone state
+        configuration.setZones(ReceiverInformationMsg.getDefaultZones());
+        configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+
         updateToolbar(null);
     }
 
@@ -293,17 +299,18 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         stateHolder.release(false);
         stateHolder.waitForRelease();
         onStateChanged(stateHolder.getState(), null);
+        final int zone = configuration.getZone();
         try
         {
-            stateHolder.setStateManager(new StateManager(connectionState, this, device, port));
+            stateHolder.setStateManager(new StateManager(connectionState, this, device, port, zone));
             return true;
         }
         catch (Exception ex)
         {
             if (Configuration.ENABLE_MOCKUP)
             {
-                stateHolder.setStateManager(new StateManager(connectionState, this));
-                configuration.setNetworkServices(stateHolder.getState().networkServices);
+                stateHolder.setStateManager(new StateManager(connectionState, this, zone));
+                updateConfiguration(stateHolder.getState());
                 return true;
             }
         }
@@ -372,14 +379,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     {
         if (state != null && eventChanges != null && eventChanges.contains(State.ChangeType.RECEIVER_INFO))
         {
-            if (!state.deviceSelectors.isEmpty())
-            {
-                configuration.setDeviceSelectors(state.deviceSelectors);
-            }
-            if (!state.networkServices.isEmpty())
-            {
-                configuration.setNetworkServices(state.networkServices);
-            }
+            updateConfiguration(state);
         }
         final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
         if (f != null)
@@ -390,6 +390,23 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             updateToolbar(state);
         }
+    }
+
+    private void updateConfiguration(@NonNull State state)
+    {
+        if (!state.zones.isEmpty())
+        {
+            configuration.setZones(state.zones);
+        }
+        if (!state.deviceSelectors.isEmpty())
+        {
+            configuration.setDeviceSelectors(state.deviceSelectors);
+        }
+        if (!state.networkServices.isEmpty())
+        {
+            configuration.setNetworkServices(state.networkServices);
+        }
+        updateToolbar(state);
     }
 
     @Override
@@ -425,6 +442,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             {
                 final StringBuilder subTitle = new StringBuilder();
                 subTitle.append(name);
+                if (state.isExtendedZone())
+                {
+                    subTitle.append("/").append(state.zones.get(state.getActiveZone()).getName());
+                }
                 if (!state.isOn())
                 {
                     subTitle.append(" (").append(getResources().getString(R.string.state_standby)).append(")");
