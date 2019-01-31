@@ -14,14 +14,19 @@
 package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
-import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.ZonedMessage;
 
 /*
  * System Power Command
  */
-public class PowerStatusMsg extends ISCPMessage
+public class PowerStatusMsg extends ZonedMessage
 {
-    public final static String CODE = "PWR";
+    final static String MAIN_CODE = "PWR";
+    final static String ZONE2_CODE = "ZPW";
+    final static String ZONE3_CODE = "PW3";
+    final static String ZONE4_CODE = "PW4";
+
+    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     /*
     * Play Status: "00": System Standby, "01":  System On, "ALL": All Zone(including Main Zone) Standby
@@ -46,14 +51,20 @@ public class PowerStatusMsg extends ISCPMessage
 
     PowerStatusMsg(EISCPMessage raw) throws Exception
     {
-        super(raw);
+        super(raw, ZONE_COMMANDS);
         powerStatus = (PowerStatus) searchParameter(data, PowerStatus.values(), powerStatus);
     }
 
-    public PowerStatusMsg(PowerStatus powerStatus)
+    public PowerStatusMsg(int zoneIndex, PowerStatus powerStatus)
     {
-        super(0, null);
+        super(0, null, zoneIndex);
         this.powerStatus = powerStatus;
+    }
+
+    @Override
+    public String getZoneCommand()
+    {
+        return ZONE_COMMANDS[zoneIndex];
     }
 
     public PowerStatus getPowerStatus()
@@ -64,12 +75,14 @@ public class PowerStatusMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "; PWR=" + powerStatus.toString() + "]";
+        return getZoneCommand() + "[" + data
+                + "; ZONE_INDEX=" + zoneIndex
+                + "; PWR=" + powerStatus.toString() + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, powerStatus.getCode());
+        return new EISCPMessage('1', getZoneCommand(), powerStatus.getCode());
     }
 }

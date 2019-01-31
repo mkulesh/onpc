@@ -146,14 +146,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         case R.id.menu_power_standby:
             if (isConnected())
             {
-                if (getStateManager().getState().isOn())
-                {
-                    getStateManager().sendMessage(new PowerStatusMsg(PowerStatusMsg.PowerStatus.STB));
-                }
-                else
-                {
-                    getStateManager().sendMessage(new PowerStatusMsg(PowerStatusMsg.PowerStatus.ON));
-                }
+                final PowerStatusMsg.PowerStatus p = getStateManager().getState().isOn() ?
+                        PowerStatusMsg.PowerStatus.STB : PowerStatusMsg.PowerStatus.ON;
+                getStateManager().sendMessage(
+                        new PowerStatusMsg(getStateManager().getState().getActiveZone(), p));
             }
             return true;
         case R.id.menu_app_settings:

@@ -25,7 +25,10 @@ public class MessageFactory
     {
         switch (raw.getCode().toUpperCase())
         {
-        case PowerStatusMsg.CODE:
+        case PowerStatusMsg.MAIN_CODE:
+        case PowerStatusMsg.ZONE2_CODE:
+        case PowerStatusMsg.ZONE3_CODE:
+        case PowerStatusMsg.ZONE4_CODE:
             return new PowerStatusMsg(raw);
         case FirmwareUpdateMsg.CODE:
             return new FirmwareUpdateMsg(raw);

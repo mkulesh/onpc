@@ -85,14 +85,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     // Queries for different states
     private final static String powerStateQueries[] = new String[]{
-            PowerStatusMsg.CODE, FirmwareUpdateMsg.CODE, ReceiverInformationMsg.CODE,
-            InputSelectorMsg.CODE, AudioMutingMsg.CODE, GoogleCastVersionMsg.CODE,
-            PrivacyPolicyStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
+            ReceiverInformationMsg.CODE, FirmwareUpdateMsg.CODE,
+            GoogleCastVersionMsg.CODE, PrivacyPolicyStatusMsg.CODE,
+            InputSelectorMsg.CODE, AudioMutingMsg.CODE,
+            ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
     private final static String settingsQueries[] = new String[]{
             DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
-            HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE, GoogleCastAnalyticsMsg.CODE
+            HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE,
+            GoogleCastAnalyticsMsg.CODE
     };
 
     private final static String playStateQueries[] = new String[]{
@@ -153,7 +155,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         messageChannel.sendMessage(
                 new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
+
+        final String zonedStateQueries[] = new String[]{
+                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()]
+        };
+
         sendQueries(powerStateQueries, "requesting power state...");
+        sendQueries(zonedStateQueries, "requesting zoned state...");
         sendQueries(settingsQueries, "requesting settings...");
 
         final BlockingQueue<Timer> timerQueue = new ArrayBlockingQueue<>(1, true);
