@@ -15,14 +15,20 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
-import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.ZonedMessage;
 
 /*
  * Master Volume Command
  */
-public class MasterVolumeMsg extends ISCPMessage
+public class MasterVolumeMsg extends ZonedMessage
 {
-    public final static String CODE = "MVL";
+    final static String MAIN_CODE = "MVL";
+    final static String ZONE2_CODE = "ZVL";
+    final static String ZONE3_CODE = "VL3";
+    final static String ZONE4_CODE = "VL4";
+
+    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+
     public final static int NO_LEVEL = -1;
 
     public enum Command implements StringParameterIf
@@ -62,7 +68,7 @@ public class MasterVolumeMsg extends ISCPMessage
 
     MasterVolumeMsg(EISCPMessage raw) throws Exception
     {
-        super(raw);
+        super(raw, ZONE_COMMANDS);
         try
         {
             volumeLevel = Integer.parseInt(data, 16);
@@ -74,10 +80,16 @@ public class MasterVolumeMsg extends ISCPMessage
         command = null;
     }
 
-    public MasterVolumeMsg(Command level)
+    public MasterVolumeMsg(int zoneIndex, Command level)
     {
-        super(0, null);
+        super(0, null, zoneIndex);
         this.command = level;
+    }
+
+    @Override
+    public String getZoneCommand()
+    {
+        return ZONE_COMMANDS[zoneIndex];
     }
 
     public Command getCommand()
@@ -93,13 +105,16 @@ public class MasterVolumeMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "; LEVEL=" + volumeLevel + "; CMD=" + (command != null ? command.toString() : "null") + "]";
+        return getZoneCommand() + "[" + data
+                + "; ZONE_INDEX=" + zoneIndex
+                + "; LEVEL=" + volumeLevel
+                + "; CMD=" + (command != null ? command.toString() : "null") + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, command.getCode());
+        return new EISCPMessage('1', getZoneCommand(), command.getCode());
     }
 
     @Override

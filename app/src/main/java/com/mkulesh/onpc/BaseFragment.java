@@ -125,7 +125,7 @@ abstract public class BaseFragment extends Fragment
 
     protected AppCompatImageButton createButton(
             @DrawableRes int imageId, @StringRes int descriptionId,
-            @NonNull final ISCPMessage msg, Object tag)
+            final ISCPMessage msg, Object tag)
     {
         return createButton(imageId, descriptionId, msg, tag,
                 buttonMarginHorizontal, buttonMarginHorizontal, buttonMarginVertical);

@@ -17,14 +17,19 @@ import android.support.annotation.StringRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
-import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.ZonedMessage;
 
 /*
  * Audio Muting Command
  */
-public class AudioMutingMsg extends ISCPMessage
+public class AudioMutingMsg extends ZonedMessage
 {
-    public final static String CODE = "AMT";
+    final static String MAIN_CODE = "AMT";
+    final static String ZONE2_CODE = "ZMT";
+    final static String ZONE3_CODE = "MT3";
+    final static String ZONE4_CODE = "MT4";
+
+    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public enum Status implements StringParameterIf
     {
@@ -58,14 +63,20 @@ public class AudioMutingMsg extends ISCPMessage
 
     AudioMutingMsg(EISCPMessage raw) throws Exception
     {
-        super(raw);
+        super(raw, ZONE_COMMANDS);
         status = (Status) searchParameter(data, Status.values(), Status.NONE);
     }
 
-    public AudioMutingMsg(Status level)
+    public AudioMutingMsg(int zoneIndex, Status level)
     {
-        super(0, null);
+        super(0, null, zoneIndex);
         this.status = level;
+    }
+
+    @Override
+    public String getZoneCommand()
+    {
+        return ZONE_COMMANDS[zoneIndex];
     }
 
     public Status getStatus()
@@ -76,13 +87,15 @@ public class AudioMutingMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + status.toString() + "]";
+        return getZoneCommand() + "[" + data
+                + "; ZONE_INDEX=" + zoneIndex
+                + "; STATUS=" + status.toString() + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, status.getCode());
+        return new EISCPMessage('1', getZoneCommand(), status.getCode());
     }
 
     @Override

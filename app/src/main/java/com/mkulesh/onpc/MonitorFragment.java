@@ -51,6 +51,8 @@ import java.util.List;
 
 public class MonitorFragment extends BaseFragment
 {
+    private final static String VOLUME_LEVEL = "volume_level";
+
     private AppCompatImageButton btnRepeat;
     private AppCompatImageButton btnPrevious;
     private AppCompatImageButton btnPausePlay;
@@ -211,34 +213,34 @@ public class MonitorFragment extends BaseFragment
         final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
         soundControlLayout.setVisibility(View.VISIBLE);
 
+        // Here, we create zone-dependent buttons without command message.
+        // The message for active zone will be assigned in updateActiveView
+
         // audio muting
         {
-            final AudioMutingMsg msg = new AudioMutingMsg(AudioMutingMsg.Status.TOGGLE);
+            final AudioMutingMsg.Status status = AudioMutingMsg.Status.TOGGLE;
             deviceSoundButtons.add(createButton(
-                    R.drawable.volume_amp_muting, msg.getStatus().getDescriptionId(),
-                    msg, msg.getStatus()));
+                    R.drawable.volume_amp_muting, status.getDescriptionId(), null, status));
         }
         // volume down
         {
-            final MasterVolumeMsg msg = new MasterVolumeMsg(MasterVolumeMsg.Command.DOWN);
+            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.DOWN;
             deviceSoundButtons.add(createButton(
-                    msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand()));
+                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
         }
         // master volume label
         {
-            final AppCompatButton b = createButton(R.string.dashed_string, null, MasterVolumeMsg.CODE, null);
-            ((LinearLayout.LayoutParams)b.getLayoutParams()).setMargins(0,0,0,0);
-            b.setPadding(0,0,0,0);
+            final AppCompatButton b = createButton(R.string.dashed_string, null, VOLUME_LEVEL, null);
+            ((LinearLayout.LayoutParams) b.getLayoutParams()).setMargins(0, 0, 0, 0);
+            b.setPadding(0, 0, 0, 0);
             b.setVisibility(View.GONE);
             deviceSoundButtons.add(b);
         }
         // volume up
         {
-            final MasterVolumeMsg msg = new MasterVolumeMsg(MasterVolumeMsg.Command.UP);
+            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.UP;
             deviceSoundButtons.add(createButton(
-                    msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand()));
+                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
         }
         for (View b : deviceSoundButtons)
         {
@@ -359,6 +361,13 @@ public class MonitorFragment extends BaseFragment
             if (b.getTag() instanceof AudioMutingMsg.Status)
             {
                 setButtonSelected(b, state.audioMuting == AudioMutingMsg.Status.ON);
+                final AudioMutingMsg.Status cmd = (AudioMutingMsg.Status) (b.getTag());
+                prepareButtonListeners(b, new AudioMutingMsg(state.getActiveZone(), cmd));
+            }
+            else if (b.getTag() instanceof MasterVolumeMsg.Command)
+            {
+                final MasterVolumeMsg.Command cmd = (MasterVolumeMsg.Command) (b.getTag());
+                prepareButtonListeners(b, new MasterVolumeMsg(state.getActiveZone(), cmd));
             }
             else if (b.getTag() instanceof ListeningModeMsg.Mode)
             {
@@ -441,7 +450,7 @@ public class MonitorFragment extends BaseFragment
 
     private boolean isVolumeLevel(View b)
     {
-        return b.getTag() != null && b.getTag() instanceof String && MasterVolumeMsg.CODE.equals(b.getTag());
+        return b.getTag() != null && b.getTag() instanceof String && VOLUME_LEVEL.equals(b.getTag());
     }
 
     @SuppressLint("SetTextI18n")

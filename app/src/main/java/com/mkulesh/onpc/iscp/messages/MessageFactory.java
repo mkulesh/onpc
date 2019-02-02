@@ -70,9 +70,15 @@ public class MessageFactory
             return new DimmerLevelMsg(raw);
         case DigitalFilterMsg.CODE:
             return new DigitalFilterMsg(raw);
-        case AudioMutingMsg.CODE:
+        case AudioMutingMsg.MAIN_CODE:
+        case AudioMutingMsg.ZONE2_CODE:
+        case AudioMutingMsg.ZONE3_CODE:
+        case AudioMutingMsg.ZONE4_CODE:
             return new AudioMutingMsg(raw);
-        case MasterVolumeMsg.CODE:
+        case MasterVolumeMsg.MAIN_CODE:
+        case MasterVolumeMsg.ZONE2_CODE:
+        case MasterVolumeMsg.ZONE3_CODE:
+        case MasterVolumeMsg.ZONE4_CODE:
             return new MasterVolumeMsg(raw);
         case AutoPowerMsg.CODE:
             return new AutoPowerMsg(raw);

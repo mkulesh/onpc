@@ -87,18 +87,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final static String powerStateQueries[] = new String[]{
             ReceiverInformationMsg.CODE, FirmwareUpdateMsg.CODE,
             GoogleCastVersionMsg.CODE, PrivacyPolicyStatusMsg.CODE,
-            InputSelectorMsg.CODE, AudioMutingMsg.CODE,
-            ListeningModeMsg.CODE, MasterVolumeMsg.CODE
+            InputSelectorMsg.CODE, ListeningModeMsg.CODE
     };
 
     private final static String settingsQueries[] = new String[]{
             DimmerLevelMsg.CODE, DigitalFilterMsg.CODE, AutoPowerMsg.CODE,
             HdmiCecMsg.CODE, SpeakerACommandMsg.CODE, SpeakerBCommandMsg.CODE,
             GoogleCastAnalyticsMsg.CODE
-    };
-
-    private final static String playStateQueries[] = new String[]{
-            PlayStatusMsg.CODE, ListeningModeMsg.CODE, MasterVolumeMsg.CODE
     };
 
     private final static String trackStateQueries[] = new String[]{
@@ -157,7 +152,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
 
         final String zonedStateQueries[] = new String[]{
-                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()]
+                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
+                AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
+                MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()]
         };
 
         sendQueries(powerStateQueries, "requesting power state...");
@@ -181,6 +178,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 if (msg == null)
                 {
                     continue;
+                }
+
+                if (msg instanceof ZonedMessage)
+                {
+                    final ZonedMessage zMsg = (ZonedMessage)msg;
+                    if (zMsg.zoneIndex != state.getActiveZone())
+                    {
+                        Logging.info(this, "message ignored: non active zone " + zMsg.zoneIndex);
+                        continue;
+                    }
                 }
 
                 boolean changed = false;
@@ -287,6 +294,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         if (msg instanceof PowerStatusMsg)
         {
             sendQueries(settingsQueries, "requesting settings...");
+
+            final String playStateQueries[] = new String[]{
+                    PlayStatusMsg.CODE, ListeningModeMsg.CODE,
+                    MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()]
+            };
             sendQueries(playStateQueries, "requesting play state...");
             requestListState();
             return true;
