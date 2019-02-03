@@ -238,6 +238,9 @@
     <string name="medialist_no_items">No items</string>
 
     <!-- Input selectors -->
+    <string name="friendly_selector_name">Friendly selector name</string>
+    <string name="friendly_selector_summary_on">Use selector names provided by Onkyo device</string>
+    <string name="friendly_selector_summary_off">Use build-in selector names</string>
     <string name="input_selector_video1">VCR/DVR</string>
     <string name="input_selector_video2">CBL/SAT</string>
     <string name="input_selector_video3">GAME</string>

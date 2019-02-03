@@ -13,11 +13,9 @@
 
 package com.mkulesh.onpc.config;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -38,21 +36,17 @@ public class PreferencesListeningModes extends AppCompatPreferenceActivity
         public void onCreatePreferences(Bundle bundle, String s)
         {
             addPreferencesFromResource(R.xml.preferences_empty);
-            prepareSelectors(getActivity(), getPreferenceScreen());
+            prepareSelectors(getPreferenceScreen());
         }
     }
 
-    private static void prepareSelectors(final Activity activity, final PreferenceScreen preferenceScreen)
+    private static void prepareSelectors(final PreferenceScreen preferenceScreen)
     {
         for (ListeningModeMsg.Mode m : Configuration.getListeningModes())
         {
-            final SwitchPreferenceCompat p =
-                    new SwitchPreferenceCompat(preferenceScreen.getContext(), null);
-            p.setDefaultValue(true);
-            p.setIconSpaceReserved(false);
-            p.setTitle(activity.getString(m.getDescriptionId()));
-            p.setKey(Configuration.LISTENING_MODES + "_" + m.getCode());
-            preferenceScreen.addPreference(p);
+            preferenceScreen.addPreference(createSwitchPreference(preferenceScreen.getContext(),
+                    m.getDescriptionId(),
+                    Configuration.LISTENING_MODES + "_" + m.getCode()));
         }
     }
 }

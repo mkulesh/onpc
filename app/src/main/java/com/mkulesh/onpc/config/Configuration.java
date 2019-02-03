@@ -47,6 +47,7 @@ public class Configuration
     static final String ZONES = "zones";
 
     static final String DEVICE_SELECTORS = "device_selectors";
+    static final String FRIENDLY_SELECTOR_NAME = "friendly_selector_name";
     static final String NETWORK_SERVICES = "network_services";
     static final String LISTENING_MODES = "listening_modes";
 
@@ -242,6 +243,11 @@ public class Configuration
     public boolean isSelectorVisible(final String code)
     {
         return preferences.getBoolean(DEVICE_SELECTORS + "_" + code, true);
+    }
+
+    public boolean isFriendlySelectorName()
+    {
+        return preferences.getBoolean(FRIENDLY_SELECTOR_NAME, true);
     }
 
     public void setNetworkServices(HashMap<String, String> networkServices)

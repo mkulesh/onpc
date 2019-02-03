@@ -108,6 +108,11 @@ public class ReceiverInformationMsg extends ISCPMessage
             return id;
         }
 
+        public String getName()
+        {
+            return name;
+        }
+
         public boolean isAddToQueue()
         {
             return addToQueue;

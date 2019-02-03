@@ -243,6 +243,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                                 progressIndicator.setVisibility(View.VISIBLE);
                             }
                         });
+                if (activity.getConfiguration().isFriendlySelectorName())
+                {
+                    b.setText(s.getName());
+                }
                 selectorPaletteLayout.addView(b);
             }
         }

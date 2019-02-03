@@ -13,7 +13,7 @@
 
 package com.mkulesh.onpc.config;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
@@ -40,15 +40,24 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
         public void onCreatePreferences(Bundle bundle, String s)
         {
             addPreferencesFromResource(R.xml.preferences_empty);
-            final String deviceSelectors = PreferenceManager.getDefaultSharedPreferences(getActivity())
+            final String deviceSelectors = PreferenceManager
+                    .getDefaultSharedPreferences(getPreferenceScreen().getContext())
                     .getString(Configuration.DEVICE_SELECTORS, "");
-            prepareSelectors(deviceSelectors, getActivity(), getPreferenceScreen());
+            prepareSelectors(deviceSelectors, getPreferenceScreen());
         }
     }
 
     private static void prepareSelectors(final String deviceSelectors,
-                                         final Activity activity, final PreferenceScreen preferenceScreen)
+                                         final PreferenceScreen preferenceScreen)
     {
+        final Context context = preferenceScreen.getContext();
+
+        final SwitchPreferenceCompat fName = createSwitchPreference(context,
+                R.string.friendly_selector_name, Configuration.FRIENDLY_SELECTOR_NAME);
+        fName.setSummaryOn(R.string.friendly_selector_summary_on);
+        fName.setSummaryOff(R.string.friendly_selector_summary_off);
+        preferenceScreen.addPreference(fName);
+
         if (deviceSelectors.isEmpty())
         {
             return;
@@ -66,17 +75,12 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
                             s, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
             if (inputType == InputSelectorMsg.InputType.NONE)
             {
-                Logging.info(activity, "Input selector not known: " + s);
+                Logging.info(context, "Input selector not known: " + s);
                 continue;
             }
-
-            final SwitchPreferenceCompat p =
-                    new SwitchPreferenceCompat(preferenceScreen.getContext(), null);
-            p.setDefaultValue(true);
-            p.setIconSpaceReserved(false);
-            p.setTitle(activity.getString(inputType.getDescriptionId()));
-            p.setKey(Configuration.DEVICE_SELECTORS + "_" + inputType.getCode());
-            preferenceScreen.addPreference(p);
+            preferenceScreen.addPreference(createSwitchPreference(context,
+                    inputType.getDescriptionId(),
+                    Configuration.DEVICE_SELECTORS + "_" + inputType.getCode()));
         }
     }
 }
