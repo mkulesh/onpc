@@ -15,14 +15,19 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
-import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.ZonedMessage;
 
 /*
  * Input Selector Command
  */
-public class InputSelectorMsg extends ISCPMessage
+public class InputSelectorMsg extends ZonedMessage
 {
-    public final static String CODE = "SLI";
+    final static String MAIN_CODE = "SLI";
+    final static String ZONE2_CODE = "SLZ";
+    final static String ZONE3_CODE = "SL3";
+    final static String ZONE4_CODE = "SL4";
+
+    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public enum InputType implements StringParameterIf
     {
@@ -104,14 +109,20 @@ public class InputSelectorMsg extends ISCPMessage
 
     InputSelectorMsg(EISCPMessage raw) throws Exception
     {
-        super(raw);
+        super(raw, ZONE_COMMANDS);
         inputType = (InputType) searchParameter(data, InputType.values(), InputType.NONE);
     }
 
-    public InputSelectorMsg(final String cmd)
+    public InputSelectorMsg(int zoneIndex, final String cmd)
     {
-        super(0, null);
+        super(0, null, zoneIndex);
         inputType = (InputType) searchParameter(cmd, InputType.values(), InputType.NONE);
+    }
+
+    @Override
+    public String getZoneCommand()
+    {
+        return ZONE_COMMANDS[zoneIndex];
     }
 
     public InputType getInputType()
@@ -122,13 +133,16 @@ public class InputSelectorMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + inputType.toString() + "; CODE=" + inputType.getCode() + "]";
+        return getZoneCommand() + "[" + data
+                + "; ZONE_INDEX=" + zoneIndex
+                + "; INPUT_TYPE=" + inputType.toString()
+                + "; CODE=" + inputType.getCode() + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, inputType.getCode());
+        return new EISCPMessage('1', getZoneCommand(), inputType.getCode());
     }
 
 }

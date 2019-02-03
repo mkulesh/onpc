@@ -231,7 +231,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         for (int i = 0; i < selNumber; i++)
         {
             final ReceiverInformationMsg.Selector s = state.deviceSelectors.get(i);
-            final InputSelectorMsg msg = new InputSelectorMsg(s.getId());
+            final InputSelectorMsg msg = new InputSelectorMsg(state.getActiveZone(), s.getId());
             if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
             {
                 final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),

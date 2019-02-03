@@ -36,7 +36,10 @@ public class MessageFactory
             return new ReceiverInformationMsg(raw);
         case DeviceNameMsg.CODE:
             return new DeviceNameMsg(raw);
-        case InputSelectorMsg.CODE:
+        case InputSelectorMsg.MAIN_CODE:
+        case InputSelectorMsg.ZONE2_CODE:
+        case InputSelectorMsg.ZONE3_CODE:
+        case InputSelectorMsg.ZONE4_CODE:
             return new InputSelectorMsg(raw);
         case TimeInfoMsg.CODE:
             return new TimeInfoMsg(raw);

@@ -85,9 +85,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     // Queries for different states
     private final static String powerStateQueries[] = new String[]{
-            ReceiverInformationMsg.CODE, FirmwareUpdateMsg.CODE,
-            GoogleCastVersionMsg.CODE, PrivacyPolicyStatusMsg.CODE,
-            InputSelectorMsg.CODE, ListeningModeMsg.CODE
+            ReceiverInformationMsg.CODE, FirmwareUpdateMsg.CODE, GoogleCastVersionMsg.CODE,
+            PrivacyPolicyStatusMsg.CODE, ListeningModeMsg.CODE
     };
 
     private final static String settingsQueries[] = new String[]{
@@ -153,6 +152,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         final String zonedStateQueries[] = new String[]{
                 PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
+                InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                 AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                 MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()]
         };
