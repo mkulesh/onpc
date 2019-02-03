@@ -117,7 +117,7 @@ public class OperationCommandMsg extends ISCPMessage
     public OperationCommandMsg(final String command)
     {
         super(0, null);
-        this.command = (Command) OperationCommandMsg.searchParameter(command, Command.values(), null);
+        this.command = (Command) searchParameter(command, Command.values(), null);
     }
 
     public OperationCommandMsg(final Command command)

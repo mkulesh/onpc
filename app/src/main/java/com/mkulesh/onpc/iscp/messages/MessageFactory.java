@@ -95,9 +95,11 @@ public class MessageFactory
             return new ListeningModeMsg(raw);
         case HdmiCecMsg.CODE:
             return new HdmiCecMsg(raw);
-        case SpeakerACommandMsg.CODE:
+        case SpeakerACommandMsg.MAIN_CODE:
+        case SpeakerACommandMsg.ZONE2_CODE:
             return new SpeakerACommandMsg(raw);
-        case SpeakerBCommandMsg.CODE:
+        case SpeakerBCommandMsg.MAIN_CODE:
+        case SpeakerBCommandMsg.ZONE2_CODE:
             return new SpeakerBCommandMsg(raw);
         case PrivacyPolicyStatusMsg.CODE:
             return new PrivacyPolicyStatusMsg(raw);

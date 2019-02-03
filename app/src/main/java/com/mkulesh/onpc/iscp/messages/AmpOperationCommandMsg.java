@@ -67,7 +67,7 @@ public class AmpOperationCommandMsg extends ISCPMessage
     public AmpOperationCommandMsg(final String command)
     {
         super(0, null);
-        this.command = (Command) OperationCommandMsg.searchParameter(command, Command.values(), null);
+        this.command = (Command) searchParameter(command, Command.values(), null);
     }
 
     public Command getCommand()

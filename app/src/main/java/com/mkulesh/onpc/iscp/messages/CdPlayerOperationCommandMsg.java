@@ -121,13 +121,13 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
     CdPlayerOperationCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
-        this.command = (Command) OperationCommandMsg.searchParameter(data, Command.values(), null);
+        this.command = (Command) searchParameter(data, Command.values(), null);
     }
 
     public CdPlayerOperationCommandMsg(final String command)
     {
         super(0, null);
-        this.command = (Command) OperationCommandMsg.searchParameter(command, Command.values(), null);
+        this.command = (Command) searchParameter(command, Command.values(), null);
     }
 
     public Command getCommand()

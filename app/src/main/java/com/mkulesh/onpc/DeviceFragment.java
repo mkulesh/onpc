@@ -76,8 +76,8 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
         prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
-        prepareImageButton(R.id.speaker_a_command_toggle, new SpeakerACommandMsg(SpeakerACommandMsg.Status.TOGGLE));
-        prepareImageButton(R.id.speaker_b_command_toggle, new SpeakerBCommandMsg(SpeakerBCommandMsg.Status.TOGGLE));
+        prepareImageButton(R.id.speaker_a_command_toggle, null);
+        prepareImageButton(R.id.speaker_b_command_toggle, null);
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
 
         update(null, null);
@@ -220,11 +220,16 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         prepareSettingPanel(state, state.hdmiCec != HdmiCecMsg.Status.NONE,
                 R.id.hdmi_cec_layout, state.hdmiCec.getDescriptionId(), null);
 
-        // Speaker A/B
-        prepareSettingPanel(state, state.speakerA != SpeakerACommandMsg.Status.NONE,
-                R.id.speaker_a_layout, state.speakerA.getDescriptionId(), null);
-        prepareSettingPanel(state, state.speakerB != SpeakerBCommandMsg.Status.NONE,
-                R.id.speaker_b_layout, state.speakerB.getDescriptionId(), null);
+        // Speaker A/B (For Main zone and Zone 2 only)
+        {
+            final boolean zoneAllowed = (state.getActiveZone() < 2);
+            prepareSettingPanel(state, zoneAllowed && state.speakerA != SpeakerACommandMsg.Status.NONE,
+                    R.id.speaker_a_layout, state.speakerA.getDescriptionId(),
+                    new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.TOGGLE));
+            prepareSettingPanel(state, zoneAllowed && state.speakerB != SpeakerBCommandMsg.Status.NONE,
+                    R.id.speaker_b_layout, state.speakerB.getDescriptionId(),
+                    new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.Status.TOGGLE));
+        }
 
         // Google Cast analytics
         {
