@@ -47,6 +47,7 @@ public class Configuration
     static final String ZONES = "zones";
 
     static final String DEVICE_SELECTORS = "device_selectors";
+    static final String DEVICE_SELECTORS_NAME = "device_selectors_name";
     static final String FRIENDLY_SELECTOR_NAME = "friendly_selector_name";
     static final String NETWORK_SERVICES = "network_services";
     static final String LISTENING_MODES = "listening_modes";
@@ -55,7 +56,7 @@ public class Configuration
     private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
     private static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
 
-    static final String DEVELOPER_MODE = "developer_mode";
+    private static final String DEVELOPER_MODE = "developer_mode";
 
     private final static ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
     {
@@ -225,20 +226,23 @@ public class Configuration
 
     public void setDeviceSelectors(List<ReceiverInformationMsg.Selector> deviceSelectors)
     {
-        final StringBuilder str = new StringBuilder();
+        final StringBuilder strId = new StringBuilder();
+        final StringBuilder strNames= new StringBuilder();
         for (ReceiverInformationMsg.Selector d : deviceSelectors)
         {
-            if (!str.toString().isEmpty())
+            if (!strId.toString().isEmpty())
             {
-                str.append(",");
+                strId.append(",");
+                strNames.append(",");
             }
-            str.append(d.getId());
+            strId.append(d.getId());
+            strNames.append(d.getName());
         }
-        String selectors = str.toString();
 
-        Logging.info(this, "Device selectors: " + selectors);
+        Logging.info(this, "Device selectors: " + strId.toString() + "; " + strNames.toString());
         SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putString(DEVICE_SELECTORS, selectors);
+        prefEditor.putString(DEVICE_SELECTORS, strId.toString());
+        prefEditor.putString(DEVICE_SELECTORS_NAME, strNames.toString());
         prefEditor.apply();
     }
 

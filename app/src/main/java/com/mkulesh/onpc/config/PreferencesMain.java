@@ -20,6 +20,7 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceScreen;
 
 import com.mkulesh.onpc.R;
 
@@ -39,29 +40,22 @@ public class PreferencesMain extends AppCompatPreferenceActivity
         public void onCreatePreferences(Bundle bundle, String s)
         {
             addPreferencesFromResource(R.xml.preferences_main);
-            final Activity activity = getActivity();
-            if (activity != null)
-            {
-                prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), activity);
-                prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
-
-                final ListPreference activeZone = (ListPreference) findPreference(Configuration.ACTIVE_ZONE);
-                final String zones = PreferenceManager.getDefaultSharedPreferences(activity)
-                        .getString(Configuration.ZONES, "");
-                fillZones(activeZone, zones);
-
-                tintIcons(activity, getPreferenceScreen());
-            }
+            prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), getActivity());
+            prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
+            prepareZoneList((ListPreference) findPreference(Configuration.ACTIVE_ZONE), getPreferenceScreen());
+            tintIcons(getPreferenceScreen().getContext(), getPreferenceScreen());
         }
     }
 
-    private static void fillZones(ListPreference listPreference, String zones)
+    private static void prepareZoneList(ListPreference listPreference, final PreferenceScreen preferenceScreen)
     {
         if (listPreference == null)
         {
             return;
         }
 
+        final String zones = PreferenceManager.getDefaultSharedPreferences(preferenceScreen.getContext())
+                .getString(Configuration.ZONES, "");
         if (zones.isEmpty())
         {
             return;

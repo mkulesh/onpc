@@ -13,7 +13,7 @@
 
 package com.mkulesh.onpc.config;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
@@ -41,16 +41,17 @@ public class PreferencesNetworkServices extends AppCompatPreferenceActivity
         public void onCreatePreferences(Bundle bundle, String s)
         {
             addPreferencesFromResource(R.xml.preferences_empty);
-            final String networkServices = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                    .getString(Configuration.NETWORK_SERVICES, "");
-            prepareSelectors(networkServices, getActivity(), getPreferenceScreen());
-            tintIcons(getActivity(), getPreferenceScreen());
+            prepareSelectors(getPreferenceScreen());
+            tintIcons(getPreferenceScreen().getContext(), getPreferenceScreen());
         }
     }
 
-    private static void prepareSelectors(final String networkServices,
-                                         final Activity activity, final PreferenceScreen preferenceScreen)
+    private static void prepareSelectors(final PreferenceScreen preferenceScreen)
     {
+        final Context context = preferenceScreen.getContext();
+
+        final String networkServices = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(Configuration.NETWORK_SERVICES, "");
         if (networkServices.isEmpty())
         {
             return;
@@ -67,7 +68,7 @@ public class PreferencesNetworkServices extends AppCompatPreferenceActivity
                     s, ServiceType.values(), ServiceType.UNKNOWN);
             if (serviceType == ServiceType.UNKNOWN)
             {
-                Logging.info(activity, "Service not known: " + s);
+                Logging.info(context, "Service not known: " + s);
                 continue;
             }
 
@@ -75,7 +76,7 @@ public class PreferencesNetworkServices extends AppCompatPreferenceActivity
                     new SwitchPreferenceCompat(preferenceScreen.getContext(), null);
             p.setDefaultValue(true);
             p.setIcon(serviceType.getImageId());
-            p.setTitle(activity.getString(serviceType.getDescriptionId()));
+            p.setTitle(context.getString(serviceType.getDescriptionId()));
             p.setKey(Configuration.NETWORK_SERVICES + "_" + serviceType.getCode());
             preferenceScreen.addPreference(p);
         }

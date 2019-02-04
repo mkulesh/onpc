@@ -13,8 +13,13 @@
 
 package com.mkulesh.onpc.config;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.PreferenceScreen;
@@ -40,15 +45,11 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
         public void onCreatePreferences(Bundle bundle, String s)
         {
             addPreferencesFromResource(R.xml.preferences_empty);
-            final String deviceSelectors = PreferenceManager
-                    .getDefaultSharedPreferences(getPreferenceScreen().getContext())
-                    .getString(Configuration.DEVICE_SELECTORS, "");
-            prepareSelectors(deviceSelectors, getPreferenceScreen());
+            prepareSelectors(getPreferenceScreen(), getActivity());
         }
     }
 
-    private static void prepareSelectors(final String deviceSelectors,
-                                         final PreferenceScreen preferenceScreen)
+    private static void prepareSelectors(final PreferenceScreen preferenceScreen, @Nullable final Activity activity)
     {
         final Context context = preferenceScreen.getContext();
 
@@ -56,31 +57,55 @@ public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
                 R.string.friendly_selector_name, Configuration.FRIENDLY_SELECTOR_NAME);
         fName.setSummaryOn(R.string.friendly_selector_summary_on);
         fName.setSummaryOff(R.string.friendly_selector_summary_off);
+        fName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                if (activity != null)
+                {
+                    final Intent intent = activity.getIntent();
+                    activity.finish();
+                    activity.startActivity(intent);
+                }
+                return true;
+            }
+        });
         preferenceScreen.addPreference(fName);
 
-        if (deviceSelectors.isEmpty())
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final String selectorsId = preferences.getString(Configuration.DEVICE_SELECTORS, "");
+        final String selectorsName = preferences.getString(Configuration.DEVICE_SELECTORS_NAME, "");
+
+        if (selectorsId.isEmpty() || selectorsName.isEmpty())
         {
             return;
         }
-        String[] tokens = deviceSelectors.split(",");
-        if (tokens.length == 0)
+        String[] tokensId = selectorsId.split(",");
+        String[] tokensName = selectorsName.split(",");
+        if (tokensId.length == 0 || tokensName.length == 0 || tokensId.length != tokensName.length)
         {
             return;
         }
 
-        for (String s : tokens)
+        for (int i = 0; i < tokensId.length; i++)
         {
+            final String id = tokensId[i];
             final InputSelectorMsg.InputType inputType =
                     (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
-                            s, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
+                            id, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
             if (inputType == InputSelectorMsg.InputType.NONE)
             {
-                Logging.info(context, "Input selector not known: " + s);
+                Logging.info(context, "Input selector not known: " + id);
                 continue;
             }
-            preferenceScreen.addPreference(createSwitchPreference(context,
+            final SwitchPreferenceCompat p = createSwitchPreference(context,
                     inputType.getDescriptionId(),
-                    Configuration.DEVICE_SELECTORS + "_" + inputType.getCode()));
+                    Configuration.DEVICE_SELECTORS + "_" + inputType.getCode());
+            if (fName.isChecked())
+            {
+                p.setTitle(tokensName[i]);
+            }
+            preferenceScreen.addPreference(p);
         }
     }
 }
