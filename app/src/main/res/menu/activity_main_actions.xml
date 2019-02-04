@@ -30,4 +30,9 @@
         android:id="@+id/menu_about"
         android:title="@string/menu_about"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_receiver_information"
+        android:title="@string/menu_receiver_information"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

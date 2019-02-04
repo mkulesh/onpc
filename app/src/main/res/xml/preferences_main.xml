@@ -11,8 +11,7 @@
   ~ Public License along with this program.
   -->
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
@@ -24,90 +23,106 @@
         android:summary="%s"
         android:title="@string/pref_app_theme" />
 
-    <SwitchPreferenceCompat
-        app:icon="@drawable/pref_keep_screen_on"
-        app:singleLineTitle="false"
-        android:defaultValue="false"
-        android:key="keep_screen_on"
-        android:title="@string/pref_keep_screen_on"/>
+    <PreferenceCategory android:title="@string/pref_category_device_options">
 
-    <SwitchPreferenceCompat
-        app:icon="@drawable/pref_exit_confirm"
-        app:singleLineTitle="false"
-        android:defaultValue="false"
-        android:key="exit_confirm"
-        android:title="@string/pref_exit_confirm"/>
+        <ListPreference
+            app:icon="@drawable/pref_sound_control"
+            android:defaultValue="@string/pref_default_sound_control"
+            android:entries="@array/pref_sound_control_names"
+            android:entryValues="@array/pref_sound_control_codes"
+            android:key="sound_control"
+            android:summary="%s"
+            android:title="@string/pref_sound_control" />
 
-    <ListPreference
-        app:icon="@drawable/pref_sound_control"
-        android:defaultValue="@string/pref_default_sound_control"
-        android:entries="@array/pref_sound_control_names"
-        android:entryValues="@array/pref_sound_control_codes"
-        android:key="sound_control"
-        android:summary="%s"
-        android:title="@string/pref_sound_control" />
+        <ListPreference
+            app:icon="@drawable/pref_active_zone"
+            android:key="active_zone"
+            android:summary="%s"
+            android:title="@string/pref_active_zone" />
 
-    <ListPreference
-        app:icon="@drawable/pref_active_zone"
-        android:key="active_zone"
-        android:summary="%s"
-        android:title="@string/pref_active_zone" />
+        <PreferenceScreen
+            app:icon="@drawable/pref_device_selectors"
+            android:icon="@null"
+            android:key="device_selectors"
+            android:title="@string/pref_device_selectors">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.mkulesh.onpc"
+                android:targetClass="com.mkulesh.onpc.config.PreferencesDeviceSelectors"></intent>
+        </PreferenceScreen>
 
-    <PreferenceScreen
-        app:icon="@drawable/pref_device_selectors"
-        android:icon="@null"
-        android:key="device_selectors"
-        android:title="@string/pref_device_selectors" >
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="com.mkulesh.onpc"
-            android:targetClass="com.mkulesh.onpc.config.PreferencesDeviceSelectors" >
-        </intent>
-    </PreferenceScreen>
+        <PreferenceScreen
+            app:icon="@drawable/pref_listening_modes"
+            android:key="listening_modes"
+            android:title="@string/pref_listening_modes">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.mkulesh.onpc"
+                android:targetClass="com.mkulesh.onpc.config.PreferencesListeningModes"></intent>
+        </PreferenceScreen>
 
-    <PreferenceScreen
-        app:icon="@drawable/pref_listening_modes"
-        android:key="listening_modes"
-        android:title="@string/pref_listening_modes" >
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="com.mkulesh.onpc"
-            android:targetClass="com.mkulesh.onpc.config.PreferencesListeningModes" >
-        </intent>
-    </PreferenceScreen>
+        <PreferenceScreen
+            app:icon="@drawable/pref_network_services"
+            android:key="network_services"
+            android:title="@string/pref_network_services">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.mkulesh.onpc"
+                android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices"></intent>
+        </PreferenceScreen>
 
-    <PreferenceScreen
-        app:icon="@drawable/pref_network_services"
-        android:key="network_services"
-        android:title="@string/pref_network_services" >
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="com.mkulesh.onpc"
-            android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices" >
-        </intent>
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <SwitchPreferenceCompat
-        app:icon="@drawable/pref_remote_interface"
-        app:singleLineTitle="false"
-        android:defaultValue="false"
-        android:key="remote_interface"
-        android:title="@string/remote_interface" />
+    <PreferenceCategory android:title="@string/pref_category_ri_options">
 
-    <SwitchPreferenceCompat
-        android:dependency="remote_interface"
-        app:singleLineTitle="false"
-        app:iconSpaceReserved="true"
-        android:defaultValue="false"
-        android:key="remote_interface_amp"
-        android:title="@string/remote_interface_amp" />
+        <SwitchPreferenceCompat
+            app:icon="@drawable/pref_remote_interface"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="remote_interface"
+            android:title="@string/remote_interface" />
 
-    <SwitchPreferenceCompat
-        android:dependency="remote_interface"
-        app:singleLineTitle="false"
-        app:iconSpaceReserved="true"
-        android:defaultValue="false"
-        android:key="remote_interface_cd"
-        android:title="@string/remote_interface_cd" />
+        <SwitchPreferenceCompat
+            android:dependency="remote_interface"
+            app:singleLineTitle="false"
+            app:iconSpaceReserved="true"
+            android:defaultValue="false"
+            android:key="remote_interface_amp"
+            android:title="@string/remote_interface_amp" />
+
+        <SwitchPreferenceCompat
+            android:dependency="remote_interface"
+            app:singleLineTitle="false"
+            app:iconSpaceReserved="true"
+            android:defaultValue="false"
+            android:key="remote_interface_cd"
+            android:title="@string/remote_interface_cd" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_advanced_options">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/pref_keep_screen_on"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="keep_screen_on"
+            android:title="@string/pref_keep_screen_on" />
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/pref_exit_confirm"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="exit_confirm"
+            android:title="@string/pref_exit_confirm" />
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/pref_developer"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="developer_mode"
+            android:title="@string/pref_developer_mode" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

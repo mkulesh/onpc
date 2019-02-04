@@ -55,6 +55,8 @@ public class Configuration
     private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
     private static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
 
+    static final String DEVELOPER_MODE = "developer_mode";
+
     private final static ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
     {
         ListeningModeMsg.Mode.MODE_00,
@@ -298,4 +300,10 @@ public class Configuration
     {
         return remoteInterface && remoteInterfaceCd;
     }
+
+    public boolean isDeveloperMode()
+    {
+        return preferences.getBoolean(DEVELOPER_MODE, false);
+    }
+
 }

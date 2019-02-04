@@ -68,6 +68,7 @@ public class State
     }
 
     // Receiver Information
+    public String receiverInformation = null;
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, String> networkServices = new HashMap<>();
     private final int activeZone;
@@ -338,6 +339,7 @@ public class State
         try
         {
             msg.parseXml();
+            receiverInformation = msg.getData();
             deviceProperties = msg.getDeviceProperties();
             networkServices = msg.getNetworkServices();
             zones = msg.getZones();

@@ -30,6 +30,10 @@
                 android:id="@+id/text_message"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:enabled="true"
+                android:textIsSelectable="true"
+                android:focusable="true"
+                android:longClickable="true"
                 android:textSize="@dimen/secondary_text_size"/>
 
         </LinearLayout>

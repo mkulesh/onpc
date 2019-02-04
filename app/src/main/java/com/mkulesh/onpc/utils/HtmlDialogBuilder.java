@@ -35,10 +35,22 @@ public class HtmlDialogBuilder
 {
     private final static String VERSION_TAG = "<version/>";
 
+    public static AlertDialog buildHtmlDialog(Context context, @DrawableRes int icon,
+                                              @StringRes int title, @StringRes int textId)
+    {
+        return buildHtmlDialog(context, icon, title, context.getResources().getString(textId), true);
+    }
+
+    public static AlertDialog buildXmlDialog(Context context, @DrawableRes int icon,
+                                             @StringRes int title, final String text)
+    {
+        return buildHtmlDialog(context, icon, title, text, false);
+    }
+
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
-    public static AlertDialog buildDialog(Context context, @DrawableRes int icon,
-                                          @StringRes int title, @StringRes int text)
+    private static AlertDialog buildHtmlDialog(Context context, @DrawableRes int icon,
+                                               @StringRes int title, final String text, final boolean isHtml)
     {
         final FrameLayout frameView = new FrameLayout(context);
         final AlertDialog alertDialog = new AlertDialog.Builder(context)
@@ -59,7 +71,7 @@ public class HtmlDialogBuilder
         final LayoutInflater inflater = alertDialog.getLayoutInflater();
         final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.html_dialog_layout, frameView);
 
-        String htmlSource = context.getResources().getString(text);
+        String htmlSource = text;
         if (htmlSource.isEmpty())
         {
             return alertDialog;
@@ -79,19 +91,25 @@ public class HtmlDialogBuilder
             }
         }
 
-        Spanned result;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        final TextView aboutMessage = dialogFrame.findViewById(R.id.text_message);
+        if (isHtml)
         {
-            result = Html.fromHtml(htmlSource, Html.FROM_HTML_MODE_LEGACY);
+            Spanned result;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            {
+                result = Html.fromHtml(htmlSource, Html.FROM_HTML_MODE_LEGACY);
+            }
+            else
+            {
+                result = Html.fromHtml(htmlSource);
+            }
+            aboutMessage.setText(result);
+            aboutMessage.setMovementMethod(LinkMovementMethod.getInstance());
         }
         else
         {
-            result = Html.fromHtml(htmlSource);
+            aboutMessage.setText(htmlSource);
         }
-
-        final TextView aboutMessage = dialogFrame.findViewById(R.id.text_message);
-        aboutMessage.setText(result);
-        aboutMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
         return alertDialog;
     }

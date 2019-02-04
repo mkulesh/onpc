@@ -132,7 +132,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         getMenuInflater().inflate(R.menu.activity_main_actions, menu);
         for (int i = 0; i < mainMenu.size(); i++)
         {
-            Utils.updateMenuIconColor(this, mainMenu.getItem(i));
+            final MenuItem m = mainMenu.getItem(i);
+            Utils.updateMenuIconColor(this, m);
+            if (m.getItemId() == R.id.menu_receiver_information)
+            {
+                m.setVisible(configuration.isDeveloperMode());
+            }
         }
         return true;
     }
@@ -160,8 +165,16 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         case R.id.menu_about:
         {
-            HtmlDialogBuilder.buildDialog(this,
+            HtmlDialogBuilder.buildHtmlDialog(this,
                     R.mipmap.ic_launcher, R.string.app_name, R.string.html_about).show();
+            return true;
+        }
+        case R.id.menu_receiver_information:
+        {
+            final String text = isConnected() ? getStateManager().getState().receiverInformation :
+                    getResources().getString(R.string.state_not_connected);
+            HtmlDialogBuilder.buildXmlDialog(this,
+                    R.mipmap.ic_launcher, R.string.app_name, text).show();
             return true;
         }
         default:
