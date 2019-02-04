@@ -48,9 +48,9 @@ class MockupState extends State
         networkServices.put("1D", "Play Queue");
         zones.add(new ReceiverInformationMsg.Zone("0", "Main", 0));
         zones.add(new ReceiverInformationMsg.Zone("2", "Zone2", 1));
-        deviceSelectors.add(new ReceiverInformationMsg.Selector("2B", "Network", "2B", false));
-        deviceSelectors.add(new ReceiverInformationMsg.Selector("29", "Front USB", "29", true));
-        deviceSelectors.add(new ReceiverInformationMsg.Selector("2A", "Rear USB", "2A", true));
+        deviceSelectors.add(new ReceiverInformationMsg.Selector("2B", "Network", 1, "2B", false));
+        deviceSelectors.add(new ReceiverInformationMsg.Selector("29", "Front USB", 1, "29", true));
+        deviceSelectors.add(new ReceiverInformationMsg.Selector("2A", "Rear USB", 1, "2A", true));
         inputType = InputSelectorMsg.InputType.NET;
         dimmerLevel = DimmerLevelMsg.Level.DIM;
         digitalFilter = DigitalFilterMsg.Filter.F01;

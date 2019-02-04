@@ -134,11 +134,7 @@ public class State
     @Override
     public String toString()
     {
-        return powerStatus.toString()
-                + "; " + album + "/" + artist + "/" + title
-                + "; " + currentTime + "/" + maxTime
-                + "; " + playStatus.toString() + "/" + repeatStatus.toString() + "/" + shuffleStatus.toString()
-                + "; cover=" + ((cover != null) ? "YES" : "NO");
+        return powerStatus.toString() + "; activeZone=" + activeZone;
     }
 
     public int getActiveZone()
@@ -348,7 +344,14 @@ public class State
             deviceProperties = msg.getDeviceProperties();
             networkServices = msg.getNetworkServices();
             zones = msg.getZones();
-            deviceSelectors = msg.getDeviceSelectors();
+            deviceSelectors.clear();
+            for (ReceiverInformationMsg.Selector s : msg.getDeviceSelectors())
+            {
+                if (s.isActiveForZone(activeZone))
+                {
+                    deviceSelectors.add(s);
+                }
+            }
             return true;
         }
         catch (Exception e)

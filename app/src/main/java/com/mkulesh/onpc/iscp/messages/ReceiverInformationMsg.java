@@ -84,7 +84,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         @Override
         public String toString()
         {
-            return id + "(" + name + ", volumeStep=" + volumeStep + ")";
+            return id + ": " + name + ", volumeStep=" + volumeStep;
         }
     }
 
@@ -92,6 +92,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     {
         final String id;
         final String name;
+        final int zone;
         final String iconId;
         final boolean addToQueue;
 
@@ -99,14 +100,17 @@ public class ReceiverInformationMsg extends ISCPMessage
         {
             id = e.getAttribute("id").toUpperCase();
             name = e.getAttribute("name");
+            zone = e.hasAttribute("zone") ? Integer.parseInt(e.getAttribute("zone")) : 1;
             iconId = e.getAttribute("iconid");
             addToQueue = e.hasAttribute("addqueue") && (Integer.parseInt(e.getAttribute("addqueue")) == 1);
         }
 
-        public Selector(final String id, final String name, final String iconId, final boolean addToQueue)
+        public Selector(final String id, final String name, final int zone,
+                        final String iconId, final boolean addToQueue)
         {
             this.id = id;
             this.name = name;
+            this.zone = zone;
             this.iconId = iconId;
             this.addToQueue = addToQueue;
         }
@@ -129,7 +133,19 @@ public class ReceiverInformationMsg extends ISCPMessage
         @Override
         public String toString()
         {
-            return id + "(" + name + "): icon=" + iconId + ", addToQueue=" + addToQueue;
+            String res = id + ": " + name + ", icon=" + iconId + ", addToQueue=" + addToQueue
+                    + ", zone=" + zone + ", zones=[";
+            for (int z = 0; z <= 3; z++)
+            {
+                res += Integer.valueOf((isActiveForZone(z) ? 1 : 0)).toString();
+            }
+            res += "]";
+            return res;
+        }
+
+        public boolean isActiveForZone(int z)
+        {
+            return ((1 << z) & zone) != 0;
         }
     }
 
