@@ -40,11 +40,13 @@ import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
+import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -294,7 +296,7 @@ public class MonitorFragment extends BaseFragment
         {
             if (isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton) b, MasterVolumeMsg.NO_LEVEL);
+                updateVolumeLevel((AppCompatButton) b, MasterVolumeMsg.NO_LEVEL, null);
             }
             else
             {
@@ -388,7 +390,7 @@ public class MonitorFragment extends BaseFragment
             }
             else if (isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton) b, state.volumeLevel);
+                updateVolumeLevel((AppCompatButton) b, state.volumeLevel, state.getActiveZoneInfo());
             }
         }
         for (AppCompatImageButton b : playbackButtons)
@@ -454,10 +456,19 @@ public class MonitorFragment extends BaseFragment
     }
 
     @SuppressLint("SetTextI18n")
-    private void updateVolumeLevel(AppCompatButton b, int volumeLevel)
+    private void updateVolumeLevel(AppCompatButton b, final int volumeLevel, final ReceiverInformationMsg.Zone zone)
     {
         b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL ? View.VISIBLE : View.GONE);
-        b.setText(Integer.toString(volumeLevel));
+        if (zone != null && zone.getVolumeStep() == 0)
+        {
+            final DecimalFormat df = Utils.getDecimalFormat("0.0");
+            final float floatLevel = (float) volumeLevel / 2.0f;
+            b.setText(df.format(floatLevel));
+        }
+        else
+        {
+            b.setText(Integer.toString(volumeLevel));
+        }
         setButtonEnabled(b, false);
     }
 

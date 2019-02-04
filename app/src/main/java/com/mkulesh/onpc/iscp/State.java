@@ -151,6 +151,11 @@ public class State
         return activeZone < zones.size() && activeZone != ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
     }
 
+    public ReceiverInformationMsg.Zone getActiveZoneInfo()
+    {
+        return activeZone < zones.size() ? zones.get(activeZone) : null;
+    }
+
     public boolean isOn()
     {
         return powerStatus == PowerStatusMsg.PowerStatus.ON;

@@ -38,6 +38,8 @@ import org.w3c.dom.Node;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,4 +221,16 @@ public class Utils
         return context.getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS;
     }
 
+    /**
+     * Procedure creates new dot-separated DecimalFormat
+     */
+    public static DecimalFormat getDecimalFormat(String format)
+    {
+        DecimalFormat df = new DecimalFormat(format);
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        dfs.setExponentSeparator("e");
+        df.setDecimalFormatSymbols(dfs);
+        return df;
+    }
 }
