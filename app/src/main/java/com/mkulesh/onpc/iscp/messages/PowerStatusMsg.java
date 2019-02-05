@@ -21,12 +21,12 @@ import com.mkulesh.onpc.iscp.ZonedMessage;
  */
 public class PowerStatusMsg extends ZonedMessage
 {
-    final static String MAIN_CODE = "PWR";
+    final static String CODE = "PWR";
     final static String ZONE2_CODE = "ZPW";
     final static String ZONE3_CODE = "PW3";
     final static String ZONE4_CODE = "PW4";
 
-    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     /*
     * Play Status: "00": System Standby, "01":  System On, "ALL": All Zone(including Main Zone) Standby

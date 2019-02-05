@@ -24,10 +24,10 @@ import com.mkulesh.onpc.iscp.ZonedMessage;
  */
 public class SpeakerBCommandMsg extends ZonedMessage
 {
-    final static String MAIN_CODE = "SPB";
+    final static String CODE = "SPB";
     final static String ZONE2_CODE = "ZPB";
 
-    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, MAIN_CODE, MAIN_CODE };
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, CODE, CODE };
 
     public enum Status implements StringParameterIf
     {

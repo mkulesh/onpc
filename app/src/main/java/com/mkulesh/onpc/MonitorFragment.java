@@ -100,7 +100,8 @@ public class MonitorFragment extends BaseFragment
 
         for (AppCompatImageButton b : playbackButtons)
         {
-            final OperationCommandMsg msg = new OperationCommandMsg((String) (b.getTag()));
+            final OperationCommandMsg msg = new OperationCommandMsg(
+                    ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, (String) (b.getTag()));
             prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
         }
 
@@ -395,6 +396,7 @@ public class MonitorFragment extends BaseFragment
         }
         for (AppCompatImageButton b : playbackButtons)
         {
+            prepareButtonListeners(b, new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag())));
             setButtonEnabled(b, true);
         }
 

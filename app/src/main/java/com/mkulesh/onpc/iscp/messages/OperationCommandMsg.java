@@ -15,14 +15,20 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
-import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.ZonedMessage;
 
 /*
  * Network/USB Operation Command (Network Model Only after TX-NR905)
  */
-public class OperationCommandMsg extends ISCPMessage
+public class OperationCommandMsg extends ZonedMessage
 {
     public final static String CODE = "NTC";
+    final static String ZONE2_CODE = "NTZ";
+    final static String ZONE3_CODE = "NT3";
+    final static String ZONE4_CODE = "NT4";
+
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+
 
     public enum Command implements StringParameterIf
     {
@@ -114,16 +120,22 @@ public class OperationCommandMsg extends ISCPMessage
 
     private final Command command;
 
-    public OperationCommandMsg(final String command)
+    public OperationCommandMsg(int zoneIndex, final String command)
     {
-        super(0, null);
+        super(0, null, zoneIndex);
         this.command = (Command) searchParameter(command, Command.values(), null);
     }
 
     public OperationCommandMsg(final Command command)
     {
-        super(0, null);
+        super(0, null, ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
         this.command = command;
+    }
+
+    @Override
+    public String getZoneCommand()
+    {
+        return ZONE_COMMANDS[zoneIndex];
     }
 
     public Command getCommand()
@@ -134,13 +146,15 @@ public class OperationCommandMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + (command == null ? "null" : command.toString()) + "]";
+        return getZoneCommand() + "[" + data
+                + "; ZONE_INDEX=" + zoneIndex
+                + "; CMD=" + (command == null ? "null" : command.toString()) + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return command == null ? null : new EISCPMessage('1', CODE, command.getCode());
+        return command == null ? null : new EISCPMessage('1', getZoneCommand(), command.getCode());
     }
 
     @Override

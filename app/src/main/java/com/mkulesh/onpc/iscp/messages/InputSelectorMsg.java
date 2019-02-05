@@ -22,12 +22,12 @@ import com.mkulesh.onpc.iscp.ZonedMessage;
  */
 public class InputSelectorMsg extends ZonedMessage
 {
-    final static String MAIN_CODE = "SLI";
+    final static String CODE = "SLI";
     final static String ZONE2_CODE = "SLZ";
     final static String ZONE3_CODE = "SL3";
     final static String ZONE4_CODE = "SL4";
 
-    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public enum InputType implements StringParameterIf
     {

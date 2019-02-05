@@ -25,7 +25,7 @@ public class MessageFactory
     {
         switch (raw.getCode().toUpperCase())
         {
-        case PowerStatusMsg.MAIN_CODE:
+        case PowerStatusMsg.CODE:
         case PowerStatusMsg.ZONE2_CODE:
         case PowerStatusMsg.ZONE3_CODE:
         case PowerStatusMsg.ZONE4_CODE:
@@ -36,7 +36,7 @@ public class MessageFactory
             return new ReceiverInformationMsg(raw);
         case DeviceNameMsg.CODE:
             return new DeviceNameMsg(raw);
-        case InputSelectorMsg.MAIN_CODE:
+        case InputSelectorMsg.CODE:
         case InputSelectorMsg.ZONE2_CODE:
         case InputSelectorMsg.ZONE3_CODE:
         case InputSelectorMsg.ZONE4_CODE:
@@ -73,12 +73,12 @@ public class MessageFactory
             return new DimmerLevelMsg(raw);
         case DigitalFilterMsg.CODE:
             return new DigitalFilterMsg(raw);
-        case AudioMutingMsg.MAIN_CODE:
+        case AudioMutingMsg.CODE:
         case AudioMutingMsg.ZONE2_CODE:
         case AudioMutingMsg.ZONE3_CODE:
         case AudioMutingMsg.ZONE4_CODE:
             return new AudioMutingMsg(raw);
-        case MasterVolumeMsg.MAIN_CODE:
+        case MasterVolumeMsg.CODE:
         case MasterVolumeMsg.ZONE2_CODE:
         case MasterVolumeMsg.ZONE3_CODE:
         case MasterVolumeMsg.ZONE4_CODE:
@@ -95,10 +95,10 @@ public class MessageFactory
             return new ListeningModeMsg(raw);
         case HdmiCecMsg.CODE:
             return new HdmiCecMsg(raw);
-        case SpeakerACommandMsg.MAIN_CODE:
+        case SpeakerACommandMsg.CODE:
         case SpeakerACommandMsg.ZONE2_CODE:
             return new SpeakerACommandMsg(raw);
-        case SpeakerBCommandMsg.MAIN_CODE:
+        case SpeakerBCommandMsg.CODE:
         case SpeakerBCommandMsg.ZONE2_CODE:
             return new SpeakerBCommandMsg(raw);
         case PrivacyPolicyStatusMsg.CODE:

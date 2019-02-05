@@ -22,12 +22,12 @@ import com.mkulesh.onpc.iscp.ZonedMessage;
  */
 public class MasterVolumeMsg extends ZonedMessage
 {
-    final static String MAIN_CODE = "MVL";
+    final static String CODE = "MVL";
     final static String ZONE2_CODE = "ZVL";
     final static String ZONE3_CODE = "VL3";
     final static String ZONE4_CODE = "VL4";
 
-    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public final static int NO_LEVEL = -1;
 

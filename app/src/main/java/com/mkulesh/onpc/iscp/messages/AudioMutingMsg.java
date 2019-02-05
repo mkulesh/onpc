@@ -24,12 +24,12 @@ import com.mkulesh.onpc.iscp.ZonedMessage;
  */
 public class AudioMutingMsg extends ZonedMessage
 {
-    final static String MAIN_CODE = "AMT";
+    final static String CODE = "AMT";
     final static String ZONE2_CODE = "ZMT";
     final static String ZONE3_CODE = "MT3";
     final static String ZONE4_CODE = "MT4";
 
-    public final static String[] ZONE_COMMANDS = new String[]{ MAIN_CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public enum Status implements StringParameterIf
     {
