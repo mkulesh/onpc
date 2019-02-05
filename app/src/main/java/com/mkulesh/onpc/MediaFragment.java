@@ -304,6 +304,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             for (XmlListItemMsg i : mediaItems)
             {
+                if (i == null)
+                {
+                    // i != null: a paranoia check: mediaItems can not actually contain null elements,
+                    // but we observed a NullPointerException for i in GooglePlay console.
+                    continue;
+                }
                 newItems.add(new XmlListItemMsg(i));
                 if (i.getIcon() == XmlListItemMsg.Icon.PLAY)
                 {
