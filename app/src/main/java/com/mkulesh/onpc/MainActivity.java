@@ -41,10 +41,10 @@ import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.ConnectionState;
-import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
@@ -358,11 +358,15 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                     {
                         // These methods will be called from GUI thread
                         @Override
-                        public void onDeviceFound(final String device, final int port, EISCPMessage response)
+                        public void onDeviceFound(BroadcastResponseMsg response)
                         {
-                            if (response != null && connectToDevice(device, port))
+                            if (response == null || !response.isValid())
                             {
-                                configuration.saveDevice(device, port);
+                                return;
+                            }
+                            if (connectToDevice(response.getHost(), response.getPort()))
+                            {
+                                configuration.saveDevice(response.getHost(), response.getPort());
                             }
                         }
 

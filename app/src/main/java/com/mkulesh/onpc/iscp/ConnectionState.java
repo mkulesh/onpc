@@ -23,6 +23,7 @@ import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.net.InetAddress;
@@ -52,7 +53,7 @@ public class ConnectionState
 
     public interface StateListener
     {
-        void onDeviceFound(final String device, final int port, EISCPMessage response);
+        void onDeviceFound(BroadcastResponseMsg response);
 
         void noDevice(FailureReason reason);
     }

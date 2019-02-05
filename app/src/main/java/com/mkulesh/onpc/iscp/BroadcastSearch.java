@@ -16,6 +16,7 @@ package com.mkulesh.onpc.iscp;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.io.IOException;
@@ -35,12 +36,10 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 
     private class Response
     {
-        InetAddress deviceAddress;
-        EISCPMessage responseMessage;
+        BroadcastResponseMsg responseMessage;
 
         Response()
         {
-            deviceAddress = null;
             responseMessage = null;
         }
     }
@@ -117,13 +116,10 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
         super.onPostExecute(aVoid);
         if (stateListener != null)
         {
-            if (retValue.deviceAddress != null && retValue.responseMessage != null)
+            if (retValue.responseMessage != null)
             {
-                final String device = retValue.deviceAddress.getHostName() != null ?
-                        retValue.deviceAddress.getHostName() : retValue.deviceAddress.getHostAddress();
-                Logging.info(BroadcastSearch.this, "Found device: " + device
-                        + ":" + retValue.responseMessage.toString());
-                stateListener.onDeviceFound(device, ISCP_PORT, retValue.responseMessage);
+                Logging.info(BroadcastSearch.this, "Found device: " + retValue.responseMessage.toString());
+                stateListener.onDeviceFound(retValue.responseMessage);
             }
             else
             {
@@ -153,11 +149,19 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
                 break;
             }
 
-            if (p2.getAddress() != null && msg.getModelCategoryId() != 'x')
+            if (p2.getAddress() == null || msg.getModelCategoryId() == 'x')
             {
-                retValue.deviceAddress = p2.getAddress();
-                retValue.responseMessage = msg;
+                continue;
+            }
+
+            try
+            {
+                retValue.responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
                 return true;
+            }
+            catch (Exception e)
+            {
+                Logging.info(BroadcastSearch.this, "cannot parse response: " + e.getLocalizedMessage());
             }
         }
         return false;

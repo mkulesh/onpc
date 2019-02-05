@@ -31,10 +31,10 @@ import android.widget.Toast;
 
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.ConnectionState;
-import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
@@ -113,9 +113,9 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
                     {
                         // These methods will be called from GUI thread
                         @Override
-                        public void onDeviceFound(final String device, final int port, EISCPMessage response)
+                        public void onDeviceFound(BroadcastResponseMsg response)
                         {
-                            DeviceFragment.this.onDeviceFound(device, port, response);
+                            DeviceFragment.this.onDeviceFound(response);
                         }
 
                         @Override
@@ -128,11 +128,15 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-    void onDeviceFound(final String device, final int port, EISCPMessage response)
+    void onDeviceFound(BroadcastResponseMsg response)
     {
-        if (response != null && activity.connectToDevice(device, port))
+        if (response == null || !response.isValid())
         {
-            activity.getConfiguration().saveDevice(device, port);
+            return;
+        }
+        if (activity.connectToDevice(response.getHost(), response.getPort()))
+        {
+            activity.getConfiguration().saveDevice(response.getHost(), response.getPort());
             deviceName.setText(activity.getConfiguration().getDeviceName());
             devicePort.setText(activity.getConfiguration().getDevicePortAsString());
         }
