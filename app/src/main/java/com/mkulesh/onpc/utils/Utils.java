@@ -21,6 +21,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -232,5 +234,20 @@ public class Utils
         dfs.setExponentSeparator("e");
         df.setDecimalFormatSymbols(dfs);
         return df;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void setDrawerListener(DrawerLayout mDrawerLayout, ActionBarDrawerToggle mDrawerToggle)
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            mDrawerLayout.removeDrawerListener(mDrawerToggle);
+            mDrawerLayout.addDrawerListener(mDrawerToggle);
+        }
+        else
+        {
+            mDrawerLayout.setDrawerListener(mDrawerToggle);
+        }
     }
 }

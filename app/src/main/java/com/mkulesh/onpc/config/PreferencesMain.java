@@ -19,8 +19,6 @@ import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.PreferenceScreen;
 
 import com.mkulesh.onpc.R;
 
@@ -42,44 +40,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
             addPreferencesFromResource(R.xml.preferences_main);
             prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), getActivity());
             prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
-            prepareZoneList((ListPreference) findPreference(Configuration.ACTIVE_ZONE), getPreferenceScreen());
             tintIcons(getPreferenceScreen().getContext(), getPreferenceScreen());
-        }
-    }
-
-    private static void prepareZoneList(ListPreference listPreference, final PreferenceScreen preferenceScreen)
-    {
-        if (listPreference == null)
-        {
-            return;
-        }
-
-        final String zones = PreferenceManager.getDefaultSharedPreferences(preferenceScreen.getContext())
-                .getString(Configuration.ZONES, "");
-        if (zones.isEmpty())
-        {
-            return;
-        }
-        String[] tokens = zones.split(",");
-        if (tokens.length == 0)
-        {
-            return;
-        }
-
-        final CharSequence[] entryValues = new CharSequence[tokens.length];
-        final CharSequence[] entries = new CharSequence[tokens.length];
-        for (int i = 0; i < tokens.length; i++)
-        {
-            entryValues[i] = Integer.toString(i);
-            entries[i] = tokens[i];
-        }
-        listPreference.setEntryValues(entryValues);
-        listPreference.setEntries(entries);
-        listPreference.setDefaultValue(entryValues[0]);
-        listPreference.setVisible(tokens.length > 1);
-        if (listPreference.isVisible())
-        {
-            prepareListPreference(listPreference, null);
         }
     }
 

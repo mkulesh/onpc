@@ -137,6 +137,11 @@ public class State
         return powerStatus.toString() + "; activeZone=" + activeZone;
     }
 
+    public List<ReceiverInformationMsg.Zone> getZones()
+    {
+        return zones;
+    }
+
     public int getActiveZone()
     {
         return activeZone;

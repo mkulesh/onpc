@@ -20,15 +20,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.config.Configuration;
@@ -46,6 +51,7 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener, StateManager.StateListener
 {
@@ -60,13 +66,19 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private final StateHolder stateHolder = new StateHolder();
     private Toast exitToast = null;
 
+    private DrawerLayout mDrawerLayout;
+    private NavigationView navigationView = null;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        String versionName = null;
         try
         {
             final PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
-            Logging.info(this, "Starting application: " + pi.versionName);
+            versionName = "v. " + pi.versionName;
+            Logging.info(this, "Starting application: " + versionName);
         }
         catch (PackageManager.NameNotFoundException e)
         {
@@ -86,10 +98,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_short_name);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
         {
-            getSupportActionBar().setTitle(R.string.app_short_name);
-            getSupportActionBar().setElevation(5.0f);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.app_short_name);
+            actionBar.setElevation(5.0f);
         }
 
         // Create the adapter that will return a fragment for each of the three
@@ -109,6 +123,32 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         // Initially reset zone state
         configuration.setZones(ReceiverInformationMsg.getDefaultZones());
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+
+        // Navigation drawer
+        mDrawerLayout = findViewById(R.id.main_drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+        if (navigationView != null)
+        {
+            updateNavigationContent(null);
+            updateNavigationHeader(versionName);
+        }
+
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the sliding drawer and the action bar app icon
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+                R.string.drawer_open, R.string.drawer_open)
+        {
+            public void onDrawerClosed(View view)
+            {
+                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            public void onDrawerOpened(View drawerView)
+            {
+                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        Utils.setDrawerListener(mDrawerLayout, mDrawerToggle);
 
         updateToolbar(null);
     }
@@ -138,6 +178,13 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem)
     {
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(menuItem))
+        {
+            return true;
+        }
+
         Logging.info(this, "Selected main menu: " + menuItem.getTitle());
         switch (menuItem.getItemId())
         {
@@ -327,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             configuration.setNetworkServices(state.networkServices);
         }
+        updateNavigationContent(state);
         updateToolbar(state);
     }
 
@@ -408,5 +456,77 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     void selectRightTab()
     {
         viewPager.arrowScroll(View.FOCUS_RIGHT);
+    }
+
+    /**
+     * Navigation drawer: When using the ActionBarDrawerToggle,
+     * you must call it during onPostCreate() and onConfigurationChanged()...
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    public void selectNavigationItem(MenuItem menuItem)
+    {
+        final int z = menuItem.getOrder();
+        Logging.info(this, "changed zone: " + z);
+        configuration.setActiveZone(z);
+        mDrawerLayout.closeDrawers();
+        restartActivity();
+    }
+
+    private void updateNavigationHeader(final String versionName)
+    {
+        for (int i = 0; i < navigationView.getHeaderCount(); i++)
+        {
+            final TextView versionInfo = navigationView.getHeaderView(i).findViewById(R.id.navigation_view_header_version);
+            if (versionInfo != null)
+            {
+                versionInfo.setText(versionName);
+            }
+        }
+    }
+
+    private void updateNavigationContent(State state)
+    {
+        final int activeZone = state == null ?
+                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE : state.getActiveZone();
+        final List<ReceiverInformationMsg.Zone> zones = state == null ?
+                ReceiverInformationMsg.getDefaultZones() : state.getZones();
+
+        for (int i = 0; i < navigationView.getMenu().size(); i++)
+        {
+            final MenuItem m = navigationView.getMenu().getItem(i);
+            if (zones == null || i >= zones.size())
+            {
+                m.setVisible(false);
+                continue;
+            }
+            m.setVisible(true);
+            m.setTitle(zones.get(i).getName());
+            m.setChecked(i == activeZone);
+        }
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener()
+                {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
+                    {
+                        selectNavigationItem(menuItem);
+                        return true;
+                    }
+                });
     }
 }

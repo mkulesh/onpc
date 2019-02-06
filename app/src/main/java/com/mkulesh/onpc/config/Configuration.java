@@ -205,10 +205,16 @@ public class Configuration
         final String activeZone = preferences.getString(ACTIVE_ZONE, "");
         if (activeZone.isEmpty())
         {
-            SharedPreferences.Editor prefEditor = preferences.edit();
-            prefEditor.putString(ACTIVE_ZONE, Integer.toString(defaultActiveZone));
-            prefEditor.apply();
+            setActiveZone(defaultActiveZone);
         }
+    }
+
+    @SuppressLint("ApplySharedPref")
+    public void setActiveZone(int zone)
+    {
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putString(ACTIVE_ZONE, Integer.toString(zone));
+        prefEditor.commit();
     }
 
     public int getZone()
@@ -227,7 +233,7 @@ public class Configuration
     public void setDeviceSelectors(List<ReceiverInformationMsg.Selector> deviceSelectors)
     {
         final StringBuilder strId = new StringBuilder();
-        final StringBuilder strNames= new StringBuilder();
+        final StringBuilder strNames = new StringBuilder();
         for (ReceiverInformationMsg.Selector d : deviceSelectors)
         {
             if (!strId.toString().isEmpty())

@@ -34,12 +34,6 @@
             android:summary="%s"
             android:title="@string/pref_sound_control" />
 
-        <ListPreference
-            app:icon="@drawable/pref_active_zone"
-            android:key="active_zone"
-            android:summary="%s"
-            android:title="@string/pref_active_zone" />
-
         <PreferenceScreen
             app:icon="@drawable/pref_device_selectors"
             android:icon="@null"
