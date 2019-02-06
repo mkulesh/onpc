@@ -16,24 +16,18 @@ package com.mkulesh.onpc;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -52,7 +46,6 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener, StateManager.StateListener
 {
@@ -60,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     private Configuration configuration;
     private Toolbar toolbar;
-    private SectionsPagerAdapter pagerAdapter;
+    private MainPagerAdapter pagerAdapter;
     private ViewPager viewPager;
     private Menu mainMenu;
     private ConnectionState connectionState;
@@ -101,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new MainPagerAdapter(this, getSupportFragmentManager(), configuration);
 
         // Set up the ViewPager with the sections adapter.
         viewPager = findViewById(R.id.view_pager);
@@ -216,91 +209,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         Intent intent = getIntent();
         finish();
         startActivity(intent);
-    }
-
-    private class SectionsPagerAdapter extends FragmentStatePagerAdapter
-    {
-        private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
-        private final int items;
-
-        SectionsPagerAdapter(FragmentManager fm)
-        {
-            super(fm);
-            items = configuration.isRemoteInterface() ? 4 : 3;
-        }
-
-        @Override
-        public Fragment getItem(int position)
-        {
-            switch (position)
-            {
-            case 0:
-                return prepareFragment(new MonitorFragment(), position);
-            case 1:
-                return prepareFragment(new MediaFragment(), position);
-            case 2:
-                return prepareFragment(new DeviceFragment(), position);
-            case 3:
-                return prepareFragment(new RemoteInterfaceFragment(), position);
-            }
-            return null;
-        }
-
-        private Fragment prepareFragment(Fragment fragment, int position)
-        {
-            Bundle args = new Bundle();
-            args.putInt(BaseFragment.FRAGMENT_NUMBER, position);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public int getCount()
-        {
-            return items;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position)
-        {
-            Locale l = Locale.getDefault();
-            switch (position)
-            {
-            case 0:
-                return getString(R.string.title_monitor).toUpperCase(l);
-            case 1:
-                return getString(R.string.title_media).toUpperCase(l);
-            case 2:
-                return getString(R.string.title_device).toUpperCase(l);
-            case 3:
-                return getString(R.string.title_remote_interface).toUpperCase(l);
-            }
-            return null;
-        }
-
-        // Register the fragment when the item is instantiated
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position)
-        {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            registeredFragments.put(position, fragment);
-            return fragment;
-        }
-
-        // Unregister when the item is inactive
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object)
-        {
-            registeredFragments.remove(position);
-            super.destroyItem(container, position, object);
-        }
-
-        // Returns the fragment for the position (if instantiated)
-        Fragment getRegisteredFragment(int position)
-        {
-            return registeredFragments.get(position);
-        }
     }
 
     public boolean connectToDevice(final String device, final int port)
@@ -441,15 +349,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     public void updateToolbar(State state)
     {
         // Logo
-        Drawable icon;
         if (state == null)
         {
-            icon = Utils.getDrawable(this, R.drawable.device_disconnect);
             toolbar.setSubtitle(R.string.state_not_connected);
         }
         else
         {
-            icon = Utils.getDrawable(this, R.drawable.device_connect);
             final String name = state.deviceProperties.get("model");
             if (name != null)
             {
@@ -465,11 +370,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 }
                 toolbar.setSubtitle(subTitle.toString());
             }
-        }
-        Utils.setDrawableColorAttr(this, icon, android.R.attr.textColorTertiary);
-        if (getSupportActionBar() != null)
-        {
-            getSupportActionBar().setLogo(icon);
         }
         // Main menu
         if (mainMenu != null)
