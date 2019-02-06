@@ -44,14 +44,10 @@
     <!-- Custom styles -->
 
     <style name="NavigationViewHeaderText" parent="@android:style/TextAppearance">
-        <item name="android:textSize">@dimen/secondary_text_size</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:typeface">normal</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowRadius">2</item>
-        <item name="android:shadowColor">#ba000000</item>
     </style>
 
     <style name="PrimaryTextViewStyle" parent="@android:style/TextAppearance">

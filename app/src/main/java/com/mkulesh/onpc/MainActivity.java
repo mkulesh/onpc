@@ -28,6 +28,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -495,6 +496,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             if (versionInfo != null)
             {
                 versionInfo.setText(versionName);
+            }
+
+            final AppCompatImageView logo = navigationView.getHeaderView(i).findViewById(R.id.drawer_header);
+            if (logo != null)
+            {
+                Utils.setImageViewColorAttr(this, logo, R.attr.colorAccent);
             }
         }
     }

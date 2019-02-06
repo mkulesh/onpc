@@ -21,19 +21,22 @@
     android:orientation="vertical"
     android:gravity="bottom">
 
-    <TextView
-        android:id="@+id/navigation_view_header_name"
-        android:textAppearance="@style/NavigationViewHeaderText"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/drawer_header"
+        android:src="@drawable/drawer_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textColor="?attr/colorAccent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="4dp"
+        android:layout_gravity="center"
+        android:saveEnabled="false" />
 
     <TextView
         android:id="@+id/navigation_view_header_version"
         android:textAppearance="@style/NavigationViewHeaderText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textColor="?attr/colorAccent"/>
 
 </LinearLayout>
