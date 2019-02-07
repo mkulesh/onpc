@@ -16,8 +16,6 @@ package com.mkulesh.onpc.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
@@ -33,8 +31,6 @@ import com.mkulesh.onpc.R;
 
 public class HtmlDialogBuilder
 {
-    private final static String VERSION_TAG = "<version/>";
-
     public static AlertDialog buildHtmlDialog(Context context, @DrawableRes int icon,
                                               @StringRes int title, @StringRes int textId)
     {
@@ -75,20 +71,6 @@ public class HtmlDialogBuilder
         if (htmlSource.isEmpty())
         {
             return alertDialog;
-        }
-
-        // Process app-specific tags like <version/>
-        if (htmlSource.contains(VERSION_TAG))
-        {
-            try
-            {
-                final PackageInfo pi = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                htmlSource = htmlSource.replace(VERSION_TAG, pi.versionName);
-            }
-            catch (PackageManager.NameNotFoundException e)
-            {
-                htmlSource = htmlSource.replace(VERSION_TAG, "unknown");
-            }
         }
 
         final TextView aboutMessage = dialogFrame.findViewById(R.id.text_message);

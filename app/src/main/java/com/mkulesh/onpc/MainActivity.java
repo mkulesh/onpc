@@ -137,18 +137,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
-                R.string.drawer_open, R.string.drawer_open)
-        {
-            public void onDrawerClosed(View view)
-            {
-                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView)
-            {
-                supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
+                R.string.drawer_open, R.string.drawer_open);
         Utils.setDrawerListener(mDrawerLayout, mDrawerToggle);
 
         updateToolbar(null);
