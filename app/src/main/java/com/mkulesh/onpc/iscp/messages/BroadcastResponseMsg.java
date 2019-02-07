@@ -87,4 +87,9 @@ public class BroadcastResponseMsg extends ISCPMessage
     {
         return host != null && port != null;
     }
+
+    public String getDevice()
+    {
+        return getHost() + "/" + (model != null? model : "unknown");
+    }
 }

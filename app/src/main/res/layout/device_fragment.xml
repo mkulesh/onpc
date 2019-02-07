@@ -30,7 +30,7 @@
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:text="@string/device_connect" />
+                    android:text="@string/connected_device" />
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle">
@@ -40,7 +40,7 @@
                     android:visibility="visible"
                     android:id="@+id/btn_search_device"
                     android:src="@drawable/media_item_search"
-                    android:contentDescription="@string/device_connect" />
+                    android:contentDescription="@string/device_search" />
 
                 <android.support.v7.widget.AppCompatEditText
                     style="@style/DeviceValueViewStyle"

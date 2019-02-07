@@ -108,7 +108,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
         }
         if (v.getId() == R.id.btn_search_device)
         {
-            final BroadcastSearch bs = new BroadcastSearch(activity.getConnectionState(),
+            final BroadcastSearch bs = new BroadcastSearch(activity, activity.getConnectionState(),
                     new ConnectionState.StateListener()
                     {
                         // These methods will be called from GUI thread
@@ -123,7 +123,7 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
                         {
                             activity.getConnectionState().showFailure(reason);
                         }
-                    }, 5000, 5);
+                    });
             bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         }
     }

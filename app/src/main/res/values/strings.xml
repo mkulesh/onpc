@@ -46,6 +46,7 @@
     <string name="menu_receiver_information">Receiver information</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
     <string name="action_ok">OK</string>
+    <string name="action_cancel">CANCEL</string>
 
     <string name="title_monitor">Monitor</string>
     <string name="title_media">Media</string>
@@ -330,8 +331,9 @@
     <string name="playlist_move_to">Move to</string>
 
     <!-- Device tab -->
-    <string name="device_connect">Device</string>
-    <string name="action_button_connect">Connect</string>
+    <string name="device_search">Search device</string>
+    <string name="connected_device">Device</string>
+    <string name="action_button_connect">Connect device</string>
     <string name="device_info">Device info</string>
     <string name="device_brand">Brand</string>
     <string name="device_model">Model</string>

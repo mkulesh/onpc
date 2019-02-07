@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         else
         {
-            final BroadcastSearch bs = new BroadcastSearch(connectionState,
+            final BroadcastSearch bs = new BroadcastSearch(this, connectionState,
                     new ConnectionState.StateListener()
                     {
                         // These methods will be called from GUI thread
@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                         {
                             connectionState.showFailure(reason);
                         }
-                    }, 5000, 2);
+                    });
             bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
         }
     }

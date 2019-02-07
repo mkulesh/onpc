@@ -13,49 +13,86 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.AppCompatRadioButton;
+import android.util.Pair;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
 
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class BroadcastSearch extends AsyncTask<Void, Void, Void>
+public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void> implements View.OnClickListener
 {
     public final static int ISCP_PORT = 60128;
 
     private final ConnectionState connectionState;
     private final ConnectionState.StateListener stateListener;
-    private final int timeout;
-    private final int numberQueries;
 
-    private class Response
-    {
-        BroadcastResponseMsg responseMessage;
+    private final static int TIMEOUT = 3000;
+    private final Context context;
+    private final List<Pair<BroadcastResponseMsg, AppCompatRadioButton>> devices = new ArrayList<>();
+    private final AtomicBoolean active = new AtomicBoolean();
+    private final ContextThemeWrapper wrappedContext;
+    private AlertDialog dialog = null;
+    private RadioGroup radioGroup = null;
 
-        Response()
-        {
-            responseMessage = null;
-        }
-    }
-
-    private final Response retValue = new Response();
-
-    public BroadcastSearch(final ConnectionState connectionState, final ConnectionState.StateListener stateListener,
-                           final int timeout, final int numberQueries)
+    public BroadcastSearch(final Context context, final ConnectionState connectionState,
+                           final ConnectionState.StateListener stateListener)
     {
         this.connectionState = connectionState;
         this.stateListener = stateListener;
-        this.timeout = timeout;
-        this.numberQueries = numberQueries;
+        this.context = context;
+        active.set(false);
+        wrappedContext = new ContextThemeWrapper(context, R.style.RadioButtonStyle);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+    }
+
+    @Override
+    protected void onPreExecute()
+    {
+        super.onPreExecute();
+        final FrameLayout frameView = new FrameLayout(context);
+
+        dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.device_search)
+                .setIcon(R.drawable.media_item_search)
+                .setCancelable(false)
+                .setView(frameView)
+                .setNegativeButton(context.getResources().getString(R.string.action_cancel),
+                        new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                active.set(false);
+                            }
+                        }).create();
+
+        final LayoutInflater inflater = dialog.getLayoutInflater();
+        final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.broadcast_dialog_layout, frameView);
+        radioGroup = dialogFrame.findViewById(R.id.broadcast_radio_group);
+        active.set(true);
+        dialog.show();
     }
 
     @Override
@@ -71,10 +108,18 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 
             final DatagramSocket socket = new DatagramSocket(ISCP_PORT, local);
             socket.setBroadcast(true);
-            socket.setSoTimeout(timeout);
+            socket.setSoTimeout(TIMEOUT);
 
-            for (int i = 0; i < numberQueries; i++)
+            while (true)
             {
+                synchronized (active)
+                {
+                    if (!active.get() || isCancelled())
+                    {
+                        break;
+                    }
+                }
+
                 if (!connectionState.isNetwork() || !connectionState.isWifi())
                 {
                     break;
@@ -82,11 +127,7 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
 
                 try
                 {
-                    sendMessage(socket, target);
-                    if (waitForResponse(socket, retValue))
-                    {
-                        break;
-                    }
+                    request(socket, target);
                 }
                 catch (Exception e)
                 {
@@ -105,21 +146,32 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
     }
 
     @Override
-    protected void onProgressUpdate(Void... result)
-    {
-        // empty
-    }
-
-    @Override
     protected void onPostExecute(Void aVoid)
     {
         super.onPostExecute(aVoid);
+        if (dialog != null)
+        {
+            dialog.dismiss();
+        }
         if (stateListener != null)
         {
-            if (retValue.responseMessage != null)
+            BroadcastResponseMsg device = null;
+            if (devices.size() > 0)
             {
-                Logging.info(BroadcastSearch.this, "Found device: " + retValue.responseMessage.toString());
-                stateListener.onDeviceFound(retValue.responseMessage);
+                for (Pair<BroadcastResponseMsg, AppCompatRadioButton> d : devices)
+                {
+                    if (d.second.isChecked())
+                    {
+                        device = d.first;
+                        break;
+                    }
+                }
+            }
+
+            if (device != null)
+            {
+                Logging.info(BroadcastSearch.this, "Found device: " + device.toString());
+                stateListener.onDeviceFound(device);
             }
             else
             {
@@ -132,39 +184,6 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
                 stateListener.noDevice(reason);
             }
         }
-    }
-
-    private boolean waitForResponse(DatagramSocket socket, final Response retValue) throws IOException
-    {
-        while (true)
-        {
-            final byte[] response = new byte[512];
-            Arrays.fill(response, (byte) 0);
-            DatagramPacket p2 = new DatagramPacket(response, response.length);
-            socket.receive(p2);
-
-            final EISCPMessage msg = convertResponse(response);
-            if (msg == null)
-            {
-                break;
-            }
-
-            if (p2.getAddress() == null || msg.getModelCategoryId() == 'x')
-            {
-                continue;
-            }
-
-            try
-            {
-                retValue.responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Logging.info(BroadcastSearch.this, "cannot parse response: " + e.getLocalizedMessage());
-            }
-        }
-        return false;
     }
 
     private EISCPMessage convertResponse(byte[] response)
@@ -187,7 +206,7 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
         }
     }
 
-    private void sendMessage(DatagramSocket socket, final InetAddress target) throws IOException
+    private void request(DatagramSocket socket, final InetAddress target) throws Exception
     {
         final EISCPMessage m = new EISCPMessage('x', "ECN", "QSTN");
         final byte[] bytes = m.getBytes();
@@ -195,5 +214,64 @@ public class BroadcastSearch extends AsyncTask<Void, Void, Void>
         DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
         socket.send(p);
         Logging.info(this, "message send to " + target);
+
+        while (true)
+        {
+            final byte[] response = new byte[512];
+            Arrays.fill(response, (byte) 0);
+            DatagramPacket p2 = new DatagramPacket(response, response.length);
+            socket.receive(p2);
+
+            final EISCPMessage msg = convertResponse(response);
+            if (msg == null || p2.getAddress() == null || msg.getModelCategoryId() == 'x')
+            {
+                continue;
+            }
+
+            final BroadcastResponseMsg responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
+            if (responseMessage.isValid())
+            {
+                publishProgress(responseMessage);
+            }
+        }
+    }
+
+    @Override
+    protected void onProgressUpdate(BroadcastResponseMsg... result)
+    {
+        if (result == null || result.length == 0 || radioGroup == null || dialog == null)
+        {
+            return;
+        }
+        final BroadcastResponseMsg msg = result[0];
+        Logging.info(this, "new response " + msg);
+        for (Pair<BroadcastResponseMsg, AppCompatRadioButton> d : devices)
+        {
+            if (d.first.getDevice().equals(msg.getDevice()))
+            {
+                Logging.info(this, "device already registered");
+                return;
+            }
+        }
+
+        final AppCompatRadioButton b = new AppCompatRadioButton(wrappedContext, null, 0);
+        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        b.setLayoutParams(lp);
+        b.setText(msg.getDevice());
+        b.setOnClickListener(this);
+
+        radioGroup.addView(b);
+        devices.add(new Pair<>(msg, b));
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        synchronized (active)
+        {
+            active.set(false);
+        }
+        dialog.dismiss();
     }
 }
