@@ -106,6 +106,7 @@
         <item>Light (Gray and Deep Purple)</item>
         <item>Light (Indigo and Orange)</item>
         <item>Light (Teal and Deep Orange)</item>
+        <item>Light (Purple and Green)</item>
     </string-array>
 
     <string name="pref_default_theme_code" translatable="false">indigo-orange</string>
@@ -116,6 +117,7 @@
         <item>gray-deep-purple</item>
         <item>indigo-orange</item>
         <item>teal-deep-orange</item>
+        <item>purple-green</item>
     </string-array>
 
     <array name="main_themes" translatable="false">
@@ -125,6 +127,7 @@
         <item>@style/MainThemeGrayDeepPurple</item>
         <item>@style/MainThemeIndigoOrange</item>
         <item>@style/MainThemeTealDeepOrange</item>
+        <item>@style/MainThemePurpleGreen</item>
     </array>
 
     <array name="settings_themes" translatable="false">
@@ -134,6 +137,7 @@
         <item>@style/SettingsThemeGrayDeepPurple</item>
         <item>@style/SettingsThemeIndigoOrange</item>
         <item>@style/SettingsThemeTealDeepOrange</item>
+        <item>@style/SettingsThemePurpleGreen</item>
     </array>
 
     <!-- Playback tab -->
