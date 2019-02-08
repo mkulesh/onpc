@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2019. Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
@@ -14,23 +13,52 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:icon="@drawable/zone_1"
-            android:orderInCategory="0"
-            android:title="Main"/>
-        <item
-            android:icon="@drawable/zone_2"
-            android:orderInCategory="1"
-            android:title="Zone" />
-        <item
-            android:icon="@drawable/zone_3"
-            android:orderInCategory="2"
-            android:title="Zone"/>
-        <item
-            android:icon="@drawable/zone_4"
-            android:orderInCategory="3"
-            android:title="Zone" />
-    </group>
+    <item
+        android:id="@+id/drawer_device_id"
+        android:title="@string/drawer_device"
+        android:orderInCategory="1">
+        <menu>
+            <item
+                android:id="@+id/drawer_device_search"
+                android:icon="@drawable/media_item_search"
+                android:orderInCategory="0"
+                android:title="@string/drawer_device_search" />
+            <item
+                android:id="@+id/drawer_device_connect"
+                android:icon="@drawable/device_connect"
+                android:orderInCategory="1"
+                android:title="@string/drawer_device_connect" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/drawer_group_zone_id"
+        android:title="@string/drawer_group_zone"
+        android:orderInCategory="2">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/drawer_zone_1"
+                    android:icon="@drawable/zone_1"
+                    android:orderInCategory="0"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_zone_2"
+                    android:icon="@drawable/zone_2"
+                    android:orderInCategory="1"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_zone_3"
+                    android:icon="@drawable/zone_3"
+                    android:orderInCategory="2"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_zone_4"
+                    android:icon="@drawable/zone_4"
+                    android:orderInCategory="3"
+                    android:title="@string/dashed_string" />
+            </group>
+        </menu>
+    </item>
 
 </menu>

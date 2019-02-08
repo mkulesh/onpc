@@ -15,13 +15,13 @@ package com.mkulesh.onpc.iscp;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.util.Pair;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -30,6 +30,7 @@ import android.widget.RadioGroup;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -39,7 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void> implements View.OnClickListener
+public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 {
     public final static int ISCP_PORT = 60128;
 
@@ -73,9 +74,11 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         super.onPreExecute();
         final FrameLayout frameView = new FrameLayout(context);
 
+        final Drawable icon = Utils.getDrawable(context, R.drawable.media_item_search);
+        Utils.setDrawableColorAttr(context, icon, android.R.attr.textColorSecondary);
         dialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.device_search)
-                .setIcon(R.drawable.media_item_search)
+                .setTitle(R.string.drawer_device_search)
+                .setIcon(icon)
                 .setCancelable(false)
                 .setView(frameView)
                 .setNegativeButton(context.getResources().getString(R.string.action_cancel),
@@ -88,9 +91,8 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                             }
                         }).create();
 
-        final LayoutInflater inflater = dialog.getLayoutInflater();
-        final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.broadcast_dialog_layout, frameView);
-        radioGroup = dialogFrame.findViewById(R.id.broadcast_radio_group);
+        dialog.getLayoutInflater().inflate(R.layout.broadcast_dialog_layout, frameView);
+        radioGroup = frameView.findViewById(R.id.broadcast_radio_group);
         active.set(true);
         dialog.show();
     }
@@ -259,19 +261,19 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         b.setLayoutParams(lp);
         b.setText(msg.getDevice());
-        b.setOnClickListener(this);
+        b.setTextColor(Utils.getThemeColorAttr(context, android.R.attr.textColor));
+        b.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                synchronized (active)
+                {
+                    active.set(false);
+                }
+            }
+        });
 
         radioGroup.addView(b);
         devices.add(new Pair<>(msg, b));
-    }
-
-    @Override
-    public void onClick(View v)
-    {
-        synchronized (active)
-        {
-            active.set(false);
-        }
-        dialog.dismiss();
     }
 }

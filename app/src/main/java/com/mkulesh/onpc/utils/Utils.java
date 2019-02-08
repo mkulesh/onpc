@@ -28,6 +28,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -221,6 +222,23 @@ public class Utils
     public static boolean isHardwareKeyboardAvailable(Context context)
     {
         return context.getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS;
+    }
+
+    public static void showSoftKeyboard(Context context, View v, boolean flag)
+    {
+        if (Utils.isHardwareKeyboardAvailable(context))
+        {
+            return;
+        }
+        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (flag)
+        {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+        else
+        {
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
     }
 
     /**

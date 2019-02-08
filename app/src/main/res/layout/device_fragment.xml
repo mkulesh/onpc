@@ -30,44 +30,6 @@
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:text="@string/connected_device" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/DeviceRowStyle">
-
-                <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonSecondaryStyle"
-                    android:visibility="visible"
-                    android:id="@+id/btn_search_device"
-                    android:src="@drawable/media_item_search"
-                    android:contentDescription="@string/device_search" />
-
-                <android.support.v7.widget.AppCompatEditText
-                    style="@style/DeviceValueViewStyle"
-                    android:id="@+id/device_name"
-                    android:inputType="text"
-                    android:focusable="true" />
-
-                <android.support.v7.widget.AppCompatEditText
-                    style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/device_port"
-                    android:layout_width="80dp"
-                    android:layout_height="fill_parent"
-                    android:focusable="true"
-                    android:inputType="numberDecimal" />
-
-                <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonSecondaryStyle"
-                    android:id="@+id/device_connect"
-                    android:src="@drawable/device_connect"
-                    android:contentDescription="@string/action_button_connect" />
-
-            </LinearLayout>
-
-            <LinearLayout style="@style/DeviceRowStyle">
-
-                <TextView
-                    style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_info" />
             </LinearLayout>
 

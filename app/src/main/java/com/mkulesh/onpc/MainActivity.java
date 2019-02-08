@@ -16,35 +16,28 @@ package com.mkulesh.onpc;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
-import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
-import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
@@ -52,7 +45,6 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener, StateManager.StateListener
 {
@@ -66,9 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private ConnectionState connectionState;
     private final StateHolder stateHolder = new StateHolder();
     private Toast exitToast = null;
-
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView = null;
+    private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
@@ -126,19 +116,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
 
         // Navigation drawer
-        mDrawerLayout = findViewById(R.id.main_drawer_layout);
-        navigationView = findViewById(R.id.navigation_view);
-        if (navigationView != null)
-        {
-            updateNavigationContent(null);
-            updateNavigationHeader(versionName);
-        }
-
+        navigationDrawer = new MainNavigationDrawer(this, versionName);
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+        mDrawerToggle = new ActionBarDrawerToggle(this, navigationDrawer.getDrawerLayout(), toolbar,
                 R.string.drawer_open, R.string.drawer_open);
-        Utils.setDrawerListener(mDrawerLayout, mDrawerToggle);
+        Utils.setDrawerListener(navigationDrawer.getDrawerLayout(), mDrawerToggle);
 
         updateToolbar(null);
     }
@@ -298,30 +281,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         else
         {
-            final BroadcastSearch bs = new BroadcastSearch(this, connectionState,
-                    new ConnectionState.StateListener()
-                    {
-                        // These methods will be called from GUI thread
-                        @Override
-                        public void onDeviceFound(BroadcastResponseMsg response)
-                        {
-                            if (response == null || !response.isValid())
-                            {
-                                return;
-                            }
-                            if (connectToDevice(response.getHost(), response.getPort()))
-                            {
-                                configuration.saveDevice(response.getHost(), response.getPort());
-                            }
-                        }
-
-                        @Override
-                        public void noDevice(ConnectionState.FailureReason reason)
-                        {
-                            connectionState.showFailure(reason);
-                        }
-                    });
-            bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+            navigationDrawer.navigationSearchDevice();
         }
     }
 
@@ -364,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             configuration.setNetworkServices(state.networkServices);
         }
-        updateNavigationContent(state);
+        navigationDrawer.updateNavigationContent(state);
         updateToolbar(state);
     }
 
@@ -466,63 +426,5 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    public void selectNavigationItem(MenuItem menuItem)
-    {
-        final int z = menuItem.getOrder();
-        Logging.info(this, "changed zone: " + z);
-        configuration.setActiveZone(z);
-        mDrawerLayout.closeDrawers();
-        restartActivity();
-    }
-
-    private void updateNavigationHeader(final String versionName)
-    {
-        for (int i = 0; i < navigationView.getHeaderCount(); i++)
-        {
-            final TextView versionInfo = navigationView.getHeaderView(i).findViewById(R.id.navigation_view_header_version);
-            if (versionInfo != null)
-            {
-                versionInfo.setText(versionName);
-            }
-
-            final AppCompatImageView logo = navigationView.getHeaderView(i).findViewById(R.id.drawer_header);
-            if (logo != null)
-            {
-                Utils.setImageViewColorAttr(this, logo, R.attr.colorAccent);
-            }
-        }
-    }
-
-    private void updateNavigationContent(State state)
-    {
-        final int activeZone = state == null ?
-                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE : state.getActiveZone();
-        final List<ReceiverInformationMsg.Zone> zones = state == null ?
-                ReceiverInformationMsg.getDefaultZones() : state.getZones();
-
-        for (int i = 0; i < navigationView.getMenu().size(); i++)
-        {
-            final MenuItem m = navigationView.getMenu().getItem(i);
-            if (zones == null || i >= zones.size())
-            {
-                m.setVisible(false);
-                continue;
-            }
-            m.setVisible(true);
-            m.setTitle(zones.get(i).getName());
-            m.setChecked(i == activeZone);
-        }
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener()
-                {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
-                    {
-                        selectNavigationItem(menuItem);
-                        return true;
-                    }
-                });
     }
 }

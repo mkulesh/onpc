@@ -27,7 +27,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -241,7 +240,7 @@ public class PopupBuilder
         {
             public void onClick(View v)
             {
-                showSoftKeyboard(v, false);
+                Utils.showSoftKeyboard(context, v, false);
                 button.setAttribute("selected", "true");
                 alertDialog.dismiss();
                 final CustomPopupMsg outMsg = new CustomPopupMsg(uiType, documentToXml(document));
@@ -280,20 +279,4 @@ public class PopupBuilder
         }
     }
 
-    private void showSoftKeyboard(View v, boolean flag)
-    {
-        if (Utils.isHardwareKeyboardAvailable(context))
-        {
-            return;
-        }
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (flag)
-        {
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        }
-        else
-        {
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
-    }
 }

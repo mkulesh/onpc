@@ -13,8 +13,6 @@
 
 package com.mkulesh.onpc;
 
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -24,17 +22,12 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.mkulesh.onpc.iscp.BroadcastSearch;
-import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
-import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
@@ -46,10 +39,8 @@ import com.mkulesh.onpc.utils.Logging;
 
 import java.util.HashSet;
 
-public class DeviceFragment extends BaseFragment implements View.OnClickListener
+public class DeviceFragment extends BaseFragment
 {
-    private EditText deviceName, devicePort;
-
     public DeviceFragment()
     {
         // Empty constructor required for fragment subclasses
@@ -59,17 +50,6 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         initializeFragment(inflater, container, R.layout.device_fragment);
-
-        final AppCompatImageButton btnConnect = prepareImageButton(R.id.device_connect, null);
-        setButtonEnabled(btnConnect, true);
-        btnConnect.setOnClickListener(this);
-
-        deviceName = rootView.findViewById(R.id.device_name);
-        devicePort = rootView.findViewById(R.id.device_port);
-
-        final AppCompatImageButton btnSearchDevice = prepareImageButton(R.id.btn_search_device, null);
-        setButtonEnabled(btnSearchDevice, true);
-        btnSearchDevice.setOnClickListener(this);
 
         prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
@@ -85,77 +65,11 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View v)
-    {
-        if (v.getId() == R.id.device_connect)
-        {
-            updateEmptyPort();
-            try
-            {
-                final String device = deviceName.getText().toString();
-                final int port = Integer.parseInt(devicePort.getText().toString());
-                if (activity.connectToDevice(device, port))
-                {
-                    activity.getConfiguration().saveDevice(device, port);
-                }
-            }
-            catch (Exception e)
-            {
-                String message = activity.getResources().getString(R.string.error_invalid_device_address);
-                Logging.info(this, message + ": " + e.getLocalizedMessage());
-                Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-            }
-        }
-        if (v.getId() == R.id.btn_search_device)
-        {
-            final BroadcastSearch bs = new BroadcastSearch(activity, activity.getConnectionState(),
-                    new ConnectionState.StateListener()
-                    {
-                        // These methods will be called from GUI thread
-                        @Override
-                        public void onDeviceFound(BroadcastResponseMsg response)
-                        {
-                            DeviceFragment.this.onDeviceFound(response);
-                        }
-
-                        @Override
-                        public void noDevice(ConnectionState.FailureReason reason)
-                        {
-                            activity.getConnectionState().showFailure(reason);
-                        }
-                    });
-            bs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-        }
-    }
-
-    void onDeviceFound(BroadcastResponseMsg response)
-    {
-        if (response == null || !response.isValid())
-        {
-            return;
-        }
-        if (activity.connectToDevice(response.getHost(), response.getPort()))
-        {
-            activity.getConfiguration().saveDevice(response.getHost(), response.getPort());
-            deviceName.setText(activity.getConfiguration().getDeviceName());
-            devicePort.setText(activity.getConfiguration().getDevicePortAsString());
-        }
-    }
-
-    @Override
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         if (state != null)
         {
             updateDeviceProperties(state);
-        }
-        else
-        {
-            if (deviceName.getText().length() == 0)
-            {
-                deviceName.setText(activity.getConfiguration().getDeviceName());
-            }
-            updateEmptyPort();
         }
     }
 
@@ -172,12 +86,6 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
 
     private void updateDeviceProperties(@NonNull final State state)
     {
-        if (deviceName.getText().length() == 0)
-        {
-            deviceName.setText(activity.getConfiguration().getDeviceName());
-        }
-        updateEmptyPort();
-
         if (!state.deviceProperties.isEmpty())
         {
             ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
@@ -243,21 +151,6 @@ public class DeviceFragment extends BaseFragment implements View.OnClickListener
 
             prepareSettingPanel(state, state.googleCastAnalytics != GoogleCastAnalyticsMsg.Status.NONE,
                     R.id.google_cast_analytics_layout, state.googleCastAnalytics.getDescriptionId(), toggleMsg);
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void updateEmptyPort()
-    {
-        // First, use port from configuration
-        if (devicePort.getText().length() == 0)
-        {
-            devicePort.setText(activity.getConfiguration().getDevicePortAsString());
-        }
-        // Second, fallback to standard port
-        if (devicePort.getText().length() == 0)
-        {
-            devicePort.setText(Integer.toString(BroadcastSearch.ISCP_PORT));
         }
     }
 
