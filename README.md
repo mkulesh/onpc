@@ -17,6 +17,7 @@ This app allows to remotely control Onkyo Network Player or a Network A/V Receiv
 - The modern material design supports different color themes and works on smartphone or tablet in portrait and landscape mode
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - Full support of Tuneln Radio and Deezer
+- Full support of different zones
 - Control of devices attached vie RI
 - Play queue support (add, remove, clear, change playback order)
 - Show information about the device and control some device settings (dimmer level, digital filter, auto power)
