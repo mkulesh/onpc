@@ -66,11 +66,6 @@ public class ReceiverInformationMsg extends ISCPMessage
             this.volumeStep = volumeStep;
         }
 
-        public String getId()
-        {
-            return id;
-        }
-
         public String getName()
         {
             return name;

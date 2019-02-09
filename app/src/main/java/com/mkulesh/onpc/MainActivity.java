@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         connectionState = new ConnectionState(this);
 
         // Initially reset zone state
-        configuration.setZones(ReceiverInformationMsg.getDefaultZones());
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
 
         // Navigation drawer
@@ -312,10 +311,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     private void updateConfiguration(@NonNull State state)
     {
-        if (!state.zones.isEmpty())
-        {
-            configuration.setZones(state.zones);
-        }
         if (!state.deviceSelectors.isEmpty())
         {
             configuration.setDeviceSelectors(state.deviceSelectors);

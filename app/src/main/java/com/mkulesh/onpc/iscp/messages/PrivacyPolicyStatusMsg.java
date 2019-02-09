@@ -68,11 +68,6 @@ public class PrivacyPolicyStatusMsg extends ISCPMessage
         this.status = level;
     }
 
-    public Status getStatus()
-    {
-        return status;
-    }
-
     @Override
     public String toString()
     {

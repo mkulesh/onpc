@@ -92,11 +92,6 @@ public class MasterVolumeMsg extends ZonedMessage
         return ZONE_COMMANDS[zoneIndex];
     }
 
-    public Command getCommand()
-    {
-        return command;
-    }
-
     public int getVolumeLevel()
     {
         return volumeLevel;

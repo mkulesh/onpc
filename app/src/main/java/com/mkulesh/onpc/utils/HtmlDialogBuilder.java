@@ -67,8 +67,7 @@ public class HtmlDialogBuilder
         final LayoutInflater inflater = alertDialog.getLayoutInflater();
         final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.html_dialog_layout, frameView);
 
-        String htmlSource = text;
-        if (htmlSource.isEmpty())
+        if (text.isEmpty())
         {
             return alertDialog;
         }
@@ -79,18 +78,18 @@ public class HtmlDialogBuilder
             Spanned result;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             {
-                result = Html.fromHtml(htmlSource, Html.FROM_HTML_MODE_LEGACY);
+                result = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
             }
             else
             {
-                result = Html.fromHtml(htmlSource);
+                result = Html.fromHtml(text);
             }
             aboutMessage.setText(result);
             aboutMessage.setMovementMethod(LinkMovementMethod.getInstance());
         }
         else
         {
-            aboutMessage.setText(htmlSource);
+            aboutMessage.setText(text);
         }
 
         return alertDialog;

@@ -43,8 +43,7 @@ public class Configuration
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String EXIT_CONFIRM = "exit_confirm";
 
-    static final String ACTIVE_ZONE = "active_zone";
-    static final String ZONES = "zones";
+    private static final String ACTIVE_ZONE = "active_zone";
 
     static final String DEVICE_SELECTORS = "device_selectors";
     static final String DEVICE_SELECTORS_NAME = "device_selectors_name";
@@ -179,25 +178,6 @@ public class Configuration
     public String getDefaultSoundControl()
     {
         return defaultSoundControl;
-    }
-
-    public void setZones(List<ReceiverInformationMsg.Zone> deviceZones)
-    {
-        final StringBuilder str = new StringBuilder();
-        for (ReceiverInformationMsg.Zone z : deviceZones)
-        {
-            if (!str.toString().isEmpty())
-            {
-                str.append(",");
-            }
-            str.append(z.getName());
-        }
-        String zones = str.toString();
-
-        Logging.info(this, "Zones: " + zones);
-        SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putString(ZONES, zones);
-        prefEditor.apply();
     }
 
     public void initActiveZone(int defaultActiveZone)
