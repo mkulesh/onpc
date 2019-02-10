@@ -71,6 +71,24 @@ public class DeviceFragment extends BaseFragment
         {
             updateDeviceProperties(state);
         }
+        else
+        {
+            final int[] settingsLayout = new int[]{
+                    R.id.settings_title,
+                    R.id.settings_divider,
+                    R.id.device_dimmer_level_layout,
+                    R.id.device_digital_filter_layout,
+                    R.id.device_auto_power_layout,
+                    R.id.hdmi_cec_layout,
+                    R.id.speaker_a_layout,
+                    R.id.speaker_b_layout,
+                    R.id.google_cast_analytics_layout
+            };
+            for (int layoutId : settingsLayout)
+            {
+                rootView.findViewById(layoutId).setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -116,6 +134,10 @@ public class DeviceFragment extends BaseFragment
 
         ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
 
+        // Update settings
+        rootView.findViewById(R.id.settings_title).setVisibility(View.GONE);
+        rootView.findViewById(R.id.settings_divider).setVisibility(View.GONE);
+
         // Dimmer level
         prepareSettingPanel(state, state.dimmerLevel != DimmerLevelMsg.Level.NONE,
                 R.id.device_dimmer_level_layout, state.dimmerLevel.getDescriptionId(), null);
@@ -158,12 +180,14 @@ public class DeviceFragment extends BaseFragment
                                      @StringRes int descriptionId, final ISCPMessage msg)
     {
         final LinearLayout layout = rootView.findViewById(layoutId);
-        if (!visible)
+        if (!visible || !state.isOn())
         {
             layout.setVisibility(View.GONE);
             return;
         }
 
+        rootView.findViewById(R.id.settings_title).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.settings_divider).setVisibility(View.VISIBLE);
         layout.setVisibility(View.VISIBLE);
         for (int i = 0; i < layout.getChildCount(); i++)
         {

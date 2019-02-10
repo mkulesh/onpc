@@ -31,6 +31,6 @@
 
     <!-- Device info fragment -->
     <dimen name="device_info_row_height">42dp</dimen>
-    <dimen name="device_info_label_width">100dp</dimen>
+    <dimen name="device_info_label_width">140dp</dimen>
 
 </resources>
