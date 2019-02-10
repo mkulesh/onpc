@@ -135,7 +135,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             switch (item.getItemId())
             {
             case R.id.playlist_menu_add:
-                activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 1), false);
+                activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 2), false);
                 return true;
             case R.id.playlist_menu_add_and_play:
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 0), false);
