@@ -54,7 +54,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private TextView titleBar;
     private ListView listView;
     private MediaListAdapter listViewAdapter;
-    private LinearLayout selectorPaletteLayout = null;
+    private LinearLayout selectorPaletteLayout;
     private XmlListItemMsg selectedItem = null;
     int moveFrom = -1;
     private AppCompatImageView progressIndicator;
@@ -70,6 +70,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         initializeFragment(inflater, container, R.layout.media_fragment);
         rootView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
+        selectorPaletteLayout = rootView.findViewById(R.id.selector_palette);
         titleBar = rootView.findViewById(R.id.items_list_title_bar);
         listView = rootView.findViewById(R.id.items_list_view);
         listView.setItemsCanFocus(false);
@@ -169,11 +170,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         moveFrom = -1;
-        if (selectorPaletteLayout != null)
-        {
-            selectorPaletteLayout.removeAllViews();
-            selectorPaletteLayout = null;
-        }
+        selectorPaletteLayout.removeAllViews();
         titleBar.setText("");
         listView.clearChoices();
         listView.invalidate();
@@ -186,10 +183,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         if (eventChanges.contains(State.ChangeType.MEDIA_ITEMS))
         {
             Logging.info(this, "Updating media fragment: " + state.mediaItems.size() + "/" + state.serviceItems.size());
-            if (selectorPaletteLayout == null)
-            {
-                addSelectorButtons(state);
-            }
             moveFrom = -1;
             updateSelectorButtons(state);
             updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
@@ -197,17 +190,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
     }
 
-    private void addSelectorButtons(@NonNull final State state)
+    private void updateSelectorButtons(@NonNull final State state)
     {
+        selectorPaletteLayout.removeAllViews();
         if (state.deviceSelectors.isEmpty())
         {
             return;
         }
-        if (selectorPaletteLayout == null)
-        {
-            selectorPaletteLayout = rootView.findViewById(R.id.selector_palette);
-        }
-        selectorPaletteLayout.removeAllViews();
 
         // Top menu button
         {
@@ -250,14 +239,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 selectorPaletteLayout.addView(b);
             }
         }
-    }
 
-    private void updateSelectorButtons(@NonNull final State state)
-    {
-        if (selectorPaletteLayout == null)
-        {
-            return;
-        }
         for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
         {
             final View v = selectorPaletteLayout.getChildAt(i);

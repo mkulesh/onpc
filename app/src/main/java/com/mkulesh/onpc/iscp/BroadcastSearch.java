@@ -37,6 +37,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,6 +53,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
     private final List<Pair<BroadcastResponseMsg, AppCompatRadioButton>> devices = new ArrayList<>();
     private final AtomicBoolean active = new AtomicBoolean();
     private final ContextThemeWrapper wrappedContext;
+    private ConnectionState.FailureReason failureReason = null;
     private AlertDialog dialog = null;
     private RadioGroup radioGroup = null;
 
@@ -97,6 +99,29 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         dialog.show();
     }
 
+    private boolean isStopped()
+    {
+        if (!connectionState.isNetwork())
+        {
+            failureReason = ConnectionState.FailureReason.NO_NETWORK;
+            return true;
+        }
+        if (!connectionState.isWifi())
+        {
+            failureReason = ConnectionState.FailureReason.NO_WIFI;
+            return true;
+        }
+        // no reason for events below
+        if (isCancelled())
+        {
+            return true;
+        }
+        synchronized (active)
+        {
+            return !active.get();
+        }
+    }
+
     @Override
     protected Void doInBackground(Void... params)
     {
@@ -110,31 +135,11 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
             final DatagramSocket socket = new DatagramSocket(ISCP_PORT, local);
             socket.setBroadcast(true);
-            socket.setSoTimeout(TIMEOUT);
+            socket.setSoTimeout(500);
 
-            while (true)
+            while (!isStopped())
             {
-                synchronized (active)
-                {
-                    if (!active.get() || isCancelled())
-                    {
-                        break;
-                    }
-                }
-
-                if (!connectionState.isNetwork() || !connectionState.isWifi())
-                {
-                    break;
-                }
-
-                try
-                {
-                    request(socket, target);
-                }
-                catch (Exception e)
-                {
-                    Logging.info(BroadcastSearch.this, "Can not receive response: " + e.toString());
-                }
+                request(socket, target);
             }
             socket.close();
         }
@@ -175,15 +180,10 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 Logging.info(BroadcastSearch.this, "Found device: " + device.toString());
                 stateListener.onDeviceFound(device);
             }
-            else
+            else if (failureReason != null)
             {
-                final ConnectionState.FailureReason reason =
-                        !connectionState.isNetwork() ? ConnectionState.FailureReason.NO_NETWORK : (
-                                !connectionState.isWifi() ? ConnectionState.FailureReason.NO_WIFI :
-                                        ConnectionState.FailureReason.NO_DEVICE
-                        );
-                Logging.info(BroadcastSearch.this, "search skipped: " + reason.toString());
-                stateListener.noDevice(reason);
+                Logging.info(BroadcastSearch.this, "Device not found: " + failureReason.toString());
+                stateListener.noDevice(failureReason);
             }
         }
     }
@@ -195,7 +195,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
             final int startIndex = EISCPMessage.getMsgStartIndex(response);
             if (startIndex != 0)
             {
-                Logging.info(this, "unexpected position of start index: " + startIndex);
+                Logging.info(this, "  -> unexpected position of start index: " + startIndex);
                 return null;
             }
             final int hSize = EISCPMessage.getHeaderSize(response, startIndex);
@@ -208,32 +208,56 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
     }
 
-    private void request(DatagramSocket socket, final InetAddress target) throws Exception
+    private void request(DatagramSocket socket, final InetAddress target)
     {
         final EISCPMessage m = new EISCPMessage('x', "ECN", "QSTN");
         final byte[] bytes = m.getBytes();
 
-        DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
-        socket.send(p);
-        Logging.info(this, "message send to " + target);
-
-        while (true)
+        try
         {
-            final byte[] response = new byte[512];
-            Arrays.fill(response, (byte) 0);
-            DatagramPacket p2 = new DatagramPacket(response, response.length);
-            socket.receive(p2);
+            final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
+            socket.send(p);
+            Logging.info(this, "message send to " + target + ", wait response for " + TIMEOUT + "ms");
+        }
+        catch (Exception e)
+        {
+            Logging.info(BroadcastSearch.this, "  -> can not send request: " + e.toString());
+        }
 
-            final EISCPMessage msg = convertResponse(response);
-            if (msg == null || p2.getAddress() == null || msg.getModelCategoryId() == 'x')
+        final long startTime = Calendar.getInstance().getTimeInMillis();
+        final byte[] response = new byte[512];
+        while (Calendar.getInstance().getTimeInMillis() < startTime + TIMEOUT)
+        {
+            if (isStopped())
             {
-                continue;
+                break;
             }
 
-            final BroadcastResponseMsg responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
-            if (responseMessage.isValid())
+            try
             {
-                publishProgress(responseMessage);
+                Arrays.fill(response, (byte) 0);
+                final DatagramPacket p2 = new DatagramPacket(response, response.length);
+                socket.receive(p2);
+                if (p2.getAddress() == null)
+                {
+                    continue;
+                }
+
+                final EISCPMessage msg = convertResponse(response);
+                if (msg == null || msg.getModelCategoryId() == 'x')
+                {
+                    continue;
+                }
+
+                final BroadcastResponseMsg responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
+                if (responseMessage.isValid())
+                {
+                    publishProgress(responseMessage);
+                }
+            }
+            catch (Exception e)
+            {
+                // nothing to do
             }
         }
     }
@@ -246,12 +270,12 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
             return;
         }
         final BroadcastResponseMsg msg = result[0];
-        Logging.info(this, "new response " + msg);
+        Logging.info(this, "  new response " + msg);
         for (Pair<BroadcastResponseMsg, AppCompatRadioButton> d : devices)
         {
             if (d.first.getDevice().equals(msg.getDevice()))
             {
-                Logging.info(this, "device already registered");
+                Logging.info(this, "  -> device already registered");
                 return;
             }
         }
