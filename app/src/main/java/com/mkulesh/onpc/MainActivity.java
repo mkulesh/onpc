@@ -175,12 +175,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             startActivityForResult(settings, SETTINGS_ACTIVITY_REQID);
             return true;
         }
-        case R.id.menu_about:
-        {
-            HtmlDialogBuilder.buildHtmlDialog(this,
-                    R.mipmap.ic_launcher, R.string.app_name, R.string.html_about).show();
-            return true;
-        }
         case R.id.menu_receiver_information:
         {
             final String text = isConnected() ? getStateManager().getState().receiverInformation :

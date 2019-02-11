@@ -24,12 +24,9 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_app_settings"
+        android:icon="@drawable/menu_app_settings"
         android:title="@string/menu_app_settings"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/menu_about"
-        android:title="@string/menu_about"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/menu_receiver_information"
         android:title="@string/menu_receiver_information"

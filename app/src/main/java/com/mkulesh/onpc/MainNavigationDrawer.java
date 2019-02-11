@@ -34,6 +34,7 @@ import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -81,6 +82,9 @@ class MainNavigationDrawer
         case R.id.drawer_zone_4:
             navigationChangeZone(menuItem.getOrder());
             break;
+        case R.id.drawer_about:
+            HtmlDialogBuilder.buildHtmlDialog(activity,
+                    R.mipmap.ic_launcher, R.string.app_name, R.string.html_about).show();
         }
     }
 

@@ -61,4 +61,15 @@
         </menu>
     </item>
 
+    <item
+        android:title="@string/drawer_device_application"
+        android:orderInCategory="3">
+        <menu>
+            <item
+                android:id="@+id/drawer_about"
+                android:icon="@drawable/drawer_about"
+                android:title="@string/drawer_about" />
+        </menu>
+    </item>
+
 </menu>
