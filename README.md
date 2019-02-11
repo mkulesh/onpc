@@ -25,10 +25,9 @@ This app allows to remotely control Onkyo Network Player or a Network A/V Receiv
 
 ## Supported devices
 Currently, this app is only tested with following devices:
-- [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) (Firmware versions 2110-0000-0000-0010-0000, 2120-1000-0000-0010-0000, ...)
-![NS-6130](https://github.com/mkulesh/onpc/blob/master/images/ns_6130.png)
-- [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html) (Firmware version 1091-1020-3050-0010-0000)
-![TX-NR676E](https://github.com/mkulesh/onpc/blob/master/images/tx_nr676e.png)
+- [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
+- [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html) 
+- [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark (Dim Gray and Cyan) theme
