@@ -18,7 +18,7 @@
     <!-- Main view -->
     <string name="app_name">Open Music Controller for Onkyo</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Remote controller for Onkyo devices: listen music properly</string>
+    <string name="app_description">Remote controller for Onkyo devices: listen to music properly!</string>
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
@@ -26,10 +26,10 @@
     <string name="action_cancel">CANCEL</string>
 
     <string name="html_about"><![CDATA[
-    <p>Remote controller for Onkyo devices: listen music properly</p>
+    <p>Remote controller for Onkyo devices: listen to music properly!</p>
     <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>This app allows to remotely control Onkyo Network Player or a Network A/V Receiver over the home network by means of
-       "Integra Serial Communication Protocol". The app is primary aimed to get a control over music playback and sound profiles.</p>
+    <p>This app allows remote control of an Onkyo Network Player or a Network A/V Receiver via the
+       "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.</p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
     <h5>License</h5>
     <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU
