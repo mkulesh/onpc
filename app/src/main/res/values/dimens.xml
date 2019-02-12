@@ -20,7 +20,7 @@
 
     <!-- Text sizes -->
     <dimen name="primary_text_size">18sp</dimen>
-    <dimen name="secondary_text_size">16sp</dimen>
+    <dimen name="secondary_text_size">15sp</dimen>
 
     <!-- Buttons and images -->
     <dimen name="button_size">36dp</dimen>
