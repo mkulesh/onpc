@@ -4,23 +4,23 @@
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Open Music Controller for Onkyo
 
-*Remote controller for Onkyo devices: listen music properly*
+*Remote controller for Onkyo devices: listen to music properly!*
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
 
-This app allows to remotely control Onkyo Network Player or a Network A/V Receiver over the home network by means of
-"Integra Serial Communication Protocol". The app is primary aimed to get a control over music playback and sound profiles.
+This app allows remote control of an Onkyo Network Player or a Network A/V Receiver via the
+"Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.  Other benefits include:
 
 ## Benefits and features
 - One-click access to music playback actions
-- The modern material design supports different color themes and works on smartphone or tablet in portrait and landscape mode
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Full support of Tuneln Radio and Deezer
-- Full support of different zones
-- Control of devices attached vie RI
+- The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
+- Tuneln Radio and Deezer streaming
+- Multi-zone support
+- Control of devices attached via RI
 - Play queue support (add, remove, clear, change playback order)
-- Show information about the device and control some device settings (dimmer level, digital filter, auto power)
+- Display device details and control device settings such as dimmer level, digital filter, auto power
 - App doesn't need any special permissions
 
 ## Supported devices
@@ -28,6 +28,8 @@ Currently, this app is only tested with following devices:
 - [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
 - [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html) 
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
+- [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
+- [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark (Dim Gray and Cyan) theme
@@ -66,7 +68,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright © 2018 by Mikhail Kulesh, Alexander Gomanyuk
+Copyright © 2018-2019 by Mikhail Kulesh, Alexander Gomanyuk
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
