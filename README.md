@@ -22,7 +22,7 @@ This app allows remote control of an Onkyo Network Player or a Network A/V Recei
 - Play queue support (add, remove, clear, change playback order)
 - Display device details and control device settings such as dimmer level, digital filter, auto power
 - App doesn't need any special permissions
-
+- Allows control of receivers over an OpenVPN connection (even over a cellular connection). Onkyo Controller does not have this functionality.
 ## Supported devices
 Currently, this app is only tested with following devices:
 - [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
