@@ -89,4 +89,9 @@ public class GoogleCastAnalyticsMsg extends ISCPMessage
     {
         return false;
     }
+
+    public static Status toggle(Status s)
+    {
+        return (s == Status.OFF) ? Status.ON : Status.OFF;
+    }
 }

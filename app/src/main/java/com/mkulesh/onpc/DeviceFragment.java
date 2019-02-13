@@ -159,21 +159,16 @@ public class DeviceFragment extends BaseFragment
             final boolean zoneAllowed = (state.getActiveZone() < 2);
             prepareSettingPanel(state, zoneAllowed && state.speakerA != SpeakerACommandMsg.Status.NONE,
                     R.id.speaker_a_layout, state.speakerA.getDescriptionId(),
-                    new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.TOGGLE));
+                    new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.toggle(state.speakerA)));
             prepareSettingPanel(state, zoneAllowed && state.speakerB != SpeakerBCommandMsg.Status.NONE,
                     R.id.speaker_b_layout, state.speakerB.getDescriptionId(),
-                    new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.Status.TOGGLE));
+                    new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.toggle(state.speakerB)));
         }
 
         // Google Cast analytics
-        {
-            final GoogleCastAnalyticsMsg toggleMsg = new GoogleCastAnalyticsMsg(
-                    (state.googleCastAnalytics == GoogleCastAnalyticsMsg.Status.OFF) ?
-                            GoogleCastAnalyticsMsg.Status.ON : GoogleCastAnalyticsMsg.Status.OFF);
-
-            prepareSettingPanel(state, state.googleCastAnalytics != GoogleCastAnalyticsMsg.Status.NONE,
-                    R.id.google_cast_analytics_layout, state.googleCastAnalytics.getDescriptionId(), toggleMsg);
-        }
+        prepareSettingPanel(state, state.googleCastAnalytics != GoogleCastAnalyticsMsg.Status.NONE,
+                R.id.google_cast_analytics_layout, state.googleCastAnalytics.getDescriptionId(),
+                new GoogleCastAnalyticsMsg(GoogleCastAnalyticsMsg.toggle(state.googleCastAnalytics)));
     }
 
     private void prepareSettingPanel(@NonNull final State state, boolean visible, @IdRes int layoutId,

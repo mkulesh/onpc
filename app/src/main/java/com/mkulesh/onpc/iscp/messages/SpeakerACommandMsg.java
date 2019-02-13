@@ -34,7 +34,7 @@ public class SpeakerACommandMsg extends ZonedMessage
         NONE("N/A", R.string.device_two_way_switch_none),
         OFF("00", R.string.device_two_way_switch_off),
         ON("01", R.string.device_two_way_switch_on),
-        TOGGLE("UP", R.string.speaker_a_command_toggle);
+        TOGGLE("UP", R.string.speaker_a_command_toggle); /* Only available for main zone */
 
         final String code;
         final int descriptionId;
@@ -100,5 +100,10 @@ public class SpeakerACommandMsg extends ZonedMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    public static Status toggle(Status s)
+    {
+        return (s == Status.OFF) ? Status.ON : Status.OFF;
     }
 }
