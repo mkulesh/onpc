@@ -21,8 +21,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -171,6 +173,18 @@ public class Utils
         {
             drawable.clearColorFilter();
             drawable.setColorFilter(getThemeColorAttr(c, resId), PorterDuff.Mode.SRC_ATOP);
+        }
+    }
+
+    /**
+     * Fix dialog icon color after dialog creation. Necessary for older Android Versions
+     */
+    public static void fixIconColor(@NonNull AlertDialog dialog, @AttrRes int resId)
+    {
+        final ImageView imageView = dialog.findViewById(android.R.id.icon);
+        if (imageView != null)
+        {
+            Utils.setImageViewColorAttr(dialog.getContext(), imageView, resId);
         }
     }
 

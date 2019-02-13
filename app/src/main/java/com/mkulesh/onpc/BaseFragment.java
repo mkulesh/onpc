@@ -111,6 +111,7 @@ abstract public class BaseFragment extends Fragment
             if (alertDialog != null)
             {
                 alertDialog.show();
+                Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
             }
         }
         catch (Exception e)

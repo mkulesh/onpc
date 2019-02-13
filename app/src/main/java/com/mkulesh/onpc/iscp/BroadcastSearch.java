@@ -97,6 +97,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         radioGroup = frameView.findViewById(R.id.broadcast_radio_group);
         active.set(true);
         dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 
     private boolean isStopped()
