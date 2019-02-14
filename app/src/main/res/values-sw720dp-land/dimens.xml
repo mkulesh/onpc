@@ -27,7 +27,7 @@
     <dimen name="button_padding">6dp</dimen>
     <dimen name="button_margin_horizontal">16dp</dimen>
     <dimen name="button_margin_vertical">8dp</dimen>
-    <dimen name="cover_image_margin">36dp</dimen>
+    <dimen name="cover_image_margin">24dp</dimen>
 
     <!-- Device info fragment -->
     <dimen name="device_info_row_height">56dp</dimen>
