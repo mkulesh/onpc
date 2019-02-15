@@ -180,7 +180,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
-        if (eventChanges.contains(State.ChangeType.MEDIA_ITEMS))
+        if (eventChanges.contains(State.ChangeType.MEDIA_ITEMS) || eventChanges.contains(State.ChangeType.RECEIVER_INFO))
         {
             Logging.info(this, "Updating media fragment: " + state.mediaItems.size() + "/" + state.serviceItems.size());
             moveFrom = -1;
