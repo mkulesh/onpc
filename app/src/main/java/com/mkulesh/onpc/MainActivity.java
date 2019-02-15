@@ -26,6 +26,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,8 @@ import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
+import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
@@ -415,5 +418,43 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event)
+    {
+        if (isConnected() && configuration.isVolumeKeys())
+        {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    Logging.info(this, "Key event: " + event);
+                    changeMasterVolume(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
+                    return true;
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private void changeMasterVolume(boolean isUp)
+    {
+        switch (configuration.getSoundControl())
+        {
+        case "none":
+            // nothing to do
+            break;
+        case "external-amplifier":
+            getStateManager().sendMessage(new AmpOperationCommandMsg(isUp ?
+                    AmpOperationCommandMsg.Command.MVLUP.getCode() :
+                    AmpOperationCommandMsg.Command.MVLDOWN.getCode()));
+            break;
+        case "device":
+            final int zone = getStateManager().getState().getActiveZone();
+            getStateManager().sendMessage(new MasterVolumeMsg(zone, isUp ?
+                    MasterVolumeMsg.Command.UP : MasterVolumeMsg.Command.DOWN));
+            break;
+        }
     }
 }

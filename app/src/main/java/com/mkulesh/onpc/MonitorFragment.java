@@ -106,7 +106,7 @@ public class MonitorFragment extends BaseFragment
         }
 
         // Amplifier command buttons
-        switch (activity.getConfiguration().getDefaultSoundControl())
+        switch (activity.getConfiguration().getSoundControl())
         {
         case "none":
             // nothing to do

@@ -97,6 +97,14 @@
     <PreferenceCategory android:title="@string/pref_category_advanced_options">
 
         <SwitchPreferenceCompat
+            app:icon="@drawable/pref_volume_keys"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="volume_keys"
+            android:title="@string/pref_volume_title"
+            android:summary="@string/pref_volume_summary" />
+
+        <SwitchPreferenceCompat
             app:icon="@drawable/pref_keep_screen_on"
             app:singleLineTitle="false"
             android:defaultValue="false"

@@ -40,9 +40,6 @@ public class Configuration
     private static final String SERVER_PORT = "server_port";
     static final String SOUND_CONTROL = "sound_control";
 
-    private static final String KEEP_SCREEN_ON = "keep_screen_on";
-    private static final String EXIT_CONFIRM = "exit_confirm";
-
     private static final String ACTIVE_ZONE = "active_zone";
 
     static final String DEVICE_SELECTORS = "device_selectors";
@@ -55,6 +52,9 @@ public class Configuration
     private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
     private static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
 
+    private static final String VOLUME_KEYS = "volume_keys";
+    private static final String KEEP_SCREEN_ON = "keep_screen_on";
+    private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
 
     private final static ListeningModeMsg.Mode listeningModes[] = new ListeningModeMsg.Mode[]
@@ -82,8 +82,7 @@ public class Configuration
 
     private String deviceName;
     private int devicePort;
-    private final boolean keepScreenOn, exitConfirm;
-    private final String defaultSoundControl;
+    private final String soundControl;
 
     private final boolean remoteInterface, remoteInterfaceAmp, remoteInterfaceCd;
 
@@ -95,10 +94,7 @@ public class Configuration
         deviceName = preferences.getString(Configuration.SERVER_NAME, "");
         devicePort = preferences.getInt(Configuration.SERVER_PORT, BroadcastSearch.ISCP_PORT);
 
-        keepScreenOn = preferences.getBoolean(Configuration.KEEP_SCREEN_ON, false);
-        exitConfirm = preferences.getBoolean(Configuration.EXIT_CONFIRM, false);
-
-        defaultSoundControl = preferences.getString(Configuration.SOUND_CONTROL,
+        soundControl = preferences.getString(Configuration.SOUND_CONTROL,
                 context.getResources().getString(R.string.pref_default_sound_control));
 
         remoteInterface = preferences.getBoolean(Configuration.REMOTE_INTERFACE, false);
@@ -165,19 +161,9 @@ public class Configuration
         prefEditor.apply();
     }
 
-    public boolean isKeepScreenOn()
+    public String getSoundControl()
     {
-        return keepScreenOn;
-    }
-
-    public boolean isExitConfirm()
-    {
-        return exitConfirm;
-    }
-
-    public String getDefaultSoundControl()
-    {
-        return defaultSoundControl;
+        return soundControl;
     }
 
     public void initActiveZone(int defaultActiveZone)
@@ -289,6 +275,21 @@ public class Configuration
     public boolean isRemoteInterfaceCd()
     {
         return remoteInterface && remoteInterfaceCd;
+    }
+
+    public boolean isVolumeKeys()
+    {
+        return preferences.getBoolean(Configuration.VOLUME_KEYS, false);
+    }
+
+    public boolean isKeepScreenOn()
+    {
+        return preferences.getBoolean(Configuration.KEEP_SCREEN_ON, false);
+    }
+
+    public boolean isExitConfirm()
+    {
+        return preferences.getBoolean(Configuration.EXIT_CONFIRM, false);
     }
 
     public boolean isDeveloperMode()
