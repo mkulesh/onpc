@@ -32,16 +32,16 @@ Currently, this app is only tested with following devices:
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
 
 ## Screenshots
-* Playback screen in landscape orientation, Dark (Dim Gray and Cyan) theme
+* Playback screen in landscape orientation, Dark theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center" width="800">
 
-* Playback screen in portrait orientation, Strong Dark (Black and Lime) theme
+* Playback screen in portrait orientation, Strong Dark theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_vert.png" align="center" height="800">
 
-* Media list screen, Dark (Dim Gray and Yellow) theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/tablet_tx_nr676_media_hor.png" align="center" height="800">
+* Playback screen and navigation drawer in landscape orientation, 10 Inch tablet, Dark theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/tablet_ns_6130_playback_hor.png" align="center" height="800">
 
-* Device info screen, Light (Indigo and Orange) theme
+* Device info screen, Light theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_device_vert.png" align="center" height="800">
 
 For more screenshots, see directory images/screenshots.
