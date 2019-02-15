@@ -33,13 +33,13 @@ Currently, this app is only tested with following devices:
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center" width="800">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center">
 
 * Playback screen in portrait orientation, Strong Dark theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_vert.png" align="center" height="800">
 
 * Playback screen and navigation drawer in landscape orientation, 10 Inch tablet, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/tablet_ns_6130_playback_hor.png" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/tablet_ns_6130_playback_hor.png" align="center">
 
 * Device info screen, Light theme
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_device_vert.png" align="center" height="800">
