@@ -11,8 +11,7 @@ git clone https://github.com/mkulesh/onpc.git --branch autobuild --single-branch
 cd onpc_autobuild
 
 # Copy newly created APK into the target directory
-ls ../onpc/app/build/outputs/apk
-mv ../onpc/app/build/outputs/apk/onpc-v${APK_VERSION}.apk ./autobuild
+mv ../onpc/app/build/outputs/apk/debug/onpc-v${APK_VERSION}-debug.apk ./autobuild
 echo "Target APK"
 pwd; ls -l ./autobuild
 
@@ -20,7 +19,7 @@ pwd; ls -l ./autobuild
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
 git remote add origin-master https://${AUTOBUILD_TOKEN}@github.com/mkulesh/onpc > /dev/null 2>&1
-git add ./autobuild/onpc-v${APK_VERSION}.apk
+git add ./autobuild/onpc-v${APK_VERSION}-debug.apk
 
 # We don’t want to run a build for a this commit in order to avoid circular builds: 
 # add [ci skip] to the git commit message
