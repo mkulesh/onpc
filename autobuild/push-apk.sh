@@ -11,6 +11,7 @@ git clone https://github.com/mkulesh/onpc.git --branch autobuild --single-branch
 cd onpc_autobuild
 
 # Copy newly created APK into the target directory
+ls ../onpc/app/build/outputs/apk
 mv ../onpc/app/build/outputs/apk/onpc-v${APK_VERSION}.apk ./autobuild
 echo "Target APK"
 pwd; ls -l ./autobuild
