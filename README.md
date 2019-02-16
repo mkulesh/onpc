@@ -11,8 +11,7 @@
 
 This app allows remote control of an Onkyo Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.  Other benefits include:
-
-## Benefits and features
+- Maximum privacy: No ads, no trackers, no telemetry
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
@@ -23,6 +22,7 @@ This app allows remote control of an Onkyo Network Player or a Network A/V Recei
 - Display device details and control device settings such as dimmer level, digital filter, auto power
 - App doesn't need any special permissions
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection). Onkyo Controller does not have this functionality.
+
 ## Supported devices
 Currently, this app is only tested with following devices:
 - [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
@@ -63,6 +63,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 ## Acknowledgement
 * Thank to [Tebriz](https://github.com/tebriz159) for Logo design
+* Thank to [mrlad](https://github.com/mrlad), [onschedule](https://github.com/onschedule) for testing and improvements ideas
 
 ## License
 
