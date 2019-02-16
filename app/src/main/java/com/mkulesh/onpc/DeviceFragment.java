@@ -22,6 +22,7 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
+import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
@@ -50,6 +52,25 @@ public class DeviceFragment extends BaseFragment
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         initializeFragment(inflater, container, R.layout.device_fragment);
+
+        // Friendly name
+        {
+            final EditText friendlyName = rootView.findViewById(R.id.device_edit_friendly_name);
+            final AppCompatImageButton b = rootView.findViewById(R.id.device_change_friendly_name);
+            prepareButtonListeners(b, null, new ButtonListener()
+            {
+                @Override
+                public void onPostProcessing()
+                {
+                    if (activity.isConnected())
+                    {
+                        activity.getStateManager().sendMessage(
+                                new FriendlyNameMsg(friendlyName.getText().toString()));
+                    }
+                }
+            });
+            setButtonEnabled(b, true);
+        }
 
         prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
@@ -104,6 +125,8 @@ public class DeviceFragment extends BaseFragment
 
     private void updateDeviceProperties(@NonNull final State state)
     {
+        ((EditText) rootView.findViewById(R.id.device_edit_friendly_name)).setText(state.friendlyName);
+
         if (!state.deviceProperties.isEmpty())
         {
             ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
@@ -206,11 +229,10 @@ public class DeviceFragment extends BaseFragment
         }
     }
 
-    protected AppCompatImageButton prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
+    protected void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
     {
         final AppCompatImageButton b = rootView.findViewById(buttonId);
         prepareButtonListeners(b, msg);
         setButtonEnabled(b, false);
-        return b;
     }
 }

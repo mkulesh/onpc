@@ -347,6 +347,8 @@
     <string name="playlist_move_to">Move to</string>
 
     <!-- Device tab -->
+    <string name="device_friendly_name">Friendly name</string>
+    <string name="device_change_friendly_name">Change friendly name</string>
     <string name="device_info">Device info</string>
     <string name="device_brand">Brand</string>
     <string name="device_model">Model</string>

@@ -24,6 +24,7 @@ import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
+import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
@@ -69,6 +70,7 @@ public class State
 
     // Receiver Information
     public String receiverInformation = null;
+    public String friendlyName = "";
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, String> networkServices = new HashMap<>();
     private final int activeZone;
@@ -196,6 +198,10 @@ public class State
         if (msg instanceof ReceiverInformationMsg)
         {
             return process((ReceiverInformationMsg) msg) ? ChangeType.RECEIVER_INFO : ChangeType.NONE;
+        }
+        if (msg instanceof FriendlyNameMsg)
+        {
+            return isCommonChange(process((FriendlyNameMsg) msg));
         }
         if (msg instanceof DimmerLevelMsg)
         {
@@ -364,6 +370,13 @@ public class State
             Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
         }
         return false;
+    }
+
+    private boolean process(FriendlyNameMsg msg)
+    {
+        final boolean changed = !friendlyName.equals(msg.getFriendlyName());
+        friendlyName = msg.getFriendlyName();
+        return changed;
     }
 
     private boolean process(InputSelectorMsg msg)

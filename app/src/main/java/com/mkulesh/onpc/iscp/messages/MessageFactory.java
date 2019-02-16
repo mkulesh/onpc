@@ -34,6 +34,8 @@ public class MessageFactory
             return new FirmwareUpdateMsg(raw);
         case ReceiverInformationMsg.CODE:
             return new ReceiverInformationMsg(raw);
+        case FriendlyNameMsg.CODE:
+            return new FriendlyNameMsg(raw);
         case DeviceNameMsg.CODE:
             return new DeviceNameMsg(raw);
         case InputSelectorMsg.CODE:

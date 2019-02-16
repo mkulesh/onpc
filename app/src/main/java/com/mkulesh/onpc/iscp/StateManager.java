@@ -27,6 +27,7 @@ import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
+import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
@@ -140,6 +141,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         final String powerStateQueries[] = new String[]{
                 ReceiverInformationMsg.CODE,
+                FriendlyNameMsg.CODE,
                 FirmwareUpdateMsg.CODE,
                 GoogleCastVersionMsg.CODE,
                 PrivacyPolicyStatusMsg.CODE,
@@ -170,7 +172,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
                 if (msg instanceof ZonedMessage)
                 {
-                    final ZonedMessage zMsg = (ZonedMessage)msg;
+                    final ZonedMessage zMsg = (ZonedMessage) msg;
                     if (zMsg.zoneIndex != state.getActiveZone())
                     {
                         Logging.info(this, "message ignored: non active zone " + zMsg.zoneIndex);

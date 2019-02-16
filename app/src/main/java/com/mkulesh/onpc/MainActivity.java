@@ -345,7 +345,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         else
         {
-            final String name = state.deviceProperties.get("model");
+            String name = state.deviceProperties.get("model");
+            if (state.friendlyName != null && !state.friendlyName.isEmpty())
+            {
+                name = state.friendlyName;
+            }
             if (name != null)
             {
                 final StringBuilder subTitle = new StringBuilder();
