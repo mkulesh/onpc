@@ -42,7 +42,7 @@
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="com.mkulesh.onpc"
-                android:targetClass="com.mkulesh.onpc.config.PreferencesDeviceSelectors"></intent>
+                android:targetClass="com.mkulesh.onpc.config.PreferencesDeviceSelectors" />
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -52,7 +52,7 @@
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="com.mkulesh.onpc"
-                android:targetClass="com.mkulesh.onpc.config.PreferencesListeningModes"></intent>
+                android:targetClass="com.mkulesh.onpc.config.PreferencesListeningModes" />
         </PreferenceScreen>
 
         <PreferenceScreen
@@ -62,15 +62,8 @@
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="com.mkulesh.onpc"
-                android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices"></intent>
+                android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices" />
         </PreferenceScreen>
-
-        <SwitchPreferenceCompat
-            app:icon="@drawable/pref_friendly_name"
-            app:singleLineTitle="false"
-            android:defaultValue="false"
-            android:key="device_friendly_name"
-            android:title="@string/pref_volume_title" />
 
     </PreferenceCategory>
 
