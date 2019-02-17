@@ -661,13 +661,6 @@ public class DragSortListView extends ListView
         super.setAdapter(mAdapterWrapper);
     }
 
-    /**
-     * As opposed to {@link ListView#getAdapter()}, which returns
-     * a heavily wrapped ListAdapter (DragSortListView wraps the
-     * input ListAdapter {\emph and} ListView wraps the wrapped one).
-     *
-     * @return The ListAdapter set as the argument of {@link setAdapter()}
-     */
     public ListAdapter getInputAdapter()
     {
         if (mAdapterWrapper == null)
@@ -993,17 +986,6 @@ public class DragSortListView extends ListView
      * thus expanded positions and slide fraction. i.e. Should not be
      * called between update of expanded positions/slide fraction
      * and layoutChildren.
-     *
-     * @param position
-     * @param top
-     * @param height   Height of item at position. If -1, this function
-     *                 calculates this height.
-     * @return Shuffle line between position-1 and position (for
-     * the given view of the list; that is, for when top of item at
-     * position has y-coord of given `top`). If
-     * floating View (treated as horizontal line) is dropped
-     * immediately above this line, it lands in position-1. If
-     * dropped immediately below this line, it lands in position.
      */
     private int getShuffleEdge(int position, int top)
     {
@@ -1677,10 +1659,6 @@ public class DragSortListView extends ListView
         }
     }
 
-    /**
-     * Cancel a drag. Calls {@link #stopDrag(boolean, boolean)} with
-     * <code>true</code> as the first argument.
-     */
     public void cancelDrag()
     {
         if (mDragState == DRAGGING)
@@ -2869,7 +2847,6 @@ public class DragSortListView extends ListView
          *                      and the offset provided in {@link DragSortListView#startDrag}.
          * @param touch         The current touch location (relative to DSLV
          *                      top-left).
-         * @param pendingScroll
          */
         public void onDragFloatView(View floatView, Point location, Point touch);
 
@@ -2899,16 +2876,6 @@ public class DragSortListView extends ListView
         mDragListener = l;
     }
 
-    /**
-     * Allows for easy toggling between a DragSortListView
-     * and a regular old ListView. If enabled, items are
-     * draggable, where the drag init mode determines how
-     * items are lifted (see {@link setDragInitMode(int)}).
-     * If disabled, items cannot be dragged.
-     *
-     * @param enabled Set <code>true</code> to enable list
-     *                item dragging
-     */
     public void setDragEnabled(boolean enabled)
     {
         mDragEnabled = enabled;

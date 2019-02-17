@@ -13,11 +13,6 @@ import android.widget.AdapterView;
  * based on touch gestures. This class also inherits from
  * {@link SimpleFloatViewManager}, which provides basic float View
  * creation.
- *
- * An instance of this class is meant to be passed to the methods
- * {@link DragSortListView#setTouchListener()} and
- * {@link DragSortListView#setFloatViewManager()} of your
- * {@link DragSortListView} instance.
  */
 public class DragSortController extends SimpleFloatViewManager implements View.OnTouchListener, GestureDetector.OnGestureListener
 {
@@ -87,14 +82,6 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
      */
     private View.OnTouchListener mSecondaryOnTouchListener;
 
-    /**
-     * Calls {@link #DragSortController(DragSortListView, int)} with a
-     * 0 drag handle id, FLING_RIGHT_REMOVE remove mode,
-     * and ON_DOWN drag init. By default, sorting is enabled, and
-     * removal is disabled.
-     *
-     * @param dslv The DSLV instance
-     */
     public DragSortController(DragSortListView dslv)
     {
         this(dslv, 0, ON_DOWN, FLING_REMOVE);
@@ -139,12 +126,6 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         return mDragInitMode;
     }
 
-    /**
-     * Set how a drag is initiated. Needs to be one of
-     * {@link ON_DOWN}, {@link ON_DRAG}, or {@link ON_LONG_PRESS}.
-     *
-     * @param mode The drag init mode.
-     */
     public void setDragInitMode(int mode)
     {
         mDragInitMode = mode;
@@ -167,11 +148,6 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         return mSortEnabled;
     }
 
-    /**
-     * One of {@link CLICK_REMOVE}, {@link FLING_RIGHT_REMOVE},
-     * {@link FLING_LEFT_REMOVE},
-     * {@link SLIDE_RIGHT_REMOVE}, or {@link SLIDE_LEFT_REMOVE}.
-     */
     public void setRemoveMode(int mode)
     {
         mRemoveMode = mode;
