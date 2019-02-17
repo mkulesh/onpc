@@ -174,7 +174,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         titleBar.setText("");
         listView.clearChoices();
         listView.invalidate();
-        listView.setAdapter(new MediaListAdapter(this, activity, new ArrayList<ISCPMessage>()));
+        listView.setAdapter(new MediaListAdapter(this, activity, new ArrayList<>()));
     }
 
     @Override
@@ -204,14 +204,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final AppCompatImageButton b = createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand(), 0, buttonMarginHorizontal, 0);
-            prepareButtonListeners(b, msg, new ButtonListener()
-            {
-                @Override
-                public void onPostProcessing()
-                {
-                    progressIndicator.setVisibility(View.VISIBLE);
-                }
-            });
+            prepareButtonListeners(b, msg, () -> progressIndicator.setVisibility(View.VISIBLE));
             selectorPaletteLayout.addView(b);
         }
 
@@ -224,14 +217,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
             {
                 final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
-                        msg, msg.getInputType(), new ButtonListener()
-                        {
-                            @Override
-                            public void onPostProcessing()
-                            {
-                                progressIndicator.setVisibility(View.VISIBLE);
-                            }
-                        });
+                        msg, msg.getInputType(), () -> progressIndicator.setVisibility(View.VISIBLE));
                 if (activity.getConfiguration().isFriendlySelectorName())
                 {
                     b.setText(s.getName());
@@ -301,12 +287,39 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (!serviceItems.isEmpty())
         {
-            for (NetworkServiceMsg i : serviceItems)
+            final ArrayList<String> selectedItems = activity.getConfiguration().getSelectedNetworkServices();
+            if (selectedItems == null)
             {
-                if (i.getService() == state.serviceType
-                        || activity.getConfiguration().isNetworkServiceVisible(i.getService().getCode()))
+                // Default configuration if filter is not active
+                for (NetworkServiceMsg i : serviceItems)
                 {
                     newItems.add(new NetworkServiceMsg(i));
+                }
+            }
+            else
+            {
+                // Add item that is currently playing
+                if (state.serviceIcon != ServiceType.UNKNOWN
+                        && !selectedItems.contains(state.serviceIcon.getCode()))
+                {
+                    for (NetworkServiceMsg i : serviceItems)
+                    {
+                        if (i.getService().getCode().equals(state.serviceIcon.getCode()))
+                        {
+                            newItems.add(new NetworkServiceMsg(i));
+                        }
+                    }
+                }
+                // Add all selected items
+                for (String s : selectedItems)
+                {
+                    for (NetworkServiceMsg i : serviceItems)
+                    {
+                        if (i.getService().getCode().equals(s))
+                        {
+                            newItems.add(new NetworkServiceMsg(i));
+                        }
+                    }
                 }
             }
         }

@@ -33,4 +33,9 @@
     <dimen name="device_info_row_height">42dp</dimen>
     <dimen name="device_info_label_width">140dp</dimen>
 
+    <!-- Draggable row in configuration -->
+    <dimen name="draggable_text_size">16sp</dimen>
+    <dimen name="draggable_row_height">48dp</dimen>
+    <dimen name="draggable_cover_size">24dp</dimen>
+
 </resources>

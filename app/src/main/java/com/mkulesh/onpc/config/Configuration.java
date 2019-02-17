@@ -26,6 +26,8 @@ import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.Logging;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +48,7 @@ public class Configuration
     static final String DEVICE_SELECTORS_NAME = "device_selectors_name";
     static final String FRIENDLY_SELECTOR_NAME = "friendly_selector_name";
     static final String NETWORK_SERVICES = "network_services";
+    static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
     static final String LISTENING_MODES = "listening_modes";
 
     private static final String REMOTE_INTERFACE = "remote_interface";
@@ -247,9 +250,10 @@ public class Configuration
         prefEditor.apply();
     }
 
-    public boolean isNetworkServiceVisible(final String code)
+    public ArrayList<String> getSelectedNetworkServices()
     {
-        return preferences.getBoolean(NETWORK_SERVICES + "_" + code, true);
+        final String cfg = preferences.getString(SELECTED_NETWORK_SERVICES, "");
+        return cfg.isEmpty()? null : new ArrayList<>(Arrays.asList(cfg.split(",")));
     }
 
     public static ListeningModeMsg.Mode[] getListeningModes()

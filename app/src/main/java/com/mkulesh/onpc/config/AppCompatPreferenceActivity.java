@@ -1,26 +1,25 @@
 /*
- * Copyright (C) 2014 The Android Open Source Project
+ * Copyright (C) 2018. Mikhail Kulesh
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details. You should have received a copy of the GNU General
+ * Public License along with this program.
  */
 package com.mkulesh.onpc.config;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceGroup;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.preference.SwitchPreferenceCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -32,6 +31,7 @@ import com.mkulesh.onpc.utils.Utils;
 
 public abstract class AppCompatPreferenceActivity extends AppCompatActivity
 {
+    protected SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,6 +42,7 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setupActionBar();
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     protected static void tintIcons(final Context c, Preference preference)
@@ -101,5 +102,11 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
         p.setTitle(context.getString(descriptionId));
         p.setKey(key);
         return p;
+    }
+
+    protected String[] getTokens(String par)
+    {
+        final String cfg = preferences.getString(par, "");
+        return cfg.isEmpty()? null : cfg.split(",");
     }
 }
