@@ -120,42 +120,19 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         setDragInitMode(dragInitMode);
     }
 
-
-    public int getDragInitMode()
-    {
-        return mDragInitMode;
-    }
-
     public void setDragInitMode(int mode)
     {
         mDragInitMode = mode;
     }
 
-    /**
-     * Enable/Disable list item sorting. Disabling is useful if only item
-     * removal is desired. Prevents drags in the vertical direction.
-     *
-     * @param enabled Set <code>true</code> to enable list
-     *                item sorting.
-     */
     public void setSortEnabled(boolean enabled)
     {
         mSortEnabled = enabled;
     }
 
-    public boolean isSortEnabled()
-    {
-        return mSortEnabled;
-    }
-
     public void setRemoveMode(int mode)
     {
         mRemoveMode = mode;
-    }
-
-    public int getRemoveMode()
-    {
-        return mRemoveMode;
     }
 
     /**
@@ -164,44 +141,6 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     public void setRemoveEnabled(boolean enabled)
     {
         mRemoveEnabled = enabled;
-    }
-
-    public boolean isRemoveEnabled()
-    {
-        return mRemoveEnabled;
-    }
-
-    /**
-     * Set the resource id for the View that represents the drag
-     * handle in a list item.
-     *
-     * @param id An android resource id.
-     */
-    public void setDragHandleId(int id)
-    {
-        mDragHandleId = id;
-    }
-
-    /**
-     * Set the resource id for the View that represents the fling
-     * handle in a list item.
-     *
-     * @param id An android resource id.
-     */
-    public void setFlingHandleId(int id)
-    {
-        mFlingHandleId = id;
-    }
-
-    /**
-     * Set the resource id for the View that represents click
-     * removal button.
-     *
-     * @param id An android resource id.
-     */
-    public void setClickRemoveId(int id)
-    {
-        mClickRemoveId = id;
     }
 
     /**
@@ -323,15 +262,6 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         return mRemoveMode == FLING_REMOVE ? flingHandleHitPosition(ev) : MISS;
     }
 
-    /**
-     * Checks for the touch of an item's drag handle (specified by
-     * {@link #setDragHandleId(int)}), and returns that item's position
-     * if a drag handle touch was detected.
-     *
-     * @param ev The ACTION_DOWN MotionEvent.
-     * @return The list position of the item whose drag handle was
-     * touched; MISS if unsuccessful.
-     */
     public int dragHandleHitPosition(MotionEvent ev)
     {
         return viewIdHitPosition(ev, mDragHandleId);
