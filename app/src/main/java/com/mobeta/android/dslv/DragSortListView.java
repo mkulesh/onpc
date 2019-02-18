@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -523,16 +522,16 @@ public class DragSortListView extends ListView
                 int clickRemoveId = a.getResourceId(
                         R.styleable.DragSortListView_click_remove_id,
                         0);
-                int bgColor = a.getColor(
-                        R.styleable.DragSortListView_float_background_color,
-                        Color.BLACK);
+                int bgResource = a.getResourceId(
+                        R.styleable.DragSortListView_float_background_id,
+                        0);
 
                 DragSortController controller = new DragSortController(
                         this, dragHandleId, dragInitMode, removeMode,
                         clickRemoveId, flingHandleId);
                 controller.setRemoveEnabled(removeEnabled);
                 controller.setSortEnabled(sortEnabled);
-                controller.setBackgroundColor(bgColor);
+                controller.setBackgroundResource(bgResource);
 
                 mFloatViewManager = controller;
                 // must register this on ListView (super), not 'this'.

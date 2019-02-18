@@ -29,7 +29,7 @@
         android:choiceMode="multipleChoice"
         dslv:drag_enabled="true"
         dslv:drag_start_mode="onMove"
-        dslv:float_background_color="?attr/colorAccent"
+        dslv:float_background_id="?attr/selectableItemBackground"
         dslv:drag_handle_id="@+id/draggable_dragger" />
 
 </LinearLayout>

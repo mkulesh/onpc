@@ -1,7 +1,6 @@
 package com.mobeta.android.dslv;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +18,18 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
 
     private ImageView mImageView;
 
-    private int mFloatBGColor = Color.BLACK;
+    private int mFloatBGResource = 0;
 
     private ListView mListView;
 
-    public SimpleFloatViewManager(ListView lv)
+    SimpleFloatViewManager(ListView lv)
     {
         mListView = lv;
     }
 
-    public void setBackgroundColor(int color)
+    void setBackgroundResource(int res)
     {
-        mFloatBGColor = color;
+        mFloatBGResource = res;
     }
 
     /**
@@ -62,7 +61,10 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
         {
             mImageView = new ImageView(mListView.getContext());
         }
-        mImageView.setBackgroundColor(mFloatBGColor);
+        if (mFloatBGResource > 0)
+        {
+            mImageView.setBackgroundResource(mFloatBGResource);
+        }
         mImageView.setPadding(0, 0, 0, 0);
         mImageView.setImageBitmap(mFloatBitmap);
         mImageView.setLayoutParams(new ViewGroup.LayoutParams(v.getWidth(), v.getHeight()));
