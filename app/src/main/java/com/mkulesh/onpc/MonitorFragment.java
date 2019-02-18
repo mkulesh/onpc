@@ -21,16 +21,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
@@ -150,40 +151,20 @@ public class MonitorFragment extends BaseFragment
         // Track menu
         {
             btnTrackMenu = rootView.findViewById(R.id.btn_track_menu);
-            prepareButtonListeners(btnTrackMenu, null,
-                    new ButtonListener()
-                    {
-                        @Override
-                        public void onPostProcessing()
-                        {
-                            activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
-                            activity.selectRightTab();
-                        }
-                    });
+            prepareButtonListeners(btnTrackMenu, null, () -> {
+                activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
+                activity.selectRightTab();
+            });
             setButtonEnabled(btnTrackMenu, false);
         }
 
         // Feeds
         positiveFeed = rootView.findViewById(R.id.btn_positive_feed);
-        prepareButtonListeners(positiveFeed, null,
-                new ButtonListener()
-                {
-                    @Override
-                    public void onPostProcessing()
-                    {
-                        activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F1, true);
-                    }
-                });
+        prepareButtonListeners(positiveFeed, null, () ->
+            activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F1, true));
         negativeFeed = rootView.findViewById(R.id.btn_negative_feed);
-        prepareButtonListeners(negativeFeed, null,
-                new ButtonListener()
-                {
-                    @Override
-                    public void onPostProcessing()
-                    {
-                        activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F2, true);
-                    }
-                });
+        prepareButtonListeners(negativeFeed, null, () ->
+            activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F2, true));
 
         update(null, null);
         return rootView;
@@ -394,6 +375,9 @@ public class MonitorFragment extends BaseFragment
                 updateVolumeLevel((AppCompatButton) b, state.volumeLevel, state.getActiveZoneInfo());
             }
         }
+
+        updateListeningModeLayout(rootView.findViewById(R.id.listening_mode_layout));
+
         for (AppCompatImageButton b : playbackButtons)
         {
             prepareButtonListeners(b, new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag())));
@@ -450,6 +434,23 @@ public class MonitorFragment extends BaseFragment
         // Feeds
         updateFeedButton(positiveFeed, state.positiveFeed);
         updateFeedButton(negativeFeed, state.negativeFeed);
+    }
+
+    private void updateListeningModeLayout(HorizontalScrollView scrollView)
+    {
+        scrollView.requestLayout();
+        if (scrollView.getChildCount() == 1)
+        {
+            final LinearLayout l = (LinearLayout) scrollView.getChildAt(0);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            if (l.getMeasuredWidth() < scrollView.getMeasuredWidth())
+            {
+                params.gravity = Gravity.CENTER;
+            }
+            l.setLayoutParams(params);
+            l.requestLayout();
+        }
     }
 
     private boolean isVolumeLevel(View b)
