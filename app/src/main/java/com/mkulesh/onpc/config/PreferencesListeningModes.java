@@ -14,39 +14,61 @@
 package com.mkulesh.onpc.config;
 
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceScreen;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 
-public class PreferencesListeningModes extends AppCompatPreferenceActivity
+import java.util.ArrayList;
+import java.util.List;
+
+public class PreferencesListeningModes extends DraggableListActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction().replace(
-                android.R.id.content, new MyPreferenceFragment()).commit();
+        prepareList(R.layout.draggable_preference_activity, Configuration.SELECTED_LISTENING_MODES);
+        prepareSelectors();
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragmentCompat
+    public void prepareSelectors()
     {
-        @Override
-        public void onCreatePreferences(Bundle bundle, String s)
-        {
-            addPreferencesFromResource(R.xml.preferences_empty);
-            prepareSelectors(getPreferenceScreen());
-        }
-    }
+        final ListeningModeMsg.Mode[] allItems = Configuration.getListeningModes();
 
-    private static void prepareSelectors(final PreferenceScreen preferenceScreen)
-    {
-        for (ListeningModeMsg.Mode m : Configuration.getListeningModes())
+        final List<PreferenceItemAdapter.Data> targetItems = new ArrayList<>();
+        final List<String> checkedItems = new ArrayList<>();
+        final String[] selectedItems = getTokens(adapter.getParameter());
+        if (selectedItems != null)
         {
-            preferenceScreen.addPreference(createSwitchPreference(preferenceScreen.getContext(),
-                    m.getDescriptionId(),
-                    Configuration.LISTENING_MODES + "_" + m.getCode()));
+            for (String s : selectedItems)
+            {
+                final ListeningModeMsg.Mode item = (ListeningModeMsg.Mode) ISCPMessage.searchParameter(
+                        s, ListeningModeMsg.Mode.values(), ListeningModeMsg.Mode.UP);
+                if (item != ListeningModeMsg.Mode.UP)
+                {
+                    checkedItems.add(item.getCode());
+                    targetItems.add(new PreferenceItemAdapter.Data(
+                            item.getDescriptionId(),
+                            item.getCode(),
+                            getText(item.getDescriptionId()),
+                            -1, true));
+                }
+            }
         }
+
+        for (ListeningModeMsg.Mode item : allItems)
+        {
+            if (!checkedItems.contains(item.getCode()))
+            {
+                targetItems.add(new PreferenceItemAdapter.Data(
+                        item.getDescriptionId(),
+                        item.getCode(),
+                        getText(item.getDescriptionId()),
+                        -1, checkedItems.isEmpty()));
+            }
+        }
+
+        setItems(targetItems, checkedItems);
     }
 }

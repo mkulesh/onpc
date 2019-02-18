@@ -18,12 +18,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
@@ -49,7 +54,7 @@ public class Configuration
     static final String FRIENDLY_SELECTOR_NAME = "friendly_selector_name";
     static final String NETWORK_SERVICES = "network_services";
     static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
-    static final String LISTENING_MODES = "listening_modes";
+    static final String SELECTED_LISTENING_MODES = "selected_listening_modes";
 
     private static final String REMOTE_INTERFACE = "remote_interface";
     private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
@@ -250,10 +255,52 @@ public class Configuration
         prefEditor.apply();
     }
 
-    public ArrayList<String> getSelectedNetworkServices()
+    @NonNull
+    public ArrayList<ISCPMessage> getSelectedNetworkServices(
+            @NonNull ServiceType activeService, @NonNull final List<NetworkServiceMsg> allItems)
     {
+        final ArrayList<ISCPMessage> newItems = new ArrayList<>();
+
         final String cfg = preferences.getString(SELECTED_NETWORK_SERVICES, "");
-        return cfg.isEmpty()? null : new ArrayList<>(Arrays.asList(cfg.split(",")));
+        final ArrayList<String> selectedItems = cfg.isEmpty() ?
+                null : new ArrayList<>(Arrays.asList(cfg.split(",")));
+
+        // Default configuration if filter is not active
+        if (selectedItems == null)
+        {
+            for (NetworkServiceMsg i : allItems)
+            {
+                newItems.add(new NetworkServiceMsg(i));
+            }
+            return newItems;
+        }
+
+        // Add item that is currently playing
+        if (activeService != ServiceType.UNKNOWN
+                && !selectedItems.contains(activeService.getCode()))
+        {
+            for (NetworkServiceMsg i : allItems)
+            {
+                if (i.getService().getCode().equals(activeService.getCode()))
+                {
+                    newItems.add(new NetworkServiceMsg(i));
+                }
+            }
+        }
+
+        // Add all selected items
+        for (String s : selectedItems)
+        {
+            for (NetworkServiceMsg i : allItems)
+            {
+                if (i.getService().getCode().equals(s))
+                {
+                    newItems.add(new NetworkServiceMsg(i));
+                }
+            }
+        }
+
+        return newItems;
     }
 
     public static ListeningModeMsg.Mode[] getListeningModes()
@@ -261,9 +308,53 @@ public class Configuration
         return listeningModes;
     }
 
-    public boolean isListeningModeVisible(final String code)
+    @Nullable
+    public ArrayList<String> getSelectedListeningModes()
     {
-        return preferences.getBoolean(LISTENING_MODES + "_" + code, true);
+        final String cfg = preferences.getString(SELECTED_LISTENING_MODES, "");
+        return cfg.isEmpty() ? null : new ArrayList<>(Arrays.asList(cfg.split(",")));
+    }
+
+    @NonNull
+    public ArrayList<ListeningModeMsg.Mode> getSortedListeningModes()
+    {
+        final ArrayList<ListeningModeMsg.Mode> newItems = new ArrayList<>();
+
+        final ListeningModeMsg.Mode[] allItems = Configuration.getListeningModes();
+        final ArrayList<String> selectedItems = getSelectedListeningModes();
+
+        // Default configuration if filter is not active
+        if (selectedItems == null)
+        {
+            for (ListeningModeMsg.Mode i : allItems)
+            {
+                newItems.add(i);
+            }
+            return newItems;
+        }
+
+        // Add non-selected items (will be used to activate currently playing item)
+        for (ListeningModeMsg.Mode i : allItems)
+        {
+            if (!selectedItems.contains(i.getCode()))
+            {
+                newItems.add(i);
+            }
+        }
+
+        // Add all selected items
+        for (String s : selectedItems)
+        {
+            for (ListeningModeMsg.Mode i : allItems)
+            {
+                if (i.getCode().equals(s))
+                {
+                    newItems.add(i);
+                }
+            }
+        }
+
+        return newItems;
     }
 
     public boolean isRemoteInterface()

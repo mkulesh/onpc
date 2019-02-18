@@ -21,7 +21,8 @@
         android:scaleType="centerCrop"
         android:layout_width="@dimen/draggable_cover_size"
         android:layout_height="@dimen/draggable_cover_size"
-        android:layout_marginLeft="8dp"
+        android:layout_marginRight="@dimen/abc_button_padding_horizontal_material"
+        android:layout_marginLeft="@dimen/abc_select_dialog_padding_start_material"
         android:layout_gravity="center_vertical"
         android:visibility="gone" />
 

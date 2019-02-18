@@ -13,51 +13,37 @@
 
 package com.mkulesh.onpc.config;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
-import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferencesNetworkServices extends AppCompatPreferenceActivity
-        implements OnItemClickListener, DragSortListView.DropListener
+public class PreferencesNetworkServices extends DraggableListActivity
 {
-    private PreferenceItemAdapter adapter;
-    private DragSortListView itemList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.draggable_preference_activity);
-        adapter = new PreferenceItemAdapter(this);
-        itemList = findViewById(R.id.list);
-        itemList.setAdapter(adapter);
-        itemList.setOnItemClickListener(this);
-        itemList.setDropListener(this);
+        prepareList(R.layout.draggable_preference_activity, Configuration.SELECTED_NETWORK_SERVICES);
         prepareSelectors();
     }
 
     public void prepareSelectors()
     {
         final String[] allItems = getTokens(Configuration.NETWORK_SERVICES);
-        if (allItems.length == 0)
+        if (allItems == null || allItems.length == 0)
         {
             return;
         }
 
         final List<PreferenceItemAdapter.Data> targetItems = new ArrayList<>();
         final List<String> checkedItems = new ArrayList<>();
-        final String[] selectedItems = getTokens(Configuration.SELECTED_NETWORK_SERVICES);
+        final String[] selectedItems = getTokens(adapter.getParameter());
         if (selectedItems != null)
         {
             for (String s : selectedItems)
@@ -71,7 +57,7 @@ public class PreferencesNetworkServices extends AppCompatPreferenceActivity
                             item.getDescriptionId(),
                             item.getCode(),
                             getText(item.getDescriptionId()),
-                            item.getImageId()));
+                            item.getImageId(), true));
                 }
             }
         }
@@ -91,49 +77,10 @@ public class PreferencesNetworkServices extends AppCompatPreferenceActivity
                         item.getDescriptionId(),
                         item.getCode(),
                         getText(item.getDescriptionId()),
-                        item.getImageId()));
+                        item.getImageId(), checkedItems.isEmpty()));
             }
         }
 
-        adapter.setItems(targetItems);
-        for (int i = 0; i < adapter.getCount(); i++)
-        {
-            itemList.setItemChecked(i,
-                    checkedItems.isEmpty() || checkedItems.contains(targetItems.get(i).getCode()));
-        }
-    }
-
-    public void save()
-    {
-        final StringBuilder selectedItems = new StringBuilder();
-        for (int i = 0; i < adapter.getCount(); i++)
-        {
-            final PreferenceItemAdapter.Data d = adapter.getDataItem(i);
-            if (d != null && itemList.isItemChecked(i))
-            {
-                if (!selectedItems.toString().isEmpty())
-                {
-                    selectedItems.append(",");
-                }
-                selectedItems.append(d.getCode());
-            }
-        }
-        Logging.info(this, "Selected items: " + selectedItems.toString());
-        SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putString(Configuration.SELECTED_NETWORK_SERVICES, selectedItems.toString());
-        prefEditor.apply();
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
-    {
-        save();
-    }
-
-    @Override
-    public void drop(int from, int to)
-    {
-        adapter.drop(from, to);
-        save();
+        setItems(targetItems, checkedItems);
     }
 }

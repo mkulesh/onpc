@@ -103,10 +103,4 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
         p.setKey(key);
         return p;
     }
-
-    protected String[] getTokens(String par)
-    {
-        final String cfg = preferences.getString(par, "");
-        return cfg.isEmpty()? null : cfg.split(",");
-    }
 }

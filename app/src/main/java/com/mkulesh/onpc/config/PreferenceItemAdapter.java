@@ -14,13 +14,16 @@
 package com.mkulesh.onpc.config;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.DrawableRes;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +37,15 @@ public class PreferenceItemAdapter extends BaseAdapter
         final CharSequence text;
         @DrawableRes
         final int imageId;
+        boolean checked;
 
-        Data(final int id, String code, CharSequence text, @DrawableRes int imageId)
+        Data(final int id, String code, CharSequence text, @DrawableRes int imageId, boolean checked)
         {
             this.id = id;
             this.code = code;
             this.text = text;
             this.imageId = imageId;
+            this.checked = checked;
         }
 
         Data(Data d)
@@ -49,6 +54,7 @@ public class PreferenceItemAdapter extends BaseAdapter
             this.code = d.code;
             this.text = d.text;
             this.imageId = d.imageId;
+            this.checked = d.checked;
         }
 
         public String getCode()
@@ -59,10 +65,19 @@ public class PreferenceItemAdapter extends BaseAdapter
 
     private final LayoutInflater inflater;
     private final List<Data> items = new ArrayList<>();
+    private final SharedPreferences preferences;
+    private String parameter;
 
-    PreferenceItemAdapter(Context context)
+    PreferenceItemAdapter(Context context, String parameter)
     {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.parameter = parameter;
+    }
+
+    String getParameter()
+    {
+        return parameter;
     }
 
     void setItems(final List<Data> newItems)
@@ -72,11 +87,6 @@ public class PreferenceItemAdapter extends BaseAdapter
             items.add(new Data(d));
         }
         notifyDataSetChanged();
-    }
-
-    public Data getDataItem(int i)
-    {
-        return (i < items.size()) ? items.get(i) : null;
     }
 
     @Override
@@ -131,7 +141,42 @@ public class PreferenceItemAdapter extends BaseAdapter
         {
             Data p = items.remove(from);
             items.add(to, p);
+            if (p.checked)
+            {
+                save();
+            }
         }
         notifyDataSetChanged();
+    }
+
+    void setChecked(int pos, boolean checked)
+    {
+        if (pos < items.size())
+        {
+            Data p = items.get(pos);
+            p.checked = checked;
+            save();
+        }
+        notifyDataSetChanged();
+    }
+
+    private void save()
+    {
+        final StringBuilder selectedItems = new StringBuilder();
+        for (Data d : items)
+        {
+            if (d != null && d.checked)
+            {
+                if (!selectedItems.toString().isEmpty())
+                {
+                    selectedItems.append(",");
+                }
+                selectedItems.append(d.getCode());
+            }
+        }
+        Logging.info(this, parameter + ": " + selectedItems.toString());
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putString(parameter, selectedItems.toString());
+        prefEditor.apply();
     }
 }

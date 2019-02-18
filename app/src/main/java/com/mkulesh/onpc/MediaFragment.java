@@ -287,41 +287,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (!serviceItems.isEmpty())
         {
-            final ArrayList<String> selectedItems = activity.getConfiguration().getSelectedNetworkServices();
-            if (selectedItems == null)
-            {
-                // Default configuration if filter is not active
-                for (NetworkServiceMsg i : serviceItems)
-                {
-                    newItems.add(new NetworkServiceMsg(i));
-                }
-            }
-            else
-            {
-                // Add item that is currently playing
-                if (state.serviceIcon != ServiceType.UNKNOWN
-                        && !selectedItems.contains(state.serviceIcon.getCode()))
-                {
-                    for (NetworkServiceMsg i : serviceItems)
-                    {
-                        if (i.getService().getCode().equals(state.serviceIcon.getCode()))
-                        {
-                            newItems.add(new NetworkServiceMsg(i));
-                        }
-                    }
-                }
-                // Add all selected items
-                for (String s : selectedItems)
-                {
-                    for (NetworkServiceMsg i : serviceItems)
-                    {
-                        if (i.getService().getCode().equals(s))
-                        {
-                            newItems.add(new NetworkServiceMsg(i));
-                        }
-                    }
-                }
-            }
+            newItems.addAll(activity.getConfiguration().getSelectedNetworkServices(
+                    state.serviceIcon, serviceItems));
         }
         else if (state.isPlaybackMode())
         {

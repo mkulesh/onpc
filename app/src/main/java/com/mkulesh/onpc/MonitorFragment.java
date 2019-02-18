@@ -237,13 +237,14 @@ public class MonitorFragment extends BaseFragment
         if (listeningModeLayout.getChildCount() == 1)
         {
             final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
-            for (ListeningModeMsg.Mode m : Configuration.getListeningModes())
+            final ArrayList<String> selectedListeningModes = activity.getConfiguration().getSelectedListeningModes();
+            for (ListeningModeMsg.Mode m : activity.getConfiguration().getSortedListeningModes())
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
                 final AppCompatButton b = createButton(
                         msg.getMode().getDescriptionId(), msg, msg.getMode(), null);
                 l.addView(b);
-                b.setVisibility(activity.getConfiguration().isListeningModeVisible(m.getCode()) ?
+                b.setVisibility(selectedListeningModes == null || selectedListeningModes.contains(m.getCode()) ?
                         View.VISIBLE : View.GONE);
                 deviceSoundButtons.add(b);
             }
@@ -335,6 +336,7 @@ public class MonitorFragment extends BaseFragment
         updateProgressBar(state);
 
         // buttons
+        final ArrayList<String> selectedListeningModes = activity.getConfiguration().getSelectedListeningModes();
         for (AppCompatImageButton b : amplifierButtons)
         {
             setButtonEnabled(b, true);
@@ -356,7 +358,9 @@ public class MonitorFragment extends BaseFragment
             else if (b.getTag() instanceof ListeningModeMsg.Mode)
             {
                 final ListeningModeMsg.Mode s = (ListeningModeMsg.Mode) (b.getTag());
-                if (s == state.listeningMode || activity.getConfiguration().isListeningModeVisible(s.getCode()))
+                if (s == state.listeningMode
+                        || selectedListeningModes == null
+                        || selectedListeningModes.contains(s.getCode()))
                 {
                     b.setVisibility(View.VISIBLE);
                     setButtonSelected(b, s == state.listeningMode);
