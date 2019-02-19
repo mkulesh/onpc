@@ -82,21 +82,6 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
      */
     private View.OnTouchListener mSecondaryOnTouchListener;
 
-    DragSortController(DragSortListView dslv)
-    {
-        this(dslv, 0, ON_DOWN, FLING_REMOVE);
-    }
-
-    DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode, int removeMode)
-    {
-        this(dslv, dragHandleId, dragInitMode, removeMode, 0);
-    }
-
-    DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode, int removeMode, int clickRemoveId)
-    {
-        this(dslv, dragHandleId, dragInitMode, removeMode, clickRemoveId, 0);
-    }
-
     /**
      * By default, sorting is enabled, and removal is disabled.
      *

@@ -27,11 +27,8 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -45,9 +42,6 @@ import android.widget.ListView;
 
 import com.mkulesh.onpc.R;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -396,16 +390,6 @@ public class DragSortListView extends ListView
     private AdapterWrapper mAdapterWrapper;
 
     /**
-     * Turn on custom debugger.
-     */
-    private boolean mTrackDragSort = false;
-
-    /**
-     * Debugging class.
-     */
-    private DragSortTracker mDragSortTracker;
-
-    /**
      * Needed for adjusting item heights from within layoutChildren
      */
     private boolean mBlockLayoutRequests = false;
@@ -433,8 +417,6 @@ public class DragSortListView extends ListView
 
     private RemoveAnimator mRemoveAnimator;
 
-    private LiftAnimator mLiftAnimator;
-
     private DropAnimator mDropAnimator;
 
     private boolean mUseRemoveVelocity;
@@ -455,14 +437,6 @@ public class DragSortListView extends ListView
 
             mItemHeightCollapsed = Math.max(1, a.getDimensionPixelSize(
                     R.styleable.DragSortListView_collapsed_height, 1));
-
-            mTrackDragSort = a.getBoolean(
-                    R.styleable.DragSortListView_track_drag_sort, false);
-
-            if (mTrackDragSort)
-            {
-                mDragSortTracker = new DragSortTracker();
-            }
 
             // alpha between 0 and 255, 0=transparent, 255=opaque
             mFloatAlpha = a.getFloat(R.styleable.DragSortListView_float_alpha, mFloatAlpha);
@@ -548,7 +522,6 @@ public class DragSortListView extends ListView
         {
             mRemoveAnimator = new RemoveAnimator(smoothness, removeAnimDuration);
         }
-        // mLiftAnimator = new LiftAnimator(smoothness, 100);
         if (dropAnimDuration > 0)
         {
             mDropAnimator = new DropAnimator(smoothness, dropAnimDuration);
@@ -634,18 +607,6 @@ public class DragSortListView extends ListView
         super.setAdapter(mAdapterWrapper);
     }
 
-    ListAdapter getInputAdapter()
-    {
-        if (mAdapterWrapper == null)
-        {
-            return null;
-        }
-        else
-        {
-            return mAdapterWrapper.getAdapter();
-        }
-    }
-
     private class AdapterWrapper extends BaseAdapter
     {
         private ListAdapter mAdapter;
@@ -667,11 +628,6 @@ public class DragSortListView extends ListView
                     notifyDataSetInvalidated();
                 }
             });
-        }
-
-        ListAdapter getAdapter()
-        {
-            return mAdapter;
         }
 
         @Override
@@ -1210,11 +1166,6 @@ public class DragSortListView extends ListView
     protected void onDraw(Canvas canvas)
     {
         super.onDraw(canvas);
-
-        if (mTrackDragSort)
-        {
-            mDragSortTracker.appendState();
-        }
     }
 
     private class SmoothAnimator implements Runnable
@@ -1300,44 +1251,6 @@ public class DragSortListView extends ListView
             {
                 onUpdate(fraction, transform(fraction));
                 post(this);
-            }
-        }
-    }
-
-    /**
-     * Centers floating View under touch point.
-     */
-    private class LiftAnimator extends SmoothAnimator
-    {
-
-        private float mInitDragDeltaY;
-        private float mFinalDragDeltaY;
-
-        LiftAnimator(float smoothness, int duration)
-        {
-            super(smoothness, duration);
-        }
-
-        @Override
-        void onStart()
-        {
-            mInitDragDeltaY = mDragDeltaY;
-            mFinalDragDeltaY = mFloatViewHeightHalf;
-        }
-
-        @Override
-        void onUpdate(float frac, float smoothFrac)
-        {
-            if (mDragState != DRAGGING)
-            {
-                cancel();
-            }
-            else
-            {
-                mDragDeltaY = (int) (smoothFrac * mFinalDragDeltaY + (1f - smoothFrac)
-                        * mInitDragDeltaY);
-                mFloatLoc.y = mY - mDragDeltaY;
-                doDragFloatView(true);
             }
         }
     }
@@ -1759,11 +1672,6 @@ public class DragSortListView extends ListView
                 {
                     dropFloatView();
                 }
-            }
-
-            if (mTrackDragSort)
-            {
-                mDragSortTracker.stopTracking();
             }
 
             return true;
@@ -2572,11 +2480,6 @@ public class DragSortListView extends ListView
             srcItem.setVisibility(View.INVISIBLE);
         }
 
-        if (mTrackDragSort)
-        {
-            mDragSortTracker.startTracking();
-        }
-
         // once float view is created, events are no longer passed
         // to ListView
         switch (mCancelMethod)
@@ -2590,12 +2493,6 @@ public class DragSortListView extends ListView
         }
 
         requestLayout();
-
-        if (mLiftAnimator != null)
-        {
-            mLiftAnimator.start();
-        }
-
         return true;
     }
 
@@ -2736,10 +2633,7 @@ public class DragSortListView extends ListView
 
     /**
      * Interface for customization of the floating View appearance
-     * and dragging behavior. Implement
-     * your own and pass it to {@link #setFloatViewManager}. If
-     * your own is not passed, the default {@link SimpleFloatViewManager}
-     * implementation is used.
+     * and dragging behavior.
      */
     interface FloatViewManager
     {
@@ -2791,19 +2685,9 @@ public class DragSortListView extends ListView
         void setSecondaryOnTouchListener(View.OnTouchListener l);
     }
 
-    void setFloatViewManager(FloatViewManager manager)
-    {
-        mFloatViewManager = manager;
-    }
-
     void setDragListener(DragListener l)
     {
         mDragListener = l;
-    }
-
-    void setDragEnabled(boolean enabled)
-    {
-        mDragEnabled = enabled;
     }
 
     boolean isDragEnabled()
@@ -2861,54 +2745,9 @@ public class DragSortListView extends ListView
         void remove(int which);
     }
 
-    interface DragSortListener extends DropListener, DragListener, RemoveListener
-    {
-    }
-
-    void setDragSortListener(DragSortListener l)
-    {
-        setDropListener(l);
-        setDragListener(l);
-        setRemoveListener(l);
-    }
-
-    /**
-     * Completely custom scroll speed profile. Default increases linearly
-     * with position and is constant in time. Create your own by implementing
-     * {@link DragSortListView.DragScrollProfile}.
-     *
-     * @param ssp
-     */
-    void setDragScrollProfile(DragScrollProfile ssp)
-    {
-        if (ssp != null)
-        {
-            mScrollProfile = ssp;
-        }
-    }
-
-    private static int insertionIndexForKey(SparseBooleanArray sba, int key)
-    {
-        int low = 0;
-        int high = sba.size();
-        while (high - low > 0)
-        {
-            int middle = (low + high) >> 1;
-            if (sba.keyAt(middle) < key)
-                low = middle + 1;
-            else
-                high = middle;
-        }
-        return low;
-    }
-
     /**
      * Interface for controlling
-     * scroll speed as a function of touch position and time. Use
-     * {@link DragSortListView#setDragScrollProfile(DragScrollProfile)} to
-     * set custom profile.
-     *
-     * @author heycosmo
+     * scroll speed as a function of touch position and time.
      */
     interface DragScrollProfile
     {
@@ -3097,148 +2936,6 @@ public class DragSortListView extends ListView
             // Log.d("mobeta", "  updated prevTime="+mPrevTime);
 
             post(this);
-        }
-    }
-
-    private class DragSortTracker
-    {
-        StringBuilder mBuilder = new StringBuilder();
-
-        File mFile;
-
-        private int mNumInBuffer = 0;
-        private int mNumFlushes = 0;
-
-        private boolean mTracking = false;
-
-        DragSortTracker()
-        {
-            File root = Environment.getExternalStorageDirectory();
-            mFile = new File(root, "dslv_state.txt");
-
-            if (!mFile.exists())
-            {
-                try
-                {
-                    mFile.createNewFile();
-                    Log.d("mobeta", "file created");
-                }
-                catch (IOException e)
-                {
-                    Log.w("mobeta", "Could not create dslv_state.txt");
-                    Log.d("mobeta", e.getMessage());
-                }
-            }
-
-        }
-
-        void startTracking()
-        {
-            mBuilder.append("<DSLVStates>\n");
-            mNumFlushes = 0;
-            mTracking = true;
-        }
-
-        void appendState()
-        {
-            if (!mTracking)
-            {
-                return;
-            }
-
-            mBuilder.append("<DSLVState>\n");
-            final int children = getChildCount();
-            final int first = getFirstVisiblePosition();
-            mBuilder.append("    <Positions>");
-            for (int i = 0; i < children; ++i)
-            {
-                mBuilder.append(first + i).append(",");
-            }
-            mBuilder.append("</Positions>\n");
-
-            mBuilder.append("    <Tops>");
-            for (int i = 0; i < children; ++i)
-            {
-                mBuilder.append(getChildAt(i).getTop()).append(",");
-            }
-            mBuilder.append("</Tops>\n");
-            mBuilder.append("    <Bottoms>");
-            for (int i = 0; i < children; ++i)
-            {
-                mBuilder.append(getChildAt(i).getBottom()).append(",");
-            }
-            mBuilder.append("</Bottoms>\n");
-
-            mBuilder.append("    <FirstExpPos>").append(mFirstExpPos).append("</FirstExpPos>\n");
-            mBuilder.append("    <FirstExpBlankHeight>")
-                    .append(getItemHeight(mFirstExpPos) - getChildHeight(mFirstExpPos))
-                    .append("</FirstExpBlankHeight>\n");
-            mBuilder.append("    <SecondExpPos>").append(mSecondExpPos).append("</SecondExpPos>\n");
-            mBuilder.append("    <SecondExpBlankHeight>")
-                    .append(getItemHeight(mSecondExpPos) - getChildHeight(mSecondExpPos))
-                    .append("</SecondExpBlankHeight>\n");
-            mBuilder.append("    <SrcPos>").append(mSrcPos).append("</SrcPos>\n");
-            mBuilder.append("    <SrcHeight>").append(mFloatViewHeight + getDividerHeight())
-                    .append("</SrcHeight>\n");
-            mBuilder.append("    <ViewHeight>").append(getHeight()).append("</ViewHeight>\n");
-            mBuilder.append("    <LastY>").append(mLastY).append("</LastY>\n");
-            mBuilder.append("    <FloatY>").append(mFloatViewMid).append("</FloatY>\n");
-            mBuilder.append("    <ShuffleEdges>");
-            for (int i = 0; i < children; ++i)
-            {
-                mBuilder.append(getShuffleEdge(first + i, getChildAt(i).getTop())).append(",");
-            }
-            mBuilder.append("</ShuffleEdges>\n");
-
-            mBuilder.append("</DSLVState>\n");
-            mNumInBuffer++;
-
-            if (mNumInBuffer > 1000)
-            {
-                flush();
-                mNumInBuffer = 0;
-            }
-        }
-
-        void flush()
-        {
-            if (!mTracking)
-            {
-                return;
-            }
-
-            // save to file on sdcard
-            try
-            {
-                boolean append = true;
-                if (mNumFlushes == 0)
-                {
-                    append = false;
-                }
-                FileWriter writer = new FileWriter(mFile, append);
-
-                writer.write(mBuilder.toString());
-                mBuilder.delete(0, mBuilder.length());
-
-                writer.flush();
-                writer.close();
-
-                mNumFlushes++;
-            }
-            catch (IOException e)
-            {
-                // do nothing
-            }
-        }
-
-        void stopTracking()
-        {
-            if (mTracking)
-            {
-                mBuilder.append("</DSLVStates>\n");
-                flush();
-                mTracking = false;
-            }
         }
     }
 }
