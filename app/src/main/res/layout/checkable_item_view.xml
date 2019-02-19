@@ -17,7 +17,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/draggable_icon"
+        android:id="@+id/checkable_icon"
         android:scaleType="centerCrop"
         android:layout_width="@dimen/draggable_cover_size"
         android:layout_height="@dimen/draggable_cover_size"
@@ -28,7 +28,7 @@
 
     <TextView
         style="@style/PrimaryTextViewStyle"
-        android:id="@+id/draggable_text"
+        android:id="@+id/checkable_text"
         android:maxLines="2"
         android:textSize="@dimen/draggable_text_size"
         android:gravity="left|center_vertical"
@@ -38,14 +38,14 @@
         android:layout_weight="1" />
 
     <CheckedTextView
-        android:id="@+id/draggable_checkbox"
+        android:id="@+id/checkable_checkbox"
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:gravity="center_vertical"
         android:layout_height="match_parent"
         android:layout_width="@dimen/draggable_row_height" />
 
     <ImageView
-        android:id="@+id/draggable_dragger"
+        android:id="@+id/checkable_dragger"
         android:src="@drawable/draggable_dots"
         android:scaleType="center"
         android:layout_width="@dimen/draggable_row_height"

@@ -20,13 +20,13 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.List;
 
-public class DraggableListActivity extends AppCompatPreferenceActivity
+public abstract class DraggableListActivity extends AppCompatPreferenceActivity
 {
     protected CheckableItemAdapter adapter;
 
-    protected void prepareList(int layoutId, String parameter)
+    protected void prepareList(String parameter)
     {
-        setContentView(layoutId);
+        setContentView(R.layout.draggable_preference_activity);
         adapter = new CheckableItemAdapter(this, parameter);
     }
 
@@ -43,8 +43,7 @@ public class DraggableListActivity extends AppCompatPreferenceActivity
         itemList.setAdapter(adapter);
         for (int i = 0; i < adapter.getCount(); i++)
         {
-            itemList.setItemChecked(i,
-                    checkedItems.isEmpty() || checkedItems.contains(targetItems.get(i).getCode()));
+            itemList.setItemChecked(i, checkedItems.contains(targetItems.get(i).code));
         }
         itemList.setOnItemClickListener((adapterView, view, pos, l) ->
         {

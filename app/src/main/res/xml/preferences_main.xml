@@ -34,6 +34,16 @@
             android:summary="%s"
             android:title="@string/pref_sound_control" />
 
+        <SwitchPreferenceCompat
+            app:icon="@drawable/pref_friendly_name"
+            app:singleLineTitle="false"
+            app:iconSpaceReserved="true"
+            android:defaultValue="true"
+            android:key="friendly_selector_name"
+            android:title="@string/friendly_selector_name"
+            android:summaryOn="@string/friendly_selector_summary_on"
+            android:summaryOff="@string/friendly_selector_summary_off" />
+
         <PreferenceScreen
             app:icon="@drawable/pref_device_selectors"
             android:icon="@null"

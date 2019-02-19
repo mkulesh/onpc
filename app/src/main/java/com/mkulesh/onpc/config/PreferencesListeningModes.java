@@ -15,9 +15,9 @@ package com.mkulesh.onpc.config;
 
 import android.os.Bundle;
 
-import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
+import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,45 +28,38 @@ public class PreferencesListeningModes extends DraggableListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        prepareList(R.layout.draggable_preference_activity, Configuration.SELECTED_LISTENING_MODES);
+        prepareList(Configuration.SELECTED_LISTENING_MODES);
         prepareSelectors();
     }
 
     public void prepareSelectors()
     {
-        final ListeningModeMsg.Mode[] allItems = Configuration.getListeningModes();
+        final ArrayList<String> defItems = new ArrayList<>();
+        for (ListeningModeMsg.Mode i : Configuration.DEFAULT_LISTENING_MODES)
+        {
+            defItems.add(i.getCode());
+        }
 
         final List<CheckableItem> targetItems = new ArrayList<>();
         final List<String> checkedItems = new ArrayList<>();
-        final String[] selectedItems = getTokens(adapter.getParameter());
-        if (selectedItems != null)
+        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, adapter.getParameter(), defItems))
         {
-            for (String s : selectedItems)
+            final ListeningModeMsg.Mode item = (ListeningModeMsg.Mode) ISCPMessage.searchParameter(
+                    sp.code, ListeningModeMsg.Mode.values(), ListeningModeMsg.Mode.UP);
+            if (item == ListeningModeMsg.Mode.UP)
             {
-                final ListeningModeMsg.Mode item = (ListeningModeMsg.Mode) ISCPMessage.searchParameter(
-                        s, ListeningModeMsg.Mode.values(), ListeningModeMsg.Mode.UP);
-                if (item != ListeningModeMsg.Mode.UP)
-                {
-                    checkedItems.add(item.getCode());
-                    targetItems.add(new CheckableItem(
-                            item.getDescriptionId(),
-                            item.getCode(),
-                            getText(item.getDescriptionId()),
-                            -1, true));
-                }
+                Logging.info(this, "Listening mode not known: " + sp.code);
+                continue;
             }
-        }
-
-        for (ListeningModeMsg.Mode item : allItems)
-        {
-            if (!checkedItems.contains(item.getCode()))
+            if (sp.checked)
             {
-                targetItems.add(new CheckableItem(
-                        item.getDescriptionId(),
-                        item.getCode(),
-                        getText(item.getDescriptionId()),
-                        -1, checkedItems.isEmpty()));
+                checkedItems.add(item.getCode());
             }
+            targetItems.add(new CheckableItem(
+                    item.getDescriptionId(),
+                    item.getCode(),
+                    getText(item.getDescriptionId()),
+                    -1, sp.checked));
         }
 
         setItems(targetItems, checkedItems);

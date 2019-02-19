@@ -205,53 +205,50 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand(), 0, buttonMarginHorizontal, 0);
             prepareButtonListeners(b, msg, () -> progressIndicator.setVisibility(View.VISIBLE));
+            setButtonEnabled(b, b.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
             selectorPaletteLayout.addView(b);
         }
 
         // Selectors
-        final int selNumber = state.deviceSelectors.size();
-        for (int i = 0; i < selNumber; i++)
+        final ArrayList<String> selectedSelectors = new ArrayList<>();
+        for (ReceiverInformationMsg.Selector s : activity.getConfiguration().getSortedDeviceSelectors(
+                false, state.inputType, state.deviceSelectors))
         {
-            final ReceiverInformationMsg.Selector s = state.deviceSelectors.get(i);
-            final InputSelectorMsg msg = new InputSelectorMsg(state.getActiveZone(), s.getId());
-            if (msg.getInputType() != InputSelectorMsg.InputType.NONE)
-            {
-                final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
-                        msg, msg.getInputType(), () -> progressIndicator.setVisibility(View.VISIBLE));
-                if (activity.getConfiguration().isFriendlySelectorName())
-                {
-                    b.setText(s.getName());
-                }
-                selectorPaletteLayout.addView(b);
-            }
+            selectedSelectors.add(s.getId());
         }
-
-        for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
+        AppCompatButton selectedButton = null;
+        for (ReceiverInformationMsg.Selector s : activity.getConfiguration().getSortedDeviceSelectors(
+                true, state.inputType, state.deviceSelectors))
         {
-            final View v = selectorPaletteLayout.getChildAt(i);
-            if (v instanceof AppCompatImageButton && v.getTag() instanceof OperationCommandMsg.Command)
+            final InputSelectorMsg msg = new InputSelectorMsg(state.getActiveZone(), s.getId());
+            if (msg.getInputType() == InputSelectorMsg.InputType.NONE)
             {
-                final AppCompatImageButton b = (AppCompatImageButton) v;
-                setButtonEnabled(b, b.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
+                continue;
             }
-            if (v instanceof AppCompatButton && v.getTag() instanceof InputSelectorMsg.InputType)
+            final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
+                    msg, msg.getInputType(), () -> progressIndicator.setVisibility(View.VISIBLE));
+            if (activity.getConfiguration().isFriendlySelectorName())
             {
-                final AppCompatButton b = (AppCompatButton) v;
-                final InputSelectorMsg.InputType s = (InputSelectorMsg.InputType) (b.getTag());
-                if (s == state.inputType || activity.getConfiguration().isSelectorVisible(s.getCode()))
+                b.setText(s.getName());
+            }
+            if (selectedSelectors.contains(s.getId()))
+            {
+                b.setVisibility(View.VISIBLE);
+                setButtonSelected(b, state.inputType.getCode().equals(s.getId()));
+                if (b.isSelected())
                 {
-                    b.setVisibility(View.VISIBLE);
-                    setButtonSelected(b, s == state.inputType);
-                    if (b.isSelected())
-                    {
-                        b.getParent().requestChildFocus(b, b);
-                    }
-                }
-                else
-                {
-                    b.setVisibility(View.GONE);
+                    selectedButton = b;
                 }
             }
+            else
+            {
+                b.setVisibility(View.GONE);
+            }
+            selectorPaletteLayout.addView(b);
+        }
+        if (selectedButton != null)
+        {
+            selectorPaletteLayout.requestChildFocus(selectedButton, selectedButton);
         }
     }
 
@@ -287,7 +284,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (!serviceItems.isEmpty())
         {
-            newItems.addAll(activity.getConfiguration().getSelectedNetworkServices(
+            newItems.addAll(activity.getConfiguration().getSortedNetworkServices(
                     state.serviceIcon, serviceItems));
         }
         else if (state.isPlaybackMode())

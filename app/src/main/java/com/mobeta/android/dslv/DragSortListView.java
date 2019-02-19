@@ -422,7 +422,7 @@ public class DragSortListView extends ListView
     private boolean mUseRemoveVelocity;
     private float mRemoveVelocityX = 0;
 
-    DragSortListView(Context context, AttributeSet attrs)
+    public DragSortListView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
 

@@ -22,14 +22,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mkulesh.onpc.R;
-import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckableItemAdapter extends BaseAdapter
 {
-
     private final LayoutInflater inflater;
     private final List<CheckableItem> items = new ArrayList<>();
     private final SharedPreferences preferences;
@@ -108,10 +106,7 @@ public class CheckableItemAdapter extends BaseAdapter
         {
             CheckableItem p = items.remove(from);
             items.add(to, p);
-            if (p.checked)
-            {
-                save();
-            }
+            CheckableItem.writeToPreference(preferences, parameter, items);
         }
         notifyDataSetChanged();
     }
@@ -122,28 +117,8 @@ public class CheckableItemAdapter extends BaseAdapter
         {
             CheckableItem p = items.get(pos);
             p.checked = checked;
-            save();
+            CheckableItem.writeToPreference(preferences, parameter, items);
         }
         notifyDataSetChanged();
-    }
-
-    private void save()
-    {
-        final StringBuilder selectedItems = new StringBuilder();
-        for (CheckableItem d : items)
-        {
-            if (d != null && d.checked)
-            {
-                if (!selectedItems.toString().isEmpty())
-                {
-                    selectedItems.append(",");
-                }
-                selectedItems.append(d.getCode());
-            }
-        }
-        Logging.info(this, parameter + ": " + selectedItems.toString());
-        SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putString(parameter, selectedItems.toString());
-        prefEditor.apply();
     }
 }

@@ -15,12 +15,12 @@ package com.mkulesh.onpc.config;
 
 import android.os.Bundle;
 
-import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PreferencesNetworkServices extends DraggableListActivity
@@ -29,7 +29,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        prepareList(R.layout.draggable_preference_activity, Configuration.SELECTED_NETWORK_SERVICES);
+        prepareList(Configuration.SELECTED_NETWORK_SERVICES);
         prepareSelectors();
     }
 
@@ -41,44 +41,27 @@ public class PreferencesNetworkServices extends DraggableListActivity
             return;
         }
 
+        final ArrayList<String> defItems = new ArrayList<>(Arrays.asList(allItems));
         final List<CheckableItem> targetItems = new ArrayList<>();
         final List<String> checkedItems = new ArrayList<>();
-        final String[] selectedItems = getTokens(adapter.getParameter());
-        if (selectedItems != null)
-        {
-            for (String s : selectedItems)
-            {
-                final ServiceType item = (ServiceType) ISCPMessage.searchParameter(
-                        s, ServiceType.values(), ServiceType.UNKNOWN);
-                if (item != ServiceType.UNKNOWN)
-                {
-                    checkedItems.add(item.getCode());
-                    targetItems.add(new CheckableItem(
-                            item.getDescriptionId(),
-                            item.getCode(),
-                            getText(item.getDescriptionId()),
-                            item.getImageId(), true));
-                }
-            }
-        }
-
-        for (String s : allItems)
+        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, adapter.getParameter(), defItems))
         {
             final ServiceType item = (ServiceType) ISCPMessage.searchParameter(
-                    s, ServiceType.values(), ServiceType.UNKNOWN);
+                    sp.code, ServiceType.values(), ServiceType.UNKNOWN);
             if (item == ServiceType.UNKNOWN)
             {
-                Logging.info(this, "Service not known: " + s);
+                Logging.info(this, "Service not known: " + sp.code);
                 continue;
             }
-            if (!checkedItems.contains(item.getCode()))
+            if (sp.checked)
             {
-                targetItems.add(new CheckableItem(
-                        item.getDescriptionId(),
-                        item.getCode(),
-                        getText(item.getDescriptionId()),
-                        item.getImageId(), checkedItems.isEmpty()));
+                checkedItems.add(item.getCode());
             }
+            targetItems.add(new CheckableItem(
+                    item.getDescriptionId(),
+                    item.getCode(),
+                    getText(item.getDescriptionId()),
+                    item.getImageId(), sp.checked));
         }
 
         setItems(targetItems, checkedItems);

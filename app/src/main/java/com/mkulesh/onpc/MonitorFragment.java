@@ -56,6 +56,7 @@ public class MonitorFragment extends BaseFragment
 {
     private final static String VOLUME_LEVEL = "volume_level";
 
+    private HorizontalScrollView listeningModeLayout;
     private AppCompatImageButton btnRepeat;
     private AppCompatImageButton btnPrevious;
     private AppCompatImageButton btnPausePlay;
@@ -79,6 +80,8 @@ public class MonitorFragment extends BaseFragment
     {
         initializeFragment(inflater, container, R.layout.monitor_fragment);
         rootView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+        listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
 
         // Command Buttons
         btnRepeat = rootView.findViewById(R.id.btn_repeat);
@@ -232,20 +235,17 @@ public class MonitorFragment extends BaseFragment
         }
 
         // fast selector for listening mode
-        final HorizontalScrollView listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
         listeningModeLayout.setVisibility(View.VISIBLE);
         if (listeningModeLayout.getChildCount() == 1)
         {
             final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
-            final ArrayList<String> selectedListeningModes = activity.getConfiguration().getSelectedListeningModes();
-            for (ListeningModeMsg.Mode m : activity.getConfiguration().getSortedListeningModes())
+            for (ListeningModeMsg.Mode m : activity.getConfiguration().getSortedListeningModes(true, null))
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
                 final AppCompatButton b = createButton(
                         msg.getMode().getDescriptionId(), msg, msg.getMode(), null);
                 l.addView(b);
-                b.setVisibility(selectedListeningModes == null || selectedListeningModes.contains(m.getCode()) ?
-                        View.VISIBLE : View.GONE);
+                b.setVisibility(View.GONE);
                 deviceSoundButtons.add(b);
             }
         }
@@ -336,7 +336,11 @@ public class MonitorFragment extends BaseFragment
         updateProgressBar(state);
 
         // buttons
-        final ArrayList<String> selectedListeningModes = activity.getConfiguration().getSelectedListeningModes();
+        final ArrayList<String> selectedListeningModes = new ArrayList<>();
+        for (ListeningModeMsg.Mode m : activity.getConfiguration().getSortedListeningModes(false, state.listeningMode))
+        {
+            selectedListeningModes.add(m.getCode());
+        }
         for (AppCompatImageButton b : amplifierButtons)
         {
             setButtonEnabled(b, true);
@@ -358,9 +362,7 @@ public class MonitorFragment extends BaseFragment
             else if (b.getTag() instanceof ListeningModeMsg.Mode)
             {
                 final ListeningModeMsg.Mode s = (ListeningModeMsg.Mode) (b.getTag());
-                if (s == state.listeningMode
-                        || selectedListeningModes == null
-                        || selectedListeningModes.contains(s.getCode()))
+                if (selectedListeningModes.contains(s.getCode()))
                 {
                     b.setVisibility(View.VISIBLE);
                     setButtonSelected(b, s == state.listeningMode);
@@ -380,7 +382,7 @@ public class MonitorFragment extends BaseFragment
             }
         }
 
-        updateListeningModeLayout(rootView.findViewById(R.id.listening_mode_layout));
+        updateListeningModeLayout();
 
         for (AppCompatImageButton b : playbackButtons)
         {
@@ -440,15 +442,15 @@ public class MonitorFragment extends BaseFragment
         updateFeedButton(negativeFeed, state.negativeFeed);
     }
 
-    private void updateListeningModeLayout(HorizontalScrollView scrollView)
+    private void updateListeningModeLayout()
     {
-        scrollView.requestLayout();
-        if (scrollView.getChildCount() == 1)
+        listeningModeLayout.requestLayout();
+        if (listeningModeLayout.getChildCount() == 1)
         {
-            final LinearLayout l = (LinearLayout) scrollView.getChildAt(0);
+            final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            if (l.getMeasuredWidth() < scrollView.getMeasuredWidth())
+            if (l.getMeasuredWidth() < listeningModeLayout.getMeasuredWidth())
             {
                 params.gravity = Gravity.CENTER;
             }

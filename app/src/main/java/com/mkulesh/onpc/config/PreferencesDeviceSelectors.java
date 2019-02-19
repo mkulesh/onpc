@@ -13,99 +13,62 @@
 
 package com.mkulesh.onpc.config;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.preference.SwitchPreferenceCompat;
 
-import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.utils.Logging;
 
-public class PreferencesDeviceSelectors extends AppCompatPreferenceActivity
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class PreferencesDeviceSelectors extends DraggableListActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction().replace(
-                android.R.id.content, new MyPreferenceFragment()).commit();
+        prepareList(Configuration.SELECTED_DEVICE_SELECTORS);
+        prepareSelectors();
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragmentCompat
+    private void prepareSelectors()
     {
-        @Override
-        public void onCreatePreferences(Bundle bundle, String s)
-        {
-            addPreferencesFromResource(R.xml.preferences_empty);
-            prepareSelectors(getPreferenceScreen(), getActivity());
-        }
-    }
-
-    private static void prepareSelectors(final PreferenceScreen preferenceScreen, @Nullable final Activity activity)
-    {
-        final Context context = preferenceScreen.getContext();
-
-        final SwitchPreferenceCompat fName = createSwitchPreference(context,
-                R.string.friendly_selector_name, Configuration.FRIENDLY_SELECTOR_NAME);
-        fName.setSummaryOn(R.string.friendly_selector_summary_on);
-        fName.setSummaryOff(R.string.friendly_selector_summary_off);
-        fName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue)
-            {
-                if (activity != null)
-                {
-                    final Intent intent = activity.getIntent();
-                    activity.finish();
-                    activity.startActivity(intent);
-                }
-                return true;
-            }
-        });
-        preferenceScreen.addPreference(fName);
-
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        final String selectorsId = preferences.getString(Configuration.DEVICE_SELECTORS, "");
-        final String selectorsName = preferences.getString(Configuration.DEVICE_SELECTORS_NAME, "");
-
-        if (selectorsId.isEmpty() || selectorsName.isEmpty())
-        {
-            return;
-        }
-        String[] tokensId = selectorsId.split(",");
-        String[] tokensName = selectorsName.split(",");
-        if (tokensId.length == 0 || tokensName.length == 0 || tokensId.length != tokensName.length)
+        final String[] allItems = getTokens(Configuration.DEVICE_SELECTORS);
+        if (allItems == null || allItems.length == 0)
         {
             return;
         }
 
-        for (int i = 0; i < tokensId.length; i++)
+        final boolean fName = preferences.getBoolean(Configuration.FRIENDLY_SELECTOR_NAME, true);
+        final ArrayList<String> defItems = new ArrayList<>(Arrays.asList(allItems));
+        final List<CheckableItem> targetItems = new ArrayList<>();
+        final List<String> checkedItems = new ArrayList<>();
+        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, adapter.getParameter(), defItems))
         {
-            final String id = tokensId[i];
-            final InputSelectorMsg.InputType inputType =
+            final InputSelectorMsg.InputType item =
                     (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
-                            id, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
-            if (inputType == InputSelectorMsg.InputType.NONE)
+                            sp.code, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
+            if (item == InputSelectorMsg.InputType.NONE)
             {
-                Logging.info(context, "Input selector not known: " + id);
+                Logging.info(this, "Input selector not known: " + sp.code);
                 continue;
             }
-            final SwitchPreferenceCompat p = createSwitchPreference(context,
-                    inputType.getDescriptionId(),
-                    Configuration.DEVICE_SELECTORS + "_" + inputType.getCode());
-            if (fName.isChecked())
+            if (sp.checked)
             {
-                p.setTitle(tokensName[i]);
+                checkedItems.add(item.getCode());
             }
-            preferenceScreen.addPreference(p);
+
+            final CharSequence defName = getText(item.getDescriptionId());
+            final CharSequence name = fName ? preferences.getString(
+                    Configuration.DEVICE_SELECTORS + "_" + item.getCode(), defName.toString()) : defName;
+            targetItems.add(new CheckableItem(
+                    item.getDescriptionId(),
+                    item.getCode(),
+                    name,
+                    -1, sp.checked));
         }
+
+        setItems(targetItems, checkedItems);
     }
 }

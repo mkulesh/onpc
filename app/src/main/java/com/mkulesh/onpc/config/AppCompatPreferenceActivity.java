@@ -20,7 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceGroup;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.SwitchPreferenceCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,15 +91,5 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
             return true;
         }
         return (super.onOptionsItemSelected(item));
-    }
-
-    protected static SwitchPreferenceCompat createSwitchPreference(Context context, int descriptionId, String key)
-    {
-        final SwitchPreferenceCompat p = new SwitchPreferenceCompat(context, null);
-        p.setDefaultValue(true);
-        p.setIconSpaceReserved(false);
-        p.setTitle(context.getString(descriptionId));
-        p.setKey(key);
-        return p;
     }
 }
