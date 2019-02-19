@@ -114,6 +114,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         messageChannel = new MessageChannel(connectionState);
         state = new MockupState(zone);
+        messageChannel.start();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

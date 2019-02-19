@@ -55,6 +55,14 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
         StrictMode.setThreadPolicy(policy);
     }
 
+    public void start()
+    {
+        synchronized (active)
+        {
+            active.set(true);
+        }
+    }
+
     public void stop()
     {
         synchronized (active)
@@ -139,10 +147,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
         {
             // nothing to do
         }
-        synchronized (active)
-        {
-            active.set(false);
-        }
+        stop();
         Logging.info(this, "stopped: " + toString());
         inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
         return null;
@@ -151,7 +156,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
     boolean connectToServer(String server, int port)
     {
         final String addr = server + ":" + Integer.toString(port);
-        active.set(false);
+        stop();
 
         try
         {
@@ -168,7 +173,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
                 }
             }
             Logging.info(this, "connected to " + addr);
-            active.set(true);
+            start();
         }
         catch (Exception e)
         {
