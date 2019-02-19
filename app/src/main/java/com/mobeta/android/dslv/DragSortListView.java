@@ -305,13 +305,13 @@ public class DragSortListView extends ListView
      * Drag flag bit. Floating View can move in the positive
      * x direction.
      */
-    public final static int DRAG_POS_X = 0x1;
+    final static int DRAG_POS_X = 0x1;
 
     /**
      * Drag flag bit. Floating View can move in the negative
      * x direction.
      */
-    public final static int DRAG_NEG_X = 0x2;
+    final static int DRAG_NEG_X = 0x2;
 
     /**
      * Drag flag bit. Floating View can move in the positive
@@ -319,7 +319,7 @@ public class DragSortListView extends ListView
      * that, if enabled, the floating View can be dragged below its starting
      * position. Remove in favor of upper-bounding item position?
      */
-    public final static int DRAG_POS_Y = 0x4;
+    final static int DRAG_POS_Y = 0x4;
 
     /**
      * Drag flag bit. Floating View can move in the negative
@@ -327,7 +327,7 @@ public class DragSortListView extends ListView
      * that the floating View can be dragged above its starting
      * position. Remove in favor of lower-bounding item position?
      */
-    public final static int DRAG_NEG_Y = 0x8;
+    final static int DRAG_NEG_Y = 0x8;
 
     /**
      * Flags that determine limits on the motion of the
@@ -440,7 +440,7 @@ public class DragSortListView extends ListView
     private boolean mUseRemoveVelocity;
     private float mRemoveVelocityX = 0;
 
-    public DragSortListView(Context context, AttributeSet attrs)
+    DragSortListView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
 
@@ -634,7 +634,7 @@ public class DragSortListView extends ListView
         super.setAdapter(mAdapterWrapper);
     }
 
-    public ListAdapter getInputAdapter()
+    ListAdapter getInputAdapter()
     {
         if (mAdapterWrapper == null)
         {
@@ -650,7 +650,7 @@ public class DragSortListView extends ListView
     {
         private ListAdapter mAdapter;
 
-        public AdapterWrapper(ListAdapter adapter)
+        AdapterWrapper(ListAdapter adapter)
         {
             super();
             mAdapter = adapter;
@@ -669,7 +669,7 @@ public class DragSortListView extends ListView
             });
         }
 
-        public ListAdapter getAdapter()
+        ListAdapter getAdapter()
         {
             return mAdapter;
         }
@@ -899,7 +899,7 @@ public class DragSortListView extends ListView
         private ArrayList<Integer> mOrder;
         private int mMaxSize;
 
-        public HeightCache(int size)
+        HeightCache(int size)
         {
             mMap = new SparseIntArray(size);
             mOrder = new ArrayList<Integer>(size);
@@ -909,7 +909,7 @@ public class DragSortListView extends ListView
         /**
          * Add item height at position if doesn't already exist.
          */
-        public void add(int position, int height)
+        void add(int position, int height)
         {
             int currHeight = mMap.get(position, -1);
             if (currHeight != height)
@@ -932,12 +932,12 @@ public class DragSortListView extends ListView
             }
         }
 
-        public int get(int position)
+        int get(int position)
         {
             return mMap.get(position, -1);
         }
 
-        public void clear()
+        void clear()
         {
             mMap.clear();
             mOrder.clear();
@@ -1228,7 +1228,7 @@ public class DragSortListView extends ListView
 
         private boolean mCanceled;
 
-        public SmoothAnimator(float smoothness, int duration)
+        SmoothAnimator(float smoothness, int duration)
         {
             mAlpha = smoothness;
             mDurationF = (float) duration;
@@ -1237,7 +1237,7 @@ public class DragSortListView extends ListView
             mC = 1f / (1f - mAlpha);
         }
 
-        public float transform(float frac)
+        float transform(float frac)
         {
             if (frac < mAlpha)
             {
@@ -1253,7 +1253,7 @@ public class DragSortListView extends ListView
             }
         }
 
-        public void start()
+        void start()
         {
             mStartTime = SystemClock.uptimeMillis();
             mCanceled = false;
@@ -1261,22 +1261,22 @@ public class DragSortListView extends ListView
             post(this);
         }
 
-        public void cancel()
+        void cancel()
         {
             mCanceled = true;
         }
 
-        public void onStart()
+        void onStart()
         {
             // stub
         }
 
-        public void onUpdate(float frac, float smoothFrac)
+        void onUpdate(float frac, float smoothFrac)
         {
             // stub
         }
 
-        public void onStop()
+        void onStop()
         {
             // stub
         }
@@ -1313,20 +1313,20 @@ public class DragSortListView extends ListView
         private float mInitDragDeltaY;
         private float mFinalDragDeltaY;
 
-        public LiftAnimator(float smoothness, int duration)
+        LiftAnimator(float smoothness, int duration)
         {
             super(smoothness, duration);
         }
 
         @Override
-        public void onStart()
+        void onStart()
         {
             mInitDragDeltaY = mDragDeltaY;
             mFinalDragDeltaY = mFloatViewHeightHalf;
         }
 
         @Override
-        public void onUpdate(float frac, float smoothFrac)
+        void onUpdate(float frac, float smoothFrac)
         {
             if (mDragState != DRAGGING)
             {
@@ -1353,13 +1353,13 @@ public class DragSortListView extends ListView
         private float mInitDeltaY;
         private float mInitDeltaX;
 
-        public DropAnimator(float smoothness, int duration)
+        DropAnimator(float smoothness, int duration)
         {
             super(smoothness, duration);
         }
 
         @Override
-        public void onStart()
+        void onStart()
         {
             mDropPos = mFloatPos;
             srcPos = mSrcPos;
@@ -1401,7 +1401,7 @@ public class DragSortListView extends ListView
         }
 
         @Override
-        public void onUpdate(float frac, float smoothFrac)
+        void onUpdate(float frac, float smoothFrac)
         {
             final int targetY = getTargetY();
             final int targetX = getPaddingLeft();
@@ -1417,7 +1417,7 @@ public class DragSortListView extends ListView
         }
 
         @Override
-        public void onStop()
+        void onStop()
         {
             dropFloatView();
         }
@@ -1441,13 +1441,13 @@ public class DragSortListView extends ListView
         private int mSecondPos;
         private int srcPos;
 
-        public RemoveAnimator(float smoothness, int duration)
+        RemoveAnimator(float smoothness, int duration)
         {
             super(smoothness, duration);
         }
 
         @Override
-        public void onStart()
+        void onStart()
         {
             mFirstChildHeight = -1;
             mSecondChildHeight = -1;
@@ -1480,7 +1480,7 @@ public class DragSortListView extends ListView
         }
 
         @Override
-        public void onUpdate(float frac, float smoothFrac)
+        void onUpdate(float frac, float smoothFrac)
         {
             float f = 1f - smoothFrac;
 
@@ -1538,13 +1538,13 @@ public class DragSortListView extends ListView
         }
 
         @Override
-        public void onStop()
+        void onStop()
         {
             doRemoveItem();
         }
     }
 
-    public void removeItem(int which)
+    void removeItem(int which)
     {
 
         mUseRemoveVelocity = false;
@@ -1558,7 +1558,7 @@ public class DragSortListView extends ListView
      *                  this is a position in your input ListAdapter).
      * @param velocityX
      */
-    public void removeItem(int which, float velocityX)
+    void removeItem(int which, float velocityX)
     {
         if (mDragState == IDLE || mDragState == DRAGGING)
         {
@@ -1604,7 +1604,7 @@ public class DragSortListView extends ListView
         }
     }
 
-    public void cancelDrag()
+    void cancelDrag()
     {
         if (mDragState == DRAGGING)
         {
@@ -1726,20 +1726,20 @@ public class DragSortListView extends ListView
      * @return True if the stop was successful. False if there is
      * no floating View.
      */
-    public boolean stopDrag(boolean remove)
+    boolean stopDrag(boolean remove)
     {
         mUseRemoveVelocity = false;
         return stopDrag(remove, 0);
     }
 
-    public boolean stopDragWithVelocity(boolean remove, float velocityX)
+    boolean stopDragWithVelocity(boolean remove, float velocityX)
     {
 
         mUseRemoveVelocity = true;
         return stopDrag(remove, velocityX);
     }
 
-    public boolean stopDrag(boolean remove, float velocityX)
+    boolean stopDrag(boolean remove, float velocityX)
     {
         if (mFloatView != null)
         {
@@ -1870,7 +1870,7 @@ public class DragSortListView extends ListView
         mOffsetY = (int) ev.getRawY() - mY;
     }
 
-    public boolean listViewIntercepted()
+    boolean listViewIntercepted()
     {
         return mListViewIntercepted;
     }
@@ -1950,7 +1950,7 @@ public class DragSortListView extends ListView
      * @param heightFraction Fraction of ListView height. Capped at
      *                       0.5f.
      */
-    public void setDragScrollStart(float heightFraction)
+    void setDragScrollStart(float heightFraction)
     {
         setDragScrollStarts(heightFraction, heightFraction);
     }
@@ -1964,7 +1964,7 @@ public class DragSortListView extends ListView
      * @param lowerFrac Fraction of ListView height for down-scroll bound.
      *                  Capped at 0.5f.
      */
-    public void setDragScrollStarts(float upperFrac, float lowerFrac)
+    void setDragScrollStarts(float upperFrac, float lowerFrac)
     {
         if (lowerFrac > 0.5f)
         {
@@ -2488,7 +2488,7 @@ public class DragSortListView extends ListView
      * a touch event, there is no registered FloatViewManager,
      * or the FloatViewManager returns a null View.
      */
-    public boolean startDrag(int position, int dragFlags, int deltaX, int deltaY)
+    boolean startDrag(int position, int dragFlags, int deltaX, int deltaY)
     {
         if (!mInTouchEvent || mFloatViewManager == null)
         {
@@ -2529,7 +2529,7 @@ public class DragSortListView extends ListView
      * a touch event, <code>floatView</code> is null, or there is
      * a drag in progress.
      */
-    public boolean startDrag(int position, View floatView, int dragFlags, int deltaX, int deltaY)
+    boolean startDrag(int position, View floatView, int dragFlags, int deltaX, int deltaY)
     {
         if (mDragState != IDLE || !mInTouchEvent || mFloatView != null || floatView == null
                 || !mDragEnabled)
@@ -2741,7 +2741,7 @@ public class DragSortListView extends ListView
      * your own is not passed, the default {@link SimpleFloatViewManager}
      * implementation is used.
      */
-    public interface FloatViewManager
+    interface FloatViewManager
     {
         /**
          * Return the floating View for item at <code>position</code>.
@@ -2757,7 +2757,7 @@ public class DragSortListView extends ListView
          *                 to add {@link ListView#getHeaderViewsCount()} to the index).
          * @return The View you wish to display as the floating View.
          */
-        public View onCreateFloatView(int position);
+        View onCreateFloatView(int position);
 
         /**
          * Called whenever the floating View is dragged. Float View
@@ -2773,7 +2773,7 @@ public class DragSortListView extends ListView
          * @param touch         The current touch location (relative to DSLV
          *                      top-left).
          */
-        public void onDragFloatView(View floatView, Point location, Point touch);
+        void onDragFloatView(View floatView, Point location, Point touch);
 
         /**
          * Called when the float View is dropped; lets you perform
@@ -2783,30 +2783,30 @@ public class DragSortListView extends ListView
          * @param floatView The floating View passed to
          *                  {@link #onCreateFloatView(int)}.
          */
-        public void onDestroyFloatView(View floatView);
+        void onDestroyFloatView(View floatView);
 
         /**
          * Register a class which will get onTouch events.
          */
-        public void setSecondaryOnTouchListener(View.OnTouchListener l);
+        void setSecondaryOnTouchListener(View.OnTouchListener l);
     }
 
-    public void setFloatViewManager(FloatViewManager manager)
+    void setFloatViewManager(FloatViewManager manager)
     {
         mFloatViewManager = manager;
     }
 
-    public void setDragListener(DragListener l)
+    void setDragListener(DragListener l)
     {
         mDragListener = l;
     }
 
-    public void setDragEnabled(boolean enabled)
+    void setDragEnabled(boolean enabled)
     {
         mDragEnabled = enabled;
     }
 
-    public boolean isDragEnabled()
+    boolean isDragEnabled()
     {
         return mDragEnabled;
     }
@@ -2826,14 +2826,14 @@ public class DragSortListView extends ListView
      *
      * @param l
      */
-    public void setRemoveListener(RemoveListener l)
+    void setRemoveListener(RemoveListener l)
     {
         mRemoveListener = l;
     }
 
-    public interface DragListener
+    interface DragListener
     {
-        public void drag(int from, int to);
+        void drag(int from, int to);
     }
 
     /**
@@ -2846,7 +2846,7 @@ public class DragSortListView extends ListView
      */
     public interface DropListener
     {
-        public void drop(int from, int to);
+        void drop(int from, int to);
     }
 
     /**
@@ -2856,16 +2856,16 @@ public class DragSortListView extends ListView
      *
      * @author heycosmo
      */
-    public interface RemoveListener
+    interface RemoveListener
     {
-        public void remove(int which);
+        void remove(int which);
     }
 
-    public interface DragSortListener extends DropListener, DragListener, RemoveListener
+    interface DragSortListener extends DropListener, DragListener, RemoveListener
     {
     }
 
-    public void setDragSortListener(DragSortListener l)
+    void setDragSortListener(DragSortListener l)
     {
         setDropListener(l);
         setDragListener(l);
@@ -2879,7 +2879,7 @@ public class DragSortListView extends ListView
      *
      * @param ssp
      */
-    public void setDragScrollProfile(DragScrollProfile ssp)
+    void setDragScrollProfile(DragScrollProfile ssp)
     {
         if (ssp != null)
         {
@@ -2910,7 +2910,7 @@ public class DragSortListView extends ListView
      *
      * @author heycosmo
      */
-    public interface DragScrollProfile
+    interface DragScrollProfile
     {
         /**
          * Return a scroll speed in pixels/millisecond. Always return a
@@ -2938,9 +2938,9 @@ public class DragSortListView extends ListView
         private long tStart;
         private int scrollDir;
 
-        public final static int STOP = -1;
-        public final static int UP = 0;
-        public final static int DOWN = 1;
+        final static int STOP = -1;
+        final static int UP = 0;
+        final static int DOWN = 1;
 
         private float mScrollSpeed; // pixels per ms
 
@@ -2949,21 +2949,21 @@ public class DragSortListView extends ListView
         private int mLastHeader;
         private int mFirstFooter;
 
-        public boolean isScrolling()
+        boolean isScrolling()
         {
             return mScrolling;
         }
 
-        public int getScrollDir()
+        int getScrollDir()
         {
             return mScrolling ? scrollDir : STOP;
         }
 
-        public DragScroller()
+        DragScroller()
         {
         }
 
-        public void startScrolling(int dir)
+        void startScrolling(int dir)
         {
             if (!mScrolling)
             {
@@ -2977,7 +2977,7 @@ public class DragSortListView extends ListView
             }
         }
 
-        public void stopScrolling(boolean now)
+        void stopScrolling(boolean now)
         {
             if (now)
             {
@@ -3111,7 +3111,7 @@ public class DragSortListView extends ListView
 
         private boolean mTracking = false;
 
-        public DragSortTracker()
+        DragSortTracker()
         {
             File root = Environment.getExternalStorageDirectory();
             mFile = new File(root, "dslv_state.txt");
@@ -3132,14 +3132,14 @@ public class DragSortListView extends ListView
 
         }
 
-        public void startTracking()
+        void startTracking()
         {
             mBuilder.append("<DSLVStates>\n");
             mNumFlushes = 0;
             mTracking = true;
         }
 
-        public void appendState()
+        void appendState()
         {
             if (!mTracking)
             {
@@ -3200,7 +3200,7 @@ public class DragSortListView extends ListView
             }
         }
 
-        public void flush()
+        void flush()
         {
             if (!mTracking)
             {
@@ -3231,7 +3231,7 @@ public class DragSortListView extends ListView
             }
         }
 
-        public void stopTracking()
+        void stopTracking()
         {
             if (mTracking)
             {

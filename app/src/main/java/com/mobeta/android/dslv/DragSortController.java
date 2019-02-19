@@ -20,9 +20,9 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     /**
      * Drag init mode enum.
      */
-    public static final int ON_DOWN = 0;
-    public static final int ON_DRAG = 1;
-    public static final int ON_LONG_PRESS = 2;
+    static final int ON_DOWN = 0;
+    private static final int ON_DRAG = 1;
+    private static final int ON_LONG_PRESS = 2;
 
     private int mDragInitMode = ON_DOWN;
 
@@ -31,8 +31,8 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     /**
      * Remove mode enum.
      */
-    public static final int CLICK_REMOVE = 0;
-    public static final int FLING_REMOVE = 1;
+    private static final int CLICK_REMOVE = 0;
+    static final int FLING_REMOVE = 1;
 
     /**
      * The current remove mode.
@@ -48,7 +48,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
 
     private int mTouchSlop;
 
-    public static final int MISS = -1;
+    private static final int MISS = -1;
 
     private int mHitPos = MISS;
     private int mFlingHitPos = MISS;
@@ -82,17 +82,17 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
      */
     private View.OnTouchListener mSecondaryOnTouchListener;
 
-    public DragSortController(DragSortListView dslv)
+    DragSortController(DragSortListView dslv)
     {
         this(dslv, 0, ON_DOWN, FLING_REMOVE);
     }
 
-    public DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode, int removeMode)
+    DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode, int removeMode)
     {
         this(dslv, dragHandleId, dragInitMode, removeMode, 0);
     }
 
-    public DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode, int removeMode, int clickRemoveId)
+    DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode, int removeMode, int clickRemoveId)
     {
         this(dslv, dragHandleId, dragInitMode, removeMode, clickRemoveId, 0);
     }
@@ -104,8 +104,8 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
      * @param dragHandleId The resource id of the View that represents
      *                     the drag handle in a list item.
      */
-    public DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode,
-                              int removeMode, int clickRemoveId, int flingHandleId)
+    DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode,
+                       int removeMode, int clickRemoveId, int flingHandleId)
     {
         super(dslv);
         mDslv = dslv;
@@ -120,17 +120,17 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         setDragInitMode(dragInitMode);
     }
 
-    public void setDragInitMode(int mode)
+    private void setDragInitMode(int mode)
     {
         mDragInitMode = mode;
     }
 
-    public void setSortEnabled(boolean enabled)
+    void setSortEnabled(boolean enabled)
     {
         mSortEnabled = enabled;
     }
 
-    public void setRemoveMode(int mode)
+    private void setRemoveMode(int mode)
     {
         mRemoveMode = mode;
     }
@@ -138,7 +138,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     /**
      * Enable/Disable item removal without affecting remove mode.
      */
-    public void setRemoveEnabled(boolean enabled)
+    void setRemoveEnabled(boolean enabled)
     {
         mRemoveEnabled = enabled;
     }
@@ -153,7 +153,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
      * @param deltaY   Touch y-coord minus top edge of floating View.
      * @return True if drag started, false otherwise.
      */
-    public boolean startDrag(int position, int deltaX, int deltaY)
+    private boolean startDrag(int position, int deltaX, int deltaY)
     {
 
         int dragFlags = 0;
@@ -252,27 +252,27 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
      * @return The list position to drag if a drag-init gesture is
      * detected; MISS if unsuccessful.
      */
-    public int startDragPosition(MotionEvent ev)
+    private int startDragPosition(MotionEvent ev)
     {
         return dragHandleHitPosition(ev);
     }
 
-    public int startFlingPosition(MotionEvent ev)
+    private int startFlingPosition(MotionEvent ev)
     {
         return mRemoveMode == FLING_REMOVE ? flingHandleHitPosition(ev) : MISS;
     }
 
-    public int dragHandleHitPosition(MotionEvent ev)
+    private int dragHandleHitPosition(MotionEvent ev)
     {
         return viewIdHitPosition(ev, mDragHandleId);
     }
 
-    public int flingHandleHitPosition(MotionEvent ev)
+    private int flingHandleHitPosition(MotionEvent ev)
     {
         return viewIdHitPosition(ev, mFlingHandleId);
     }
 
-    public int viewIdHitPosition(MotionEvent ev, int id)
+    private int viewIdHitPosition(MotionEvent ev, int id)
     {
         final int x = (int) ev.getX();
         final int y = (int) ev.getY();
