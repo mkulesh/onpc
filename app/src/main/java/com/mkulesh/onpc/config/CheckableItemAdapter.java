@@ -28,7 +28,7 @@ import com.mkulesh.onpc.utils.Logging;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferenceItemAdapter extends BaseAdapter
+public class CheckableItemAdapter extends BaseAdapter
 {
     static class Data
     {
@@ -68,7 +68,7 @@ public class PreferenceItemAdapter extends BaseAdapter
     private final SharedPreferences preferences;
     private String parameter;
 
-    PreferenceItemAdapter(Context context, String parameter)
+    CheckableItemAdapter(Context context, String parameter)
     {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -116,14 +116,14 @@ public class PreferenceItemAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convert, ViewGroup parent)
     {
-        DraggableItem view;
+        CheckableItemView view;
         if (convert == null)
         {
-            view = (DraggableItem) inflater.inflate(R.layout.draggable_item, parent, false);
+            view = (CheckableItemView) inflater.inflate(R.layout.checkable_item_view, parent, false);
         }
         else
         {
-            view = (DraggableItem) convert;
+            view = (CheckableItemView) convert;
         }
         final Data d = items.get(position);
         view.setTag(d.code);

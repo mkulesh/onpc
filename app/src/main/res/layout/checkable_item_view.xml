@@ -11,7 +11,7 @@
   ~ Public License along with this program.
   -->
 
-<com.mkulesh.onpc.config.DraggableItem xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mkulesh.onpc.config.CheckableItemView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -50,4 +50,4 @@
         android:scaleType="center"
         android:layout_width="@dimen/draggable_row_height"
         android:layout_height="@dimen/draggable_row_height" />
-</com.mkulesh.onpc.config.DraggableItem>
+</com.mkulesh.onpc.config.CheckableItemView>

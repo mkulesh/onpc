@@ -22,12 +22,12 @@ import java.util.List;
 
 public class DraggableListActivity extends AppCompatPreferenceActivity
 {
-    protected PreferenceItemAdapter adapter;
+    protected CheckableItemAdapter adapter;
 
     protected void prepareList(int layoutId, String parameter)
     {
         setContentView(layoutId);
-        adapter = new PreferenceItemAdapter(this, parameter);
+        adapter = new CheckableItemAdapter(this, parameter);
     }
 
     protected String[] getTokens(String par)
@@ -36,7 +36,7 @@ public class DraggableListActivity extends AppCompatPreferenceActivity
         return cfg.isEmpty() ? null : cfg.split(",");
     }
 
-    protected void setItems(List<PreferenceItemAdapter.Data> targetItems, List<String> checkedItems)
+    protected void setItems(List<CheckableItemAdapter.Data> targetItems, List<String> checkedItems)
     {
         adapter.setItems(targetItems);
         final DragSortListView itemList = findViewById(R.id.list);

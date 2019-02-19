@@ -25,14 +25,14 @@ import android.widget.TextView;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.utils.Utils;
 
-public class DraggableItem extends LinearLayout implements Checkable
+public class CheckableItemView extends LinearLayout implements Checkable
 {
     private ImageView icon;
     private TextView textView;
     private CheckedTextView checkBox;
     private boolean checked;
 
-    public DraggableItem(Context context, AttributeSet attrs)
+    public CheckableItemView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
