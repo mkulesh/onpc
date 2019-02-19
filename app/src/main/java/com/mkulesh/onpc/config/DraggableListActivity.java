@@ -13,8 +13,6 @@
 
 package com.mkulesh.onpc.config;
 
-import android.widget.Checkable;
-
 import com.mkulesh.onpc.R;
 import com.mobeta.android.dslv.DragSortListView;
 
@@ -46,12 +44,8 @@ public abstract class DraggableListActivity extends AppCompatPreferenceActivity
             itemList.setItemChecked(i, checkedItems.contains(targetItems.get(i).code));
         }
         itemList.setOnItemClickListener((adapterView, view, pos, l) ->
-        {
-            if (view instanceof Checkable)
-            {
-                adapter.setChecked(pos, ((Checkable) view).isChecked());
-            }
-        });
-        itemList.setDropListener((int from, int to) -> adapter.drop(from, to));
+                adapter.setChecked(pos, ((DragSortListView)adapterView).isItemChecked(pos)));
+        itemList.setDropListener((int from, int to) ->
+                adapter.drop(from, to));
     }
 }
