@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.utils.Utils;
 
 import java.nio.ByteBuffer;
@@ -71,6 +73,7 @@ public class EISCPMessage
         this.parameters = parameters;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

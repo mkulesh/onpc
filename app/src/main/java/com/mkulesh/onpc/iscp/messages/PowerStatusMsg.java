@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 
@@ -29,8 +31,8 @@ public class PowerStatusMsg extends ZonedMessage
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     /*
-    * Play Status: "00": System Standby, "01":  System On, "ALL": All Zone(including Main Zone) Standby
-    */
+     * Play Status: "00": System Standby, "01":  System On, "ALL": All Zone(including Main Zone) Standby
+     */
     public enum PowerStatus implements StringParameterIf
     {
         STB("00"), ON("01"), ALL_STB("ALL");
@@ -72,6 +74,7 @@ public class PowerStatusMsg extends ZonedMessage
         return powerStatus;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

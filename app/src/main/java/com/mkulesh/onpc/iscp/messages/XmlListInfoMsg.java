@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Utils;
@@ -73,6 +75,7 @@ public class XmlListInfoMsg extends ISCPMessage
         rawXml = data.substring(9);
     }
 
+    @NonNull
     @Override
     public String toString()
     {

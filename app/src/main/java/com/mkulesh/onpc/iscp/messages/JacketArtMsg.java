@@ -15,6 +15,7 @@ package com.mkulesh.onpc.iscp.messages;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -122,6 +123,7 @@ public class JacketArtMsg extends ISCPMessage
         return rawData;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

@@ -44,6 +44,7 @@ public class NetworkServiceMsg extends ISCPMessage
         return service;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

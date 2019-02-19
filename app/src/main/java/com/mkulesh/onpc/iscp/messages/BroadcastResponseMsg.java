@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -62,6 +64,7 @@ public class BroadcastResponseMsg extends ISCPMessage
         }
     }
 
+    @NonNull
     @Override
     public String toString()
     {
@@ -90,6 +93,6 @@ public class BroadcastResponseMsg extends ISCPMessage
 
     public String getDevice()
     {
-        return getHost() + "/" + (model != null? model : "unknown");
+        return getHost() + "/" + (model != null ? model : "unknown");
     }
 }

@@ -14,6 +14,7 @@
 package com.mkulesh.onpc.iscp;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
@@ -75,7 +76,7 @@ public class State
     public HashMap<String, String> networkServices = new HashMap<>();
     private final int activeZone;
     public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
-    public List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
@@ -133,6 +134,7 @@ public class State
         this.activeZone = activeZone;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -28,6 +30,7 @@ class DeviceNameMsg extends ISCPMessage
         super(raw);
     }
 
+    @NonNull
     @Override
     public String toString()
     {

@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -51,6 +53,7 @@ public class FileFormatMsg extends ISCPMessage
         return str.toString();
     }
 
+    @NonNull
     @Override
     public String toString()
     {

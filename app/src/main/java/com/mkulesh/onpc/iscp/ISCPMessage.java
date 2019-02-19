@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.support.annotation.NonNull;
+
 import java.nio.charset.Charset;
 
 public class ISCPMessage
@@ -55,6 +57,7 @@ public class ISCPMessage
         return data;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

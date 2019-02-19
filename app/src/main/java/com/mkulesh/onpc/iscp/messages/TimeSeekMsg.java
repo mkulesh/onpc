@@ -14,6 +14,7 @@
 package com.mkulesh.onpc.iscp.messages;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -35,6 +36,7 @@ public class TimeSeekMsg extends ISCPMessage
         this.seconds = seconds;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
@@ -143,6 +145,7 @@ public class OperationCommandMsg extends ZonedMessage
         return command;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

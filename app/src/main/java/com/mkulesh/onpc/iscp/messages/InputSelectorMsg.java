@@ -13,6 +13,8 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
+
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
@@ -130,6 +132,7 @@ public class InputSelectorMsg extends ZonedMessage
         return inputType;
     }
 
+    @NonNull
     @Override
     public String toString()
     {

@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.mkulesh.onpc.R;
@@ -74,6 +75,7 @@ public class FirmwareUpdateMsg extends ISCPMessage
         return status;
     }
 
+    @NonNull
     @Override
     public String toString()
     {
