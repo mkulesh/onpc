@@ -57,16 +57,12 @@ public class DeviceFragment extends BaseFragment
         {
             final EditText friendlyName = rootView.findViewById(R.id.device_edit_friendly_name);
             final AppCompatImageButton b = rootView.findViewById(R.id.device_change_friendly_name);
-            prepareButtonListeners(b, null, new ButtonListener()
+            prepareButtonListeners(b, null, () ->
             {
-                @Override
-                public void onPostProcessing()
+                if (activity.isConnected())
                 {
-                    if (activity.isConnected())
-                    {
-                        activity.getStateManager().sendMessage(
-                                new FriendlyNameMsg(friendlyName.getText().toString()));
-                    }
+                    activity.getStateManager().sendMessage(
+                            new FriendlyNameMsg(friendlyName.getText().toString()));
                 }
             });
             setButtonEnabled(b, true);

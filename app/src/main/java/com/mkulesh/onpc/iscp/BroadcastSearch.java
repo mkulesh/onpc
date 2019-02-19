@@ -14,7 +14,6 @@
 package com.mkulesh.onpc.iscp;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -22,7 +21,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.util.Pair;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -83,15 +81,8 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 .setIcon(icon)
                 .setCancelable(false)
                 .setView(frameView)
-                .setNegativeButton(context.getResources().getString(R.string.action_cancel),
-                        new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                active.set(false);
-                            }
-                        }).create();
+                .setNegativeButton(context.getResources().getString(R.string.action_cancel), (dialog, which) -> active.set(false))
+                .create();
 
         dialog.getLayoutInflater().inflate(R.layout.broadcast_dialog_layout, frameView);
         radioGroup = frameView.findViewById(R.id.broadcast_radio_group);
@@ -287,14 +278,11 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         b.setLayoutParams(lp);
         b.setText(msg.getDevice());
         b.setTextColor(Utils.getThemeColorAttr(context, android.R.attr.textColor));
-        b.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
+        b.setOnClickListener(v ->
+        {
+            synchronized (active)
             {
-                synchronized (active)
-                {
-                    active.set(false);
-                }
+                active.set(false);
             }
         });
 

@@ -15,7 +15,6 @@ package com.mkulesh.onpc.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
@@ -54,15 +53,7 @@ public class HtmlDialogBuilder
                 .setIcon(icon)
                 .setCancelable(true)
                 .setView(frameView)
-                .setPositiveButton(context.getResources().getString(R.string.action_ok),
-                        new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                // empty
-                            }
-                        }).create();
+                .setPositiveButton(context.getResources().getString(R.string.action_ok), (dialog, which) -> { /* empty */ }).create();
 
         final LayoutInflater inflater = alertDialog.getLayoutInflater();
         final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.html_dialog_layout, frameView);

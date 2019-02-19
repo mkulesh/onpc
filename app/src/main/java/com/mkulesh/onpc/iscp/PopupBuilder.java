@@ -25,7 +25,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -236,16 +235,13 @@ public class PopupBuilder
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         b.setGravity(Gravity.CENTER);
         b.setText(button.getAttribute("text"));
-        b.setOnClickListener(new View.OnClickListener()
+        b.setOnClickListener(v ->
         {
-            public void onClick(View v)
-            {
-                Utils.showSoftKeyboard(context, v, false);
-                button.setAttribute("selected", "true");
-                alertDialog.dismiss();
-                final CustomPopupMsg outMsg = new CustomPopupMsg(uiType, documentToXml(document));
-                buttonListener.onButtonSelected(outMsg);
-            }
+            Utils.showSoftKeyboard(context, v, false);
+            button.setAttribute("selected", "true");
+            alertDialog.dismiss();
+            final CustomPopupMsg outMsg = new CustomPopupMsg(uiType, documentToXml(document));
+            buttonListener.onButtonSelected(outMsg);
         });
         return b;
     }

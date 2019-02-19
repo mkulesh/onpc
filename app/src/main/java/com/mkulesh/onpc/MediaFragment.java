@@ -327,13 +327,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     {
         final ListView flv$ = listView;
         final int position$ = i, y$ = y_;
-        flv$.post(new Runnable()
-        {
-            public void run()
-            {
-                flv$.setSelectionFromTop(position$, y$ > 0 ? y$ : flv$.getHeight() / 2);
-            }
-        });
+        flv$.post(() -> flv$.setSelectionFromTop(position$, y$ > 0 ? y$ : flv$.getHeight() / 2));
     }
 
     private void updateTitle(@NonNull final State state, boolean processing)

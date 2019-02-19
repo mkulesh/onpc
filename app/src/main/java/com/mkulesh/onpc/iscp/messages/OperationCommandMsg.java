@@ -29,7 +29,7 @@ public class OperationCommandMsg extends ZonedMessage
     private final static String ZONE3_CODE = "NT3";
     private final static String ZONE4_CODE = "NT4";
 
-    final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    private final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
 
     public enum Command implements StringParameterIf

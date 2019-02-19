@@ -96,7 +96,7 @@ public class XmlListInfoMsg extends ISCPMessage
                 String.format("%04x", endItem);
     }
 
-    public List<XmlListItemMsg> parseXml(final List<XmlListItemMsg> items, final int numberOfLayers) throws Exception
+    public void parseXml(final List<XmlListItemMsg> items, final int numberOfLayers) throws Exception
     {
         items.clear();
         InputStream stream = new ByteArrayInputStream(rawXml.getBytes(UTF_8));
@@ -136,6 +136,5 @@ public class XmlListInfoMsg extends ISCPMessage
             }
         }
         stream.close();
-        return items;
     }
 }

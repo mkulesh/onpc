@@ -101,14 +101,7 @@ abstract public class BaseFragment extends Fragment
     {
         try
         {
-            PopupBuilder builder = new PopupBuilder(activity, state, new PopupBuilder.ButtonListener()
-            {
-                @Override
-                public void onButtonSelected(final CustomPopupMsg outMsg)
-                {
-                    activity.getStateManager().sendMessage(outMsg);
-                }
-            });
+            PopupBuilder builder = new PopupBuilder(activity, state, outMsg -> activity.getStateManager().sendMessage(outMsg));
             final AlertDialog alertDialog = builder.build(inMsg);
             if (alertDialog != null)
             {
@@ -136,7 +129,7 @@ abstract public class BaseFragment extends Fragment
 
     AppCompatImageButton createButton(
             @DrawableRes int imageId, @StringRes int descriptionId,
-            @NonNull final ISCPMessage msg, Object tag,
+            final ISCPMessage msg, Object tag,
             int leftMargin, int rightMargin, int verticalMargin)
     {
         ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.ImageButtonPrimaryStyle);
@@ -171,33 +164,22 @@ abstract public class BaseFragment extends Fragment
     void prepareButtonListeners(@NonNull View b, final ISCPMessage msg, final ButtonListener listener)
     {
         b.setClickable(true);
-        b.setOnClickListener(new View.OnClickListener()
+        b.setOnClickListener(v ->
         {
-            @Override
-            public void onClick(View v)
+            if (activity.isConnected() && msg != null)
             {
-                if (activity.isConnected() && msg != null)
-                {
-                    activity.getStateManager().sendMessage(msg);
-                }
-                if (listener != null)
-                {
-                    listener.onPostProcessing();
-                }
+                activity.getStateManager().sendMessage(msg);
+            }
+            if (listener != null)
+            {
+                listener.onPostProcessing();
             }
         });
 
         if (b instanceof AppCompatImageButton || b instanceof ImageView)
         {
             b.setLongClickable(true);
-            b.setOnLongClickListener(new View.OnLongClickListener()
-            {
-                @Override
-                public boolean onLongClick(View v)
-                {
-                    return Utils.showButtonDescription(activity, v);
-                }
-            });
+            b.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));
         }
     }
 

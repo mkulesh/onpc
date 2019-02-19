@@ -245,6 +245,10 @@ public class Utils
             return;
         }
         final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null)
+        {
+            return;
+        }
         if (flag)
         {
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
