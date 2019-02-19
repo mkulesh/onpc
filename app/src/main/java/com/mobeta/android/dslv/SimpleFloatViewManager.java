@@ -20,7 +20,7 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
 
     private int mFloatBGResource = 0;
 
-    private ListView mListView;
+    private final ListView mListView;
 
     SimpleFloatViewManager(ListView lv)
     {

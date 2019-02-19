@@ -42,11 +42,11 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     private boolean mRemoveEnabled = false;
     private boolean mIsRemoving = false;
 
-    private GestureDetector mDetector;
+    private final GestureDetector mDetector;
 
-    private GestureDetector mFlingRemoveDetector;
+    private final GestureDetector mFlingRemoveDetector;
 
-    private int mTouchSlop;
+    private final int mTouchSlop;
 
     private static final int MISS = -1;
 
@@ -55,7 +55,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
 
     private int mClickRemoveHitPos = MISS;
 
-    private int[] mTempLoc = new int[2];
+    private final int[] mTempLoc = new int[2];
 
     private int mItemX;
     private int mItemY;
@@ -65,16 +65,16 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
 
     private boolean mDragging = false;
 
-    private float mFlingSpeed = 500f;
+    private final float mFlingSpeed = 500f;
 
-    private int mDragHandleId;
+    private final int mDragHandleId;
 
-    private int mClickRemoveId;
+    private final int mClickRemoveId;
 
-    private int mFlingHandleId;
+    private final int mFlingHandleId;
     private boolean mCanDrag;
 
-    private DragSortListView mDslv;
+    private final DragSortListView mDslv;
     private int mPositionX;
 
     /**
@@ -136,9 +136,8 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
      * @param position The list item position (includes headers).
      * @param deltaX   Touch x-coord minus left edge of floating View.
      * @param deltaY   Touch y-coord minus top edge of floating View.
-     * @return True if drag started, false otherwise.
      */
-    private boolean startDrag(int position, int deltaX, int deltaY)
+    private void startDrag(int position, int deltaX, int deltaY)
     {
 
         int dragFlags = 0;
@@ -154,7 +153,6 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
 
         mDragging = mDslv.startDrag(position - mDslv.getHeaderViewsCount(), dragFlags, deltaX,
                 deltaY);
-        return mDragging;
     }
 
     @Override
@@ -278,7 +276,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
             final int rawX = (int) ev.getRawX();
             final int rawY = (int) ev.getRawY();
 
-            View dragBox = id == 0 ? item : (View) item.findViewById(id);
+            View dragBox = id == 0 ? item : item.findViewById(id);
             if (dragBox != null)
             {
                 dragBox.getLocationOnScreen(mTempLoc);
@@ -409,7 +407,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         // do nothing
     }
 
-    private GestureDetector.OnGestureListener mFlingRemoveListener =
+    private final GestureDetector.OnGestureListener mFlingRemoveListener =
             new GestureDetector.SimpleOnGestureListener()
             {
                 @Override
