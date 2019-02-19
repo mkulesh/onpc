@@ -32,7 +32,7 @@ public class PreferencesListeningModes extends DraggableListActivity
         prepareSelectors();
     }
 
-    public void prepareSelectors()
+    private void prepareSelectors()
     {
         final ArrayList<String> defItems = new ArrayList<>();
         for (ListeningModeMsg.Mode i : Configuration.DEFAULT_LISTENING_MODES)

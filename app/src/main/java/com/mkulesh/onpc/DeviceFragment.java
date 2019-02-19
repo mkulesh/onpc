@@ -229,7 +229,7 @@ public class DeviceFragment extends BaseFragment
         }
     }
 
-    protected void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
+    private void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
     {
         final AppCompatImageButton b = rootView.findViewById(buttonId);
         prepareButtonListeners(b, msg);

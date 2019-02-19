@@ -323,7 +323,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         return moveFrom >= 0 && moveFrom != messageId;
     }
 
-    public final void setSelection(int i, int y_)
+    private void setSelection(int i, int y_)
     {
         final ListView flv$ = listView;
         final int position$ = i, y$ = y_;

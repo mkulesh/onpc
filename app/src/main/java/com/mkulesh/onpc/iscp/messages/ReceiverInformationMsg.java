@@ -77,6 +77,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             return volumeStep;
         }
 
+        @NonNull
         @Override
         public String toString()
         {
@@ -126,6 +127,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             return addToQueue;
         }
 
+        @NonNull
         @Override
         public String toString()
         {

@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
     }
 
-    public void updateToolbar(State state)
+    private void updateToolbar(State state)
     {
         // Logo
         if (state == null)

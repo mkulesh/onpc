@@ -24,7 +24,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
  */
 public class TimeSeekMsg extends ISCPMessage
 {
-    public final static String CODE = "NTS";
+    private final static String CODE = "NTS";
 
     private final int hours, minutes, seconds;
 

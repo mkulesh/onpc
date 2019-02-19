@@ -25,11 +25,11 @@ import com.mkulesh.onpc.iscp.ZonedMessage;
 public class OperationCommandMsg extends ZonedMessage
 {
     public final static String CODE = "NTC";
-    final static String ZONE2_CODE = "NTZ";
-    final static String ZONE3_CODE = "NT3";
-    final static String ZONE4_CODE = "NT4";
+    private final static String ZONE2_CODE = "NTZ";
+    private final static String ZONE3_CODE = "NT3";
+    private final static String ZONE4_CODE = "NT4";
 
-    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
 
     public enum Command implements StringParameterIf

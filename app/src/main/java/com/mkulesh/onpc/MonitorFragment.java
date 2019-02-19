@@ -195,7 +195,7 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
-    public void prepareDeviceSoundButtons()
+    private void prepareDeviceSoundButtons()
     {
         final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
         soundControlLayout.setVisibility(View.VISIBLE);

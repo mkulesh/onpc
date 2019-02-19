@@ -23,7 +23,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
  */
 public class PlayQueueRemoveMsg extends ISCPMessage
 {
-    public final static String CODE = "PQR";
+    private final static String CODE = "PQR";
 
     // Remove Type: 0:Specify Line, (1:ALL)
     private final int type;

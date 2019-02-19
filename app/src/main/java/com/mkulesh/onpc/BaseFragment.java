@@ -46,10 +46,12 @@ abstract public class BaseFragment extends Fragment
      */
     public static final String FRAGMENT_NUMBER = "fragment_number";
 
-    protected MainActivity activity;
-    protected View rootView = null;
+    MainActivity activity;
+    View rootView = null;
 
-    int buttonSize = 0, buttonMarginHorizontal = 0, buttonMarginVertical = 0;
+    private int buttonSize = 0;
+    int buttonMarginHorizontal = 0;
+    private int buttonMarginVertical = 0;
 
     interface ButtonListener
     {
@@ -62,7 +64,7 @@ abstract public class BaseFragment extends Fragment
         // Empty constructor required for fragment subclasses
     }
 
-    public void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutId)
+    void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutId)
     {
         activity = (MainActivity) getActivity();
         rootView = inflater.inflate(layoutId, container, false);
@@ -124,7 +126,7 @@ abstract public class BaseFragment extends Fragment
 
     protected abstract void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges);
 
-    protected AppCompatImageButton createButton(
+    AppCompatImageButton createButton(
             @DrawableRes int imageId, @StringRes int descriptionId,
             final ISCPMessage msg, Object tag)
     {
@@ -132,7 +134,7 @@ abstract public class BaseFragment extends Fragment
                 buttonMarginHorizontal, buttonMarginHorizontal, buttonMarginVertical);
     }
 
-    protected AppCompatImageButton createButton(
+    AppCompatImageButton createButton(
             @DrawableRes int imageId, @StringRes int descriptionId,
             @NonNull final ISCPMessage msg, Object tag,
             int leftMargin, int rightMargin, int verticalMargin)
@@ -149,7 +151,7 @@ abstract public class BaseFragment extends Fragment
         return b;
     }
 
-    protected void prepareButton(
+    void prepareButton(
             @NonNull AppCompatImageButton b, final ISCPMessage msg, @DrawableRes final int imageId, @StringRes final int descriptionId)
     {
         b.setImageResource(imageId);
@@ -161,12 +163,12 @@ abstract public class BaseFragment extends Fragment
         setButtonEnabled(b, false);
     }
 
-    protected void prepareButtonListeners(@NonNull View b, final ISCPMessage msg)
+    void prepareButtonListeners(@NonNull View b, final ISCPMessage msg)
     {
         prepareButtonListeners(b, msg, null);
     }
 
-    protected void prepareButtonListeners(@NonNull View b, final ISCPMessage msg, final ButtonListener listener)
+    void prepareButtonListeners(@NonNull View b, final ISCPMessage msg, final ButtonListener listener)
     {
         b.setClickable(true);
         b.setOnClickListener(new View.OnClickListener()
@@ -199,7 +201,7 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    protected void setButtonEnabled(View b, boolean isEnabled)
+    void setButtonEnabled(View b, boolean isEnabled)
     {
         @AttrRes int resId = isEnabled ? R.attr.colorButtonEnabled : R.attr.colorButtonDisabled;
         b.setEnabled(isEnabled);
@@ -213,7 +215,7 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    protected void setButtonSelected(View b, boolean isSelected)
+    void setButtonSelected(View b, boolean isSelected)
     {
         @AttrRes int resId = isSelected ? R.attr.colorAccent : R.attr.colorButtonEnabled;
         b.setSelected(isSelected);
@@ -227,7 +229,7 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    protected AppCompatButton createButton(@StringRes int descriptionId,
+    AppCompatButton createButton(@StringRes int descriptionId,
                                            final ISCPMessage msg, Object tag, final ButtonListener listener)
     {
         ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.TextButtonStyle);

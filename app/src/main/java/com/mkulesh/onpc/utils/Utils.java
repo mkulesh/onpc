@@ -233,7 +233,7 @@ public class Utils
     /**
      * Procedure checks whether the hard keyboard is available
      */
-    public static boolean isHardwareKeyboardAvailable(Context context)
+    private static boolean isHardwareKeyboardAvailable(Context context)
     {
         return context.getResources().getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS;
     }

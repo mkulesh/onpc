@@ -33,7 +33,7 @@ import java.net.InetAddress;
  */
 public class BroadcastResponseMsg extends ISCPMessage
 {
-    public final static String CODE = "ECN";
+    private final static String CODE = "ECN";
 
     private final String host;
     private String model = null;

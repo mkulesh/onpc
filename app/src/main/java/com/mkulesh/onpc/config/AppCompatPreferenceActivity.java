@@ -30,7 +30,7 @@ import com.mkulesh.onpc.utils.Utils;
 
 public abstract class AppCompatPreferenceActivity extends AppCompatActivity
 {
-    protected SharedPreferences preferences;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,7 +44,7 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
-    protected static void tintIcons(final Context c, Preference preference)
+    static void tintIcons(final Context c, Preference preference)
     {
         if (preference instanceof PreferenceGroup)
         {
@@ -61,7 +61,7 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
         }
     }
 
-    protected void setupActionBar()
+    private void setupActionBar()
     {
         ViewGroup rootView = findViewById(R.id.action_bar_root); //id from appcompat
         if (rootView != null)

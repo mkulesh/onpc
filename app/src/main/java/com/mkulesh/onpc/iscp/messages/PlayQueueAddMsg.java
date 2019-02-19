@@ -23,7 +23,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
  */
 public class PlayQueueAddMsg extends ISCPMessage
 {
-    public final static String CODE = "PQA";
+    private final static String CODE = "PQA";
 
     // The Index number of the item to be added in the content list
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )

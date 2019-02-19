@@ -133,7 +133,7 @@ public class RemoteInterfaceFragment extends BaseFragment
         }
     }
 
-    public static void collectButtons(LinearLayout layout, ArrayList<View> out)
+    private static void collectButtons(LinearLayout layout, ArrayList<View> out)
     {
         for (int k = 0; k < layout.getChildCount(); k++)
         {

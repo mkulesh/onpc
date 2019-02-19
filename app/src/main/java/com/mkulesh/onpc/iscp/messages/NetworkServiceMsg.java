@@ -23,7 +23,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
  */
 public class NetworkServiceMsg extends ISCPMessage
 {
-    public final static String CODE = "NSV";
+    private final static String CODE = "NSV";
 
     private final ServiceType service;
 

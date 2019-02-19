@@ -23,7 +23,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
  */
 public class PlayQueueReorderMsg extends ISCPMessage
 {
-    public final static String CODE = "PQO";
+    private final static String CODE = "PQO";
 
     // The Index number in the PlayQueue of the item to be moved
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )  .

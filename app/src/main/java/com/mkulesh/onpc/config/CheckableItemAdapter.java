@@ -26,12 +26,12 @@ import com.mkulesh.onpc.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckableItemAdapter extends BaseAdapter
+class CheckableItemAdapter extends BaseAdapter
 {
     private final LayoutInflater inflater;
     private final List<CheckableItem> items = new ArrayList<>();
     private final SharedPreferences preferences;
-    private String parameter;
+    private final String parameter;
 
     CheckableItemAdapter(Context context, String parameter)
     {

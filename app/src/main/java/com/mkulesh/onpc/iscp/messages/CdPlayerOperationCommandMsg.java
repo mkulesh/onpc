@@ -112,7 +112,7 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
             return imageId;
         }
 
-        public String getCmd()
+        String getCmd()
         {
             return cmd != null ? cmd : getCode();
         }

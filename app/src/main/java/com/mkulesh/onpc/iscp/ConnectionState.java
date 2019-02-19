@@ -45,7 +45,7 @@ public class ConnectionState
         }
 
         @StringRes
-        public int getDescriptionId()
+        int getDescriptionId()
         {
             return descriptionId;
         }

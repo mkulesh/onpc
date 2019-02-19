@@ -33,7 +33,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
         prepareSelectors();
     }
 
-    public void prepareSelectors()
+    private void prepareSelectors()
     {
         final String[] allItems = getTokens(Configuration.NETWORK_SERVICES);
         if (allItems == null || allItems.length == 0)

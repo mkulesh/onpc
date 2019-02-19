@@ -40,7 +40,7 @@ public class ISCPMessage
         modelCategoryId = raw.getModelCategoryId();
     }
 
-    public ISCPMessage(ISCPMessage other)
+    protected ISCPMessage(ISCPMessage other)
     {
         messageId = other.messageId;
         data = other.data;

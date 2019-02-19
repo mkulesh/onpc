@@ -22,21 +22,21 @@ import java.util.List;
 
 public abstract class DraggableListActivity extends AppCompatPreferenceActivity
 {
-    protected CheckableItemAdapter adapter;
+    CheckableItemAdapter adapter;
 
-    protected void prepareList(String parameter)
+    void prepareList(String parameter)
     {
         setContentView(R.layout.draggable_preference_activity);
         adapter = new CheckableItemAdapter(this, parameter);
     }
 
-    protected String[] getTokens(String par)
+    String[] getTokens(String par)
     {
         final String cfg = preferences.getString(par, "");
         return cfg.isEmpty() ? null : cfg.split(",");
     }
 
-    protected void setItems(List<CheckableItem> targetItems, List<String> checkedItems)
+    void setItems(List<CheckableItem> targetItems, List<String> checkedItems)
     {
         adapter.setItems(targetItems);
         final DragSortListView itemList = findViewById(R.id.list);
