@@ -101,7 +101,13 @@ abstract public class BaseFragment extends Fragment
     {
         try
         {
-            PopupBuilder builder = new PopupBuilder(activity, state, outMsg -> activity.getStateManager().sendMessage(outMsg));
+            PopupBuilder builder = new PopupBuilder(activity, state, (outMsg) ->
+            {
+                if (activity != null)
+                {
+                    activity.getStateManager().sendMessage(outMsg);
+                }
+            });
             final AlertDialog alertDialog = builder.build(inMsg);
             if (alertDialog != null)
             {

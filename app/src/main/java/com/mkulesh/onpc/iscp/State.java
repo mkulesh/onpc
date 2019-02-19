@@ -70,7 +70,7 @@ public class State
     }
 
     // Receiver Information
-    public String receiverInformation = null;
+    public String receiverInformation = "";
     public String friendlyName = "";
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, String> networkServices = new HashMap<>();
