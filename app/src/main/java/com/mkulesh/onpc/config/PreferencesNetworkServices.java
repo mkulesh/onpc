@@ -41,7 +41,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
             return;
         }
 
-        final List<CheckableItemAdapter.Data> targetItems = new ArrayList<>();
+        final List<CheckableItem> targetItems = new ArrayList<>();
         final List<String> checkedItems = new ArrayList<>();
         final String[] selectedItems = getTokens(adapter.getParameter());
         if (selectedItems != null)
@@ -53,7 +53,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
                 if (item != ServiceType.UNKNOWN)
                 {
                     checkedItems.add(item.getCode());
-                    targetItems.add(new CheckableItemAdapter.Data(
+                    targetItems.add(new CheckableItem(
                             item.getDescriptionId(),
                             item.getCode(),
                             getText(item.getDescriptionId()),
@@ -73,7 +73,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
             }
             if (!checkedItems.contains(item.getCode()))
             {
-                targetItems.add(new CheckableItemAdapter.Data(
+                targetItems.add(new CheckableItem(
                         item.getDescriptionId(),
                         item.getCode(),
                         getText(item.getDescriptionId()),

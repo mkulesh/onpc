@@ -36,7 +36,7 @@ public class DraggableListActivity extends AppCompatPreferenceActivity
         return cfg.isEmpty() ? null : cfg.split(",");
     }
 
-    protected void setItems(List<CheckableItemAdapter.Data> targetItems, List<String> checkedItems)
+    protected void setItems(List<CheckableItem> targetItems, List<String> checkedItems)
     {
         adapter.setItems(targetItems);
         final DragSortListView itemList = findViewById(R.id.list);

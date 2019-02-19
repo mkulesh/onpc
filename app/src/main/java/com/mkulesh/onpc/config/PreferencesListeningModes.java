@@ -36,7 +36,7 @@ public class PreferencesListeningModes extends DraggableListActivity
     {
         final ListeningModeMsg.Mode[] allItems = Configuration.getListeningModes();
 
-        final List<CheckableItemAdapter.Data> targetItems = new ArrayList<>();
+        final List<CheckableItem> targetItems = new ArrayList<>();
         final List<String> checkedItems = new ArrayList<>();
         final String[] selectedItems = getTokens(adapter.getParameter());
         if (selectedItems != null)
@@ -48,7 +48,7 @@ public class PreferencesListeningModes extends DraggableListActivity
                 if (item != ListeningModeMsg.Mode.UP)
                 {
                     checkedItems.add(item.getCode());
-                    targetItems.add(new CheckableItemAdapter.Data(
+                    targetItems.add(new CheckableItem(
                             item.getDescriptionId(),
                             item.getCode(),
                             getText(item.getDescriptionId()),
@@ -61,7 +61,7 @@ public class PreferencesListeningModes extends DraggableListActivity
         {
             if (!checkedItems.contains(item.getCode()))
             {
-                targetItems.add(new CheckableItemAdapter.Data(
+                targetItems.add(new CheckableItem(
                         item.getDescriptionId(),
                         item.getCode(),
                         getText(item.getDescriptionId()),

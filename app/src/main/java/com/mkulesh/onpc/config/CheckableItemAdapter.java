@@ -15,7 +15,6 @@ package com.mkulesh.onpc.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.DrawableRes;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,41 +29,9 @@ import java.util.List;
 
 public class CheckableItemAdapter extends BaseAdapter
 {
-    static class Data
-    {
-        final int id;
-        final String code;
-        final CharSequence text;
-        @DrawableRes
-        final int imageId;
-        boolean checked;
-
-        Data(final int id, String code, CharSequence text, @DrawableRes int imageId, boolean checked)
-        {
-            this.id = id;
-            this.code = code;
-            this.text = text;
-            this.imageId = imageId;
-            this.checked = checked;
-        }
-
-        Data(Data d)
-        {
-            this.id = d.id;
-            this.code = d.code;
-            this.text = d.text;
-            this.imageId = d.imageId;
-            this.checked = d.checked;
-        }
-
-        public String getCode()
-        {
-            return code;
-        }
-    }
 
     private final LayoutInflater inflater;
-    private final List<Data> items = new ArrayList<>();
+    private final List<CheckableItem> items = new ArrayList<>();
     private final SharedPreferences preferences;
     private String parameter;
 
@@ -80,11 +47,11 @@ public class CheckableItemAdapter extends BaseAdapter
         return parameter;
     }
 
-    void setItems(final List<Data> newItems)
+    void setItems(final List<CheckableItem> newItems)
     {
-        for (Data d : newItems)
+        for (CheckableItem d : newItems)
         {
-            items.add(new Data(d));
+            items.add(new CheckableItem(d));
         }
         notifyDataSetChanged();
     }
@@ -125,7 +92,7 @@ public class CheckableItemAdapter extends BaseAdapter
         {
             view = (CheckableItemView) convert;
         }
-        final Data d = items.get(position);
+        final CheckableItem d = items.get(position);
         view.setTag(d.code);
         view.setText(d.text);
         if (d.imageId > 0)
@@ -139,7 +106,7 @@ public class CheckableItemAdapter extends BaseAdapter
     {
         if (from != to && from < items.size() && to < items.size())
         {
-            Data p = items.remove(from);
+            CheckableItem p = items.remove(from);
             items.add(to, p);
             if (p.checked)
             {
@@ -153,7 +120,7 @@ public class CheckableItemAdapter extends BaseAdapter
     {
         if (pos < items.size())
         {
-            Data p = items.get(pos);
+            CheckableItem p = items.get(pos);
             p.checked = checked;
             save();
         }
@@ -163,7 +130,7 @@ public class CheckableItemAdapter extends BaseAdapter
     private void save()
     {
         final StringBuilder selectedItems = new StringBuilder();
-        for (Data d : items)
+        for (CheckableItem d : items)
         {
             if (d != null && d.checked)
             {
