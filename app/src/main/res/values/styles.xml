@@ -89,6 +89,9 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">false</item>
+        <item name="android:enabled">false</item>
         <item name="android:layout_gravity">left|center_vertical</item>
     </style>
 

@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -254,12 +255,14 @@ public class DeviceFragment extends BaseFragment
         rootView.findViewById(R.id.settings_title).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.settings_divider).setVisibility(View.VISIBLE);
         layout.setVisibility(View.VISIBLE);
+        TextView tv = null;
+        AppCompatImageButton button = null;
         for (int i = 0; i < layout.getChildCount(); i++)
         {
             final View child = layout.getChildAt(i);
             if (child instanceof TextView)
             {
-                final TextView tv = (TextView) child;
+                tv = (TextView) child;
                 if (tv.getTag() != null && "VALUE".equals(tv.getTag()))
                 {
                     tv.setText(descriptionId);
@@ -272,6 +275,21 @@ public class DeviceFragment extends BaseFragment
                     prepareButtonListeners(child, msg);
                 }
                 setButtonEnabled(child, state.isOn());
+                if (state.isOn())
+                {
+                    button = (AppCompatImageButton) child;
+                }
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+        {
+            if (tv != null && button != null)
+            {
+                final AppCompatImageButton b = button;
+                tv.setEnabled(true);
+                tv.setClickable(true);
+                tv.setOnClickListener((View v) -> b.callOnClick());
             }
         }
     }
