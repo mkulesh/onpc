@@ -38,9 +38,11 @@ public class SpeakerBCommandMsg extends ZonedMessage
         TOGGLE("UP", R.string.speaker_b_command_toggle); /* Only available for main zone */
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Status(final String code, final int descriptionId)
+        Status(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
@@ -102,10 +104,5 @@ public class SpeakerBCommandMsg extends ZonedMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
-    }
-
-    public static Status toggle(Status s)
-    {
-        return (s == Status.OFF) ? Status.ON : Status.OFF;
     }
 }

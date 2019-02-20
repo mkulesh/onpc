@@ -36,9 +36,11 @@ public class FirmwareUpdateMsg extends ISCPMessage
         NET("NET", R.string.device_firmware_net);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Status(final String code, final int descriptionId)
+        Status(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

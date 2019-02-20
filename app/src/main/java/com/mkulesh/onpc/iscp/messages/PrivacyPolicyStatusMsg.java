@@ -35,9 +35,11 @@ public class PrivacyPolicyStatusMsg extends ISCPMessage
         SUE("001", R.string.privacy_policy_sue);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Status(final String code, final int descriptionId)
+        Status(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

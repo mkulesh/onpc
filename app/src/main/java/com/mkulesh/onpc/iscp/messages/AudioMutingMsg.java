@@ -40,9 +40,11 @@ public class AudioMutingMsg extends ZonedMessage
         TOGGLE("TG", R.string.audio_muting_toggle);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Status(final String code, final int descriptionId)
+        Status(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

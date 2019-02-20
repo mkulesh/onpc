@@ -37,9 +37,11 @@ public class DimmerLevelMsg extends ISCPMessage
         TOGGLE("DIM", R.string.device_dimmer_level_toggle);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Level(final String code, final int descriptionId)
+        Level(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

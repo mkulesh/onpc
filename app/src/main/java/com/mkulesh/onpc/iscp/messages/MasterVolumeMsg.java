@@ -13,7 +13,9 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
@@ -40,10 +42,13 @@ public class MasterVolumeMsg extends ZonedMessage
         UP1(R.string.master_volume_up1, R.drawable.volume_amp_up),
         DOWN1(R.string.master_volume_down1, R.drawable.volume_amp_down);
 
+        @StringRes
         final int descriptionId;
+
+        @DrawableRes
         final int imageId;
 
-        Command(final int descriptionId, final int imageId)
+        Command(@StringRes final int descriptionId, @DrawableRes final int imageId)
         {
             this.descriptionId = descriptionId;
             this.imageId = imageId;
@@ -54,11 +59,13 @@ public class MasterVolumeMsg extends ZonedMessage
             return toString();
         }
 
+        @StringRes
         public int getDescriptionId()
         {
             return descriptionId;
         }
 
+        @DrawableRes
         public int getImageId()
         {
             return imageId;

@@ -13,7 +13,9 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
@@ -39,10 +41,13 @@ public class AmpOperationCommandMsg extends ISCPMessage
         PWROFF(R.string.amp_cmd_system_standby, R.drawable.menu_power_standby),
         PWRTG(R.string.amp_cmd_system_on_toggle, R.drawable.menu_power_standby);
 
+        @StringRes
         final int descriptionId;
+
+        @DrawableRes
         final int imageId;
 
-        Command(final int descriptionId, final int imageId)
+        Command(@StringRes final int descriptionId, @DrawableRes final int imageId)
         {
             this.descriptionId = descriptionId;
             this.imageId = imageId;
@@ -53,11 +58,13 @@ public class AmpOperationCommandMsg extends ISCPMessage
             return toString();
         }
 
+        @StringRes
         public int getDescriptionId()
         {
             return descriptionId;
         }
 
+        @DrawableRes
         public int getImageId()
         {
             return imageId;

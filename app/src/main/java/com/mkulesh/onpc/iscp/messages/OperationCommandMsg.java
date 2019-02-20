@@ -13,7 +13,9 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
@@ -82,17 +84,21 @@ public class OperationCommandMsg extends ZonedMessage
         F2("F2", R.string.cmd_description_f2, R.drawable.feed_dont_like);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
+
+        @DrawableRes
         final int imageId;
 
-        Command(final String code, final int descriptionId)
+        Command(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
             this.imageId = -1;
         }
 
-        Command(final String code, final int descriptionId, final int imageId)
+        Command(final String code, @StringRes final int descriptionId, @DrawableRes final int imageId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
@@ -104,11 +110,13 @@ public class OperationCommandMsg extends ZonedMessage
             return code;
         }
 
+        @StringRes
         public int getDescriptionId()
         {
             return descriptionId;
         }
 
+        @DrawableRes
         public int getImageId()
         {
             return imageId;

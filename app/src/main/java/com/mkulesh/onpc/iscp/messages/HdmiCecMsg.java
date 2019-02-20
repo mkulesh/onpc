@@ -35,9 +35,11 @@ public class HdmiCecMsg extends ISCPMessage
         TOGGLE("UP", R.string.hdmi_cec_toggle);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Status(final String code, final int descriptionId)
+        Status(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

@@ -100,9 +100,11 @@ public class ListeningModeMsg extends ISCPMessage
         UP("UP", R.string.listening_mode_up);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Mode(final String code, final int descriptionId)
+        Mode(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

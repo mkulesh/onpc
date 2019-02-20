@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.R;
@@ -33,9 +34,11 @@ public class XmlListItemMsg extends ISCPMessage
         SEARCH("2F", R.drawable.media_item_search),
         PLAY("36", R.drawable.media_item_play);
         final String code;
+
+        @DrawableRes
         final int imageId;
 
-        Icon(String code, int imageId)
+        Icon(String code, @DrawableRes int imageId)
         {
             this.code = code;
             this.imageId = imageId;
@@ -46,6 +49,7 @@ public class XmlListItemMsg extends ISCPMessage
             return code;
         }
 
+        @DrawableRes
         public int getImageId()
         {
             return imageId;

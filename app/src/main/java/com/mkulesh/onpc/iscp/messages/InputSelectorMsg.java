@@ -14,6 +14,7 @@
 package com.mkulesh.onpc.iscp.messages;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
@@ -74,17 +75,19 @@ public class InputSelectorMsg extends ZonedMessage
         NONE("XX", -1);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
         final boolean mediaList;
 
-        InputType(String code, final int descriptionId, final boolean mediaList)
+        InputType(String code, @StringRes final int descriptionId, final boolean mediaList)
         {
             this.code = code;
             this.descriptionId = descriptionId;
             this.mediaList = mediaList;
         }
 
-        InputType(String code, final int descriptionId)
+        InputType(String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
@@ -96,6 +99,7 @@ public class InputSelectorMsg extends ZonedMessage
             return code;
         }
 
+        @StringRes
         public int getDescriptionId()
         {
             return descriptionId;

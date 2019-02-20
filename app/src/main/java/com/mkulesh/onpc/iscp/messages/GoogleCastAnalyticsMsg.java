@@ -34,9 +34,11 @@ public class GoogleCastAnalyticsMsg extends ISCPMessage
         ON("01", R.string.device_two_way_switch_on);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Status(final String code, final int descriptionId)
+        Status(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

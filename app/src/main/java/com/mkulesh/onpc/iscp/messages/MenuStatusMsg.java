@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.R;
@@ -68,9 +69,11 @@ public class MenuStatusMsg extends ISCPMessage
         FAVORITE_YELLOW("0B", R.drawable.feed_love);
 
         final String code;
+
+        @DrawableRes
         final int imageId;
 
-        Feed(String code, final int imageId)
+        Feed(String code, @DrawableRes final int imageId)
         {
             this.code = code;
             this.imageId = imageId;
@@ -81,6 +84,7 @@ public class MenuStatusMsg extends ISCPMessage
             return code;
         }
 
+        @DrawableRes
         public int getImageId()
         {
             return imageId;

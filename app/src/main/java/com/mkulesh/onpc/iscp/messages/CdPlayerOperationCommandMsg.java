@@ -13,7 +13,9 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
@@ -65,32 +67,35 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
         DISC5(R.string.cd_cmd_disc5),
         DISC6(R.string.cd_cmd_disc6);
 
+        @StringRes
         final int descriptionId;
+
+        @DrawableRes
         final int imageId;
         final String cmd;
 
-        Command(final int descriptionId)
+        Command(@StringRes final int descriptionId)
         {
             this.descriptionId = descriptionId;
             this.imageId = R.drawable.media_item_unknown;
             this.cmd = null;
         }
 
-        Command(final int descriptionId, final int imageId)
+        Command(@StringRes final int descriptionId, @DrawableRes final int imageId)
         {
             this.descriptionId = descriptionId;
             this.imageId = imageId;
             this.cmd = null;
         }
 
-        Command(final int descriptionId, final String cmd)
+        Command(@StringRes final int descriptionId, final String cmd)
         {
             this.descriptionId = descriptionId;
             this.imageId = R.drawable.media_item_unknown;
             this.cmd = cmd;
         }
 
-        Command(final int descriptionId, final int imageId, final String cmd)
+        Command(@StringRes final int descriptionId, @DrawableRes final int imageId, final String cmd)
         {
             this.descriptionId = descriptionId;
             this.imageId = imageId;
@@ -102,11 +107,13 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
             return toString();
         }
 
+        @StringRes
         public int getDescriptionId()
         {
             return descriptionId;
         }
 
+        @DrawableRes
         public int getImageId()
         {
             return imageId;

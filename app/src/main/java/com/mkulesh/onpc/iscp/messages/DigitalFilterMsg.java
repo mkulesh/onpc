@@ -36,9 +36,11 @@ public class DigitalFilterMsg extends ISCPMessage
         TOGGLE("UP", R.string.device_digital_filter_toggle);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Filter(final String code, final int descriptionId)
+        Filter(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

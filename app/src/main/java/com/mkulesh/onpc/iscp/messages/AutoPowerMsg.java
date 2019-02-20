@@ -35,9 +35,11 @@ public class AutoPowerMsg extends ISCPMessage
         TOGGLE("UP", R.string.device_auto_power_toggle);
 
         final String code;
+
+        @StringRes
         final int descriptionId;
 
-        Status(final String code, final int descriptionId)
+        Status(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;

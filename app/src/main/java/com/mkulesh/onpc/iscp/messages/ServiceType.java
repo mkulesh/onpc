@@ -13,6 +13,9 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
+
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -31,7 +34,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
  */
 public enum ServiceType implements ISCPMessage.StringParameterIf
 {
-    UNKNOWN("XX", "", R.drawable.media_item_unknown),
+    UNKNOWN("XX", "", R.string.dashed_string),
     MUSIC_SERVER("00", "Music Server", R.string.service_music_server, R.drawable.media_item_media_server),
     FAVORITE("01", "Favorite", R.string.service_favorite, R.drawable.media_item_favorite),
     VTUNER("02", "vTuner", R.string.service_vtuner),
@@ -69,10 +72,14 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
 
     final String code;
     final String name;
+
+    @StringRes
     final int descriptionId;
+
+    @DrawableRes
     final int imageId;
 
-    ServiceType(final String code, final String name, final int descriptionId, final int imageId)
+    ServiceType(final String code, final String name, @StringRes final int descriptionId, @DrawableRes final int imageId)
     {
         this.code = code;
         this.name = name;
@@ -80,7 +87,7 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
         this.imageId = imageId;
     }
 
-    ServiceType(final String code, final String name, final int descriptionId)
+    ServiceType(final String code, final String name, @StringRes final int descriptionId)
     {
         this.code = code;
         this.name = name;
@@ -98,11 +105,13 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
         return name;
     }
 
+    @StringRes
     public int getDescriptionId()
     {
         return descriptionId;
     }
 
+    @DrawableRes
     public int getImageId()
     {
         return imageId;
