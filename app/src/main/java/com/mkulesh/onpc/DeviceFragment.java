@@ -43,6 +43,36 @@ import java.util.HashSet;
 
 public class DeviceFragment extends BaseFragment
 {
+    private enum SpeakerABStatus
+    {
+        NONE(R.string.device_two_way_switch_none, SpeakerACommandMsg.Status.NONE, SpeakerBCommandMsg.Status.NONE),
+        OFF(R.string.speaker_ab_command_ab_off, SpeakerACommandMsg.Status.OFF, SpeakerBCommandMsg.Status.OFF),
+        ON(R.string.speaker_ab_command_ab_on, SpeakerACommandMsg.Status.ON, SpeakerBCommandMsg.Status.ON),
+        A_ONLY(R.string.speaker_ab_command_a_only, SpeakerACommandMsg.Status.ON, null),
+        B_ONLY(R.string.speaker_ab_command_b_only, null, SpeakerBCommandMsg.Status.ON);
+
+        @StringRes
+        final int descriptionId;
+
+        final SpeakerACommandMsg.Status speakerA;
+        final SpeakerBCommandMsg.Status speakerB;
+
+        SpeakerABStatus(@StringRes final int descriptionId,
+                        final SpeakerACommandMsg.Status speakerA,
+                        final SpeakerBCommandMsg.Status speakerB)
+        {
+            this.descriptionId = descriptionId;
+            this.speakerA = speakerA;
+            this.speakerB = speakerB;
+        }
+
+        @StringRes
+        int getDescriptionId()
+        {
+            return descriptionId;
+        }
+    }
+
     public DeviceFragment()
     {
         // Empty constructor required for fragment subclasses
@@ -73,8 +103,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
         prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
-        prepareImageButton(R.id.speaker_a_command_toggle, null);
-        prepareImageButton(R.id.speaker_b_command_toggle, null);
+        prepareImageButton(R.id.speaker_ab_command_toggle, null);
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
 
         update(null, null);
@@ -97,8 +126,7 @@ public class DeviceFragment extends BaseFragment
                     R.id.device_digital_filter_layout,
                     R.id.device_auto_power_layout,
                     R.id.hdmi_cec_layout,
-                    R.id.speaker_a_layout,
-                    R.id.speaker_b_layout,
+                    R.id.speaker_ab_layout,
                     R.id.google_cast_analytics_layout
             };
             for (int layoutId : settingsLayout)
@@ -176,12 +204,35 @@ public class DeviceFragment extends BaseFragment
         // Speaker A/B (For Main zone and Zone 2 only)
         {
             final boolean zoneAllowed = (state.getActiveZone() < 2);
-            prepareSettingPanel(state, zoneAllowed && state.speakerA != SpeakerACommandMsg.Status.NONE,
-                    R.id.speaker_a_layout, state.speakerA.getDescriptionId(),
-                    new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.toggle(state.speakerA)));
-            prepareSettingPanel(state, zoneAllowed && state.speakerB != SpeakerBCommandMsg.Status.NONE,
-                    R.id.speaker_b_layout, state.speakerB.getDescriptionId(),
-                    new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.toggle(state.speakerB)));
+            final SpeakerABStatus spState = getSpeakerABStatus(state.speakerA, state.speakerB);
+            prepareSettingPanel(state, zoneAllowed && spState != SpeakerABStatus.NONE,
+                    R.id.speaker_ab_layout, spState.getDescriptionId(), null);
+            final AppCompatImageButton b = rootView.findViewById(R.id.speaker_ab_command_toggle);
+            // OFF -> A_ONLY -> B_ONLY -> ON -> A_ONLY -> B_ONLY -> ON -> A_ONLY -> ...
+            switch (spState)
+            {
+            case NONE:
+                // nothing to do
+                break;
+            case OFF:
+                prepareButtonListeners(b,
+                        new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.ON));
+                break;
+            case A_ONLY:
+                prepareButtonListeners(b,
+                        new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.Status.ON),
+                        () -> activity.getStateManager().sendMessage(
+                                new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.OFF)));
+                break;
+            case B_ONLY:
+                prepareButtonListeners(b,
+                        new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.ON));
+                break;
+            case ON:
+                prepareButtonListeners(b,
+                        new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.Status.OFF));
+                break;
+            }
         }
 
         // Google Cast analytics
@@ -231,4 +282,29 @@ public class DeviceFragment extends BaseFragment
         prepareButtonListeners(b, msg);
         setButtonEnabled(b, false);
     }
+
+    @NonNull
+    private SpeakerABStatus getSpeakerABStatus(
+            SpeakerACommandMsg.Status speakerA, SpeakerBCommandMsg.Status speakerB)
+    {
+        for (final SpeakerABStatus s : SpeakerABStatus.values())
+        {
+            if (speakerA == s.speakerA && speakerB == s.speakerB)
+            {
+                return s;
+            }
+        }
+        if (speakerA == SpeakerACommandMsg.Status.ON
+                && speakerB != SpeakerBCommandMsg.Status.ON)
+        {
+            return SpeakerABStatus.A_ONLY;
+        }
+        if (speakerA != SpeakerACommandMsg.Status.ON
+                && speakerB == SpeakerBCommandMsg.Status.ON)
+        {
+            return SpeakerABStatus.B_ONLY;
+        }
+        return SpeakerABStatus.OFF;
+    }
+
 }

@@ -205,11 +205,11 @@
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/speaker_a_layout" >
+                android:id="@+id/speaker_ab_layout" >
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:text="@string/speaker_a_command" />
+                    android:text="@string/speaker_ab_command" />
 
                 <TextView
                     style="@style/DeviceValueViewStyle"
@@ -218,28 +218,9 @@
 
                 <android.support.v7.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
-                    android:id="@+id/speaker_a_command_toggle"
+                    android:id="@+id/speaker_ab_command_toggle"
                     android:src="@drawable/wrap_around"
-                    android:contentDescription="@string/speaker_a_command_toggle" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/speaker_b_layout" >
-
-                <TextView
-                    style="@style/DeviceLabelViewStyle"
-                    android:text="@string/speaker_b_command" />
-
-                <TextView
-                    style="@style/DeviceValueViewStyle"
-                    android:tag="VALUE"
-                    android:gravity="center" />
-
-                <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonSecondaryStyle"
-                    android:id="@+id/speaker_b_command_toggle"
-                    android:src="@drawable/wrap_around"
-                    android:contentDescription="@string/speaker_b_command_toggle" />
+                    android:contentDescription="@string/speaker_ab_command_toggle" />
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle"

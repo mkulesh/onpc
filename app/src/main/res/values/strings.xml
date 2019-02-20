@@ -23,7 +23,7 @@
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
     <string name="action_ok">OK</string>
-    <string name="action_cancel">CANCEL</string>
+    <string name="action_cancel">Cancel</string>
 
     <string name="html_about"><![CDATA[
     <p>Remote controller for Onkyo devices: listen to music properly!</p>
@@ -206,6 +206,7 @@
     <string name="master_volume_up1">Sets volume level up 1dB step</string>
     <string name="master_volume_down1">Sets volume level down 1dB step</string>
 
+    <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Play</string>
     <string name="cmd_description_stop">Stop</string>
     <string name="cmd_description_pause">Pause</string>
@@ -393,6 +394,14 @@
     <!-- Speaker B Command -->
     <string name="speaker_b_command">Speaker B</string>
     <string name="speaker_b_command_toggle">Sets speaker B switch wrap-around</string>
+
+    <!-- Speaker A/B three-way switch -->
+    <string name="speaker_ab_command">Speaker A/B</string>
+    <string name="speaker_ab_command_toggle">Toggle between speakers</string>
+    <string name="speaker_ab_command_ab_off">Both off</string>
+    <string name="speaker_ab_command_ab_on">Both on</string>
+    <string name="speaker_ab_command_a_only">A only</string>
+    <string name="speaker_ab_command_b_only">B only</string>
 
     <!-- Auto power commands -->
     <string name="device_auto_power">Auto power</string>
