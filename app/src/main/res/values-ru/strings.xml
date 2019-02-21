@@ -63,7 +63,7 @@
     <string name="menu_receiver_information">Информация</string>
 
     <!-- Tabs -->
-    <string name="title_monitor">Воспроизведение</string>
+    <string name="title_monitor">Музыка</string>
     <string name="title_media">Каналы</string>
     <string name="title_remote_interface">RI</string>
     <string name="title_device">Устройство</string>
