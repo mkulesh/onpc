@@ -21,7 +21,7 @@
     <string name="app_description">Управляй музыкой на устройствах Onkyo одним кликом!</string>
     <string name="state_not_connected">Отсутствует соединение</string>
     <string name="state_standby">Ожидание</string>
-    <string name="action_exit_confirm">Нажмите Назад дважды для выхода</string>
+    <string name="action_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">ОТМЕНА</string>
 
