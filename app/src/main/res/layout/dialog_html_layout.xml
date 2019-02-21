@@ -17,7 +17,7 @@
     android:orientation="vertical"
     android:paddingLeft="?dialogPreferredPadding"
     android:paddingRight="?dialogPreferredPadding"
-    android:paddingTop="0dp"
+    android:paddingTop="16dp"
     android:paddingBottom="0dp">
 
     <View style="@style/HorizontalDividerStyle" />

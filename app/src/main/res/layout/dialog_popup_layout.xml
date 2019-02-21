@@ -15,6 +15,9 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="?dialogPreferredPadding">
+    android:paddingLeft="?dialogPreferredPadding"
+    android:paddingRight="?dialogPreferredPadding"
+    android:paddingTop="16dp"
+    android:paddingBottom="?dialogPreferredPadding">
 
 </LinearLayout>
