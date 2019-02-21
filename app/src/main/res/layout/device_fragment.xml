@@ -42,7 +42,7 @@
                     android:text="@string/device_friendly_name" />
 
                 <android.support.v7.widget.AppCompatEditText
-                    style="@style/DeviceValueViewStyle"
+                    style="@style/DeviceEditableViewStyle"
                     android:id="@+id/device_edit_friendly_name"
                     android:inputType="text"
                     android:focusable="true" />
