@@ -50,7 +50,7 @@ public class Configuration
 
     static final String DEVICE_SELECTORS = "device_selectors";
     static final String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
-    static final String FRIENDLY_SELECTOR_NAME = "friendly_selector_name";
+    static final String FRIENDLY_NAMES = "pref_friendly_names";
     static final String NETWORK_SERVICES = "network_services";
     static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
     static final String SELECTED_LISTENING_MODES = "selected_listening_modes";
@@ -247,9 +247,9 @@ public class Configuration
         return result;
     }
 
-    public boolean isFriendlySelectorName()
+    public boolean isFriendlyNames()
     {
-        return preferences.getBoolean(FRIENDLY_SELECTOR_NAME, true);
+        return preferences.getBoolean(FRIENDLY_NAMES, true);
     }
 
     public void setNetworkServices(HashMap<String, String> networkServices)

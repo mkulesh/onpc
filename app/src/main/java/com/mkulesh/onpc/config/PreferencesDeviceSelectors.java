@@ -40,7 +40,7 @@ public class PreferencesDeviceSelectors extends DraggableListActivity
             return;
         }
 
-        final boolean fName = preferences.getBoolean(Configuration.FRIENDLY_SELECTOR_NAME, true);
+        final boolean fName = preferences.getBoolean(Configuration.FRIENDLY_NAMES, true);
         final ArrayList<String> defItems = new ArrayList<>(Arrays.asList(allItems));
         final List<CheckableItem> targetItems = new ArrayList<>();
         final List<String> checkedItems = new ArrayList<>();

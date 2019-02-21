@@ -82,6 +82,10 @@
     <string name="pref_listening_modes">Listening modes</string>
     <string name="pref_network_services">Network services</string>
 
+    <string name="pref_friendly_names">Friendly selector and device names</string>
+    <string name="pref_friendly_names_summary_on">Use friendly names provided by Onkyo device</string>
+    <string name="pref_friendly_names_summary_off">Use build-in names</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Sound control</string>
     <string-array name="pref_sound_control_names">
@@ -263,9 +267,6 @@
     <string name="medialist_no_items">No items</string>
 
     <!-- Input selectors -->
-    <string name="friendly_selector_name">Friendly selector name</string>
-    <string name="friendly_selector_summary_on">Use selector names provided by Onkyo device</string>
-    <string name="friendly_selector_summary_off">Use build-in selector names</string>
     <string name="input_selector_video1">VCR/DVR</string>
     <string name="input_selector_video2">CBL/SAT</string>
     <string name="input_selector_video3">GAME</string>

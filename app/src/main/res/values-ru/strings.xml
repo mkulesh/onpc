@@ -82,6 +82,10 @@
     <string name="pref_listening_modes">Профили</string>
     <string name="pref_network_services">Сервисы</string>
 
+    <string name="pref_friendly_names">Удобные названия каналов и устройства</string>
+    <string name="pref_friendly_names_summary_on">Использовать удобные названия, предоставленные устройством Onkyo</string>
+    <string name="pref_friendly_names_summary_off">Использовать встроенные названия</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Управление звуком</string>
     <string-array name="pref_sound_control_names">
@@ -262,9 +266,6 @@
     <string name="medialist_no_items">No items</string>
 
     <!-- Input selectors -->
-    <string name="friendly_selector_name">Удобное название канала</string>
-    <string name="friendly_selector_summary_on">Использовать названия каналов устройства Onkyo</string>
-    <string name="friendly_selector_summary_off">Использовать встроенные названия каналов</string>
     <string name="input_selector_video1">VCR/DVR</string>
     <string name="input_selector_video2">CBL/SAT</string>
     <string name="input_selector_video3">GAME</string>
@@ -394,6 +395,14 @@
     <!-- Speaker B Command -->
     <string name="speaker_b_command">Speaker B</string>
     <string name="speaker_b_command_toggle">Sets speaker B switch wrap-around</string>
+
+    <!-- Speaker A/B three-way switch -->
+    <string name="speaker_ab_command">Speaker A/B</string>
+    <string name="speaker_ab_command_toggle">Toggle between speakers</string>
+    <string name="speaker_ab_command_ab_off">Both off</string>
+    <string name="speaker_ab_command_ab_on">Both on</string>
+    <string name="speaker_ab_command_a_only">A only</string>
+    <string name="speaker_ab_command_b_only">B only</string>
 
     <!-- Auto power commands -->
     <string name="device_auto_power">Авто включение</string>

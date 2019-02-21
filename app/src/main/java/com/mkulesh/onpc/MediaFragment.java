@@ -227,7 +227,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             }
             final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
                     msg, msg.getInputType(), () -> progressIndicator.setVisibility(View.VISIBLE));
-            if (activity.getConfiguration().isFriendlySelectorName())
+            if (activity.getConfiguration().isFriendlyNames())
             {
                 b.setText(s.getName());
             }
