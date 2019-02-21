@@ -90,7 +90,7 @@
         <item>Device</item>
     </string-array>
 
-    <string name="pref_default_sound_control" translatable="true">устройство</string>
+    <string name="pref_default_sound_control" translatable="false">device</string>
     <string-array name="pref_sound_control_codes" translatable="false">
         <item>none</item>
         <item>external-amplifier</item>
@@ -201,6 +201,7 @@
     <string name="audio_muting_toggle">Вкл/Выкл звука плеера</string>
 
     <!-- Master Volume Command  -->
+    <string name="master_volume">Громкость</string>
     <string name="master_volume_up">Повысить громкость</string>
     <string name="master_volume_down">Понизить громкость</string>
     <string name="master_volume_up1">Повысить громкость на 1dB</string>

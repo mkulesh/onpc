@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -47,7 +48,6 @@ import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -221,6 +221,8 @@ public class MonitorFragment extends BaseFragment
             ((LinearLayout.LayoutParams) b.getLayoutParams()).setMargins(0, 0, 0, 0);
             b.setPadding(0, 0, 0, 0);
             b.setVisibility(View.GONE);
+            b.setContentDescription(activity.getResources().getString(R.string.master_volume));
+            prepareButtonListeners(b, null, this::createMasterVolumeDialog);
             deviceSoundButtons.add(b);
         }
         // volume up
@@ -249,6 +251,71 @@ public class MonitorFragment extends BaseFragment
                 deviceSoundButtons.add(b);
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void createMasterVolumeDialog()
+    {
+        if (!activity.isConnected())
+        {
+            return;
+        }
+
+        final State state = activity.getStateManager().getState();
+        final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+        if (zone.getVolMax() == 0)
+        {
+            return;
+        }
+
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
+        {
+            final TextView minValue = frameView.findViewById(R.id.volume_min_value);
+            minValue.setText("0");
+
+            final TextView maxValue = frameView.findViewById(R.id.volume_max_value);
+            maxValue.setText(Integer.toString(zone.getVolMax()));
+        }
+
+        final AppCompatSeekBar progressBar = frameView.findViewById(R.id.progress_bar);
+        progressBar.setMax(zone.getVolMax());
+        progressBar.setProgress((int)State.getVolumeLevelFloat(state.volumeLevel, state.getActiveZoneInfo()));
+        progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            int progressChanged = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
+                progressChanged = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+                // empty
+            }
+
+            @SuppressLint("SetTextI18n")
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+                if (activity.isConnected())
+                {
+                    activity.getStateManager().sendMessage(
+                            new MasterVolumeMsg(state.getActiveZone(), progressChanged));
+                }
+            }
+        });
+
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.master_volume)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView).create();
+        dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 
     @Override
@@ -464,21 +531,11 @@ public class MonitorFragment extends BaseFragment
         return b.getTag() != null && b.getTag() instanceof String && VOLUME_LEVEL.equals(b.getTag());
     }
 
-    @SuppressLint("SetTextI18n")
     private void updateVolumeLevel(AppCompatButton b, final int volumeLevel, final ReceiverInformationMsg.Zone zone)
     {
         b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL ? View.VISIBLE : View.GONE);
-        if (zone != null && zone.getVolumeStep() == 0)
-        {
-            final DecimalFormat df = Utils.getDecimalFormat("0.0");
-            final float floatLevel = (float) volumeLevel / 2.0f;
-            b.setText(df.format(floatLevel));
-        }
-        else
-        {
-            b.setText(Integer.toString(volumeLevel));
-        }
-        setButtonEnabled(b, false);
+        b.setText(State.getVolumeLevelStr(volumeLevel, zone));
+        setButtonEnabled(b, true);
     }
 
     private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)

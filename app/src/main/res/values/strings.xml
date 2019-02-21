@@ -201,6 +201,7 @@
     <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
 
     <!-- Master Volume Command  -->
+    <string name="master_volume">Master volume</string>
     <string name="master_volume_up">Sets volume level up</string>
     <string name="master_volume_down">Sets volume level down</string>
     <string name="master_volume_up1">Sets volume level up 1dB step</string>

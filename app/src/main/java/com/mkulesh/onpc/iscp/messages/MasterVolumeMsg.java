@@ -93,6 +93,14 @@ public class MasterVolumeMsg extends ZonedMessage
     {
         super(0, null, zoneIndex);
         this.command = level;
+        this.volumeLevel = NO_LEVEL;
+    }
+
+    public MasterVolumeMsg(int zoneIndex, int volumeLevel)
+    {
+        super(0, null, zoneIndex);
+        this.command = null;
+        this.volumeLevel = volumeLevel;
     }
 
     @Override
@@ -119,7 +127,16 @@ public class MasterVolumeMsg extends ZonedMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', getZoneCommand(), command.getCode());
+        String par = "";
+        if (command != null)
+        {
+            par = command.getCode();
+        }
+        else if (volumeLevel != NO_LEVEL)
+        {
+            par = Integer.toString(volumeLevel, 16);
+        }
+        return new EISCPMessage('1', getZoneCommand(), par);
     }
 
     @Override

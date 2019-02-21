@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
@@ -50,8 +51,10 @@ import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -795,4 +798,22 @@ public class State
         return false;
     }
 
+    public static float getVolumeLevelFloat(int volumeLevel, ReceiverInformationMsg.Zone zone)
+    {
+        return (zone != null && zone.getVolumeStep() == 0) ? (float) volumeLevel / 2.0f : (float) volumeLevel;
+    }
+
+    @SuppressLint("SetTextI18n")
+    public static String getVolumeLevelStr(int volumeLevel, ReceiverInformationMsg.Zone zone)
+    {
+        if (zone != null && zone.getVolumeStep() == 0)
+        {
+            final DecimalFormat df = Utils.getDecimalFormat("0.0");
+            return df.format(getVolumeLevelFloat(volumeLevel, zone));
+        }
+        else
+        {
+            return Integer.toString((int) getVolumeLevelFloat(volumeLevel, zone));
+        }
+    }
 }

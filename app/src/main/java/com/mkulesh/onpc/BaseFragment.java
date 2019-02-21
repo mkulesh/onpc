@@ -26,7 +26,6 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -182,7 +181,7 @@ abstract public class BaseFragment extends Fragment
             }
         });
 
-        if (b instanceof AppCompatImageButton || b instanceof ImageView)
+        if (b.getContentDescription() != null && b.getContentDescription().length() > 0)
         {
             b.setLongClickable(true);
             b.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));

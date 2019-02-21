@@ -52,19 +52,22 @@ public class ReceiverInformationMsg extends ISCPMessage
         final String id;
         final String name;
         final int volumeStep;
+        final int volMax;
 
         Zone(Element e)
         {
             id = e.getAttribute("id").toUpperCase();
             name = e.getAttribute("name");
             volumeStep = e.hasAttribute("volstep") ? Integer.parseInt(e.getAttribute("volstep")) : 0;
+            volMax = e.hasAttribute("volmax") ? Integer.parseInt(e.getAttribute("volmax"), 16) : 0;
         }
 
-        public Zone(final String id, final String name, final int volumeStep)
+        public Zone(final String id, final String name, final int volumeStep, final int volMax)
         {
             this.id = id;
             this.name = name;
             this.volumeStep = volumeStep;
+            this.volMax = volMax;
         }
 
         public String getName()
@@ -75,6 +78,11 @@ public class ReceiverInformationMsg extends ISCPMessage
         public int getVolumeStep()
         {
             return volumeStep;
+        }
+
+        public int getVolMax()
+        {
+            return volMax;
         }
 
         @NonNull
@@ -176,7 +184,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     public static List<Zone> getDefaultZones()
     {
         List<ReceiverInformationMsg.Zone> defaultZones = new ArrayList<>();
-        defaultZones.add(new Zone("1", "Main", 1));
+        defaultZones.add(new Zone("1", "Main", 1, 0));
         return defaultZones;
     }
 
