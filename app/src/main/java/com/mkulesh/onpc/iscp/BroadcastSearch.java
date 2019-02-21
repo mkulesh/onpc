@@ -84,7 +84,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 .setNegativeButton(context.getResources().getString(R.string.action_cancel), (dialog, which) -> active.set(false))
                 .create();
 
-        dialog.getLayoutInflater().inflate(R.layout.broadcast_dialog_layout, frameView);
+        dialog.getLayoutInflater().inflate(R.layout.dialog_broadcast_layout, frameView);
         radioGroup = frameView.findViewById(R.id.broadcast_radio_group);
         active.set(true);
         dialog.show();

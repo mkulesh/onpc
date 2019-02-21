@@ -103,7 +103,7 @@ public class PopupBuilder
         // dialog layout
         final AlertDialog alertDialog = builder.create();
         LayoutInflater inflater = alertDialog.getLayoutInflater();
-        FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.popup_layout, frameView);
+        FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.dialog_popup_layout, frameView);
         if (dialogFrame.getChildCount() != 1)
         {
             throw new Exception("cannot inflate dialog layout");

@@ -118,7 +118,7 @@ class MainNavigationDrawer
     private void navigationConnectDevice()
     {
         final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.connect_dialog_layout, frameView);
+        activity.getLayoutInflater().inflate(R.layout.dialog_connect_layout, frameView);
         final EditText deviceName = frameView.findViewById(R.id.device_name);
         deviceName.setText(configuration.getDeviceName());
         final EditText devicePort = frameView.findViewById(R.id.device_port);

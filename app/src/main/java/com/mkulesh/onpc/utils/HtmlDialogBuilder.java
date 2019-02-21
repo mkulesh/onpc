@@ -56,7 +56,7 @@ public class HtmlDialogBuilder
                 .setPositiveButton(context.getResources().getString(R.string.action_ok), (dialog, which) -> { /* empty */ }).create();
 
         final LayoutInflater inflater = alertDialog.getLayoutInflater();
-        final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.html_dialog_layout, frameView);
+        final FrameLayout dialogFrame = (FrameLayout) inflater.inflate(R.layout.dialog_html_layout, frameView);
 
         if (text.isEmpty())
         {
