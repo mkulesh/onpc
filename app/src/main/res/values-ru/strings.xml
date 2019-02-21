@@ -83,7 +83,7 @@
     <string name="pref_network_services">Сервисы</string>
 
     <!-- Sound Control -->
-    <string name="pref_sound_control">Громкость</string>
+    <string name="pref_sound_control">Управление звуком</string>
     <string-array name="pref_sound_control_names">
         <item>None</item>
         <item>External amplifier (RI)</item>
