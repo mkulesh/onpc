@@ -70,7 +70,7 @@
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Настройки устройства</string>
-    <string name="pref_category_ri_options">Пульт</string>
+    <string name="pref_category_ri_options">RI</string>
     <string name="pref_category_advanced_options">Дополнительно</string>
 
     <string name="pref_volume_title">Управление громкостью</string>
