@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/btn_track_menu"
-                android:src="@drawable/track_menu"
+                android:src="@drawable/cmd_menu"
                 android:contentDescription="@string/medialist_track_menu"
                 android:visibility="invisible"
                 android:tag="MENU" />

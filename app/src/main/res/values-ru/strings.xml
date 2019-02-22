@@ -13,8 +13,6 @@
 
 <resources>
 
-    <string name="dashed_string" translatable="false">---</string>
-
     <!-- Main view -->
     <string name="app_name">Open Music Controller for Onkyo</string>
     <string name="app_short_name">Music Control</string>
@@ -65,8 +63,9 @@
     <!-- Tabs -->
     <string name="title_monitor">Музыка</string>
     <string name="title_media">Каналы</string>
-    <string name="title_remote_interface">RI</string>
     <string name="title_device">Устройство</string>
+    <string name="title_remote_control">RC</string>
+    <string name="title_remote_interface">RI</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Настройки устройства</string>
@@ -94,13 +93,6 @@
         <item>Device</item>
     </string-array>
 
-    <string name="pref_default_sound_control" translatable="false">device</string>
-    <string-array name="pref_sound_control_codes" translatable="false">
-        <item>none</item>
-        <item>external-amplifier</item>
-        <item>device</item>
-    </string-array>
-
     <!-- App themes -->
     <string name="pref_app_theme">Тема</string>
     <string-array name="pref_theme_names">
@@ -113,39 +105,7 @@
         <item>Light (Purple and Green)</item>
     </string-array>
 
-    <string name="pref_default_theme_code" translatable="false">indigo-orange</string>
-    <string-array name="pref_theme_codes" translatable="false">
-        <item>black-lime</item>
-        <item>dim-gray-cyan</item>
-        <item>dim-gray-yellow</item>
-        <item>gray-deep-purple</item>
-        <item>indigo-orange</item>
-        <item>teal-deep-orange</item>
-        <item>purple-green</item>
-    </string-array>
-
-    <array name="main_themes" translatable="false">
-        <item>@style/MainThemeBlackLime</item>
-        <item>@style/MainThemeDimGrayCyan</item>
-        <item>@style/MainThemeDimGrayYellow</item>
-        <item>@style/MainThemeGrayDeepPurple</item>
-        <item>@style/MainThemeIndigoOrange</item>
-        <item>@style/MainThemeTealDeepOrange</item>
-        <item>@style/MainThemePurpleGreen</item>
-    </array>
-
-    <array name="settings_themes" translatable="false">
-        <item>@style/SettingsThemeBlackLime</item>
-        <item>@style/SettingsThemeDimGrayCyan</item>
-        <item>@style/SettingsThemeDimGrayYellow</item>
-        <item>@style/SettingsThemeGrayDeepPurple</item>
-        <item>@style/SettingsThemeIndigoOrange</item>
-        <item>@style/SettingsThemeTealDeepOrange</item>
-        <item>@style/SettingsThemePurpleGreen</item>
-    </array>
-
     <!-- Playback tab -->
-    <string name="tv_time_default" translatable="false">--:--</string>
     <string name="tv_display_mode">Отображение</string>
 
     <!-- Amplifier commands (RI interface) -->
@@ -389,11 +349,9 @@
     <string name="device_two_way_switch_on">Вкл</string>
 
     <!-- Speaker A Command -->
-    <string name="speaker_a_command">Speaker A</string>
     <string name="speaker_a_command_toggle">Sets speaker A switch wrap-around</string>
 
     <!-- Speaker B Command -->
-    <string name="speaker_b_command">Speaker B</string>
     <string name="speaker_b_command_toggle">Sets speaker B switch wrap-around</string>
 
     <!-- Speaker A/B three-way switch -->

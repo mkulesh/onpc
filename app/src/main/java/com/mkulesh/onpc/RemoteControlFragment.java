@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018. Mikhail Kulesh
+ * Copyright (C) 2019. Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -23,17 +23,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.iscp.State;
-import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
-import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class RemoteInterfaceFragment extends BaseFragment
+public class RemoteControlFragment extends BaseFragment
 {
     private final ArrayList<View> buttons = new ArrayList<>();
 
-    public RemoteInterfaceFragment()
+    public RemoteControlFragment()
     {
         // Empty constructor required for fragment subclasses
     }
@@ -41,27 +41,13 @@ public class RemoteInterfaceFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.remote_interface_fragment);
-
-        if (activity.getConfiguration().isRemoteInterfaceAmp())
-        {
-            final LinearLayout l = rootView.findViewById(R.id.remote_interface_amp);
-            l.setVisibility(View.VISIBLE);
-            collectButtons(l, buttons);
-        }
-
-        if (activity.getConfiguration().isRemoteInterfaceCd())
-        {
-            final LinearLayout l = rootView.findViewById(R.id.remote_interface_cd);
-            l.setVisibility(View.VISIBLE);
-            collectButtons(l, buttons);
-        }
-
+        initializeFragment(inflater, container, R.layout.remote_control_fragment);
+        final LinearLayout l = rootView.findViewById(R.id.remote_control_layout);
+        collectButtons(l, buttons);
         for (View b : buttons)
         {
             prepareRiButton(b);
         }
-
         update(null, null);
         return rootView;
     }
@@ -81,23 +67,9 @@ public class RemoteInterfaceFragment extends BaseFragment
 
         switch (msgName)
         {
-        case AmpOperationCommandMsg.CODE:
+        case OperationCommandMsg.CODE:
         {
-            final AmpOperationCommandMsg cmd = new AmpOperationCommandMsg(tokens[1]);
-            if (b instanceof AppCompatImageButton)
-            {
-                prepareButton((AppCompatImageButton) b, cmd, cmd.getCommand().getImageId(), cmd.getCommand().getDescriptionId());
-
-            }
-            else
-            {
-                prepareButtonListeners(b, cmd, null);
-            }
-            break;
-        }
-        case CdPlayerOperationCommandMsg.CODE:
-        {
-            final CdPlayerOperationCommandMsg cmd = new CdPlayerOperationCommandMsg(tokens[1]);
+            final OperationCommandMsg cmd = new OperationCommandMsg(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, tokens[1]);
             if (b instanceof AppCompatImageButton)
             {
                 prepareButton((AppCompatImageButton) b, cmd, cmd.getCommand().getImageId(), cmd.getCommand().getDescriptionId());

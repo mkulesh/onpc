@@ -36,7 +36,7 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
     {
         super(fm);
         this.context = context;
-        this.items = configuration.isRemoteInterface() ? 4 : 3;
+        this.items = configuration.isRemoteInterface() ? 5 : 4;
     }
 
     @Override
@@ -51,6 +51,8 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
         case 2:
             return prepareFragment(new DeviceFragment(), position);
         case 3:
+            return prepareFragment(new RemoteControlFragment(), position);
+        case 4:
             return prepareFragment(new RemoteInterfaceFragment(), position);
         }
         return null;
@@ -83,6 +85,8 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
         case 2:
             return context.getString(R.string.title_device).toUpperCase(l);
         case 3:
+            return context.getString(R.string.title_remote_control).toUpperCase(l);
+        case 4:
             return context.getString(R.string.title_remote_interface).toUpperCase(l);
         }
         return null;

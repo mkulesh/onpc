@@ -65,8 +65,9 @@
     <!-- Tabs -->
     <string name="title_monitor">Monitor</string>
     <string name="title_media">Media</string>
-    <string name="title_remote_interface">RI</string>
     <string name="title_device">Device</string>
+    <string name="title_remote_control">RC</string>
+    <string name="title_remote_interface">RI</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Device options</string>
@@ -390,11 +391,9 @@
     <string name="device_two_way_switch_on">On</string>
 
     <!-- Speaker A Command -->
-    <string name="speaker_a_command">Speaker A</string>
     <string name="speaker_a_command_toggle">Sets speaker A switch wrap-around</string>
 
     <!-- Speaker B Command -->
-    <string name="speaker_b_command">Speaker B</string>
     <string name="speaker_b_command_toggle">Sets speaker B switch wrap-around</string>
 
     <!-- Speaker A/B three-way switch -->

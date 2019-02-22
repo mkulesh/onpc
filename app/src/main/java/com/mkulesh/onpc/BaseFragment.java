@@ -35,6 +35,7 @@ import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -217,7 +218,7 @@ abstract public class BaseFragment extends Fragment
     }
 
     AppCompatButton createButton(@StringRes int descriptionId,
-                                           final ISCPMessage msg, Object tag, final ButtonListener listener)
+                                 final ISCPMessage msg, Object tag, final ButtonListener listener)
     {
         ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.TextButtonStyle);
         final AppCompatButton b = new AppCompatButton(wrappedContext, null, 0);
@@ -231,5 +232,21 @@ abstract public class BaseFragment extends Fragment
         b.setTag(tag);
         prepareButtonListeners(b, msg, listener);
         return b;
+    }
+
+    protected static void collectButtons(LinearLayout layout, ArrayList<View> out)
+    {
+        for (int k = 0; k < layout.getChildCount(); k++)
+        {
+            View v = layout.getChildAt(k);
+            if (v instanceof AppCompatImageButton || v instanceof AppCompatButton)
+            {
+                out.add(v);
+            }
+            if (v instanceof LinearLayout)
+            {
+                collectButtons((LinearLayout) v, out);
+            }
+        }
     }
 }
