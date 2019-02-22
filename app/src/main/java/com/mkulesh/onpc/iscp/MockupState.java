@@ -38,7 +38,9 @@ class MockupState extends State
         deviceProperties.put("brand", "Onkyo");
         deviceProperties.put("model", "NS-6130");
         deviceProperties.put("year", "2016");
+        deviceProperties.put("friendlyname", "PROP_NAME");
         deviceProperties.put("firmwareversion", "1234-5678-910");
+        friendlyName = "FRI_NAME";
         networkServices.put("04", "Pandora");
         networkServices.put("0A", "Spotify");
         networkServices.put("0E", "TuneIn");

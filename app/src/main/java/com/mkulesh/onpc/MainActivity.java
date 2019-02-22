@@ -345,26 +345,21 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
         else
         {
-            String name = state.deviceProperties.get("model");
-            if (configuration.isFriendlyNames()
-                    && state.friendlyName != null && !state.friendlyName.isEmpty())
+            final StringBuilder subTitle = new StringBuilder();
+            subTitle.append(state.getDeviceName(configuration.isFriendlyNames()));
+            if (state.isExtendedZone())
             {
-                name = state.friendlyName;
+                if (!subTitle.toString().isEmpty())
+                {
+                    subTitle.append("/");
+                }
+                subTitle.append(state.zones.get(state.getActiveZone()).getName());
             }
-            if (name != null)
+            if (!state.isOn())
             {
-                final StringBuilder subTitle = new StringBuilder();
-                subTitle.append(name);
-                if (state.isExtendedZone())
-                {
-                    subTitle.append("/").append(state.zones.get(state.getActiveZone()).getName());
-                }
-                if (!state.isOn())
-                {
-                    subTitle.append(" (").append(getResources().getString(R.string.state_standby)).append(")");
-                }
-                toolbar.setSubtitle(subTitle.toString());
+                subTitle.append(" (").append(getResources().getString(R.string.state_standby)).append(")");
             }
+            toolbar.setSubtitle(subTitle.toString());
         }
         // Main menu
         if (mainMenu != null)

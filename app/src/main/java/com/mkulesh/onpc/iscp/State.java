@@ -74,7 +74,7 @@ public class State
 
     // Receiver Information
     public String receiverInformation = "";
-    public String friendlyName = "";
+    protected String friendlyName = "";
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, String> networkServices = new HashMap<>();
     private final int activeZone;
@@ -182,6 +182,33 @@ public class State
     public boolean isMenuMode()
     {
         return uiType == ListTitleInfoMsg.UIType.MENU;
+    }
+
+    @NonNull
+    public String getDeviceName(boolean useFriendlyName)
+    {
+        if (useFriendlyName)
+        {
+            // name from FriendlyNameMsg (NFN)
+            if (friendlyName != null && !friendlyName.isEmpty())
+            {
+                return friendlyName;
+            }
+            // fallback to ReceiverInformationMsg
+            final String name = deviceProperties.get("friendlyname");
+            if (name != null)
+            {
+                return name;
+            }
+        }
+        // fallback to model from ReceiverInformationMsg
+        {
+            final String name = deviceProperties.get("model");
+            if (name != null) {
+                return name;
+            }
+        }
+        return "";
     }
 
     public ChangeType update(ISCPMessage msg)

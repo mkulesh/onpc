@@ -150,7 +150,7 @@ public class DeviceFragment extends BaseFragment
 
     private void updateDeviceProperties(@NonNull final State state)
     {
-        ((EditText) rootView.findViewById(R.id.device_edit_friendly_name)).setText(state.friendlyName);
+        ((EditText) rootView.findViewById(R.id.device_edit_friendly_name)).setText(state.getDeviceName(true));
 
         if (!state.deviceProperties.isEmpty())
         {
