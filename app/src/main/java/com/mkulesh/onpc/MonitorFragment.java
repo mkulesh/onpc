@@ -535,7 +535,18 @@ public class MonitorFragment extends BaseFragment
     {
         b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL ? View.VISIBLE : View.GONE);
         b.setText(State.getVolumeLevelStr(volumeLevel, zone));
-        setButtonEnabled(b, true);
+        if (zone == null || zone.getVolMax() == 0)
+        {
+            setButtonEnabled(b, false);
+            b.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
+        else
+        {
+            setButtonEnabled(b, true);
+            final Drawable icon = Utils.getDrawable(activity, R.drawable.volume_amp_slider);
+            Utils.setDrawableColorAttr(activity, icon, R.attr.colorButtonEnabled);
+            b.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+        }
     }
 
     private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)
