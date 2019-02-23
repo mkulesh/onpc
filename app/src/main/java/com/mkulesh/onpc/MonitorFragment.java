@@ -222,7 +222,7 @@ public class MonitorFragment extends BaseFragment
             b.setPadding(0, 0, 0, 0);
             b.setVisibility(View.GONE);
             b.setContentDescription(activity.getResources().getString(R.string.master_volume));
-            prepareButtonListeners(b, null, this::createMasterVolumeDialog);
+            prepareButtonListeners(b, null, this::showMasterVolumeDialog);
             deviceSoundButtons.add(b);
         }
         // volume up
@@ -251,71 +251,6 @@ public class MonitorFragment extends BaseFragment
                 deviceSoundButtons.add(b);
             }
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void createMasterVolumeDialog()
-    {
-        if (!activity.isConnected())
-        {
-            return;
-        }
-
-        final State state = activity.getStateManager().getState();
-        final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-        if (zone.getVolMax() == 0)
-        {
-            return;
-        }
-
-        final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
-        {
-            final TextView minValue = frameView.findViewById(R.id.volume_min_value);
-            minValue.setText("0");
-
-            final TextView maxValue = frameView.findViewById(R.id.volume_max_value);
-            maxValue.setText(Integer.toString(zone.getVolMax()));
-        }
-
-        final AppCompatSeekBar progressBar = frameView.findViewById(R.id.progress_bar);
-        progressBar.setMax(zone.getVolMax());
-        progressBar.setProgress((int)State.getVolumeLevelFloat(state.volumeLevel, state.getActiveZoneInfo()));
-        progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
-            int progressChanged = 0;
-
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                progressChanged = progress;
-            }
-
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-                // empty
-            }
-
-            @SuppressLint("SetTextI18n")
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-                if (activity.isConnected())
-                {
-                    activity.getStateManager().sendMessage(
-                            new MasterVolumeMsg(state.getActiveZone(), progressChanged));
-                }
-            }
-        });
-
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.master_volume)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView).create();
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 
     @Override
@@ -425,6 +360,14 @@ public class MonitorFragment extends BaseFragment
             {
                 final MasterVolumeMsg.Command cmd = (MasterVolumeMsg.Command) (b.getTag());
                 prepareButtonListeners(b, new MasterVolumeMsg(state.getActiveZone(), cmd));
+                if (isVolumeDialogEnabled())
+                {
+                    b.setOnLongClickListener(v -> showMasterVolumeDialog());
+                }
+                else
+                {
+                    b.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));
+                }
             }
             else if (b.getTag() instanceof ListeningModeMsg.Mode)
             {
@@ -531,22 +474,93 @@ public class MonitorFragment extends BaseFragment
         return b.getTag() != null && b.getTag() instanceof String && VOLUME_LEVEL.equals(b.getTag());
     }
 
+    private boolean isVolumeDialogEnabled()
+    {
+        if (activity == null || !activity.isConnected())
+        {
+            return false;
+        }
+        final ReceiverInformationMsg.Zone z = activity.getStateManager().getState().getActiveZoneInfo();
+        return z != null && z.getVolMax() > 0;
+    }
+
     private void updateVolumeLevel(AppCompatButton b, final int volumeLevel, final ReceiverInformationMsg.Zone zone)
     {
         b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL ? View.VISIBLE : View.GONE);
         b.setText(State.getVolumeLevelStr(volumeLevel, zone));
-        if (zone == null || zone.getVolMax() == 0)
-        {
-            setButtonEnabled(b, false);
-            b.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        }
-        else
+        if (isVolumeDialogEnabled())
         {
             setButtonEnabled(b, true);
             final Drawable icon = Utils.getDrawable(activity, R.drawable.volume_amp_slider);
             Utils.setDrawableColorAttr(activity, icon, R.attr.colorButtonEnabled);
             b.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         }
+        else
+        {
+            setButtonEnabled(b, false);
+            b.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private boolean showMasterVolumeDialog()
+    {
+        if (!isVolumeDialogEnabled())
+        {
+            return false;
+        }
+
+        final State state = activity.getStateManager().getState();
+        final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
+        {
+            final TextView minValue = frameView.findViewById(R.id.volume_min_value);
+            minValue.setText("0");
+
+            final TextView maxValue = frameView.findViewById(R.id.volume_max_value);
+            maxValue.setText(Integer.toString(zone.getVolMax()));
+        }
+
+        final AppCompatSeekBar progressBar = frameView.findViewById(R.id.progress_bar);
+        progressBar.setMax(zone.getVolMax());
+        progressBar.setProgress((int)State.getVolumeLevelFloat(state.volumeLevel, state.getActiveZoneInfo()));
+        progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            int progressChanged = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
+                progressChanged = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+                // empty
+            }
+
+            @SuppressLint("SetTextI18n")
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+                if (activity.isConnected())
+                {
+                    activity.getStateManager().sendMessage(
+                            new MasterVolumeMsg(state.getActiveZone(), progressChanged));
+                }
+            }
+        });
+
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.master_volume)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView).create();
+        dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        return true;
     }
 
     private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)
