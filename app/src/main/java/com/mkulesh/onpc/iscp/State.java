@@ -74,7 +74,7 @@ public class State
 
     // Receiver Information
     public String receiverInformation = "";
-    protected String friendlyName = "";
+    String friendlyName = "";
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, String> networkServices = new HashMap<>();
     private final int activeZone;

@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.ConnectionState;
@@ -48,6 +50,7 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener, StateManager.StateListener
 {
@@ -126,6 +129,14 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         Utils.setDrawerListener(navigationDrawer.getDrawerLayout(), mDrawerToggle);
 
         updateToolbar(null);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase)
+    {
+        final Locale prefLocale = AppLocale.ContextWrapper.getPreferredLocale(newBase);
+        Logging.info(this, "Application locale: " + prefLocale.toString());
+        super.attachBaseContext(AppLocale.ContextWrapper.wrap(newBase, prefLocale));
     }
 
     public Configuration getConfiguration()

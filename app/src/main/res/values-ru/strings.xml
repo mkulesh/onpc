@@ -105,6 +105,8 @@
         <item>Light (Purple and Green)</item>
     </string-array>
 
+    <string name="pref_app_language">Язык приложения</string>
+
     <!-- Playback tab -->
     <string name="tv_display_mode">Отображение</string>
 

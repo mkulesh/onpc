@@ -26,7 +26,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
+
+import java.util.Locale;
 
 public abstract class AppCompatPreferenceActivity extends AppCompatActivity
 {
@@ -42,6 +45,14 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setupActionBar();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase)
+    {
+        final Locale prefLocale = AppLocale.ContextWrapper.getPreferredLocale(newBase);
+        Logging.info(this, "Settings locale: " + prefLocale.toString());
+        super.attachBaseContext(AppLocale.ContextWrapper.wrap(newBase, prefLocale));
     }
 
     static void tintIcons(final Context c, Preference preference)

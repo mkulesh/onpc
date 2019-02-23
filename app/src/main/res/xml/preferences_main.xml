@@ -23,6 +23,15 @@
         android:summary="%s"
         android:title="@string/pref_app_theme" />
 
+    <ListPreference
+        app:icon="@drawable/pref_language"
+        android:defaultValue="@string/pref_default_language_code"
+        android:entries="@array/pref_language_names"
+        android:entryValues="@array/pref_language_codes"
+        android:key="app_language"
+        android:summary="%s"
+        android:title="@string/pref_app_language"/>
+
     <PreferenceCategory android:title="@string/pref_category_device_options">
 
         <ListPreference

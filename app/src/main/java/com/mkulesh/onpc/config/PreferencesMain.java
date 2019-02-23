@@ -38,6 +38,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
         {
             addPreferencesFromResource(R.xml.preferences_main);
             prepareListPreference((ListPreference) findPreference(Configuration.APP_THEME), getActivity());
+            prepareListPreference((ListPreference) findPreference(Configuration.APP_LANGUAGE), getActivity());
             prepareListPreference((ListPreference) findPreference(Configuration.SOUND_CONTROL), null);
             tintIcons(getPreferenceScreen().getContext(), getPreferenceScreen());
         }

@@ -145,6 +145,19 @@
         <item>@style/SettingsThemePurpleGreen</item>
     </array>
 
+    <!-- Application settings: Languages -->
+    <string name="pref_app_language">App language</string>
+    <string-array name="pref_language_names" translatable="false">
+        <item>English</item>
+        <item>Русский</item>
+    </string-array>
+    <!-- Non-Translatable parameters of languages -->
+    <string name="pref_default_language_code" translatable="false">en</string>
+    <string-array name="pref_language_codes" translatable="false">
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
+
     <!-- Playback tab -->
     <string name="tv_time_default" translatable="false">--:--</string>
     <string name="tv_display_mode">Display mode</string>

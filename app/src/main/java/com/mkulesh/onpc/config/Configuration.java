@@ -41,6 +41,7 @@ public class Configuration
     public static final boolean ENABLE_MOCKUP = false;
 
     static final String APP_THEME = "app_theme";
+    static final String APP_LANGUAGE = "app_language";
 
     private static final String SERVER_NAME = "server_name";
     private static final String SERVER_PORT = "server_port";
