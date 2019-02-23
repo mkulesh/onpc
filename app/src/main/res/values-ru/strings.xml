@@ -64,7 +64,7 @@
     <string name="title_monitor">Музыка</string>
     <string name="title_media">Каналы</string>
     <string name="title_device">Устройство</string>
-    <string name="title_remote_control">RC</string>
+    <string name="title_remote_control">Пульт</string>
     <string name="title_remote_interface">RI</string>
 
     <!-- Application settings -->
