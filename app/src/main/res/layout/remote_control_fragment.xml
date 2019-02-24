@@ -48,7 +48,7 @@
                         android:text="@string/cmd_description_menu" />
 
                     <android.support.v7.widget.AppCompatImageButton
-                        style="@style/ImageButtonPrimaryStyle"
+                        style="@style/BigImageButtonStyle"
                         android:tag="NTC:MENU" />
                 </LinearLayout>
 
@@ -66,8 +66,8 @@
                         android:text="@string/cmd_description_setup" />
 
                     <android.support.v7.widget.AppCompatImageButton
-                        style="@style/ImageButtonPrimaryStyle"
-                        android:tag="NTC:SETUP" />
+                        style="@style/BigImageButtonStyle"
+                        android:tag="OSD:MENU" />
                 </LinearLayout>
 
                 <!-- Return -->
@@ -84,8 +84,8 @@
                         android:text="@string/cmd_description_return" />
 
                     <android.support.v7.widget.AppCompatImageButton
-                        style="@style/ImageButtonPrimaryStyle"
-                        android:tag="NTC:RETURN" />
+                        style="@style/BigImageButtonStyle"
+                        android:tag="OSD:EXIT" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -94,8 +94,8 @@
 
             <!-- Up -->
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:tag="NTC:UP" />
+                style="@style/BigImageButtonStyle"
+                android:tag="OSD:UP" />
 
             <!-- Left, Select, Right -->
             <LinearLayout
@@ -105,104 +105,22 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:tag="NTC:LEFT" />
+                    style="@style/BigImageButtonStyle"
+                    android:tag="OSD:LEFT" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:tag="NTC:SELECT" />
+                    style="@style/BigImageButtonStyle"
+                    android:tag="OSD:ENTER" />
 
                 <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:tag="NTC:RIGHT" />
+                    style="@style/BigImageButtonStyle"
+                    android:tag="OSD:RIGHT" />
             </LinearLayout>
 
             <!-- Down -->
             <android.support.v7.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:tag="NTC:DOWN" />
-
-            <!-- Three lines: numbers -->
-            <View style="@style/HorizontalDividerStyle" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_1"
-                    android:tag="NTC:1" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_2"
-                    android:tag="NTC:2" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_3"
-                    android:tag="NTC:3" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_4"
-                    android:tag="NTC:4" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_5"
-                    android:tag="NTC:5" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_6"
-                    android:tag="NTC:6" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_7"
-                    android:tag="NTC:7" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_8"
-                    android:tag="NTC:8" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-
-                <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:tag="NTC:DELETE" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_9"
-                    android:tag="NTC:9" />
-
-                <android.support.v7.widget.AppCompatButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:text="@string/cmd_description_key_0"
-                    android:tag="NTC:0" />
-
-                <android.support.v7.widget.AppCompatImageButton
-                    style="@style/ImageButtonPrimaryStyle"
-                    android:tag="NTC:CAPS" />
-
-            </LinearLayout>
+                style="@style/BigImageButtonStyle"
+                android:tag="OSD:DOWN" />
 
         </LinearLayout>
     </ScrollView>

@@ -126,6 +126,11 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
+    <style name="BigImageButtonStyle" parent="@style/ImageButtonPrimaryStyle">
+        <item name="android:layout_width">@dimen/big_button_size</item>
+        <item name="android:layout_height">@dimen/big_button_size</item>
+    </style>
+
     <style name="ImageButtonSecondaryStyle" parent="@style/Widget.AppCompat.ImageButton">
         <item name="android:layout_width">@dimen/button_size</item>
         <item name="android:layout_height">@dimen/button_size</item>

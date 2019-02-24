@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.SetupOperationCommandMsg;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,6 +68,20 @@ public class RemoteControlFragment extends BaseFragment
 
         switch (msgName)
         {
+        case SetupOperationCommandMsg.CODE:
+        {
+            final SetupOperationCommandMsg cmd = new SetupOperationCommandMsg(tokens[1]);
+            if (b instanceof AppCompatImageButton)
+            {
+                prepareButton((AppCompatImageButton) b, cmd, cmd.getCommand().getImageId(), cmd.getCommand().getDescriptionId());
+
+            }
+            else
+            {
+                prepareButtonListeners(b, cmd, null);
+            }
+            break;
+        }
         case OperationCommandMsg.CODE:
         {
             final OperationCommandMsg cmd = new OperationCommandMsg(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, tokens[1]);

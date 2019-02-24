@@ -63,7 +63,7 @@
     <string name="menu_receiver_information">Receiver information</string>
 
     <!-- Tabs -->
-    <string name="title_monitor">Monitor</string>
+    <string name="title_monitor">Listen</string>
     <string name="title_media">Media</string>
     <string name="title_device">Device</string>
     <string name="title_remote_control">RC</string>
