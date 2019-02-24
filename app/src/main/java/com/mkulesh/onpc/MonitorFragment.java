@@ -281,7 +281,7 @@ public class MonitorFragment extends BaseFragment
         {
             if (isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton) b, MasterVolumeMsg.NO_LEVEL, null);
+                updateVolumeLevel((AppCompatButton) b, state);
             }
             else
             {
@@ -388,7 +388,7 @@ public class MonitorFragment extends BaseFragment
             }
             else if (isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton) b, state.volumeLevel, state.getActiveZoneInfo());
+                updateVolumeLevel((AppCompatButton) b, state);
             }
         }
 
@@ -474,22 +474,12 @@ public class MonitorFragment extends BaseFragment
         return b.getTag() != null && b.getTag() instanceof String && VOLUME_LEVEL.equals(b.getTag());
     }
 
-    private boolean isVolumeDialogEnabled()
+    private void updateVolumeLevel(AppCompatButton b, @Nullable final State state)
     {
-        if (activity == null || !activity.isConnected())
+        if (state != null && state.isOn() && state.volumeLevel != MasterVolumeMsg.NO_LEVEL)
         {
-            return false;
-        }
-        final ReceiverInformationMsg.Zone z = activity.getStateManager().getState().getActiveZoneInfo();
-        return z != null && z.getVolMax() > 0;
-    }
-
-    private void updateVolumeLevel(AppCompatButton b, final int volumeLevel, final ReceiverInformationMsg.Zone zone)
-    {
-        b.setVisibility(volumeLevel != MasterVolumeMsg.NO_LEVEL ? View.VISIBLE : View.GONE);
-        b.setText(State.getVolumeLevelStr(volumeLevel, zone));
-        if (isVolumeDialogEnabled())
-        {
+            b.setVisibility(View.VISIBLE);
+            b.setText(State.getVolumeLevelStr(state.volumeLevel, state.getActiveZoneInfo()));
             setButtonEnabled(b, true);
             final Drawable icon = Utils.getDrawable(activity, R.drawable.volume_amp_slider);
             Utils.setDrawableColorAttr(activity, icon, R.attr.colorButtonEnabled);
@@ -497,9 +487,15 @@ public class MonitorFragment extends BaseFragment
         }
         else
         {
+            b.setVisibility(View.GONE);
             setButtonEnabled(b, false);
             b.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
+    }
+
+    private boolean isVolumeDialogEnabled()
+    {
+        return activity != null && activity.isConnected() && activity.getStateManager().getState().isOn();
     }
 
     @SuppressLint("SetTextI18n")
@@ -512,6 +508,10 @@ public class MonitorFragment extends BaseFragment
 
         final State state = activity.getStateManager().getState();
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+        final int maxVolume = Math.max(state.volumeLevel,
+                (zone != null && zone.getVolumeStep() == 0) ?
+                MasterVolumeMsg.MAX_VOLUME_0_5_STEP : MasterVolumeMsg.MAX_VOLUME_1_STEP);
+
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
         {
@@ -519,12 +519,12 @@ public class MonitorFragment extends BaseFragment
             minValue.setText("0");
 
             final TextView maxValue = frameView.findViewById(R.id.volume_max_value);
-            maxValue.setText(Integer.toString(zone.getVolMax()));
+            maxValue.setText(State.getVolumeLevelStr(maxVolume, zone));
         }
 
         final AppCompatSeekBar progressBar = frameView.findViewById(R.id.progress_bar);
-        progressBar.setMax(zone.getVolMax());
-        progressBar.setProgress((int)State.getVolumeLevelFloat(state.volumeLevel, state.getActiveZoneInfo()));
+        progressBar.setMax(maxVolume);
+        progressBar.setProgress(Math.max(0, state.volumeLevel));
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             int progressChanged = 0;
@@ -542,7 +542,7 @@ public class MonitorFragment extends BaseFragment
             @SuppressLint("SetTextI18n")
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                if (activity.isConnected())
+                if (isVolumeDialogEnabled())
                 {
                     activity.getStateManager().sendMessage(
                             new MasterVolumeMsg(state.getActiveZone(), progressChanged));

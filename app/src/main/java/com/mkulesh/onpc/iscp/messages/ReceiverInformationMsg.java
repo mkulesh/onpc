@@ -80,11 +80,6 @@ public class ReceiverInformationMsg extends ISCPMessage
             return volumeStep;
         }
 
-        public int getVolMax()
-        {
-            return volMax;
-        }
-
         @NonNull
         @Override
         public String toString()

@@ -825,22 +825,18 @@ public class State
         return false;
     }
 
-    public static float getVolumeLevelFloat(int volumeLevel, ReceiverInformationMsg.Zone zone)
-    {
-        return (zone != null && zone.getVolumeStep() == 0) ? (float) volumeLevel / 2.0f : (float) volumeLevel;
-    }
-
     @SuppressLint("SetTextI18n")
     public static String getVolumeLevelStr(int volumeLevel, ReceiverInformationMsg.Zone zone)
     {
         if (zone != null && zone.getVolumeStep() == 0)
         {
+            final float f = (float) volumeLevel / 2.0f;
             final DecimalFormat df = Utils.getDecimalFormat("0.0");
-            return df.format(getVolumeLevelFloat(volumeLevel, zone));
+            return df.format(f);
         }
         else
         {
-            return Integer.toString((int) getVolumeLevelFloat(volumeLevel, zone));
+            return Integer.toString(volumeLevel, 10);
         }
     }
 }

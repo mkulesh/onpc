@@ -34,6 +34,8 @@ public class MasterVolumeMsg extends ZonedMessage
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public final static int NO_LEVEL = -1;
+    public static final int MAX_VOLUME_0_5_STEP = 0xC8;
+    public static final int MAX_VOLUME_1_STEP = 0x64;
 
     public enum Command implements StringParameterIf
     {
@@ -134,7 +136,7 @@ public class MasterVolumeMsg extends ZonedMessage
         }
         else if (volumeLevel != NO_LEVEL)
         {
-            par = Integer.toString(volumeLevel, 16);
+            par = String.format("%02x", volumeLevel);
         }
         return new EISCPMessage('1', getZoneCommand(), par);
     }
