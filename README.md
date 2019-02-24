@@ -60,6 +60,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 ## Used Open Source Libraries
 * Material Design Icons: http://materialdesignicons.com
 * Material Design Palette: https://www.materialpalette.com
+* DragSortListView (drag-and-drop reordering of list items): https://github.com/bauerca/drag-sort-listview
 
 ## Acknowledgement
 * Thank to [Tebriz](https://github.com/tebriz159) for Logo design
