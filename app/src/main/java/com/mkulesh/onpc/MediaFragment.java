@@ -342,8 +342,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             title.append(state.titleBar);
             if (state.numberOfItems > 0)
             {
-                title.append("/").append(state.numberOfItems).append(" ").append(
-                        activity.getResources().getString(R.string.medialist_items));
+                title.append("/").append(activity.getResources().getString(R.string.medialist_items))
+                        .append(":").append(state.numberOfItems);
             }
         }
         else

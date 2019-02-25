@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             final String text = isConnected() ? getStateManager().getState().receiverInformation :
                     getResources().getString(R.string.state_not_connected);
             HtmlDialogBuilder.buildXmlDialog(this,
-                    R.mipmap.ic_launcher, R.string.app_name, text).show();
+                    R.mipmap.ic_launcher, R.string.menu_receiver_information, text).show();
             return true;
         }
         default:

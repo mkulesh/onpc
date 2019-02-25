@@ -161,7 +161,7 @@
 
     <!-- Playback tab -->
     <string name="tv_time_default" translatable="false">--:--</string>
-    <string name="tv_display_mode">Display mode</string>
+    <string name="tv_display_mode">Display mode on device</string>
 
     <!-- Amplifier commands (RI interface) -->
     <string name="amp_cmd_volume_up">Volume level up</string>
@@ -275,7 +275,7 @@
     <string name="cmd_description_f2">Negative Feed</string>
 
     <!-- Media list tab -->
-    <string name="medialist_items">item(s)</string>
+    <string name="medialist_items">items</string>
     <string name="medialist_processing">Processing…</string>
     <string name="medialist_track_menu">Track menu</string>
     <string name="medialist_playback_mode">Playback mode</string>

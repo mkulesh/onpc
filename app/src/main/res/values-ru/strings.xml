@@ -21,29 +21,33 @@
     <string name="state_standby">Ожидание</string>
     <string name="action_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="action_ok">OK</string>
-    <string name="action_cancel">ОТМЕНА</string>
+    <string name="action_cancel">Отмена</string>
 
     <string name="html_about"><![CDATA[
-    <p>Remote controller for Onkyo devices: listen to music properly!</p>
-    <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>This app allows remote control of an Onkyo Network Player or a Network A/V Receiver via the
-       "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.</p>
-    <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
-    <h5>License</h5>
-    <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU
-       General Public License as published by the Free Software Foundation, either version 3 of the License,
-       or (at your option) any later version.</p>
-    <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
-       even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-       GNU General Public License for more details. You should have received a copy of the GNU General
-       Public License along with this program.</p>
-    <h5>Used Open Source Libraries</h5>
+    <p>Управляй музыкой на устройствах Onkyo одним кликом!</p>
+    <p>Copyright © 2018-2019 by <b>Михаил Кулеш, Александр Гоманюк</b></p>
+    <p>Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo по
+       локальной сети, используя сетевой протокол "Integra Serial Communication Protocol".
+       Основное предназначение программы - управление воспроизведением и звуковыми профилями.</p>
+    <p><a href="https://github.com/mkulesh/onpc">Репозиторий с исходным кодом</a></p>
+    <h5>Лицензия</h5>
+    <p>Данная программа является свободным программным обеспечением. Вы вправе распространять ее
+       и/или модифицировать в соответствии с условиями версии 3 либо по вашему выбору с условиями
+       более поздней версии Стандартной Общественной Лицензии GNU, опубликованной Free Software Foundation.</p>
+    <p>Мы распространяем данную программу в надежде на то, что она будет вам полезной, однако
+       НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ
+       ПРОДАЖЕ и ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ. Для получения более подробной
+       информации ознакомьтесь со Стандартной Общественной Лицензией GNU.</p>
+    <p>Вместе с данной программой вы должны были получить экземпляр
+       <a href="https://www.gnu.org/licenses">Стандартной Общественной Лицензии GNU</a></p>
+    <h5>Библиотеки с открытым исходным кодом</h5>
     <p>&#8226; <a href="http://materialdesignicons.com">Material Design Icons</a></p>
     <p>&#8226; <a href="https://www.materialpalette.com">Material Design Palette</a></p>
+    <p>&#8226; <a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></p>
     ]]></string>
 
     <!-- Navigation drawer -->
-    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_open">Открыть панель навигатора</string>
     <string name="drawer_group_zone">Зона</string>
     <string name="drawer_device">Устройство</string>
     <string name="drawer_device_connect">Соединение</string>
@@ -56,14 +60,14 @@
     <string name="connect_dialog_port">Порт (необязательно)</string>
 
     <!-- Main menu -->
-    <string name="menu_power_power">Вкл/Выкл</string>
+    <string name="menu_power_power">Вкл/выкл</string>
     <string name="menu_app_settings">Настройки</string>
-    <string name="menu_receiver_information">Информация</string>
+    <string name="menu_receiver_information">Информация об устройстве</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Музыка</string>
     <string name="title_media">Каналы</string>
-    <string name="title_device">Устройство</string>
+    <string name="title_device">Система</string>
     <string name="title_remote_control">Пульт</string>
     <string name="title_remote_interface">RI</string>
 
@@ -77,9 +81,9 @@
     <string name="pref_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="pref_keep_screen_on">Не гасить экран</string>
     <string name="pref_developer_mode">Для разработчика</string>
-    <string name="pref_device_selectors">Каналы</string>
-    <string name="pref_listening_modes">Профили</string>
-    <string name="pref_network_services">Сервисы</string>
+    <string name="pref_device_selectors">Входные каналы</string>
+    <string name="pref_listening_modes">Звуковые профили</string>
+    <string name="pref_network_services">Сетевые сервисы</string>
 
     <string name="pref_friendly_names">Удобные названия каналов и устройства</string>
     <string name="pref_friendly_names_summary_on">Использовать удобные названия, предоставленные устройством Onkyo</string>
@@ -88,36 +92,36 @@
     <!-- Sound Control -->
     <string name="pref_sound_control">Управление звуком</string>
     <string-array name="pref_sound_control_names">
-        <item>None</item>
-        <item>External amplifier (RI)</item>
-        <item>Device</item>
+        <item>Нет</item>
+        <item>Внешний усилитель (RI)</item>
+        <item>Само устройство</item>
     </string-array>
 
     <!-- App themes -->
     <string name="pref_app_theme">Тема</string>
     <string-array name="pref_theme_names">
-        <item>Strong Dark (Black and Lime)</item>
-        <item>Dark (Dim Gray and Cyan)</item>
-        <item>Dark (Dim Gray and Yellow)</item>
-        <item>Light (Gray and Deep Purple)</item>
-        <item>Light (Indigo and Orange)</item>
-        <item>Light (Teal and Deep Orange)</item>
-        <item>Light (Purple and Green)</item>
+        <item>Контрастная темная (черно-желтая)</item>
+        <item>Темная (серая и сине-зеленая)</item>
+        <item>Темная (серо-желтая)</item>
+        <item>Светлая (серая и темно-фиолетовая)</item>
+        <item>Светлая (темно-синяя и оранжевая)</item>
+        <item>Светлая (зеленовато-голубая и темно-оранжевая)</item>
+        <item>Светлая (фиолетовая и темно-зеленая)</item>
     </string-array>
 
     <string name="pref_app_language">Язык приложения</string>
 
     <!-- Playback tab -->
-    <string name="tv_display_mode">Отображение</string>
+    <string name="tv_display_mode">Режим отображения на дисплее устройства</string>
 
     <!-- Amplifier commands (RI interface) -->
-    <string name="amp_cmd_volume_up">Увеличить громкость</string>
-    <string name="amp_cmd_volume_down">Понизить громкость</string>
-    <string name="amp_cmd_selector_up">Selector position wrap-around up</string>
-    <string name="amp_cmd_selector_down">Selector position wrap-around down</string>
+    <string name="amp_cmd_volume_up">Увеличить громкость усилителя</string>
+    <string name="amp_cmd_volume_down">Понизить громкость усилителя</string>
+    <string name="amp_cmd_selector_up">Выбрать следующий входной канал</string>
+    <string name="amp_cmd_selector_down">Выбрать предыдущий входной канал</string>
     <string name="amp_cmd_audio_muting_off">Выключить звук усилителя</string>
     <string name="amp_cmd_audio_muting_on">Включить звук усилителя</string>
-    <string name="amp_cmd_audio_muting_toggle">Вкл/Выкл звука усилителя</string>
+    <string name="amp_cmd_audio_muting_toggle">Вкл/выкл звука усилителя</string>
     <string name="amp_cmd_system_on">Усилитель включен</string>
     <string name="amp_cmd_system_standby">Усилитель выключен</string>
     <string name="amp_cmd_system_on_toggle">Усилитель вкл/выкл</string>
@@ -134,41 +138,41 @@
     <string name="cd_cmd_clear">Очистка</string>
     <string name="cd_cmd_repeat">Повтор</string>
     <string name="cd_cmd_random">Случайно</string>
-    <string name="cd_cmd_disp">Display</string>
-    <string name="cd_cmd_d_mode">Disk mode</string>
-    <string name="cd_cmd_ff">FF key</string>
-    <string name="cd_cmd_rew">REW key</string>
-    <string name="cd_cmd_op_cl">Открыть/Закрыть</string>
-    <string name="cd_cmd_number_1">Number 1</string>
-    <string name="cd_cmd_number_2">Number 2</string>
-    <string name="cd_cmd_number_3">Number 3</string>
-    <string name="cd_cmd_number_4">Number 4</string>
-    <string name="cd_cmd_number_5">Number 5</string>
-    <string name="cd_cmd_number_6">Number 6</string>
-    <string name="cd_cmd_number_7">Number 7</string>
-    <string name="cd_cmd_number_8">Number 8</string>
-    <string name="cd_cmd_number_9">Number 9</string>
-    <string name="cd_cmd_number_0">Number 0</string>
-    <string name="cd_cmd_number_10">Number 10</string>
-    <string name="cd_cmd_number_greater_10">Number greater 10</string>
+    <string name="cd_cmd_disp">Режим отображения на дисплее</string>
+    <string name="cd_cmd_d_mode">Режим диска</string>
+    <string name="cd_cmd_ff">Перемотка вперед</string>
+    <string name="cd_cmd_rew">Перемотка назад</string>
+    <string name="cd_cmd_op_cl">Открыть/закрыть</string>
+    <string name="cd_cmd_number_1">Номер 1</string>
+    <string name="cd_cmd_number_2">Номер 2</string>
+    <string name="cd_cmd_number_3">Номер 3</string>
+    <string name="cd_cmd_number_4">Номер 4</string>
+    <string name="cd_cmd_number_5">Номер 5</string>
+    <string name="cd_cmd_number_6">Номер 6</string>
+    <string name="cd_cmd_number_7">Номер 7</string>
+    <string name="cd_cmd_number_8">Номер 8</string>
+    <string name="cd_cmd_number_9">Номер 9</string>
+    <string name="cd_cmd_number_0">Номер 0</string>
+    <string name="cd_cmd_number_10">Номер 10</string>
+    <string name="cd_cmd_number_greater_10">Номер больше 10</string>
     <string name="cd_cmd_disc_f">Следующий диск</string>
     <string name="cd_cmd_disc_r">Предыдущий диск</string>
-    <string name="cd_cmd_disc1">Disk 1</string>
-    <string name="cd_cmd_disc2">Disk 2</string>
-    <string name="cd_cmd_disc3">Disk 3</string>
-    <string name="cd_cmd_disc4">Disk 4</string>
-    <string name="cd_cmd_disc5">Disk 5</string>
-    <string name="cd_cmd_disc6">Disk 6</string>
+    <string name="cd_cmd_disc1">Диск 1</string>
+    <string name="cd_cmd_disc2">Диск 2</string>
+    <string name="cd_cmd_disc3">Диск 3</string>
+    <string name="cd_cmd_disc4">Диск 4</string>
+    <string name="cd_cmd_disc5">Диск 5</string>
+    <string name="cd_cmd_disc6">Диск 6</string>
     
     <!-- Device audio muting, duplicate some amplifier commands -->
-    <string name="audio_muting_none">Пусто</string>
-    <string name="audio_muting_off">Выключить звук плеера</string>
-    <string name="audio_muting_on">Включить звук плеер</string>
-    <string name="audio_muting_toggle">Вкл/Выкл звука плеера</string>
+    <string name="audio_muting_none">Нет</string>
+    <string name="audio_muting_off">Выключить звук устройства</string>
+    <string name="audio_muting_on">Включить звук устройства</string>
+    <string name="audio_muting_toggle">Вкл/выкл звука устройства</string>
 
     <!-- Master Volume Command  -->
     <string name="master_volume">Громкость</string>
-    <string name="master_volume_up">Повысить громкость</string>
+    <string name="master_volume_up">Увеличить громкость</string>
     <string name="master_volume_down">Понизить громкость</string>
     <string name="master_volume_up1">Повысить громкость на 1dB</string>
     <string name="master_volume_down1">Понизить громкость на 1dB</string>
@@ -177,55 +181,55 @@
     <string name="cmd_description_stop">Стоп</string>
     <string name="cmd_description_pause">Пауза</string>
     <string name="cmd_description_p_p">Воспроизведение/Пауза</string>
-    <string name="cmd_description_trup">Track Up</string>
-    <string name="cmd_description_trdn">Track Down</string>
-    <string name="cmd_description_ff">FF Key(Continuous)</string>
-    <string name="cmd_description_rew">REW Key(Continuous)</string>
+    <string name="cmd_description_trup">Следующий трек</string>
+    <string name="cmd_description_trdn">Предыдущий трек</string>
+    <string name="cmd_description_ff">Перемотка вперед</string>
+    <string name="cmd_description_rew">Перемотка назад</string>
     <string name="cmd_description_repeat">Повтор</string>
     <string name="cmd_description_random">Случайно</string>
-    <string name="cmd_description_rep_shf">Повтор/Shuffle</string>
-    <string name="cmd_description_display">Display</string>
+    <string name="cmd_description_rep_shf">Повтор/случайно</string>
+    <string name="cmd_description_display">Режим отображения на дисплее устройства</string>
     <string name="cmd_description_album">Альбом</string>
     <string name="cmd_description_artist">Артист</string>
     <string name="cmd_description_genre">Жанр</string>
     <string name="cmd_description_playlist">Список</string>
-    <string name="cmd_description_right">Право</string>
-    <string name="cmd_description_left">Лево</string>
+    <string name="cmd_description_right">Вправо</string>
+    <string name="cmd_description_left">Влево</string>
     <string name="cmd_description_up">Вверх</string>
     <string name="cmd_description_down">Вниз</string>
     <string name="cmd_description_select">Выбор</string>
-    <string name="cmd_description_key_0">0</string>
-    <string name="cmd_description_key_1">1</string>
-    <string name="cmd_description_key_2">2</string>
-    <string name="cmd_description_key_3">3</string>
-    <string name="cmd_description_key_4">4</string>
-    <string name="cmd_description_key_5">5</string>
-    <string name="cmd_description_key_6">6</string>
-    <string name="cmd_description_key_7">7</string>
-    <string name="cmd_description_key_8">8</string>
-    <string name="cmd_description_key_9">9</string>
+    <string name="cmd_description_key_0">Номер 0</string>
+    <string name="cmd_description_key_1">Номер 1</string>
+    <string name="cmd_description_key_2">Номер 2</string>
+    <string name="cmd_description_key_3">Номер 3</string>
+    <string name="cmd_description_key_4">Номер 4</string>
+    <string name="cmd_description_key_5">Номер 5</string>
+    <string name="cmd_description_key_6">Номер 6</string>
+    <string name="cmd_description_key_7">Номер 7</string>
+    <string name="cmd_description_key_8">Номер 8</string>
+    <string name="cmd_description_key_9">Номер 9</string>
     <string name="cmd_description_delete">Удалить</string>
-    <string name="cmd_description_caps">Caps</string>
-    <string name="cmd_description_location">Location</string>
+    <string name="cmd_description_caps">Регистр</string>
+    <string name="cmd_description_location">Расположение</string>
     <string name="cmd_description_language">Язык</string>
     <string name="cmd_description_setup">Настройки</string>
     <string name="cmd_description_return">Назад</string>
-    <string name="cmd_description_chup">Ch Up(For Iradio)</string>
-    <string name="cmd_description_chdn">Ch Down(For Iradio)</string>
+    <string name="cmd_description_chup">Следующий канал для Iradio</string>
+    <string name="cmd_description_chdn">Предыдущий канал для Iradio</string>
     <string name="cmd_description_menu">Меню</string>
-    <string name="cmd_description_top">Top Menu</string>
-    <string name="cmd_description_mode">Mode(For Ipod)</string>
-    <string name="cmd_description_list">List/Playback</string>
-    <string name="cmd_description_memory">Memory(Add Favorite)</string>
-    <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
-    <string name="cmd_description_f2">Negative Feed</string>
+    <string name="cmd_description_top">Наверх</string>
+    <string name="cmd_description_mode">Режим Ipod</string>
+    <string name="cmd_description_list">Переключение между списком и режимом воспроизведения</string>
+    <string name="cmd_description_memory">Добавить в избранное</string>
+    <string name="cmd_description_f1">Нравится</string>
+    <string name="cmd_description_f2">Не нравится</string>
 
     <!-- Media list tab -->
-    <string name="medialist_items">item(s)</string>
-    <string name="medialist_processing">Процесс…</string>
-    <string name="medialist_track_menu">Track menu</string>
-    <string name="medialist_playback_mode">Playback mode</string>
-    <string name="medialist_no_items">No items</string>
+    <string name="medialist_items">элементов</string>
+    <string name="medialist_processing">Ждите…</string>
+    <string name="medialist_track_menu">Меню трека</string>
+    <string name="medialist_playback_mode">Режим воспроизведения</string>
+    <string name="medialist_no_items">Список пуст</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>
@@ -296,19 +300,19 @@
     <string name="service_chromecast">Chromecast</string>
     <string name="service_fireconnect">FireConnect</string>
     <string name="service_flareconnect">FlareConnect</string>
-    <string name="service_usb_front">Front USB</string>
-    <string name="service_usb_rear">Rear USB</string>
+    <string name="service_usb_front">Передний USB</string>
+    <string name="service_usb_rear">Задний USB</string>
     <string name="service_internet_radio">Internet Radio</string>
     <string name="service_play_fi">Play-Fi</string>
-    <string name="service_net">Network</string>
+    <string name="service_net">Сеть</string>
     <string name="service_bluetooth">Bluetooth</string>
 
     <string name="playlist_add">Добавить в очередь</string>
     <string name="playlist_add_and_play">Добавить и воспроизвести</string>
     <string name="playlist_remove">Удалить позицию</string>
     <string name="playlist_remove_all">Удалить все</string>
-    <string name="playlist_move_from">Move from</string>
-    <string name="playlist_move_to">Move to</string>
+    <string name="playlist_move_from">Вырезать</string>
+    <string name="playlist_move_to">Вставить</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Удобное название</string>
@@ -322,8 +326,8 @@
 
     <!-- Firmware -->
     <string name="device_firmware">Прошивка</string>
-    <string name="device_firmware_none">N/A</string>
-    <string name="device_firmware_actual">Крайняя версия</string>
+    <string name="device_firmware_none">Неизвестно</string>
+    <string name="device_firmware_actual">Актуальная версия</string>
     <string name="device_firmware_new_version">Обнаружена новая версия</string>
     <string name="device_firmware_update_complete">Обновление завершено</string>
     <string name="device_firmware_net">Обновить устройство по сети</string>
@@ -335,51 +339,51 @@
     <string name="device_dimmer_level_dim">Неярко</string>
     <string name="device_dimmer_level_dark">Тускло</string>
     <string name="device_dimmer_level_off">Выключено</string>
-    <string name="device_dimmer_level_toggle">Установить яркость дисплея</string>
+    <string name="device_dimmer_level_toggle">Изменить яркость дисплея</string>
 
     <!-- Digital Filter -->
-    <string name="device_digital_filter">Digital filter</string>
-    <string name="device_digital_filter_none">N/A</string>
+    <string name="device_digital_filter">Цифровой фильтр</string>
+    <string name="device_digital_filter_none">Нет</string>
     <string name="device_digital_filter_slow">Slow</string>
     <string name="device_digital_filter_sharp">Sharp</string>
     <string name="device_digital_filter_short">Short</string>
-    <string name="device_digital_filter_toggle">Sets digital filter wrap-around</string>
+    <string name="device_digital_filter_toggle">Изменить цифровой фильтр</string>
 
     <!-- Any two-way switch commands -->
-    <string name="device_two_way_switch_none">Пусто</string>
+    <string name="device_two_way_switch_none">Нет</string>
     <string name="device_two_way_switch_off">Выкл</string>
     <string name="device_two_way_switch_on">Вкл</string>
 
     <!-- Speaker A Command -->
-    <string name="speaker_a_command_toggle">Sets speaker A switch wrap-around</string>
+    <string name="speaker_a_command_toggle">Вкл/выкл динамик A</string>
 
     <!-- Speaker B Command -->
-    <string name="speaker_b_command_toggle">Sets speaker B switch wrap-around</string>
+    <string name="speaker_b_command_toggle">Вкл/выкл динамик B</string>
 
     <!-- Speaker A/B three-way switch -->
-    <string name="speaker_ab_command">Speaker A/B</string>
-    <string name="speaker_ab_command_toggle">Toggle between speakers</string>
-    <string name="speaker_ab_command_ab_off">Both off</string>
-    <string name="speaker_ab_command_ab_on">Both on</string>
-    <string name="speaker_ab_command_a_only">A only</string>
-    <string name="speaker_ab_command_b_only">B only</string>
+    <string name="speaker_ab_command">Динамик A/B</string>
+    <string name="speaker_ab_command_toggle">Переключить динамик</string>
+    <string name="speaker_ab_command_ab_off">оба выкл.</string>
+    <string name="speaker_ab_command_ab_on">оба вкл.</string>
+    <string name="speaker_ab_command_a_only">только A</string>
+    <string name="speaker_ab_command_b_only">только B</string>
 
     <!-- Auto power commands -->
-    <string name="device_auto_power">Авто включение</string>
-    <string name="device_auto_power_toggle">Sets auto power wrap-around</string>
+    <string name="device_auto_power">Авто-отключение</string>
+    <string name="device_auto_power_toggle">Вкл/выкл авто-отключение</string>
 
     <!-- Privacy Policy Status -->
-    <string name="privacy_policy_onkyo">Подтвердить Onkyo Privacy соглашение</string>
-    <string name="privacy_policy_google">Подтвердить Google Cast лицензию</string>
-    <string name="privacy_policy_sue">Подтвердить SUE - Privacy соглашение</string>
+    <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>
+    <string name="privacy_policy_google">Подтвердить лицензию Google Cast</string>
+    <string name="privacy_policy_sue">Подтвердить соглашение SUE-Privacy</string>
 
     <!-- HDMI CEC settings -->
     <string name="hdmi_cec">HDMI CEC</string>
-    <string name="hdmi_cec_toggle">Sets HDMI CEC wrap-around up</string>
+    <string name="hdmi_cec_toggle">Вкл/выкл HDMI CEC</string>
 
     <!-- Auto power commands -->
-    <string name="google_cast_analytics">Google Cast analytics</string>
-    <string name="google_cast_analytics_toggle">Sets Google Cast analytics wrap-around</string>
+    <string name="google_cast_analytics">Аналитика Google Cast</string>
+    <string name="google_cast_analytics_toggle">Вкл/выкл аналитику Google Cast</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_mode_00">STEREO</string>
@@ -450,7 +454,7 @@
     <string name="listening_mode_mode_a6">Neural Digital Music + Audyssey DSX</string>
     <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff">Auto Surround</string>
-    <string name="listening_mode_up">Sets listening mode wrap-around up</string>
+    <string name="listening_mode_up">Изменить звуковой профиль</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface">Использовать устройства, подключенные через удаленный интерфейс (RI)</string>
