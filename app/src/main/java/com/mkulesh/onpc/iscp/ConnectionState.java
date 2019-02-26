@@ -27,6 +27,7 @@ import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.net.InetAddress;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConnectionState
 {
@@ -61,12 +62,30 @@ public class ConnectionState
     private final Context context;
     private final ConnectivityManager connectivity;
     private final WifiManager wifi;
+    private final AtomicBoolean active = new AtomicBoolean();
 
     public ConnectionState(Context context)
     {
         this.context = context;
         this.connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         this.wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        active.set(true);
+    }
+
+    public void setActive(boolean a)
+    {
+        synchronized (active)
+        {
+            active.set(a);
+        }
+    }
+
+    public boolean isActive()
+    {
+        synchronized (active)
+        {
+            return active.get();
+        }
     }
 
     public Context getContext()

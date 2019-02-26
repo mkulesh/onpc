@@ -182,7 +182,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     {
         if (eventChanges.contains(State.ChangeType.MEDIA_ITEMS) || eventChanges.contains(State.ChangeType.RECEIVER_INFO))
         {
-            Logging.info(this, "Updating media fragment: " + state.mediaItems.size() + "/" + state.serviceItems.size());
+            Logging.info(this, "Updating media fragment");
             moveFrom = -1;
             updateSelectorButtons(state);
             updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
@@ -256,8 +256,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     {
         listView.clearChoices();
         listView.invalidate();
-        final List<XmlListItemMsg> mediaItems = state.mediaItems;
-        final List<NetworkServiceMsg> serviceItems = state.serviceItems;
+        final List<XmlListItemMsg> mediaItems = state.cloneMediaItems();
+        final List<NetworkServiceMsg> serviceItems = state.cloneServiceItems();
 
         ArrayList<ISCPMessage> newItems = new ArrayList<>();
         if (!state.isTopLayer())
@@ -269,13 +269,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             for (XmlListItemMsg i : mediaItems)
             {
-                if (i == null)
-                {
-                    // i != null: a paranoia check: mediaItems can not actually contain null elements,
-                    // but we observed a NullPointerException for i in GooglePlay console.
-                    continue;
-                }
-                newItems.add(new XmlListItemMsg(i));
+                newItems.add(i);
                 if (i.getIcon() == XmlListItemMsg.Icon.PLAY)
                 {
                     playing = newItems.size() - 1;

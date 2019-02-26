@@ -125,8 +125,8 @@ public class State
     int numberOfLayers = 0;
     public int numberOfItems = 0;
     public String titleBar = "";
-    public final List<XmlListItemMsg> mediaItems = new ArrayList<>();
-    public final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
+    protected final List<XmlListItemMsg> mediaItems = new ArrayList<>();
+    protected final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
     private final List<String> listInfoItems = new ArrayList<>();
 
     // Popup
@@ -666,33 +666,50 @@ public class State
 
     private void clearItems()
     {
-        mediaItems.clear();
-        serviceItems.clear();
+        synchronized (mediaItems)
+        {
+            mediaItems.clear();
+        }
+        synchronized (serviceItems)
+        {
+            serviceItems.clear();
+        }
+    }
+
+    public List<XmlListItemMsg> cloneMediaItems()
+    {
+        synchronized (mediaItems)
+        {
+            return new ArrayList<>(mediaItems);
+        }
     }
 
     private boolean process(XmlListInfoMsg msg)
     {
-        if (!inputType.isMediaList())
+        synchronized (mediaItems)
         {
-            mediaItems.clear();
-            Logging.info(msg, "skipped: input channel " + inputType.toString() + " is not a media list");
-            return true;
-        }
-        try
-        {
-            Logging.info(msg, "processing XmlListInfoMsg");
-            msg.parseXml(mediaItems, numberOfLayers);
-            if (serviceType == ServiceType.PLAYQUEUE &&
-                    (currentTrack == null || maxTrack == null))
+            if (!inputType.isMediaList())
             {
-                trackInfoFromList(mediaItems);
+                mediaItems.clear();
+                Logging.info(msg, "skipped: input channel " + inputType.toString() + " is not a media list");
+                return true;
             }
-            return true;
-        }
-        catch (Exception e)
-        {
-            mediaItems.clear();
-            Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
+            try
+            {
+                Logging.info(msg, "processing XmlListInfoMsg");
+                msg.parseXml(mediaItems, numberOfLayers);
+                if (serviceType == ServiceType.PLAYQUEUE &&
+                        (currentTrack == null || maxTrack == null))
+                {
+                    trackInfoFromList(mediaItems);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                mediaItems.clear();
+                Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
+            }
         }
         return false;
     }
@@ -711,6 +728,14 @@ public class State
         }
     }
 
+    public List<NetworkServiceMsg> cloneServiceItems()
+    {
+        synchronized (serviceItems)
+        {
+            return new ArrayList<>(serviceItems);
+        }
+    }
+
     private boolean process(ListInfoMsg msg)
     {
         if (msg.getInformationType() == ListInfoMsg.InformationType.CURSOR)
@@ -720,17 +745,20 @@ public class State
         }
         if (serviceType == ServiceType.NET)
         {
-            for (NetworkServiceMsg i : serviceItems)
+            synchronized (serviceItems)
             {
-                if (i.getService().getName().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                for (NetworkServiceMsg i : serviceItems)
                 {
-                    return false;
+                    if (i.getService().getName().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                    {
+                        return false;
+                    }
                 }
-            }
-            final NetworkServiceMsg nsMsg = new NetworkServiceMsg(msg.getListedData());
-            if (nsMsg.getService() != ServiceType.UNKNOWN)
-            {
-                serviceItems.add(nsMsg);
+                final NetworkServiceMsg nsMsg = new NetworkServiceMsg(msg.getListedData());
+                if (nsMsg.getService() != ServiceType.UNKNOWN)
+                {
+                    serviceItems.add(nsMsg);
+                }
             }
             return true;
         }
@@ -745,16 +773,19 @@ public class State
         }
         else if (isMenuMode())
         {
-            for (XmlListItemMsg i : mediaItems)
+            synchronized (mediaItems)
             {
-                if (i.getTitle().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                for (XmlListItemMsg i : mediaItems)
                 {
-                    return false;
+                    if (i.getTitle().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                    {
+                        return false;
+                    }
                 }
+                final XmlListItemMsg nsMsg = new XmlListItemMsg(
+                        msg.getLineInfo(), 0, msg.getListedData(), XmlListItemMsg.Icon.UNKNOWN, true);
+                mediaItems.add(nsMsg);
             }
-            final XmlListItemMsg nsMsg = new XmlListItemMsg(
-                    msg.getLineInfo(), 0, msg.getListedData(), XmlListItemMsg.Icon.UNKNOWN, true);
-            mediaItems.add(nsMsg);
             return true;
         }
         return false;
@@ -812,13 +843,16 @@ public class State
         {
             return true;
         }
-        for (String s : listInfoItems)
+        synchronized (mediaItems)
         {
-            for (XmlListItemMsg i : mediaItems)
+            for (String s : listInfoItems)
             {
-                if (i.getTitle().toUpperCase().equals(s.toUpperCase()))
+                for (XmlListItemMsg i : mediaItems)
                 {
-                    return true;
+                    if (i.getTitle().toUpperCase().equals(s.toUpperCase()))
+                    {
+                        return true;
+                    }
                 }
             }
         }

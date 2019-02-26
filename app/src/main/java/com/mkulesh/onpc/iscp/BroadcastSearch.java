@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -39,6 +40,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@SuppressLint("StaticFieldLeak")
 public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 {
     public final static int ISCP_PORT = 60128;
@@ -104,7 +106,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
             return true;
         }
         // no reason for events below
-        if (isCancelled())
+        if (isCancelled() || !connectionState.isActive())
         {
             return true;
         }
@@ -148,35 +150,42 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
     protected void onPostExecute(Void aVoid)
     {
         super.onPostExecute(aVoid);
-        if (dialog != null)
+        try
         {
-            dialog.dismiss();
-        }
-        if (stateListener != null)
-        {
-            BroadcastResponseMsg device = null;
-            if (devices.size() > 0)
+            if (dialog != null)
             {
-                for (Pair<BroadcastResponseMsg, AppCompatRadioButton> d : devices)
+                dialog.dismiss();
+            }
+            if (stateListener != null)
+            {
+                BroadcastResponseMsg device = null;
+                if (devices.size() > 0)
                 {
-                    if (d.second.isChecked())
+                    for (Pair<BroadcastResponseMsg, AppCompatRadioButton> d : devices)
                     {
-                        device = d.first;
-                        break;
+                        if (d.second.isChecked())
+                        {
+                            device = d.first;
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (device != null)
-            {
-                Logging.info(BroadcastSearch.this, "Found device: " + device.toString());
-                stateListener.onDeviceFound(device);
+                if (device != null)
+                {
+                    Logging.info(BroadcastSearch.this, "Found device: " + device.toString());
+                    stateListener.onDeviceFound(device);
+                }
+                else if (failureReason != null)
+                {
+                    Logging.info(BroadcastSearch.this, "Device not found: " + failureReason.toString());
+                    stateListener.noDevice(failureReason);
+                }
             }
-            else if (failureReason != null)
-            {
-                Logging.info(BroadcastSearch.this, "Device not found: " + failureReason.toString());
-                stateListener.noDevice(failureReason);
-            }
+        }
+        catch (Exception ex)
+        {
+            // nothing to do
         }
     }
 

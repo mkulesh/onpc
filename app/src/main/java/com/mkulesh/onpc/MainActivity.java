@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     protected void onResume()
     {
         super.onResume();
+        connectionState.setActive(true);
         if (!configuration.getDeviceName().isEmpty() && configuration.getDevicePort() > 0)
         {
             Logging.info(this, "use stored connection data: "
@@ -296,6 +297,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     protected void onPause()
     {
         super.onPause();
+        connectionState.setActive(false);
         stateHolder.release(true);
     }
 
