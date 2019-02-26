@@ -217,6 +217,7 @@
     <string name="cmd_description_chup">Следующий канал для Iradio</string>
     <string name="cmd_description_chdn">Предыдущий канал для Iradio</string>
     <string name="cmd_description_menu">Меню</string>
+    <string name="cmd_description_quick_menu">Меню</string>
     <string name="cmd_description_top">Наверх</string>
     <string name="cmd_description_mode">Режим Ipod</string>
     <string name="cmd_description_list">Переключение между списком и режимом воспроизведения</string>

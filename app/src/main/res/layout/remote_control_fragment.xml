@@ -45,11 +45,11 @@
                         style="@style/SecondaryTextViewStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/cmd_description_menu" />
+                        android:text="@string/cmd_description_quick_menu" />
 
                     <android.support.v7.widget.AppCompatImageButton
                         style="@style/BigImageButtonStyle"
-                        android:tag="NTC:MENU" />
+                        android:tag="OSD:QUICK" />
                 </LinearLayout>
 
                 <!-- Settings -->

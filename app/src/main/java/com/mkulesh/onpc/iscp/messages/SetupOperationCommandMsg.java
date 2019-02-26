@@ -37,7 +37,7 @@ public class SetupOperationCommandMsg extends ISCPMessage
         LEFT("LEFT", R.string.cmd_description_left, R.drawable.cmd_left),
         ENTER("ENTER", R.string.cmd_description_select, R.drawable.cmd_select),
         EXIT("EXIT", R.string.cmd_description_return, R.drawable.cmd_return),
-        QUICK("QUICK", R.string.cmd_description_menu, R.drawable.cmd_menu);
+        QUICK("QUICK", R.string.cmd_description_quick_menu, R.drawable.cmd_quick_menu);
 
         final String code;
 

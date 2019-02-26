@@ -267,6 +267,7 @@
     <string name="cmd_description_chup">Ch Up(For Iradio)</string>
     <string name="cmd_description_chdn">Ch Down(For Iradio)</string>
     <string name="cmd_description_menu">Menu</string>
+    <string name="cmd_description_quick_menu">Quick menu</string>
     <string name="cmd_description_top">Top Menu</string>
     <string name="cmd_description_mode">Mode(For Ipod)</string>
     <string name="cmd_description_list">List/Playback</string>
