@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.PopupBuilder;
@@ -240,6 +241,10 @@ abstract public class BaseFragment extends Fragment
         {
             View v = layout.getChildAt(k);
             if (v instanceof AppCompatImageButton || v instanceof AppCompatButton)
+            {
+                out.add(v);
+            }
+            else if (v instanceof TextView && v.getTag() != null)
             {
                 out.add(v);
             }

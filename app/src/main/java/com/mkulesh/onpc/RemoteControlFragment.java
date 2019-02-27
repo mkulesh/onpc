@@ -106,7 +106,7 @@ public class RemoteControlFragment extends BaseFragment
     {
         for (View b : buttons)
         {
-            setButtonEnabled(b, state != null);
+            setButtonEnabled(b, state != null && state.isOn());
         }
     }
 

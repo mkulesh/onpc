@@ -42,10 +42,9 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/SecondaryTextViewStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cmd_description_quick_menu" />
+                        style="@style/ClickableLabelStyle"
+                        android:text="@string/cmd_description_quick_menu"
+                        android:tag="OSD:QUICK" />
 
                     <android.support.v7.widget.AppCompatImageButton
                         style="@style/BigImageButtonStyle"
@@ -60,10 +59,9 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/SecondaryTextViewStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cmd_description_setup" />
+                        style="@style/ClickableLabelStyle"
+                        android:text="@string/cmd_description_setup"
+                        android:tag="OSD:MENU" />
 
                     <android.support.v7.widget.AppCompatImageButton
                         style="@style/BigImageButtonStyle"
@@ -78,10 +76,9 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/SecondaryTextViewStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cmd_description_return" />
+                        style="@style/ClickableLabelStyle"
+                        android:text="@string/cmd_description_return"
+                        android:tag="OSD:EXIT" />
 
                     <android.support.v7.widget.AppCompatImageButton
                         style="@style/BigImageButtonStyle"
