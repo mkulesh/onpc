@@ -321,14 +321,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     private void updateConfiguration(@NonNull State state)
     {
-        if (!state.deviceSelectors.isEmpty())
-        {
-            configuration.setDeviceSelectors(state.deviceSelectors);
-        }
-        if (!state.networkServices.isEmpty())
-        {
-            configuration.setNetworkServices(state.networkServices);
-        }
+        configuration.setReceiverInformation(state);
         navigationDrawer.updateNavigationContent(state);
         updateToolbar(state);
     }

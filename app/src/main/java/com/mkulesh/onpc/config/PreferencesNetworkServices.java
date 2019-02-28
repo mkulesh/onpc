@@ -29,7 +29,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        prepareList(Configuration.SELECTED_NETWORK_SERVICES);
+        prepareList(Configuration.getSelectedNetworkServicesParameter(preferences));
         prepareSelectors();
     }
 

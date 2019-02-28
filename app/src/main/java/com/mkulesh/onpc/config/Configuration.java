@@ -24,6 +24,7 @@ import android.support.annotation.StyleRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
@@ -32,7 +33,6 @@ import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,13 +47,14 @@ public class Configuration
     private static final String SERVER_PORT = "server_port";
     static final String SOUND_CONTROL = "sound_control";
 
+    private static final String MODEL = "model";
     private static final String ACTIVE_ZONE = "active_zone";
 
     static final String DEVICE_SELECTORS = "device_selectors";
-    static final String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
+    private static final String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
     static final String FRIENDLY_NAMES = "pref_friendly_names";
     static final String NETWORK_SERVICES = "network_services";
-    static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
+    private static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
     static final String SELECTED_LISTENING_MODES = "selected_listening_modes";
 
     private static final String REMOTE_INTERFACE = "remote_interface";
@@ -203,22 +204,52 @@ public class Configuration
         }
     }
 
-    public void setDeviceSelectors(List<ReceiverInformationMsg.Selector> deviceSelectors)
+    public void setReceiverInformation(@NonNull State state)
     {
         SharedPreferences.Editor prefEditor = preferences.edit();
-        final StringBuilder strId = new StringBuilder();
-        for (ReceiverInformationMsg.Selector d : deviceSelectors)
+
+        final String model = state.deviceProperties.get("model");
+        if (model != null)
         {
-            if (!strId.toString().isEmpty())
-            {
-                strId.append(",");
-            }
-            strId.append(d.getId());
-            prefEditor.putString(DEVICE_SELECTORS + "_" + d.getId(), d.getName());
+            prefEditor.putString(MODEL, model);
         }
-        Logging.info(this, "Device selectors: " + strId.toString());
-        prefEditor.putString(DEVICE_SELECTORS, strId.toString());
+        if (!state.networkServices.isEmpty())
+        {
+            final StringBuilder str = new StringBuilder();
+            for (Map.Entry<String, String> p : state.networkServices.entrySet())
+            {
+                if (!str.toString().isEmpty())
+                {
+                    str.append(",");
+                }
+                str.append(p.getKey());
+            }
+            Logging.info(this, "Network services: " + str.toString());
+            prefEditor.putString(NETWORK_SERVICES, str.toString());
+        }
+        if (!state.deviceSelectors.isEmpty())
+        {
+            final StringBuilder str = new StringBuilder();
+            for (ReceiverInformationMsg.Selector d : state.deviceSelectors)
+            {
+                if (!str.toString().isEmpty())
+                {
+                    str.append(",");
+                }
+                str.append(d.getId());
+                prefEditor.putString(DEVICE_SELECTORS + "_" + d.getId(), d.getName());
+            }
+            Logging.info(this, "Device selectors: " + str.toString());
+            prefEditor.putString(DEVICE_SELECTORS, str.toString());
+        }
+
         prefEditor.apply();
+    }
+
+    @NonNull
+    static String getSelectedDeviceSelectorsParameter(final SharedPreferences p)
+    {
+        return Configuration.SELECTED_DEVICE_SELECTORS + "_" + p.getString(MODEL, "NONE");
     }
 
     @NonNull
@@ -233,7 +264,8 @@ public class Configuration
         {
             defItems.add(i.getId());
         }
-        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, SELECTED_DEVICE_SELECTORS, defItems))
+        final String par = getSelectedDeviceSelectorsParameter(preferences);
+        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, par, defItems))
         {
             final boolean visible = allItems || sp.checked ||
                     (activeItem != InputSelectorMsg.InputType.NONE && activeItem.getCode().equals(sp.code));
@@ -253,23 +285,10 @@ public class Configuration
         return preferences.getBoolean(FRIENDLY_NAMES, true);
     }
 
-    public void setNetworkServices(HashMap<String, String> networkServices)
+    @NonNull
+    static String getSelectedNetworkServicesParameter(final SharedPreferences p)
     {
-        final StringBuilder str = new StringBuilder();
-        for (Map.Entry<String, String> p : networkServices.entrySet())
-        {
-            if (!str.toString().isEmpty())
-            {
-                str.append(",");
-            }
-            str.append(p.getKey());
-        }
-        String selectors = str.toString();
-
-        Logging.info(this, "Network services: " + selectors);
-        SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putString(NETWORK_SERVICES, selectors);
-        prefEditor.apply();
+        return Configuration.SELECTED_NETWORK_SERVICES + "_" + p.getString(MODEL, "NONE");
     }
 
     @NonNull
@@ -283,7 +302,8 @@ public class Configuration
         {
             defItems.add(i.getService().getCode());
         }
-        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, SELECTED_NETWORK_SERVICES, defItems))
+        final String par = getSelectedNetworkServicesParameter(preferences);
+        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, par, defItems))
         {
             final boolean visible = sp.checked ||
                     (activeItem != ServiceType.UNKNOWN && activeItem.getCode().equals(sp.code));

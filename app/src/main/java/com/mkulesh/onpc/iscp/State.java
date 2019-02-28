@@ -204,7 +204,8 @@ public class State
         // fallback to model from ReceiverInformationMsg
         {
             final String name = deviceProperties.get("model");
-            if (name != null) {
+            if (name != null)
+            {
                 return name;
             }
         }

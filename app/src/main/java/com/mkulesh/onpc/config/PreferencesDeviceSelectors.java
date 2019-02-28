@@ -28,7 +28,7 @@ public class PreferencesDeviceSelectors extends DraggableListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        prepareList(Configuration.SELECTED_DEVICE_SELECTORS);
+        prepareList(Configuration.getSelectedDeviceSelectorsParameter(preferences));
         prepareSelectors();
     }
 
