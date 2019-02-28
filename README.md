@@ -2,14 +2,14 @@
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
 [![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v0.8-debug.apk)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Open Music Controller for Onkyo
+# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo/Integra
 
 *Remote controller for Onkyo devices: listen to music properly!*
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
 
-This app allows remote control of an Onkyo Network Player or a Network A/V Receiver via the
+This app allows remote control of an Onkyo/Integra Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.  Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry
 - One-click access to music playback actions
@@ -55,7 +55,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 ## Publications:
 
 * [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985/)
-* [Logo design for Open Music Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
+* [Logo design for Enhanced Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
 
 ## Used Open Source Libraries
 * Material Design Icons: http://materialdesignicons.com

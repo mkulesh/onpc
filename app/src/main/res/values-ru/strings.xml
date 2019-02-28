@@ -14,7 +14,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Open Music Controller for Onkyo</string>
+    <string name="app_name">Enhanced Controller for Onkyo</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Управляй музыкой на устройствах Onkyo одним кликом!</string>
     <string name="state_not_connected">Отсутствует соединение</string>
@@ -26,7 +26,7 @@
     <string name="html_about"><![CDATA[
     <p>Управляй музыкой на устройствах Onkyo одним кликом!</p>
     <p>Copyright © 2018-2019 by <b>Михаил Кулеш, Александр Гоманюк</b></p>
-    <p>Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo по
+    <p>Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Integra по
        локальной сети, используя сетевой протокол "Integra Serial Communication Protocol".
        Основное предназначение программы - управление воспроизведением и звуковыми профилями.</p>
     <p><a href="https://github.com/mkulesh/onpc">Репозиторий с исходным кодом</a></p>
