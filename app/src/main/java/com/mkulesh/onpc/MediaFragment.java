@@ -170,8 +170,16 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         moveFrom = -1;
-        selectorPaletteLayout.removeAllViews();
-        titleBar.setText("");
+        if (state != null)
+        {
+            updateSelectorButtons(state);
+        }
+        else
+        {
+            selectorPaletteLayout.removeAllViews();
+        }
+        titleBar.setVisibility(View.GONE);
+        titleBar.setText(R.string.dashed_string);
         listView.clearChoices();
         listView.invalidate();
         listView.setAdapter(new MediaListAdapter(this, activity, new ArrayList<>()));
@@ -245,6 +253,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 b.setVisibility(View.GONE);
             }
             selectorPaletteLayout.addView(b);
+        }
+        for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
+        {
+            setButtonEnabled(selectorPaletteLayout.getChildAt(i), state.isOn());
         }
         if (selectedButton != null)
         {
@@ -345,6 +357,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             title.append(state.titleBar).append("/").append(
                     activity.getResources().getString(R.string.medialist_no_items));
         }
+        titleBar.setVisibility(View.VISIBLE);
         titleBar.setText(title.toString());
         progressIndicator.setVisibility(state.inputType.isMediaList() && processing ? View.VISIBLE : View.INVISIBLE);
     }
