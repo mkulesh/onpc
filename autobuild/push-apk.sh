@@ -1,6 +1,6 @@
 #!/bin/sh
 
-APK_VERSION=0.8
+APK_VERSION=0.9
 
 echo "Generated APK"
 pwd; ls -l ./app/build/outputs/apk
