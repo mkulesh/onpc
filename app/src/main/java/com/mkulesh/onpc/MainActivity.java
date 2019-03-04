@@ -377,6 +377,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 {
                     m.setEnabled(state != null);
                     Utils.updateMenuIconColor(this, m);
+                    if (m.isEnabled() && state != null)
+                    {
+                        Utils.setDrawableColorAttr(this, m.getIcon(),
+                                state.isOn()? android.R.attr.textColorTertiary : R.attr.colorAccent);
+                    }
                 }
             }
         }
