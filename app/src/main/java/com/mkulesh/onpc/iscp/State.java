@@ -363,6 +363,10 @@ public class State
     {
         final boolean changed = msg.getPowerStatus() != powerStatus;
         powerStatus = msg.getPowerStatus();
+        if (changed && !isOn())
+        {
+            clearItems();
+        }
         return changed;
     }
 

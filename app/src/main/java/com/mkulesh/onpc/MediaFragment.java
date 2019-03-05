@@ -196,6 +196,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
             updateListView(state);
         }
+        else if (eventChanges.contains(State.ChangeType.COMMON))
+        {
+            updateSelectorButtonsState(state);
+        }
     }
 
     private void updateSelectorButtons(@NonNull final State state)
@@ -213,20 +217,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand(), 0, buttonMarginHorizontal, 0);
             prepareButtonListeners(b, msg, () -> progressIndicator.setVisibility(View.VISIBLE));
-            setButtonEnabled(b, b.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
             selectorPaletteLayout.addView(b);
         }
 
         // Selectors
-        final ArrayList<String> selectedSelectors = new ArrayList<>();
-        for (ReceiverInformationMsg.Selector s : activity.getConfiguration().getSortedDeviceSelectors(
-                false, state.inputType, state.deviceSelectors))
-        {
-            selectedSelectors.add(s.getId());
-        }
         AppCompatButton selectedButton = null;
         for (ReceiverInformationMsg.Selector s : activity.getConfiguration().getSortedDeviceSelectors(
-                true, state.inputType, state.deviceSelectors))
+                false, state.inputType, state.deviceSelectors))
         {
             final InputSelectorMsg msg = new InputSelectorMsg(state.getActiveZone(), s.getId());
             if (msg.getInputType() == InputSelectorMsg.InputType.NONE)
@@ -239,28 +236,38 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 b.setText(s.getName());
             }
-            if (selectedSelectors.contains(s.getId()))
+            if (state.inputType.getCode().equals(s.getId()))
             {
-                b.setVisibility(View.VISIBLE);
-                setButtonSelected(b, state.inputType.getCode().equals(s.getId()));
-                if (b.isSelected())
-                {
-                    selectedButton = b;
-                }
-            }
-            else
-            {
-                b.setVisibility(View.GONE);
+                selectedButton = b;
             }
             selectorPaletteLayout.addView(b);
         }
-        for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
-        {
-            setButtonEnabled(selectorPaletteLayout.getChildAt(i), state.isOn());
-        }
+        updateSelectorButtonsState(state);
         if (selectedButton != null)
         {
             selectorPaletteLayout.requestChildFocus(selectedButton, selectedButton);
+        }
+    }
+
+    private void updateSelectorButtonsState(@NonNull final State state)
+    {
+        for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
+        {
+            final View v = selectorPaletteLayout.getChildAt(i);
+            setButtonEnabled(v, state.isOn());
+            if (!state.isOn())
+            {
+                continue;
+            }
+            if (v.getTag() instanceof OperationCommandMsg.Command)
+            {
+                setButtonEnabled(v, v.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
+
+            }
+            else if (v.getTag() instanceof InputSelectorMsg.InputType)
+            {
+                setButtonSelected(v, state.inputType == v.getTag());
+            }
         }
     }
 
