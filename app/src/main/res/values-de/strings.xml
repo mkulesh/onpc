@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2018. Mikhail Kulesh
+  ~ Copyright (C) 2019. Mikhail Kulesh 
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -18,20 +18,20 @@
     <!-- Main view -->
     <string name="app_name">Enhanced Controller for Onkyo</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo devices: listen to music properly!</string>
-    <string name="state_not_connected">Not connected</string>
-    <string name="state_standby">Standby</string>
-    <string name="action_exit_confirm">Press back button again to exit</string>
+    <string name="app_description">Verbesserte Fernsteuerung für Onkyo Geräte: listen to music properly!</string>
+    <string name="state_not_connected">Nicht verbunden</string>
+    <string name="state_standby">Schlafmodus</string>
+    <string name="action_exit_confirm">Zum Beenden zurück erneut drücken</string>
     <string name="action_ok">OK</string>
-    <string name="action_cancel">Cancel</string>
+    <string name="action_cancel">Abbrechen</string>
 
     <string name="html_about"><![CDATA[
-    <p>Enhanced controller for Onkyo devices: listen to music properly!</p>
+    <p>Verbesserte Fernsteuerung für Onkyo Geräte: listen to music properly!</p>
     <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>This app allows remote control of an Onkyo/Integra Network Player or a Network A/V Receiver via the
-       "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.</p>
-    <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
-    <h5>License</h5>
+    <p>Diese app steuert Onkyo/Integra Netzwerk Abspielgeräte und A/V Receiver über das
+       "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.</p>
+    <p><a href="https://github.com/mkulesh/onpc">Öffentliches repository</a></p>
+    <h5>Lizenz</h5>
     <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU
        General Public License as published by the Free Software Foundation, either version 3 of the License,
        or (at your option) any later version.</p>
@@ -39,135 +39,85 @@
        even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
        GNU General Public License for more details. You should have received a copy of the GNU General
        Public License along with this program.</p>
-    <h5>Used Open Source Libraries</h5>
+    <h5>Genutzte Open Source Bibliotheken</h5>
     <p>&#8226; <a href="http://materialdesignicons.com">Material Design Icons</a></p>
     <p>&#8226; <a href="https://www.materialpalette.com">Material Design Palette</a></p>
     <p>&#8226; <a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></p>
     ]]></string>
 
     <!-- Navigation drawer -->
-    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_open">Navigation drawer öffnen</string>
     <string name="drawer_group_zone">Zone</string>
-    <string name="drawer_device">Device</string>
-    <string name="drawer_device_connect">Connect</string>
-    <string name="drawer_device_search">Search</string>
-    <string name="drawer_device_application">Application</string>
-    <string name="drawer_about">About</string>
+    <string name="drawer_device">Gerät</string>
+    <string name="drawer_device_connect">Verbinden</string>
+    <string name="drawer_device_search">Suchen</string>
+    <string name="drawer_device_application">Anwendung</string>
+    <string name="drawer_about">Über</string>
 
     <!-- Connection dialog -->
-    <string name="connect_dialog_address">Address</string>
+    <string name="connect_dialog_address">Adresse</string>
     <string name="connect_dialog_port">Port (optional)</string>
 
     <!-- Main menu -->
-    <string name="menu_power_power">On/Standby</string>
-    <string name="menu_app_settings">Settings</string>
-    <string name="menu_receiver_information">Receiver information</string>
+    <string name="menu_power_power">An/Standby</string>
+    <string name="menu_app_settings">Einstellungen</string>
+    <string name="menu_receiver_information">Receiver Informationen</string>
 
     <!-- Tabs -->
-    <string name="title_monitor">Listen</string>
-    <string name="title_media">Media</string>
-    <string name="title_device">Device</string>
+    <string name="title_monitor">Hören</string>
+    <string name="title_media">Medien</string>
+    <string name="title_device">Gerät</string>
     <string name="title_remote_control">RC</string>
     <string name="title_remote_interface">RI</string>
 
     <!-- Application settings -->
-    <string name="pref_category_device_options">Device options</string>
+    <string name="pref_category_device_options">Gerät Optionen</string>
     <string name="pref_category_ri_options">Remote interface</string>
-    <string name="pref_category_advanced_options">Advanced</string>
+    <string name="pref_category_advanced_options">Erweitert</string>
 
-    <string name="pref_volume_title">Volume keys turning</string>
-    <string name="pref_volume_summary">Use volume keys to change master volume on remote device</string>
-    <string name="pref_exit_confirm">Press back button twice for exit</string>
-    <string name="pref_keep_screen_on">Keep the screen turned on</string>
-    <string name="pref_developer_mode">Developer options</string>
-    <string name="pref_device_selectors">Input selectors</string>
-    <string name="pref_listening_modes">Listening modes</string>
-    <string name="pref_network_services">Network services</string>
+    <string name="pref_volume_title">Lautstärketasten weiterleiten</string>
+    <string name="pref_volume_summary">Lautstärketasten verwenden um master Lautstärke zu ändern</string>
+    <string name="pref_exit_confirm">Zweimal zurück zum beenden</string>
+    <string name="pref_keep_screen_on">Bildschirm aktiv lassen</string>
+    <string name="pref_developer_mode">Entwicklereinstellungen</string>
+    <string name="pref_device_selectors">Eingangskanäle</string>
+    <string name="pref_listening_modes">Klangprofile</string>
+    <string name="pref_network_services">Netzwerkdienste</string>
 
-    <string name="pref_friendly_names">Friendly selector and device names</string>
-    <string name="pref_friendly_names_summary_on">Use friendly names provided by Onkyo device</string>
-    <string name="pref_friendly_names_summary_off">Use build-in names</string>
+    <string name="pref_friendly_names">Lesbare Kanal- und Gerätenamen</string>
+    <string name="pref_friendly_names_summary_on">Lesbare Namen vom Onkyo-Gerät nutzen</string>
+    <string name="pref_friendly_names_summary_off">Namen des Protokolls nutzen</string>
 
     <!-- Sound Control -->
-    <string name="pref_sound_control">Sound control</string>
+    <string name="pref_sound_control">Klangprofile</string>
     <string-array name="pref_sound_control_names">
-        <item>None</item>
-        <item>External amplifier (RI)</item>
-        <item>Device</item>
-    </string-array>
-
-    <string name="pref_default_sound_control" translatable="false">device</string>
-    <string-array name="pref_sound_control_codes" translatable="false">
-        <item>none</item>
-        <item>external-amplifier</item>
-        <item>device</item>
+        <item>Keine</item>
+        <item>Externer Verstärker (RI)</item>
+        <item>Gerät</item>
     </string-array>
 
     <!-- App themes -->
     <string name="pref_app_theme">Theme</string>
     <string-array name="pref_theme_names">
-        <item>Strong Dark (Black and Lime)</item>
-        <item>Dark (Dim Gray and Cyan)</item>
-        <item>Dark (Dim Gray and Yellow)</item>
-        <item>Light (Gray and Deep Purple)</item>
-        <item>Light (Indigo and Orange)</item>
-        <item>Light (Teal and Deep Orange)</item>
-        <item>Light (Purple and Green)</item>
+        <item>Schwarz und Limette</item>
+        <item>Dunkel (Dunkelgrau und Blau)</item>
+        <item>Dunkel (Dunkelgrau und Gelb)</item>
+        <item>Hell (Grau und Lila)</item>
+        <item>Hell (Indigo und Orange)</item>
+        <item>Hell (Türkis und sattes Orange)</item>
+        <item>Hell (Lila und Grün)</item>
     </string-array>
 
-    <string name="pref_default_theme_code" translatable="false">indigo-orange</string>
-    <string-array name="pref_theme_codes" translatable="false">
-        <item>black-lime</item>
-        <item>dim-gray-cyan</item>
-        <item>dim-gray-yellow</item>
-        <item>gray-deep-purple</item>
-        <item>indigo-orange</item>
-        <item>teal-deep-orange</item>
-        <item>purple-green</item>
-    </string-array>
-
-    <array name="main_themes" translatable="false">
-        <item>@style/MainThemeBlackLime</item>
-        <item>@style/MainThemeDimGrayCyan</item>
-        <item>@style/MainThemeDimGrayYellow</item>
-        <item>@style/MainThemeGrayDeepPurple</item>
-        <item>@style/MainThemeIndigoOrange</item>
-        <item>@style/MainThemeTealDeepOrange</item>
-        <item>@style/MainThemePurpleGreen</item>
-    </array>
-
-    <array name="settings_themes" translatable="false">
-        <item>@style/SettingsThemeBlackLime</item>
-        <item>@style/SettingsThemeDimGrayCyan</item>
-        <item>@style/SettingsThemeDimGrayYellow</item>
-        <item>@style/SettingsThemeGrayDeepPurple</item>
-        <item>@style/SettingsThemeIndigoOrange</item>
-        <item>@style/SettingsThemeTealDeepOrange</item>
-        <item>@style/SettingsThemePurpleGreen</item>
-    </array>
 
     <!-- Application settings: Languages -->
-    <string name="pref_app_language">App language</string>
-    <string-array name="pref_language_names" translatable="false">
-        <item>English</item>
-        <item>Русский</item>
-        <item>Deutsch</item>
-    </string-array>
-    <!-- Non-Translatable parameters of languages -->
-    <string name="pref_default_language_code" translatable="false">en</string>
-    <string-array name="pref_language_codes" translatable="false">
-        <item>en</item>
-        <item>ru</item>
-        <item>de</item>
-    </string-array>
+    <string name="pref_app_language">App Sprache</string>
 
     <!-- Playback tab -->
-    <string name="tv_time_default" translatable="false">--:--</string>
     <string name="tv_display_mode">Display mode on device</string>
 
     <!-- Amplifier commands (RI interface) -->
-    <string name="amp_cmd_volume_up">Volume level up</string>
-    <string name="amp_cmd_volume_down">Volume level down</string>
+    <string name="amp_cmd_volume_up">Lauter</string>
+    <string name="amp_cmd_volume_down">Leiser</string>
     <string name="amp_cmd_selector_up">Selector position wrap-around up</string>
     <string name="amp_cmd_selector_down">Selector position wrap-around down</string>
     <string name="amp_cmd_audio_muting_off">Amplifier audio muting off</string>
@@ -178,10 +128,10 @@
     <string name="amp_cmd_system_on_toggle">Amplifier on/standby toggle</string>
 
     <!-- CD player commands (RI interface) -->
-    <string name="cd_cmd_power">CD player on/standby toggle</string>
-    <string name="cd_cmd_track">Next track</string>
+    <string name="cd_cmd_power">CD Spieler an/standby</string>
+    <string name="cd_cmd_track">Nächster Titel</string>
     <string name="cd_cmd_play">Play</string>
-    <string name="cd_cmd_stop">Stop</string>
+    <string name="cd_cmd_stop">Stopp</string>
     <string name="cd_cmd_pause">Pause</string>
     <string name="cd_cmd_skip_f">Skip forward</string>
     <string name="cd_cmd_skip_r">Skip backwards</string>
@@ -222,34 +172,34 @@
     <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
 
     <!-- Master Volume Command  -->
-    <string name="master_volume">Master volume</string>
-    <string name="master_volume_up">Sets volume level up</string>
-    <string name="master_volume_down">Sets volume level down</string>
-    <string name="master_volume_up1">Sets volume level up 1dB step</string>
-    <string name="master_volume_down1">Sets volume level down 1dB step</string>
+    <string name="master_volume">Master Lautstärke</string>
+    <string name="master_volume_up">Lauter</string>
+    <string name="master_volume_down">Leiser</string>
+    <string name="master_volume_up1">1dB lauter</string>
+    <string name="master_volume_down1">1dB leiser</string>
 
     <!-- Network/USB Operation Command  -->
-    <string name="cmd_description_play">Play</string>
-    <string name="cmd_description_stop">Stop</string>
+    <string name="cmd_description_play">Abspielen</string>
+    <string name="cmd_description_stop">Stopp</string>
     <string name="cmd_description_pause">Pause</string>
-    <string name="cmd_description_p_p">Play/Pause</string>
-    <string name="cmd_description_trup">Track Up</string>
-    <string name="cmd_description_trdn">Track Down</string>
-    <string name="cmd_description_ff">FF Key(Continuous)</string>
-    <string name="cmd_description_rew">REW Key(Continuous)</string>
-    <string name="cmd_description_repeat">Repeat</string>
-    <string name="cmd_description_random">Random</string>
-    <string name="cmd_description_rep_shf">Repeat/Shuffle</string>
-    <string name="cmd_description_display">Display</string>
+    <string name="cmd_description_p_p">Abspielen/Pause</string>
+    <string name="cmd_description_trup">voriger Titel</string>
+    <string name="cmd_description_trdn">nächster Titel</string>
+    <string name="cmd_description_ff">FF Taste(Continuous)</string>
+    <string name="cmd_description_rew">REW Taste(Continuous)</string>
+    <string name="cmd_description_repeat">Wiederholen</string>
+    <string name="cmd_description_random">Zufall</string>
+    <string name="cmd_description_rep_shf">Wiederholen/Zufall</string>
+    <string name="cmd_description_display">Anzeige</string>
     <string name="cmd_description_album">Album</string>
-    <string name="cmd_description_artist">Artist</string>
+    <string name="cmd_description_artist">Künstler</string>
     <string name="cmd_description_genre">Genre</string>
-    <string name="cmd_description_playlist">Playlist</string>
-    <string name="cmd_description_right">Right</string>
-    <string name="cmd_description_left">Left</string>
-    <string name="cmd_description_up">Up</string>
-    <string name="cmd_description_down">Down</string>
-    <string name="cmd_description_select">Select</string>
+    <string name="cmd_description_playlist">Abspielliste</string>
+    <string name="cmd_description_right">Rechts</string>
+    <string name="cmd_description_left">Links</string>
+    <string name="cmd_description_up">Hoch</string>
+    <string name="cmd_description_down">Runter</string>
+    <string name="cmd_description_select">Auswählen</string>
     <string name="cmd_description_key_0">0</string>
     <string name="cmd_description_key_1">1</string>
     <string name="cmd_description_key_2">2</string>
@@ -260,29 +210,29 @@
     <string name="cmd_description_key_7">7</string>
     <string name="cmd_description_key_8">8</string>
     <string name="cmd_description_key_9">9</string>
-    <string name="cmd_description_delete">Delete</string>
-    <string name="cmd_description_caps">Caps</string>
-    <string name="cmd_description_location">Location</string>
-    <string name="cmd_description_language">Language</string>
-    <string name="cmd_description_setup">Setup</string>
-    <string name="cmd_description_return">Return</string>
-    <string name="cmd_description_chup">Ch Up(For Iradio)</string>
-    <string name="cmd_description_chdn">Ch Down(For Iradio)</string>
-    <string name="cmd_description_menu">Menu</string>
-    <string name="cmd_description_quick_menu">Quick menu</string>
-    <string name="cmd_description_top">Top Menu</string>
-    <string name="cmd_description_mode">Mode(For Ipod)</string>
-    <string name="cmd_description_list">List/Playback</string>
-    <string name="cmd_description_memory">Memory(Add Favorite)</string>
-    <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
-    <string name="cmd_description_f2">Negative Feed</string>
+    <string name="cmd_description_delete">Entfernen</string>
+    <string name="cmd_description_caps">Großbuchstaben</string>
+    <string name="cmd_description_location">Ort</string>
+    <string name="cmd_description_language">Sprache</string>
+    <string name="cmd_description_setup">Einrichten</string>
+    <string name="cmd_description_return">Zurück</string>
+    <string name="cmd_description_chup">Voriger Kanal (Iradio)</string>
+    <string name="cmd_description_chdn">Nächster Kanal (Iradio)</string>
+    <string name="cmd_description_menu">Menü</string>
+    <string name="cmd_description_quick_menu">Schnellmenü</string>
+    <string name="cmd_description_top">Hauptmenü</string>
+    <string name="cmd_description_mode">Modus (Ipod)</string>
+    <string name="cmd_description_list">Liste/Abspielen</string>
+    <string name="cmd_description_memory">Speichern(Favorit hinzufügen)</string>
+    <string name="cmd_description_f1">Positiv markieren/demarkieren</string>
+    <string name="cmd_description_f2">Negativ markieren</string>
 
     <!-- Media list tab -->
-    <string name="medialist_items">items</string>
-    <string name="medialist_processing">Processing…</string>
-    <string name="medialist_track_menu">Track menu</string>
-    <string name="medialist_playback_mode">Playback mode</string>
-    <string name="medialist_no_items">No items</string>
+    <string name="medialist_items">Elemente</string>
+    <string name="medialist_processing">Bearbeite…</string>
+    <string name="medialist_track_menu">Titel Menü</string>
+    <string name="medialist_playback_mode">Abspielmodus</string>
+    <string name="medialist_no_items">Keine Elemente</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>
@@ -360,22 +310,22 @@
     <string name="service_net">Network</string>
     <string name="service_bluetooth">Bluetooth</string>
 
-    <string name="playlist_add">Add to queue</string>
-    <string name="playlist_add_and_play">Add and play</string>
-    <string name="playlist_remove">Remove item</string>
-    <string name="playlist_remove_all">Remove all</string>
-    <string name="playlist_move_from">Move from</string>
-    <string name="playlist_move_to">Move to</string>
+    <string name="playlist_add">Zur Abspielliste hinzufügen</string>
+    <string name="playlist_add_and_play">Hinzufügen und abspielen</string>
+    <string name="playlist_remove">Element entfernen</string>
+    <string name="playlist_remove_all">Alle entfernen</string>
+    <string name="playlist_move_from">Verschiebe von</string>
+    <string name="playlist_move_to">Verschiebe nach</string>
 
     <!-- Device tab -->
-    <string name="device_friendly_name">Friendly name</string>
-    <string name="device_change_friendly_name">Change friendly name</string>
-    <string name="device_info">Device info</string>
-    <string name="device_brand">Brand</string>
-    <string name="device_model">Model</string>
-    <string name="device_year">Year</string>
+    <string name="device_friendly_name">Gewählter Name</string>
+    <string name="device_change_friendly_name">Namen bearbeiten</string>
+    <string name="device_info">Gerätinformationen</string>
+    <string name="device_brand">Marke</string>
+    <string name="device_model">Modell</string>
+    <string name="device_year">Jahr</string>
     <string name="google_cast_version">Google Cast</string>
-    <string name="device_settings">Settings</string>
+    <string name="device_settings">Einstellungen</string>
 
     <!-- Firmware -->
     <string name="device_firmware">Firmware</string>
@@ -386,26 +336,26 @@
     <string name="device_firmware_net">Start device update via network</string>
 
     <!-- Dimmer Level -->
-    <string name="device_dimmer_level">Dimmer level</string>
+    <string name="device_dimmer_level">Anzeigehelligkeit</string>
     <string name="device_dimmer_level_none">N/A</string>
-    <string name="device_dimmer_level_bright">Bright</string>
-    <string name="device_dimmer_level_dim">Dim</string>
-    <string name="device_dimmer_level_dark">Dark</string>
-    <string name="device_dimmer_level_off">Off</string>
-    <string name="device_dimmer_level_toggle">Sets dimmer level wrap-around</string>
+    <string name="device_dimmer_level_bright">Hell</string>
+    <string name="device_dimmer_level_dim">Mittel</string>
+    <string name="device_dimmer_level_dark">Dunkel</string>
+    <string name="device_dimmer_level_off">Aus</string>
+    <string name="device_dimmer_level_toggle">Rotiert durch die Helligkeitseinstellungen</string>
 
     <!-- Digital Filter -->
-    <string name="device_digital_filter">Digital filter</string>
+    <string name="device_digital_filter">Digitalfilter</string>
     <string name="device_digital_filter_none">N/A</string>
-    <string name="device_digital_filter_slow">Slow</string>
-    <string name="device_digital_filter_sharp">Sharp</string>
-    <string name="device_digital_filter_short">Short</string>
-    <string name="device_digital_filter_toggle">Sets digital filter wrap-around</string>
+    <string name="device_digital_filter_slow">Langsam</string>
+    <string name="device_digital_filter_sharp">Klar</string>
+    <string name="device_digital_filter_short">Kurz</string>
+    <string name="device_digital_filter_toggle">Rotiert durch die Digitalfilter</string>
 
     <!-- Any two-way switch commands -->
     <string name="device_two_way_switch_none">N/A</string>
-    <string name="device_two_way_switch_off">Off</string>
-    <string name="device_two_way_switch_on">On</string>
+    <string name="device_two_way_switch_off">Aus</string>
+    <string name="device_two_way_switch_on">An</string>
 
     <!-- Speaker A Command -->
     <string name="speaker_a_command_toggle">Sets speaker A switch wrap-around</string>
@@ -520,10 +470,10 @@
     <string name="remote_interface_playback">Playback</string>
 
     <!-- Errors -->
-    <string name="error_invalid_device_address">Invalid device name or port</string>
-    <string name="error_connection_no_network">No connection to the network</string>
-    <string name="error_connection_no_wifi">No connection to Wi-Fi. Please input Onkyo device IP and port manually</string>
-    <string name="error_connection_no_device">Onkyo device not found</string>
-    <string name="error_connection_no_response">Onkyo device %s not responding</string>
+    <string name="error_invalid_device_address">Ungültiger Gerätename oder Port</string>
+    <string name="error_connection_no_network">Keine Verbindung zum Netzwerk</string>
+    <string name="error_connection_no_wifi">Keine WLAN Verbindung, bitte IP und Port manuell eingeben</string>
+    <string name="error_connection_no_device">Onkyo Gerät nicht gefunden</string>
+    <string name="error_connection_no_response">Onkyo Gerät %s antwortet nicht</string>
 
 </resources>
