@@ -8,6 +8,8 @@
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
+[<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
+      alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
 This app allows remote control of an Onkyo/Integra Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.  Other benefits include:
