@@ -67,6 +67,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 ## Acknowledgement
 * Thank to [Tebriz](https://github.com/tebriz159) for Logo design
 * Thank to [mrlad](https://github.com/mrlad), [onschedule](https://github.com/onschedule) for testing and improvements ideas
+* Thank to [Michael](https://github.com/quelbs) for German translation
 
 ## License
 
