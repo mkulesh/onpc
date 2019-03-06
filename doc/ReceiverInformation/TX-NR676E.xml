@@ -6,7 +6,7 @@
         <model>TX-NR676E</model>
         <destination>xx</destination>
         <productid>streamsdk</productid>
-        <macaddress>0009B0EA8089</macaddress>
+        <macaddress></macaddress>
         <modeliconurl>http://192.168.1.58/icon/OAVR_120.jpg</modeliconurl>
         <friendlyname></friendlyname>
         <firmwareversion>1091-1020-3050-0010-0000</firmwareversion>

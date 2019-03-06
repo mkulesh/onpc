@@ -7,7 +7,7 @@
         <model>NS-6130</model>
         <destination>xx</destination>
         <productid>streamsdk</productid>
-        <macaddress>0009B0E1EE7F</macaddress>
+        <macaddress></macaddress>
         <modeliconurl>http://192.168.1.80/icon/OAVR_120.jpg</modeliconurl>
         <friendlyname></friendlyname>
         <firmwareversion>2120-1000-0000-0010-0000</firmwareversion>
