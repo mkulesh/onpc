@@ -81,14 +81,14 @@ class MockupState extends State
         numberOfLayers = 0;
         numberOfItems = 9;
         titleBar = "Net";
-        serviceItems.add(new NetworkServiceMsg("Music Server"));
-        serviceItems.add(new NetworkServiceMsg("SPOTIFY"));
-        serviceItems.add(new NetworkServiceMsg("TuneIn"));
-        serviceItems.add(new NetworkServiceMsg("Deezer"));
-        serviceItems.add(new NetworkServiceMsg("Airplay"));
-        serviceItems.add(new NetworkServiceMsg("Tidal"));
-        serviceItems.add(new NetworkServiceMsg("Chromecast built-in"));
-        serviceItems.add(new NetworkServiceMsg("FlareConnect"));
-        serviceItems.add(new NetworkServiceMsg("Play Queue"));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.MUSIC_SERVER));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.SPOTIFY));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.TUNEIN_RADIO));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.DEEZER));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.AIRPLAY));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.TIDAL));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.CHROMECAST));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.FLARECONNECT));
+        serviceItems.add(new NetworkServiceMsg(ServiceType.PLAYQUEUE));
     }
 }

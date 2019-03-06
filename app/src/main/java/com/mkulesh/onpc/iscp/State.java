@@ -125,8 +125,8 @@ public class State
     int numberOfLayers = 0;
     public int numberOfItems = 0;
     public String titleBar = "";
-    protected final List<XmlListItemMsg> mediaItems = new ArrayList<>();
-    protected final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
+    private final List<XmlListItemMsg> mediaItems = new ArrayList<>();
+    final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
     private final List<String> listInfoItems = new ArrayList<>();
 
     // Popup
@@ -750,22 +750,24 @@ public class State
         }
         if (serviceType == ServiceType.NET)
         {
+            // Since the names in ListInfoMsg and ReceiverInformationMsg are
+            // not consistent for some services (see https://github.com/mkulesh/onpc/issues/35)
+            // we just clone here networkServices provided by ReceiverInformationMsg
+            // into serviceItems list by any NET ListInfoMsg
             synchronized (serviceItems)
             {
-                for (NetworkServiceMsg i : serviceItems)
+                serviceItems.clear();
+                for (final String code : networkServices.keySet())
                 {
-                    if (i.getService().getName().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                    final ServiceType service =
+                            (ServiceType) ISCPMessage.searchParameter(code, ServiceType.values(), ServiceType.UNKNOWN);
+                    if (service != ServiceType.UNKNOWN)
                     {
-                        return false;
+                        serviceItems.add(new NetworkServiceMsg(service));
                     }
                 }
-                final NetworkServiceMsg nsMsg = new NetworkServiceMsg(msg.getListedData());
-                if (nsMsg.getService() != ServiceType.UNKNOWN)
-                {
-                    serviceItems.add(nsMsg);
-                }
             }
-            return true;
+            return !serviceItems.isEmpty();
         }
         else if (isUsb())
         {

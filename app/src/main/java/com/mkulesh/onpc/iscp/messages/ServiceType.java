@@ -62,10 +62,10 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     PLAYQUEUE("1D", "Play Queue", R.string.service_playqueue, R.drawable.media_item_playqueue),
     CHROMECAST("40", "Chromecast built-in", R.string.service_chromecast, R.drawable.media_item_chromecast),
     FIRECONNECT("41", "FireConnect", R.string.service_fireconnect),
-    PLAY_FI("42", "Play-Fi", R.string.service_play_fi, R.drawable.media_item_play_fi),
+    PLAY_FI("42", "DTS Play-Fi", R.string.service_play_fi, R.drawable.media_item_play_fi),
     FLARECONNECT("43", "FlareConnect", R.string.service_flareconnect, R.drawable.media_item_flare_connect),
-    USB_FRONT("F0", "USB(F)", R.string.service_usb_front, R.drawable.media_item_usb),
-    USB_REAR("F1", "USB(R)", R.string.service_usb_rear, R.drawable.media_item_usb),
+    USB_FRONT("F0", "USB(Front)", R.string.service_usb_front, R.drawable.media_item_usb),
+    USB_REAR("F1", "USB(Rear)", R.string.service_usb_rear, R.drawable.media_item_usb),
     INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio, R.drawable.media_item_radio),
     NET("F3", "NET", R.string.service_net, R.drawable.media_item_net),
     BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth, R.drawable.media_item_bluetooth);
@@ -98,11 +98,6 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     public String getCode()
     {
         return code;
-    }
-
-    public String getName()
-    {
-        return name;
     }
 
     @StringRes
