@@ -52,6 +52,8 @@ public class Configuration
 
     static final String DEVICE_SELECTORS = "device_selectors";
     private static final String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
+
+    private static final String AUTO_POWER = "auto_power";
     static final String FRIENDLY_NAMES = "pref_friendly_names";
     static final String NETWORK_SERVICES = "network_services";
     private static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
@@ -278,6 +280,11 @@ public class Configuration
             }
         }
         return result;
+    }
+
+    public boolean isAutoPower()
+    {
+        return preferences.getBoolean(AUTO_POWER, false);
     }
 
     public boolean isFriendlyNames()

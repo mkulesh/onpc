@@ -85,6 +85,7 @@
     <string name="pref_listening_modes">Звуковые профили</string>
     <string name="pref_network_services">Сетевые сервисы</string>
 
+    <string name="pref_auto_power">Включить удаленное устройство при запуске приложения</string>
     <string name="pref_friendly_names">Удобные названия каналов и устройства</string>
     <string name="pref_friendly_names_summary_on">Использовать удобные названия, предоставленные устройством Onkyo</string>
     <string name="pref_friendly_names_summary_off">Использовать встроенные названия</string>

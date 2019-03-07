@@ -34,6 +34,22 @@
 
     <PreferenceCategory android:title="@string/pref_category_device_options">
 
+        <SwitchPreferenceCompat
+            app:icon="@drawable/pref_auto_power"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="auto_power"
+            android:title="@string/pref_auto_power" />
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/pref_friendly_name"
+            app:singleLineTitle="false"
+            android:defaultValue="true"
+            android:key="pref_friendly_names"
+            android:title="@string/pref_friendly_names"
+            android:summaryOn="@string/pref_friendly_names_summary_on"
+            android:summaryOff="@string/pref_friendly_names_summary_off" />
+
         <ListPreference
             app:icon="@drawable/pref_sound_control"
             android:defaultValue="@string/pref_default_sound_control"
@@ -42,16 +58,6 @@
             android:key="sound_control"
             android:summary="%s"
             android:title="@string/pref_sound_control" />
-
-        <SwitchPreferenceCompat
-            app:icon="@drawable/pref_friendly_name"
-            app:singleLineTitle="false"
-            app:iconSpaceReserved="true"
-            android:defaultValue="true"
-            android:key="pref_friendly_names"
-            android:title="@string/pref_friendly_names"
-            android:summaryOn="@string/pref_friendly_names_summary_on"
-            android:summaryOff="@string/pref_friendly_names_summary_off" />
 
         <PreferenceScreen
             app:icon="@drawable/pref_device_selectors"

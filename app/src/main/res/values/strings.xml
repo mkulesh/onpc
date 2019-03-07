@@ -84,6 +84,7 @@
     <string name="pref_listening_modes">Listening modes</string>
     <string name="pref_network_services">Network services</string>
 
+    <string name="pref_auto_power">Switch-on remote device on app startup</string>
     <string name="pref_friendly_names">Friendly selector and device names</string>
     <string name="pref_friendly_names_summary_on">Use friendly names provided by Onkyo device</string>
     <string name="pref_friendly_names_summary_off">Use build-in names</string>

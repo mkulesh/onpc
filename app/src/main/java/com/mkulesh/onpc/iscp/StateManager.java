@@ -90,7 +90,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             MenuStatusMsg.CODE
     };
 
-    public StateManager(final ConnectionState connectionState, final StateListener stateListener, final String device, final int port, final int zone) throws Exception
+    private boolean autoPower = false;
+
+    public StateManager(final ConnectionState connectionState, final StateListener stateListener,
+                        final String device, final int port, final int zone) throws Exception
     {
         this.stateListener = stateListener;
 
@@ -132,6 +135,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         return state;
     }
 
+    public void setAutoPower(boolean autoPower)
+    {
+        this.autoPower = autoPower;
+    }
+
     @Override
     protected Void doInBackground(Void... params)
     {
@@ -166,10 +174,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 }
 
                 final ISCPMessage msg = messageChannel.getInputQueue().take();
-                if (msg == null)
-                {
-                    continue;
-                }
 
                 if (msg instanceof ZonedMessage)
                 {
@@ -246,6 +250,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         // no further message handling, if power off
         if (!state.isOn())
         {
+            if (msg instanceof PowerStatusMsg && autoPower)
+            {
+                // Auto power-on once at first PowerStatusMsg
+                sendMessage(new PowerStatusMsg(state.getActiveZone(), PowerStatusMsg.PowerStatus.ON));
+                autoPower = false;
+            }
             return changed != State.ChangeType.NONE;
         }
 

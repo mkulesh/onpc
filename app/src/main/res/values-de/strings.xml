@@ -82,6 +82,7 @@
     <string name="pref_listening_modes">Klangprofile</string>
     <string name="pref_network_services">Netzwerkdienste</string>
 
+    <string name="pref_auto_power">Remote-Gerät beim Start der App einschalten</string>
     <string name="pref_friendly_names">Lesbare Kanal- und Gerätenamen</string>
     <string name="pref_friendly_names_summary_on">Lesbare Namen vom Onkyo-Gerät nutzen</string>
     <string name="pref_friendly_names_summary_off">Namen des Protokolls nutzen</string>

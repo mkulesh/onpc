@@ -66,10 +66,13 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private Toast exitToast = null;
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
+    private boolean autoPower = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // Note that due to onActivityResult, the activity will be started twice
+        // after the preference activity is closed
         String versionName = null;
         try
         {
@@ -128,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 R.string.drawer_open, R.string.drawer_open);
         Utils.setDrawerListener(navigationDrawer.getDrawerLayout(), mDrawerToggle);
 
+        autoPower = savedInstanceState == null && configuration.isAutoPower();
         updateToolbar(null);
     }
 
@@ -247,6 +251,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         try
         {
             stateHolder.setStateManager(new StateManager(connectionState, this, device, port, zone));
+            if (autoPower)
+            {
+                // Auto power-on once at application startup
+                stateHolder.getStateManager().setAutoPower(true);
+                autoPower = false;
+            }
             return true;
         }
         catch (Exception ex)
