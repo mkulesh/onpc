@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -42,6 +43,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /*
  * Gets the Receiver Information Status
  */
+@SuppressLint("UseSparseArrays")
 public class ReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "NRI";
@@ -134,14 +136,19 @@ public class ReceiverInformationMsg extends ISCPMessage
         @Override
         public String toString()
         {
-            String res = id + ": " + name + ", icon=" + iconId + ", addToQueue=" + addToQueue
-                    + ", zone=" + zone + ", zones=[";
+            StringBuilder res = new StringBuilder();
+            res.append(id)
+                    .append(": ").append(name)
+                    .append(", icon=").append(iconId)
+                    .append(", addToQueue=").append(addToQueue)
+                    .append(", zone=").append(zone)
+                    .append(", zones=[");
             for (int z = 0; z <= 3; z++)
             {
-                res += Integer.valueOf((isActiveForZone(z) ? 1 : 0)).toString();
+                res.append(Integer.valueOf((isActiveForZone(z) ? 1 : 0)).toString());
             }
-            res += "]";
-            return res;
+            res.append("]");
+            return res.toString();
         }
 
         public boolean isActiveForZone(int z)
@@ -157,6 +164,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     private final HashMap<String, String> networkServices = new HashMap<>();
     private final List<Zone> zones = new ArrayList<>();
     private final List<Selector> deviceSelectors = new ArrayList<>();
+    private final HashMap<Integer, String> presetList = new HashMap<>();
     private final Set<String> controlList = new HashSet<>();
 
     ReceiverInformationMsg(EISCPMessage raw) throws Exception
@@ -166,11 +174,13 @@ public class ReceiverInformationMsg extends ISCPMessage
         deviceCover = null;
     }
 
+    @NonNull
     public Map<String, String> getDeviceProperties()
     {
         return deviceProperties;
     }
 
+    @NonNull
     public HashMap<String, String> getNetworkServices()
     {
         return networkServices;
@@ -183,14 +193,22 @@ public class ReceiverInformationMsg extends ISCPMessage
         return defaultZones;
     }
 
+    @NonNull
     public List<Zone> getZones()
     {
         return zones;
     }
 
+    @NonNull
     public List<Selector> getDeviceSelectors()
     {
         return deviceSelectors;
+    }
+
+    @NonNull
+    public HashMap<Integer, String> getPresetList()
+    {
+        return presetList;
     }
 
     @NonNull
@@ -206,6 +224,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         networkServices.clear();
         zones.clear();
         deviceSelectors.clear();
+        presetList.clear();
         controlList.clear();
         InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -281,6 +300,20 @@ public class ReceiverInformationMsg extends ISCPMessage
                                 deviceSelectors.add(new Selector(element));
                             }
                         }
+                        else if ("presetlist".equals(en.getTagName()))
+                        {
+                            final List<Element> elPresets = Utils.getElements(en, "preset");
+                            for (Element element : elPresets)
+                            {
+                                final String id = element.getAttribute("id");
+                                final String band = element.getAttribute("band");
+                                final String name = element.getAttribute("name");
+                                if (id != null && band != null && Integer.parseInt(band) > 0 && name != null)
+                                {
+                                    presetList.put(Integer.parseInt(id, 16), name.trim());
+                                }
+                            }
+                        }
                         else if ("controllist".equals(en.getTagName()))
                         {
                             final List<Element> elControls = Utils.getElements(en, "control");
@@ -314,6 +347,10 @@ public class ReceiverInformationMsg extends ISCPMessage
         for (Selector s : deviceSelectors)
         {
             Logging.info(this, "    Selector: " + s.toString());
+        }
+        for (Map.Entry<Integer, String> p : presetList.entrySet())
+        {
+            Logging.info(this, "    Preset: " + p.getKey() + "=" + p.getValue());
         }
         for (String s : controlList)
         {

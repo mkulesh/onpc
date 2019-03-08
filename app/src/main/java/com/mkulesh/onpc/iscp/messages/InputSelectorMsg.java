@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
@@ -48,17 +49,17 @@ public class InputSelectorMsg extends ZonedMessage
         TAPE2("21", R.string.input_selector_tape2),
         PHONO("22", R.string.input_selector_phono),
         TV_CD("23", R.string.input_selector_tv_cd),
-        FM("24", R.string.input_selector_fm),
+        FM("24", R.string.input_selector_fm, R.drawable.media_item_radio_fm),
         AM("25", R.string.input_selector_am),
         TUNER("26", R.string.input_selector_tuner),
         MUSIC_SERVER("27", R.string.input_selector_music_server),
         INTERNET_RADIO("28", R.string.input_selector_internet_radio),
-        USB_FRONT("29", R.string.input_selector_usb_front, true),
-        USB_REAR("2A", R.string.input_selector_usb_rear, true),
-        NET("2B", R.string.input_selector_net, true),
+        USB_FRONT("29", R.string.input_selector_usb_front, R.drawable.media_item_usb, true),
+        USB_REAR("2A", R.string.input_selector_usb_rear, R.drawable.media_item_usb, true),
+        NET("2B", R.string.input_selector_net, R.drawable.media_item_net, true),
         USB_TOGGLE("2C", R.string.input_selector_usb_toggle),
-        AIRPLAY("2D", R.string.input_selector_airplay),
-        BLUETOOTH("2E", R.string.input_selector_bluetooth),
+        AIRPLAY("2D", R.string.input_selector_airplay, R.drawable.media_item_airplay),
+        BLUETOOTH("2E", R.string.input_selector_bluetooth, R.drawable.media_item_bluetooth),
         USB_DAC_IN("2F", R.string.input_selector_usb_dac_in),
         LINE("41", R.string.input_selector_line),
         LINE2("42", R.string.input_selector_line2),
@@ -78,19 +79,33 @@ public class InputSelectorMsg extends ZonedMessage
 
         @StringRes
         final int descriptionId;
+
+        @DrawableRes
+        final int imageId;
+
         final boolean mediaList;
 
-        InputType(String code, @StringRes final int descriptionId, final boolean mediaList)
+        InputType(String code, @StringRes final int descriptionId, @DrawableRes final int imageId, final boolean mediaList)
         {
             this.code = code;
             this.descriptionId = descriptionId;
+            this.imageId = imageId;
             this.mediaList = mediaList;
+        }
+
+        InputType(String code, @StringRes final int descriptionId, @DrawableRes final int imageId)
+        {
+            this.code = code;
+            this.descriptionId = descriptionId;
+            this.imageId = imageId;
+            this.mediaList = false;
         }
 
         InputType(String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
+            this.imageId = R.drawable.media_item_unknown;
             this.mediaList = false;
         }
 
@@ -103,6 +118,12 @@ public class InputSelectorMsg extends ZonedMessage
         public int getDescriptionId()
         {
             return descriptionId;
+        }
+
+        @DrawableRes
+        public int getImageId()
+        {
+            return imageId;
         }
 
         public boolean isMediaList()

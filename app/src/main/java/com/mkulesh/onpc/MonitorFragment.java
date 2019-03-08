@@ -16,6 +16,7 @@ package com.mkulesh.onpc;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -37,14 +38,15 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
+import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
+import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
-import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -64,6 +66,7 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnRandom;
     private AppCompatImageButton btnTrackMenu;
     private final List<AppCompatImageButton> playbackButtons = new ArrayList<>();
+    private final List<AppCompatImageButton> presetButtons = new ArrayList<>();
     private final List<AppCompatImageButton> amplifierButtons = new ArrayList<>();
     private AppCompatImageButton positiveFeed, negativeFeed;
     private final List<View> deviceSoundButtons = new ArrayList<>();
@@ -107,6 +110,19 @@ public class MonitorFragment extends BaseFragment
             final OperationCommandMsg msg = new OperationCommandMsg(
                     ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, (String) (b.getTag()));
             prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+        }
+
+        // Radio preset buttons
+        presetButtons.add(rootView.findViewById(R.id.btn_preset_up));
+        presetButtons.add(rootView.findViewById(R.id.btn_preset_down));
+        for (AppCompatImageButton b : presetButtons)
+        {
+            final PresetCommandMsg msg = new PresetCommandMsg(
+                    ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, (String) (b.getTag()));
+            if (msg.getCommand() != null)
+            {
+                prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+            }
         }
 
         // Amplifier command buttons
@@ -253,6 +269,22 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
+    private void setButtonsEnabled(List<AppCompatImageButton> buttons, boolean flag)
+    {
+        for (AppCompatImageButton b : buttons)
+        {
+            setButtonEnabled(b, flag);
+        }
+    }
+
+    private void setButtonsVisibility(List<AppCompatImageButton> buttons, int flag)
+    {
+        for (AppCompatImageButton b : buttons)
+        {
+            b.setVisibility(flag);
+        }
+    }
+
     @Override
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
@@ -273,10 +305,7 @@ public class MonitorFragment extends BaseFragment
         cover.setImageResource(R.drawable.empty_cover);
         seekBar.setEnabled(false);
         seekBar.setProgress(0);
-        for (AppCompatImageButton b : amplifierButtons)
-        {
-            setButtonEnabled(b, state != null);
-        }
+        setButtonsEnabled(amplifierButtons, state != null);
         for (View b : deviceSoundButtons)
         {
             if (isVolumeLevel(b))
@@ -288,10 +317,9 @@ public class MonitorFragment extends BaseFragment
                 setButtonEnabled(b, false);
             }
         }
-        for (AppCompatImageButton b : playbackButtons)
-        {
-            setButtonEnabled(b, false);
-        }
+        setButtonsVisibility(playbackButtons, View.VISIBLE);
+        setButtonsEnabled(playbackButtons, false);
+        setButtonsVisibility(presetButtons, View.GONE);
         btnTrackMenu.setVisibility(View.INVISIBLE);
         positiveFeed.setVisibility(View.GONE);
         negativeFeed.setVisibility(View.GONE);
@@ -311,16 +339,31 @@ public class MonitorFragment extends BaseFragment
         // Text
         ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
-        ((TextView) rootView.findViewById(R.id.tv_title)).setText(state.title);
+
+        if (state.inputType == InputSelectorMsg.InputType.FM)
+        {
+            final String txt = state.presetList.get(state.preset);
+            Logging.info(this, txt);
+            ((TextView) rootView.findViewById(R.id.tv_title)).setText(txt != null? txt : "");
+        }
+        else
+        {
+            ((TextView) rootView.findViewById(R.id.tv_title)).setText(state.title);
+        }
         ((TextView) rootView.findViewById(R.id.tv_file_format)).setText(state.fileFormat);
 
         // service icon and track
         {
             final TextView track = rootView.findViewById(R.id.tv_track);
-            final Drawable bg = Utils.getDrawable(activity, state.serviceIcon.getImageId());
+            @DrawableRes int icon = state.serviceIcon.getImageId();
+            if (icon == R.drawable.media_item_unknown)
+            {
+                icon = state.inputType.getImageId();
+            }
+            final Drawable bg = Utils.getDrawable(activity, icon);
             Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
             track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);
-            track.setText(TrackInfoMsg.getTrackInfo(state.currentTrack, state.maxTrack));
+            track.setText(state.getTrackInfo(activity));
         }
 
         // cover
@@ -343,10 +386,7 @@ public class MonitorFragment extends BaseFragment
         {
             selectedListeningModes.add(m.getCode());
         }
-        for (AppCompatImageButton b : amplifierButtons)
-        {
-            setButtonEnabled(b, true);
-        }
+        setButtonsEnabled(amplifierButtons, true);
         for (View b : deviceSoundButtons)
         {
             setButtonEnabled(b, true);
@@ -394,10 +434,44 @@ public class MonitorFragment extends BaseFragment
 
         updateListeningModeLayout();
 
+        if (state.inputType == InputSelectorMsg.InputType.FM)
+        {
+            updatePresetButtons();
+        }
+        else
+        {
+            updatePlaybackButtons(state);
+        }
+
+        // Track menu
+        {
+            final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE &&
+                    state.playStatus != PlayStatusMsg.PlayStatus.STOP;
+            btnTrackMenu.setVisibility(isTrackMenu ? View.VISIBLE : View.INVISIBLE);
+            setButtonEnabled(btnTrackMenu, isTrackMenu);
+        }
+
+        // Feeds
+        updateFeedButton(positiveFeed, state.positiveFeed);
+        updateFeedButton(negativeFeed, state.negativeFeed);
+    }
+
+    private void updatePresetButtons()
+    {
+        setButtonsVisibility(playbackButtons, View.GONE);
+        setButtonsVisibility(presetButtons, View.VISIBLE);
+        setButtonsEnabled(presetButtons, true);
+    }
+
+    private void updatePlaybackButtons(@NonNull final State state)
+    {
+        setButtonsVisibility(presetButtons, View.GONE);
+        setButtonsVisibility(playbackButtons, View.VISIBLE);
+        setButtonsEnabled(playbackButtons, true);
+
         for (AppCompatImageButton b : playbackButtons)
         {
             prepareButtonListeners(b, new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag())));
-            setButtonEnabled(b, true);
         }
 
         if (state.repeatStatus == PlayStatusMsg.RepeatStatus.DISABLE)
@@ -438,18 +512,6 @@ public class MonitorFragment extends BaseFragment
             break;
         }
         setButtonEnabled(btnPausePlay, state.isOn());
-
-        // Track menu
-        {
-            final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE &&
-                    state.playStatus != PlayStatusMsg.PlayStatus.STOP;
-            btnTrackMenu.setVisibility(isTrackMenu ? View.VISIBLE : View.INVISIBLE);
-            setButtonEnabled(btnTrackMenu, isTrackMenu);
-        }
-
-        // Feeds
-        updateFeedButton(positiveFeed, state.positiveFeed);
-        updateFeedButton(negativeFeed, state.negativeFeed);
     }
 
     private void updateListeningModeLayout()

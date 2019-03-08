@@ -14,9 +14,11 @@
 package com.mkulesh.onpc.iscp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
@@ -40,6 +42,7 @@ import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
@@ -60,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressLint("UseSparseArrays")
 public class State
 {
     // Changes
@@ -80,6 +84,7 @@ public class State
     private final int activeZone;
     public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    public HashMap<Integer, String> presetList = new HashMap<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
@@ -104,7 +109,8 @@ public class State
     public Bitmap cover = null;
     public String album = "", artist = "", title = "";
     public String currentTime = "", maxTime = "";
-    public Integer currentTrack = null, maxTrack = null;
+    Integer currentTrack = null, maxTrack = null;
+    public int preset = PresetCommandMsg.NO_PRESET;
     public String fileFormat = "";
     private ByteArrayOutputStream coverBuffer = null;
 
@@ -256,7 +262,10 @@ public class State
         {
             return isCommonChange(process((MasterVolumeMsg) msg));
         }
-
+        if (msg instanceof PresetCommandMsg)
+        {
+            return isCommonChange(process((PresetCommandMsg) msg));
+        }
 
         // Common settings
         if (msg instanceof AutoPowerMsg)
@@ -393,6 +402,7 @@ public class State
             networkServices = msg.getNetworkServices();
             zones = msg.getZones();
             deviceSelectors.clear();
+            presetList = msg.getPresetList();
             for (ReceiverInformationMsg.Selector s : msg.getDeviceSelectors())
             {
                 if (s.isActiveForZone(activeZone))
@@ -420,6 +430,7 @@ public class State
     {
         final boolean changed = inputType != msg.getInputType();
         inputType = msg.getInputType();
+        serviceIcon = ServiceType.UNKNOWN;
         if (!inputType.isMediaList())
         {
             clearItems();
@@ -459,6 +470,13 @@ public class State
     {
         final boolean changed = volumeLevel != msg.getVolumeLevel();
         volumeLevel = msg.getVolumeLevel();
+        return changed;
+    }
+
+    private boolean process(PresetCommandMsg msg)
+    {
+        final boolean changed = preset != msg.getPreset();
+        preset = msg.getPreset();
         return changed;
     }
 
@@ -879,5 +897,24 @@ public class State
         {
             return Integer.toString(volumeLevel, 10);
         }
+    }
+
+    public String getTrackInfo(final Context context)
+    {
+        final StringBuilder str = new StringBuilder();
+        final String dashedString = context.getString(R.string.dashed_string);
+        if (inputType == InputSelectorMsg.InputType.FM)
+        {
+            str.append(preset != PresetCommandMsg.NO_PRESET ? Integer.toString(preset) : dashedString);
+            str.append("/");
+            str.append(!presetList.isEmpty() ? Integer.toString(presetList.size()) : dashedString);
+        }
+        else
+        {
+            str.append(currentTrack != null ? Integer.toString(currentTrack) : dashedString);
+            str.append("/");
+            str.append(maxTrack != null ? Integer.toString(maxTrack) : dashedString);
+        }
+        return str.toString();
     }
 }

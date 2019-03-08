@@ -224,6 +224,16 @@
                 android:id="@+id/btn_random"
                 android:tag="RANDOM" />
 
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_preset_down"
+                android:tag="DOWN" />
+
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_preset_up"
+                android:tag="UP" />
+
         </LinearLayout>
 
     </LinearLayout>

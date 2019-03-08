@@ -85,6 +85,11 @@ public class MessageFactory
         case MasterVolumeMsg.ZONE3_CODE:
         case MasterVolumeMsg.ZONE4_CODE:
             return new MasterVolumeMsg(raw);
+        case PresetCommandMsg.CODE:
+        case PresetCommandMsg.ZONE2_CODE:
+        case PresetCommandMsg.ZONE3_CODE:
+        case PresetCommandMsg.ZONE4_CODE:
+            return new PresetCommandMsg(raw);
         case AutoPowerMsg.CODE:
             return new AutoPowerMsg(raw);
         case CustomPopupMsg.CODE:

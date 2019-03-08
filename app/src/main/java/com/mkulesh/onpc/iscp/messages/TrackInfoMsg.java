@@ -66,15 +66,6 @@ public class TrackInfoMsg extends ISCPMessage
         return maxTrack;
     }
 
-    public static String getTrackInfo(Integer currentTrack, Integer maxTrack)
-    {
-        final StringBuilder str = new StringBuilder();
-        str.append(currentTrack != null ? Integer.toString(currentTrack) : "----");
-        str.append("/");
-        str.append(maxTrack != null ? Integer.toString(maxTrack) : "----");
-        return str.toString();
-    }
-
     @NonNull
     @Override
     public String toString()

@@ -178,6 +178,11 @@
     <string name="master_volume_up1">Повысить громкость на 1dB</string>
     <string name="master_volume_down1">Понизить громкость на 1dB</string>
 
+    <!-- Preset Command  -->
+    <string name="preset_command_up">Следующий канал</string>
+    <string name="preset_command_down">Предыдущий канал</string>
+
+    <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Воспроизведение</string>
     <string name="cmd_description_stop">Стоп</string>
     <string name="cmd_description_pause">Пауза</string>
