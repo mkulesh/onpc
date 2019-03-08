@@ -130,7 +130,7 @@
     <!-- CD player commands (RI interface) -->
     <string name="cd_cmd_power">CD Spieler an/standby</string>
     <string name="cd_cmd_track">Nächster Titel</string>
-    <string name="cd_cmd_play">Start</string>
+    <string name="cd_cmd_play">Wiedergabe</string>
     <string name="cd_cmd_stop">Stopp</string>
     <string name="cd_cmd_pause">Pause</string>
     <string name="cd_cmd_skip_f">Vorwärts springen</string>
