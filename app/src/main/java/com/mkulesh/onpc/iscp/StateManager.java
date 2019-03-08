@@ -43,7 +43,6 @@ import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
-import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
@@ -379,8 +378,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private void requestXmlListState(final ListTitleInfoMsg liMsg)
     {
         requestXmlList.set(false);
-        if (liMsg.getServiceType() == ServiceType.NET
-                && liMsg.getLayerInfo() == ListTitleInfoMsg.LayerInfo.NET_TOP)
+        if (liMsg.isNetTopService())
         {
             Logging.info(this, "requesting XML list state skipped");
         }
@@ -389,7 +387,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             Logging.info(this, "requesting XML list state skipped");
         }
-        else if (liMsg.getNumberOfLayers() > 0)
+        else if (liMsg.isUsbTopService() || liMsg.getNumberOfLayers() > 0)
         {
             Logging.info(this, "requesting XML list state");
             messageChannel.sendMessage(

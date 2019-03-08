@@ -322,4 +322,16 @@ public class ListTitleInfoMsg extends ISCPMessage
                 + "; title=" + titleBar
                 + "]";
     }
+
+    public boolean isNetTopService()
+    {
+        return serviceType == ServiceType.NET
+                && layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP;
+    }
+
+    public boolean isUsbTopService()
+    {
+        return (serviceType == ServiceType.USB_FRONT || serviceType == ServiceType.USB_REAR)
+                && layerInfo == LayerInfo.SERVICE_TOP;
+    }
 }
