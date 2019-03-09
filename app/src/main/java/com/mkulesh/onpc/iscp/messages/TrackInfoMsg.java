@@ -26,7 +26,7 @@ public class TrackInfoMsg extends ISCPMessage
     public final static String CODE = "NTR";
 
     /*
-     * (Current Track/Toral Track Max 9999. If Track is unknown, this response is ----)
+     * (Current Track/Total Track Max 9999. If Track is unknown, this response is ----)
      */
     private Integer currentTrack, maxTrack;
 

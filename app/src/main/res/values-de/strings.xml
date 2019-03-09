@@ -88,7 +88,7 @@
     <string name="pref_friendly_names_summary_off">Namen des Protokolls nutzen</string>
 
     <!-- Sound Control -->
-    <string name="pref_sound_control">Klangprofile</string>
+    <string name="pref_sound_control">Lautstärkekontrolle</string>
     <string-array name="pref_sound_control_names">
         <item>Keine</item>
         <item>Externer Verstärker (RI)</item>
@@ -96,7 +96,7 @@
     </string-array>
 
     <!-- App themes -->
-    <string name="pref_app_theme">Theme</string>
+    <string name="pref_app_theme">Thema</string>
     <string-array name="pref_theme_names">
         <item>Schwarz und Limette</item>
         <item>Dunkel (Dunkelgrau und Blau)</item>
@@ -112,7 +112,7 @@
     <string name="pref_app_language">App Sprache</string>
 
     <!-- Playback tab -->
-    <string name="tv_display_mode">Display mode on device</string>
+    <string name="tv_display_mode">Anzeigemodus am Gerät</string>
 
     <!-- Amplifier commands (RI interface) -->
     <string name="amp_cmd_volume_up">Lauter</string>
@@ -129,34 +129,34 @@
     <!-- CD player commands (RI interface) -->
     <string name="cd_cmd_power">CD Spieler an/standby</string>
     <string name="cd_cmd_track">Nächster Titel</string>
-    <string name="cd_cmd_play">Play</string>
+    <string name="cd_cmd_play">Wiedergabe</string>
     <string name="cd_cmd_stop">Stopp</string>
     <string name="cd_cmd_pause">Pause</string>
-    <string name="cd_cmd_skip_f">Skip forward</string>
-    <string name="cd_cmd_skip_r">Skip backwards</string>
-    <string name="cd_cmd_memory">Memory</string>
-    <string name="cd_cmd_clear">Clear</string>
-    <string name="cd_cmd_repeat">Repeat</string>
-    <string name="cd_cmd_random">Random</string>
-    <string name="cd_cmd_disp">Display</string>
-    <string name="cd_cmd_d_mode">Disk mode</string>
-    <string name="cd_cmd_ff">FF key</string>
-    <string name="cd_cmd_rew">REW key</string>
-    <string name="cd_cmd_op_cl">Open/Close</string>
-    <string name="cd_cmd_number_1">Number 1</string>
-    <string name="cd_cmd_number_2">Number 2</string>
-    <string name="cd_cmd_number_3">Number 3</string>
-    <string name="cd_cmd_number_4">Number 4</string>
-    <string name="cd_cmd_number_5">Number 5</string>
-    <string name="cd_cmd_number_6">Number 6</string>
-    <string name="cd_cmd_number_7">Number 7</string>
-    <string name="cd_cmd_number_8">Number 8</string>
-    <string name="cd_cmd_number_9">Number 9</string>
-    <string name="cd_cmd_number_0">Number 0</string>
-    <string name="cd_cmd_number_10">Number 10</string>
-    <string name="cd_cmd_number_greater_10">Number greater 10</string>
-    <string name="cd_cmd_disc_f">Next Disk</string>
-    <string name="cd_cmd_disc_r">Previous disk</string>
+    <string name="cd_cmd_skip_f">Vorwärts springen</string>
+    <string name="cd_cmd_skip_r">Zurück springen</string>
+    <string name="cd_cmd_memory">Speicher</string>
+    <string name="cd_cmd_clear">Leeren</string>
+    <string name="cd_cmd_repeat">Wiederholen</string>
+    <string name="cd_cmd_random">Zufall</string>
+    <string name="cd_cmd_disp">Anzeige</string>
+    <string name="cd_cmd_d_mode">Disk Modus</string>
+    <string name="cd_cmd_ff">FF Taste</string>
+    <string name="cd_cmd_rew">REW Taste</string>
+    <string name="cd_cmd_op_cl">Öffnen/schließen</string>
+    <string name="cd_cmd_number_1">Nummer 1</string>
+    <string name="cd_cmd_number_2">Nummer 2</string>
+    <string name="cd_cmd_number_3">Nummer 3</string>
+    <string name="cd_cmd_number_4">Nummer 4</string>
+    <string name="cd_cmd_number_5">Nummer 5</string>
+    <string name="cd_cmd_number_6">Nummer 6</string>
+    <string name="cd_cmd_number_7">Nummer 7</string>
+    <string name="cd_cmd_number_8">Nummer 8</string>
+    <string name="cd_cmd_number_9">Nummer 9</string>
+    <string name="cd_cmd_number_0">Nummer 0</string>
+    <string name="cd_cmd_number_10">Nummer 10</string>
+    <string name="cd_cmd_number_greater_10">Nummer größer 10</string>
+    <string name="cd_cmd_disc_f">Nächste Disk</string>
+    <string name="cd_cmd_disc_r">Vorige Disk</string>
     <string name="cd_cmd_disc1">Disk 1</string>
     <string name="cd_cmd_disc2">Disk 2</string>
     <string name="cd_cmd_disc3">Disk 3</string>
@@ -166,9 +166,9 @@
     
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
-    <string name="audio_muting_off">Player audio muting off</string>
-    <string name="audio_muting_on">Player audio muting on</string>
-    <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
+    <string name="audio_muting_off">Ton Stumm aus</string>
+    <string name="audio_muting_on">Ton Stumm an</string>
+    <string name="audio_muting_toggle">Setzt die Stummschaltung (Umschalter)</string>
 
     <!-- Master Volume Command  -->
     <string name="master_volume">Master Lautstärke</string>
@@ -306,11 +306,11 @@
     <string name="service_chromecast">Chromecast</string>
     <string name="service_fireconnect">FireConnect</string>
     <string name="service_flareconnect">FlareConnect</string>
-    <string name="service_usb_front">Front USB</string>
-    <string name="service_usb_rear">Rear USB</string>
+    <string name="service_usb_front">USB vorne</string>
+    <string name="service_usb_rear">USB hinten</string>
     <string name="service_internet_radio">Internet Radio</string>
     <string name="service_play_fi">Play-Fi</string>
-    <string name="service_net">Network</string>
+    <string name="service_net">Netzwerk</string>
     <string name="service_bluetooth">Bluetooth</string>
 
     <string name="playlist_add">Zur Abspielliste hinzufügen</string>
@@ -333,10 +333,10 @@
     <!-- Firmware -->
     <string name="device_firmware">Firmware</string>
     <string name="device_firmware_none">N/A</string>
-    <string name="device_firmware_actual">Latest version</string>
-    <string name="device_firmware_new_version">New version exists</string>
-    <string name="device_firmware_update_complete">Update completed</string>
-    <string name="device_firmware_net">Start device update via network</string>
+    <string name="device_firmware_actual">Aktuellste version</string>
+    <string name="device_firmware_new_version">Es gibt eine neue Version</string>
+    <string name="device_firmware_update_complete">Update abgeschlossen</string>
+    <string name="device_firmware_net">Update über Netzwerk starten</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Anzeigehelligkeit</string>
@@ -361,18 +361,18 @@
     <string name="device_two_way_switch_on">An</string>
 
     <!-- Speaker A Command -->
-    <string name="speaker_a_command_toggle">Sets speaker A switch wrap-around</string>
+    <string name="speaker_a_command_toggle">Lautsprecher A umschalten</string>
 
     <!-- Speaker B Command -->
-    <string name="speaker_b_command_toggle">Sets speaker B switch wrap-around</string>
+    <string name="speaker_b_command_toggle">Lautsprecher B umschalten</string>
 
     <!-- Speaker A/B three-way switch -->
-    <string name="speaker_ab_command">Speaker A/B</string>
-    <string name="speaker_ab_command_toggle">Toggle between speakers</string>
-    <string name="speaker_ab_command_ab_off">Both off</string>
-    <string name="speaker_ab_command_ab_on">Both on</string>
-    <string name="speaker_ab_command_a_only">A only</string>
-    <string name="speaker_ab_command_b_only">B only</string>
+    <string name="speaker_ab_command">Lautsprecher A/B</string>
+    <string name="speaker_ab_command_toggle">Zwischen Lautsprechern wechseln</string>
+    <string name="speaker_ab_command_ab_off">Beide aus</string>
+    <string name="speaker_ab_command_ab_on">Beide an</string>
+    <string name="speaker_ab_command_a_only">nur A</string>
+    <string name="speaker_ab_command_b_only">nur B</string>
 
     <!-- Auto power commands -->
     <string name="device_auto_power">Auto power</string>
