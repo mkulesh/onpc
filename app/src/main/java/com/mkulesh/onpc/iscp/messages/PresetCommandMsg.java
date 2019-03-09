@@ -71,11 +71,14 @@ public class PresetCommandMsg extends ZonedMessage
     }
 
     private final Command command;
+    private final ReceiverInformationMsg.Preset presetConfig;
     private int preset = NO_PRESET;
 
     PresetCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw, ZONE_COMMANDS);
+        command = null;
+        presetConfig = null;
         try
         {
             preset = Integer.parseInt(data, 16);
@@ -84,14 +87,22 @@ public class PresetCommandMsg extends ZonedMessage
         {
             // nothing to do
         }
-        command = null;
     }
 
     public PresetCommandMsg(int zoneIndex, final String command)
     {
         super(0, null, zoneIndex);
         this.command = (Command) searchParameter(command, Command.values(), null);
+        presetConfig = null;
         this.preset = NO_PRESET;
+    }
+
+    public PresetCommandMsg(int zoneIndex, final ReceiverInformationMsg.Preset presetConfig, final int preset)
+    {
+        super(0, null, zoneIndex);
+        this.command = null;
+        this.presetConfig = presetConfig;
+        this.preset = preset;
     }
 
     @Override
@@ -105,6 +116,11 @@ public class PresetCommandMsg extends ZonedMessage
         return command;
     }
 
+    public ReceiverInformationMsg.Preset getPresetConfig()
+    {
+        return presetConfig;
+    }
+
     public int getPreset()
     {
         return preset;
@@ -116,8 +132,9 @@ public class PresetCommandMsg extends ZonedMessage
     {
         return getZoneCommand() + "[" + data
                 + "; ZONE_INDEX=" + zoneIndex
-                + "; PRESET=" + preset
-                + "; CMD=" + (command != null ? command.toString() : "null") + "]";
+                + "; CMD=" + (command != null ? command.toString() : "null")
+                + "; PRS_CFG=" + (presetConfig != null ? presetConfig.getName() : "null")
+                + "; PRESET=" + preset + "]";
     }
 
     @Override
@@ -128,9 +145,9 @@ public class PresetCommandMsg extends ZonedMessage
         {
             par = command.getCode();
         }
-        else if (preset != NO_PRESET)
+        else if (presetConfig != null)
         {
-            par = String.format("%02x", preset);
+            par = String.format("%02x", presetConfig.getId());
         }
         return new EISCPMessage('1', getZoneCommand(), par);
     }

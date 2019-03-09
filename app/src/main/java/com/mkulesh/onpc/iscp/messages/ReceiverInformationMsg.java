@@ -15,8 +15,10 @@ package com.mkulesh.onpc.iscp.messages;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
@@ -183,6 +185,11 @@ public class ReceiverInformationMsg extends ISCPMessage
             return id;
         }
 
+        public int getBand()
+        {
+            return band;
+        }
+
         public String getName()
         {
             return name;
@@ -193,6 +200,27 @@ public class ReceiverInformationMsg extends ISCPMessage
         public String toString()
         {
             return id + ": " + name + ", band=" + band + ", freq=" + freq;
+        }
+
+        @NonNull
+        public String displayedString()
+        {
+            return name + ((freq != null && !freq.equals("0")) ? ("/" + freq) : "");
+        }
+
+        @NonNull
+        @DrawableRes
+        public int getImageId()
+        {
+            switch (band)
+            {
+            case 1:
+                return R.drawable.media_item_radio_fm;
+            case 2:
+                return R.drawable.media_item_radio_digital;
+            default:
+                return R.drawable.media_item_unknown;
+            }
         }
     }
 

@@ -39,6 +39,7 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueAddMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueRemoveMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueReorderMsg;
+import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
@@ -306,6 +307,19 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     activity.getResources().getString(R.string.medialist_playback_mode),
                     XmlListItemMsg.Icon.PLAY, false);
             newItems.add(nsMsg);
+        }
+        else if (state.isRadioInput())
+        {
+            for (ReceiverInformationMsg.Preset p : state.presetList)
+            {
+                if ((state.inputType == InputSelectorMsg.InputType.FM && p.getBand() == 1)
+                    || (state.inputType == InputSelectorMsg.InputType.DAB && p.getBand() == 2))
+                {
+                    final boolean isPlaying = (p.getId() == state.preset);
+                    newItems.add(new PresetCommandMsg(
+                            state.getActiveZone(), p, isPlaying? state.preset : PresetCommandMsg.NO_PRESET));
+                }
+            }
         }
         listViewAdapter = new MediaListAdapter(this, activity, newItems);
         listView.setAdapter(listViewAdapter);

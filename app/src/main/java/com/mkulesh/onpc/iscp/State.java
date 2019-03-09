@@ -114,8 +114,8 @@ public class State
     private ByteArrayOutputStream coverBuffer = null;
 
     // Radio
-    private List<ReceiverInformationMsg.Preset> presetList = new ArrayList<>();
-    private int preset = PresetCommandMsg.NO_PRESET;
+    public List<ReceiverInformationMsg.Preset> presetList = new ArrayList<>();
+    public int preset = PresetCommandMsg.NO_PRESET;
 
     // Playback
     public PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
@@ -461,7 +461,6 @@ public class State
                 final ReceiverInformationMsg.Preset p = new ReceiverInformationMsg.Preset(
                         i, i < 20? 1 : 2, "Freq_" + i, "Name_" + i);
                 presetList.add(p);
-                Logging.info(this, "Debug preset: " + p);
             }
         }
         // end of debug code
@@ -933,7 +932,6 @@ public class State
     public boolean isRadioInput()
     {
         return inputType == InputSelectorMsg.InputType.FM
-                || inputType == InputSelectorMsg.InputType.AM
                 || inputType == InputSelectorMsg.InputType.DAB;
     }
 

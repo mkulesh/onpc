@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -93,6 +94,21 @@ final class MediaListAdapter extends ArrayAdapter<ISCPMessage>
                 Utils.setImageViewColorAttr(mediaFragment.activity, icon, android.R.attr.textColor);
             }
             tvTitle.setText(msg.getCommand().getDescriptionId());
+        }
+        else if (item instanceof PresetCommandMsg)
+        {
+            final PresetCommandMsg msg = (PresetCommandMsg) item;
+            if (msg.getPreset() != PresetCommandMsg.NO_PRESET)
+            {
+                icon.setImageResource(R.drawable.media_item_play);
+                Utils.setImageViewColorAttr(mediaFragment.activity, icon, R.attr.colorAccent);
+            }
+            else
+            {
+                icon.setImageResource(msg.getPresetConfig().getImageId());
+                Utils.setImageViewColorAttr(mediaFragment.activity, icon, android.R.attr.textColor);
+            }
+            tvTitle.setText(msg.getPresetConfig().displayedString());
         }
 
         return convertView;

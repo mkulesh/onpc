@@ -344,7 +344,7 @@ public class MonitorFragment extends BaseFragment
             if (state.isRadioInput())
             {
                 final ReceiverInformationMsg.Preset preset = state.searchPreset();
-                title.setText(preset != null ? preset.getName() : "");
+                title.setText(preset != null ? preset.displayedString() : "");
             }
             else
             {
