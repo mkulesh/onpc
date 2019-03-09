@@ -46,6 +46,7 @@ import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
+import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -65,7 +66,7 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnRandom;
     private AppCompatImageButton btnTrackMenu;
     private final List<AppCompatImageButton> playbackButtons = new ArrayList<>();
-    private final List<AppCompatImageButton> presetButtons = new ArrayList<>();
+    private final List<AppCompatImageButton> fmDabButtons = new ArrayList<>();
     private final List<AppCompatImageButton> amplifierButtons = new ArrayList<>();
     private AppCompatImageButton positiveFeed, negativeFeed;
     private final List<View> deviceSoundButtons = new ArrayList<>();
@@ -111,18 +112,12 @@ public class MonitorFragment extends BaseFragment
             prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
         }
 
-        // Radio preset buttons
-        presetButtons.add(rootView.findViewById(R.id.btn_preset_up));
-        presetButtons.add(rootView.findViewById(R.id.btn_preset_down));
-        for (AppCompatImageButton b : presetButtons)
-        {
-            final PresetCommandMsg msg = new PresetCommandMsg(
-                    ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, (String) (b.getTag()));
-            if (msg.getCommand() != null)
-            {
-                prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
-            }
-        }
+        // FM/DAB preset and tuning buttons
+        fmDabButtons.add(rootView.findViewById(R.id.btn_preset_up));
+        fmDabButtons.add(rootView.findViewById(R.id.btn_preset_down));
+        fmDabButtons.add(rootView.findViewById(R.id.btn_tuning_up));
+        fmDabButtons.add(rootView.findViewById(R.id.btn_tuning_down));
+        prepareFmDabButtons();
 
         // Amplifier command buttons
         switch (activity.getConfiguration().getSoundControl())
@@ -186,6 +181,38 @@ public class MonitorFragment extends BaseFragment
 
         update(null, null);
         return rootView;
+    }
+
+    private void prepareFmDabButtons()
+    {
+        for (AppCompatImageButton b : fmDabButtons)
+        {
+            String[] tokens = b.getTag().toString().split(":");
+            if (tokens.length != 2)
+            {
+                continue;
+            }
+            final String msgName = tokens[0];
+            switch (msgName)
+            {
+            case PresetCommandMsg.CODE:
+                final PresetCommandMsg pMsg = new PresetCommandMsg(
+                        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, tokens[1]);
+                if (pMsg.getCommand() != null)
+                {
+                    prepareButton(b, pMsg, pMsg.getCommand().getImageId(), pMsg.getCommand().getDescriptionId());
+                }
+                break;
+            case TuningCommandMsg.CODE:
+                final TuningCommandMsg tMsg = new TuningCommandMsg(
+                        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, tokens[1]);
+                if (tMsg.getCommand() != null)
+                {
+                    prepareButton(b, tMsg, tMsg.getCommand().getImageId(), tMsg.getCommand().getDescriptionId());
+                }
+                break;
+            }
+        }
     }
 
     private void prepareAmplifierButtons()
@@ -318,7 +345,7 @@ public class MonitorFragment extends BaseFragment
         }
         setButtonsVisibility(playbackButtons, View.VISIBLE);
         setButtonsEnabled(playbackButtons, false);
-        setButtonsVisibility(presetButtons, View.GONE);
+        setButtonsVisibility(fmDabButtons, View.GONE);
         btnTrackMenu.setVisibility(View.INVISIBLE);
         positiveFeed.setVisibility(View.GONE);
         negativeFeed.setVisibility(View.GONE);
@@ -337,20 +364,22 @@ public class MonitorFragment extends BaseFragment
         Logging.info(this, "Updating playback monitor");
         {
             // Text
-            final TextView title = rootView.findViewById(R.id.tv_title);
             ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
             ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
 
+            final TextView title = rootView.findViewById(R.id.tv_title);
+            final TextView format = rootView.findViewById(R.id.tv_file_format);
             if (state.isRadioInput())
             {
                 final ReceiverInformationMsg.Preset preset = state.searchPreset();
                 title.setText(preset != null ? preset.displayedString() : "");
+                format.setText(state.getFrequencyInfo(activity));
             }
             else
             {
                 title.setText(state.title);
+                format.setText(state.fileFormat);
             }
-            ((TextView) rootView.findViewById(R.id.tv_file_format)).setText(state.fileFormat);
         }
 
         // service icon and track
@@ -460,13 +489,13 @@ public class MonitorFragment extends BaseFragment
     private void updatePresetButtons()
     {
         setButtonsVisibility(playbackButtons, View.GONE);
-        setButtonsVisibility(presetButtons, View.VISIBLE);
-        setButtonsEnabled(presetButtons, true);
+        setButtonsVisibility(fmDabButtons, View.VISIBLE);
+        setButtonsEnabled(fmDabButtons, true);
     }
 
     private void updatePlaybackButtons(@NonNull final State state)
     {
-        setButtonsVisibility(presetButtons, View.GONE);
+        setButtonsVisibility(fmDabButtons, View.GONE);
         setButtonsVisibility(playbackButtons, View.VISIBLE);
         setButtonsEnabled(playbackButtons, true);
 

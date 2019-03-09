@@ -90,6 +90,11 @@ public class MessageFactory
         case PresetCommandMsg.ZONE3_CODE:
         case PresetCommandMsg.ZONE4_CODE:
             return new PresetCommandMsg(raw);
+        case TuningCommandMsg.CODE:
+        case TuningCommandMsg.ZONE2_CODE:
+        case TuningCommandMsg.ZONE3_CODE:
+        case TuningCommandMsg.ZONE4_CODE:
+            return new TuningCommandMsg(raw);
         case AutoPowerMsg.CODE:
             return new AutoPowerMsg(raw);
         case CustomPopupMsg.CODE:

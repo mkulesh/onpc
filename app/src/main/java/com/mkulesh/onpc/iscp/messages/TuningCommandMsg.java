@@ -22,23 +22,21 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 
 /*
- * Preset Command (Include Tuner Pack Model Only)
+ * Tuning Command (Include Tuner Pack Model Only)
  */
-public class PresetCommandMsg extends ZonedMessage
+public class TuningCommandMsg extends ZonedMessage
 {
-    public final static String CODE = "PRS";
-    final static String ZONE2_CODE = "PRZ";
-    final static String ZONE3_CODE = "PR3";
-    final static String ZONE4_CODE = "PR4";
+    public final static String CODE = "TUN";
+    final static String ZONE2_CODE = "TUZ";
+    final static String ZONE3_CODE = "TU3";
+    final static String ZONE4_CODE = "TU4";
 
     private final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
-    public final static int NO_PRESET = -1;
-
     public enum Command implements StringParameterIf
     {
-        UP(R.string.preset_command_up, R.drawable.cmd_right),
-        DOWN(R.string.preset_command_down, R.drawable.cmd_left);
+        UP(R.string.tuning_command_up, R.drawable.cmd_fast_forward),
+        DOWN(R.string.tuning_command_down, R.drawable.cmd_fast_backward);
 
         @StringRes
         final int descriptionId;
@@ -71,38 +69,20 @@ public class PresetCommandMsg extends ZonedMessage
     }
 
     private final Command command;
-    private final ReceiverInformationMsg.Preset presetConfig;
-    private int preset = NO_PRESET;
+    private final String frequency;
 
-    PresetCommandMsg(EISCPMessage raw) throws Exception
+    TuningCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw, ZONE_COMMANDS);
         command = null;
-        presetConfig = null;
-        try
-        {
-            preset = Integer.parseInt(data, 16);
-        }
-        catch (Exception e)
-        {
-            // nothing to do
-        }
+        frequency = data;
     }
 
-    public PresetCommandMsg(int zoneIndex, final String command)
+    public TuningCommandMsg(int zoneIndex, final String command)
     {
         super(0, null, zoneIndex);
         this.command = (Command) searchParameter(command, Command.values(), null);
-        presetConfig = null;
-        this.preset = NO_PRESET;
-    }
-
-    public PresetCommandMsg(int zoneIndex, final ReceiverInformationMsg.Preset presetConfig, final int preset)
-    {
-        super(0, null, zoneIndex);
-        this.command = null;
-        this.presetConfig = presetConfig;
-        this.preset = preset;
+        frequency = "";
     }
 
     @Override
@@ -116,14 +96,9 @@ public class PresetCommandMsg extends ZonedMessage
         return command;
     }
 
-    public ReceiverInformationMsg.Preset getPresetConfig()
+    public String getFrequency()
     {
-        return presetConfig;
-    }
-
-    public int getPreset()
-    {
-        return preset;
+        return frequency;
     }
 
     @NonNull
@@ -133,23 +108,13 @@ public class PresetCommandMsg extends ZonedMessage
         return getZoneCommand() + "[" + data
                 + "; ZONE_INDEX=" + zoneIndex
                 + "; CMD=" + (command != null ? command.toString() : "null")
-                + "; PRS_CFG=" + (presetConfig != null ? presetConfig.getName() : "null")
-                + "; PRESET=" + preset + "]";
+                + "; FREQ=" + frequency + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        String par = "";
-        if (command != null)
-        {
-            par = command.getCode();
-        }
-        else if (presetConfig != null)
-        {
-            par = String.format("%02x", presetConfig.getId());
-        }
-        return new EISCPMessage('1', getZoneCommand(), par);
+        return new EISCPMessage('1', getZoneCommand(), command.getCode());
     }
 
     @Override

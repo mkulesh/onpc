@@ -244,12 +244,22 @@
                 <android.support.v7.widget.AppCompatImageButton
                     style="@style/ImageButtonPrimaryStyle"
                     android:id="@+id/btn_preset_down"
-                    android:tag="DOWN" />
+                    android:tag="PRS:DOWN" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_tuning_down"
+                    android:tag="TUN:DOWN" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_tuning_up"
+                    android:tag="TUN:UP" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     style="@style/ImageButtonPrimaryStyle"
                     android:id="@+id/btn_preset_up"
-                    android:tag="UP" />
+                    android:tag="PRS:UP" />
 
             </LinearLayout>
 

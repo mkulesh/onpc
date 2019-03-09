@@ -182,6 +182,10 @@
     <string name="preset_command_up">Следующий канал</string>
     <string name="preset_command_down">Предыдущий канал</string>
 
+    <!-- Tuning Command  -->
+    <string name="tuning_command_up">Повысить частоту приема</string>
+    <string name="tuning_command_down">Понизить частоту приема</string>
+
     <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Воспроизведение</string>
     <string name="cmd_description_stop">Стоп</string>

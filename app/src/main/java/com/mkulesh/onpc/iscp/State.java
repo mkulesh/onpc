@@ -51,6 +51,7 @@ import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
+import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -116,6 +117,7 @@ public class State
     // Radio
     public List<ReceiverInformationMsg.Preset> presetList = new ArrayList<>();
     public int preset = PresetCommandMsg.NO_PRESET;
+    private String frequency = "";
 
     // Playback
     public PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
@@ -333,6 +335,10 @@ public class State
         {
             return isCommonChange(process((PresetCommandMsg) msg));
         }
+        if (msg instanceof TuningCommandMsg)
+        {
+            return isCommonChange(process((TuningCommandMsg) msg));
+        }
 
         // Playback
         if (msg instanceof PlayStatusMsg)
@@ -421,6 +427,8 @@ public class State
             {
                 deviceSelectors.add(new ReceiverInformationMsg.Selector(
                         "24", "FM", 0, "", false));
+                deviceSelectors.add(new ReceiverInformationMsg.Selector(
+                        "33", "DAB", 0, "", false));
             }
             // end of debug code
 
@@ -454,12 +462,13 @@ public class State
         if (RADIO_DEBUG && inputType == InputSelectorMsg.InputType.NONE)
         {
             inputType = InputSelectorMsg.InputType.FM;
-            preset = 16;
+            preset = 10;
+            frequency = "9990";
             presetList.clear();
             for (int i = 0; i < 40; i++)
             {
                 final ReceiverInformationMsg.Preset p = new ReceiverInformationMsg.Preset(
-                        i, i < 20? 1 : 2, "Freq_" + i, "Name_" + i);
+                        i, i < 20 ? 1 : 2, i < 20 ? "Freq_" + i : "0", "Name_" + i);
                 presetList.add(p);
             }
         }
@@ -507,6 +516,13 @@ public class State
     {
         final boolean changed = preset != msg.getPreset();
         preset = msg.getPreset();
+        return changed;
+    }
+
+    private boolean process(TuningCommandMsg msg)
+    {
+        final boolean changed = !msg.getFrequency().equals(frequency);
+        frequency = msg.getFrequency();
         return changed;
     }
 
@@ -964,5 +980,29 @@ public class State
             str.append(maxTrack != null ? Integer.toString(maxTrack) : dashedString);
         }
         return str.toString();
+    }
+
+    @NonNull
+    public String getFrequencyInfo(final Context context)
+    {
+        final String dashedString = context.getString(R.string.dashed_string);
+        if (frequency == null)
+        {
+            return dashedString;
+        }
+        if (inputType != InputSelectorMsg.InputType.FM)
+        {
+            return frequency;
+        }
+        try
+        {
+            final float f = (float) Integer.parseInt(frequency) / 100.0f;
+            final DecimalFormat df = Utils.getDecimalFormat("0.00 MHz");
+            return df.format(f);
+        }
+        catch (Exception e)
+        {
+            return dashedString;
+        }
     }
 }
