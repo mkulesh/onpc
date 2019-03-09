@@ -39,7 +39,7 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
         SKIP_R(R.string.cd_cmd_skip_r, R.drawable.cmd_previous, "SKIP.R"),
         MEMORY(R.string.cd_cmd_memory),
         CLEAR(R.string.cd_cmd_clear),
-        REPEAT(R.string.cd_cmd_repeat, R.drawable.cmd_repeat),
+        REPEAT(R.string.cd_cmd_repeat, R.drawable.repeat_all),
         RANDOM(R.string.cd_cmd_random, R.drawable.cmd_random),
         DISP(R.string.cd_cmd_disp),
         D_MODE(R.string.cd_cmd_d_mode),

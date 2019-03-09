@@ -504,6 +504,7 @@ public class MonitorFragment extends BaseFragment
             prepareButtonListeners(b, new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag())));
         }
 
+        btnRepeat.setImageResource(state.repeatStatus.getImageId());
         if (state.repeatStatus == PlayStatusMsg.RepeatStatus.DISABLE)
         {
             setButtonEnabled(btnRepeat, false);

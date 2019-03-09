@@ -13,8 +13,10 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -51,17 +53,32 @@ public class PlayStatusMsg extends ISCPMessage
      */
     public enum RepeatStatus implements CharParameterIf
     {
-        OFF('-'), ALL('R'), FOLDER('F'), REPEAT_1('1'), DISABLE('x');
+        OFF('-', R.drawable.repeat_off),
+        ALL('R', R.drawable.repeat_all),
+        FOLDER('F', R.drawable.repeat_folder),
+        REPEAT_1('1', R.drawable.repeat_once),
+        DISABLE('x', R.drawable.repeat_off);
+
         final Character code;
 
-        RepeatStatus(Character code)
+        @DrawableRes
+        final int imageId;
+
+        RepeatStatus(Character code, @DrawableRes final int imageId)
         {
             this.code = code;
+            this.imageId = imageId;
         }
 
         public Character getCode()
         {
             return code;
+        }
+
+        @DrawableRes
+        public int getImageId()
+        {
+            return imageId;
         }
     }
 
