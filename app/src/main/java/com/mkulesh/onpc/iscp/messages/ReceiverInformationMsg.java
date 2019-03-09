@@ -13,7 +13,6 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -43,7 +42,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /*
  * Gets the Receiver Information Status
  */
-@SuppressLint("UseSparseArrays")
 public class ReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "NRI";
@@ -157,6 +155,46 @@ public class ReceiverInformationMsg extends ISCPMessage
         }
     }
 
+    public static class Preset
+    {
+        final int id;
+        final int band;
+        final String freq;
+        final String name;
+
+        Preset(Element e)
+        {
+            id = Integer.parseInt(e.getAttribute("id"), 16);
+            band = Integer.parseInt(e.getAttribute("band"));
+            freq = e.getAttribute("freq");
+            name = e.getAttribute("name").trim();
+        }
+
+        public Preset(final int id, final int band, final String freq, final String name)
+        {
+            this.id = id;
+            this.band = band;
+            this.freq = freq;
+            this.name = name;
+        }
+
+        public int getId()
+        {
+            return id;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        @NonNull
+        @Override
+        public String toString()
+        {
+            return id + ": " + name + ", band=" + band + ", freq=" + freq;
+        }
+    }
 
     private String deviceId;
     private final HashMap<String, String> deviceProperties = new HashMap<>();
@@ -164,7 +202,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     private final HashMap<String, String> networkServices = new HashMap<>();
     private final List<Zone> zones = new ArrayList<>();
     private final List<Selector> deviceSelectors = new ArrayList<>();
-    private final HashMap<Integer, String> presetList = new HashMap<>();
+    private final List<Preset> presetList = new ArrayList<>();
     private final Set<String> controlList = new HashSet<>();
 
     ReceiverInformationMsg(EISCPMessage raw) throws Exception
@@ -206,7 +244,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     }
 
     @NonNull
-    public HashMap<Integer, String> getPresetList()
+    public List<Preset> getPresetList()
     {
         return presetList;
     }
@@ -308,9 +346,9 @@ public class ReceiverInformationMsg extends ISCPMessage
                                 final String id = element.getAttribute("id");
                                 final String band = element.getAttribute("band");
                                 final String name = element.getAttribute("name");
-                                if (id != null && band != null && Integer.parseInt(band) > 0 && name != null)
+                                if (id != null && band != null && name != null)
                                 {
-                                    presetList.put(Integer.parseInt(id, 16), name.trim());
+                                    presetList.add(new Preset(element));
                                 }
                             }
                         }
@@ -348,9 +386,9 @@ public class ReceiverInformationMsg extends ISCPMessage
         {
             Logging.info(this, "    Selector: " + s.toString());
         }
-        for (Map.Entry<Integer, String> p : presetList.entrySet())
+        for (Preset p : presetList)
         {
-            Logging.info(this, "    Preset: " + p.getKey() + "=" + p.getValue());
+            Logging.info(this, "    Preset: " + p.toString());
         }
         for (String s : controlList)
         {

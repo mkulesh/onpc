@@ -10,7 +10,8 @@
         <friendlyname>TX-8150</friendlyname>
         <firmwareversion>1040-2000-0000-0000-0000</firmwareversion>
         <netservicelist count="18">
-            <netservice id="0e" value="1" name="TuneIn Radio" account="Username" password="Password" />
+            <netservice id="0e" value="1" name="TuneIn Radio" account="Username"
+                password="Password" />
             <netservice id="0c" value="0" name="radiko.jp" />
             <netservice id="04" value="1" name="Pandora" account="Email" password="Password" />
             <netservice id="0a" value="1" name="Spotify" />
@@ -78,9 +79,9 @@
             <preset id="1b" band="0" freq="0" name="" />
             <preset id="1c" band="0" freq="0" name="" />
             <preset id="1d" band="0" freq="0" name="" />
-            <preset id="1e" band="0" freq="0" name="" />
-            <preset id="1f" band="0" freq="0" name="" />
-            <preset id="20" band="0" freq="0" name="" />
+            <preset id="1e" band="1" freq="89.00" name="2DAY 89   " />
+            <preset id="1f" band="1" freq="89.50" name="Bayern 2  " />
+            <preset id="20" band="1" freq="90.00" name="B5 akt    " />
             <preset id="21" band="0" freq="0" name="" />
             <preset id="22" band="0" freq="0" name="" />
             <preset id="23" band="0" freq="0" name="" />

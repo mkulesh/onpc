@@ -63,9 +63,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressLint("UseSparseArrays")
 public class State
 {
+    private static final boolean RADIO_DEBUG = false;
+
     // Changes
     public enum ChangeType
     {
@@ -113,8 +114,8 @@ public class State
     private ByteArrayOutputStream coverBuffer = null;
 
     // Radio
-    public HashMap<Integer, String> presetList = new HashMap<>();
-    public int preset = PresetCommandMsg.NO_PRESET;
+    private List<ReceiverInformationMsg.Preset> presetList = new ArrayList<>();
+    private int preset = PresetCommandMsg.NO_PRESET;
 
     // Playback
     public PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
@@ -414,6 +415,15 @@ public class State
                     deviceSelectors.add(s);
                 }
             }
+
+            // Debug code for radio mock-up
+            if (RADIO_DEBUG)
+            {
+                deviceSelectors.add(new ReceiverInformationMsg.Selector(
+                        "24", "FM", 0, "", false));
+            }
+            // end of debug code
+
             return true;
         }
         catch (Exception e)
@@ -439,6 +449,23 @@ public class State
         {
             clearItems();
         }
+
+        // Debug code for radio mock-up
+        if (RADIO_DEBUG && inputType == InputSelectorMsg.InputType.NONE)
+        {
+            inputType = InputSelectorMsg.InputType.FM;
+            preset = 16;
+            presetList.clear();
+            for (int i = 0; i < 40; i++)
+            {
+                final ReceiverInformationMsg.Preset p = new ReceiverInformationMsg.Preset(
+                        i, i < 20? 1 : 2, "Freq_" + i, "Name_" + i);
+                presetList.add(p);
+                Logging.info(this, "Debug preset: " + p);
+            }
+        }
+        // end of debug code
+
         return changed;
     }
 
@@ -905,7 +932,21 @@ public class State
 
     public boolean isRadioInput()
     {
-        return inputType == InputSelectorMsg.InputType.FM;
+        return inputType == InputSelectorMsg.InputType.FM
+                || inputType == InputSelectorMsg.InputType.AM
+                || inputType == InputSelectorMsg.InputType.DAB;
+    }
+
+    public ReceiverInformationMsg.Preset searchPreset()
+    {
+        for (ReceiverInformationMsg.Preset p : presetList)
+        {
+            if (p.getId() == preset)
+            {
+                return p;
+            }
+        }
+        return null;
     }
 
     public String getTrackInfo(final Context context)

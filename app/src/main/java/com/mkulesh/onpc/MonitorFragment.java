@@ -335,21 +335,23 @@ public class MonitorFragment extends BaseFragment
         }
 
         Logging.info(this, "Updating playback monitor");
-        // Text
-        ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
-        ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
+        {
+            // Text
+            final TextView title = rootView.findViewById(R.id.tv_title);
+            ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
+            ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
 
-        if (state.isRadioInput())
-        {
-            final String txt = state.presetList.get(state.preset);
-            Logging.info(this, txt);
-            ((TextView) rootView.findViewById(R.id.tv_title)).setText(txt != null? txt : "");
+            if (state.isRadioInput())
+            {
+                final ReceiverInformationMsg.Preset preset = state.searchPreset();
+                title.setText(preset != null ? preset.getName() : "");
+            }
+            else
+            {
+                title.setText(state.title);
+            }
+            ((TextView) rootView.findViewById(R.id.tv_file_format)).setText(state.fileFormat);
         }
-        else
-        {
-            ((TextView) rootView.findViewById(R.id.tv_title)).setText(state.title);
-        }
-        ((TextView) rootView.findViewById(R.id.tv_file_format)).setText(state.fileFormat);
 
         // service icon and track
         {
