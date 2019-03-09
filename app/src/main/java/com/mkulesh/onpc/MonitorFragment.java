@@ -38,7 +38,6 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
-import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -340,7 +339,7 @@ public class MonitorFragment extends BaseFragment
         ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
 
-        if (state.inputType == InputSelectorMsg.InputType.FM)
+        if (state.isRadioInput())
         {
             final String txt = state.presetList.get(state.preset);
             Logging.info(this, txt);
@@ -434,7 +433,7 @@ public class MonitorFragment extends BaseFragment
 
         updateListeningModeLayout();
 
-        if (state.inputType == InputSelectorMsg.InputType.FM)
+        if (state.isRadioInput())
         {
             updatePresetButtons();
         }

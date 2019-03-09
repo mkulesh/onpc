@@ -84,7 +84,6 @@ public class State
     private final int activeZone;
     public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
-    public HashMap<Integer, String> presetList = new HashMap<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
@@ -110,9 +109,12 @@ public class State
     public String album = "", artist = "", title = "";
     public String currentTime = "", maxTime = "";
     Integer currentTrack = null, maxTrack = null;
-    public int preset = PresetCommandMsg.NO_PRESET;
     public String fileFormat = "";
     private ByteArrayOutputStream coverBuffer = null;
+
+    // Radio
+    public HashMap<Integer, String> presetList = new HashMap<>();
+    public int preset = PresetCommandMsg.NO_PRESET;
 
     // Playback
     public PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
@@ -262,10 +264,6 @@ public class State
         {
             return isCommonChange(process((MasterVolumeMsg) msg));
         }
-        if (msg instanceof PresetCommandMsg)
-        {
-            return isCommonChange(process((PresetCommandMsg) msg));
-        }
 
         // Common settings
         if (msg instanceof AutoPowerMsg)
@@ -327,6 +325,12 @@ public class State
         if (msg instanceof TrackInfoMsg)
         {
             return isCommonChange(process((TrackInfoMsg) msg));
+        }
+
+        // Radio
+        if (msg instanceof PresetCommandMsg)
+        {
+            return isCommonChange(process((PresetCommandMsg) msg));
         }
 
         // Playback
@@ -899,11 +903,16 @@ public class State
         }
     }
 
+    public boolean isRadioInput()
+    {
+        return inputType == InputSelectorMsg.InputType.FM;
+    }
+
     public String getTrackInfo(final Context context)
     {
         final StringBuilder str = new StringBuilder();
         final String dashedString = context.getString(R.string.dashed_string);
-        if (inputType == InputSelectorMsg.InputType.FM)
+        if (isRadioInput())
         {
             str.append(preset != PresetCommandMsg.NO_PRESET ? Integer.toString(preset) : dashedString);
             str.append("/");
