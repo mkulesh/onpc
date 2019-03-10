@@ -13,8 +13,6 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
@@ -30,7 +28,6 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -226,7 +223,6 @@ public class ReceiverInformationMsg extends ISCPMessage
 
     private String deviceId;
     private final HashMap<String, String> deviceProperties = new HashMap<>();
-    private Bitmap deviceCover;
     private final HashMap<String, String> networkServices = new HashMap<>();
     private final List<Zone> zones = new ArrayList<>();
     private final List<Selector> deviceSelectors = new ArrayList<>();
@@ -237,7 +233,6 @@ public class ReceiverInformationMsg extends ISCPMessage
     {
         super(raw);
         deviceId = "";
-        deviceCover = null;
     }
 
     @NonNull
@@ -423,17 +418,6 @@ public class ReceiverInformationMsg extends ISCPMessage
             Logging.info(this, "    Control: " + s);
         }
 
-        if (deviceProperties.containsKey("modeliconurl"))
-        {
-            final URL url = new URL(deviceProperties.get("modeliconurl"));
-            Logging.info(this, "loading image from URL: " + url.toString());
-            byte[] bytes = Utils.streamToByteArray(url.openConnection().getInputStream());
-            deviceCover = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            if (deviceCover == null)
-            {
-                Logging.info(this, "can not decode image");
-            }
-        }
         stream.close();
     }
 }

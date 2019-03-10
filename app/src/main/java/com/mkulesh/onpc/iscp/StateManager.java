@@ -92,6 +92,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     };
 
     private boolean autoPower = false;
+    private final boolean useBmpImages;
 
     public StateManager(final ConnectionState connectionState, final StateListener stateListener,
                         final String device, final int port, final int zone) throws Exception
@@ -100,6 +101,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         messageChannel = new MessageChannel(connectionState);
         state = new State(zone);
+
+        // In LTE mode, always use BMP images instead if links since direct links
+        // can be not available
+        useBmpImages = !connectionState.isWifi();
 
         if (!messageChannel.connectToServer(device, port))
         {
@@ -118,6 +123,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         messageChannel = new MessageChannel(connectionState);
         state = new MockupState(zone);
+        useBmpImages = false;
         messageChannel.start();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -147,7 +153,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "started: " + toString());
 
         messageChannel.sendMessage(
-                new EISCPMessage('1', JacketArtMsg.CODE, JacketArtMsg.TYPE_LINK));
+                new EISCPMessage('1', JacketArtMsg.CODE,
+                    useBmpImages? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
 
         final String powerStateQueries[] = new String[]{
                 ReceiverInformationMsg.CODE,
