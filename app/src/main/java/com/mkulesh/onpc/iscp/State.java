@@ -898,6 +898,13 @@ public class State
         return null;
     }
 
+    public boolean isRadioInput()
+    {
+        return inputType == InputSelectorMsg.InputType.FM
+                || inputType == InputSelectorMsg.InputType.AM
+                || inputType == InputSelectorMsg.InputType.DAB;
+    }
+
     public boolean isUsb()
     {
         return serviceType == ServiceType.USB_FRONT
@@ -908,6 +915,10 @@ public class State
     {
         if (!isPlaybackMode())
         {
+            if (isRadioInput())
+            {
+                return true;
+            }
             if (serviceType == ServiceType.NET &&
                     layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP)
             {
@@ -961,13 +972,6 @@ public class State
         {
             return Integer.toString(volumeLevel, 10);
         }
-    }
-
-    public boolean isRadioInput()
-    {
-        return inputType == InputSelectorMsg.InputType.FM
-                || inputType == InputSelectorMsg.InputType.AM
-                || inputType == InputSelectorMsg.InputType.DAB;
     }
 
     public ReceiverInformationMsg.Preset searchPreset()
