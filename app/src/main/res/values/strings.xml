@@ -163,7 +163,6 @@
     </string-array>
 
     <!-- Playback tab -->
-    <string name="tv_time_default" translatable="false">--:--</string>
     <string name="tv_display_mode">Display mode on device</string>
 
     <!-- Amplifier commands (RI interface) -->

@@ -31,7 +31,7 @@ public class TuningCommandMsg extends ZonedMessage
     final static String ZONE3_CODE = "TU3";
     final static String ZONE4_CODE = "TU4";
 
-    private final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public enum Command implements StringParameterIf
     {

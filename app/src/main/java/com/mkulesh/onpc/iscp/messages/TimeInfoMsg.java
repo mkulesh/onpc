@@ -24,6 +24,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 public class TimeInfoMsg extends ISCPMessage
 {
     public final static String CODE = "NTM";
+    public final static String INVALID_TIME = "--:--:--";
 
     /*
      * (Elapsed time/Track Time Max 99:59:59. If time is unknown, this response is --:--)
@@ -44,12 +45,12 @@ public class TimeInfoMsg extends ISCPMessage
 
     public String getCurrentTime()
     {
-        return currentTime;
+        return (currentTime == null || currentTime.isEmpty()) ? INVALID_TIME : currentTime;
     }
 
     public String getMaxTime()
     {
-        return maxTime;
+        return (maxTime == null || maxTime.isEmpty()) ? INVALID_TIME : maxTime;
     }
 
     @NonNull

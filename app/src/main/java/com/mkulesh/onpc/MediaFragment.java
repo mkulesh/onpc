@@ -364,6 +364,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             title.append(state.title);
         }
+        else if (state.isRadioInput())
+        {
+            title.append(activity.getResources().getString(state.inputType.getDescriptionId()));
+        }
         else if (state.inputType.isMediaList())
         {
             title.append(state.titleBar);

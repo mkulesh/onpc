@@ -106,12 +106,10 @@ public class State
     public GoogleCastAnalyticsMsg.Status googleCastAnalytics = GoogleCastAnalyticsMsg.Status.NONE;
     private String privacyPolicy = PrivacyPolicyStatusMsg.Status.NONE.getCode();
 
-    // Track info
-    public Bitmap cover = null;
-    public String album = "", artist = "", title = "";
-    public String currentTime = "", maxTime = "";
+    // Track info (default values are set in clearTrackInfo method)
+    public Bitmap cover;
+    public String album, artist, title, currentTime, maxTime, fileFormat;
     Integer currentTrack = null, maxTrack = null;
-    public String fileFormat = "";
     private ByteArrayOutputStream coverBuffer = null;
 
     // Radio
@@ -146,6 +144,7 @@ public class State
     State(int activeZone)
     {
         this.activeZone = activeZone;
+        clearTrackInfo();
     }
 
     @NonNull
@@ -221,6 +220,19 @@ public class State
             }
         }
         return "";
+    }
+
+    private void clearTrackInfo()
+    {
+        cover = null;
+        album = "";
+        artist = "";
+        title = "";
+        fileFormat = "";
+        currentTime = TimeInfoMsg.INVALID_TIME;
+        maxTime = TimeInfoMsg.INVALID_TIME;
+        currentTrack = null;
+        maxTrack = null;
     }
 
     public ChangeType update(ISCPMessage msg)
@@ -473,6 +485,12 @@ public class State
             }
         }
         // end of debug code
+
+        if (changed && isRadioInput())
+        {
+            clearTrackInfo();
+            timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
+        }
 
         return changed;
     }
@@ -948,6 +966,7 @@ public class State
     public boolean isRadioInput()
     {
         return inputType == InputSelectorMsg.InputType.FM
+                || inputType == InputSelectorMsg.InputType.AM
                 || inputType == InputSelectorMsg.InputType.DAB;
     }
 

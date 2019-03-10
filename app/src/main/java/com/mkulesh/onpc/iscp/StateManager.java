@@ -41,6 +41,7 @@ import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
@@ -48,6 +49,7 @@ import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
+import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.utils.Logging;
 
@@ -304,6 +306,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     ListeningModeMsg.CODE,
                     PlayStatusMsg.CODE,
             };

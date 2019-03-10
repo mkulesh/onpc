@@ -31,7 +31,7 @@ public class PresetCommandMsg extends ZonedMessage
     final static String ZONE3_CODE = "PR3";
     final static String ZONE4_CODE = "PR4";
 
-    private final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
+    public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
     public final static int NO_PRESET = -1;
 

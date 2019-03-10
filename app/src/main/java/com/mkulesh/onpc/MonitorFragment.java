@@ -45,6 +45,7 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -314,10 +315,8 @@ public class MonitorFragment extends BaseFragment
     @Override
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
-        ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(
-                activity.getResources().getString(R.string.tv_time_default));
-        ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(
-                activity.getResources().getString(R.string.tv_time_default));
+        ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(TimeInfoMsg.INVALID_TIME);
+        ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(TimeInfoMsg.INVALID_TIME);
 
         TextView track = rootView.findViewById(R.id.tv_track);
         track.setText("");
