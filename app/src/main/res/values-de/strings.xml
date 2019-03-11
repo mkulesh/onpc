@@ -110,6 +110,12 @@
 
     <!-- Application settings: Languages -->
     <string name="pref_app_language">App Sprache</string>
+    <string-array name="pref_language_names">
+        <item>Systemsprache</item>
+        <item>English</item>
+        <item>Русский</item>
+        <item>Deutsch</item>
+    </string-array>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Anzeigemodus am Gerät</string>

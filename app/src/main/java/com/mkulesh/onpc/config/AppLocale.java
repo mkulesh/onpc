@@ -21,6 +21,8 @@ import android.os.Build;
 import android.os.LocaleList;
 import android.preference.PreferenceManager;
 
+import com.mkulesh.onpc.R;
+
 import java.util.Locale;
 
 /*********************************************************
@@ -38,9 +40,11 @@ public final class AppLocale
         public static Locale getPreferredLocale(Context context)
         {
             final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-            final String languageCode = pref.getString(com.mkulesh.onpc.config.Configuration.APP_LANGUAGE, "");
+            final String languageCode = pref.getString(
+                    com.mkulesh.onpc.config.Configuration.APP_LANGUAGE,
+                    context.getString(R.string.pref_default_language_code));
 
-            if (languageCode.equals(""))
+            if (languageCode.equals("system"))
             {
                 return new Locale(Locale.getDefault().getLanguage());
             }
