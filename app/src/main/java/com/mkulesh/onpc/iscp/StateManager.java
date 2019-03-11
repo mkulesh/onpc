@@ -102,7 +102,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel = new MessageChannel(connectionState);
         state = new State(zone);
 
-        // In LTE mode, always use BMP images instead if links since direct links
+        // In LTE mode, always use BMP images instead of links since direct links
         // can be not available
         useBmpImages = !connectionState.isWifi();
 
