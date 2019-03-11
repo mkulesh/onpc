@@ -28,7 +28,8 @@ This app allows remote control of an Onkyo/Integra Network Player or a Network A
 ## Supported devices
 Currently, this app is only tested with following devices:
 - [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
-- [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html) 
+- [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html)
+- [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
