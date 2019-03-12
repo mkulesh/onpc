@@ -27,8 +27,8 @@ public class EISCPMessage
 
     private final static String MSG_START = "ISCP";
     private final static String INVALID_MSG = "INVALID";
-    private final static int CR = 0x0D;
-    private final static int LF = 0x0A;
+    public final static int CR = 0x0D;
+    public final static int LF = 0x0A;
     private final static int EOF = 0x1A;
     private final static Character START_CHAR = '!';
     private final static int MIN_MSG_LENGTH = 22;

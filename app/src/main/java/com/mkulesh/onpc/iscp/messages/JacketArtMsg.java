@@ -20,10 +20,11 @@ import android.support.annotation.NonNull;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 /*
  * NET/USB Jacket Art (When Jacket Art is available and Output for Network Control Only)
@@ -158,22 +159,28 @@ public class JacketArtMsg extends ISCPMessage
         {
             Logging.info(this, "loading image from URL: " + url.toString());
 
-            byte[] bytes = Utils.streamToByteArray(url.openConnection().getInputStream());
-            int offset = 1;
-            for (; offset < bytes.length; offset++)
+            byte[] buffer = new byte[1024];
+            int headerLength = 0;
+            
+            // Inspect content header
             {
-                if (bytes[offset] == 0x0A && bytes[offset - 1] == 0x0A)
+                final URLConnection headerConnection = url.openConnection();
+                final InputStream headerStream = headerConnection.getInputStream();
+                if (headerStream.read(buffer) != -1)
                 {
-                    break;
+                    headerLength = getUrlHeaderLength(buffer);
                 }
+                headerStream.close();
             }
-            offset++;
-            final int length = bytes.length - offset;
-            if (length > 0)
+
+            // Skip header, if applicable
+            final InputStream dataStream = url.openConnection().getInputStream();
+            if (headerLength > 0)
             {
-                Logging.info(this, "Cover image size length=" + length);
-                cover = BitmapFactory.decodeByteArray(bytes, offset, length);
+                dataStream.skip(headerLength);
             }
+            cover = BitmapFactory.decodeStream(dataStream);
+            dataStream.close();
         }
         catch (Exception e)
         {
@@ -181,9 +188,30 @@ public class JacketArtMsg extends ISCPMessage
         }
         if (cover == null)
         {
-            Logging.info(this, "can not open image");
+            Logging.info(this, "can not open image: BitmapFactory.decodeStream error");
         }
         return cover;
+    }
+
+    private int getUrlHeaderLength(byte[] buffer)
+    {
+        int length = 0;
+        while (true)
+        {
+            String str = new String(buffer, length, buffer.length - length, UTF_8);
+            final int lf = str.indexOf(EISCPMessage.LF);
+            if (str.startsWith("Content-") && lf > 0)
+            {
+                length += lf;
+                while (buffer[length] == EISCPMessage.LF || buffer[length] == EISCPMessage.CR)
+                {
+                    length++;
+                }
+                continue;
+            }
+            break;
+        }
+        return length;
     }
 
     public Bitmap loadFromBuffer(ByteArrayOutputStream coverBuffer)
