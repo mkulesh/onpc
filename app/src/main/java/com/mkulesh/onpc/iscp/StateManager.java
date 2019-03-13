@@ -328,6 +328,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             if (state.isPlaying())
             {
                 sendQueries(trackStateQueries, "requesting track state...");
+                // Some devices (like TX-8150) does not proved cover image;
+                // we shall specially request it:
+                if (state.getModel().equals("TX-8150"))
+                {
+                    messageChannel.sendMessage(
+                            new EISCPMessage('1', JacketArtMsg.CODE, EISCPMessage.QUERY));
+                }
                 if (state.isMediaEmpty())
                 {
                     requestListState();

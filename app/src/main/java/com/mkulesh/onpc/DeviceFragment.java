@@ -155,7 +155,7 @@ public class DeviceFragment extends BaseFragment
         if (!state.deviceProperties.isEmpty())
         {
             ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
-            ((TextView) rootView.findViewById(R.id.device_model)).setText(state.deviceProperties.get("model"));
+            ((TextView) rootView.findViewById(R.id.device_model)).setText(state.getModel());
             ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
             // Firmware version
             {

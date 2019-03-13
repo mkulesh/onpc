@@ -195,6 +195,13 @@ public class State
     }
 
     @NonNull
+    public String getModel()
+    {
+        final String m = deviceProperties.get("model");
+        return m == null? "" : m;
+    }
+
+    @NonNull
     public String getDeviceName(boolean useFriendlyName)
     {
         if (useFriendlyName)
