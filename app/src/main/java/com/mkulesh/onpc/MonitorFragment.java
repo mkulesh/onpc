@@ -328,7 +328,7 @@ public class MonitorFragment extends BaseFragment
         ((TextView) rootView.findViewById(R.id.tv_file_format)).setText("");
         cover.setEnabled(false);
         cover.setImageResource(R.drawable.empty_cover);
-        Utils.setImageViewColorAttr(getContext(), cover, android.R.attr.textColor);
+        Utils.setImageViewColorAttr(activity, cover, android.R.attr.textColor);
 
         seekBar.setEnabled(false);
         seekBar.setProgress(0);
@@ -402,7 +402,7 @@ public class MonitorFragment extends BaseFragment
         if (state.cover == null)
         {
             cover.setImageResource(R.drawable.empty_cover);
-            Utils.setImageViewColorAttr(getContext(), cover, android.R.attr.textColor);
+            Utils.setImageViewColorAttr(activity, cover, android.R.attr.textColor);
         }
         else
         {
