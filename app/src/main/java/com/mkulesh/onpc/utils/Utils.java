@@ -40,6 +40,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -66,6 +69,24 @@ public class Utils
         {
             return context.getResources().getDrawable(icon);
         }
+    }
+
+    public static byte[] streamToByteArray(InputStream stream) throws IOException
+    {
+        byte[] buffer = new byte[1024];
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        int line;
+        // read bytes from stream, and store them in buffer
+        while ((line = stream.read(buffer)) != -1)
+        {
+            // Writes bytes from byte array (buffer) into output stream.
+            os.write(buffer, 0, line);
+        }
+        os.flush();
+        os.close();
+        stream.close();
+        return os.toByteArray();
     }
 
     public static boolean ensureAttribute(Element e, String type, String s)
