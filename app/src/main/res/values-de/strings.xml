@@ -196,8 +196,8 @@
     <string name="cmd_description_stop">Stopp</string>
     <string name="cmd_description_pause">Pause</string>
     <string name="cmd_description_p_p">Abspielen/Pause</string>
-    <string name="cmd_description_trup">voriger Titel</string>
-    <string name="cmd_description_trdn">nächster Titel</string>
+    <string name="cmd_description_trup">nächster Titel</string>
+    <string name="cmd_description_trdn">voriger Titel</string>
     <string name="cmd_description_ff">FF Taste(Continuous)</string>
     <string name="cmd_description_rew">REW Taste(Continuous)</string>
     <string name="cmd_description_repeat">Wiederholen</string>
@@ -208,8 +208,8 @@
     <string name="cmd_description_artist">Künstler</string>
     <string name="cmd_description_genre">Genre</string>
     <string name="cmd_description_playlist">Abspielliste</string>
-    <string name="cmd_description_right">Rechts</string>
-    <string name="cmd_description_left">Links</string>
+    <string name="cmd_description_right">Nächstes</string>
+    <string name="cmd_description_left">Voriges</string>
     <string name="cmd_description_up">Hoch</string>
     <string name="cmd_description_down">Runter</string>
     <string name="cmd_description_select">Auswählen</string>
@@ -288,8 +288,8 @@
     <string name="input_selector_hdmi_7">HDMI 7</string>
 
     <!-- Services -->
-    <string name="service_music_server">Music Server (DLNA)</string>
-    <string name="service_favorite">Favorite</string>
+    <string name="service_music_server">Musik Server (DLNA)</string>
+    <string name="service_favorite">Favoriten</string>
     <string name="service_vtuner">vTuner</string>
     <string name="service_siriusxm">SiriusXM</string>
     <string name="service_pandora">Pandora</string>
