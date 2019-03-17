@@ -114,7 +114,7 @@ public class TuningCommandMsg extends ZonedMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', getZoneCommand(), command.getCode());
+        return new EISCPMessage(getZoneCommand(), command.getCode());
     }
 
     @Override

@@ -86,7 +86,7 @@ public class AutoPowerMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, status.getCode());
+        return new EISCPMessage(CODE, status.getCode());
     }
 
     @Override

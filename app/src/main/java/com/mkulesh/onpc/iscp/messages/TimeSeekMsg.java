@@ -56,7 +56,7 @@ public class TimeSeekMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, getTimeAsString());
+        return new EISCPMessage(CODE, getTimeAsString());
     }
 
     @Override

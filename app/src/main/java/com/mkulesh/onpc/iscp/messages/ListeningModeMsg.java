@@ -151,7 +151,7 @@ public class ListeningModeMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, mode.getCode());
+        return new EISCPMessage(CODE, mode.getCode());
     }
 
     @Override

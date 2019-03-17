@@ -88,7 +88,7 @@ public class DimmerLevelMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, level.getCode());
+        return new EISCPMessage(CODE, level.getCode());
     }
 
     @Override

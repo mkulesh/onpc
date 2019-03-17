@@ -82,7 +82,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
     private int xmlReqId = 0;
     private ISCPMessage circlePlayQueueMsg = null;
-    private final EISCPMessage commandListMsg = new EISCPMessage('1',
+    private final EISCPMessage commandListMsg = new EISCPMessage(
             OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString());
 
     private final static String trackStateQueries[] = new String[]{
@@ -153,7 +153,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "started: " + toString());
 
         messageChannel.sendMessage(
-                new EISCPMessage('1', JacketArtMsg.CODE,
+                new EISCPMessage(JacketArtMsg.CODE,
                     useBmpImages? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
 
         final String powerStateQueries[] = new String[]{
@@ -281,7 +281,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             {
                 Logging.info(this, "requesting XML list state for USB...");
                 messageChannel.sendMessage(
-                        new EISCPMessage('1', XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
+                        new EISCPMessage(XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
                                 xmlReqId++, state.numberOfLayers, 0, state.numberOfItems)));
             }
         }
@@ -333,7 +333,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 if (state.getModel().equals("TX-8150"))
                 {
                     messageChannel.sendMessage(
-                            new EISCPMessage('1', JacketArtMsg.CODE, EISCPMessage.QUERY));
+                            new EISCPMessage(JacketArtMsg.CODE, EISCPMessage.QUERY));
                 }
                 if (state.isMediaEmpty())
                 {
@@ -390,7 +390,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "requesting list state...");
         requestXmlList.set(true);
         messageChannel.sendMessage(
-                new EISCPMessage('1', ListTitleInfoMsg.CODE, EISCPMessage.QUERY));
+                new EISCPMessage(ListTitleInfoMsg.CODE, EISCPMessage.QUERY));
     }
 
     private void requestXmlListState(final ListTitleInfoMsg liMsg)
@@ -409,7 +409,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             Logging.info(this, "requesting XML list state");
             messageChannel.sendMessage(
-                    new EISCPMessage('1', XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
+                    new EISCPMessage(XmlListInfoMsg.CODE, XmlListInfoMsg.getListedData(
                             xmlReqId++, liMsg.getNumberOfLayers(), 0, liMsg.getNumberOfItems())));
         }
     }
@@ -460,7 +460,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         for (String code : queries)
         {
             messageChannel.sendMessage(
-                    new EISCPMessage('1', code, EISCPMessage.QUERY));
+                    new EISCPMessage(code, EISCPMessage.QUERY));
         }
     }
 
@@ -471,7 +471,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             messageChannel.sendMessage(commandListMsg);
         }
-        messageChannel.sendMessage(new EISCPMessage('1',
+        messageChannel.sendMessage(new EISCPMessage(
                 OperationCommandMsg.CODE, menu.getCode()));
         if (doReturn)
         {

@@ -55,7 +55,7 @@ public class NetworkServiceMsg extends ISCPMessage
     public EISCPMessage getCmdMsg()
     {
         final String param = service.getCode() + "0";
-        return new EISCPMessage('1', CODE, param);
+        return new EISCPMessage(CODE, param);
     }
 }
 

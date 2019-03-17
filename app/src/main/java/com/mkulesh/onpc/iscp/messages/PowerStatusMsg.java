@@ -86,6 +86,6 @@ public class PowerStatusMsg extends ZonedMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', getZoneCommand(), powerStatus.getCode());
+        return new EISCPMessage(getZoneCommand(), powerStatus.getCode());
     }
 }

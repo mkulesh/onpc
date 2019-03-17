@@ -46,7 +46,7 @@ public class DisplayModeMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, data);
+        return new EISCPMessage(CODE, data);
     }
 
     @Override

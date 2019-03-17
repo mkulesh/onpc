@@ -59,7 +59,7 @@ public class FriendlyNameMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE,
+        return new EISCPMessage(CODE,
                 friendlyName.isEmpty() ? " " : friendlyName);
     }
 

@@ -94,7 +94,7 @@ public class AmpOperationCommandMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return command == null ? null : new EISCPMessage('1', CODE, command.getCode());
+        return command == null ? null : new EISCPMessage(CODE, command.getCode());
     }
 
     @Override

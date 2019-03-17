@@ -149,7 +149,7 @@ public class PresetCommandMsg extends ZonedMessage
         {
             par = String.format("%02x", presetConfig.getId());
         }
-        return new EISCPMessage('1', getZoneCommand(), par);
+        return new EISCPMessage(getZoneCommand(), par);
     }
 
     @Override

@@ -99,7 +99,7 @@ public class AudioMutingMsg extends ZonedMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', getZoneCommand(), status.getCode());
+        return new EISCPMessage(getZoneCommand(), status.getCode());
     }
 
     @Override

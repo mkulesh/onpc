@@ -52,6 +52,6 @@ public class PlayQueueReorderMsg extends ISCPMessage
     {
         final String param = String.format("%04x", itemIndex) +
                 String.format("%04x", targetIndex);
-        return new EISCPMessage('1', CODE, param);
+        return new EISCPMessage(CODE, param);
     }
 }

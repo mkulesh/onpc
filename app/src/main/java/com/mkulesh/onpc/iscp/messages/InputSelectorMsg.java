@@ -170,7 +170,7 @@ public class InputSelectorMsg extends ZonedMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', getZoneCommand(), inputType.getCode());
+        return new EISCPMessage(getZoneCommand(), inputType.getCode());
     }
 
 }

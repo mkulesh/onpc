@@ -74,6 +74,11 @@ public class EISCPMessage
         this.parameters = parameters;
     }
 
+    public EISCPMessage(final String code, final String parameters)
+    {
+        this('1', code, parameters);
+    }
+
     @NonNull
     @Override
     public String toString()

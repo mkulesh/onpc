@@ -165,7 +165,7 @@ public class OperationCommandMsg extends ZonedMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return command == null ? null : new EISCPMessage('1', getZoneCommand(), command.getCode());
+        return command == null ? null : new EISCPMessage(getZoneCommand(), command.getCode());
     }
 
     @Override

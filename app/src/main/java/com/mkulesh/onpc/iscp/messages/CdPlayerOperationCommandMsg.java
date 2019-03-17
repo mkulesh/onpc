@@ -156,7 +156,7 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return command == null ? null : new EISCPMessage('1', CODE, command.getCmd());
+        return command == null ? null : new EISCPMessage(CODE, command.getCmd());
     }
 
     @Override

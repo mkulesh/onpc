@@ -87,7 +87,7 @@ public class DigitalFilterMsg extends ISCPMessage
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, filter.getCode());
+        return new EISCPMessage(CODE, filter.getCode());
     }
 
     @Override

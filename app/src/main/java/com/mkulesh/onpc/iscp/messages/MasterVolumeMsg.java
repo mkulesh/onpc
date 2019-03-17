@@ -138,7 +138,7 @@ public class MasterVolumeMsg extends ZonedMessage
         {
             par = String.format("%02x", volumeLevel);
         }
-        return new EISCPMessage('1', getZoneCommand(), par);
+        return new EISCPMessage(getZoneCommand(), par);
     }
 
     @Override

@@ -134,6 +134,6 @@ public class XmlListItemMsg extends ISCPMessage
     {
         final String param = "I" + String.format("%02x", getNumberOfLayers()) +
                 String.format("%04x", getMessageId()) + "----";
-        return new EISCPMessage('1', "NLA", param);
+        return new EISCPMessage("NLA", param);
     }
 }

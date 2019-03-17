@@ -50,6 +50,6 @@ public class PlayQueueRemoveMsg extends ISCPMessage
     {
         final String param = Integer.toString(type) +
                 String.format("%04x", itemIndex);
-        return new EISCPMessage('1', CODE, param);
+        return new EISCPMessage(CODE, param);
     }
 }
