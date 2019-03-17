@@ -66,8 +66,6 @@ import java.util.Map;
 
 public class State
 {
-    private static final boolean RADIO_DEBUG = false;
-
     // Changes
     public enum ChangeType
     {
@@ -441,16 +439,6 @@ public class State
                 }
             }
 
-            // Debug code for radio mock-up
-            if (RADIO_DEBUG)
-            {
-                deviceSelectors.add(new ReceiverInformationMsg.Selector(
-                        "24", "FM", 0, "", false));
-                deviceSelectors.add(new ReceiverInformationMsg.Selector(
-                        "33", "DAB", 0, "", false));
-            }
-            // end of debug code
-
             return true;
         }
         catch (Exception e)
@@ -476,22 +464,6 @@ public class State
         {
             clearItems();
         }
-
-        // Debug code for radio mock-up
-        if (RADIO_DEBUG && inputType == InputSelectorMsg.InputType.NONE)
-        {
-            inputType = InputSelectorMsg.InputType.FM;
-            preset = 10;
-            frequency = "9990";
-            presetList.clear();
-            for (int i = 0; i < 40; i++)
-            {
-                final ReceiverInformationMsg.Preset p = new ReceiverInformationMsg.Preset(
-                        i, i < 20 ? 1 : 2, i < 20 ? "Freq_" + i : "0", "Name_" + i);
-                presetList.add(p);
-            }
-        }
-        // end of debug code
 
         if (changed && isRadioInput())
         {
@@ -890,7 +862,7 @@ public class State
     private boolean process(CustomPopupMsg msg)
     {
         popup = msg;
-        return true;
+        return popup != null;
     }
 
     public ReceiverInformationMsg.Selector getActualSelector()

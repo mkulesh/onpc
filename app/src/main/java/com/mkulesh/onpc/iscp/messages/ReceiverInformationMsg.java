@@ -205,7 +205,6 @@ public class ReceiverInformationMsg extends ISCPMessage
             return name + ((freq != null && !freq.equals("0")) ? ("/" + freq) : "");
         }
 
-        @NonNull
         @DrawableRes
         public int getImageId()
         {

@@ -235,7 +235,7 @@ abstract public class BaseFragment extends Fragment
         return b;
     }
 
-    protected static void collectButtons(LinearLayout layout, ArrayList<View> out)
+    static void collectButtons(LinearLayout layout, ArrayList<View> out)
     {
         for (int k = 0; k < layout.getChildCount(); k++)
         {

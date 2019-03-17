@@ -30,7 +30,7 @@ public final class AppLocale
 {
     public static class ContextWrapper extends android.content.ContextWrapper
     {
-        public ContextWrapper(Context base)
+        ContextWrapper(Context base)
         {
             super(base);
         }
@@ -48,11 +48,7 @@ public final class AppLocale
             }
 
             String[] array = languageCode.split("-r", -1);
-            if (array == null)
-            {
-                return new Locale(Locale.getDefault().getLanguage());
-            }
-            else if (array.length == 1)
+            if (array.length == 1)
             {
                 return new Locale(array[0]);
             }
