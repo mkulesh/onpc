@@ -275,7 +275,9 @@ public class ReceiverInformationMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[XML<" + Integer.toString(data.length()) + ">]";
+        return CODE + "["
+                + (isMultiline() ? ("XML<" + data.length() + "B>") : ("XML=" + data))
+                + "]";
     }
 
     public void parseXml() throws Exception

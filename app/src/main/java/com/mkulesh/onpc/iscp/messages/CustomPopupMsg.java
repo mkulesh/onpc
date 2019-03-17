@@ -58,7 +58,7 @@ public class CustomPopupMsg extends ISCPMessage
 
     public CustomPopupMsg(final UiType uiType, final String xml)
     {
-        super(0, null);
+        super(0, uiType.getCode() + "000" + xml);
         this.uiType = uiType;
         this.xml = xml;
     }
@@ -72,12 +72,14 @@ public class CustomPopupMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + uiType.toString() + ": " + xml + "]";
+        return CODE + "[" + uiType.toString() + "; "
+                + (isMultiline() ? ("XML<" + xml.length() + "B>") : ("XML=" + xml))
+                + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage('1', CODE, uiType.getCode() + "000" + xml);
+        return new EISCPMessage('1', CODE, data);
     }
 }

@@ -83,8 +83,8 @@ public class XmlListInfoMsg extends ISCPMessage
                 + "; RESP=" + responceType
                 + "; SEQ_NR=" + sequenceNumber
                 + "; STATUS=" + status
-                + "; UI=" + uiType.toString()
-                + "; XML=" + rawXml
+                + "; UI=" + uiType.toString() + "; "
+                + (isMultiline() ? ("XML<" + rawXml.length() + "B>") : ("XML=" + rawXml))
                 + "]";
     }
 

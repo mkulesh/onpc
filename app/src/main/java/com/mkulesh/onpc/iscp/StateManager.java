@@ -417,6 +417,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public void sendMessage(final ISCPMessage msg)
     {
         Logging.info(this, "sending message: " + msg.toString());
+        if (msg.isMultiline())
+        {
+            msg.logParameters();
+        }
         circlePlayQueueMsg = null;
         if (msg.hasImpactOnMediaList() ||
                 (msg instanceof DisplayModeMsg && !state.isPlaybackMode()))

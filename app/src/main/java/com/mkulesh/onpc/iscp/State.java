@@ -245,6 +245,10 @@ public class State
         if (!(msg instanceof TimeInfoMsg) && !(msg instanceof JacketArtMsg))
         {
             Logging.info(msg, "<< " + msg.toString());
+            if (msg.isMultiline())
+            {
+                msg.logParameters();
+            }
         }
 
         //Common
@@ -416,12 +420,6 @@ public class State
 
     private boolean process(ReceiverInformationMsg msg)
     {
-        final String data = msg.getData();
-        final int debugLength = 512;
-        for (int i = 0; i < data.length(); i += debugLength)
-        {
-            Logging.info(msg, data.substring(i, Math.min(data.length(), i + debugLength)));
-        }
         try
         {
             msg.parseXml();

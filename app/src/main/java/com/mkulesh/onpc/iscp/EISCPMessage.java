@@ -33,6 +33,7 @@ public class EISCPMessage
     private final static Character START_CHAR = '!';
     private final static int MIN_MSG_LENGTH = 22;
     final static String QUERY = "QSTN";
+    final static int LOG_LINE_LENGTH = 160;
 
     private final int messageId;
     private final int headerSize, dataSize, version;
@@ -77,7 +78,24 @@ public class EISCPMessage
     @Override
     public String toString()
     {
-        return MSG_START + "/v" + version + "[" + headerSize + "," + dataSize + "]: " + code + "(" + parameters + ")";
+        String res = MSG_START + "/v" + version + "[" + headerSize + "," + dataSize + "]: " + code + "(";
+        if (isMultiline())
+        {
+            float ln = (float) parameters.length() / (float) LOG_LINE_LENGTH;
+            res += (int) Math.ceil(ln);
+            res += " lines)";
+        }
+        else
+        {
+            res += parameters;
+            res += ")";
+        }
+        return res;
+    }
+
+    protected boolean isMultiline()
+    {
+        return parameters.length() > LOG_LINE_LENGTH;
     }
 
     int getMsgSize()

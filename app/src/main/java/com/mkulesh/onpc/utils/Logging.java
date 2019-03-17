@@ -13,10 +13,20 @@
 
 package com.mkulesh.onpc.utils;
 
+import android.util.Log;
+
 public final class Logging
 {
+    public static boolean isEnabled()
+    {
+        return true;
+    }
+
     public static void info(Object o, String text)
     {
-        //Log.d("onpc", o.getClass().getSimpleName() + ": " + text);
+        if (isEnabled())
+        {
+            Log.d("onpc", o.getClass().getSimpleName() + ": " + text);
+        }
     }
 }

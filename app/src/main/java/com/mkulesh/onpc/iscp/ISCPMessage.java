@@ -15,6 +15,8 @@ package com.mkulesh.onpc.iscp;
 
 import android.support.annotation.NonNull;
 
+import com.mkulesh.onpc.utils.Logging;
+
 import java.nio.charset.Charset;
 
 public class ISCPMessage
@@ -62,6 +64,33 @@ public class ISCPMessage
     public String toString()
     {
         return "ISCPMessage/" + modelCategoryId;
+    }
+
+    protected boolean isMultiline()
+    {
+        return data != null && data.length() > EISCPMessage.LOG_LINE_LENGTH;
+    }
+
+    public void logParameters()
+    {
+        if (!Logging.isEnabled() || data == null)
+        {
+            return;
+        }
+        String p = data;
+        while (true)
+        {
+            if (p.length() > EISCPMessage.LOG_LINE_LENGTH)
+            {
+                Logging.info(this, p.substring(0, EISCPMessage.LOG_LINE_LENGTH));
+                p = p.substring(EISCPMessage.LOG_LINE_LENGTH);
+            }
+            else
+            {
+                Logging.info(this, p);
+                break;
+            }
+        }
     }
 
     /**
