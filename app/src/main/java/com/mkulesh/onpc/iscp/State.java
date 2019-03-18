@@ -572,7 +572,8 @@ public class State
 
     private boolean process(JacketArtMsg msg)
     {
-        if (msg.getImageType() == JacketArtMsg.ImageType.URL)
+        if (msg.getImageType() == JacketArtMsg.ImageType.URL ||
+                msg.getImageType() == JacketArtMsg.ImageType.URL1)
         {
             Logging.info(msg, "<< " + msg.toString());
             cover = msg.loadFromUrl();
@@ -659,7 +660,7 @@ public class State
 
     private boolean process(FileFormatMsg msg)
     {
-        final boolean changed = !msg.getFullFormat().equals(title);
+        final boolean changed = !msg.getFullFormat().equals(fileFormat);
         fileFormat = msg.getFullFormat();
         return changed;
     }
