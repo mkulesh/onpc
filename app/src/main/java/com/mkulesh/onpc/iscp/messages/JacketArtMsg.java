@@ -33,13 +33,14 @@ public class JacketArtMsg extends ISCPMessage
     public final static String CODE = "NJA";
     public final static String TYPE_LINK = "LINK";
     public final static String TYPE_BMP = "BMP";
+    public final static String REQUEST = "REQ";
 
     /*
      * Image type 0:BMP, 1:JPEG, 2:URL, n:No Image
      */
     public enum ImageType implements CharParameterIf
     {
-        BMP('0'), JPEG('1'), URL('2'), URL1('L'), NO_IMAGE('n');
+        BMP('0'), JPEG('1'), URL('2'), NO_IMAGE('n');
         final Character code;
 
         ImageType(Character code)
@@ -95,7 +96,6 @@ public class JacketArtMsg extends ISCPMessage
             switch (imageType)
             {
             case URL:
-            case URL1:
                 url = new URL(data.substring(2));
                 break;
             case BMP:

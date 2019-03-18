@@ -572,8 +572,7 @@ public class State
 
     private boolean process(JacketArtMsg msg)
     {
-        if (msg.getImageType() == JacketArtMsg.ImageType.URL ||
-                msg.getImageType() == JacketArtMsg.ImageType.URL1)
+        if (msg.getImageType() == JacketArtMsg.ImageType.URL)
         {
             Logging.info(msg, "<< " + msg.toString());
             cover = msg.loadFromUrl();

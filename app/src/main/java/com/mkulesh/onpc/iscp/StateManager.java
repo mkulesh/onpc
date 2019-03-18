@@ -333,7 +333,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 if (state.getModel().equals("TX-8150"))
                 {
                     messageChannel.sendMessage(
-                            new EISCPMessage(JacketArtMsg.CODE, EISCPMessage.QUERY));
+                            new EISCPMessage(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
                 }
                 if (state.isMediaEmpty())
                 {
