@@ -154,7 +154,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         messageChannel.sendMessage(
                 new EISCPMessage(JacketArtMsg.CODE,
-                    useBmpImages? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
+                        useBmpImages ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
 
         final String powerStateQueries[] = new String[]{
                 ReceiverInformationMsg.CODE,

@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                     if (m.isEnabled() && state != null)
                     {
                         Utils.setDrawableColorAttr(this, m.getIcon(),
-                                state.isOn()? android.R.attr.textColorTertiary : R.attr.colorAccent);
+                                state.isOn() ? android.R.attr.textColorTertiary : R.attr.colorAccent);
                     }
                 }
             }

@@ -175,10 +175,10 @@ public class MonitorFragment extends BaseFragment
         // Feeds
         positiveFeed = rootView.findViewById(R.id.btn_positive_feed);
         prepareButtonListeners(positiveFeed, null, () ->
-            activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F1, true));
+                activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F1, true));
         negativeFeed = rootView.findViewById(R.id.btn_negative_feed);
         prepareButtonListeners(negativeFeed, null, () ->
-            activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F2, true));
+                activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F2, true));
 
         update(null, null);
         return rootView;
@@ -606,7 +606,7 @@ public class MonitorFragment extends BaseFragment
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
         final int maxVolume = Math.max(state.volumeLevel,
                 (zone != null && zone.getVolumeStep() == 0) ?
-                MasterVolumeMsg.MAX_VOLUME_0_5_STEP : MasterVolumeMsg.MAX_VOLUME_1_STEP);
+                        MasterVolumeMsg.MAX_VOLUME_0_5_STEP : MasterVolumeMsg.MAX_VOLUME_1_STEP);
 
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);

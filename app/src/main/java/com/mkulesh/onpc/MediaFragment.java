@@ -313,11 +313,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             for (ReceiverInformationMsg.Preset p : state.presetList)
             {
                 if ((state.inputType == InputSelectorMsg.InputType.FM && p.getBand() == 1)
-                    || (state.inputType == InputSelectorMsg.InputType.DAB && p.getBand() == 2))
+                        || (state.inputType == InputSelectorMsg.InputType.DAB && p.getBand() == 2))
                 {
                     final boolean isPlaying = (p.getId() == state.preset);
                     newItems.add(new PresetCommandMsg(
-                            state.getActiveZone(), p, isPlaying? state.preset : PresetCommandMsg.NO_PRESET));
+                            state.getActiveZone(), p, isPlaying ? state.preset : PresetCommandMsg.NO_PRESET));
                 }
             }
         }

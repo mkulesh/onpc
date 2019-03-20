@@ -196,7 +196,7 @@ public class State
     public String getModel()
     {
         final String m = deviceProperties.get("model");
-        return m == null? "" : m;
+        return m == null ? "" : m;
     }
 
     @NonNull

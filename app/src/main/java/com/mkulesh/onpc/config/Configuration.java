@@ -68,7 +68,8 @@ public class Configuration
     private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
 
-    static final ListeningModeMsg.Mode DEFAULT_LISTENING_MODES[] = new ListeningModeMsg.Mode[] {
+    static final ListeningModeMsg.Mode DEFAULT_LISTENING_MODES[] = new ListeningModeMsg.Mode[]
+    {
         ListeningModeMsg.Mode.MODE_00,
         ListeningModeMsg.Mode.MODE_01,
         ListeningModeMsg.Mode.MODE_09,

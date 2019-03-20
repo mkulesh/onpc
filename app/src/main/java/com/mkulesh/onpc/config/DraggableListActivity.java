@@ -44,7 +44,7 @@ public abstract class DraggableListActivity extends AppCompatPreferenceActivity
             itemList.setItemChecked(i, checkedItems.contains(targetItems.get(i).code));
         }
         itemList.setOnItemClickListener((adapterView, view, pos, l) ->
-                adapter.setChecked(pos, ((DragSortListView)adapterView).isItemChecked(pos)));
+                adapter.setChecked(pos, ((DragSortListView) adapterView).isItemChecked(pos)));
         itemList.setDropListener((int from, int to) ->
                 adapter.drop(from, to));
     }
