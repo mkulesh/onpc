@@ -15,8 +15,17 @@ package com.mkulesh.onpc.utils;
 
 import android.util.Log;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public final class Logging
 {
+    public static boolean saveLogging = false;
+    private final static int LOG_SIZE = 5000;
+    private final static BlockingQueue<String> latestLogging = new ArrayBlockingQueue<>(LOG_SIZE, true);
+    private final static AtomicInteger logLineNumber = new AtomicInteger(0);
+
     public static boolean isEnabled()
     {
         return true;
@@ -26,7 +35,42 @@ public final class Logging
     {
         if (isEnabled())
         {
-            Log.d("onpc", o.getClass().getSimpleName() + ": " + text);
+            final String out = o.getClass().getSimpleName() + ": " + text;
+            if (saveLogging)
+            {
+                try
+                {
+                    if (latestLogging.size() >= LOG_SIZE - 1)
+                    {
+                        latestLogging.take();
+                    }
+                    final int l = logLineNumber.addAndGet(1);
+                    latestLogging.offer(String.format("#%04d: ", l) + out);
+                }
+                catch (Exception e)
+                {
+                    // nothing to do
+                }
+            }
+
+            Log.d("onpc", out);
         }
+    }
+
+    public static String getLatestLogging()
+    {
+        final StringBuilder str = new StringBuilder();
+        try
+        {
+            while (!latestLogging.isEmpty())
+            {
+                str.append(latestLogging.take()).append("\n");
+            }
+        }
+        catch (Exception e)
+        {
+            str.append("Can not collect logging: " + e.getLocalizedMessage());
+        }
+        return str.toString();
     }
 }

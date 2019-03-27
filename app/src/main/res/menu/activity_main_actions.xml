@@ -32,4 +32,9 @@
         android:title="@string/menu_receiver_information"
         android:visible="false"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_latest_logging"
+        android:title="@string/menu_latest_logging"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

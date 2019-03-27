@@ -60,6 +60,7 @@
     <string name="menu_power_power">An/Standby</string>
     <string name="menu_app_settings">Einstellungen</string>
     <string name="menu_receiver_information">Receiver Informationen</string>
+    <string name="menu_latest_logging">Letzte Log</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Hören</string>

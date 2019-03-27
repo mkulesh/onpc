@@ -63,6 +63,7 @@
     <string name="menu_power_power">Вкл/выкл</string>
     <string name="menu_app_settings">Настройки</string>
     <string name="menu_receiver_information">Информация об устройстве</string>
+    <string name="menu_latest_logging">Лог приложения</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Музыка</string>

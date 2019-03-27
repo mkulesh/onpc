@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        configuration = new Configuration(this);
+        setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
+        Logging.saveLogging = configuration.isDeveloperMode();
+
         // Note that due to onActivityResult, the activity will be started twice
         // after the preference activity is closed
         String versionName = null;
@@ -85,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
             Logging.info(this, "Starting application");
         }
 
-        configuration = new Configuration(this);
-        setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             final MenuItem m = mainMenu.getItem(i);
             Utils.updateMenuIconColor(this, m);
-            if (m.getItemId() == R.id.menu_receiver_information)
+            if (m.getItemId() == R.id.menu_receiver_information || m.getItemId() == R.id.menu_latest_logging)
             {
                 m.setVisible(configuration.isDeveloperMode());
             }
@@ -199,6 +201,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                     getResources().getString(R.string.state_not_connected);
             HtmlDialogBuilder.buildXmlDialog(this,
                     R.mipmap.ic_launcher, R.string.menu_receiver_information, text).show();
+            return true;
+        }
+        case R.id.menu_latest_logging:
+        {
+            HtmlDialogBuilder.buildXmlDialog(this,
+                    R.mipmap.ic_launcher, R.string.menu_latest_logging, Logging.getLatestLogging()).show();
             return true;
         }
         default:
