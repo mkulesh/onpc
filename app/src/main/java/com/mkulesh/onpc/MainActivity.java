@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     {
         configuration = new Configuration(this);
         setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
-        Logging.saveLogging = configuration.isDeveloperMode();
+        Logging.saveLogging = Logging.isEnabled() && configuration.isDeveloperMode();
 
         // Note that due to onActivityResult, the activity will be started twice
         // after the preference activity is closed
@@ -159,9 +159,13 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         {
             final MenuItem m = mainMenu.getItem(i);
             Utils.updateMenuIconColor(this, m);
-            if (m.getItemId() == R.id.menu_receiver_information || m.getItemId() == R.id.menu_latest_logging)
+            if (m.getItemId() == R.id.menu_receiver_information)
             {
                 m.setVisible(configuration.isDeveloperMode());
+            }
+            if (m.getItemId() == R.id.menu_latest_logging)
+            {
+                m.setVisible(Logging.saveLogging);
             }
         }
         return true;
