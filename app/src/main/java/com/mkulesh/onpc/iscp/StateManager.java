@@ -405,7 +405,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             Logging.info(this, "requesting XML list state skipped");
         }
-        else if (liMsg.isUsbTopService() || liMsg.getNumberOfLayers() > 0)
+        else if (liMsg.isXmlListTopService() || liMsg.getNumberOfLayers() > 0)
         {
             Logging.info(this, "requesting XML list state");
             messageChannel.sendMessage(

@@ -329,9 +329,11 @@ public class ListTitleInfoMsg extends ISCPMessage
                 && layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP;
     }
 
-    public boolean isUsbTopService()
+    public boolean isXmlListTopService()
     {
-        return (serviceType == ServiceType.USB_FRONT || serviceType == ServiceType.USB_REAR)
-                && layerInfo == LayerInfo.SERVICE_TOP;
+        return (serviceType == ServiceType.USB_FRONT
+                 || serviceType == ServiceType.USB_REAR
+                 || serviceType == ServiceType.MUSIC_SERVER
+               ) && layerInfo == LayerInfo.SERVICE_TOP;
     }
 }
