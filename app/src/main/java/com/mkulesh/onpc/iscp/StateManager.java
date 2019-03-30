@@ -44,6 +44,7 @@ import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
@@ -286,8 +287,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
-        if (msg instanceof PlayStatusMsg && state.isPlaybackMode() && state.isPlaying())
+        if (msg instanceof PlayStatusMsg &&
+            state.isPlaybackMode() &&
+            state.isPlaying() &&
+            state.serviceType != ServiceType.TUNEIN_RADIO)
         {
+            // Note: see Issue 51. Do not request list mode for TUNEIN_RADIO since it tops
+            // playing for some models
             messageChannel.sendMessage(commandListMsg);
         }
 

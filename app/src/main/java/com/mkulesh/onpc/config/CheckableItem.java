@@ -150,7 +150,6 @@ class CheckableItem
             }
         }
 
-        Logging.info(preference, parameter + ": " + retValue.toString());
         return retValue;
     }
 }
