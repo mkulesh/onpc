@@ -79,6 +79,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final State state;
 
     private final AtomicBoolean requestXmlList = new AtomicBoolean();
+    private final AtomicBoolean playbackMode = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
     private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
     private int xmlReqId = 0;
@@ -172,6 +173,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         final BlockingQueue<Timer> timerQueue = new ArrayBlockingQueue<>(1, true);
         skipNextTimeMsg.set(0);
         requestXmlList.set(false);
+        playbackMode.set(false);
+
         while (true)
         {
             try
@@ -287,14 +290,21 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
+        // Issue LIST command upon PlayStatusMsg if PlaybackMode is active
+        if (msg instanceof ListTitleInfoMsg)
+        {
+            playbackMode.set(state.isPlaybackMode());
+        }
         if (msg instanceof PlayStatusMsg &&
-            state.isPlaybackMode() &&
+            playbackMode.get() &&
             state.isPlaying() &&
             state.serviceType != ServiceType.TUNEIN_RADIO)
         {
             // Note: see Issue 51. Do not request list mode for TUNEIN_RADIO since it tops
             // playing for some models
+            Logging.info(this, "requesting list mode...");
             messageChannel.sendMessage(commandListMsg);
+            playbackMode.set(false);
         }
 
         if (changed == State.ChangeType.NONE)
