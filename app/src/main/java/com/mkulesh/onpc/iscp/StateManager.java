@@ -470,7 +470,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         skipNextTimeMsg.set(number);
     }
 
-    private void sendQueries(final String[] queries, final String purpose)
+    public void sendQueries(final String[] queries, final String purpose)
     {
         Logging.info(this, purpose);
         for (String code : queries)

@@ -204,7 +204,8 @@ public class DeviceFragment extends BaseFragment
 
         // Speaker A/B (For Main zone and Zone 2 only)
         {
-            final boolean zoneAllowed = (state.getActiveZone() < 2);
+            final int zone = state.getActiveZone();
+            final boolean zoneAllowed = (zone < 2);
             final SpeakerABStatus spState = getSpeakerABStatus(state.speakerA, state.speakerB);
             prepareSettingPanel(state, zoneAllowed && spState != SpeakerABStatus.NONE,
                     R.id.speaker_ab_layout, spState.getDescriptionId(), null);
@@ -217,21 +218,27 @@ public class DeviceFragment extends BaseFragment
                 break;
             case OFF:
                 prepareButtonListeners(b,
-                        new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.ON));
+                        new SpeakerACommandMsg(zone, SpeakerACommandMsg.Status.ON),
+                        () -> sendQueries(zone));
                 break;
             case A_ONLY:
                 prepareButtonListeners(b,
-                        new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.Status.ON),
-                        () -> activity.getStateManager().sendMessage(
-                                new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.OFF)));
+                        new SpeakerBCommandMsg(zone, SpeakerBCommandMsg.Status.ON),
+                        () -> {
+                            activity.getStateManager().sendMessage(
+                                new SpeakerACommandMsg(zone, SpeakerACommandMsg.Status.OFF));
+                            sendQueries(zone);
+                        });
                 break;
             case B_ONLY:
                 prepareButtonListeners(b,
-                        new SpeakerACommandMsg(state.getActiveZone(), SpeakerACommandMsg.Status.ON));
+                        new SpeakerACommandMsg(zone, SpeakerACommandMsg.Status.ON),
+                        () -> sendQueries(zone));
                 break;
             case ON:
                 prepareButtonListeners(b,
-                        new SpeakerBCommandMsg(state.getActiveZone(), SpeakerBCommandMsg.Status.OFF));
+                        new SpeakerBCommandMsg(zone, SpeakerBCommandMsg.Status.OFF),
+                        () -> sendQueries(zone));
                 break;
             }
         }
@@ -240,6 +247,15 @@ public class DeviceFragment extends BaseFragment
         prepareSettingPanel(state, state.googleCastAnalytics != GoogleCastAnalyticsMsg.Status.NONE,
                 R.id.google_cast_analytics_layout, state.googleCastAnalytics.getDescriptionId(),
                 new GoogleCastAnalyticsMsg(GoogleCastAnalyticsMsg.toggle(state.googleCastAnalytics)));
+    }
+
+    private void sendQueries(int zone)
+    {
+        final String speakerStateQueries[] = new String[]{
+                SpeakerACommandMsg.ZONE_COMMANDS[zone],
+                SpeakerBCommandMsg.ZONE_COMMANDS[zone]
+        };
+        activity.getStateManager().sendQueries(speakerStateQueries, "requesting speaker state...");
     }
 
     private void prepareSettingPanel(@NonNull final State state, boolean visible, @IdRes int layoutId,
