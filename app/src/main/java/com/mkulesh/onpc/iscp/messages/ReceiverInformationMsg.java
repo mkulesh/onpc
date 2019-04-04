@@ -58,7 +58,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             id = e.getAttribute("id").toUpperCase();
             name = e.getAttribute("name");
             volumeStep = e.hasAttribute("volstep") ? Integer.parseInt(e.getAttribute("volstep")) : 0;
-            volMax = e.hasAttribute("volmax") ? Integer.parseInt(e.getAttribute("volmax"), 16) : 0;
+            volMax = e.hasAttribute("volmax") ? Integer.parseInt(e.getAttribute("volmax")) : 0;
         }
 
         public Zone(final String id, final String name, final int volumeStep, final int volMax)
@@ -77,6 +77,11 @@ public class ReceiverInformationMsg extends ISCPMessage
         public int getVolumeStep()
         {
             return volumeStep;
+        }
+
+        public int getVolMax()
+        {
+            return volMax;
         }
 
         @NonNull
