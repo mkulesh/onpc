@@ -298,10 +298,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         if (msg instanceof PlayStatusMsg &&
             playbackMode.get() &&
             state.isPlaying() &&
-            state.serviceType != ServiceType.TUNEIN_RADIO)
+            state.serviceType != ServiceType.TUNEIN_RADIO &&
+            state.serviceType != ServiceType.USB_FRONT &&
+            state.serviceType != ServiceType.USB_REAR)
         {
-            // Note: see Issue 51. Do not request list mode for TUNEIN_RADIO since it tops
-            // playing for some models
+            // Notes for not requesting list mode for some service Types:
+            // #51: List mode stops playing TUNEIN_RADIO for some models
+            // #44: List mode disables track navigation for some models
             Logging.info(this, "requesting list mode...");
             messageChannel.sendMessage(commandListMsg);
             playbackMode.set(false);
