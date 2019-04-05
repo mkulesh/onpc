@@ -504,7 +504,23 @@ public class MonitorFragment extends BaseFragment
 
         for (AppCompatImageButton b : playbackButtons)
         {
-            prepareButtonListeners(b, new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag())));
+            final OperationCommandMsg msg = new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag()));
+            prepareButtonListeners(b, null, () ->
+            {
+                if (!state.isPlaybackMode() && state.isUsb() &&
+                        (msg.getCommand() == OperationCommandMsg.Command.TRDN ||
+                                msg.getCommand() == OperationCommandMsg.Command.TRUP))
+                {
+                    // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
+                    // in playback mode. Therefore, switch to this mode before
+                    // send OperationCommandMsg if current mode is LIST
+                    activity.getStateManager().sendTrackMsg(msg, false);
+                }
+                else
+                {
+                    activity.getStateManager().sendMessage(msg);
+                }
+            });
         }
 
         btnRepeat.setImageResource(state.repeatStatus.getImageId());

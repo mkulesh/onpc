@@ -298,13 +298,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         if (msg instanceof PlayStatusMsg &&
             playbackMode.get() &&
             state.isPlaying() &&
-            state.serviceType != ServiceType.TUNEIN_RADIO &&
-            state.serviceType != ServiceType.USB_FRONT &&
-            state.serviceType != ServiceType.USB_REAR)
+            state.serviceType != ServiceType.TUNEIN_RADIO)
         {
             // Notes for not requesting list mode for some service Types:
             // #51: List mode stops playing TUNEIN_RADIO for some models
-            // #44: List mode disables track navigation for some models
             Logging.info(this, "requesting list mode...");
             messageChannel.sendMessage(commandListMsg);
             playbackMode.set(false);
@@ -483,15 +480,21 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    public void sendTrackCmd(OperationCommandMsg.Command menu, boolean doReturn)
+    public void sendTrackCmd(OperationCommandMsg.Command cmd, boolean doReturn)
     {
-        Logging.info(this, "sending track cmd: " + menu.toString());
+        final OperationCommandMsg msg = new OperationCommandMsg(
+                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, cmd.toString());
+        sendTrackMsg(msg, doReturn);
+    }
+
+    public void sendTrackMsg(final OperationCommandMsg msg, boolean doReturn)
+    {
+        Logging.info(this, "sending track cmd: " + msg.toString());
         if (!state.isPlaybackMode())
         {
             messageChannel.sendMessage(commandListMsg);
         }
-        messageChannel.sendMessage(new EISCPMessage(
-                OperationCommandMsg.CODE, menu.getCode()));
+        messageChannel.sendMessage(msg.getCmdMsg());
         if (doReturn)
         {
             messageChannel.sendMessage(commandListMsg);
