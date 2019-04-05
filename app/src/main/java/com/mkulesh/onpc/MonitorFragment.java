@@ -604,9 +604,16 @@ public class MonitorFragment extends BaseFragment
 
         final State state = activity.getStateManager().getState();
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-        final int maxVolume = Math.max(state.volumeLevel,
-                (zone != null && zone.getVolumeStep() == 0) ?
-                        MasterVolumeMsg.MAX_VOLUME_0_5_STEP : MasterVolumeMsg.MAX_VOLUME_1_STEP);
+        final int maxVolume = (
+                zone != null && zone.getVolMax() > 0 ?
+                        zone.getVolMax() :
+                        Math.max(
+                                state.volumeLevel,
+                                (zone != null && zone.getVolumeStep() == 0) ?
+                                        MasterVolumeMsg.MAX_VOLUME_0_5_STEP :
+                                        MasterVolumeMsg.MAX_VOLUME_1_STEP
+                        )
+        );
 
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
