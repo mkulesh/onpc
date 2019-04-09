@@ -446,7 +446,7 @@
     <string name="hdmi_cec">HDMI CEC</string>
     <string name="hdmi_cec_toggle">Sets HDMI CEC wrap-around up</string>
 
-    <!-- Auto power commands -->
+    <!-- Google Cast commands -->
     <string name="google_cast_analytics">Google Cast analytics</string>
     <string name="google_cast_analytics_toggle">Sets Google Cast analytics wrap-around</string>
 

@@ -14,9 +14,9 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Enhanced Controller for Onkyo</string>
-    <string name="app_short_name">Music Control</string>
-    <string name="app_description">Verbesserte Fernsteuerung für Onkyo Geräte: listen to music properly!</string>
+    <string name="app_name">Erweiterte Bedienung für Onkyo</string>
+    <string name="app_short_name">Musik Kontrolle</string>
+    <string name="app_description">Verbesserte Fernsteuerung für Onkyo Geräte: Musik richtig hören!</string>
     <string name="state_not_connected">Nicht verbunden</string>
     <string name="state_standby">Schlafmodus</string>
     <string name="action_exit_confirm">Zum Beenden zurück erneut drücken</string>
@@ -24,9 +24,9 @@
     <string name="action_cancel">Abbrechen</string>
 
     <string name="html_about"><![CDATA[
-    <p>Verbesserte Fernsteuerung für Onkyo Geräte: listen to music properly!</p>
+    <p>Verbesserte Fernsteuerung für Onkyo Geräte: Musik richtig hören!</p>
     <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>Diese app steuert Onkyo/Integra Netzwerk Abspielgeräte und A/V Receiver über das
+    <p>Diese App steuert Onkyo/Integra Netzwerk Abspielgeräte und A/V Receiver über das
        "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.</p>
     <p><a href="https://github.com/mkulesh/onpc">Öffentliches repository</a></p>
     <h5>Lizenz</h5>
@@ -99,7 +99,7 @@
     <!-- App themes -->
     <string name="pref_app_theme">Thema</string>
     <string-array name="pref_theme_names">
-        <item>Schwarz und Limette</item>
+        <item>OLED (Schwarz und Limette)</item>
         <item>Dunkel (Dunkelgrau und Blau)</item>
         <item>Dunkel (Dunkelgrau und Gelb)</item>
         <item>Hell (Grau und Lila)</item>
@@ -126,12 +126,12 @@
     <string name="amp_cmd_volume_down">Leiser</string>
     <string name="amp_cmd_selector_up">Selector position wrap-around up</string>
     <string name="amp_cmd_selector_down">Selector position wrap-around down</string>
-    <string name="amp_cmd_audio_muting_off">Amplifier audio muting off</string>
-    <string name="amp_cmd_audio_muting_on">Amplifier audio muting on</string>
-    <string name="amp_cmd_audio_muting_toggle">Sets amplifier audio muting wrap-around</string>
-    <string name="amp_cmd_system_on">Amplifier on</string>
-    <string name="amp_cmd_system_standby">Amplifier standby</string>
-    <string name="amp_cmd_system_on_toggle">Amplifier on/standby toggle</string>
+    <string name="amp_cmd_audio_muting_off">Verstärker stumm ausschalten</string>
+    <string name="amp_cmd_audio_muting_on">Verstärker stummschalten</string>
+    <string name="amp_cmd_audio_muting_toggle">Verstärker Stummschaltung wechseln</string>
+    <string name="amp_cmd_system_on">RI Gerät anschalten</string>
+    <string name="amp_cmd_system_standby">RI Gerät standby</string>
+    <string name="amp_cmd_system_on_toggle">RI Gerät an/aus wechseln</string>
 
     <!-- CD player commands (RI interface) -->
     <string name="cd_cmd_power">CD Spieler an/standby</string>
@@ -175,10 +175,10 @@
     <string name="audio_muting_none">N/A</string>
     <string name="audio_muting_off">Ton Stumm aus</string>
     <string name="audio_muting_on">Ton Stumm an</string>
-    <string name="audio_muting_toggle">Setzt die Stummschaltung (Umschalter)</string>
+    <string name="audio_muting_toggle">Stummschaltung wechseln</string>
 
     <!-- Master Volume Command  -->
-    <string name="master_volume">Master Lautstärke</string>
+    <string name="master_volume">Haupt Lautstärke</string>
     <string name="master_volume_up">Lauter</string>
     <string name="master_volume_down">Leiser</string>
     <string name="master_volume_up1">1dB lauter</string>
@@ -189,8 +189,8 @@
     <string name="preset_command_down">Voriger gespeicherter Sender</string>
 
     <!-- Tuning Command  -->
-    <string name="tuning_command_up">Nächster Sender (Frequenzsuchlauf)</string>
-    <string name="tuning_command_down">Voriger Sender (Frequenzsuchlauf)</string>
+    <string name="tuning_command_up">Nächsten Sender suchen</string>
+    <string name="tuning_command_down">Vorigen Sender suchen</string>
 
     <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Abspielen</string>
@@ -199,8 +199,8 @@
     <string name="cmd_description_p_p">Abspielen/Pause</string>
     <string name="cmd_description_trup">nächster Titel</string>
     <string name="cmd_description_trdn">voriger Titel</string>
-    <string name="cmd_description_ff">FF Taste(Continuous)</string>
-    <string name="cmd_description_rew">REW Taste(Continuous)</string>
+    <string name="cmd_description_ff">FF Taste(fortlaufend)</string>
+    <string name="cmd_description_rew">REW Taste(fortlaufend)</string>
     <string name="cmd_description_repeat">Wiederholen</string>
     <string name="cmd_description_random">Zufall</string>
     <string name="cmd_description_rep_shf">Wiederholen/Zufall</string>
@@ -344,7 +344,7 @@
     <!-- Firmware -->
     <string name="device_firmware">Firmware</string>
     <string name="device_firmware_none">N/A</string>
-    <string name="device_firmware_actual">Aktuellste version</string>
+    <string name="device_firmware_actual">Aktuellste Version</string>
     <string name="device_firmware_new_version">Es gibt eine neue Version</string>
     <string name="device_firmware_update_complete">Update abgeschlossen</string>
     <string name="device_firmware_net">Update über Netzwerk starten</string>
@@ -356,7 +356,7 @@
     <string name="device_dimmer_level_dim">Mittel</string>
     <string name="device_dimmer_level_dark">Dunkel</string>
     <string name="device_dimmer_level_off">Aus</string>
-    <string name="device_dimmer_level_toggle">Rotiert durch die Helligkeitseinstellungen</string>
+    <string name="device_dimmer_level_toggle">Helligkeitseinstellung wechseln</string>
 
     <!-- Digital Filter -->
     <string name="device_digital_filter">Digitalfilter</string>
@@ -364,7 +364,7 @@
     <string name="device_digital_filter_slow">Langsam</string>
     <string name="device_digital_filter_sharp">Klar</string>
     <string name="device_digital_filter_short">Kurz</string>
-    <string name="device_digital_filter_toggle">Rotiert durch die Digitalfilter</string>
+    <string name="device_digital_filter_toggle">Digitalfilter wechseln</string>
 
     <!-- Any two-way switch commands -->
     <string name="device_two_way_switch_none">N/A</string>
@@ -386,38 +386,38 @@
     <string name="speaker_ab_command_b_only">nur B</string>
 
     <!-- Auto power commands -->
-    <string name="device_auto_power">Auto power</string>
-    <string name="device_auto_power_toggle">Sets auto power wrap-around</string>
+    <string name="device_auto_power">Auto an/aus</string>
+    <string name="device_auto_power_toggle">Auto an/aus wechseln</string>
 
     <!-- Privacy Policy Status -->
-    <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
-    <string name="privacy_policy_google">Agree Google Cast License</string>
-    <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+    <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>
+    <string name="privacy_policy_google">Google Cast Lizenz zustimmen</string>
+    <string name="privacy_policy_sue">SUE - Datenschutzerklärung zustimmen</string>
 
     <!-- HDMI CEC settings -->
     <string name="hdmi_cec">HDMI CEC</string>
-    <string name="hdmi_cec_toggle">Sets HDMI CEC wrap-around up</string>
+    <string name="hdmi_cec_toggle">HDMI CEC wechseln</string>
 
-    <!-- Auto power commands -->
+    <!-- Google Cast commands -->
     <string name="google_cast_analytics">Google Cast analytics</string>
-    <string name="google_cast_analytics_toggle">Sets Google Cast analytics wrap-around</string>
+    <string name="google_cast_analytics_toggle">Google Cast analytics durchwechseln</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_mode_00">STEREO</string>
-    <string name="listening_mode_mode_01">DIRECT</string>
+    <string name="listening_mode_mode_01">DIREKT</string>
     <string name="listening_mode_mode_02">SURROUND</string>
     <string name="listening_mode_mode_03">FILM</string>
     <string name="listening_mode_mode_04">THX</string>
     <string name="listening_mode_mode_05">ACTION</string>
     <string name="listening_mode_mode_06">MUSICAL</string>
-    <string name="listening_mode_mode_07">MONO MOVIE</string>
-    <string name="listening_mode_mode_08">ORCHESTRA</string>
+    <string name="listening_mode_mode_07">MONO FILM</string>
+    <string name="listening_mode_mode_08">ORCHESTER</string>
     <string name="listening_mode_mode_09">UNPLUGGED</string>
     <string name="listening_mode_mode_0a">STUDIO-MIX</string>
     <string name="listening_mode_mode_0b">TV LOGIC</string>
     <string name="listening_mode_mode_0c">ALL CH STEREO</string>
     <string name="listening_mode_mode_0d">THEATER-DIMENSIONAL</string>
-    <string name="listening_mode_mode_0e">ENHANCED 7/ENHANCE</string>
+    <string name="listening_mode_mode_0e">SPIELE-SPORT</string>
     <string name="listening_mode_mode_0f">MONO</string>
     <string name="listening_mode_mode_11">PURE AUDIO</string>
     <string name="listening_mode_mode_12">MULTIPLEX</string>
@@ -428,60 +428,60 @@
     <string name="listening_mode_mode_1f">Whole House Mode</string>
     <string name="listening_mode_mode_40">5.1ch Surround</string>
     <string name="listening_mode_mode_41">Dolby EX/DTS ES</string>
-    <string name="listening_mode_mode_42">THX Cinema</string>
+    <string name="listening_mode_mode_42">THX Kino</string>
     <string name="listening_mode_mode_43">THX Surround EX</string>
-    <string name="listening_mode_mode_44">THX Music</string>
-    <string name="listening_mode_mode_45">THX Games</string>
-    <string name="listening_mode_mode_50">THX U(2)/S(2)/I/S Cinema/Cinema2</string>
-    <string name="listening_mode_mode_51">THX MusicMode</string>
-    <string name="listening_mode_mode_52">THX Games Mode</string>
-    <string name="listening_mode_mode_80">PLII/PLIIx Movie </string>
-    <string name="listening_mode_mode_81">PLII/PLIIx Music</string>
-    <string name="listening_mode_mode_82">Neo:6 Cinema/Neo:X Cinema</string>
-    <string name="listening_mode_mode_83">Neo:6 Music/Neo:X Music</string>
-    <string name="listening_mode_mode_84">PLII/PLIIx THX Cinema  </string>
-    <string name="listening_mode_mode_85">Neo:6/Neo:X THX Cinema</string>
-    <string name="listening_mode_mode_86">PLII/PLIIx Game</string>
+    <string name="listening_mode_mode_44">THX Musik</string>
+    <string name="listening_mode_mode_45">THX Spiele</string>
+    <string name="listening_mode_mode_50">THX U(2)/S(2)/I/S Kino/Kino2</string>
+    <string name="listening_mode_mode_51">THX MusikModus</string>
+    <string name="listening_mode_mode_52">THX Spiele Modus</string>
+    <string name="listening_mode_mode_80">PLII/PLIIx Film </string>
+    <string name="listening_mode_mode_81">PLII/PLIIx Musik</string>
+    <string name="listening_mode_mode_82">Neo:6 Kino/Neo:X Kino</string>
+    <string name="listening_mode_mode_83">Neo:6 Musik/Neo:X Musik</string>
+    <string name="listening_mode_mode_84">PLII/PLIIx THX Kino  </string>
+    <string name="listening_mode_mode_85">Neo:6/Neo:X THX Kino</string>
+    <string name="listening_mode_mode_86">PLII/PLIIx Spiele</string>
     <string name="listening_mode_mode_87">Neural Surr*3</string>
     <string name="listening_mode_mode_88">Neural THX/Neural Surround</string>
-    <string name="listening_mode_mode_89">PLII/PLIIx THX Games</string>
-    <string name="listening_mode_mode_8a">Neo:6/Neo:X THX Games</string>
-    <string name="listening_mode_mode_8b">PLII/PLIIx THX Music </string>
-    <string name="listening_mode_mode_8c">Neo:6/Neo:X THX Music</string>
-    <string name="listening_mode_mode_8d">Neural THX Cinema</string>
-    <string name="listening_mode_mode_8e">Neural THX Music</string>
-    <string name="listening_mode_mode_8f">Neural THX Games</string>
+    <string name="listening_mode_mode_89">PLII/PLIIx THX Spiele</string>
+    <string name="listening_mode_mode_8a">Neo:6/Neo:X THX Spiele</string>
+    <string name="listening_mode_mode_8b">PLII/PLIIx THX Musik </string>
+    <string name="listening_mode_mode_8c">Neo:6/Neo:X THX Musik</string>
+    <string name="listening_mode_mode_8d">Neural THX Kino</string>
+    <string name="listening_mode_mode_8e">Neural THX Musik</string>
+    <string name="listening_mode_mode_8f">Neural THX Spiele</string>
     <string name="listening_mode_mode_90">PLIIz Height</string>
-    <string name="listening_mode_mode_91">Neo:6 Cinema DTS Surround Sensation</string>
-    <string name="listening_mode_mode_92">Neo:6 Music DTS Surround Sensation</string>
-    <string name="listening_mode_mode_93">Neural Digital Music</string>
-    <string name="listening_mode_mode_94">PLIIz Height + THX Cinema</string>
-    <string name="listening_mode_mode_95">PLIIz Height + THX Music</string>
-    <string name="listening_mode_mode_96">PLIIz Height + THX Games</string>
-    <string name="listening_mode_mode_97">PLIIz Height + THX U2/S2 Cinema</string>
-    <string name="listening_mode_mode_98">PLIIz Height + THX U2/S2 Music</string>
-    <string name="listening_mode_mode_99">PLIIz Height + THX U2/S2 Games</string>
-    <string name="listening_mode_mode_9a">Neo:X Game</string>
+    <string name="listening_mode_mode_91">Neo:6 Kino DTS Surround Sensation</string>
+    <string name="listening_mode_mode_92">Neo:6 Musik DTS Surround Sensation</string>
+    <string name="listening_mode_mode_93">Neural Digital Musik</string>
+    <string name="listening_mode_mode_94">PLIIz Height + THX Kino</string>
+    <string name="listening_mode_mode_95">PLIIz Height + THX Musik</string>
+    <string name="listening_mode_mode_96">PLIIz Height + THX Spiele</string>
+    <string name="listening_mode_mode_97">PLIIz Height + THX U2/S2 Kino</string>
+    <string name="listening_mode_mode_98">PLIIz Height + THX U2/S2 Musik</string>
+    <string name="listening_mode_mode_99">PLIIz Height + THX U2/S2 Spiele</string>
+    <string name="listening_mode_mode_9a">Neo:X Spiele</string>
     <string name="listening_mode_mode_a0">PLIIx/PLII Movie + Audyssey DSX</string>
-    <string name="listening_mode_mode_a1">PLIIx/PLII Music + Audyssey DSX</string>
-    <string name="listening_mode_mode_a2">PLIIx/PLII Game + Audyssey DSX</string>
-    <string name="listening_mode_mode_a3">Neo:6 Cinema + Audyssey DSX</string>
-    <string name="listening_mode_mode_a4">Neo:6 Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a1">PLIIx/PLII Musik + Audyssey DSX</string>
+    <string name="listening_mode_mode_a2">PLIIx/PLII Spiele + Audyssey DSX</string>
+    <string name="listening_mode_mode_a3">Neo:6 Kino + Audyssey DSX</string>
+    <string name="listening_mode_mode_a4">Neo:6 Musik + Audyssey DSX</string>
     <string name="listening_mode_mode_a5">Neural Surround + Audyssey DSX</string>
-    <string name="listening_mode_mode_a6">Neural Digital Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a6">Neural Digital Musik + Audyssey DSX</string>
     <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff">Auto Surround</string>
-    <string name="listening_mode_up">Sets listening mode wrap-around up</string>
+    <string name="listening_mode_up">Klangprofile durchwechseln</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface">Use devices connected via Remote Interface (RI)</string>
-    <string name="remote_interface_amp">Amplifier</string>
+    <string name="remote_interface">Über RI Verbundene Geräte nutzen</string>
+    <string name="remote_interface_amp">Verstärker</string>
     <string name="remote_interface_cd">CD Player</string>
-    <string name="remote_interface_power">Power</string>
+    <string name="remote_interface_power">An/Aus</string>
     <string name="remote_interface_common">Common</string>
-    <string name="remote_interface_input">Input</string>
-    <string name="remote_interface_volume">Volume</string>
-    <string name="remote_interface_playback">Playback</string>
+    <string name="remote_interface_input">Eingang</string>
+    <string name="remote_interface_volume">Lautstärke</string>
+    <string name="remote_interface_playback">Abspieler</string>
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Ungültiger Gerätename oder Port</string>
