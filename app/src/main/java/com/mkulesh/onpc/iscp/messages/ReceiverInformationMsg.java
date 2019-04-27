@@ -45,6 +45,7 @@ public class ReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "NRI";
     public final static int DEFAULT_ACTIVE_ZONE = 0;
+    public final static int ALL_ZONE = 0xFF;
 
     public static class Zone
     {

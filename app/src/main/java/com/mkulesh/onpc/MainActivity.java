@@ -263,6 +263,12 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         try
         {
             stateHolder.setStateManager(new StateManager(connectionState, this, device, port, zone));
+            // By default, add all possible device selectors
+            {
+                final State s = stateHolder.getState();
+                s.createDefaultSelectors(this);
+                configuration.setReceiverInformation(s);
+            }
             if (autoPower)
             {
                 // Auto power-on once at application startup

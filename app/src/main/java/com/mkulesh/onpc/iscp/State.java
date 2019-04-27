@@ -227,6 +227,21 @@ public class State
         return "";
     }
 
+    public void createDefaultSelectors(final Context context)
+    {
+        deviceSelectors.clear();
+        for (InputSelectorMsg.InputType it : InputSelectorMsg.InputType.values())
+        {
+            if (it != InputSelectorMsg.InputType.NONE)
+            {
+                final ReceiverInformationMsg.Selector s = new ReceiverInformationMsg.Selector(
+                        it.getCode(), context.getString(it.getDescriptionId()),
+                        ReceiverInformationMsg.ALL_ZONE, it.getCode(), false);
+                deviceSelectors.add(s);
+            }
+        }
+    }
+
     private void clearTrackInfo()
     {
         cover = null;
