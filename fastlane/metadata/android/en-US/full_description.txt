@@ -1,0 +1,15 @@
+This app allows remote control of an Onkyo Network Player or a Network A/V Receiver via the "Integra Serial Communication  Protocol". Its two most popular features are music playback and sound profile management.
+
+Other benefits include:
+
+* Maximum privacy: No ads, no trackers, no telemetry, no special permissions
+* One-click access to music playback actions
+* Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
+* The modern material design supports different color themes and works on smartphones and/or tablets in portrait and  landscape mode
+* Tuneln Radio and Deezer streaming (if supported by receiver)
+* DAB / FM (if supported by receiver)
+* Multi-zone support
+* Control of devices attached via RI
+* Play queue support (add, remove, clear, change playback order)
+* Display device details and control device settings such as dimmer level, digital filter, auto power
+* Allows control of receivers over an OpenVPN connection (even over a cellular connection)

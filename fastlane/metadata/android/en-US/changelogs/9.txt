@@ -1,0 +1,4 @@
+• Improved handling of FM and DAB radio
+• Internationalization: German translaton and "Use system language" setting
+• Ability to switch-on remote device on app startup
+• Improved indication of stand-by state

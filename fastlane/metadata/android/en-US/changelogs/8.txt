@@ -1,0 +1,6 @@
+• Added volume slider
+• Added possibility to use device friendly name
+• Support device settings menu & remote control keys
+• Added 3-way toggle for Zone 2 A and B speakers
+• Enabled sorting of network services
+• Added Russian translation

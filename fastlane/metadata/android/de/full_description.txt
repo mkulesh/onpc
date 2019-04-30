@@ -1,0 +1,16 @@
+Diese App steuert Onkyo/Integra Netzwerk Abspielgeräte und A/V Receiver über das "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.
+
+Vorteile und Funktionen:
+- Maximale Privatsphäre: Keine Werbung, keine Tracker
+- Direkter Zugriff auf Verstärker und Musikspieler Aktionen
+- Volle Wiedergabesteuerung (start, stopp, pause, weiter, zurück, Zeitsuche, Wiederholungen, Zufallsmodus)
+- Modernes Material Design mit verschiedenen Farbthemen
+- Funktioniert auf Smartphones und Tablets im Hoch- und Querformat
+- TuneIn Radio and Deezer streaming (wenn vom Receiver unterstützt)
+- DAB / FM (wenn vom Receiver unterstützt)
+- Multizonen Unterstützung
+- Kontrolle von Geräten über RI (wenn Geräte über RI angeschlossen sind)
+- Unterstützung von Wiedergabelisten (hinzufügen, entfernen, löschen, Reihenfolge ändern)
+- Geräteinformationen anzeigen und Einstellungen wie Displayhelligkeit, Ausgabefilter und verwendete Lautsprecher ändern
+- Die App benötigt keine speziellen Berechtigungen
+- Ermöglicht die Kontrolle über eine OpenVPN Verbindung (sogar aus dem Mobilfunknetz)
