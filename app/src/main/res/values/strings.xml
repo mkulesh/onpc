@@ -483,9 +483,9 @@
     <string name="listening_mode_mode_50">THX U(2)/S(2)/I/S Cinema/Cinema2</string>
     <string name="listening_mode_mode_51">THX MusicMode</string>
     <string name="listening_mode_mode_52">THX Games Mode</string>
-    <string name="listening_mode_mode_80">PLII/PLIIx Movie </string>
+    <string name="listening_mode_mode_80">DOLBY SURROUND</string>
     <string name="listening_mode_mode_81">PLII/PLIIx Music</string>
-    <string name="listening_mode_mode_82">Neo:6 Cinema/Neo:X Cinema</string>
+    <string name="listening_mode_mode_82">DTS NEURAL:X</string>
     <string name="listening_mode_mode_83">Neo:6 Music/Neo:X Music</string>
     <string name="listening_mode_mode_84">PLII/PLIIx THX Cinema  </string>
     <string name="listening_mode_mode_85">Neo:6/Neo:X THX Cinema</string>

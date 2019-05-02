@@ -77,8 +77,8 @@ public class Configuration
         ListeningModeMsg.Mode.MODE_0A,
         ListeningModeMsg.Mode.MODE_11,
         ListeningModeMsg.Mode.MODE_0C,
-        ListeningModeMsg.Mode.MODE_40,
-        ListeningModeMsg.Mode.MODE_42
+        ListeningModeMsg.Mode.MODE_80,
+        ListeningModeMsg.Mode.MODE_82
     };
 
     /*********************************************************
