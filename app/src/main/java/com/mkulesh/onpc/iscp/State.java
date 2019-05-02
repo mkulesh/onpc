@@ -475,12 +475,13 @@ public class State
         serviceIcon = ServiceType.UNKNOWN;
         if (!inputType.isMediaList())
         {
+            Logging.info(msg, "New selector is not a media list. Clearing...");
+            clearTrackInfo();
             clearItems();
         }
 
-        if (changed && isRadioInput())
+        if (isRadioInput())
         {
-            clearTrackInfo();
             timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
         }
 

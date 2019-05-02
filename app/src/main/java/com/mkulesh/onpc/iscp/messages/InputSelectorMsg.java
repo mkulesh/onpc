@@ -52,7 +52,7 @@ public class InputSelectorMsg extends ZonedMessage
         FM("24", R.string.input_selector_fm, R.drawable.media_item_radio_fm),
         AM("25", R.string.input_selector_am, R.drawable.media_item_radio_am),
         TUNER("26", R.string.input_selector_tuner, R.drawable.media_item_radio),
-        MUSIC_SERVER("27", R.string.input_selector_music_server, R.drawable.media_item_media_server),
+        MUSIC_SERVER("27", R.string.input_selector_music_server, R.drawable.media_item_media_server, true),
         INTERNET_RADIO("28", R.string.input_selector_internet_radio, R.drawable.media_item_radio_digital),
         USB_FRONT("29", R.string.input_selector_usb_front, R.drawable.media_item_usb, true),
         USB_REAR("2A", R.string.input_selector_usb_rear, R.drawable.media_item_usb, true),
