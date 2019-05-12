@@ -59,9 +59,9 @@ public class PreferencesDeviceSelectors extends DraggableListActivity
                 checkedItems.add(item.getCode());
             }
 
-            final CharSequence defName = getText(item.getDescriptionId());
-            final CharSequence name = fName ? preferences.getString(
-                    Configuration.DEVICE_SELECTORS + "_" + item.getCode(), defName.toString()) : defName;
+            final String defName = getString(item.getDescriptionId());
+            final String name = fName ? preferences.getString(
+                    Configuration.DEVICE_SELECTORS + "_" + item.getCode(), defName) : defName;
             targetItems.add(new CheckableItem(
                     item.getDescriptionId(),
                     item.getCode(),

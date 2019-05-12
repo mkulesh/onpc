@@ -67,7 +67,7 @@ public class CheckableItemView extends LinearLayout implements Checkable
         Utils.setImageViewColorAttr(getContext(), icon, android.R.attr.textColorSecondary);
     }
 
-    public void setText(CharSequence line)
+    public void setText(String line)
     {
         textView.setText(line);
     }

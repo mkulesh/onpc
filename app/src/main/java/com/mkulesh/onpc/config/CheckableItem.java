@@ -28,14 +28,14 @@ class CheckableItem
 {
     final int id;
     final String code;
-    final CharSequence text;
+    final String text;
     @DrawableRes
     final int imageId;
     boolean checked;
 
     CheckableItem(final int id,
                   @NonNull final String code,
-                  @NonNull final CharSequence text,
+                  @NonNull final String text,
                   @DrawableRes final int imageId,
                   final boolean checked)
     {

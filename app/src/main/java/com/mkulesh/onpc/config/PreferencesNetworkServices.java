@@ -60,7 +60,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
             targetItems.add(new CheckableItem(
                     item.getDescriptionId(),
                     item.getCode(),
-                    getText(item.getDescriptionId()),
+                    getString(item.getDescriptionId()),
                     item.getImageId(), sp.checked));
         }
 

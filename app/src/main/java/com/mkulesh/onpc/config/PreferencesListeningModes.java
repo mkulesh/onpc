@@ -58,7 +58,7 @@ public class PreferencesListeningModes extends DraggableListActivity
             targetItems.add(new CheckableItem(
                     item.getDescriptionId(),
                     item.getCode(),
-                    getText(item.getDescriptionId()),
+                    getString(item.getDescriptionId()),
                     -1, sp.checked));
         }
 
