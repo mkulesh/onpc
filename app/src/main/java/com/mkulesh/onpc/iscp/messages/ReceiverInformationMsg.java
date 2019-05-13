@@ -234,7 +234,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     private final List<Preset> presetList = new ArrayList<>();
     private final Set<String> controlList = new HashSet<>();
 
-    ReceiverInformationMsg(EISCPMessage raw) throws Exception
+    public ReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
         deviceId = "";
@@ -286,7 +286,7 @@ public class ReceiverInformationMsg extends ISCPMessage
                 + "]";
     }
 
-    public void parseXml() throws Exception
+    public void parseXml(boolean showInfo) throws Exception
     {
         deviceProperties.clear();
         networkServices.clear();
@@ -322,7 +322,6 @@ public class ReceiverInformationMsg extends ISCPMessage
                 }
 
                 deviceId = deviceInfo.getAttribute("id");
-                Logging.info(this, "    deviceId=" + deviceId);
 
                 for (Node prop = deviceInfo.getFirstChild(); prop != null; prop = prop.getNextSibling())
                 {
@@ -400,29 +399,37 @@ public class ReceiverInformationMsg extends ISCPMessage
             }
         }
 
-        for (Map.Entry<String, String> p : deviceProperties.entrySet())
+        if (showInfo)
         {
-            Logging.info(this, "    Property: " + p.getKey() + "=" + p.getValue());
+            Logging.info(this, "    deviceId=" + deviceId);
+            for (Map.Entry<String, String> p : deviceProperties.entrySet())
+            {
+                Logging.info(this, "    Property: " + p.getKey() + "=" + p.getValue());
+            }
+            for (Map.Entry<String, String> p : networkServices.entrySet())
+            {
+                Logging.info(this, "    Service: " + p.getKey() + "=" + p.getValue());
+            }
+            for (Zone s : zones)
+            {
+                Logging.info(this, "    Zone: " + s.toString());
+            }
+            for (Selector s : deviceSelectors)
+            {
+                Logging.info(this, "    Selector: " + s.toString());
+            }
+            for (Preset p : presetList)
+            {
+                Logging.info(this, "    Preset: " + p.toString());
+            }
+            for (String s : controlList)
+            {
+                Logging.info(this, "    Control: " + s);
+            }
         }
-        for (Map.Entry<String, String> p : networkServices.entrySet())
+        else
         {
-            Logging.info(this, "    Service: " + p.getKey() + "=" + p.getValue());
-        }
-        for (Zone s : zones)
-        {
-            Logging.info(this, "    Zone: " + s.toString());
-        }
-        for (Selector s : deviceSelectors)
-        {
-            Logging.info(this, "    Selector: " + s.toString());
-        }
-        for (Preset p : presetList)
-        {
-            Logging.info(this, "    Preset: " + p.toString());
-        }
-        for (String s : controlList)
-        {
-            Logging.info(this, "    Control: " + s);
+            Logging.info(this, "receiver information parsed");
         }
 
         stream.close();

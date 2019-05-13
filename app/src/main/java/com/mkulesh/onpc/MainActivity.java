@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean autoPower = false;
 
+    // #58: observed missed receiver information message on device rotation.
+    // Solution: save and restore the receiver information in
+    // onSaveInstanceState/onRestoreInstanceState
+    private String savedReceiverInformation = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -143,6 +148,41 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         final Locale prefLocale = AppLocale.ContextWrapper.getPreferredLocale(newBase);
         Logging.info(this, "Application locale: " + prefLocale.toString());
         super.attachBaseContext(AppLocale.ContextWrapper.wrap(newBase, prefLocale));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        try
+        {
+            if (savedReceiverInformation != null)
+            {
+                Logging.info(this, "save receiver information");
+                outState.putString("savedReceiverInformation", savedReceiverInformation);
+            }
+        }
+        catch (Exception e)
+        {
+            Logging.info(this, "cannot save state: " + e.getLocalizedMessage());
+        }
+    }
+
+    public void onRestoreInstanceState(Bundle inState)
+    {
+        try
+        {
+            savedReceiverInformation = inState.getString("savedReceiverInformation", "");
+            if (!savedReceiverInformation.isEmpty())
+            {
+                Logging.info(this, "restore receiver information");
+                autoPower = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Logging.info(this, "cannot restore state: " + e.getLocalizedMessage());
+        }
     }
 
     public Configuration getConfiguration()
@@ -256,24 +296,21 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     public boolean connectToDevice(final String device, final int port)
     {
-        stateHolder.release(false);
+        stateHolder.release(false, "reconnect");
         stateHolder.waitForRelease();
         onStateChanged(stateHolder.getState(), null);
         final int zone = configuration.getZone();
         try
         {
-            stateHolder.setStateManager(new StateManager(connectionState, this, device, port, zone));
+            stateHolder.setStateManager(new StateManager(
+                    connectionState, this, device, port, zone, autoPower, savedReceiverInformation));
+            autoPower = false;
+            savedReceiverInformation = null;
             // By default, add all possible device selectors
             {
                 final State s = stateHolder.getState();
                 s.createDefaultSelectors(this);
                 configuration.setReceiverInformation(s);
-            }
-            if (autoPower)
-            {
-                // Auto power-on once at application startup
-                stateHolder.getStateManager().setAutoPower(true);
-                autoPower = false;
             }
             return true;
         }
@@ -325,8 +362,9 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     protected void onPause()
     {
         super.onPause();
+        savedReceiverInformation = getStateManager().getState().receiverInformation;
         connectionState.setActive(false);
-        stateHolder.release(true);
+        stateHolder.release(true, "pause");
     }
 
     @Override
@@ -363,7 +401,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public void onDeviceDisconnected()
     {
-        Logging.info(this, "device disconnected");
         if (!stateHolder.isAppExit())
         {
             onStateChanged(stateHolder.getState(), null);

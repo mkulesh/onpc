@@ -277,7 +277,7 @@ public class State
         }
         if (msg instanceof ReceiverInformationMsg)
         {
-            return process((ReceiverInformationMsg) msg) ? ChangeType.RECEIVER_INFO : ChangeType.NONE;
+            return process((ReceiverInformationMsg) msg, true) ? ChangeType.RECEIVER_INFO : ChangeType.NONE;
         }
         if (msg instanceof FriendlyNameMsg)
         {
@@ -433,11 +433,11 @@ public class State
         return changed;
     }
 
-    private boolean process(ReceiverInformationMsg msg)
+    public boolean process(ReceiverInformationMsg msg, boolean showInfo)
     {
         try
         {
-            msg.parseXml();
+            msg.parseXml(showInfo);
             receiverInformation = msg.getData();
             deviceProperties = msg.getDeviceProperties();
             networkServices = msg.getNetworkServices();

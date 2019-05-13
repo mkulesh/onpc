@@ -47,14 +47,14 @@ public class StateHolder
         return stateManager == null ? null : stateManager.getState();
     }
 
-    public void release(boolean appExit)
+    public void release(boolean appExit, String reason)
     {
         this.appExit = appExit;
         synchronized (released)
         {
             if (stateManager != null)
             {
-                Logging.info(this, "request to release state holder");
+                Logging.info(this, "request to release state holder (" + reason + ")");
                 released.set(false);
                 stateManager.stop();
             }

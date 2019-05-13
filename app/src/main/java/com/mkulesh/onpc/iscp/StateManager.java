@@ -97,7 +97,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final boolean useBmpImages;
 
     public StateManager(final ConnectionState connectionState, final StateListener stateListener,
-                        final String device, final int port, final int zone) throws Exception
+                        final String device, final int port, final int zone,
+                        boolean autoPower, String savedReceiverInformation) throws Exception
     {
         this.stateListener = stateListener;
 
@@ -111,6 +112,21 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         if (!messageChannel.connectToServer(device, port))
         {
             throw new Exception("Cannot connect to server");
+        }
+
+        this.autoPower = autoPower;
+        if (savedReceiverInformation != null)
+        {
+            try
+            {
+                state.process(new ReceiverInformationMsg(
+                        new EISCPMessage(ReceiverInformationMsg.CODE, savedReceiverInformation)),
+                        /*showInfo=*/ false);
+            }
+            catch (Exception ex)
+            {
+                // nothing to do
+            }
         }
 
         messageChannel.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
@@ -142,11 +158,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public final State getState()
     {
         return state;
-    }
-
-    public void setAutoPower(boolean autoPower)
-    {
-        this.autoPower = autoPower;
     }
 
     @Override
@@ -318,7 +329,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof PowerStatusMsg)
         {
+            // #58: delayed response for InputSelectorMsg was observed:
+            // Send this request first
             final String playStateQueries[] = new String[]{
+                    InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     DimmerLevelMsg.CODE,
                     DigitalFilterMsg.CODE,
                     AutoPowerMsg.CODE,
@@ -326,7 +340,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     GoogleCastAnalyticsMsg.CODE,
                     SpeakerACommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     SpeakerBCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
-                    InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],
                     PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
