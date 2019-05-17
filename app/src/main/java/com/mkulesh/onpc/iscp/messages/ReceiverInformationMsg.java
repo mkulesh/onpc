@@ -47,6 +47,69 @@ public class ReceiverInformationMsg extends ISCPMessage
     public final static int DEFAULT_ACTIVE_ZONE = 0;
     public final static int ALL_ZONE = 0xFF;
 
+    public static class NetworkService
+    {
+        final String id;
+        final String name;
+        final int zone;
+        final boolean addToQueue;
+
+        NetworkService(Element e)
+        {
+            id = e.getAttribute("id").toUpperCase();
+            name = e.getAttribute("name");
+            zone = e.hasAttribute("zone") ? Integer.parseInt(e.getAttribute("zone")) : 1;
+            addToQueue = e.hasAttribute("addqueue") && (Integer.parseInt(e.getAttribute("addqueue")) == 1);
+        }
+
+        public NetworkService(final String id, final String name, final int zone,
+                              final boolean addToQueue)
+        {
+            this.id = id;
+            this.name = name;
+            this.zone = zone;
+            this.addToQueue = addToQueue;
+        }
+
+        public String getId()
+        {
+            return id;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public boolean isAddToQueue()
+        {
+            return addToQueue;
+        }
+
+        @NonNull
+        @Override
+        public String toString()
+        {
+            StringBuilder res = new StringBuilder();
+            res.append(id)
+                    .append(": ").append(name)
+                    .append(", addToQueue=").append(addToQueue)
+                    .append(", zone=").append(zone)
+                    .append(", zones=[");
+            for (int z = 0; z <= 3; z++)
+            {
+                res.append(Integer.valueOf((isActiveForZone(z) ? 1 : 0)).toString());
+            }
+            res.append("]");
+            return res.toString();
+        }
+
+        boolean isActiveForZone(int z)
+        {
+            return ((1 << z) & zone) != 0;
+        }
+    }
+
     public static class Zone
     {
         final String id;
@@ -228,7 +291,7 @@ public class ReceiverInformationMsg extends ISCPMessage
 
     private String deviceId;
     private final HashMap<String, String> deviceProperties = new HashMap<>();
-    private final HashMap<String, String> networkServices = new HashMap<>();
+    private final HashMap<String, NetworkService> networkServices = new HashMap<>();
     private final List<Zone> zones = new ArrayList<>();
     private final List<Selector> deviceSelectors = new ArrayList<>();
     private final List<Preset> presetList = new ArrayList<>();
@@ -247,7 +310,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     }
 
     @NonNull
-    public HashMap<String, String> getNetworkServices()
+    public HashMap<String, NetworkService> getNetworkServices()
     {
         return networkServices;
     }
@@ -342,7 +405,8 @@ public class ReceiverInformationMsg extends ISCPMessage
                                 final String name = element.getAttribute("name");
                                 if (id != null && value != null && Integer.parseInt(value) == 1 && name != null)
                                 {
-                                    networkServices.put(id.toUpperCase(), name);
+                                    final NetworkService n = new NetworkService(element);
+                                    networkServices.put(n.getId(), n);
                                 }
                             }
                         }
@@ -406,9 +470,9 @@ public class ReceiverInformationMsg extends ISCPMessage
             {
                 Logging.info(this, "    Property: " + p.getKey() + "=" + p.getValue());
             }
-            for (Map.Entry<String, String> p : networkServices.entrySet())
+            for (NetworkService s : networkServices.values())
             {
-                Logging.info(this, "    Service: " + p.getKey() + "=" + p.getValue());
+                Logging.info(this, "    Service: " + s.toString());
             }
             for (Zone s : zones)
             {

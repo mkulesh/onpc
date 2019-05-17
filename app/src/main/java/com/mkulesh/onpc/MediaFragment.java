@@ -96,9 +96,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             final State state = activity.getStateManager().getState();
             final ReceiverInformationMsg.Selector selector = state.getActualSelector();
+            final ReceiverInformationMsg.NetworkService networkService = state.getNetworkService();
             if (selector != null)
             {
-                Logging.info(this, "Context menu for selector " + selector.toString());
+                Logging.info(this, "Context menu for selector " + selector.toString() +
+                        (networkService != null? " and service " + networkService.toString() : ""));
                 ListView lv = (ListView) v;
                 AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 final Object item = lv.getItemAtPosition(acmi.position);
@@ -107,10 +109,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     selectedItem = (XmlListItemMsg) item;
                     MenuInflater inflater = activity.getMenuInflater();
                     inflater.inflate(R.menu.playlist_context_menu, menu);
-                    menu.findItem(R.id.playlist_menu_add).setVisible(selector.isAddToQueue());
-                    menu.findItem(R.id.playlist_menu_add_and_play).setVisible(selector.isAddToQueue());
 
                     final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE;
+                    final boolean addToQueue = selector.isAddToQueue() ||
+                            (networkService != null && networkService.isAddToQueue());
+
+                    menu.findItem(R.id.playlist_menu_add).setVisible(!isQueue && addToQueue);
+                    menu.findItem(R.id.playlist_menu_add_and_play).setVisible(!isQueue && addToQueue);
                     menu.findItem(R.id.playlist_menu_remove).setVisible(isQueue);
                     menu.findItem(R.id.playlist_menu_remove_all).setVisible(isQueue);
                     menu.findItem(R.id.playlist_menu_move_from).setVisible(isQueue);

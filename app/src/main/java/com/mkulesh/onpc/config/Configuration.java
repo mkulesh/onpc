@@ -34,7 +34,6 @@ import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Configuration
 {
@@ -221,13 +220,13 @@ public class Configuration
         if (!state.networkServices.isEmpty())
         {
             final StringBuilder str = new StringBuilder();
-            for (Map.Entry<String, String> p : state.networkServices.entrySet())
+            for (final String p : state.networkServices.keySet())
             {
                 if (!str.toString().isEmpty())
                 {
                     str.append(",");
                 }
-                str.append(p.getKey());
+                str.append(p);
             }
             Logging.info(this, "Network services: " + str.toString());
             prefEditor.putString(NETWORK_SERVICES, str.toString());

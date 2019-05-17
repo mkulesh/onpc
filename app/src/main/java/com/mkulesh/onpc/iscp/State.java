@@ -80,7 +80,7 @@ public class State
     public String receiverInformation = "";
     String friendlyName = "";
     public Map<String, String> deviceProperties = new HashMap<>();
-    public HashMap<String, String> networkServices = new HashMap<>();
+    public HashMap<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
     private final int activeZone;
     public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
@@ -1020,5 +1020,14 @@ public class State
         {
             return dashedString;
         }
+    }
+
+    public ReceiverInformationMsg.NetworkService getNetworkService()
+    {
+        if (serviceType != null)
+        {
+            return networkServices.get(serviceType.getCode());
+        }
+        return null;
     }
 }
