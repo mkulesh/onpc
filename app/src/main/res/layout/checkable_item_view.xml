@@ -46,7 +46,7 @@
 
     <ImageView
         android:id="@+id/checkable_dragger"
-        android:src="@drawable/draggable_dots"
+        android:src="@drawable/drag_vertical"
         android:scaleType="center"
         android:layout_width="@dimen/draggable_row_height"
         android:layout_height="@dimen/draggable_row_height" />
