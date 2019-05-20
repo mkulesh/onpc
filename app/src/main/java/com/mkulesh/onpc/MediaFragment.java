@@ -58,6 +58,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private LinearLayout selectorPaletteLayout;
     private XmlListItemMsg selectedItem = null;
     int moveFrom = -1;
+    int filteredItems = 0;
     private AppCompatImageView progressIndicator;
 
     public MediaFragment()
@@ -198,9 +199,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             Logging.info(this, "Updating media fragment");
             moveFrom = -1;
+            filteredItems = state.numberOfItems;
             updateSelectorButtons(state);
-            updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
             updateListView(state);
+            updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
         }
         else if (eventChanges.contains(State.ChangeType.COMMON))
         {
@@ -303,8 +305,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (!serviceItems.isEmpty())
         {
-            newItems.addAll(activity.getConfiguration().getSortedNetworkServices(
-                    state.serviceIcon, serviceItems));
+            final ArrayList<NetworkServiceMsg> items =
+                    activity.getConfiguration().getSortedNetworkServices(state.serviceIcon, serviceItems);
+            filteredItems = items.size();
+            newItems.addAll(items);
         }
         else if (state.isPlaybackMode())
         {
@@ -378,8 +382,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             title.append(state.titleBar);
             if (state.numberOfItems > 0)
             {
-                title.append("/").append(activity.getResources().getString(R.string.medialist_items))
-                        .append(":").append(state.numberOfItems);
+                title.append(" | ").append(activity.getResources().getString(R.string.medialist_items)).append(": ");
+                if (filteredItems != state.numberOfItems)
+                {
+                    title.append(filteredItems).append("/");
+                }
+                title.append(state.numberOfItems);
             }
         }
         else
