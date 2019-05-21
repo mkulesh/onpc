@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
+import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
@@ -58,7 +59,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private LinearLayout selectorPaletteLayout;
     private XmlListItemMsg selectedItem = null;
     int moveFrom = -1;
-    int filteredItems = 0;
+    private int filteredItems = 0;
+    private final OperationCommandMsg returnMsg = new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
     private AppCompatImageView progressIndicator;
 
     public MediaFragment()
@@ -287,9 +289,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         final List<NetworkServiceMsg> serviceItems = state.cloneServiceItems();
 
         ArrayList<ISCPMessage> newItems = new ArrayList<>();
-        if (!state.isTopLayer())
+        if (!state.isTopLayer() && !activity.getConfiguration().isBackAsReturn())
         {
-            newItems.add(new OperationCommandMsg(OperationCommandMsg.Command.RETURN));
+            newItems.add(returnMsg);
         }
         int playing = -1;
         if (!mediaItems.isEmpty())
@@ -398,5 +400,22 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         titleBar.setVisibility(View.VISIBLE);
         titleBar.setText(title.toString());
         progressIndicator.setVisibility(state.inputType.isMediaList() && processing ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    protected boolean onBackPressed()
+    {
+        final StateManager stateManager = activity.getStateManager();
+        if (!activity.isConnected() || stateManager == null)
+        {
+            return false;
+        }
+        if (stateManager.getState().isTopLayer())
+        {
+            return false;
+        }
+        moveFrom = -1;
+        updateTitle(stateManager.getState(), true);
+        stateManager.sendMessage(returnMsg);
+        return true;
     }
 }

@@ -261,6 +261,14 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     @Override
     public void onBackPressed()
     {
+        if (configuration.isBackAsReturn())
+        {
+            final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
+            if (f != null && f.onBackPressed())
+            {
+                return;
+            }
+        }
         if (!configuration.isExitConfirm())
         {
             finish();

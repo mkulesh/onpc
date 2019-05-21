@@ -254,4 +254,10 @@ abstract public class BaseFragment extends Fragment
             }
         }
     }
+
+    protected boolean onBackPressed()
+    {
+        // No default processing for Back button
+        return false;
+    }
 }
