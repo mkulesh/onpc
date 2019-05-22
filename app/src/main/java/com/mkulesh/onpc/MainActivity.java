@@ -370,7 +370,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     protected void onPause()
     {
         super.onPause();
-        savedReceiverInformation = getStateManager().getState().receiverInformation;
+        if (getStateManager() != null)
+        {
+            savedReceiverInformation = getStateManager().getState().receiverInformation;
+        }
         connectionState.setActive(false);
         stateHolder.release(true, "pause");
     }
