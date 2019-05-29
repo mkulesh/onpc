@@ -154,7 +154,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(0, idx), false);
                 return true;
             case R.id.playlist_menu_remove_all:
-                activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(0, 0), true);
+                if (activity.getConfiguration().isAdvancedQueue())
+                {
+                    activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(1, 0), false);
+                }
+                else
+                {
+                    activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(0, 0), true);
+                }
                 return true;
             case R.id.playlist_menu_move_from:
                 moveFrom = idx;

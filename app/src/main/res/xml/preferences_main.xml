@@ -145,6 +145,14 @@
             android:summary="@string/pref_back_as_return_summary" />
 
         <SwitchPreferenceCompat
+            app:icon="@drawable/pref_advanced_queue"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="advanced_queue"
+            android:title="@string/pref_advanced_queue"
+            android:summary="@string/pref_advanced_queue_summary" />
+
+        <SwitchPreferenceCompat
             app:icon="@drawable/pref_exit_confirm"
             app:singleLineTitle="false"
             android:defaultValue="false"

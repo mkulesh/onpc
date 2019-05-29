@@ -65,6 +65,7 @@ public class Configuration
     private static final String VOLUME_KEYS = "volume_keys";
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String BACK_AS_RETURN = "back_as_return";
+    private static final String ADVANCED_QUEUE = "advanced_queue";
     private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
 
@@ -382,6 +383,11 @@ public class Configuration
     public boolean isBackAsReturn()
     {
         return preferences.getBoolean(Configuration.BACK_AS_RETURN, false);
+    }
+
+    public boolean isAdvancedQueue()
+    {
+        return preferences.getBoolean(Configuration.ADVANCED_QUEUE, false);
     }
 
     public boolean isExitConfirm()
