@@ -44,7 +44,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     public BroadcastResponseMsg(InetAddress hostAddress, EISCPMessage raw) throws Exception
     {
         super(raw);
-        host = hostAddress.getHostName() != null ? hostAddress.getHostName() : hostAddress.getHostAddress();
+        host = hostAddress.getHostAddress();
         String[] tokens = data.split("/");
         if (tokens.length > 0)
         {
