@@ -330,6 +330,8 @@
 
     <string name="playlist_add">Zur Abspielliste hinzufügen</string>
     <string name="playlist_add_and_play">Hinzufügen und abspielen</string>
+    <string name="playlist_replace">Replace queue</string>
+    <string name="playlist_replace_and_play">Replace and play</string>
     <string name="playlist_remove">Element entfernen</string>
     <string name="playlist_remove_all">Alle entfernen</string>
     <string name="playlist_move_from">Verschiebe von</string>

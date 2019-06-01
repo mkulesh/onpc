@@ -331,6 +331,8 @@
 
     <string name="playlist_add">Добавить в очередь</string>
     <string name="playlist_add_and_play">Добавить и воспроизвести</string>
+    <string name="playlist_replace">Replace queue</string>
+    <string name="playlist_replace_and_play">Replace and play</string>
     <string name="playlist_remove">Удалить позицию</string>
     <string name="playlist_remove_all">Удалить все</string>
     <string name="playlist_move_from">Вырезать</string>

@@ -378,6 +378,8 @@
 
     <string name="playlist_add">Add to queue</string>
     <string name="playlist_add_and_play">Add and play</string>
+    <string name="playlist_replace">Replace queue</string>
+    <string name="playlist_replace_and_play">Replace and play</string>
     <string name="playlist_remove">Remove item</string>
     <string name="playlist_remove_all">Remove all</string>
     <string name="playlist_move_from">Move from</string>

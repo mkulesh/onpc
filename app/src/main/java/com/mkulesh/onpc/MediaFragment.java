@@ -116,9 +116,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE;
                     final boolean addToQueue = selector.isAddToQueue() ||
                             (networkService != null && networkService.isAddToQueue());
+                    final boolean isAdvQueue = activity.getConfiguration().isAdvancedQueue();
 
                     menu.findItem(R.id.playlist_menu_add).setVisible(!isQueue && addToQueue);
                     menu.findItem(R.id.playlist_menu_add_and_play).setVisible(!isQueue && addToQueue);
+                    menu.findItem(R.id.playlist_menu_replace).setVisible(!isQueue && addToQueue && isAdvQueue);
+                    menu.findItem(R.id.playlist_menu_replace_and_play).setVisible(!isQueue && addToQueue && isAdvQueue);
                     menu.findItem(R.id.playlist_menu_remove).setVisible(isQueue);
                     menu.findItem(R.id.playlist_menu_remove_all).setVisible(isQueue);
                     menu.findItem(R.id.playlist_menu_move_from).setVisible(isQueue);
@@ -148,6 +151,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 2), false);
                 return true;
             case R.id.playlist_menu_add_and_play:
+                activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 0), false);
+                return true;
+            case R.id.playlist_menu_replace:
+                activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(1, 0), false);
+                activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 2), false);
+                return true;
+            case R.id.playlist_menu_replace_and_play:
+                activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(1, 0), false);
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 0), false);
                 return true;
             case R.id.playlist_menu_remove:
