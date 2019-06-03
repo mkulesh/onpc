@@ -16,9 +16,17 @@
     tools:ignore="AlwaysShowAction">
 
     <item
+        android:id="@+id/playlist_menu_replace_and_play"
+        android:icon="@drawable/playlist_add"
+        android:title="@string/playlist_replace_and_play" />
+    <item
         android:id="@+id/playlist_menu_add"
         android:icon="@drawable/playlist_add"
         android:title="@string/playlist_add" />
+    <item
+        android:id="@+id/playlist_menu_replace"
+        android:icon="@drawable/playlist_add"
+        android:title="@string/playlist_replace" />
     <item
         android:id="@+id/playlist_menu_add_and_play"
         android:icon="@drawable/playlist_add"
