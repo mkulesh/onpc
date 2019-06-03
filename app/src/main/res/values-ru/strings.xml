@@ -329,10 +329,11 @@
     <string name="service_net">Сеть</string>
     <string name="service_bluetooth">Bluetooth</string>
 
-    <string name="playlist_add">Добавить в очередь</string>
+    <string name="playlist_options">Очередь воспроизведения</string>
+    <string name="playlist_add">Добавить</string>
     <string name="playlist_add_and_play">Добавить и воспроизвести</string>
-    <string name="playlist_replace">Replace queue</string>
-    <string name="playlist_replace_and_play">Replace and play</string>
+    <string name="playlist_replace">Заменить</string>
+    <string name="playlist_replace_and_play">Заменить и воспроизвести</string>
     <string name="playlist_remove">Удалить позицию</string>
     <string name="playlist_remove_all">Удалить все</string>
     <string name="playlist_move_from">Вырезать</string>
