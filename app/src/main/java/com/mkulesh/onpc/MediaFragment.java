@@ -118,6 +118,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                             (networkService != null && networkService.isAddToQueue());
                     final boolean isAdvQueue = activity.getConfiguration().isAdvancedQueue();
 
+                    if (isQueue || addToQueue)
+                    {
+                        menu.setHeaderTitle(R.string.playlist_options);
+                    }
                     menu.findItem(R.id.playlist_menu_add).setVisible(!isQueue && addToQueue);
                     menu.findItem(R.id.playlist_menu_add_and_play).setVisible(!isQueue && addToQueue);
                     menu.findItem(R.id.playlist_menu_replace).setVisible(!isQueue && addToQueue && isAdvQueue);
@@ -130,7 +134,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
                     final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE;
                     menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu &&
-                            selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY);
+                            selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY && !isQueue);
                 }
             }
         }
