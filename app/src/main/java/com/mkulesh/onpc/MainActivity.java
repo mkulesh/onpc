@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
     public void onRestoreInstanceState(Bundle inState)
     {
+        super.onRestoreInstanceState(inState);
         try
         {
             savedReceiverInformation = inState.getString("savedReceiverInformation", "");
