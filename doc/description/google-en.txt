@@ -2,7 +2,7 @@ This app allows remote control of an Onkyo Network Player or a Network A/V Recei
 
 Benefits and features:
 
-- Maximum privacy: No ads, no trackers, no telemetry
+- Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
@@ -10,9 +10,8 @@ Benefits and features:
 - DAB / FM (if supported by receiver)
 - Multi-zone support
 - Control of devices attached via RI
-- Play queue support (add, remove, clear, change playback order)
+- Enhanced Play Queue support (add, replace, remove, clear, change playback order)
 - Display device details and control device settings such as dimmer level, digital filter, auto power
-- App doesn't need any special permissions
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
 The app is 100% open source. Please feel free to download, explore, fork or contribute to it on https://github.com/mkulesh/onpc
