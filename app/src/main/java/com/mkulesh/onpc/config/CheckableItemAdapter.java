@@ -15,7 +15,6 @@ package com.mkulesh.onpc.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,8 @@ import com.mkulesh.onpc.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.preference.PreferenceManager;
 
 class CheckableItemAdapter extends BaseAdapter
 {

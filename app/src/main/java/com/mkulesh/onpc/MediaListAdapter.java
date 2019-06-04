@@ -14,7 +14,6 @@
 package com.mkulesh.onpc;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,8 @@ import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
 
 final class MediaListAdapter extends ArrayAdapter<ISCPMessage>
 {

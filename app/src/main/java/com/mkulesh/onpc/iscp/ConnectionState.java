@@ -18,8 +18,6 @@ import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
@@ -28,6 +26,9 @@ import com.mkulesh.onpc.utils.Logging;
 
 import java.net.InetAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 public class ConnectionState
 {

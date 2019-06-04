@@ -16,7 +16,6 @@ package com.mkulesh.onpc.iscp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
@@ -63,6 +62,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 public class State
 {

@@ -13,8 +13,6 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.support.annotation.NonNull;
-
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Utils;
@@ -29,6 +27,8 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import androidx.annotation.NonNull;
 
 /*
  * NET/USB List Info(All item, need processing XML data, for Network Control Only)

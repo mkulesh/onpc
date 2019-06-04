@@ -16,9 +16,6 @@ package com.mkulesh.onpc.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
-import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -27,6 +24,10 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 
 public class HtmlDialogBuilder
 {

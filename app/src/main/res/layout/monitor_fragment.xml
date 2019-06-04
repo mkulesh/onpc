@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="left" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonSecondaryStyle"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/tv_cover"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -119,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center" />
 
-                <android.support.v7.widget.AppCompatSeekBar
+                <androidx.appcompat.widget.AppCompatSeekBar
                     style="@style/SegBarStyle"
                     android:id="@+id/progress_bar"
                     android:layout_width="0dp"
@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/btn_negative_feed"
                     android:contentDescription="@string/cmd_description_f2"
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/btn_positive_feed"
                     android:contentDescription="@string/cmd_description_f1"
@@ -194,52 +194,52 @@
             android:orientation="horizontal"
             android:gravity="center">
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_repeat"
                 android:tag="REPEAT" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_previous"
                 android:tag="TRDN" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_stop"
                 android:tag="STOP" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_pause_play"
                 android:tag="PAUSE" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_next"
                 android:tag="TRUP" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_random"
                 android:tag="RANDOM" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_preset_down"
                 android:tag="PRS:DOWN" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_tuning_down"
                 android:tag="TUN:DOWN" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_tuning_up"
                 android:tag="TUN:UP" />
 
-            <android.support.v7.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_preset_up"
                 android:tag="PRS:UP" />

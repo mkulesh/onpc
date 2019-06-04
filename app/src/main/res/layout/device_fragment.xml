@@ -41,13 +41,13 @@
                     style="@style/DeviceLabelViewStyle"
                     android:text="@string/device_friendly_name" />
 
-                <android.support.v7.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText
                     style="@style/DeviceEditableViewStyle"
                     android:id="@+id/device_edit_friendly_name"
                     android:inputType="text"
                     android:focusable="true" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_change_friendly_name"
                     android:src="@drawable/pref_friendly_name"
@@ -97,7 +97,7 @@
                     style="@style/DeviceValueViewStyle"
                     android:id="@+id/device_firmware" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:visibility="gone"
                     android:id="@+id/btn_firmware_update"
@@ -140,7 +140,7 @@
                     android:tag="VALUE"
                     android:gravity="center" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_dimmer_level_toggle"
                     android:src="@drawable/wrap_around"
@@ -159,7 +159,7 @@
                     android:tag="VALUE"
                     android:gravity="center" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_digital_filter_toggle"
                     android:src="@drawable/wrap_around"
@@ -178,7 +178,7 @@
                     android:tag="VALUE"
                     android:gravity="center" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_auto_power_toggle"
                     android:src="@drawable/wrap_around"
@@ -197,7 +197,7 @@
                     android:tag="VALUE"
                     android:gravity="center" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/hdmi_cec_toggle"
                     android:src="@drawable/wrap_around"
@@ -216,7 +216,7 @@
                     android:tag="VALUE"
                     android:gravity="center" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/speaker_ab_command_toggle"
                     android:src="@drawable/wrap_around"
@@ -235,7 +235,7 @@
                     android:tag="VALUE"
                     android:gravity="center" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/google_cast_analytics_toggle"
                     android:src="@drawable/wrap_around"

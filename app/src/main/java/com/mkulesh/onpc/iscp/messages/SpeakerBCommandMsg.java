@@ -13,12 +13,12 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 /*
  * Speaker B Command (For Main zone and Zone 2 only)

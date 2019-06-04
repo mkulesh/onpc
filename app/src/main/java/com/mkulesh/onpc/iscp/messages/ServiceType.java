@@ -13,11 +13,11 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
-
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 /*
  * Service icon

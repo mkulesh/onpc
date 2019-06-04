@@ -18,9 +18,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.AppCompatRadioButton;
 import android.util.Pair;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -39,6 +36,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 @SuppressLint("StaticFieldLeak")
 public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>

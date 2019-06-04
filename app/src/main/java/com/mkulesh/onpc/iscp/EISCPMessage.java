@@ -13,13 +13,13 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.support.annotation.NonNull;
-
 import com.mkulesh.onpc.utils.Utils;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+
+import androidx.annotation.NonNull;
 
 public class EISCPMessage
 {
