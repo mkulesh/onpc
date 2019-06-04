@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.utils;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -29,9 +30,10 @@ public final class Logging
     public static boolean isEnabled()
     {
         // Should be false in release build
-        return true;
+        return false;
     }
 
+    @SuppressLint("DefaultLocale")
     public static void info(Object o, String text)
     {
         if (isEnabled())
@@ -70,7 +72,7 @@ public final class Logging
         }
         catch (Exception e)
         {
-            str.append("Can not collect logging: " + e.getLocalizedMessage());
+            str.append("Can not collect logging: ").append(e.getLocalizedMessage());
         }
         return str.toString();
     }
