@@ -16,10 +16,11 @@ package com.mkulesh.onpc.config;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.mkulesh.onpc.R;
+
+import androidx.preference.ListPreference;
+import androidx.preference.PreferenceFragmentCompat;
 
 public class PreferencesMain extends AppCompatPreferenceActivity
 {

@@ -13,9 +13,6 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -37,6 +34,9 @@ import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 /*
  * Gets the Receiver Information Status

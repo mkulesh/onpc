@@ -14,7 +14,6 @@
 package com.mkulesh.onpc.config;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.Checkable;
 import android.widget.CheckedTextView;
@@ -24,6 +23,8 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.utils.Utils;
+
+import androidx.annotation.DrawableRes;
 
 public class CheckableItemView extends LinearLayout implements Checkable
 {

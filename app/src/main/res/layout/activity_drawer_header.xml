@@ -21,7 +21,7 @@
     android:orientation="vertical"
     android:gravity="bottom">
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/drawer_header"
         android:src="@drawable/drawer_header"
         android:layout_width="match_parent"

@@ -13,12 +13,12 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.support.annotation.NonNull;
-
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import java.net.InetAddress;
+
+import androidx.annotation.NonNull;
 
 /*
  * Broadcast Response Message

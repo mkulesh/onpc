@@ -15,7 +15,6 @@ package com.mkulesh.onpc.iscp.messages;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -24,6 +23,8 @@ import com.mkulesh.onpc.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
+
+import androidx.annotation.NonNull;
 
 /*
  * NET/USB Jacket Art (When Jacket Art is available and Output for Network Control Only)

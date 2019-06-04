@@ -15,14 +15,15 @@ package com.mkulesh.onpc.config;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
 
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 class CheckableItem
 {

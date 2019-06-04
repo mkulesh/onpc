@@ -13,15 +13,15 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Utils;
 
 import org.w3c.dom.Element;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 public class XmlListItemMsg extends ISCPMessage
 {

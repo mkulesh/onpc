@@ -13,16 +13,6 @@
 
 package com.mkulesh.onpc;
 
-import android.support.annotation.AttrRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +29,17 @@ import com.mkulesh.onpc.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.fragment.app.Fragment;
 
 abstract public class BaseFragment extends Fragment
 {

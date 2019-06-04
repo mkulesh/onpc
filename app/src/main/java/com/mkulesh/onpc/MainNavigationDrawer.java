@@ -17,16 +17,13 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatImageView;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.ConnectionState;
@@ -38,6 +35,10 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.List;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 class MainNavigationDrawer
 {

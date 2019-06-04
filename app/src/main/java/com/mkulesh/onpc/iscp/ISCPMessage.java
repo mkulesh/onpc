@@ -13,11 +13,11 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.support.annotation.NonNull;
-
 import com.mkulesh.onpc.utils.Logging;
 
 import java.nio.charset.Charset;
+
+import androidx.annotation.NonNull;
 
 public class ISCPMessage
 {

@@ -56,7 +56,7 @@
                 android:paddingTop="2dp"
                 android:maxLines="9999" />
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 style="@style/ImageButtonSecondaryStyle"
                 android:id="@+id/progress_indicator"
                 android:layout_width="16dp"

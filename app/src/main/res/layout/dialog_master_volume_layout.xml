@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/dashed_string" />
 
-    <android.support.v7.widget.AppCompatSeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
         style="@style/SegBarStyle"
         android:id="@+id/progress_bar"
         android:layout_width="0dp"

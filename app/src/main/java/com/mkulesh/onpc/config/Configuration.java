@@ -18,9 +18,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
@@ -34,6 +31,10 @@ import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 
 public class Configuration
 {
