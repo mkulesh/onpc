@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
-[![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.1-debug.apk)
+[![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.2-debug.apk)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo/Integra
 
@@ -13,17 +13,17 @@
 
 This app allows remote control of an Onkyo/Integra Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.  Other benefits include:
-- Maximum privacy: No ads, no trackers, no telemetry
+- Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
-- Tuneln Radio and Deezer streaming
+- Tuneln Radio and Deezer streaming (if supported by receiver)
+- DAB / FM (if supported by receiver)
 - Multi-zone support
 - Control of devices attached via RI
-- Play queue support (add, remove, clear, change playback order)
+- Enhanced Play Queue support (add, replace, remove, clear, change playback order)
 - Display device details and control device settings such as dimmer level, digital filter, auto power
-- App doesn't need any special permissions
-- Allows control of receivers over an OpenVPN connection (even over a cellular connection). Onkyo Controller does not have this functionality.
+- Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
 ## Supported devices
 Currently, this app is only tested with following devices:
