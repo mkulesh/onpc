@@ -425,6 +425,13 @@
     <string name="device_two_way_switch_none">N/A</string>
     <string name="device_two_way_switch_off">Off</string>
     <string name="device_two_way_switch_on">On</string>
+    <string name="device_two_way_switch_toggle">Toggle</string>
+
+    <!-- Two-way switches -->
+    <string name="music_optimizer">Music optimizer</string>
+    <string name="device_auto_power">Auto power</string>
+    <string name="hdmi_cec">HDMI CEC</string>
+    <string name="google_cast_analytics">Google Cast analytics</string>
 
     <!-- Speaker A Command -->
     <string name="speaker_a_command_toggle">Sets speaker A switch wrap-around</string>
@@ -440,22 +447,10 @@
     <string name="speaker_ab_command_a_only">A only</string>
     <string name="speaker_ab_command_b_only">B only</string>
 
-    <!-- Auto power commands -->
-    <string name="device_auto_power">Auto power</string>
-    <string name="device_auto_power_toggle">Sets auto power wrap-around</string>
-
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
-
-    <!-- HDMI CEC settings -->
-    <string name="hdmi_cec">HDMI CEC</string>
-    <string name="hdmi_cec_toggle">Sets HDMI CEC wrap-around up</string>
-
-    <!-- Google Cast commands -->
-    <string name="google_cast_analytics">Google Cast analytics</string>
-    <string name="google_cast_analytics_toggle">Sets Google Cast analytics wrap-around</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_mode_00">STEREO</string>

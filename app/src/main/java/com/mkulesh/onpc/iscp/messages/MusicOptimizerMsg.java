@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018. Mikhail Kulesh
+ * Copyright (C) 2019. Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -21,11 +21,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 /*
- * HDMI CEC settings
+ * Music Optimizer Command
  */
-public class HdmiCecMsg extends ISCPMessage
+public class MusicOptimizerMsg extends ISCPMessage
 {
-    public final static String CODE = "CEC";
+    public final static String CODE = "MOT";
 
     public enum Status implements StringParameterIf
     {
@@ -59,13 +59,13 @@ public class HdmiCecMsg extends ISCPMessage
 
     private final Status status;
 
-    HdmiCecMsg(EISCPMessage raw) throws Exception
+    MusicOptimizerMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
         status = (Status) searchParameter(data, Status.values(), Status.NONE);
     }
 
-    public HdmiCecMsg(Status level)
+    public MusicOptimizerMsg(Status level)
     {
         super(0, null);
         this.status = level;

@@ -38,6 +38,7 @@ import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
+import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
@@ -95,6 +96,7 @@ public class State
     public AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
     public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
     public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
+    public MusicOptimizerMsg.Status musicOptimizer = MusicOptimizerMsg.Status.NONE;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
@@ -306,6 +308,10 @@ public class State
         }
 
         // Common settings
+        if (msg instanceof MusicOptimizerMsg)
+        {
+            return isCommonChange(process((MusicOptimizerMsg) msg));
+        }
         if (msg instanceof AutoPowerMsg)
         {
             return isCommonChange(process((AutoPowerMsg) msg));
@@ -434,7 +440,7 @@ public class State
         return changed;
     }
 
-    public boolean process(ReceiverInformationMsg msg, boolean showInfo)
+    boolean process(ReceiverInformationMsg msg, boolean showInfo)
     {
         try
         {
@@ -535,6 +541,13 @@ public class State
     {
         final boolean changed = !msg.getFrequency().equals(frequency);
         frequency = msg.getFrequency();
+        return changed;
+    }
+
+    private boolean process(MusicOptimizerMsg msg)
+    {
+        final boolean changed = musicOptimizer != msg.getStatus();
+        musicOptimizer = msg.getStatus();
         return changed;
     }
 

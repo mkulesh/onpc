@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
+import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
@@ -172,11 +173,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         final String powerStateQueries[] = new String[]{
                 ReceiverInformationMsg.CODE,
+                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
                 FriendlyNameMsg.CODE,
                 FirmwareUpdateMsg.CODE,
                 GoogleCastVersionMsg.CODE,
                 PrivacyPolicyStatusMsg.CODE,
-                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
                 ListeningModeMsg.CODE
         };
 
@@ -336,6 +337,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     DimmerLevelMsg.CODE,
                     DigitalFilterMsg.CODE,
+                    MusicOptimizerMsg.CODE,
                     AutoPowerMsg.CODE,
                     HdmiCecMsg.CODE,
                     GoogleCastAnalyticsMsg.CODE,
