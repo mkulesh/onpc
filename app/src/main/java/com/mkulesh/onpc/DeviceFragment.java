@@ -31,6 +31,7 @@ import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
+import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -103,6 +104,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
+        prepareImageButton(R.id.music_optimizer_toggle, new MusicOptimizerMsg(MusicOptimizerMsg.Status.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
         prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
@@ -194,6 +196,10 @@ public class DeviceFragment extends BaseFragment
         // Digital filter
         prepareSettingPanel(state, state.digitalFilter != DigitalFilterMsg.Filter.NONE,
                 R.id.device_digital_filter_layout, state.digitalFilter.getDescriptionId(), null);
+
+        // Music Optimizer
+        prepareSettingPanel(state, state.musicOptimizer != MusicOptimizerMsg.Status.NONE,
+                R.id.music_optimizer_layout, state.musicOptimizer.getDescriptionId(), null);
 
         // Auto power
         prepareSettingPanel(state, state.autoPower != AutoPowerMsg.Status.NONE,

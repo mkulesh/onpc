@@ -32,7 +32,7 @@ public class AutoPowerMsg extends ISCPMessage
         NONE("N/A", R.string.device_two_way_switch_none),
         OFF("00", R.string.device_two_way_switch_off),
         ON("01", R.string.device_two_way_switch_on),
-        TOGGLE("UP", R.string.device_auto_power_toggle);
+        TOGGLE("UP", R.string.device_two_way_switch_toggle);
 
         final String code;
 
