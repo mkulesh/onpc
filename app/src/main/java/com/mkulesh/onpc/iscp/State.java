@@ -50,6 +50,7 @@ import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
+import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
@@ -96,6 +97,8 @@ public class State
     public AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
     public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
     public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
+    public int bassLevel = ToneCommandMsg.NO_LEVEL;
+    public int trebleLevel = ToneCommandMsg.NO_LEVEL;
     public MusicOptimizerMsg.Status musicOptimizer = MusicOptimizerMsg.Status.NONE;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
@@ -305,6 +308,10 @@ public class State
         if (msg instanceof MasterVolumeMsg)
         {
             return isCommonChange(process((MasterVolumeMsg) msg));
+        }
+        if (msg instanceof ToneCommandMsg)
+        {
+            return isCommonChange(process((ToneCommandMsg) msg));
         }
 
         // Common settings
@@ -527,6 +534,16 @@ public class State
     {
         final boolean changed = volumeLevel != msg.getVolumeLevel();
         volumeLevel = msg.getVolumeLevel();
+        return changed;
+    }
+
+    private boolean process(ToneCommandMsg msg)
+    {
+        final boolean changed =
+                (msg.getBassLevel() != ToneCommandMsg.NO_LEVEL && bassLevel != msg.getBassLevel()) ||
+                (msg.getTrebleLevel() != ToneCommandMsg.NO_LEVEL && trebleLevel != msg.getTrebleLevel());
+        bassLevel = msg.getBassLevel();
+        trebleLevel = msg.getTrebleLevel();
         return changed;
     }
 

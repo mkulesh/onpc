@@ -40,6 +40,7 @@ import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
+import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -634,17 +635,72 @@ public class MonitorFragment extends BaseFragment
 
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
+
+        // Master volume
         {
             final TextView minValue = frameView.findViewById(R.id.volume_min_value);
             minValue.setText("0");
 
             final TextView maxValue = frameView.findViewById(R.id.volume_max_value);
             maxValue.setText(State.getVolumeLevelStr(maxVolume, zone));
+
+            final AppCompatSeekBar progressBar = frameView.findViewById(R.id.volume_progress_bar);
+            progressBar.setMax(maxVolume);
+            progressBar.setProgress(Math.max(0, state.volumeLevel));
+            progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+            {
+                int progressChanged = 0;
+
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+                {
+                    progressChanged = progress;
+                }
+
+                public void onStartTrackingTouch(SeekBar seekBar)
+                {
+                    // empty
+                }
+
+                @SuppressLint("SetTextI18n")
+                public void onStopTrackingTouch(SeekBar seekBar)
+                {
+                    if (isVolumeDialogEnabled())
+                    {
+                        activity.getStateManager().sendMessage(
+                                new MasterVolumeMsg(state.getActiveZone(), progressChanged));
+                    }
+                }
+            });
         }
 
-        final AppCompatSeekBar progressBar = frameView.findViewById(R.id.progress_bar);
-        progressBar.setMax(maxVolume);
-        progressBar.setProgress(Math.max(0, state.volumeLevel));
+        // Tone control
+        prepareToneControl(frameView, R.id.tone_bass_group, R.id.tone_bass_progress_bar, state.bassLevel);
+        prepareToneControl(frameView, R.id.tone_treble_group, R.id.tone_treble_progress_bar, state.trebleLevel);
+
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.audio_control)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView).create();
+        dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        return true;
+    }
+
+    private void prepareToneControl(final FrameLayout frameView, final int toneGroup, final int toneBar, int toneLevel)
+    {
+        final int zone = activity.getStateManager().getState().getActiveZone();
+
+        final boolean isTone = toneLevel != ToneCommandMsg.NO_LEVEL
+                && zone < ToneCommandMsg.ZONE_COMMANDS.length;
+        frameView.findViewById(toneGroup).setVisibility(isTone ? View.VISIBLE : View.GONE);
+
+        final AppCompatSeekBar progressBar = frameView.findViewById(toneBar);
+        progressBar.setMax(2 * ToneCommandMsg.MAX_LEVEL);
+        progressBar.setProgress(toneLevel + ToneCommandMsg.MAX_LEVEL);
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             int progressChanged = 0;
@@ -664,23 +720,20 @@ public class MonitorFragment extends BaseFragment
             {
                 if (isVolumeDialogEnabled())
                 {
-                    activity.getStateManager().sendMessage(
-                            new MasterVolumeMsg(state.getActiveZone(), progressChanged));
+                    final int v = progressChanged - ToneCommandMsg.MAX_LEVEL;
+                    if (toneGroup == R.id.tone_bass_group)
+                    {
+                        activity.getStateManager().sendMessage(
+                                new ToneCommandMsg(zone, v, ToneCommandMsg.NO_LEVEL));
+                    }
+                    if (toneGroup == R.id.tone_treble_group)
+                    {
+                        activity.getStateManager().sendMessage(
+                                new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, v));
+                    }
                 }
             }
         });
-
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.master_volume)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView).create();
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
-        return true;
     }
 
     private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)
