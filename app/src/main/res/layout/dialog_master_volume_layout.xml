@@ -74,13 +74,13 @@
 
             <TextView
                 style="@style/SecondaryTextViewStyle"
+                android:tag="tone_min_value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tone_min" />
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatSeekBar
                 style="@style/SegBarStyle"
-                android:id="@+id/tone_bass_progress_bar"
+                android:tag="tone_progress_bar"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -88,9 +88,9 @@
 
             <TextView
                 style="@style/SecondaryTextViewStyle"
+                android:tag="tone_max_value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tone_max" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 
@@ -114,13 +114,13 @@
 
             <TextView
                 style="@style/SecondaryTextViewStyle"
+                android:tag="tone_min_value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tone_min" />
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatSeekBar
                 style="@style/SegBarStyle"
-                android:id="@+id/tone_treble_progress_bar"
+                android:tag="tone_progress_bar"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -128,9 +128,9 @@
 
             <TextView
                 style="@style/SecondaryTextViewStyle"
+                android:tag="tone_max_value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tone_max" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 

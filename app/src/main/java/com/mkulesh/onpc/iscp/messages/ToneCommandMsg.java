@@ -31,11 +31,12 @@ public class ToneCommandMsg extends ZonedMessage
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE };
 
     public final static int NO_LEVEL = 0xFF;
-    public final static int MAX_LEVEL = 10;
 
+    public final static String BASS_KEY = "Bass";
     private final static Character BASS_MARKER = 'B';
     private int bassLevel = NO_LEVEL;
 
+    public final static String TREBLE_KEY = "Treble";
     private final static Character TREBLE_MARKER = 'T';
     private int trebleLevel = NO_LEVEL;
 
@@ -72,8 +73,8 @@ public class ToneCommandMsg extends ZonedMessage
     public ToneCommandMsg(int zoneIndex, int bass, int treble)
     {
         super(0, null, zoneIndex);
-        this.bassLevel = (bass == NO_LEVEL) ? NO_LEVEL : Math.max(Math.min(bass, MAX_LEVEL), -MAX_LEVEL);
-        this.trebleLevel = (treble == NO_LEVEL) ? NO_LEVEL : Math.max(Math.min(treble, MAX_LEVEL), -MAX_LEVEL);
+        this.bassLevel = bass;
+        this.trebleLevel = treble;
     }
 
     @Override

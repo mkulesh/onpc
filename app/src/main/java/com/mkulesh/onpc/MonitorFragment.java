@@ -674,8 +674,10 @@ public class MonitorFragment extends BaseFragment
         }
 
         // Tone control
-        prepareToneControl(frameView, R.id.tone_bass_group, R.id.tone_bass_progress_bar, state.bassLevel);
-        prepareToneControl(frameView, R.id.tone_treble_group, R.id.tone_treble_progress_bar, state.trebleLevel);
+        prepareToneControl(ToneCommandMsg.BASS_KEY,
+                frameView.findViewById(R.id.tone_bass_group), state.bassLevel);
+        prepareToneControl(ToneCommandMsg.TREBLE_KEY,
+                frameView.findViewById(R.id.tone_treble_group), state.trebleLevel);
 
         final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
         Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
@@ -690,17 +692,37 @@ public class MonitorFragment extends BaseFragment
         return true;
     }
 
-    private void prepareToneControl(final FrameLayout frameView, final int toneGroup, final int toneBar, int toneLevel)
+    @SuppressLint("SetTextI18n")
+    private void prepareToneControl(final String toneKey, final LinearLayout toneGroup, int toneLevel)
     {
+        final ReceiverInformationMsg.ToneControl toneControl =
+                activity.getStateManager().getState().toneControls.get(toneKey);
         final int zone = activity.getStateManager().getState().getActiveZone();
 
-        final boolean isTone = toneLevel != ToneCommandMsg.NO_LEVEL
+        final boolean isTone = toneControl != null
+                && toneLevel != ToneCommandMsg.NO_LEVEL
                 && zone < ToneCommandMsg.ZONE_COMMANDS.length;
-        frameView.findViewById(toneGroup).setVisibility(isTone ? View.VISIBLE : View.GONE);
+        toneGroup.setVisibility(isTone ? View.VISIBLE : View.GONE);
+        if (!isTone)
+        {
+            return;
+        }
 
-        final AppCompatSeekBar progressBar = frameView.findViewById(toneBar);
-        progressBar.setMax(2 * ToneCommandMsg.MAX_LEVEL);
-        progressBar.setProgress(toneLevel + ToneCommandMsg.MAX_LEVEL);
+        final TextView minText = toneGroup.findViewWithTag("tone_min_value");
+        if (minText != null)
+        {
+            minText.setText(Integer.toString(toneControl.getMin()));
+        }
+
+        final TextView maxText = toneGroup.findViewWithTag("tone_max_value");
+        if (maxText != null)
+        {
+            maxText.setText(Integer.toString(toneControl.getMax()));
+        }
+
+        final AppCompatSeekBar progressBar = toneGroup.findViewWithTag("tone_progress_bar");
+        progressBar.setMax((toneControl.getMax() - toneControl.getMin())/toneControl.getStep());
+        progressBar.setProgress((toneLevel - toneControl.getMin())/toneControl.getStep());
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             int progressChanged = 0;
@@ -720,13 +742,13 @@ public class MonitorFragment extends BaseFragment
             {
                 if (isVolumeDialogEnabled())
                 {
-                    final int v = progressChanged - ToneCommandMsg.MAX_LEVEL;
-                    if (toneGroup == R.id.tone_bass_group)
+                    final int v = progressChanged * toneControl.getStep() + toneControl.getMin();
+                    if (toneKey.equals(ToneCommandMsg.BASS_KEY))
                     {
                         activity.getStateManager().sendMessage(
                                 new ToneCommandMsg(zone, v, ToneCommandMsg.NO_LEVEL));
                     }
-                    if (toneGroup == R.id.tone_treble_group)
+                    if (toneKey.equals(ToneCommandMsg.TREBLE_KEY))
                     {
                         activity.getStateManager().sendMessage(
                                 new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, v));

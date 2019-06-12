@@ -87,6 +87,7 @@ public class State
     private final int activeZone;
     public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    public HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
@@ -233,8 +234,9 @@ public class State
         return "";
     }
 
-    public void createDefaultSelectors(final Context context)
+    public void createDefaultReceiverInfo(final Context context)
     {
+        // By default, add all possible device selectors
         deviceSelectors.clear();
         for (InputSelectorMsg.InputType it : InputSelectorMsg.InputType.values())
         {
@@ -246,6 +248,12 @@ public class State
                 deviceSelectors.add(s);
             }
         }
+        // Add default bass and treble limits
+        toneControls.clear();
+        toneControls.put(ToneCommandMsg.BASS_KEY,
+                new ReceiverInformationMsg.ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2));
+        toneControls.put(ToneCommandMsg.TREBLE_KEY,
+                new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2));
     }
 
     private void clearTrackInfo()
@@ -465,6 +473,7 @@ public class State
                     deviceSelectors.add(s);
                 }
             }
+            toneControls = msg.getToneControls();
 
             return true;
         }

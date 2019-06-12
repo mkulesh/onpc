@@ -233,8 +233,6 @@
     <string name="audio_control">Audio control</string>
     <string name="tone_bass">Bass</string>
     <string name="tone_treble">Treble</string>
-    <string name="tone_min" translatable="false">-10</string>
-    <string name="tone_max" translatable="false">+10</string>
     <string name="master_volume">Master volume</string>
     <string name="master_volume_up">Sets volume level up</string>
     <string name="master_volume_down">Sets volume level down</string>
