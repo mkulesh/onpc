@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommand;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
@@ -38,6 +39,7 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommand;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
@@ -637,14 +639,15 @@ public class MonitorFragment extends BaseFragment
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
 
         // Master volume
+        final LinearLayout volumeGroup = frameView.findViewById(R.id.volume_group);
         {
-            final TextView minValue = frameView.findViewById(R.id.volume_min_value);
+            final TextView minValue = volumeGroup.findViewWithTag("tone_min_value");
             minValue.setText("0");
 
-            final TextView maxValue = frameView.findViewById(R.id.volume_max_value);
+            final TextView maxValue = volumeGroup.findViewWithTag("tone_max_value");
             maxValue.setText(State.getVolumeLevelStr(maxVolume, zone));
 
-            final AppCompatSeekBar progressBar = frameView.findViewById(R.id.volume_progress_bar);
+            final AppCompatSeekBar progressBar = volumeGroup.findViewWithTag("tone_progress_bar");
             progressBar.setMax(maxVolume);
             progressBar.setProgress(Math.max(0, state.volumeLevel));
             progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
@@ -675,9 +678,20 @@ public class MonitorFragment extends BaseFragment
 
         // Tone control
         prepareToneControl(ToneCommandMsg.BASS_KEY,
-                frameView.findViewById(R.id.tone_bass_group), state.bassLevel);
+                frameView.findViewById(R.id.bass_group), state.bassLevel,
+                ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+
         prepareToneControl(ToneCommandMsg.TREBLE_KEY,
-                frameView.findViewById(R.id.tone_treble_group), state.trebleLevel);
+                frameView.findViewById(R.id.treble_group), state.trebleLevel,
+                ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+
+        prepareToneControl(SubwooferLevelCommand.KEY,
+                frameView.findViewById(R.id.subwoofer_level_group), state.subwooferLevel,
+                SubwooferLevelCommand.NO_LEVEL, 1);
+
+        prepareToneControl(CenterLevelCommand.KEY,
+                frameView.findViewById(R.id.center_level_group), state.centerLevel,
+                CenterLevelCommand.NO_LEVEL, 1);
 
         final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
         Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
@@ -693,15 +707,14 @@ public class MonitorFragment extends BaseFragment
     }
 
     @SuppressLint("SetTextI18n")
-    private void prepareToneControl(final String toneKey, final LinearLayout toneGroup, int toneLevel)
+    private void prepareToneControl(final String toneKey, final LinearLayout toneGroup,
+                                    int toneLevel, final int noLevel, final int maxZone)
     {
         final ReceiverInformationMsg.ToneControl toneControl =
                 activity.getStateManager().getState().toneControls.get(toneKey);
         final int zone = activity.getStateManager().getState().getActiveZone();
 
-        final boolean isTone = toneControl != null
-                && toneLevel != ToneCommandMsg.NO_LEVEL
-                && zone < ToneCommandMsg.ZONE_COMMANDS.length;
+        final boolean isTone = toneControl != null && toneLevel != noLevel && zone < maxZone;
         toneGroup.setVisibility(isTone ? View.VISIBLE : View.GONE);
         if (!isTone)
         {
@@ -720,9 +733,12 @@ public class MonitorFragment extends BaseFragment
             maxText.setText(Integer.toString(toneControl.getMax()));
         }
 
+        final float step = toneControl.getStep() == 0 ? 0.5f : toneControl.getStep();
         final AppCompatSeekBar progressBar = toneGroup.findViewWithTag("tone_progress_bar");
-        progressBar.setMax((toneControl.getMax() - toneControl.getMin())/toneControl.getStep());
-        progressBar.setProgress((toneLevel - toneControl.getMin())/toneControl.getStep());
+        final int max = (int)((float)(toneControl.getMax() - toneControl.getMin())/step);
+        progressBar.setMax(max);
+        final int progress = (int)((float)(toneLevel - toneControl.getMin())/step);
+        progressBar.setProgress(progress);
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             int progressChanged = 0;
@@ -742,16 +758,23 @@ public class MonitorFragment extends BaseFragment
             {
                 if (isVolumeDialogEnabled())
                 {
-                    final int v = progressChanged * toneControl.getStep() + toneControl.getMin();
-                    if (toneKey.equals(ToneCommandMsg.BASS_KEY))
+                    final int v = (int)((float)progressChanged * step) + toneControl.getMin();
+                    switch (toneKey)
                     {
+                    case ToneCommandMsg.BASS_KEY:
                         activity.getStateManager().sendMessage(
                                 new ToneCommandMsg(zone, v, ToneCommandMsg.NO_LEVEL));
-                    }
-                    if (toneKey.equals(ToneCommandMsg.TREBLE_KEY))
-                    {
+                        break;
+                    case ToneCommandMsg.TREBLE_KEY:
                         activity.getStateManager().sendMessage(
                                 new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, v));
+                        break;
+                    case SubwooferLevelCommand.KEY:
+                        activity.getStateManager().sendMessage(new SubwooferLevelCommand(v));
+                        break;
+                    case CenterLevelCommand.KEY:
+                        activity.getStateManager().sendMessage(new CenterLevelCommand(v));
+                        break;
                     }
                 }
             }

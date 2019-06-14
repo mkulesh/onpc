@@ -15,6 +15,7 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.NonNull;
 
@@ -109,23 +110,13 @@ public class ToneCommandMsg extends ZonedMessage
         String par = "";
         if (bassLevel != NO_LEVEL)
         {
-            par += intToneToString(BASS_MARKER, bassLevel);
+            par += Utils.intToneToString(BASS_MARKER, bassLevel);
         }
         if (trebleLevel != NO_LEVEL)
         {
-            par += intToneToString(TREBLE_MARKER, trebleLevel);
+            par += Utils.intToneToString(TREBLE_MARKER, trebleLevel);
         }
         return new EISCPMessage(getZoneCommand(), par);
-    }
-
-    private String intToneToString(Character m, int tone)
-    {
-        if (tone == 0)
-        {
-            return String.format("%c%02x", m, tone);
-        }
-        final Character s = tone < 0 ? '-' : '+';
-        return String.format("%c%c%1x", m, s, Math.abs(tone)).toUpperCase();
     }
 
     @Override

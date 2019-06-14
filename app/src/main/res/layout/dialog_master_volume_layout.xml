@@ -19,119 +19,96 @@
     android:orientation="vertical"
     android:padding="?dialogPreferredPadding">
 
-    <TextView
-        style="@style/SecondaryTextViewStyle"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/master_volume" />
-
-    <LinearLayout
-        android:id="@+id/volume_group"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            style="@style/SecondaryTextViewStyle"
-            android:id="@+id/volume_min_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dashed_string" />
-
-        <androidx.appcompat.widget.AppCompatSeekBar
-            style="@style/SegBarStyle"
-            android:id="@+id/volume_progress_bar"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:min="0" />
-
-        <TextView
-            style="@style/SecondaryTextViewStyle"
-            android:id="@+id/volume_max_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dashed_string" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/tone_bass_group"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            style="@style/SecondaryTextViewStyle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tone_bass"
-            android:paddingTop="?dialogPreferredPadding" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:tag="tone_min_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <androidx.appcompat.widget.AppCompatSeekBar
-                style="@style/SegBarStyle"
-                android:tag="tone_progress_bar"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/volume_group"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:min="0" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:tag="tone_max_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/master_volume" />
 
-    <LinearLayout
-        android:id="@+id/tone_treble_group"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+                <include layout="@layout/tone_control_layout" />
+            </LinearLayout>
 
-        <TextView
-            style="@style/SecondaryTextViewStyle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tone_treble"
-            android:paddingTop="?dialogPreferredPadding" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:tag="tone_min_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <androidx.appcompat.widget.AppCompatSeekBar
-                style="@style/SegBarStyle"
-                android:tag="tone_progress_bar"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/bass_group"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:min="0" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:tag="tone_max_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tone_bass"
+                    android:paddingTop="?dialogPreferredPadding" />
+
+                <include layout="@layout/tone_control_layout" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/treble_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tone_treble"
+                    android:paddingTop="?dialogPreferredPadding" />
+
+                <include layout="@layout/tone_control_layout" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/subwoofer_level_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subwoofer_level"
+                    android:paddingTop="?dialogPreferredPadding" />
+
+                <include layout="@layout/tone_control_layout" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/center_level_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/center_level"
+                    android:paddingTop="?dialogPreferredPadding" />
+
+                <include layout="@layout/tone_control_layout" />
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

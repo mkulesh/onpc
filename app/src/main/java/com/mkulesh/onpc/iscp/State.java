@@ -22,6 +22,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommand;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -48,6 +49,7 @@ import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommand;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
@@ -93,18 +95,24 @@ public class State
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
     public FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
     public InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
+
+    // Settings
     public DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
     public DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
     public AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
-    public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
-    public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
-    public int bassLevel = ToneCommandMsg.NO_LEVEL;
-    public int trebleLevel = ToneCommandMsg.NO_LEVEL;
     public MusicOptimizerMsg.Status musicOptimizer = MusicOptimizerMsg.Status.NONE;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
     public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
+
+    // Sound control
+    public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
+    public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
+    public int bassLevel = ToneCommandMsg.NO_LEVEL;
+    public int trebleLevel = ToneCommandMsg.NO_LEVEL;
+    public int subwooferLevel = SubwooferLevelCommand.NO_LEVEL;
+    public int centerLevel = CenterLevelCommand.NO_LEVEL;
 
     // Google cast
     public String googleCastVersion = "N/A";
@@ -297,6 +305,8 @@ public class State
         {
             return isCommonChange(process((FriendlyNameMsg) msg));
         }
+
+        // Settings
         if (msg instanceof DimmerLevelMsg)
         {
             return isCommonChange(process((DimmerLevelMsg) msg));
@@ -309,20 +319,6 @@ public class State
         {
             return isCommonChange(process((AudioMutingMsg) msg));
         }
-        if (msg instanceof ListeningModeMsg)
-        {
-            return isCommonChange(process((ListeningModeMsg) msg));
-        }
-        if (msg instanceof MasterVolumeMsg)
-        {
-            return isCommonChange(process((MasterVolumeMsg) msg));
-        }
-        if (msg instanceof ToneCommandMsg)
-        {
-            return isCommonChange(process((ToneCommandMsg) msg));
-        }
-
-        // Common settings
         if (msg instanceof MusicOptimizerMsg)
         {
             return isCommonChange(process((MusicOptimizerMsg) msg));
@@ -342,6 +338,28 @@ public class State
         if (msg instanceof SpeakerBCommandMsg)
         {
             return isCommonChange(process((SpeakerBCommandMsg) msg));
+        }
+
+        // Sound control
+        if (msg instanceof ListeningModeMsg)
+        {
+            return isCommonChange(process((ListeningModeMsg) msg));
+        }
+        if (msg instanceof MasterVolumeMsg)
+        {
+            return isCommonChange(process((MasterVolumeMsg) msg));
+        }
+        if (msg instanceof ToneCommandMsg)
+        {
+            return isCommonChange(process((ToneCommandMsg) msg));
+        }
+        if (msg instanceof SubwooferLevelCommand)
+        {
+            return isCommonChange(process((SubwooferLevelCommand) msg));
+        }
+        if (msg instanceof CenterLevelCommand)
+        {
+            return isCommonChange(process((CenterLevelCommand) msg));
         }
 
         // Google cast
@@ -553,6 +571,20 @@ public class State
                 (msg.getTrebleLevel() != ToneCommandMsg.NO_LEVEL && trebleLevel != msg.getTrebleLevel());
         bassLevel = msg.getBassLevel();
         trebleLevel = msg.getTrebleLevel();
+        return changed;
+    }
+
+    private boolean process(SubwooferLevelCommand msg)
+    {
+        final boolean changed = subwooferLevel != msg.getLevel();
+        subwooferLevel = msg.getLevel();
+        return changed;
+    }
+
+    private boolean process(CenterLevelCommand msg)
+    {
+        final boolean changed = centerLevel != msg.getLevel();
+        centerLevel = msg.getLevel();
         return changed;
     }
 
