@@ -22,7 +22,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
-import com.mkulesh.onpc.iscp.messages.CenterLevelCommand;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -49,7 +49,7 @@ import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
-import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommand;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
@@ -111,8 +111,8 @@ public class State
     public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
     public int bassLevel = ToneCommandMsg.NO_LEVEL;
     public int trebleLevel = ToneCommandMsg.NO_LEVEL;
-    public int subwooferLevel = SubwooferLevelCommand.NO_LEVEL;
-    public int centerLevel = CenterLevelCommand.NO_LEVEL;
+    public int subwooferLevel = SubwooferLevelCommandMsg.NO_LEVEL;
+    public int centerLevel = CenterLevelCommandMsg.NO_LEVEL;
 
     // Google cast
     public String googleCastVersion = "N/A";
@@ -353,13 +353,13 @@ public class State
         {
             return isCommonChange(process((ToneCommandMsg) msg));
         }
-        if (msg instanceof SubwooferLevelCommand)
+        if (msg instanceof SubwooferLevelCommandMsg)
         {
-            return isCommonChange(process((SubwooferLevelCommand) msg));
+            return isCommonChange(process((SubwooferLevelCommandMsg) msg));
         }
-        if (msg instanceof CenterLevelCommand)
+        if (msg instanceof CenterLevelCommandMsg)
         {
-            return isCommonChange(process((CenterLevelCommand) msg));
+            return isCommonChange(process((CenterLevelCommandMsg) msg));
         }
 
         // Google cast
@@ -574,14 +574,14 @@ public class State
         return changed;
     }
 
-    private boolean process(SubwooferLevelCommand msg)
+    private boolean process(SubwooferLevelCommandMsg msg)
     {
         final boolean changed = subwooferLevel != msg.getLevel();
         subwooferLevel = msg.getLevel();
         return changed;
     }
 
-    private boolean process(CenterLevelCommand msg)
+    private boolean process(CenterLevelCommandMsg msg)
     {
         final boolean changed = centerLevel != msg.getLevel();
         centerLevel = msg.getLevel();

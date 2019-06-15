@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
-import com.mkulesh.onpc.iscp.messages.CenterLevelCommand;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
@@ -39,7 +39,7 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
-import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommand;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
@@ -685,13 +685,13 @@ public class MonitorFragment extends BaseFragment
                 frameView.findViewById(R.id.treble_group), state.trebleLevel,
                 ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
 
-        prepareToneControl(SubwooferLevelCommand.KEY,
+        prepareToneControl(SubwooferLevelCommandMsg.KEY,
                 frameView.findViewById(R.id.subwoofer_level_group), state.subwooferLevel,
-                SubwooferLevelCommand.NO_LEVEL, 1);
+                SubwooferLevelCommandMsg.NO_LEVEL, 1);
 
-        prepareToneControl(CenterLevelCommand.KEY,
+        prepareToneControl(CenterLevelCommandMsg.KEY,
                 frameView.findViewById(R.id.center_level_group), state.centerLevel,
-                CenterLevelCommand.NO_LEVEL, 1);
+                CenterLevelCommandMsg.NO_LEVEL, 1);
 
         final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
         Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
@@ -769,11 +769,11 @@ public class MonitorFragment extends BaseFragment
                         activity.getStateManager().sendMessage(
                                 new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, v));
                         break;
-                    case SubwooferLevelCommand.KEY:
-                        activity.getStateManager().sendMessage(new SubwooferLevelCommand(v));
+                    case SubwooferLevelCommandMsg.KEY:
+                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(v));
                         break;
-                    case CenterLevelCommand.KEY:
-                        activity.getStateManager().sendMessage(new CenterLevelCommand(v));
+                    case CenterLevelCommandMsg.KEY:
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(v));
                         break;
                     }
                 }

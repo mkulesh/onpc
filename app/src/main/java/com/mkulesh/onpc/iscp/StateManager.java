@@ -20,7 +20,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
-import com.mkulesh.onpc.iscp.messages.CenterLevelCommand;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
@@ -47,7 +47,7 @@ import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
-import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommand;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
@@ -351,8 +351,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],
                     toneCommand,
-                    SubwooferLevelCommand.CODE,
-                    CenterLevelCommand.CODE,
+                    SubwooferLevelCommandMsg.CODE,
+                    CenterLevelCommandMsg.CODE,
                     PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     ListeningModeMsg.CODE,

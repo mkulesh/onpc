@@ -20,17 +20,17 @@ import com.mkulesh.onpc.utils.Utils;
 import androidx.annotation.NonNull;
 
 /*
- * Subwoofer (temporary) Level Command
+ * Center (temporary) Level Command
  */
-public class SubwooferLevelCommand extends ISCPMessage
+public class CenterLevelCommandMsg extends ISCPMessage
 {
-    public final static String CODE = "SWL";
+    public final static String CODE = "CTL";
 
-    public final static String KEY = "Subwoofer Level";
+    public final static String KEY = "Center Level";
     public final static int NO_LEVEL = 0xFF;
     private int level;
 
-    SubwooferLevelCommand(EISCPMessage raw) throws Exception
+    CenterLevelCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
         try
@@ -43,7 +43,7 @@ public class SubwooferLevelCommand extends ISCPMessage
         }
     }
 
-    public SubwooferLevelCommand(int level)
+    public CenterLevelCommandMsg(int level)
     {
         super(0, null);
         this.level = level;
