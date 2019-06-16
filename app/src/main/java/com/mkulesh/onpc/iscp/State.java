@@ -409,7 +409,7 @@ public class State
         // Radio
         if (msg instanceof PresetCommandMsg)
         {
-            return isCommonChange(process((PresetCommandMsg) msg));
+            return process((PresetCommandMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
         if (msg instanceof TuningCommandMsg)
         {
