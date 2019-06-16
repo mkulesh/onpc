@@ -521,7 +521,7 @@ public class State
             clearItems();
         }
 
-        if (isRadioInput())
+        if (isSimpleInput())
         {
             timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
         }
@@ -968,6 +968,15 @@ public class State
         return inputType == InputSelectorMsg.InputType.FM
                 || inputType == InputSelectorMsg.InputType.AM
                 || inputType == InputSelectorMsg.InputType.DAB;
+    }
+
+    /**
+     * Simple inputs do not have time or cover
+     * @return boolean
+     */
+    public boolean isSimpleInput()
+    {
+        return inputType == InputSelectorMsg.InputType.TAPE1 || inputType == InputSelectorMsg.InputType.TV || isRadioInput();
     }
 
     public boolean isUsb()

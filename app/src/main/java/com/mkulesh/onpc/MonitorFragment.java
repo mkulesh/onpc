@@ -403,7 +403,7 @@ public class MonitorFragment extends BaseFragment
 
         // cover
         cover.setEnabled(true);
-        if (state.cover == null)
+        if (state.cover == null || state.isSimpleInput())
         {
             cover.setImageResource(R.drawable.empty_cover);
             Utils.setImageViewColorAttr(activity, cover, android.R.attr.textColor);
