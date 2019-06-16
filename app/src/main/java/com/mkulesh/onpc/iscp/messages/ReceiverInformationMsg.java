@@ -282,7 +282,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             case 1:
                 return R.drawable.media_item_radio_fm;
             case 2:
-                return R.drawable.media_item_radio_digital;
+                return R.drawable.media_item_radio_dab;
             default:
                 return R.drawable.media_item_unknown;
             }
