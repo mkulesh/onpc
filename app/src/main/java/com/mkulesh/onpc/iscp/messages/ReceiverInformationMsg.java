@@ -282,10 +282,64 @@ public class ReceiverInformationMsg extends ISCPMessage
             case 1:
                 return R.drawable.media_item_radio_fm;
             case 2:
-                return R.drawable.media_item_radio_digital;
+                return R.drawable.media_item_radio_dab;
             default:
                 return R.drawable.media_item_unknown;
             }
+        }
+    }
+
+    public static class ToneControl
+    {
+        final String id;
+        final int min, max, step;
+
+        ToneControl(Element e)
+        {
+            id = e.getAttribute("id");
+            min = Integer.parseInt(e.getAttribute("min"));
+            max = Integer.parseInt(e.getAttribute("max"));
+            step = Integer.parseInt(e.getAttribute("step"));
+        }
+
+        public ToneControl(final String id, final int min, final int max, final int step)
+        {
+            this.id = id;
+            this.min = min;
+            this.max = max;
+            this.step = step;
+        }
+
+        static boolean isControl(Element e)
+        {
+            return e.hasAttribute("min") && e.hasAttribute("max") && e.hasAttribute("step");
+        }
+
+        public String getId()
+        {
+            return id;
+        }
+
+        public int getMin()
+        {
+            return min;
+        }
+
+        public int getMax()
+        {
+            return max;
+        }
+
+        public int getStep()
+        {
+            return step;
+        }
+
+        @NonNull
+        @Override
+        public String toString()
+        {
+            return id + ": " + getId() + ", min=" + getMin() + ", max=" + getMax() + ", step=" + getStep();
         }
     }
 
@@ -296,6 +350,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     private final List<Selector> deviceSelectors = new ArrayList<>();
     private final List<Preset> presetList = new ArrayList<>();
     private final Set<String> controlList = new HashSet<>();
+    private final HashMap<String, ToneControl> toneControls = new HashMap<>();
 
     public ReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
@@ -341,6 +396,12 @@ public class ReceiverInformationMsg extends ISCPMessage
     }
 
     @NonNull
+    public HashMap<String, ToneControl> getToneControls()
+    {
+        return toneControls;
+    }
+
+    @NonNull
     @Override
     public String toString()
     {
@@ -357,6 +418,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         deviceSelectors.clear();
         presetList.clear();
         controlList.clear();
+        toneControls.clear();
         InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
@@ -455,6 +517,11 @@ public class ReceiverInformationMsg extends ISCPMessage
                                 if (id != null && value != null && Integer.parseInt(value) == 1)
                                 {
                                     controlList.add(id);
+                                    if (ToneControl.isControl(element))
+                                    {
+                                        final ToneControl n = new ToneControl(element);
+                                        toneControls.put(n.getId(), n);
+                                    }
                                 }
                             }
                         }
@@ -489,6 +556,10 @@ public class ReceiverInformationMsg extends ISCPMessage
             for (String s : controlList)
             {
                 Logging.info(this, "    Control: " + s);
+            }
+            for (ToneControl s : toneControls.values())
+            {
+                Logging.info(this, "    Tone control: " + s.toString());
             }
         }
         else

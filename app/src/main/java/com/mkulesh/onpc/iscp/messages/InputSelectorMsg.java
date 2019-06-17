@@ -69,7 +69,7 @@ public class InputSelectorMsg extends ZonedMessage
         MULTI_CH("30", R.string.input_selector_multi_ch),
         XM("31", R.string.input_selector_xm),
         SIRIUS("32", R.string.input_selector_sirius),
-        DAB("33", R.string.input_selector_dab, R.drawable.media_item_radio_digital),
+        DAB("33", R.string.input_selector_dab, R.drawable.media_item_radio_dab),
         HDMI_5("55", R.string.input_selector_hdmi_5),
         HDMI_6("56", R.string.input_selector_hdmi_6),
         HDMI_7("57", R.string.input_selector_hdmi_7),

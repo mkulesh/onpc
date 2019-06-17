@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
@@ -46,8 +47,10 @@ import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
+import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
@@ -333,6 +336,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             // #58: delayed response for InputSelectorMsg was observed:
             // Send this request first
+            final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
+                    ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
             final String playStateQueries[] = new String[]{
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     DimmerLevelMsg.CODE,
@@ -345,6 +350,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     SpeakerBCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    toneCommand,
+                    SubwooferLevelCommandMsg.CODE,
+                    CenterLevelCommandMsg.CODE,
                     PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     ListeningModeMsg.CODE,
@@ -491,6 +499,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, purpose);
         for (String code : queries)
         {
+            if (code == null)
+            {
+                continue;
+            }
             messageChannel.sendMessage(
                     new EISCPMessage(code, EISCPMessage.QUERY));
         }

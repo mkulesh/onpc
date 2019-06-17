@@ -182,7 +182,12 @@
     <string name="audio_muting_on">Включить звук устройства</string>
     <string name="audio_muting_toggle">Вкл/выкл звука устройства</string>
 
-    <!-- Master Volume Command  -->
+    <!-- Audio Control Command  -->
+    <string name="audio_control">Контроль звука</string>
+    <string name="tone_bass">Тембр НЧ</string>
+    <string name="tone_treble">Тембр ВЧ</string>
+    <string name="subwoofer_level">Уровень сабвуфера</string>
+    <string name="center_level">Уровень центра</string>
     <string name="master_volume">Громкость</string>
     <string name="master_volume_up">Увеличить громкость</string>
     <string name="master_volume_down">Понизить громкость</string>

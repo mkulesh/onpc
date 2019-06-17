@@ -181,7 +181,12 @@
     <string name="audio_muting_on">Ton Stumm an</string>
     <string name="audio_muting_toggle">Stummschaltung wechseln</string>
 
-    <!-- Master Volume Command  -->
+    <!-- Audio Control Command  -->
+    <string name="audio_control">Audiosteuerung</string>
+    <string name="tone_bass">Bass</string>
+    <string name="tone_treble">Höhen</string>
+    <string name="subwoofer_level">Subwoofer-Pegel</string>
+    <string name="center_level">Center-Lautstärke</string>
     <string name="master_volume">Haupt Lautstärke</string>
     <string name="master_volume_up">Lauter</string>
     <string name="master_volume_down">Leiser</string>

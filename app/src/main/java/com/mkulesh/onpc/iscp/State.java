@@ -22,6 +22,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -48,8 +49,10 @@ import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
+import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
@@ -86,21 +89,30 @@ public class State
     private final int activeZone;
     public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    public HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
     public FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
     public InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
+
+    // Settings
     public DimmerLevelMsg.Level dimmerLevel = DimmerLevelMsg.Level.NONE;
     public DigitalFilterMsg.Filter digitalFilter = DigitalFilterMsg.Filter.NONE;
     public AudioMutingMsg.Status audioMuting = AudioMutingMsg.Status.NONE;
-    public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
-    public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
     public MusicOptimizerMsg.Status musicOptimizer = MusicOptimizerMsg.Status.NONE;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
     public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
+
+    // Sound control
+    public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
+    public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
+    public int bassLevel = ToneCommandMsg.NO_LEVEL;
+    public int trebleLevel = ToneCommandMsg.NO_LEVEL;
+    public int subwooferLevel = SubwooferLevelCommandMsg.NO_LEVEL;
+    public int centerLevel = CenterLevelCommandMsg.NO_LEVEL;
 
     // Google cast
     public String googleCastVersion = "N/A";
@@ -230,8 +242,9 @@ public class State
         return "";
     }
 
-    public void createDefaultSelectors(final Context context)
+    public void createDefaultReceiverInfo(final Context context)
     {
+        // By default, add all possible device selectors
         deviceSelectors.clear();
         for (InputSelectorMsg.InputType it : InputSelectorMsg.InputType.values())
         {
@@ -243,6 +256,12 @@ public class State
                 deviceSelectors.add(s);
             }
         }
+        // Add default bass and treble limits
+        toneControls.clear();
+        toneControls.put(ToneCommandMsg.BASS_KEY,
+                new ReceiverInformationMsg.ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2));
+        toneControls.put(ToneCommandMsg.TREBLE_KEY,
+                new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2));
     }
 
     private void clearTrackInfo()
@@ -286,6 +305,8 @@ public class State
         {
             return isCommonChange(process((FriendlyNameMsg) msg));
         }
+
+        // Settings
         if (msg instanceof DimmerLevelMsg)
         {
             return isCommonChange(process((DimmerLevelMsg) msg));
@@ -298,16 +319,6 @@ public class State
         {
             return isCommonChange(process((AudioMutingMsg) msg));
         }
-        if (msg instanceof ListeningModeMsg)
-        {
-            return isCommonChange(process((ListeningModeMsg) msg));
-        }
-        if (msg instanceof MasterVolumeMsg)
-        {
-            return isCommonChange(process((MasterVolumeMsg) msg));
-        }
-
-        // Common settings
         if (msg instanceof MusicOptimizerMsg)
         {
             return isCommonChange(process((MusicOptimizerMsg) msg));
@@ -327,6 +338,28 @@ public class State
         if (msg instanceof SpeakerBCommandMsg)
         {
             return isCommonChange(process((SpeakerBCommandMsg) msg));
+        }
+
+        // Sound control
+        if (msg instanceof ListeningModeMsg)
+        {
+            return isCommonChange(process((ListeningModeMsg) msg));
+        }
+        if (msg instanceof MasterVolumeMsg)
+        {
+            return isCommonChange(process((MasterVolumeMsg) msg));
+        }
+        if (msg instanceof ToneCommandMsg)
+        {
+            return isCommonChange(process((ToneCommandMsg) msg));
+        }
+        if (msg instanceof SubwooferLevelCommandMsg)
+        {
+            return isCommonChange(process((SubwooferLevelCommandMsg) msg));
+        }
+        if (msg instanceof CenterLevelCommandMsg)
+        {
+            return isCommonChange(process((CenterLevelCommandMsg) msg));
         }
 
         // Google cast
@@ -376,7 +409,7 @@ public class State
         // Radio
         if (msg instanceof PresetCommandMsg)
         {
-            return isCommonChange(process((PresetCommandMsg) msg));
+            return process((PresetCommandMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
         if (msg instanceof TuningCommandMsg)
         {
@@ -458,6 +491,7 @@ public class State
                     deviceSelectors.add(s);
                 }
             }
+            toneControls = msg.getToneControls();
 
             return true;
         }
@@ -487,7 +521,7 @@ public class State
             clearItems();
         }
 
-        if (isRadioInput())
+        if (isSimpleInput())
         {
             timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
         }
@@ -527,6 +561,30 @@ public class State
     {
         final boolean changed = volumeLevel != msg.getVolumeLevel();
         volumeLevel = msg.getVolumeLevel();
+        return changed;
+    }
+
+    private boolean process(ToneCommandMsg msg)
+    {
+        final boolean changed =
+                (msg.getBassLevel() != ToneCommandMsg.NO_LEVEL && bassLevel != msg.getBassLevel()) ||
+                (msg.getTrebleLevel() != ToneCommandMsg.NO_LEVEL && trebleLevel != msg.getTrebleLevel());
+        bassLevel = msg.getBassLevel();
+        trebleLevel = msg.getTrebleLevel();
+        return changed;
+    }
+
+    private boolean process(SubwooferLevelCommandMsg msg)
+    {
+        final boolean changed = subwooferLevel != msg.getLevel();
+        subwooferLevel = msg.getLevel();
+        return changed;
+    }
+
+    private boolean process(CenterLevelCommandMsg msg)
+    {
+        final boolean changed = centerLevel != msg.getLevel();
+        centerLevel = msg.getLevel();
         return changed;
     }
 
@@ -910,6 +968,15 @@ public class State
         return inputType == InputSelectorMsg.InputType.FM
                 || inputType == InputSelectorMsg.InputType.AM
                 || inputType == InputSelectorMsg.InputType.DAB;
+    }
+
+    /**
+     * Simple inputs do not have time or cover
+     * @return boolean
+     */
+    public boolean isSimpleInput()
+    {
+        return inputType == InputSelectorMsg.InputType.TAPE1 || inputType == InputSelectorMsg.InputType.TV || isRadioInput();
     }
 
     public boolean isUsb()

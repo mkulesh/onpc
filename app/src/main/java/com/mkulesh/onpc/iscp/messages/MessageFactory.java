@@ -85,6 +85,14 @@ public class MessageFactory
         case MasterVolumeMsg.ZONE3_CODE:
         case MasterVolumeMsg.ZONE4_CODE:
             return new MasterVolumeMsg(raw);
+        case ToneCommandMsg.CODE:
+        case ToneCommandMsg.ZONE2_CODE:
+        case ToneCommandMsg.ZONE3_CODE:
+            return new ToneCommandMsg(raw);
+        case SubwooferLevelCommandMsg.CODE:
+            return new SubwooferLevelCommandMsg(raw);
+        case CenterLevelCommandMsg.CODE:
+            return new CenterLevelCommandMsg(raw);
         case PresetCommandMsg.CODE:
         case PresetCommandMsg.ZONE2_CODE:
         case PresetCommandMsg.ZONE3_CODE:

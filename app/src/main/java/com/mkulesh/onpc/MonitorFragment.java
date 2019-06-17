@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
@@ -38,8 +39,10 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
+import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -400,7 +403,7 @@ public class MonitorFragment extends BaseFragment
 
         // cover
         cover.setEnabled(true);
-        if (state.cover == null)
+        if (state.cover == null || state.isSimpleInput())
         {
             cover.setImageResource(R.drawable.empty_cover);
             Utils.setImageViewColorAttr(activity, cover, android.R.attr.textColor);
@@ -634,17 +637,108 @@ public class MonitorFragment extends BaseFragment
 
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
+
+        // Master volume
+        final LinearLayout volumeGroup = frameView.findViewById(R.id.volume_group);
         {
-            final TextView minValue = frameView.findViewById(R.id.volume_min_value);
+            final TextView minValue = volumeGroup.findViewWithTag("tone_min_value");
             minValue.setText("0");
 
-            final TextView maxValue = frameView.findViewById(R.id.volume_max_value);
+            final TextView maxValue = volumeGroup.findViewWithTag("tone_max_value");
             maxValue.setText(State.getVolumeLevelStr(maxVolume, zone));
+
+            final AppCompatSeekBar progressBar = volumeGroup.findViewWithTag("tone_progress_bar");
+            progressBar.setMax(maxVolume);
+            progressBar.setProgress(Math.max(0, state.volumeLevel));
+            progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+            {
+                int progressChanged = 0;
+
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+                {
+                    progressChanged = progress;
+                }
+
+                public void onStartTrackingTouch(SeekBar seekBar)
+                {
+                    // empty
+                }
+
+                @SuppressLint("SetTextI18n")
+                public void onStopTrackingTouch(SeekBar seekBar)
+                {
+                    if (isVolumeDialogEnabled())
+                    {
+                        activity.getStateManager().sendMessage(
+                                new MasterVolumeMsg(state.getActiveZone(), progressChanged));
+                    }
+                }
+            });
         }
 
-        final AppCompatSeekBar progressBar = frameView.findViewById(R.id.progress_bar);
-        progressBar.setMax(maxVolume);
-        progressBar.setProgress(Math.max(0, state.volumeLevel));
+        // Tone control
+        prepareToneControl(ToneCommandMsg.BASS_KEY,
+                frameView.findViewById(R.id.bass_group), state.bassLevel,
+                ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+
+        prepareToneControl(ToneCommandMsg.TREBLE_KEY,
+                frameView.findViewById(R.id.treble_group), state.trebleLevel,
+                ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+
+        prepareToneControl(SubwooferLevelCommandMsg.KEY,
+                frameView.findViewById(R.id.subwoofer_level_group), state.subwooferLevel,
+                SubwooferLevelCommandMsg.NO_LEVEL, 1);
+
+        prepareToneControl(CenterLevelCommandMsg.KEY,
+                frameView.findViewById(R.id.center_level_group), state.centerLevel,
+                CenterLevelCommandMsg.NO_LEVEL, 1);
+
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.audio_control)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView).create();
+        dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        return true;
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void prepareToneControl(final String toneKey, final LinearLayout toneGroup,
+                                    int toneLevel, final int noLevel, final int maxZone)
+    {
+        final ReceiverInformationMsg.ToneControl toneControl =
+                activity.getStateManager().getState().toneControls.get(toneKey);
+        final int zone = activity.getStateManager().getState().getActiveZone();
+
+        final boolean isTone = toneControl != null && toneLevel != noLevel && zone < maxZone;
+        toneGroup.setVisibility(isTone ? View.VISIBLE : View.GONE);
+        if (!isTone)
+        {
+            return;
+        }
+
+        final TextView minText = toneGroup.findViewWithTag("tone_min_value");
+        if (minText != null)
+        {
+            minText.setText(Integer.toString(toneControl.getMin()));
+        }
+
+        final TextView maxText = toneGroup.findViewWithTag("tone_max_value");
+        if (maxText != null)
+        {
+            maxText.setText(Integer.toString(toneControl.getMax()));
+        }
+
+        final float step = toneControl.getStep() == 0 ? 0.5f : toneControl.getStep();
+        final AppCompatSeekBar progressBar = toneGroup.findViewWithTag("tone_progress_bar");
+        final int max = (int)((float)(toneControl.getMax() - toneControl.getMin())/step);
+        progressBar.setMax(max);
+        final int progress = (int)((float)(toneLevel - toneControl.getMin())/step);
+        progressBar.setProgress(progress);
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             int progressChanged = 0;
@@ -664,23 +758,27 @@ public class MonitorFragment extends BaseFragment
             {
                 if (isVolumeDialogEnabled())
                 {
-                    activity.getStateManager().sendMessage(
-                            new MasterVolumeMsg(state.getActiveZone(), progressChanged));
+                    final int v = (int)((float)progressChanged * step) + toneControl.getMin();
+                    switch (toneKey)
+                    {
+                    case ToneCommandMsg.BASS_KEY:
+                        activity.getStateManager().sendMessage(
+                                new ToneCommandMsg(zone, v, ToneCommandMsg.NO_LEVEL));
+                        break;
+                    case ToneCommandMsg.TREBLE_KEY:
+                        activity.getStateManager().sendMessage(
+                                new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, v));
+                        break;
+                    case SubwooferLevelCommandMsg.KEY:
+                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(v));
+                        break;
+                    case CenterLevelCommandMsg.KEY:
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(v));
+                        break;
+                    }
                 }
             }
         });
-
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.master_volume)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView).create();
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
-        return true;
     }
 
     private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)

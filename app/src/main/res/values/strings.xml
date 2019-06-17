@@ -229,7 +229,12 @@
     <string name="audio_muting_on">Player audio muting on</string>
     <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
 
-    <!-- Master Volume Command  -->
+    <!-- Audio Control Command  -->
+    <string name="audio_control">Audio control</string>
+    <string name="tone_bass">Bass</string>
+    <string name="tone_treble">Treble</string>
+    <string name="subwoofer_level">Subwoofer level</string>
+    <string name="center_level">Center level</string>
     <string name="master_volume">Master volume</string>
     <string name="master_volume_up">Sets volume level up</string>
     <string name="master_volume_down">Sets volume level down</string>

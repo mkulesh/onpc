@@ -316,10 +316,10 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                     connectionState, this, device, port, zone, autoPower, savedReceiverInformation));
             autoPower = false;
             savedReceiverInformation = null;
-            // By default, add all possible device selectors
+            // Default receiver information used if ReceiverInformationMsg is missing
             {
                 final State s = stateHolder.getState();
-                s.createDefaultSelectors(this);
+                s.createDefaultReceiverInfo(this);
                 configuration.setReceiverInformation(s);
             }
             return true;

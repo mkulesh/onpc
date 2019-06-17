@@ -287,4 +287,24 @@ public class Utils
             mDrawerLayout.setDrawerListener(mDrawerToggle);
         }
     }
+
+    public static String intToneToString(Character m, int tone)
+    {
+        if (tone == 0)
+        {
+            return String.format("%c%02x", m, tone);
+        }
+        final Character s = tone < 0 ? '-' : '+';
+        return String.format("%c%c%1x", m, s, Math.abs(tone)).toUpperCase();
+    }
+
+    public static String intToneToString(int tone)
+    {
+        if (tone == 0)
+        {
+            return String.format("%02x", tone);
+        }
+        final Character s = tone < 0 ? '-' : '+';
+        return String.format("%c%1x", s, Math.abs(tone)).toUpperCase();
+    }
 }
