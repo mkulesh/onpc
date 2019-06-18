@@ -268,7 +268,7 @@ public class MonitorFragment extends BaseFragment
             ((LinearLayout.LayoutParams) b.getLayoutParams()).setMargins(0, 0, 0, 0);
             b.setPadding(0, 0, 0, 0);
             b.setVisibility(View.GONE);
-            b.setContentDescription(activity.getResources().getString(R.string.master_volume));
+            b.setContentDescription(activity.getResources().getString(R.string.audio_control));
             prepareButtonListeners(b, null, this::showMasterVolumeDialog);
             deviceSoundButtons.add(b);
         }
@@ -511,18 +511,21 @@ public class MonitorFragment extends BaseFragment
             final OperationCommandMsg msg = new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag()));
             prepareButtonListeners(b, null, () ->
             {
-                if (!state.isPlaybackMode() && state.isUsb() &&
-                        (msg.getCommand() == OperationCommandMsg.Command.TRDN ||
-                                msg.getCommand() == OperationCommandMsg.Command.TRUP))
+                if (activity.getStateManager() != null)
                 {
-                    // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
-                    // in playback mode. Therefore, switch to this mode before
-                    // send OperationCommandMsg if current mode is LIST
-                    activity.getStateManager().sendTrackMsg(msg, false);
-                }
-                else
-                {
-                    activity.getStateManager().sendMessage(msg);
+                    if (!state.isPlaybackMode() && state.isUsb() &&
+                            (msg.getCommand() == OperationCommandMsg.Command.TRDN ||
+                                    msg.getCommand() == OperationCommandMsg.Command.TRUP))
+                    {
+                        // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
+                        // in playback mode. Therefore, switch to this mode before
+                        // send OperationCommandMsg if current mode is LIST
+                        activity.getStateManager().sendTrackMsg(msg, false);
+                    }
+                    else
+                    {
+                        activity.getStateManager().sendMessage(msg);
+                    }
                 }
             });
         }
@@ -641,6 +644,13 @@ public class MonitorFragment extends BaseFragment
         // Master volume
         final LinearLayout volumeGroup = frameView.findViewById(R.id.volume_group);
         {
+            final String labelText = activity.getString(R.string.master_volume);
+            final TextView labelField = volumeGroup.findViewWithTag("tone_label");
+            if (labelField != null)
+            {
+                labelField.setText(labelText + ": " + Integer.toString(state.volumeLevel));
+            }
+
             final TextView minValue = volumeGroup.findViewWithTag("tone_min_value");
             minValue.setText("0");
 
@@ -657,6 +667,10 @@ public class MonitorFragment extends BaseFragment
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
                 {
                     progressChanged = progress;
+                    if (labelField != null)
+                    {
+                        labelField.setText(labelText + ": " + Integer.toString(progressChanged));
+                    }
                 }
 
                 public void onStartTrackingTouch(SeekBar seekBar)
@@ -677,19 +691,19 @@ public class MonitorFragment extends BaseFragment
         }
 
         // Tone control
-        prepareToneControl(ToneCommandMsg.BASS_KEY,
+        prepareToneControl(ToneCommandMsg.BASS_KEY, R.string.tone_bass,
                 frameView.findViewById(R.id.bass_group), state.bassLevel,
                 ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
 
-        prepareToneControl(ToneCommandMsg.TREBLE_KEY,
+        prepareToneControl(ToneCommandMsg.TREBLE_KEY, R.string.tone_treble,
                 frameView.findViewById(R.id.treble_group), state.trebleLevel,
                 ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
 
-        prepareToneControl(SubwooferLevelCommandMsg.KEY,
+        prepareToneControl(SubwooferLevelCommandMsg.KEY, R.string.subwoofer_level,
                 frameView.findViewById(R.id.subwoofer_level_group), state.subwooferLevel,
                 SubwooferLevelCommandMsg.NO_LEVEL, 1);
 
-        prepareToneControl(CenterLevelCommandMsg.KEY,
+        prepareToneControl(CenterLevelCommandMsg.KEY, R.string.center_level,
                 frameView.findViewById(R.id.center_level_group), state.centerLevel,
                 CenterLevelCommandMsg.NO_LEVEL, 1);
 
@@ -707,7 +721,7 @@ public class MonitorFragment extends BaseFragment
     }
 
     @SuppressLint("SetTextI18n")
-    private void prepareToneControl(final String toneKey, final LinearLayout toneGroup,
+    private void prepareToneControl(final String toneKey, final int labelId, final LinearLayout toneGroup,
                                     int toneLevel, final int noLevel, final int maxZone)
     {
         final ReceiverInformationMsg.ToneControl toneControl =
@@ -719,6 +733,13 @@ public class MonitorFragment extends BaseFragment
         if (!isTone)
         {
             return;
+        }
+
+        final String labelText = activity.getString(labelId);
+        final TextView labelField = toneGroup.findViewWithTag("tone_label");
+        if (labelField != null)
+        {
+            labelField.setText(labelText + ": " + Integer.toString(toneLevel));
         }
 
         final TextView minText = toneGroup.findViewWithTag("tone_min_value");
@@ -743,9 +764,18 @@ public class MonitorFragment extends BaseFragment
         {
             int progressChanged = 0;
 
+            private int getScaledProgress()
+            {
+                return (int)((float)progressChanged * step) + toneControl.getMin();
+            }
+
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
                 progressChanged = progress;
+                if (labelField != null)
+                {
+                    labelField.setText(labelText + ": " + Integer.toString(getScaledProgress()));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar seekBar)
@@ -758,22 +788,21 @@ public class MonitorFragment extends BaseFragment
             {
                 if (isVolumeDialogEnabled())
                 {
-                    final int v = (int)((float)progressChanged * step) + toneControl.getMin();
                     switch (toneKey)
                     {
                     case ToneCommandMsg.BASS_KEY:
                         activity.getStateManager().sendMessage(
-                                new ToneCommandMsg(zone, v, ToneCommandMsg.NO_LEVEL));
+                                new ToneCommandMsg(zone, getScaledProgress(), ToneCommandMsg.NO_LEVEL));
                         break;
                     case ToneCommandMsg.TREBLE_KEY:
                         activity.getStateManager().sendMessage(
-                                new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, v));
+                                new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, getScaledProgress()));
                         break;
                     case SubwooferLevelCommandMsg.KEY:
-                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(v));
+                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress()));
                         break;
                     case CenterLevelCommandMsg.KEY:
-                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(v));
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress()));
                         break;
                     }
                 }

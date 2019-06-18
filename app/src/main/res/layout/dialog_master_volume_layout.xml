@@ -34,13 +34,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    style="@style/SecondaryTextViewStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/master_volume" />
-
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -48,15 +41,8 @@
                 android:id="@+id/bass_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/SecondaryTextViewStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tone_bass"
-                    android:paddingTop="?dialogPreferredPadding" />
-
+                android:orientation="vertical"
+                android:paddingTop="?dialogPreferredPadding">
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -64,15 +50,8 @@
                 android:id="@+id/treble_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/SecondaryTextViewStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tone_treble"
-                    android:paddingTop="?dialogPreferredPadding" />
-
+                android:orientation="vertical"
+                android:paddingTop="?dialogPreferredPadding">
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -80,15 +59,8 @@
                 android:id="@+id/subwoofer_level_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/SecondaryTextViewStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/subwoofer_level"
-                    android:paddingTop="?dialogPreferredPadding" />
-
+                android:orientation="vertical"
+                android:paddingTop="?dialogPreferredPadding">
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -96,15 +68,9 @@
                 android:id="@+id/center_level_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/SecondaryTextViewStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/center_level"
-                    android:paddingTop="?dialogPreferredPadding" />
-
+                android:orientation="vertical"
+                android:paddingTop="?dialogPreferredPadding"
+                android:paddingBottom="?dialogPreferredPadding">
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
