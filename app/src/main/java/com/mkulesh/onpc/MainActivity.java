@@ -522,6 +522,11 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                     changeMasterVolume(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
                     return true;
                 }
+                else if (event.getAction() == KeyEvent.ACTION_UP)
+                {
+                    // Report to the OS that event is fully processed
+                    return true;
+                }
             }
         }
         return super.dispatchKeyEvent(event);
