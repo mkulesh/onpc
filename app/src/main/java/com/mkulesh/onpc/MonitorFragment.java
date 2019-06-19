@@ -627,16 +627,11 @@ public class MonitorFragment extends BaseFragment
 
         final State state = activity.getStateManager().getState();
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-        final int maxVolume = (
-                zone != null && zone.getVolMax() > 0 ?
-                        zone.getVolMax() :
-                        Math.max(
-                                state.volumeLevel,
-                                (zone != null && zone.getVolumeStep() == 0) ?
-                                        MasterVolumeMsg.MAX_VOLUME_0_5_STEP :
-                                        MasterVolumeMsg.MAX_VOLUME_1_STEP
-                        )
-        );
+        final int scale = (zone != null && zone.getVolumeStep() == 0) ? 2 : 1;
+        final int maxVolume = (zone != null && zone.getVolMax() > 0) ?
+                    scale * zone.getVolMax() :
+                    Math.max(state.volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
+
 
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
@@ -648,7 +643,7 @@ public class MonitorFragment extends BaseFragment
             final TextView labelField = volumeGroup.findViewWithTag("tone_label");
             if (labelField != null)
             {
-                labelField.setText(labelText + ": " + Integer.toString(state.volumeLevel));
+                labelField.setText(labelText + ": " + State.getVolumeLevelStr(state.volumeLevel, zone));
             }
 
             final TextView minValue = volumeGroup.findViewWithTag("tone_min_value");
@@ -669,7 +664,7 @@ public class MonitorFragment extends BaseFragment
                     progressChanged = progress;
                     if (labelField != null)
                     {
-                        labelField.setText(labelText + ": " + Integer.toString(progressChanged));
+                        labelField.setText(labelText + ": " + State.getVolumeLevelStr(progressChanged, zone));
                     }
                 }
 
