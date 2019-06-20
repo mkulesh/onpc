@@ -686,12 +686,16 @@ public class MonitorFragment extends BaseFragment
         }
 
         // Tone control
+        final boolean isDirectMode = state.listeningMode != null && state.listeningMode.isDirectMode();
+
         prepareToneControl(ToneCommandMsg.BASS_KEY, R.string.tone_bass,
-                frameView.findViewById(R.id.bass_group), state.bassLevel,
+                frameView.findViewById(R.id.bass_group),
+                isDirectMode ? ToneCommandMsg.NO_LEVEL : state.bassLevel,
                 ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
 
         prepareToneControl(ToneCommandMsg.TREBLE_KEY, R.string.tone_treble,
-                frameView.findViewById(R.id.treble_group), state.trebleLevel,
+                frameView.findViewById(R.id.treble_group),
+                isDirectMode ? ToneCommandMsg.NO_LEVEL : state.trebleLevel,
                 ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
 
         prepareToneControl(SubwooferLevelCommandMsg.KEY, R.string.subwoofer_level,

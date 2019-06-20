@@ -30,7 +30,7 @@ public class ListeningModeMsg extends ISCPMessage
     public enum Mode implements StringParameterIf
     {
         MODE_00("00", R.string.listening_mode_mode_00),
-        MODE_01("01", R.string.listening_mode_mode_01),
+        MODE_01("01", R.string.listening_mode_mode_01, true),
         MODE_02("02", R.string.listening_mode_mode_02),
         MODE_03("03", R.string.listening_mode_mode_03),
         MODE_04("04", R.string.listening_mode_mode_04),
@@ -45,7 +45,7 @@ public class ListeningModeMsg extends ISCPMessage
         MODE_0D("0D", R.string.listening_mode_mode_0d),
         MODE_0E("0E", R.string.listening_mode_mode_0e),
         MODE_0F("0F", R.string.listening_mode_mode_0f),
-        MODE_11("11", R.string.listening_mode_mode_11),
+        MODE_11("11", R.string.listening_mode_mode_11, true),
         MODE_12("12", R.string.listening_mode_mode_12),
         MODE_13("13", R.string.listening_mode_mode_13),
         MODE_14("14", R.string.listening_mode_mode_14),
@@ -104,10 +104,21 @@ public class ListeningModeMsg extends ISCPMessage
         @StringRes
         final int descriptionId;
 
+        // For direct mode, the tone control is disabled
+        final boolean directMode;
+
         Mode(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
+            this.directMode = false;
+        }
+
+        Mode(final String code, @StringRes final int descriptionId, final boolean directMode)
+        {
+            this.code = code;
+            this.descriptionId = descriptionId;
+            this.directMode = directMode;
         }
 
         public String getCode()
@@ -119,6 +130,11 @@ public class ListeningModeMsg extends ISCPMessage
         public int getDescriptionId()
         {
             return descriptionId;
+        }
+
+        public boolean isDirectMode()
+        {
+            return directMode;
         }
     }
 
