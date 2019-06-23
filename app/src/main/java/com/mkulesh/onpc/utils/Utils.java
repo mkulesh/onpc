@@ -298,13 +298,17 @@ public class Utils
         return String.format("%c%c%1x", m, s, Math.abs(tone)).toUpperCase();
     }
 
-    public static String intToneToString(int tone)
+    public static String intToneToString(int tone, int length)
     {
         if (tone == 0)
         {
-            return String.format("%02x", tone);
+            return length == 1 ? "00" : "000";
         }
-        final Character s = tone < 0 ? '-' : '+';
-        return String.format("%c%1x", s, Math.abs(tone)).toUpperCase();
+        else
+        {
+            final Character s = tone < 0 ? '-' : '+';
+            final String format = length == 1 ? "%c%1x" : "%c%02x";
+            return String.format(format, s, Math.abs(tone)).toUpperCase();
+        }
     }
 }

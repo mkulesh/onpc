@@ -798,10 +798,12 @@ public class MonitorFragment extends BaseFragment
                                 new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, getScaledProgress()));
                         break;
                     case SubwooferLevelCommandMsg.KEY:
-                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress()));
+                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress(), 1));
+                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress(), 2));
                         break;
                     case CenterLevelCommandMsg.KEY:
-                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress()));
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(),1));
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(),2));
                         break;
                     }
                 }
