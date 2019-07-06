@@ -12,14 +12,15 @@
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
 This app allows remote control of an Onkyo/Integra Network Player or a Network A/V Receiver via the
-"Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.  Other benefits include:
+"Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
+- Full tome control (bass, center, treble and subwoofer levels)
 - The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - Tuneln Radio and Deezer streaming (if supported by receiver)
 - DAB / FM (if supported by receiver)
-- Multi-zone support
+- Multi-zone support (if supported by receiver)
 - Control of devices attached via RI
 - Enhanced Play Queue support (add, replace, remove, clear, change playback order)
 - Display device details and control device settings such as dimmer level, digital filter, auto power
@@ -29,6 +30,7 @@ This app allows remote control of an Onkyo/Integra Network Player or a Network A
 Currently, this app is only tested with following devices:
 - [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
 - [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html)
+- [ONKYO TX-NR686](https://www.eu.onkyo.com/en/products/tx-nr686-148905.html)
 - [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
@@ -68,7 +70,8 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 ## Acknowledgement
 * Thank to [Tebriz](https://github.com/tebriz159) for Logo design
 * Thank to [mrlad](https://github.com/mrlad), [onschedule](https://github.com/onschedule) for testing and improvements ideas
-* Thank to [Michael](https://github.com/quelbs) for German translation
+* Thank to [Michael](https://github.com/quelbs) for German translation and code contribution
+* Thank to [John Orr](https://github.com/qpkorr) for improvements ideas and code contribution
 
 ## License
 
