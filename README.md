@@ -16,7 +16,7 @@ This app allows remote control of an Onkyo/Integra Network Player or a Network A
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Full tome control (bass, center, treble and subwoofer levels)
+- Full tone control (bass, center, treble and subwoofer levels)
 - The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - Tuneln Radio and Deezer streaming (if supported by receiver)
 - DAB / FM (if supported by receiver)
