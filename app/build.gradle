@@ -7,8 +7,8 @@ android {
         applicationId "com.mkulesh.onpc"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.2"
+        versionCode 13
+        versionName "1.3"
         setProperty("archivesBaseName", "onpc-v" + versionName)
     }
 
