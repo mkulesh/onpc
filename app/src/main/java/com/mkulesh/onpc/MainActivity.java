@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 {
                     subTitle.append("/");
                 }
-                subTitle.append(state.zones.get(state.getActiveZone()).getName());
+                subTitle.append(state.getActiveZoneInfo().getName());
             }
             if (!state.isOn())
             {

@@ -87,7 +87,7 @@ public class State
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
     private final int activeZone;
-    public List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
+    protected List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
     public HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
@@ -262,6 +262,8 @@ public class State
                 new ReceiverInformationMsg.ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2));
         toneControls.put(ToneCommandMsg.TREBLE_KEY,
                 new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2));
+        // Default zones:
+        zones = ReceiverInformationMsg.getDefaultZones();
     }
 
     private void clearTrackInfo()

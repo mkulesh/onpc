@@ -373,7 +373,8 @@ public class ReceiverInformationMsg extends ISCPMessage
     public static List<Zone> getDefaultZones()
     {
         List<ReceiverInformationMsg.Zone> defaultZones = new ArrayList<>();
-        defaultZones.add(new Zone("1", "Main", 1, 0));
+        defaultZones.add(new Zone("1", "Main", 1, 0x82));
+        defaultZones.add(new Zone("2", "Zone2", 1, 0x82));
         return defaultZones;
     }
 
