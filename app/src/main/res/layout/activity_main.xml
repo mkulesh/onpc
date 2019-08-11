@@ -43,7 +43,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/activity_tab_height"
                 app:tabMode="fixed"
-                app:tabGravity="fill" />
+                app:tabGravity="fill"
+                app:tabPaddingStart="-1dp"
+                app:tabPaddingEnd="-1dp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -55,7 +57,7 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"></androidx.viewpager.widget.ViewPager>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -15,6 +15,7 @@ package com.mkulesh.onpc;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.mkulesh.onpc.config.Configuration;
+import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.State;
@@ -81,6 +83,9 @@ class MainNavigationDrawer
         case R.id.drawer_zone_3:
         case R.id.drawer_zone_4:
             navigationChangeZone(menuItem.getOrder());
+            break;
+        case R.id.drawer_app_settings:
+            activity.startActivityForResult(new Intent(activity, PreferencesMain.class), MainActivity.SETTINGS_ACTIVITY_REQID);
             break;
         case R.id.drawer_about:
             HtmlDialogBuilder.buildHtmlDialog(activity,

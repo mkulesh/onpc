@@ -28,7 +28,6 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.Configuration;
-import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
@@ -55,7 +54,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 public class MainActivity extends AppCompatActivity implements OnPageChangeListener, StateManager.StateListener
 {
-    private static final int SETTINGS_ACTIVITY_REQID = 256;
+    public static final int SETTINGS_ACTIVITY_REQID = 256;
 
     private Configuration configuration;
     private Toolbar toolbar;
@@ -235,12 +234,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                         new PowerStatusMsg(getStateManager().getState().getActiveZone(), p));
             }
             return true;
-        case R.id.menu_app_settings:
-        {
-            Intent settings = new Intent(this, PreferencesMain.class);
-            startActivityForResult(settings, SETTINGS_ACTIVITY_REQID);
-            return true;
-        }
         case R.id.menu_receiver_information:
         {
             final String text = isConnected() ? getStateManager().getState().receiverInformation :
