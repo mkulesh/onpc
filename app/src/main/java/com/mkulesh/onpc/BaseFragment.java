@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,13 @@ abstract public class BaseFragment extends Fragment
         buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.button_size);
         buttonMarginHorizontal = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_horizontal);
         buttonMarginVertical = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_vertical);
+    }
+
+    void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutPort, int layoutLand)
+    {
+        activity = (MainActivity) getActivity();
+        initializeFragment(inflater, container,
+                activity.orientation == Configuration.ORIENTATION_PORTRAIT ? layoutPort : layoutLand);
     }
 
     @Override

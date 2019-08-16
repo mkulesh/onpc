@@ -86,7 +86,7 @@ public class MonitorFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.monitor_fragment);
+        initializeFragment(inflater, container, R.layout.monitor_fragment_port, R.layout.monitor_fragment_land);
         rootView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);

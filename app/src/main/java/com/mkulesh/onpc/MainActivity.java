@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean autoPower = false;
-    String versionName = null;
+    private String versionName = null;
+    int orientation;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -82,19 +83,20 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
 
         // Note that due to onActivityResult, the activity will be started twice
         // after the preference activity is closed
+        super.onCreate(savedInstanceState);
+
+        orientation = getResources().getConfiguration().orientation;
         try
         {
             final PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
             versionName = "v. " + pi.versionName;
-            Logging.info(this, "Starting application: " + versionName);
+            Logging.info(this, "Starting application: version " + versionName + ", orientation " + orientation);
         }
         catch (PackageManager.NameNotFoundException e)
         {
             Logging.info(this, "Starting application");
             versionName = null;
         }
-
-        super.onCreate(savedInstanceState);
 
         connectionState = new ConnectionState(this);
 
@@ -110,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     @Override
     public void onConfigurationChanged(android.content.res.Configuration newConfig)
     {
-        Logging.info(this, "device rotation change");
+        orientation = newConfig.orientation;
+        Logging.info(this, "device orientation change: " + orientation);
         super.onConfigurationChanged(newConfig);
 
         // restore active page
