@@ -13,11 +13,6 @@
 
 <resources>
 
-    <!-- Activity parameters -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="activity_tab_height">@dimen/abc_action_bar_default_height_material</dimen>
-
     <!-- Text sizes -->
     <dimen name="primary_text_size">19sp</dimen>
     <dimen name="secondary_text_size">17sp</dimen>
@@ -27,7 +22,6 @@
     <dimen name="button_padding">6dp</dimen>
     <dimen name="button_margin_horizontal">16dp</dimen>
     <dimen name="button_margin_vertical">16dp</dimen>
-    <dimen name="cover_image_margin">24dp</dimen>
 
     <!-- Device info fragment -->
     <dimen name="device_info_row_height">56dp</dimen>

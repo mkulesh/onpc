@@ -129,7 +129,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
 
     void initGUI()
     {
-        setContentView(R.layout.activity_main);
+        setContentView(orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT ?
+                R.layout.activity_main_port : R.layout.activity_main_land);
 
         if (configuration.isKeepScreenOn())
         {

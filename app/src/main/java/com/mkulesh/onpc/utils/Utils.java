@@ -207,7 +207,7 @@ public class Utils
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             final int x = pos[0] + button.getMeasuredWidth() / 2 - (t.getView().getMeasuredWidth() / 2);
             final int y = pos[1] - button.getMeasuredHeight() / 2 - t.getView().getMeasuredHeight()
-                    - context.getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
+                    - context.getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin_port);
             t.setGravity(Gravity.TOP | Gravity.LEFT, x, y);
             t.show();
             return true;

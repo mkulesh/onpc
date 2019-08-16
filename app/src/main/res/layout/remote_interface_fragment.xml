@@ -46,7 +46,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/cover_image_margin"
+                    android:layout_margin="@dimen/cover_image_margin_land"
                     android:layout_gravity="center"
                     android:src="@drawable/amplifier"
                     android:saveEnabled="false" />
@@ -159,7 +159,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/cover_image_margin"
+                    android:layout_margin="@dimen/cover_image_margin_land"
                     android:layout_gravity="center"
                     android:src="@drawable/cd_player"
                     android:saveEnabled="false" />
