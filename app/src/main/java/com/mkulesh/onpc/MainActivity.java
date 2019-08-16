@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         // Initially reset zone state
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
 
-        autoPower = savedInstanceState == null && configuration.isAutoPower();
+        autoPower = configuration.isAutoPower();
 
         initGUI();
         updateToolbar(null);
@@ -199,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             if (!savedReceiverInformation.isEmpty())
             {
                 Logging.info(this, "restore receiver information");
-                autoPower = false;
             }
         }
         catch (Exception e)
