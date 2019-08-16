@@ -88,7 +88,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         progressIndicator = rootView.findViewById(R.id.progress_indicator);
         Utils.setImageViewColorAttr(activity, progressIndicator, R.attr.colorButtonDisabled);
 
-        update(null, null);
+        updateContent();
         return rootView;
     }
 

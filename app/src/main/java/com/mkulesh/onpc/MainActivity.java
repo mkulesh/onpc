@@ -50,9 +50,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
-public class MainActivity extends AppCompatActivity implements OnPageChangeListener, StateManager.StateListener
+public class MainActivity extends AppCompatActivity implements StateManager.StateListener
 {
     public static final int SETTINGS_ACTIVITY_REQID = 256;
 
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean autoPower = false;
+    String versionName = null;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
 
         // Note that due to onActivityResult, the activity will be started twice
         // after the preference activity is closed
-        String versionName = null;
         try
         {
             final PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -92,9 +91,41 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         catch (PackageManager.NameNotFoundException e)
         {
             Logging.info(this, "Starting application");
+            versionName = null;
         }
 
         super.onCreate(savedInstanceState);
+
+        connectionState = new ConnectionState(this);
+
+        // Initially reset zone state
+        configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+
+        autoPower = savedInstanceState == null && configuration.isAutoPower();
+
+        initGUI();
+        updateToolbar(null);
+    }
+
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig)
+    {
+        Logging.info(this, "device rotation change");
+        super.onConfigurationChanged(newConfig);
+
+        // restore active page
+        int page = viewPager.getCurrentItem();
+        initGUI();
+        viewPager.setCurrentItem(page);
+        updateConfiguration(stateHolder.getState());
+
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+        mDrawerToggle.syncState();
+    }
+
+    void initGUI()
+    {
         setContentView(R.layout.activity_main);
 
         if (configuration.isKeepScreenOn())
@@ -120,15 +151,9 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         // Set up the ViewPager with the sections adapter.
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.addOnPageChangeListener(this);
 
         final TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
-        connectionState = new ConnectionState(this);
-
-        // Initially reset zone state
-        configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
 
         // Navigation drawer
         navigationDrawer = new MainNavigationDrawer(this, versionName);
@@ -137,9 +162,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         mDrawerToggle = new ActionBarDrawerToggle(this, navigationDrawer.getDrawerLayout(), toolbar,
                 R.string.drawer_open, R.string.drawer_open);
         Utils.setDrawerListener(navigationDrawer.getDrawerLayout(), mDrawerToggle);
-
-        autoPower = savedInstanceState == null && configuration.isAutoPower();
-        updateToolbar(null);
     }
 
     @Override
@@ -209,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
                 m.setVisible(Logging.saveLogging);
             }
         }
+        updateToolbar(stateHolder.getState());
         return true;
     }
 
@@ -458,25 +481,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         }
     }
 
-    @Override
-    public void onPageScrollStateChanged(int arg0)
-    {
-        // empty
-
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2)
-    {
-        // empty
-    }
-
-    @Override
-    public void onPageSelected(int p)
-    {
-        onStateChanged(stateHolder.getState(), null);
-    }
-
     void selectRightTab()
     {
         viewPager.arrowScroll(View.FOCUS_RIGHT);
@@ -494,13 +498,6 @@ public class MainActivity extends AppCompatActivity implements OnPageChangeListe
         mDrawerToggle.syncState();
     }
 
-    @Override
-    public void onConfigurationChanged(android.content.res.Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)

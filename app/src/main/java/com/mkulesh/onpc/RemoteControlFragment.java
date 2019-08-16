@@ -50,7 +50,7 @@ public class RemoteControlFragment extends BaseFragment
         {
             prepareRiButton(b);
         }
-        update(null, null);
+        updateContent();
         return rootView;
     }
 

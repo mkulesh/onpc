@@ -48,7 +48,8 @@ abstract public class BaseFragment extends Fragment
      */
     public static final String FRAGMENT_NUMBER = "fragment_number";
 
-    MainActivity activity;
+    private boolean visibleToUser = false;
+    MainActivity activity = null;
     View rootView = null;
 
     private int buttonSize = 0;
@@ -74,6 +75,22 @@ abstract public class BaseFragment extends Fragment
         buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.button_size);
         buttonMarginHorizontal = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_horizontal);
         buttonMarginVertical = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_vertical);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        visibleToUser = isVisibleToUser;
+        if (activity != null)
+        {
+            updateContent();
+        }
+    }
+
+    void updateContent()
+    {
+        update(visibleToUser && activity.isConnected()? activity.getStateManager().getState() : null, null);
     }
 
     public void update(final State state, @Nullable HashSet<State.ChangeType> eventChanges)

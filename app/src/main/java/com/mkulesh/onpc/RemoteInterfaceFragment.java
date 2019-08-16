@@ -63,7 +63,7 @@ public class RemoteInterfaceFragment extends BaseFragment
             prepareRiButton(b);
         }
 
-        update(null, null);
+        updateContent();
         return rootView;
     }
 

@@ -110,7 +110,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
 
-        update(null, null);
+        updateContent();
         return rootView;
     }
 

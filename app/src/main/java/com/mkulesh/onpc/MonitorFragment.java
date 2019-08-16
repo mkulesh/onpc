@@ -184,7 +184,7 @@ public class MonitorFragment extends BaseFragment
         prepareButtonListeners(negativeFeed, null, () ->
                 activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.F2, true));
 
-        update(null, null);
+        updateContent();
         return rootView;
     }
 
