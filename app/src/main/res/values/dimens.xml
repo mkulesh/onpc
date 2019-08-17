@@ -20,7 +20,7 @@
     <dimen name="activity_vertical_margin_land">8dp</dimen>
     <dimen name="activity_bar_height_port">56dp</dimen>
     <dimen name="activity_bar_height_land">48dp</dimen>
-    <dimen name="activity_tab_height_port">56dp</dimen>
+    <dimen name="activity_tab_height_port">48dp</dimen>
     <dimen name="activity_tab_height_land">32dp</dimen>
 
     <!-- Text sizes -->

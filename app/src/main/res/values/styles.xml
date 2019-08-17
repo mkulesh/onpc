@@ -44,7 +44,7 @@
     <!-- Custom styles -->
 
     <style name="ToolbarTitleTextPort" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="ToolbarTitleTextLand" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -52,7 +52,7 @@
     </style>
 
     <style name="ToolbarSubTitleTextPort" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="ToolbarSubTitleTextLand" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
