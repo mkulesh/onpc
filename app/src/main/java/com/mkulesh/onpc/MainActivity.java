@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private Toast exitToast = null;
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
-    private boolean autoPower = false;
     private String versionName = null;
     int orientation;
 
@@ -102,8 +101,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
 
         // Initially reset zone state
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
-
-        autoPower = configuration.isAutoPower();
 
         initGUI();
         updateToolbar(null);
@@ -332,8 +329,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         try
         {
             stateHolder.setStateManager(new StateManager(
-                    connectionState, this, device, port, zone, autoPower, savedReceiverInformation));
-            autoPower = false;
+                    connectionState, this, device, port, zone,
+                    configuration.isAutoPower(), savedReceiverInformation));
             savedReceiverInformation = null;
             // Default receiver information used if ReceiverInformationMsg is missing
             {
