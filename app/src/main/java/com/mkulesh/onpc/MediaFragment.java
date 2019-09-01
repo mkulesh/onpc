@@ -191,7 +191,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
                 return true;
             case R.id.playlist_track_menu:
-                activity.getStateManager().sendMessage(new OperationCommandMsg(OperationCommandMsg.Command.MENU));
+                activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
                 return true;
             }
         }

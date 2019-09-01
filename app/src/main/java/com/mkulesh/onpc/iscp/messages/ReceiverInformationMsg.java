@@ -339,7 +339,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         @Override
         public String toString()
         {
-            return id + ": " + getId() + ", min=" + getMin() + ", max=" + getMax() + ", step=" + getStep();
+            return getId() + ": min=" + getMin() + ", max=" + getMax() + ", step=" + getStep();
         }
     }
 
