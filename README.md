@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
 [![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.3-debug.apk)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo/Integra
+# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo/Integra/Pioneer
 
 *Remote controller for Onkyo devices: listen to music properly!*
 
@@ -11,7 +11,7 @@
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
-This app allows remote control of an Onkyo/Integra Network Player or a Network A/V Receiver via the
+This app allows remote control of an Onkyo/Integra/Pioneer Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - One-click access to music playback actions
@@ -35,6 +35,7 @@ Currently, this app is only tested with following devices:
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
+- [Pioneer VSX-LX303](https://www.pioneerelectronics.com/PUSA/Home/AV-Receivers/Elite+Receivers/VSX-LX303)
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark theme
