@@ -123,6 +123,9 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         Logging.info(this, "started, network=" + connectionState.isNetwork()
                 + ", wifi=" + connectionState.isWifi());
 
+        final Character models[] = new Character[]{'x', 'p'};
+        int modelId = 0;
+
         try
         {
             final InetAddress local = InetAddress.getByName("0.0.0.0");
@@ -134,7 +137,12 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
             while (!isStopped())
             {
-                request(socket, target);
+                request(socket, target, models[modelId]);
+                modelId++;
+                if (modelId > 1)
+                {
+                    modelId = 0;
+                }
             }
             socket.close();
         }
@@ -210,16 +218,17 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
     }
 
-    private void request(DatagramSocket socket, final InetAddress target)
+    private void request(DatagramSocket socket, final InetAddress target, final Character modelCategoryId)
     {
-        final EISCPMessage m = new EISCPMessage('x', "ECN", "QSTN");
+        final EISCPMessage m = new EISCPMessage(modelCategoryId, "ECN", "QSTN");
         final byte[] bytes = m.getBytes();
 
         try
         {
             final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
             socket.send(p);
-            Logging.info(this, "message send to " + target + ", wait response for " + TIMEOUT + "ms");
+            Logging.info(this, "message " + m.toString() + " for category \'"
+                    + modelCategoryId + "\' send to " + target + ", wait response for " + TIMEOUT + "ms");
         }
         catch (Exception e)
         {
@@ -246,7 +255,12 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 }
 
                 final EISCPMessage msg = convertResponse(response);
-                if (msg == null || msg.getModelCategoryId() == 'x')
+                if (msg == null || msg.getParameters() == null)
+                {
+                    continue;
+                }
+
+                if (msg.getParameters().equals("QSTN"))
                 {
                     continue;
                 }
