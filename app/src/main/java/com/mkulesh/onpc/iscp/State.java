@@ -39,6 +39,7 @@ import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -78,7 +79,8 @@ public class State
         COMMON,
         TIME_SEEK,
         MEDIA_ITEMS,
-        RECEIVER_INFO
+        RECEIVER_INFO,
+        MULTIROOM_INFO
     }
 
     // Receiver Information
@@ -87,7 +89,7 @@ public class State
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
     private final int activeZone;
-    protected List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
+    List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
     public HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
@@ -449,6 +451,13 @@ public class State
         {
             return process((ListInfoMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
+
+        // Multiroom
+        if (msg instanceof MultiroomDeviceInformationMsg)
+        {
+            return process((MultiroomDeviceInformationMsg) msg) ? ChangeType.MULTIROOM_INFO : ChangeType.NONE;
+        }
+
         return ChangeType.NONE;
     }
 
@@ -974,6 +983,7 @@ public class State
 
     /**
      * Simple inputs do not have time or cover
+     *
      * @return boolean
      */
     public boolean isSimpleInput()
@@ -1112,5 +1122,19 @@ public class State
             return networkServices.get(serviceType.getCode());
         }
         return null;
+    }
+
+    private boolean process(MultiroomDeviceInformationMsg msg)
+    {
+        try
+        {
+            msg.parseXml(true);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
+        }
+        return false;
     }
 }

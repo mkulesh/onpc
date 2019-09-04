@@ -540,19 +540,19 @@ public class ReceiverInformationMsg extends ISCPMessage
             }
             for (NetworkService s : networkServices.values())
             {
-                Logging.info(this, "    Service: " + s.toString());
+                Logging.info(this, "    Service " + s.toString());
             }
             for (Zone s : zones)
             {
-                Logging.info(this, "    Zone: " + s.toString());
+                Logging.info(this, "    Zone " + s.toString());
             }
             for (Selector s : deviceSelectors)
             {
-                Logging.info(this, "    Selector: " + s.toString());
+                Logging.info(this, "    Selector " + s.toString());
             }
             for (Preset p : presetList)
             {
-                Logging.info(this, "    Preset: " + p.toString());
+                Logging.info(this, "    Preset " + p.toString());
             }
             for (String s : controlList)
             {
@@ -560,7 +560,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             }
             for (ToneControl s : toneControls.values())
             {
-                Logging.info(this, "    Tone control: " + s.toString());
+                Logging.info(this, "    Tone control " + s.toString());
             }
         }
         else

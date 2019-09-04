@@ -127,6 +127,8 @@ public class MessageFactory
             return new PrivacyPolicyStatusMsg(raw);
         case CdPlayerOperationCommandMsg.CODE:
             return new CdPlayerOperationCommandMsg(raw);
+        case MultiroomDeviceInformationMsg.CODE:
+            return new MultiroomDeviceInformationMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }
