@@ -37,7 +37,6 @@ import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
-import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -182,8 +181,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 FirmwareUpdateMsg.CODE,
                 GoogleCastVersionMsg.CODE,
                 PrivacyPolicyStatusMsg.CODE,
-                ListeningModeMsg.CODE,
-                MultiroomDeviceInformationMsg.CODE
+                ListeningModeMsg.CODE
         };
 
         sendQueries(powerStateQueries, "requesting power state...");

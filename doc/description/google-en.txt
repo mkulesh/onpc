@@ -1,4 +1,4 @@
-This app allows remote control of an Onkyo Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
+This app allows remote control of an Onkyo/Pioneer/Integra  Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
 
 Benefits and features:
 
