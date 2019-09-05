@@ -13,59 +13,32 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.util.Pair;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 
-import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.appcompat.widget.AppCompatRadioButton;
-
-@SuppressLint("StaticFieldLeak")
 public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 {
     public final static int ISCP_PORT = 60128;
+    private final static int TIMEOUT = 3000;
 
     private final ConnectionState connectionState;
-    private final ConnectionState.StateListener stateListener;
-
-    private final static int TIMEOUT = 3000;
-    private final Context context;
-    private final List<Pair<BroadcastResponseMsg, AppCompatRadioButton>> devices = new ArrayList<>();
     private final AtomicBoolean active = new AtomicBoolean();
-    private final ContextThemeWrapper wrappedContext;
-    private ConnectionState.FailureReason failureReason = null;
-    private AlertDialog dialog = null;
-    private RadioGroup radioGroup = null;
+    protected ConnectionState.FailureReason failureReason = null;
 
-    public BroadcastSearch(final Context context, final ConnectionState connectionState,
-                           final ConnectionState.StateListener stateListener)
+    public BroadcastSearch(final ConnectionState connectionState)
     {
         this.connectionState = connectionState;
-        this.stateListener = stateListener;
-        this.context = context;
         active.set(false);
-        wrappedContext = new ContextThemeWrapper(context, R.style.RadioButtonStyle);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -75,23 +48,15 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
     protected void onPreExecute()
     {
         super.onPreExecute();
-        final FrameLayout frameView = new FrameLayout(context);
+        setActive(true);
+    }
 
-        final Drawable icon = Utils.getDrawable(context, R.drawable.media_item_search);
-        Utils.setDrawableColorAttr(context, icon, android.R.attr.textColorSecondary);
-        dialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.drawer_device_search)
-                .setIcon(icon)
-                .setCancelable(false)
-                .setView(frameView)
-                .setNegativeButton(context.getResources().getString(R.string.action_cancel), (dialog, which) -> active.set(false))
-                .create();
-
-        dialog.getLayoutInflater().inflate(R.layout.dialog_broadcast_layout, frameView);
-        radioGroup = frameView.findViewById(R.id.broadcast_radio_group);
-        active.set(true);
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+    protected void setActive(boolean a)
+    {
+        synchronized (active)
+        {
+            active.set(a);
+        }
     }
 
     private boolean isStopped()
@@ -123,7 +88,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         Logging.info(this, "started, network=" + connectionState.isNetwork()
                 + ", wifi=" + connectionState.isWifi());
 
-        final Character models[] = new Character[]{'x', 'p'};
+        final Character models[] = new Character[]{ 'x', 'p' };
         int modelId = 0;
 
         try
@@ -153,49 +118,6 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
         Logging.info(this, "stopped");
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid)
-    {
-        super.onPostExecute(aVoid);
-        try
-        {
-            if (dialog != null)
-            {
-                dialog.dismiss();
-            }
-            if (stateListener != null)
-            {
-                BroadcastResponseMsg device = null;
-                if (devices.size() > 0)
-                {
-                    for (Pair<BroadcastResponseMsg, AppCompatRadioButton> d : devices)
-                    {
-                        if (d.second.isChecked())
-                        {
-                            device = d.first;
-                            break;
-                        }
-                    }
-                }
-
-                if (device != null)
-                {
-                    Logging.info(BroadcastSearch.this, "Found device: " + device.toString());
-                    stateListener.onDeviceFound(device);
-                }
-                else if (failureReason != null)
-                {
-                    Logging.info(BroadcastSearch.this, "Device not found: " + failureReason.toString());
-                    stateListener.noDevice(failureReason);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            // nothing to do
-        }
     }
 
     private EISCPMessage convertResponse(byte[] response)
@@ -281,36 +203,12 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
     @Override
     protected void onProgressUpdate(BroadcastResponseMsg... result)
     {
-        if (result == null || result.length == 0 || radioGroup == null || dialog == null)
-        {
-            return;
-        }
-        final BroadcastResponseMsg msg = result[0];
-        Logging.info(this, "  new response " + msg);
-        for (Pair<BroadcastResponseMsg, AppCompatRadioButton> d : devices)
-        {
-            if (d.first.getDevice().equals(msg.getDevice()))
-            {
-                Logging.info(this, "  -> device already registered");
-                return;
-            }
-        }
+        // empty
+    }
 
-        final AppCompatRadioButton b = new AppCompatRadioButton(wrappedContext, null, 0);
-        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        b.setLayoutParams(lp);
-        b.setText(msg.getDevice());
-        b.setTextColor(Utils.getThemeColorAttr(context, android.R.attr.textColor));
-        b.setOnClickListener(v ->
-        {
-            synchronized (active)
-            {
-                active.set(false);
-            }
-        });
-
-        radioGroup.addView(b);
-        devices.add(new Pair<>(msg, b));
+    @Override
+    protected void onPostExecute(Void aVoid)
+    {
+        super.onPostExecute(aVoid);
     }
 }

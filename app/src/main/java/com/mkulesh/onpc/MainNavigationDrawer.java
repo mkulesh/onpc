@@ -95,8 +95,8 @@ class MainNavigationDrawer
 
     void navigationSearchDevice()
     {
-        final BroadcastSearch bs = new BroadcastSearch(activity, activity.getConnectionState(),
-                new ConnectionState.StateListener()
+        final SearchDialog bs = new SearchDialog(activity, activity.getConnectionState(),
+                new SearchDialog.StateListener()
                 {
                     // These methods will be called from GUI thread
                     @Override

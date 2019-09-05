@@ -93,7 +93,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
     private final HashMap<String, String> properties = new HashMap<>();
     private final List<MultiroomDeviceInformationMsg.Zone> zones = new ArrayList<>();
 
-    public MultiroomDeviceInformationMsg(EISCPMessage raw) throws Exception
+    MultiroomDeviceInformationMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
     }

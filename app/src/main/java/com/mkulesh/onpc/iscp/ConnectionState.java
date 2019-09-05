@@ -21,7 +21,6 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
-import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.net.InetAddress;
@@ -53,13 +52,6 @@ public class ConnectionState
         }
     }
 
-    public interface StateListener
-    {
-        void onDeviceFound(BroadcastResponseMsg response);
-
-        void noDevice(FailureReason reason);
-    }
-
     private final Context context;
     private final ConnectivityManager connectivity;
     private final WifiManager wifi;
@@ -81,7 +73,7 @@ public class ConnectionState
         }
     }
 
-    public boolean isActive()
+    boolean isActive()
     {
         synchronized (active)
         {
