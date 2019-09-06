@@ -32,6 +32,7 @@ public class FirmwareUpdateMsg extends ISCPMessage
         NONE("N/A", R.string.device_firmware_none),
         ACTUAL("00", R.string.device_firmware_actual),
         NEW_VERSION("01", R.string.device_firmware_new_version),
+        NEW_VERSION_FORCE("02", R.string.device_firmware_new_version),
         UPDATE_COMPLETE("CMP", R.string.device_firmware_update_complete),
         NET("NET", R.string.device_firmware_net);
 

@@ -174,7 +174,8 @@ public class DeviceFragment extends BaseFragment
             // Update button
             {
                 final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
-                b.setVisibility(state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION ?
+                b.setVisibility((state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION ||
+                                 state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_FORCE)?
                         View.VISIBLE : View.GONE);
                 if (b.getVisibility() == View.VISIBLE)
                 {
