@@ -21,15 +21,15 @@ import android.net.wifi.WifiManager;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.net.InetAddress;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
-public class ConnectionState
+public class ConnectionState extends AppTask
 {
     public enum FailureReason
     {
@@ -55,30 +55,13 @@ public class ConnectionState
     private final Context context;
     private final ConnectivityManager connectivity;
     private final WifiManager wifi;
-    private final AtomicBoolean active = new AtomicBoolean();
 
     public ConnectionState(Context context)
     {
+        super(true);
         this.context = context;
         this.connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         this.wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        active.set(true);
-    }
-
-    public void setActive(boolean a)
-    {
-        synchronized (active)
-        {
-            active.set(a);
-        }
-    }
-
-    boolean isActive()
-    {
-        synchronized (active)
-        {
-            return active.get();
-        }
     }
 
     public Context getContext()

@@ -62,8 +62,48 @@
     </item>
 
     <item
-        android:title="@string/drawer_device_application"
+        android:id="@+id/drawer_multiroom"
+        android:title="@string/drawer_multiroom"
         android:orderInCategory="3">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/drawer_multiroom_1"
+                    android:icon="@drawable/alpha_a_box_outline"
+                    android:orderInCategory="0"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_multiroom_2"
+                    android:icon="@drawable/alpha_b_box_outline"
+                    android:orderInCategory="1"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_multiroom_3"
+                    android:icon="@drawable/alpha_c_box_outline"
+                    android:orderInCategory="2"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_multiroom_4"
+                    android:icon="@drawable/alpha_d_box_outline"
+                    android:orderInCategory="3"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_multiroom_5"
+                    android:icon="@drawable/alpha_e_box_outline"
+                    android:orderInCategory="4"
+                    android:title="@string/dashed_string" />
+                <item
+                    android:id="@+id/drawer_multiroom_6"
+                    android:icon="@drawable/alpha_f_box_outline"
+                    android:orderInCategory="5"
+                    android:title="@string/dashed_string" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:title="@string/drawer_device_application"
+        android:orderInCategory="4">
         <menu>
             <item
                 android:id="@+id/drawer_app_settings"

@@ -49,6 +49,7 @@
     <!-- Navigation drawer -->
     <string name="drawer_open">Открыть панель навигатора</string>
     <string name="drawer_group_zone">Зона</string>
+    <string name="drawer_multiroom">Группа</string>
     <string name="drawer_device">Устройство</string>
     <string name="drawer_device_connect">Соединение</string>
     <string name="drawer_device_search">Поиск</string>

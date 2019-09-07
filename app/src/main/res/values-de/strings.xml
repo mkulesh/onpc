@@ -46,6 +46,7 @@
     <!-- Navigation drawer -->
     <string name="drawer_open">Navigation drawer öffnen</string>
     <string name="drawer_group_zone">Zone</string>
+    <string name="drawer_multiroom">Gruppe</string>
     <string name="drawer_device">Gerät</string>
     <string name="drawer_device_connect">Verbinden</string>
     <string name="drawer_device_search">Suchen</string>

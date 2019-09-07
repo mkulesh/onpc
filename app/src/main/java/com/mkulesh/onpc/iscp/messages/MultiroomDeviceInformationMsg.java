@@ -36,6 +36,7 @@ import androidx.annotation.NonNull;
 public class MultiroomDeviceInformationMsg extends ISCPMessage
 {
     public final static String CODE = "MDI";
+    public final static String UNKNOWN = "UNKNOWN";
 
     enum ChannelType
     {
@@ -158,5 +159,12 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
                 Logging.info(this, "    Zone " + s.toString());
             }
         }
+    }
+
+    @NonNull
+    public String getProperty(final String name)
+    {
+        String prop = properties.get(name);
+        return prop == null? UNKNOWN : prop;
     }
 }

@@ -86,6 +86,12 @@ public class BroadcastResponseMsg extends ISCPMessage
         return port;
     }
 
+    @NonNull
+    public String getIdentifier()
+    {
+        return identifier == null ? "" : identifier;
+    }
+
     public boolean isValid()
     {
         return host != null && port != null;

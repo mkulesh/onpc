@@ -29,10 +29,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.ConnectionState;
+import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private Menu mainMenu;
     private ConnectionState connectionState;
     private final StateHolder stateHolder = new StateHolder();
+    private DeviceList deviceList;
     private Toast exitToast = null;
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
 
         connectionState = new ConnectionState(this);
+        deviceList = new DeviceList(this, connectionState);
 
         // Initially reset zone state
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
@@ -320,6 +324,14 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         startActivity(intent);
     }
 
+    public void connectToDevice(BroadcastResponseMsg response)
+    {
+        if (connectToDevice(response.getHost(), response.getPort()))
+        {
+            configuration.saveDevice(response.getHost(), response.getPort());
+        }
+    }
+
     public boolean connectToDevice(final String device, final int port)
     {
         stateHolder.release(false, "reconnect");
@@ -371,7 +383,11 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     protected void onResume()
     {
         super.onResume();
-        connectionState.setActive(true);
+        connectionState.start();
+        if (connectionState.isActive())
+        {
+            deviceList.start();
+        }
         if (!configuration.getDeviceName().isEmpty() && configuration.getDevicePort() > 0)
         {
             Logging.info(this, "use stored connection data: "
@@ -392,16 +408,21 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             savedReceiverInformation = getStateManager().getState().receiverInformation;
         }
-        connectionState.setActive(false);
+        deviceList.stop();
+        connectionState.stop();
         stateHolder.release(true, "pause");
     }
 
     @Override
     public void onStateChanged(State state, @Nullable final HashSet<State.ChangeType> eventChanges)
     {
-        if (state != null && eventChanges != null && eventChanges.contains(State.ChangeType.RECEIVER_INFO))
+        if (state != null && eventChanges != null)
         {
-            updateConfiguration(state);
+            if (eventChanges.contains(State.ChangeType.RECEIVER_INFO) ||
+                eventChanges.contains(State.ChangeType.MULTIROOM_INFO))
+            {
+                updateConfiguration(state);
+            }
         }
         final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
         if (f != null)
@@ -540,5 +561,11 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                     MasterVolumeMsg.Command.UP : MasterVolumeMsg.Command.DOWN));
             break;
         }
+    }
+
+    @NonNull
+    public DeviceList getDeviceList()
+    {
+        return deviceList;
     }
 }

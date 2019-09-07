@@ -37,6 +37,7 @@ import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -176,6 +177,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         final String powerStateQueries[] = new String[]{
                 ReceiverInformationMsg.CODE,
+                MultiroomDeviceInformationMsg.CODE,
                 PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
                 FriendlyNameMsg.CODE,
                 FirmwareUpdateMsg.CODE,

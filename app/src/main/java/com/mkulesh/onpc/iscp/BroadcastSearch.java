@@ -31,13 +31,26 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
     public final static int ISCP_PORT = 60128;
     private final static int TIMEOUT = 3000;
 
+    // Connection state
     private final ConnectionState connectionState;
-    private final AtomicBoolean active = new AtomicBoolean();
-    protected ConnectionState.FailureReason failureReason = null;
 
-    public BroadcastSearch(final ConnectionState connectionState)
+    // Callbacks
+    public interface EventListener
+    {
+        void onDeviceFound(BroadcastResponseMsg response);
+
+        void noDevice(ConnectionState.FailureReason reason);
+    }
+    private EventListener eventListener;
+
+    // Common properties
+    private final AtomicBoolean active = new AtomicBoolean();
+    private ConnectionState.FailureReason failureReason = null;
+
+    BroadcastSearch(final ConnectionState connectionState, final EventListener eventListener)
     {
         this.connectionState = connectionState;
+        this.eventListener = eventListener;
         active.set(false);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -48,14 +61,15 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
     protected void onPreExecute()
     {
         super.onPreExecute();
-        setActive(true);
+        active.set(true);
     }
 
-    protected void setActive(boolean a)
+    public void stop()
     {
         synchronized (active)
         {
-            active.set(a);
+            active.set(false);
+            eventListener = null;
         }
     }
 
@@ -203,12 +217,28 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
     @Override
     protected void onProgressUpdate(BroadcastResponseMsg... result)
     {
-        // empty
+        if (result == null || result.length == 0)
+        {
+            return;
+        }
+        final BroadcastResponseMsg msg = result[0];
+        if (eventListener != null)
+        {
+            eventListener.onDeviceFound(msg);
+        }
     }
 
     @Override
     protected void onPostExecute(Void aVoid)
     {
         super.onPostExecute(aVoid);
+        if (failureReason != null)
+        {
+            Logging.info(this, "Device not found: " + failureReason.toString());
+            if (eventListener != null)
+            {
+                eventListener.noDevice(failureReason);
+            }
+        }
     }
 }

@@ -153,6 +153,9 @@ public class State
     final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
     private final List<String> listInfoItems = new ArrayList<>();
 
+    // Multiroom
+    public MultiroomDeviceInformationMsg multiroomDevice = null;
+
     // Popup
     public CustomPopupMsg popup = null;
 
@@ -1129,6 +1132,7 @@ public class State
         try
         {
             msg.parseXml(true);
+            multiroomDevice = msg;
             return true;
         }
         catch (Exception e)
