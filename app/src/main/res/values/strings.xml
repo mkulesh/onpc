@@ -300,6 +300,8 @@
     <string name="cmd_description_memory">Memory(Add Favorite)</string>
     <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
     <string name="cmd_description_f2">Negative Feed</string>
+    <string name="cmd_group">Group devices</string>
+    <string name="cmd_ungroup">Ungroup devices</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">items</string>

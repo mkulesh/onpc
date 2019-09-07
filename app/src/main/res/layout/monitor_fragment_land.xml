@@ -57,11 +57,25 @@
             style="@style/ImageButtonSecondaryStyle"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:paddingLeft="@dimen/button_margin_horizontal"
+            android:paddingRight="@dimen/button_margin_horizontal"
             android:id="@+id/btn_track_menu"
             android:src="@drawable/cmd_menu"
             android:contentDescription="@string/medialist_track_menu"
             android:visibility="invisible"
             android:tag="MENU" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            style="@style/ImageButtonSecondaryStyle"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:paddingLeft="@dimen/button_margin_horizontal"
+            android:paddingRight="@dimen/button_margin_horizontal"
+            android:id="@+id/btn_cmd_group"
+            android:src="@drawable/cmd_group"
+            android:contentDescription="@string/cmd_group"
+            android:visibility="invisible"
+            android:tag="GROUP" />
 
         <TextView
             style="@style/SecondaryTextViewStyle"

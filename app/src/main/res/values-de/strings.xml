@@ -251,6 +251,8 @@
     <string name="cmd_description_memory">Speichern(Favorit hinzufügen)</string>
     <string name="cmd_description_f1">Positiv markieren/demarkieren</string>
     <string name="cmd_description_f2">Negativ markieren</string>
+    <string name="cmd_group">Gruppieren</string>
+    <string name="cmd_ungroup">Gruppierung aufheben</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">Elemente</string>

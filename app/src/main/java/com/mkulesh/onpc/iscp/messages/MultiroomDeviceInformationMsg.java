@@ -43,14 +43,14 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
         ST, FL, FR, NONE
     }
 
-    enum RoleType
+    public enum RoleType
     {
         SRC, DST, NONE
     }
 
     public static class Zone
     {
-        final String id;
+        final int id;
         final String groupid;
         final ChannelType ch;
         final RoleType role;
@@ -63,7 +63,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
 
         Zone(Element e)
         {
-            id = e.getAttribute("id").toUpperCase();
+            id = Integer.parseInt(e.getAttribute("id"));
             groupid = e.hasAttribute("groupid") ? e.getAttribute("groupid") : "";
             ch = e.hasAttribute("ch") ? ChannelType.valueOf(e.getAttribute("ch").toUpperCase()) : ChannelType.NONE;
             role = e.hasAttribute("role") ? RoleType.valueOf(e.getAttribute("role").toUpperCase()) : RoleType.NONE;
@@ -88,6 +88,16 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
                     + ", iconid=" + iconid
                     + ", color=" + color
                     + ", delay=" + delay;
+        }
+
+        public int getId()
+        {
+            return id;
+        }
+
+        public RoleType getRole()
+        {
+            return role;
         }
     }
 
@@ -166,5 +176,11 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
     {
         String prop = properties.get(name);
         return prop == null? UNKNOWN : prop;
+    }
+
+    @NonNull
+    public List<Zone> getZones()
+    {
+        return zones;
     }
 }

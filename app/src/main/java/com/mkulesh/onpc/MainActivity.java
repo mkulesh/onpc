@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
@@ -567,5 +568,12 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     public DeviceList getDeviceList()
     {
         return deviceList;
+    }
+
+    @NonNull
+    public String myDeviceId()
+    {
+        return stateHolder.getState() != null ?
+                stateHolder.getState().multiroomDeviceId : MultiroomDeviceInformationMsg.UNKNOWN;
     }
 }

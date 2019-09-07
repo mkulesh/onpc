@@ -31,7 +31,6 @@ import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
-import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
@@ -232,9 +231,6 @@ class MainNavigationDrawer
             devices.add(deviceInfo.message);
         }
 
-        final String myDevice = state != null && state.multiroomDevice != null ?
-                state.multiroomDevice.getProperty("deviceid") : MultiroomDeviceInformationMsg.UNKNOWN;
-
         final Menu menu = navigationView.getMenu();
         for (int k = 0; k < menu.size(); k++)
         {
@@ -264,7 +260,7 @@ class MainNavigationDrawer
                     {
                         m.setTitle(devices.get(i).getDevice());
                         m.setVisible(true);
-                        m.setChecked(devices.get(i).getIdentifier().equals(myDevice));
+                        m.setChecked(devices.get(i).getIdentifier().equals(activity.myDeviceId()));
                     }
                     else
                     {

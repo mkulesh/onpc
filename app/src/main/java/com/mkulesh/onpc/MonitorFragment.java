@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
@@ -35,6 +36,7 @@ import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomGroupSettingMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
@@ -70,6 +72,7 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnNext;
     private AppCompatImageButton btnRandom;
     private AppCompatImageButton btnTrackMenu;
+    private AppCompatImageButton btnCmdGroup;
     private final List<AppCompatImageButton> playbackButtons = new ArrayList<>();
     private final List<AppCompatImageButton> fmDabButtons = new ArrayList<>();
     private final List<AppCompatImageButton> amplifierButtons = new ArrayList<>();
@@ -176,6 +179,9 @@ public class MonitorFragment extends BaseFragment
             });
             setButtonEnabled(btnTrackMenu, false);
         }
+
+        // Multiroom groups
+        btnCmdGroup = rootView.findViewById(R.id.btn_cmd_group);
 
         // Feeds
         positiveFeed = rootView.findViewById(R.id.btn_positive_feed);
@@ -361,7 +367,8 @@ public class MonitorFragment extends BaseFragment
         setButtonsVisibility(playbackButtons, View.VISIBLE);
         setButtonsEnabled(playbackButtons, false);
         setButtonsVisibility(fmDabButtons, View.GONE);
-        btnTrackMenu.setVisibility(View.INVISIBLE);
+        btnTrackMenu.setVisibility(View.GONE);
+        btnCmdGroup.setVisibility(View.GONE);
         positiveFeed.setVisibility(View.GONE);
         negativeFeed.setVisibility(View.GONE);
     }
@@ -462,7 +469,7 @@ public class MonitorFragment extends BaseFragment
             {
                 final MasterVolumeMsg.Command cmd = (MasterVolumeMsg.Command) (b.getTag());
                 prepareButtonListeners(b, new MasterVolumeMsg(state.getActiveZone(), cmd));
-                if (isVolumeDialogEnabled())
+                if (isVolumeComandEnabled())
                 {
                     b.setOnLongClickListener(v -> showMasterVolumeDialog());
                 }
@@ -509,9 +516,12 @@ public class MonitorFragment extends BaseFragment
         {
             final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE &&
                     state.playStatus != PlayStatusMsg.PlayStatus.STOP;
-            btnTrackMenu.setVisibility(isTrackMenu ? View.VISIBLE : View.INVISIBLE);
+            btnTrackMenu.setVisibility(isTrackMenu ? View.VISIBLE : View.GONE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
         }
+
+        // Multiroom groups
+        updateBtnCmdGroup(state);
 
         // Feeds
         updateFeedButton(positiveFeed, state.positiveFeed);
@@ -613,6 +623,30 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
+    private void updateBtnCmdGroup(@NonNull final State state)
+    {
+        final boolean isGroupMenu = activity.getDeviceList().getDevices().size() > 1;
+        btnCmdGroup.setVisibility(isGroupMenu ? View.VISIBLE : View.GONE);
+        setButtonSelected(btnCmdGroup, state.isMasterDevice());
+        btnCmdGroup.setContentDescription(activity.getResources().getString(
+                state.isMasterDevice()? R.string.cmd_ungroup : R.string.cmd_group));
+
+        final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
+                new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.GROUP_DISSOLUTION,
+                        state.getActiveZone() + 1, 0, 0) :
+                new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
+                        state.getActiveZone() + 1, 119, 3000);
+        for (DeviceList.DeviceInfo deviceInfo : activity.getDeviceList().getDevices().values())
+        {
+            if (!deviceInfo.message.getIdentifier().equals(activity.myDeviceId()))
+            {
+                cmd.addDevice(deviceInfo.message.getIdentifier());
+            }
+        }
+
+        prepareButtonListeners(btnCmdGroup, cmd);
+    }
+
     private boolean isVolumeLevel(View b)
     {
         return b.getTag() != null && b.getTag() instanceof String && VOLUME_LEVEL.equals(b.getTag());
@@ -637,7 +671,7 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
-    private boolean isVolumeDialogEnabled()
+    private boolean isVolumeComandEnabled()
     {
         return activity != null && activity.isConnected() && activity.getStateManager().getState().isOn();
     }
@@ -645,7 +679,7 @@ public class MonitorFragment extends BaseFragment
     @SuppressLint("SetTextI18n")
     private boolean showMasterVolumeDialog()
     {
-        if (!isVolumeDialogEnabled())
+        if (!isVolumeComandEnabled())
         {
             return false;
         }
@@ -701,7 +735,7 @@ public class MonitorFragment extends BaseFragment
                 @SuppressLint("SetTextI18n")
                 public void onStopTrackingTouch(SeekBar seekBar)
                 {
-                    if (isVolumeDialogEnabled())
+                    if (isVolumeComandEnabled())
                     {
                         activity.getStateManager().sendMessage(
                                 new MasterVolumeMsg(state.getActiveZone(), progressChanged));
@@ -810,7 +844,7 @@ public class MonitorFragment extends BaseFragment
             @SuppressLint("SetTextI18n")
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                if (isVolumeDialogEnabled())
+                if (isVolumeComandEnabled())
                 {
                     switch (toneKey)
                     {

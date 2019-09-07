@@ -154,7 +154,8 @@ public class State
     private final List<String> listInfoItems = new ArrayList<>();
 
     // Multiroom
-    public MultiroomDeviceInformationMsg multiroomDevice = null;
+    public String multiroomDeviceId = "";
+    public List<MultiroomDeviceInformationMsg.Zone> multiroomZones = new ArrayList<>();
 
     // Popup
     public CustomPopupMsg popup = null;
@@ -1132,12 +1133,26 @@ public class State
         try
         {
             msg.parseXml(true);
-            multiroomDevice = msg;
+            multiroomDeviceId = msg.getProperty("deviceid");
+            multiroomZones = msg.getZones();
             return true;
         }
         catch (Exception e)
         {
             Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
+        }
+        return false;
+    }
+
+    public boolean isMasterDevice()
+    {
+        for (MultiroomDeviceInformationMsg.Zone z : multiroomZones)
+        {
+            if (z.getId() == getActiveZone() + 1 &&
+                    z.getRole() == MultiroomDeviceInformationMsg.RoleType.SRC)
+            {
+                return true;
+            }
         }
         return false;
     }
