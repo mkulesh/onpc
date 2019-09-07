@@ -102,6 +102,7 @@
         <item>Нет</item>
         <item>Внешний усилитель (RI)</item>
         <item>Само устройство</item>
+        <item>Выбрать автоматически</item>
     </string-array>
 
     <!-- App themes -->

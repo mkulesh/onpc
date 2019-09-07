@@ -101,6 +101,7 @@
         <item>None</item>
         <item>External amplifier (RI)</item>
         <item>Device</item>
+        <item>Automatic</item>
     </string-array>
 
     <string name="pref_default_sound_control" translatable="false">device</string>
@@ -108,6 +109,7 @@
         <item>none</item>
         <item>external-amplifier</item>
         <item>device</item>
+        <item>auto</item>
     </string-array>
 
     <!-- App themes -->

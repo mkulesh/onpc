@@ -99,6 +99,7 @@
         <item>Keine</item>
         <item>Externer Verstärker (RI)</item>
         <item>Gerät</item>
+        <item>Automatisch</item>
     </string-array>
 
     <!-- App themes -->

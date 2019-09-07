@@ -134,6 +134,7 @@ public class MonitorFragment extends BaseFragment
             prepareAmplifierButtons();
             break;
         case "device":
+        case "auto":
             prepareDeviceSoundButtons();
             break;
         }
@@ -220,9 +221,17 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
+    private void clearSoundVolumeButtons(final LinearLayout soundControlLayout)
+    {
+        amplifierButtons.clear();
+        deviceSoundButtons.clear();
+        soundControlLayout.removeAllViews();
+    }
+
     private void prepareAmplifierButtons()
     {
         final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
+        clearSoundVolumeButtons(soundControlLayout);
         soundControlLayout.setVisibility(View.VISIBLE);
 
         final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]
@@ -245,6 +254,7 @@ public class MonitorFragment extends BaseFragment
     private void prepareDeviceSoundButtons()
     {
         final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
+        clearSoundVolumeButtons(soundControlLayout);
         soundControlLayout.setVisibility(View.VISIBLE);
 
         // Here, we create zone-dependent buttons without command message.
@@ -367,8 +377,23 @@ public class MonitorFragment extends BaseFragment
         }
 
         Logging.info(this, "Updating playback monitor");
+
+        // Auto volume control
+        final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+        if (activity.getConfiguration().getSoundControl().equals("auto"))
         {
-            // Text
+            if (zone != null && zone.getVolMax() == 0)
+            {
+                prepareAmplifierButtons();
+            }
+            else
+            {
+                prepareDeviceSoundButtons();
+            }
+        }
+
+        // Text (album and artist)
+        {
             ((TextView) rootView.findViewById(R.id.tv_album)).setText(state.album);
             ((TextView) rootView.findViewById(R.id.tv_artist)).setText(state.artist);
 
