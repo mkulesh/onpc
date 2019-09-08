@@ -122,7 +122,10 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         int page = viewPager.getCurrentItem();
         initGUI();
         viewPager.setCurrentItem(page);
-        updateConfiguration(stateHolder.getState());
+        if (stateHolder.getState() != null)
+        {
+            updateConfiguration(stateHolder.getState());
+        }
 
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
