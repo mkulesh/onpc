@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String versionName = null;
-    int orientation;
+    int startRequestCode, orientation;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -85,7 +85,11 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         Logging.saveLogging = Logging.isEnabled() && configuration.isDeveloperMode();
 
         // Note that due to onActivityResult, the activity will be started twice
-        // after the preference activity is closed
+        // after the Preference activity is closed
+        // We store activity result code in startRequestCode and use it to prevent
+        // network communication after Preference activity is just closed
+        startRequestCode = 0;
+
         super.onCreate(savedInstanceState);
 
         orientation = getResources().getConfiguration().orientation;
@@ -169,7 +173,13 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(this, navigationDrawer.getDrawerLayout(), toolbar,
-                R.string.drawer_open, R.string.drawer_open);
+                R.string.drawer_open, R.string.drawer_open){
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+                navigationDrawer.updateNavigationContent(stateHolder.getState());
+            }
+        };
         Utils.setDrawerListener(navigationDrawer.getDrawerLayout(), mDrawerToggle);
     }
 
@@ -317,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SETTINGS_ACTIVITY_REQID)
         {
+            startRequestCode = requestCode;
             restartActivity();
         }
     }
@@ -387,6 +398,10 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     protected void onResume()
     {
         super.onResume();
+        if (startRequestCode == SETTINGS_ACTIVITY_REQID)
+        {
+            return;
+        }
         connectionState.start();
         if (connectionState.isActive())
         {
