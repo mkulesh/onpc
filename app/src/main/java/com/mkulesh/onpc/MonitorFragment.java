@@ -27,10 +27,12 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.config.CheckableItemView;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -631,21 +633,100 @@ public class MonitorFragment extends BaseFragment
         btnCmdGroup.setContentDescription(activity.getResources().getString(
                 state.isMasterDevice()? R.string.cmd_ungroup : R.string.cmd_group));
 
-        final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
-                new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.GROUP_DISSOLUTION,
-                        state.getActiveZone() + 1, 0, 0) :
-                new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
-                        state.getActiveZone() + 1, 119, 3000);
+        final int maxDelay = 3000;
+        final List<BroadcastResponseMsg> devices = new ArrayList<>();
         for (DeviceList.DeviceInfo deviceInfo : activity.getDeviceList().getDevices().values())
         {
             if (!deviceInfo.message.getIdentifier().equals(activity.myDeviceId()))
             {
-                cmd.addDevice(deviceInfo.message.getIdentifier());
+                devices.add(deviceInfo.message);
             }
         }
 
-        prepareButtonListeners(btnCmdGroup, cmd);
+        if (devices.size() == 1)
+        {
+            final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
+                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.GROUP_DISSOLUTION,
+                            state.getActiveZone() + 1, 0, maxDelay) :
+                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
+                            state.getActiveZone() + 1, 119, maxDelay);
+            for (BroadcastResponseMsg msg : devices)
+            {
+                cmd.getDevice().add(msg.getIdentifier());
+            }
+            prepareButtonListeners(btnCmdGroup, cmd);
+        }
+        else
+        {
+            final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
+                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.REMOVE_SLAVE,
+                            state.getActiveZone() + 1, 0, maxDelay) :
+                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
+                            state.getActiveZone() + 1, 119, maxDelay);
+            prepareButtonListeners(btnCmdGroup, null, () ->
+            {
+                if (activity.isConnected())
+                {
+                    showDeviceSelectionDialog(btnCmdGroup.getContentDescription(), cmd, devices);
+                }
+            });
+        }
     }
+
+
+    private void showDeviceSelectionDialog(CharSequence title,
+            final MultiroomGroupSettingMsg cmd, final List<BroadcastResponseMsg> devices)
+    {
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_multiroom_layout, frameView);
+
+        // Create device list
+        final LinearLayout deviceGroup = frameView.findViewById(R.id.device_group);
+        for (BroadcastResponseMsg msg : devices)
+        {
+            final CheckableItemView view = (CheckableItemView) activity.getLayoutInflater().inflate(
+                    R.layout.checkable_item_view, deviceGroup, false);
+            view.setText(msg.getDevice());
+            view.setDraggedVisibility(View.GONE);
+            view.setTag(msg.getIdentifier());
+            view.setOnClickListener(v -> {
+                CheckableItemView cv = (CheckableItemView)v;
+                cv.setChecked(!cv.isChecked());
+            });
+            deviceGroup.addView(view);
+        }
+
+        // Create dialog
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_group);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView)
+                .setNegativeButton(R.string.action_cancel, (dialog1, which) -> dialog1.dismiss())
+                .setPositiveButton(R.string.action_ok, (dialog2, which) ->
+                {
+                    for (int i = 0; i < deviceGroup.getChildCount(); i++)
+                    {
+                        CheckableItemView cv = (CheckableItemView) deviceGroup.getChildAt(i);
+                        if (cv.isChecked())
+                        {
+                            cmd.getDevice().add((String)cv.getTag());
+                        }
+                    }
+                    if (cmd.getDevice().size() > 0)
+                    {
+                        activity.getStateManager().sendMessage(cmd);
+                    }
+                    dialog2.dismiss();
+                }).create();
+
+        alertDialog.show();
+        Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
+    }
+
 
     private boolean isVolumeLevel(View b)
     {

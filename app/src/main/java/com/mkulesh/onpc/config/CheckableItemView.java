@@ -31,6 +31,7 @@ public class CheckableItemView extends LinearLayout implements Checkable
     private ImageView icon;
     private TextView textView;
     private CheckedTextView checkBox;
+    private ImageView checkableDragger;
     private boolean checked;
 
     public CheckableItemView(Context context, AttributeSet attrs)
@@ -44,8 +45,8 @@ public class CheckableItemView extends LinearLayout implements Checkable
         icon = this.findViewById(R.id.checkable_icon);
         textView = this.findViewById(R.id.checkable_text);
         checkBox = this.findViewById(R.id.checkable_checkbox);
-        final ImageView d = this.findViewById(R.id.checkable_dragger);
-        Utils.setImageViewColorAttr(getContext(), d, android.R.attr.textColor);
+        checkableDragger = this.findViewById(R.id.checkable_dragger);
+        Utils.setImageViewColorAttr(getContext(), checkableDragger, android.R.attr.textColor);
         super.onFinishInflate();
     }
 
@@ -71,6 +72,11 @@ public class CheckableItemView extends LinearLayout implements Checkable
     public void setText(String line)
     {
         textView.setText(line);
+    }
+
+    public void setDraggedVisibility(int v)
+    {
+        checkableDragger.setVisibility(v);
     }
 
     @Override

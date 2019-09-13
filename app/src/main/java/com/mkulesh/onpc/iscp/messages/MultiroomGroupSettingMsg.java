@@ -30,7 +30,8 @@ public class MultiroomGroupSettingMsg extends ISCPMessage
     public enum Command
     {
         ADD_SLAVE,
-        GROUP_DISSOLUTION
+        GROUP_DISSOLUTION,
+        REMOVE_SLAVE
     }
 
     private final Command command;
@@ -46,9 +47,10 @@ public class MultiroomGroupSettingMsg extends ISCPMessage
         this.maxDelay = maxDelay;
     }
 
-    public void addDevice(final String device)
+    @NonNull
+    public List<String> getDevice()
     {
-        devices.add(device);
+        return devices;
     }
 
     @NonNull
@@ -92,6 +94,23 @@ public class MultiroomGroupSettingMsg extends ISCPMessage
             cmd.append("\"><groupid>");
             cmd.append(groupId);
             cmd.append("</groupid></mgs>");
+            return new EISCPMessage(CODE, cmd.toString());
+        }
+        case REMOVE_SLAVE:
+        {
+            final StringBuilder cmd = new StringBuilder();
+            cmd.append("<mgs zone=\"");
+            cmd.append(zone);
+            cmd.append("\"><groupid>");
+            cmd.append(groupId);
+            cmd.append("</groupid><maxdelay>");
+            cmd.append(maxDelay);
+            cmd.append("</maxdelay><devices>");
+            for (String d : devices)
+            {
+                cmd.append("<device id=\"").append(d).append("\" zoneid=\"1\"/>");
+            }
+            cmd.append("</devices></mgs>");
             return new EISCPMessage(CODE, cmd.toString());
         }
         }
