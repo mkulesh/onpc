@@ -39,6 +39,7 @@ import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomChannelSettingMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
@@ -155,7 +156,8 @@ public class State
 
     // Multiroom
     public String multiroomDeviceId = "";
-    public List<MultiroomDeviceInformationMsg.Zone> multiroomZones = new ArrayList<>();
+    private List<MultiroomDeviceInformationMsg.Zone> multiroomZones = new ArrayList<>();
+    public MultiroomDeviceInformationMsg.ChannelType multiroomChannel = MultiroomDeviceInformationMsg.ChannelType.NONE;
 
     // Popup
     public CustomPopupMsg popup = null;
@@ -460,6 +462,10 @@ public class State
         if (msg instanceof MultiroomDeviceInformationMsg)
         {
             return process((MultiroomDeviceInformationMsg) msg) ? ChangeType.MULTIROOM_INFO : ChangeType.NONE;
+        }
+        if (msg instanceof MultiroomChannelSettingMsg)
+        {
+            return isCommonChange(process((MultiroomChannelSettingMsg) msg));
         }
 
         return ChangeType.NONE;
@@ -1135,6 +1141,7 @@ public class State
             msg.parseXml(true);
             multiroomDeviceId = msg.getProperty("deviceid");
             multiroomZones = msg.getZones();
+            multiroomChannel = getChannelType();
             return true;
         }
         catch (Exception e)
@@ -1155,5 +1162,24 @@ public class State
             }
         }
         return false;
+    }
+
+    private boolean process(MultiroomChannelSettingMsg msg)
+    {
+        final boolean changed = multiroomChannel != msg.getChannelType();
+        multiroomChannel = msg.getChannelType();
+        return changed;
+    }
+
+    private MultiroomDeviceInformationMsg.ChannelType getChannelType()
+    {
+        for (MultiroomDeviceInformationMsg.Zone z : multiroomZones)
+        {
+            if (z.getId() == getActiveZone() + 1)
+            {
+                return z.getChannelType();
+            }
+        }
+        return MultiroomDeviceInformationMsg.ChannelType.NONE;
     }
 }

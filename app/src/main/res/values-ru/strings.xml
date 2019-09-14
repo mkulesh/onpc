@@ -252,8 +252,9 @@
     <string name="cmd_description_memory">Добавить в избранное</string>
     <string name="cmd_description_f1">Нравится</string>
     <string name="cmd_description_f2">Не нравится</string>
-    <string name="cmd_group">Сгруппировать с другими устойствами</string>
-    <string name="cmd_ungroup">Разгруппировать</string>
+    <string name="cmd_multiroom_group">Сгруппировать с другими устойствами</string>
+    <string name="cmd_multiroom_ungroup">Разгруппировать</string>
+    <string name="cmd_multiroom_channel">Канал колонок</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">элементов</string>

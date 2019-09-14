@@ -38,7 +38,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
     public final static String CODE = "MDI";
     public final static String UNKNOWN = "UNKNOWN";
 
-    enum ChannelType
+    public enum ChannelType
     {
         ST, FL, FR, NONE
     }
@@ -98,6 +98,11 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
         public RoleType getRole()
         {
             return role;
+        }
+
+        public ChannelType getChannelType()
+        {
+            return ch;
         }
     }
 
@@ -175,7 +180,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
     public String getProperty(final String name)
     {
         String prop = properties.get(name);
-        return prop == null? UNKNOWN : prop;
+        return prop == null ? UNKNOWN : prop;
     }
 
     @NonNull

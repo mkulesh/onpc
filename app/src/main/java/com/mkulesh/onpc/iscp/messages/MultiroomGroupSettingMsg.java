@@ -21,7 +21,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 
 /*
- * Amplifier Operation Command
+ * Multiroom Group Setting Command
  */
 public class MultiroomGroupSettingMsg extends ISCPMessage
 {

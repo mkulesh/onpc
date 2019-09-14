@@ -38,7 +38,9 @@ import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomGroupSettingMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomChannelSettingMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
@@ -74,7 +76,8 @@ public class MonitorFragment extends BaseFragment
     private AppCompatImageButton btnNext;
     private AppCompatImageButton btnRandom;
     private AppCompatImageButton btnTrackMenu;
-    private AppCompatImageButton btnCmdGroup;
+    private AppCompatImageButton btnMultiroomGroup;
+    private AppCompatButton btnMultiroomChanel;
     private final List<AppCompatImageButton> playbackButtons = new ArrayList<>();
     private final List<AppCompatImageButton> fmDabButtons = new ArrayList<>();
     private final List<AppCompatImageButton> amplifierButtons = new ArrayList<>();
@@ -182,8 +185,9 @@ public class MonitorFragment extends BaseFragment
             setButtonEnabled(btnTrackMenu, false);
         }
 
-        // Multiroom groups
-        btnCmdGroup = rootView.findViewById(R.id.btn_cmd_group);
+        // Multiroom
+        btnMultiroomGroup = rootView.findViewById(R.id.btn_multiroom_group);
+        btnMultiroomChanel = rootView.findViewById(R.id.btn_multiroom_channel);
 
         // Feeds
         positiveFeed = rootView.findViewById(R.id.btn_positive_feed);
@@ -370,7 +374,8 @@ public class MonitorFragment extends BaseFragment
         setButtonsEnabled(playbackButtons, false);
         setButtonsVisibility(fmDabButtons, View.GONE);
         btnTrackMenu.setVisibility(View.GONE);
-        btnCmdGroup.setVisibility(View.GONE);
+        updateMultiroomGroupBtn(btnMultiroomGroup, state);
+        updateMultiroomChannelBtn(btnMultiroomChanel, state);
         positiveFeed.setVisibility(View.GONE);
         negativeFeed.setVisibility(View.GONE);
     }
@@ -523,7 +528,8 @@ public class MonitorFragment extends BaseFragment
         }
 
         // Multiroom groups
-        updateBtnCmdGroup(state);
+        updateMultiroomGroupBtn(btnMultiroomGroup, state);
+        updateMultiroomChannelBtn(btnMultiroomChanel, state);
 
         // Feeds
         updateFeedButton(positiveFeed, state.positiveFeed);
@@ -537,6 +543,10 @@ public class MonitorFragment extends BaseFragment
         setButtonsEnabled(fmDabButtons, true);
     }
 
+
+    /*
+     * Playback control
+     */
     private void updatePlaybackButtons(@NonNull final State state)
     {
         setButtonsVisibility(fmDabButtons, View.GONE);
@@ -625,54 +635,67 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
-    private void updateBtnCmdGroup(@NonNull final State state)
+
+    /*
+     * Multiroom control
+     */
+    private void updateMultiroomGroupBtn(AppCompatImageButton b, @Nullable final State state)
     {
         final boolean isGroupMenu = activity.getDeviceList().getDevices().size() > 1;
-        btnCmdGroup.setVisibility(isGroupMenu ? View.VISIBLE : View.GONE);
-        setButtonSelected(btnCmdGroup, state.isMasterDevice());
-        btnCmdGroup.setContentDescription(activity.getResources().getString(
-                state.isMasterDevice()? R.string.cmd_ungroup : R.string.cmd_group));
 
-        final int maxDelay = 3000;
-        final List<BroadcastResponseMsg> devices = new ArrayList<>();
-        for (DeviceList.DeviceInfo deviceInfo : activity.getDeviceList().getDevices().values())
+        if (state != null && isGroupMenu)
         {
-            if (!deviceInfo.message.getIdentifier().equals(activity.myDeviceId()))
-            {
-                devices.add(deviceInfo.message);
-            }
-        }
+            b.setVisibility(View.VISIBLE);
+            setButtonEnabled(b, true);
+            setButtonSelected(b, state.isMasterDevice());
+            b.setContentDescription(activity.getResources().getString(
+                    state.isMasterDevice() ? R.string.cmd_multiroom_ungroup : R.string.cmd_multiroom_group));
 
-        if (devices.size() == 1)
-        {
-            final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
-                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.GROUP_DISSOLUTION,
-                            state.getActiveZone() + 1, 0, maxDelay) :
-                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
-                            state.getActiveZone() + 1, 119, maxDelay);
-            for (BroadcastResponseMsg msg : devices)
+            final int maxDelay = 3000;
+            final List<BroadcastResponseMsg> devices = new ArrayList<>();
+            for (DeviceList.DeviceInfo deviceInfo : activity.getDeviceList().getDevices().values())
             {
-                cmd.getDevice().add(msg.getIdentifier());
+                if (!deviceInfo.message.getIdentifier().equals(activity.myDeviceId()))
+                {
+                    devices.add(deviceInfo.message);
+                }
             }
-            prepareButtonListeners(btnCmdGroup, cmd);
+
+            if (devices.size() == 1)
+            {
+                final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
+                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.GROUP_DISSOLUTION,
+                                state.getActiveZone() + 1, 0, maxDelay) :
+                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
+                                state.getActiveZone() + 1, 119, maxDelay);
+                for (BroadcastResponseMsg msg : devices)
+                {
+                    cmd.getDevice().add(msg.getIdentifier());
+                }
+                prepareButtonListeners(b, cmd);
+            }
+            else
+            {
+                final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
+                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.REMOVE_SLAVE,
+                                state.getActiveZone() + 1, 0, maxDelay) :
+                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
+                                state.getActiveZone() + 1, 119, maxDelay);
+                prepareButtonListeners(b, null, () ->
+                {
+                    if (activity.isConnected())
+                    {
+                        showDeviceSelectionDialog(b.getContentDescription(), cmd, devices);
+                    }
+                });
+            }
         }
         else
         {
-            final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
-                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.REMOVE_SLAVE,
-                            state.getActiveZone() + 1, 0, maxDelay) :
-                    new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
-                            state.getActiveZone() + 1, 119, maxDelay);
-            prepareButtonListeners(btnCmdGroup, null, () ->
-            {
-                if (activity.isConnected())
-                {
-                    showDeviceSelectionDialog(btnCmdGroup.getContentDescription(), cmd, devices);
-                }
-            });
+            b.setVisibility(View.GONE);
+            setButtonEnabled(b, false);
         }
     }
-
 
     private void showDeviceSelectionDialog(CharSequence title,
             final MultiroomGroupSettingMsg cmd, final List<BroadcastResponseMsg> devices)
@@ -690,14 +713,14 @@ public class MonitorFragment extends BaseFragment
             view.setDraggedVisibility(View.GONE);
             view.setTag(msg.getIdentifier());
             view.setOnClickListener(v -> {
-                CheckableItemView cv = (CheckableItemView)v;
+                CheckableItemView cv = (CheckableItemView) v;
                 cv.setChecked(!cv.isChecked());
             });
             deviceGroup.addView(view);
         }
 
         // Create dialog
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_group);
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_multiroom_group);
         Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(activity)
@@ -713,7 +736,7 @@ public class MonitorFragment extends BaseFragment
                         CheckableItemView cv = (CheckableItemView) deviceGroup.getChildAt(i);
                         if (cv.isChecked())
                         {
-                            cmd.getDevice().add((String)cv.getTag());
+                            cmd.getDevice().add((String) cv.getTag());
                         }
                     }
                     if (cmd.getDevice().size() > 0)
@@ -727,7 +750,38 @@ public class MonitorFragment extends BaseFragment
         Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
     }
 
+    private void updateMultiroomChannelBtn(AppCompatButton b, @Nullable final State state)
+    {
+        final boolean isGroupMenu = activity.getDeviceList().getDevices().size() > 1;
 
+        MultiroomDeviceInformationMsg.ChannelType ch = state != null ?
+                state.multiroomChannel : MultiroomDeviceInformationMsg.ChannelType.NONE;
+
+        if (ch != MultiroomDeviceInformationMsg.ChannelType.NONE && isGroupMenu)
+        {
+            final MultiroomChannelSettingMsg cmd = new MultiroomChannelSettingMsg(
+                    state.getActiveZone() + 1, MultiroomChannelSettingMsg.getUpType(ch));
+            b.setVisibility(View.VISIBLE);
+            b.setText(ch.toString());
+            setButtonEnabled(b, state.isOn());
+            final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_multiroom_channel);
+            Utils.setDrawableColorAttr(activity, icon,
+                    state.isOn() ? R.attr.colorButtonEnabled : R.attr.colorButtonDisabled);
+            b.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+            prepareButtonListeners(b, cmd, null);
+        }
+        else
+        {
+            b.setVisibility(View.GONE);
+            setButtonEnabled(b, false);
+            b.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
+    }
+
+
+    /*
+     * Volume control
+     */
     private boolean isVolumeLevel(View b)
     {
         return b.getTag() != null && b.getTag() instanceof String && VOLUME_LEVEL.equals(b.getTag());
@@ -769,8 +823,8 @@ public class MonitorFragment extends BaseFragment
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
         final int scale = (zone != null && zone.getVolumeStep() == 0) ? 2 : 1;
         final int maxVolume = (zone != null && zone.getVolMax() > 0) ?
-                    scale * zone.getVolMax() :
-                    Math.max(state.volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
+                scale * zone.getVolMax() :
+                Math.max(state.volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
 
 
         final FrameLayout frameView = new FrameLayout(activity);
@@ -895,9 +949,9 @@ public class MonitorFragment extends BaseFragment
 
         final float step = toneControl.getStep() == 0 ? 0.5f : toneControl.getStep();
         final AppCompatSeekBar progressBar = toneGroup.findViewWithTag("tone_progress_bar");
-        final int max = (int)((float)(toneControl.getMax() - toneControl.getMin())/step);
+        final int max = (int) ((float) (toneControl.getMax() - toneControl.getMin()) / step);
         progressBar.setMax(max);
-        final int progress = (int)((float)(toneLevel - toneControl.getMin())/step);
+        final int progress = (int) ((float) (toneLevel - toneControl.getMin()) / step);
         progressBar.setProgress(progress);
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
@@ -905,7 +959,7 @@ public class MonitorFragment extends BaseFragment
 
             private int getScaledProgress()
             {
-                return (int)((float)progressChanged * step) + toneControl.getMin();
+                return (int) ((float) progressChanged * step) + toneControl.getMin();
             }
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
@@ -942,8 +996,8 @@ public class MonitorFragment extends BaseFragment
                         activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress(), 2));
                         break;
                     case CenterLevelCommandMsg.KEY:
-                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(),1));
-                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(),2));
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(), 1));
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(), 2));
                         break;
                     }
                 }
@@ -951,17 +1005,10 @@ public class MonitorFragment extends BaseFragment
         });
     }
 
-    private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)
-    {
-        btn.setVisibility(feed.isImageValid() ? View.VISIBLE : View.GONE);
-        if (feed.isImageValid())
-        {
-            btn.setImageResource(feed.getImageId());
-            setButtonEnabled(btn, true);
-            setButtonSelected(btn, feed == MenuStatusMsg.Feed.LOVE);
-        }
-    }
 
+    /*
+     * Timeseek control
+     */
     private void updateProgressBar(@NonNull final State state)
     {
         ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
@@ -996,6 +1043,17 @@ public class MonitorFragment extends BaseFragment
             state.currentTime = msg.getTimeAsString();
             ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
             activity.getStateManager().sendMessage(msg);
+        }
+    }
+
+    private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)
+    {
+        btn.setVisibility(feed.isImageValid() ? View.VISIBLE : View.GONE);
+        if (feed.isImageValid())
+        {
+            btn.setImageResource(feed.getImageId());
+            setButtonEnabled(btn, true);
+            setButtonSelected(btn, feed == MenuStatusMsg.Feed.LOVE);
         }
     }
 }

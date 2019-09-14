@@ -129,6 +129,8 @@ public class MessageFactory
             return new CdPlayerOperationCommandMsg(raw);
         case MultiroomDeviceInformationMsg.CODE:
             return new MultiroomDeviceInformationMsg(raw);
+        case MultiroomChannelSettingMsg.CODE:
+            return new MultiroomChannelSettingMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }
