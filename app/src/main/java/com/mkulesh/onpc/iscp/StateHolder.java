@@ -15,6 +15,7 @@ package com.mkulesh.onpc.iscp;
 
 import com.mkulesh.onpc.utils.Logging;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StateHolder
@@ -76,6 +77,14 @@ public class StateHolder
                     Logging.info(this, "state holder released");
                     return;
                 }
+            }
+            try
+            {
+                TimeUnit.MILLISECONDS.sleep(50);
+            }
+            catch (InterruptedException e)
+            {
+                // nothing to do
             }
         }
     }
