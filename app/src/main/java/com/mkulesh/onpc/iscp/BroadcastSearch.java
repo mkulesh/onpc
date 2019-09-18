@@ -22,6 +22,7 @@ import com.mkulesh.onpc.utils.Logging;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -107,12 +108,13 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
         try
         {
-            final InetAddress local = InetAddress.getByName("0.0.0.0");
             final InetAddress target = connectionState.getBroadcastAddress();
 
-            final DatagramSocket socket = new DatagramSocket(ISCP_PORT, local);
+            final DatagramSocket socket = new DatagramSocket(null);
+            socket.setReuseAddress(true);
             socket.setBroadcast(true);
             socket.setSoTimeout(500);
+            socket.bind(new InetSocketAddress(ISCP_PORT));
 
             while (!isStopped())
             {
