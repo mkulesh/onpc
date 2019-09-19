@@ -84,6 +84,9 @@ public class State
         MULTIROOM_INFO
     }
 
+    // main host
+    private final String host;
+
     // Receiver Information
     public String receiverInformation = "";
     String friendlyName = "";
@@ -162,8 +165,9 @@ public class State
     // Popup
     public CustomPopupMsg popup = null;
 
-    State(int activeZone)
+    State(final String host, int activeZone)
     {
+        this.host = host;
         this.activeZone = activeZone;
         clearTrackInfo();
     }
@@ -285,6 +289,11 @@ public class State
         maxTime = TimeInfoMsg.INVALID_TIME;
         currentTrack = null;
         maxTrack = null;
+    }
+
+    private boolean isAnotherHost(final ISCPMessage msg)
+    {
+        return msg.sourceHost != null && !msg.sourceHost.equals(host);
     }
 
     public ChangeType update(ISCPMessage msg)

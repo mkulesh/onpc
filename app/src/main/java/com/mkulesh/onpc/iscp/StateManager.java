@@ -80,6 +80,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         void onDeviceDisconnected();
     }
 
+    private final DeviceList deviceList;
+    private final ConnectionState connectionState;
+
     private final StateListener stateListener;
     private final MessageChannel messageChannel;
     private final State state;
@@ -102,23 +105,30 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private boolean autoPower = false;
     private final boolean useBmpImages;
 
-    public StateManager(final ConnectionState connectionState, final StateListener stateListener,
-                        final String device, final int port, final int zone,
-                        boolean autoPower, String savedReceiverInformation) throws Exception
+    private final BlockingQueue<ISCPMessage> inputQueue = new ArrayBlockingQueue<>(MessageChannel.QUEUE_SIZE, true);
+
+    public StateManager(final DeviceList deviceList,
+                        final ConnectionState connectionState,
+                        final StateListener stateListener,
+                        final String device, final int port,
+                        final int zone, boolean autoPower,
+                        String savedReceiverInformation) throws Exception
     {
+        this.deviceList = deviceList;
+        this.connectionState = connectionState;
         this.stateListener = stateListener;
 
-        messageChannel = new MessageChannel(connectionState);
-        state = new State(zone);
-
-        // In LTE mode, always use BMP images instead of links since direct links
-        // can be not available
-        useBmpImages = !connectionState.isWifi();
-
+        messageChannel = new MessageChannel(connectionState, inputQueue);
         if (!messageChannel.connectToServer(device, port))
         {
             throw new Exception("Cannot connect to server");
         }
+
+        state = new State(device, zone);
+
+        // In LTE mode, always use BMP images instead of links since direct links
+        // can be not available
+        useBmpImages = !connectionState.isWifi();
 
         this.autoPower = autoPower;
         if (savedReceiverInformation != null)
@@ -143,9 +153,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     public StateManager(final ConnectionState connectionState, final StateListener stateListener, final int zone)
     {
+        this.deviceList = null;
+        this.connectionState = connectionState;
         this.stateListener = stateListener;
 
-        messageChannel = new MessageChannel(connectionState);
+        messageChannel = new MessageChannel(connectionState, inputQueue);
         state = new MockupState(zone);
         useBmpImages = false;
         messageChannel.start();
@@ -203,7 +215,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     break;
                 }
 
-                final ISCPMessage msg = messageChannel.getInputQueue().take();
+                final ISCPMessage msg = inputQueue.take();
 
                 if (msg instanceof ZonedMessage)
                 {

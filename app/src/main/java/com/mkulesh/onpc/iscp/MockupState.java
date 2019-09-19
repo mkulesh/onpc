@@ -30,7 +30,7 @@ class MockupState extends State
 {
     MockupState(int zone)
     {
-        super(zone);
+        super("192.168.1.10", zone);
         Logging.info(this, "Used mockup state");
 
         //Common

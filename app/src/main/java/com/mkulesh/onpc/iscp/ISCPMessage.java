@@ -27,6 +27,7 @@ public class ISCPMessage
     protected final int messageId;
     protected final String data;
     private final Character modelCategoryId;
+    public String sourceHost = null;
 
     protected ISCPMessage(final int messageId, final String data)
     {
