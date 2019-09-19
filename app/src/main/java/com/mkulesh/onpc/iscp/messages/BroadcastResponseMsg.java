@@ -35,7 +35,6 @@ public class BroadcastResponseMsg extends ISCPMessage
 {
     private final static String CODE = "ECN";
 
-    private final String host;
     private String model = null;
     private Integer port = null;
     private String destinationArea = null;
@@ -44,7 +43,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     public BroadcastResponseMsg(InetAddress hostAddress, EISCPMessage raw) throws Exception
     {
         super(raw);
-        host = hostAddress.getHostAddress();
+        sourceHost = hostAddress.getHostAddress();
         String[] tokens = data.split("/");
         if (tokens.length > 0)
         {
@@ -69,7 +68,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     public String toString()
     {
         return CODE + "[" + data
-                + "; HOST=" + host
+                + "; HOST=" + sourceHost
                 + "; MODEL=" + model
                 + "; PORT=" + port
                 + "; DST=" + destinationArea
@@ -78,7 +77,7 @@ public class BroadcastResponseMsg extends ISCPMessage
 
     public String getHost()
     {
-        return host;
+        return sourceHost;
     }
 
     public Integer getPort()
@@ -94,7 +93,7 @@ public class BroadcastResponseMsg extends ISCPMessage
 
     public boolean isValid()
     {
-        return host != null && port != null;
+        return sourceHost != null && port != null;
     }
 
     public String getDevice()

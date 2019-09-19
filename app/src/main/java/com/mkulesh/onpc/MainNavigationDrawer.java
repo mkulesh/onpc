@@ -105,7 +105,7 @@ class MainNavigationDrawer
 
     void navigationSearchDevice()
     {
-        activity.getDeviceList().startSearchDialog(new DeviceList.EventListener()
+        activity.getDeviceList().startSearchDialog(new DeviceList.DialogEventListener()
         {
             // These methods will be called from GUI thread
             @Override

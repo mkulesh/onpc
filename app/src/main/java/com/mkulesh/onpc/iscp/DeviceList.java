@@ -63,20 +63,30 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     private AlertDialog dialog = null;
     private RadioGroup dialogList = null;
 
-    // Callbacks
-    public interface EventListener
+    // Callbacks for dialogs
+    public interface DialogEventListener
     {
         void onDeviceFound(BroadcastResponseMsg response);
 
         void noDevice(ConnectionState.FailureReason reason);
     }
-    private EventListener eventListener = null;
+    private DialogEventListener dialogEventListener = null;
 
-    public DeviceList(final Context context, final ConnectionState connectionState)
+    // Callback for background search
+    public interface BackgroundEventListener
+    {
+        void onDeviceFound(DeviceInfo device);
+    }
+    private final BackgroundEventListener backgroundEventListener;
+
+    public DeviceList(final Context context,
+                      final ConnectionState connectionState,
+                      final BackgroundEventListener backgroundEventListener)
     {
         super(false);
         this.context = context;
         this.connectionState = connectionState;
+        this.backgroundEventListener = backgroundEventListener;
     }
 
     public Map<String, DeviceInfo> getDevices()
@@ -111,17 +121,17 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             }
             dialog = null;
             dialogList = null;
-            if (eventListener != null)
+            if (dialogEventListener != null)
             {
                 for (DeviceInfo deviceInfo : devices.values())
                 {
                     if (deviceInfo.selected)
                     {
-                        eventListener.onDeviceFound(deviceInfo.message);
+                        dialogEventListener.onDeviceFound(deviceInfo.message);
                     }
                 }
             }
-            eventListener = null;
+            dialogEventListener = null;
         }
     }
 
@@ -141,6 +151,10 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         {
             deviceInfo = new DeviceInfo(msg);
             devices.put(d, deviceInfo);
+            if (backgroundEventListener != null)
+            {
+                backgroundEventListener.onDeviceFound(deviceInfo);
+            }
             if (dialogMode)
             {
                 addToRadioGroup(deviceInfo);
@@ -168,14 +182,14 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     @Override
     public void noDevice(ConnectionState.FailureReason reason)
     {
-        if (eventListener != null)
+        if (dialogEventListener != null)
         {
-            eventListener.noDevice(reason);
+            dialogEventListener.noDevice(reason);
         }
         stop();
     }
 
-    public void startSearchDialog(EventListener listener)
+    public void startSearchDialog(DialogEventListener listener)
     {
         if (!connectionState.isWifi())
         {
@@ -187,7 +201,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         }
 
         dialogMode = true;
-        eventListener = listener;
+        dialogEventListener = listener;
         final FrameLayout frameView = new FrameLayout(context);
 
         final Drawable icon = Utils.getDrawable(context, R.drawable.media_item_search);

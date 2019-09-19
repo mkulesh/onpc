@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 public class MultiroomGroupSettingMsg extends ISCPMessage
 {
     public final static String CODE = "MGS";
+    public final static int TARGET_ZONE_ID = 1;
 
     public enum Command
     {
@@ -108,7 +109,7 @@ public class MultiroomGroupSettingMsg extends ISCPMessage
             cmd.append("</maxdelay><devices>");
             for (String d : devices)
             {
-                cmd.append("<device id=\"").append(d).append("\" zoneid=\"1\"/>");
+                cmd.append("<device id=\"").append(d).append("\" zoneid=\"" + TARGET_ZONE_ID + "\"/>");
             }
             cmd.append("</devices></mgs>");
             return new EISCPMessage(CODE, cmd.toString());

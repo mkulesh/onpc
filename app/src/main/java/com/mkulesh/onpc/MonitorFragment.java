@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.mkulesh.onpc.config.CheckableItemView;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
@@ -38,9 +37,8 @@ import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
-import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
-import com.mkulesh.onpc.iscp.messages.MultiroomGroupSettingMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomChannelSettingMsg;
+import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
@@ -645,109 +643,41 @@ public class MonitorFragment extends BaseFragment
 
         if (state != null && isGroupMenu)
         {
+            final boolean isMaster = state.getMultiroomRole() == MultiroomDeviceInformationMsg.RoleType.SRC;
             b.setVisibility(View.VISIBLE);
             setButtonEnabled(b, true);
-            setButtonSelected(b, state.isMasterDevice());
-            b.setContentDescription(activity.getResources().getString(
-                    state.isMasterDevice() ? R.string.cmd_multiroom_ungroup : R.string.cmd_multiroom_group));
+            setButtonSelected(b, isMaster);
+            b.setContentDescription(activity.getString(R.string.cmd_multiroom_group));
 
-            final int maxDelay = 3000;
             final List<BroadcastResponseMsg> devices = new ArrayList<>();
             for (DeviceList.DeviceInfo deviceInfo : activity.getDeviceList().getDevices().values())
             {
-                if (!deviceInfo.message.getIdentifier().equals(activity.myDeviceId()))
+                if (deviceInfo.message.getIdentifier().equals(activity.myDeviceId()))
+                {
+                    devices.add(0, deviceInfo.message);
+                }
+                else
                 {
                     devices.add(deviceInfo.message);
                 }
             }
 
-            if (devices.size() == 1)
+            prepareButtonListeners(b, null, () ->
             {
-                final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
-                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.GROUP_DISSOLUTION,
-                                state.getActiveZone() + 1, 0, maxDelay) :
-                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
-                                state.getActiveZone() + 1, 119, maxDelay);
-                for (BroadcastResponseMsg msg : devices)
+                if (activity.isConnected())
                 {
-                    cmd.getDevice().add(msg.getIdentifier());
+                    final AlertDialog alertDialog = MultiroomManager.createDeviceSelectionDialog(
+                            activity, b.getContentDescription(), devices);
+                    alertDialog.show();
+                    Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
                 }
-                prepareButtonListeners(b, cmd);
-            }
-            else
-            {
-                final MultiroomGroupSettingMsg cmd = state.isMasterDevice() ?
-                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.REMOVE_SLAVE,
-                                state.getActiveZone() + 1, 0, maxDelay) :
-                        new MultiroomGroupSettingMsg(MultiroomGroupSettingMsg.Command.ADD_SLAVE,
-                                state.getActiveZone() + 1, 119, maxDelay);
-                prepareButtonListeners(b, null, () ->
-                {
-                    if (activity.isConnected())
-                    {
-                        showDeviceSelectionDialog(b.getContentDescription(), cmd, devices);
-                    }
-                });
-            }
+            });
         }
         else
         {
             b.setVisibility(View.GONE);
             setButtonEnabled(b, false);
         }
-    }
-
-    private void showDeviceSelectionDialog(CharSequence title,
-            final MultiroomGroupSettingMsg cmd, final List<BroadcastResponseMsg> devices)
-    {
-        final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.dialog_multiroom_layout, frameView);
-
-        // Create device list
-        final LinearLayout deviceGroup = frameView.findViewById(R.id.device_group);
-        for (BroadcastResponseMsg msg : devices)
-        {
-            final CheckableItemView view = (CheckableItemView) activity.getLayoutInflater().inflate(
-                    R.layout.checkable_item_view, deviceGroup, false);
-            view.setText(msg.getDevice());
-            view.setDraggedVisibility(View.GONE);
-            view.setTag(msg.getIdentifier());
-            view.setOnClickListener(v -> {
-                CheckableItemView cv = (CheckableItemView) v;
-                cv.setChecked(!cv.isChecked());
-            });
-            deviceGroup.addView(view);
-        }
-
-        // Create dialog
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_multiroom_group);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-
-        final AlertDialog alertDialog = new AlertDialog.Builder(activity)
-                .setTitle(title)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView)
-                .setNegativeButton(R.string.action_cancel, (dialog1, which) -> dialog1.dismiss())
-                .setPositiveButton(R.string.action_ok, (dialog2, which) ->
-                {
-                    for (int i = 0; i < deviceGroup.getChildCount(); i++)
-                    {
-                        CheckableItemView cv = (CheckableItemView) deviceGroup.getChildAt(i);
-                        if (cv.isChecked())
-                        {
-                            cmd.getDevice().add((String) cv.getTag());
-                        }
-                    }
-                    if (cmd.getDevice().size() > 0)
-                    {
-                        activity.getStateManager().sendMessage(cmd);
-                    }
-                    dialog2.dismiss();
-                }).create();
-
-        alertDialog.show();
-        Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
     }
 
     private void updateMultiroomChannelBtn(AppCompatButton b, @Nullable final State state)

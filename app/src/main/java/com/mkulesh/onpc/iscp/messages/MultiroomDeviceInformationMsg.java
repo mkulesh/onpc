@@ -1,5 +1,6 @@
 package com.mkulesh.onpc.iscp.messages;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
@@ -20,6 +21,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 /*
  * Multiroom Device Information Command: gets the Multiroom Device Information as an XML message:
@@ -36,22 +38,46 @@ import androidx.annotation.NonNull;
 public class MultiroomDeviceInformationMsg extends ISCPMessage
 {
     public final static String CODE = "MDI";
-    public final static String UNKNOWN = "UNKNOWN";
+    public final static int NO_GROUP = 0;
 
     public enum ChannelType
     {
         ST, FL, FR, NONE
     }
 
-    public enum RoleType
+    public enum RoleType implements StringParameterIf
     {
-        SRC, DST, NONE
+        SRC("SRC", R.string.multiroom_master),
+        DST("DST", R.string.multiroom_slave),
+        NONE("NONE", R.string.multiroom_none);
+
+        final String code;
+
+        @StringRes
+        final int descriptionId;
+
+        RoleType(final String code, @StringRes final int descriptionId)
+        {
+            this.code = code;
+            this.descriptionId = descriptionId;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        @StringRes
+        public int getDescriptionId()
+        {
+            return descriptionId;
+        }
     }
 
     public static class Zone
     {
         final int id;
-        final String groupid;
+        final int groupid;
         final ChannelType ch;
         final RoleType role;
         final String roomname;
@@ -64,7 +90,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
         Zone(Element e)
         {
             id = Integer.parseInt(e.getAttribute("id"));
-            groupid = e.hasAttribute("groupid") ? e.getAttribute("groupid") : "";
+            groupid = e.hasAttribute("groupid") ? Integer.parseInt(e.getAttribute("groupid")) : NO_GROUP;
             ch = e.hasAttribute("ch") ? ChannelType.valueOf(e.getAttribute("ch").toUpperCase()) : ChannelType.NONE;
             role = e.hasAttribute("role") ? RoleType.valueOf(e.getAttribute("role").toUpperCase()) : RoleType.NONE;
             roomname = e.hasAttribute("roomname") ? e.getAttribute("roomname") : "";
@@ -95,14 +121,9 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
             return id;
         }
 
-        public RoleType getRole()
+        public int getGroupid()
         {
-            return role;
-        }
-
-        public ChannelType getChannelType()
-        {
-            return ch;
+            return groupid;
         }
     }
 
@@ -180,12 +201,50 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
     public String getProperty(final String name)
     {
         String prop = properties.get(name);
-        return prop == null ? UNKNOWN : prop;
+        return prop == null ? "" : prop;
     }
 
     @NonNull
     public List<Zone> getZones()
     {
         return zones;
+    }
+
+    @NonNull
+    public RoleType getRole(int zone)
+    {
+        for (MultiroomDeviceInformationMsg.Zone z : zones)
+        {
+            if (z.getId() == zone)
+            {
+                return z.role;
+            }
+        }
+        return RoleType.NONE;
+    }
+
+    @NonNull
+    public ChannelType getChannelType(int zone)
+    {
+        for (MultiroomDeviceInformationMsg.Zone z : zones)
+        {
+            if (z.getId() == zone)
+            {
+                return z.ch;
+            }
+        }
+        return ChannelType.NONE;
+    }
+
+    public int getGroupId(int zone)
+    {
+        for (MultiroomDeviceInformationMsg.Zone z : zones)
+        {
+            if (z.getId() == zone)
+            {
+                return z.groupid;
+            }
+        }
+        return NO_GROUP;
     }
 }

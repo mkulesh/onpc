@@ -11,29 +11,23 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc.config;
+package com.mkulesh.onpc;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.CheckedTextView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mkulesh.onpc.R;
-import com.mkulesh.onpc.utils.Utils;
-
-import androidx.annotation.DrawableRes;
-
-public class CheckableItemView extends LinearLayout implements Checkable
+public class MultiroomDeviceItem extends LinearLayout implements Checkable
 {
-    private ImageView icon;
-    private TextView textView;
+    private TextView textView, description;
     private CheckedTextView checkBox;
     private boolean checked;
 
-    public CheckableItemView(Context context, AttributeSet attrs)
+    public MultiroomDeviceItem(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
@@ -41,11 +35,9 @@ public class CheckableItemView extends LinearLayout implements Checkable
     @Override
     public void onFinishInflate()
     {
-        icon = this.findViewById(R.id.checkable_icon);
         textView = this.findViewById(R.id.checkable_text);
+        description = this.findViewById(R.id.checkable_description);
         checkBox = this.findViewById(R.id.checkable_checkbox);
-        ImageView checkableDragger = this.findViewById(R.id.checkable_dragger);
-        Utils.setImageViewColorAttr(getContext(), checkableDragger, android.R.attr.textColor);
         super.onFinishInflate();
     }
 
@@ -61,16 +53,21 @@ public class CheckableItemView extends LinearLayout implements Checkable
         return textView.getTag();
     }
 
-    public void setImage(@DrawableRes int imageId)
-    {
-        icon.setImageResource(imageId);
-        icon.setVisibility(VISIBLE);
-        Utils.setImageViewColorAttr(getContext(), icon, android.R.attr.textColorSecondary);
-    }
-
     public void setText(String line)
     {
         textView.setText(line);
+    }
+
+    public void setDescription(String line)
+    {
+        textView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        description.setVisibility(VISIBLE);
+        description.setText(line);
+    }
+
+    public void setCheckBoxVisibility(int v)
+    {
+        checkBox.setVisibility(v);
     }
 
     @Override
@@ -89,6 +86,9 @@ public class CheckableItemView extends LinearLayout implements Checkable
     @Override
     public void toggle()
     {
-        setChecked(!checked);
+        if (checkBox.getVisibility() == VISIBLE)
+        {
+            setChecked(!checked);
+        }
     }
 }

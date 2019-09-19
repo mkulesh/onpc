@@ -252,9 +252,6 @@
     <string name="cmd_description_memory">Добавить в избранное</string>
     <string name="cmd_description_f1">Нравится</string>
     <string name="cmd_description_f2">Не нравится</string>
-    <string name="cmd_multiroom_group">Сгруппировать с другими устойствами</string>
-    <string name="cmd_multiroom_ungroup">Разгруппировать</string>
-    <string name="cmd_multiroom_channel">Канал колонок</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">элементов</string>
@@ -495,6 +492,15 @@
     <string name="remote_interface_input">Вход</string>
     <string name="remote_interface_volume">Громкость</string>
     <string name="remote_interface_playback">Воспроизведение</string>
+
+    <!-- Multiroom properties -->
+    <string name="cmd_multiroom_group">Сгруппировать/Разгруппировать</string>
+    <string name="cmd_multiroom_channel">Изменить канал колонок</string>
+    <string name="multiroom_group">Группа</string>
+    <string name="multiroom_master">Ведущий</string>
+    <string name="multiroom_slave">Ведомый</string>
+    <string name="multiroom_none">Не связан</string>
+    <string name="multiroom_channel">Канал</string>
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Неправильный адрес устройства или порт</string>

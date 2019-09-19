@@ -159,7 +159,7 @@ public class State
 
     // Multiroom
     public String multiroomDeviceId = "";
-    private List<MultiroomDeviceInformationMsg.Zone> multiroomZones = new ArrayList<>();
+    public final Map<String, MultiroomDeviceInformationMsg> multiroomLayout = new HashMap<>();
     public MultiroomDeviceInformationMsg.ChannelType multiroomChannel = MultiroomDeviceInformationMsg.ChannelType.NONE;
 
     // Popup
@@ -1148,9 +1148,20 @@ public class State
         try
         {
             msg.parseXml(true);
-            multiroomDeviceId = msg.getProperty("deviceid");
-            multiroomZones = msg.getZones();
-            multiroomChannel = getChannelType();
+            final String id = msg.getProperty("deviceid");
+            if (!id.isEmpty())
+            {
+                multiroomLayout.put(id, msg);
+            }
+            if (isAnotherHost(msg))
+            {
+                Logging.info(msg, "Multiroom device information for another host");
+            }
+            else
+            {
+                multiroomDeviceId = id;
+                multiroomChannel = getMultiroomChannelType();
+            }
             return true;
         }
         catch (Exception e)
@@ -1160,17 +1171,22 @@ public class State
         return false;
     }
 
-    public boolean isMasterDevice()
+    public MultiroomDeviceInformationMsg.RoleType getMultiroomRole()
     {
-        for (MultiroomDeviceInformationMsg.Zone z : multiroomZones)
-        {
-            if (z.getId() == getActiveZone() + 1 &&
-                    z.getRole() == MultiroomDeviceInformationMsg.RoleType.SRC)
-            {
-                return true;
-            }
-        }
-        return false;
+        final MultiroomDeviceInformationMsg msg = multiroomLayout.get(multiroomDeviceId);
+        return (msg == null) ? MultiroomDeviceInformationMsg.RoleType.NONE : msg.getRole(getActiveZone() + 1);
+    }
+
+    private MultiroomDeviceInformationMsg.ChannelType getMultiroomChannelType()
+    {
+        final MultiroomDeviceInformationMsg msg = multiroomLayout.get(multiroomDeviceId);
+        return (msg == null) ? MultiroomDeviceInformationMsg.ChannelType.NONE : msg.getChannelType(getActiveZone() + 1);
+    }
+
+    public int getMultiroomGroupId()
+    {
+        final MultiroomDeviceInformationMsg msg = multiroomLayout.get(multiroomDeviceId);
+        return (msg == null) ? MultiroomDeviceInformationMsg.NO_GROUP : msg.getGroupId(getActiveZone() + 1);
     }
 
     private boolean process(MultiroomChannelSettingMsg msg)
@@ -1178,17 +1194,5 @@ public class State
         final boolean changed = multiroomChannel != msg.getChannelType();
         multiroomChannel = msg.getChannelType();
         return changed;
-    }
-
-    private MultiroomDeviceInformationMsg.ChannelType getChannelType()
-    {
-        for (MultiroomDeviceInformationMsg.Zone z : multiroomZones)
-        {
-            if (z.getId() == getActiveZone() + 1)
-            {
-                return z.getChannelType();
-            }
-        }
-        return MultiroomDeviceInformationMsg.ChannelType.NONE;
     }
 }

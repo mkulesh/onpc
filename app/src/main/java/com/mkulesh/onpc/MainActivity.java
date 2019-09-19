@@ -36,7 +36,6 @@ import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
-import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
@@ -106,7 +105,13 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
 
         connectionState = new ConnectionState(this);
-        deviceList = new DeviceList(this, connectionState);
+        deviceList = new DeviceList(this, connectionState, (di) ->
+        {
+            if (isConnected())
+            {
+                getStateManager().inform(di.message);
+            }
+        });
 
         // Initially reset zone state
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
@@ -366,6 +371,10 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 s.createDefaultReceiverInfo(this);
                 configuration.setReceiverInformation(s);
             }
+            if (!deviceList.isActive())
+            {
+                deviceList.start();
+            }
             return true;
         }
         catch (Exception ex)
@@ -592,7 +601,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     @NonNull
     public String myDeviceId()
     {
-        return stateHolder.getState() != null ?
-                stateHolder.getState().multiroomDeviceId : MultiroomDeviceInformationMsg.UNKNOWN;
+        return stateHolder.getState() != null ? stateHolder.getState().multiroomDeviceId : "";
     }
 }

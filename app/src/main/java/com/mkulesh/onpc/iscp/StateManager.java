@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -57,7 +58,9 @@ import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.utils.Logging;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -82,6 +85,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private final DeviceList deviceList;
     private final ConnectionState connectionState;
+    private final Map<String, MessageChannel> multiroomChannels = new HashMap<>();
 
     private final StateListener stateListener;
     private final MessageChannel messageChannel;
@@ -100,6 +104,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             ArtistNameMsg.CODE, AlbumNameMsg.CODE, TitleNameMsg.CODE,
             FileFormatMsg.CODE, TrackInfoMsg.CODE, TimeInfoMsg.CODE,
             MenuStatusMsg.CODE
+    };
+
+    private final static String multiroomQueries[] = new String[]{
+            MultiroomDeviceInformationMsg.CODE
     };
 
     private boolean autoPower = false;
@@ -170,6 +178,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public void stop()
     {
         messageChannel.stop();
+        for (MessageChannel m : multiroomChannels.values())
+        {
+            m.stop();
+        }
     }
 
     @NonNull
@@ -216,6 +228,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 }
 
                 final ISCPMessage msg = inputQueue.take();
+
+                if (msg instanceof BroadcastResponseMsg && deviceList != null)
+                {
+                    handleMultiroom();
+                }
 
                 if (msg instanceof ZonedMessage)
                 {
@@ -540,6 +557,44 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         if (doReturn)
         {
             messageChannel.sendMessage(commandListMsg);
+        }
+    }
+
+    public void inform(BroadcastResponseMsg message)
+    {
+        inputQueue.add(message);
+    }
+
+    private void handleMultiroom()
+    {
+        for (DeviceList.DeviceInfo di : deviceList.getDevices().values())
+        {
+            final BroadcastResponseMsg msg = di.message;
+            if (msg.getHost() == null)
+            {
+                continue;
+            }
+            if (msg.getHost().equals(messageChannel.getSourceHost()))
+            {
+                continue;
+            }
+            if (multiroomChannels.containsKey(msg.getHost()))
+            {
+                continue;
+            }
+            Logging.info(this, "connecting to multiroom device: " + msg.getDevice());
+            MessageChannel m = new MessageChannel(connectionState, inputQueue);
+            for (String code : multiroomQueries)
+            {
+                m.addAllowedMessage(code);
+                m.sendMessage(new EISCPMessage(code, EISCPMessage.QUERY));
+            }
+
+            if (m.connectToServer(msg.getHost(), msg.getPort()))
+            {
+                multiroomChannels.put(msg.getHost(), m);
+                m.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+            }
         }
     }
 }

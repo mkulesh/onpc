@@ -300,9 +300,6 @@
     <string name="cmd_description_memory">Memory(Add Favorite)</string>
     <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
     <string name="cmd_description_f2">Negative Feed</string>
-    <string name="cmd_multiroom_group">Group devices</string>
-    <string name="cmd_multiroom_ungroup">Ungroup devices</string>
-    <string name="cmd_multiroom_channel">Change speaker channel</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">items</string>
@@ -543,6 +540,15 @@
     <string name="remote_interface_input">Input</string>
     <string name="remote_interface_volume">Volume</string>
     <string name="remote_interface_playback">Playback</string>
+
+    <!-- Multiroom properties -->
+    <string name="cmd_multiroom_group">Group/Ungroup devices</string>
+    <string name="cmd_multiroom_channel">Change speaker channel</string>
+    <string name="multiroom_group">Group</string>
+    <string name="multiroom_master">Master</string>
+    <string name="multiroom_slave">Slave</string>
+    <string name="multiroom_none">Not attached</string>
+    <string name="multiroom_channel">Channel</string>
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Invalid device name or port</string>

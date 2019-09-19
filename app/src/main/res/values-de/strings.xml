@@ -251,9 +251,6 @@
     <string name="cmd_description_memory">Speichern(Favorit hinzufügen)</string>
     <string name="cmd_description_f1">Positiv markieren/demarkieren</string>
     <string name="cmd_description_f2">Negativ markieren</string>
-    <string name="cmd_multiroom_group">Gruppieren</string>
-    <string name="cmd_multiroom_ungroup">Gruppierung aufheben</string>
-    <string name="cmd_multiroom_channel">Lautsprecherkanal</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">Elemente</string>
@@ -494,6 +491,15 @@
     <string name="remote_interface_input">Eingang</string>
     <string name="remote_interface_volume">Lautstärke</string>
     <string name="remote_interface_playback">Abspieler</string>
+
+    <!-- Multiroom properties -->
+    <string name="cmd_multiroom_group">Gruppieren/Aufheben</string>
+    <string name="cmd_multiroom_channel">Lautsprecherkanal ändern</string>
+    <string name="multiroom_group">Gruppe</string>
+    <string name="multiroom_master">Master</string>
+    <string name="multiroom_slave">Slave</string>
+    <string name="multiroom_none">Nicht verbunden</string>
+    <string name="multiroom_channel">Kanal</string>
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Ungültiger Gerätename oder Port</string>
