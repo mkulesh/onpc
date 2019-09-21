@@ -567,9 +567,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private void handleMultiroom()
     {
-        for (DeviceList.DeviceInfo di : deviceList.getDevices().values())
+        for (BroadcastResponseMsg msg : deviceList.getDevices())
         {
-            final BroadcastResponseMsg msg = di.message;
             if (msg.getHost() == null)
             {
                 continue;

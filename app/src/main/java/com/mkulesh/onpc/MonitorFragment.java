@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
@@ -639,7 +638,7 @@ public class MonitorFragment extends BaseFragment
      */
     private void updateMultiroomGroupBtn(AppCompatImageButton b, @Nullable final State state)
     {
-        final boolean isGroupMenu = activity.getDeviceList().getDevices().size() > 1;
+        final boolean isGroupMenu = activity.getDeviceList().getDevicesNumber() > 1;
 
         if (state != null && isGroupMenu)
         {
@@ -650,15 +649,15 @@ public class MonitorFragment extends BaseFragment
             b.setContentDescription(activity.getString(R.string.cmd_multiroom_group));
 
             final List<BroadcastResponseMsg> devices = new ArrayList<>();
-            for (DeviceList.DeviceInfo deviceInfo : activity.getDeviceList().getDevices().values())
+            for (BroadcastResponseMsg message : activity.getDeviceList().getDevices())
             {
-                if (deviceInfo.message.getIdentifier().equals(activity.myDeviceId()))
+                if (message.getIdentifier().equals(activity.myDeviceId()))
                 {
-                    devices.add(0, deviceInfo.message);
+                    devices.add(0, message);
                 }
                 else
                 {
-                    devices.add(deviceInfo.message);
+                    devices.add(message);
                 }
             }
 
@@ -682,7 +681,7 @@ public class MonitorFragment extends BaseFragment
 
     private void updateMultiroomChannelBtn(AppCompatButton b, @Nullable final State state)
     {
-        final boolean isGroupMenu = activity.getDeviceList().getDevices().size() > 1;
+        final boolean isGroupMenu = activity.getDeviceList().getDevicesNumber() > 1;
 
         MultiroomDeviceInformationMsg.ChannelType ch = state != null ?
                 state.multiroomChannel : MultiroomDeviceInformationMsg.ChannelType.NONE;

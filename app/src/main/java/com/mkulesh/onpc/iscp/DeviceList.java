@@ -26,6 +26,8 @@ import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -56,7 +58,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             selected = false;
         }
     }
-    private Map<String, DeviceInfo> devices = new TreeMap<>();
+    private final Map<String, DeviceInfo> devices = new TreeMap<>();
 
     // Dialog properties
     private boolean dialogMode = false;
@@ -89,16 +91,35 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         this.backgroundEventListener = backgroundEventListener;
     }
 
-    public Map<String, DeviceInfo> getDevices()
+    public int getDevicesNumber()
     {
-        return devices;
+        synchronized (devices)
+        {
+            return devices.size();
+        }
+    }
+
+    public List<BroadcastResponseMsg> getDevices()
+    {
+        List<BroadcastResponseMsg> retValue = new ArrayList<>();
+        synchronized (devices)
+        {
+            for (DeviceInfo di : devices.values())
+            {
+                retValue.add(new BroadcastResponseMsg(di.message));
+            }
+        }
+        return retValue;
     }
 
     public void start()
     {
         super.start();
         Logging.info(this, "started");
-        devices.clear();
+        synchronized (devices)
+        {
+            devices.clear();
+        }
         searchEngine = new BroadcastSearch(connectionState, this);
         searchEngine.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
@@ -123,12 +144,21 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             dialogList = null;
             if (dialogEventListener != null)
             {
-                for (DeviceInfo deviceInfo : devices.values())
+                BroadcastResponseMsg found = null;
+                synchronized (devices)
                 {
-                    if (deviceInfo.selected)
+                    for (DeviceInfo deviceInfo : devices.values())
                     {
-                        dialogEventListener.onDeviceFound(deviceInfo.message);
+                        if (deviceInfo.selected)
+                        {
+                            found = new BroadcastResponseMsg(deviceInfo.message);
+                            break;
+                        }
                     }
+                }
+                if (found != null)
+                {
+                    dialogEventListener.onDeviceFound(found);
                 }
             }
             dialogEventListener = null;
@@ -145,37 +175,40 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         }
         Logging.info(this, "  new response " + msg);
 
-        final String d = msg.getDevice();
-        DeviceInfo deviceInfo = devices.get(d);
-        if (deviceInfo == null)
+        synchronized (devices)
         {
-            deviceInfo = new DeviceInfo(msg);
-            devices.put(d, deviceInfo);
-            if (backgroundEventListener != null)
+            final String d = msg.getDevice();
+            DeviceInfo deviceInfo = devices.get(d);
+            if (deviceInfo == null)
             {
-                backgroundEventListener.onDeviceFound(deviceInfo);
-            }
-            if (dialogMode)
-            {
-                addToRadioGroup(deviceInfo);
-            }
-        }
-        else
-        {
-            deviceInfo.responses++;
-        }
-
-        if (!dialogMode)
-        {
-            for (DeviceInfo di : devices.values())
-            {
-                if (di.responses < RESPONSE_NUMBER)
+                deviceInfo = new DeviceInfo(msg);
+                devices.put(d, deviceInfo);
+                if (backgroundEventListener != null)
                 {
-                    return;
+                    backgroundEventListener.onDeviceFound(deviceInfo);
+                }
+                if (dialogMode)
+                {
+                    addToRadioGroup(deviceInfo);
                 }
             }
-            Logging.info(this, "  -> no more devices");
-            stop();
+            else
+            {
+                deviceInfo.responses++;
+            }
+
+            if (!dialogMode)
+            {
+                for (DeviceInfo di : devices.values())
+                {
+                    if (di.responses < RESPONSE_NUMBER)
+                    {
+                        return;
+                    }
+                }
+                Logging.info(this, "  -> no more devices");
+                stop();
+            }
         }
     }
 

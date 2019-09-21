@@ -226,10 +226,7 @@ class MainNavigationDrawer
 
         // store devices
         devices.clear();
-        for (DeviceList.DeviceInfo deviceInfo : activity.getDeviceList().getDevices().values())
-        {
-            devices.add(deviceInfo.message);
-        }
+        devices.addAll(activity.getDeviceList().getDevices());
 
         final Menu menu = navigationView.getMenu();
         for (int k = 0; k < menu.size(); k++)

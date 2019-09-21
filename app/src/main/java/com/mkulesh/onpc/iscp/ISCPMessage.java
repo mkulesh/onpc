@@ -27,7 +27,7 @@ public class ISCPMessage
     protected final int messageId;
     protected final String data;
     private final Character modelCategoryId;
-    public String sourceHost = null;
+    protected String sourceHost = null;
 
     protected ISCPMessage(final int messageId, final String data)
     {
@@ -48,6 +48,7 @@ public class ISCPMessage
         messageId = other.messageId;
         data = other.data;
         modelCategoryId = other.modelCategoryId;
+        sourceHost = other.sourceHost;
     }
 
     public int getMessageId()
@@ -72,7 +73,7 @@ public class ISCPMessage
         return data != null && data.length() > EISCPMessage.LOG_LINE_LENGTH;
     }
 
-    public void logParameters()
+    void logParameters()
     {
         if (!Logging.isEnabled() || data == null)
         {

@@ -63,6 +63,15 @@ public class BroadcastResponseMsg extends ISCPMessage
         }
     }
 
+    public BroadcastResponseMsg(BroadcastResponseMsg other)
+    {
+        super(other);
+        this.model = other.model;
+        this.port = other.port;
+        this.destinationArea = other.destinationArea;
+        this.identifier = other.identifier;
+    }
+
     @NonNull
     @Override
     public String toString()
