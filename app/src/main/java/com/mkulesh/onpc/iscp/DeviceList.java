@@ -183,10 +183,6 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             {
                 deviceInfo = new DeviceInfo(msg);
                 devices.put(d, deviceInfo);
-                if (backgroundEventListener != null)
-                {
-                    backgroundEventListener.onDeviceFound(deviceInfo);
-                }
                 if (dialogMode)
                 {
                     addToRadioGroup(deviceInfo);
@@ -195,6 +191,11 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             else
             {
                 deviceInfo.responses++;
+            }
+
+            if (backgroundEventListener != null)
+            {
+                backgroundEventListener.onDeviceFound(deviceInfo);
             }
 
             if (!dialogMode)

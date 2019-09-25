@@ -13,13 +13,13 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
+import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -34,27 +34,32 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class MessageChannel extends AsyncTask<Void, Void, Void>
+class MessageChannel extends AppTask implements Runnable
 {
     private final static long CONNECTION_TIMEOUT = 5000;
     final static int QUEUE_SIZE = 4 * 1024;
     private final static int SOCKET_BUFFER = 4 * 1024;
 
-    private final ConnectionState connectionState;
-    private final AtomicBoolean active = new AtomicBoolean();
-    private SocketChannel socket = null;
+    // thread implementation
+    private final AtomicBoolean threadCancelled = new AtomicBoolean();
 
+    // connection state
+    private final ConnectionState connectionState;
+    private SocketChannel socket = null;
+    private String sourceHost = null;
+
+    // input-output queues
     private final BlockingQueue<EISCPMessage> outputQueue = new ArrayBlockingQueue<>(QUEUE_SIZE, true);
     private final BlockingQueue<ISCPMessage> inputQueue;
 
+    // message handling
     private byte[] packetJoinBuffer = null;
     private int messageId = 0;
-
-    private String sourceHost = null;
     private final Set<String> allowedMessages = new HashSet<>();
 
     MessageChannel(final ConnectionState connectionState, final BlockingQueue<ISCPMessage> inputQueue)
     {
+        super(false);
         this.connectionState = connectionState;
         this.inputQueue = inputQueue;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -63,23 +68,22 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
 
     public void start()
     {
-        synchronized (active)
+        if (isActive())
         {
-            active.set(true);
+            return;
         }
+        super.start();
+        final Thread thread = new Thread(this, this.getClass().getSimpleName());
+        threadCancelled.set(false);
+        thread.start();
     }
 
     public void stop()
     {
-        synchronized (active)
+        synchronized (threadCancelled)
         {
-            active.set(false);
+            threadCancelled.set(true);
         }
-    }
-
-    boolean isActive()
-    {
-        return active.get();
     }
 
     String getSourceHost()
@@ -93,7 +97,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
     }
 
     @Override
-    protected Void doInBackground(Void... params)
+    public void run()
     {
         Logging.info(this, "started " + sourceHost + ":" + toString());
 
@@ -102,9 +106,9 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
         {
             try
             {
-                synchronized (active)
+                synchronized (threadCancelled)
                 {
-                    if (!active.get() || isCancelled())
+                    if (threadCancelled.get())
                     {
                         Logging.info(this, "cancelled " + sourceHost);
                         break;
@@ -145,7 +149,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
             }
             catch (Exception e)
             {
-                Logging.info(this, "interrupted " + sourceHost + ":" + e.getLocalizedMessage());
+                Logging.info(this, "interrupted " + sourceHost);
                 break;
             }
         }
@@ -158,16 +162,14 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
         {
             // nothing to do
         }
-        stop();
+        super.stop();
         Logging.info(this, "stopped " + sourceHost + ":" + toString());
         inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
-        return null;
     }
 
     boolean connectToServer(String server, int port)
     {
         final String addr = server + ":" + Integer.toString(port);
-        stop();
 
         try
         {
@@ -185,7 +187,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
             }
             Logging.info(this, "connected to " + addr);
             this.sourceHost = server;
-            start();
+            return true;
         }
         catch (Exception e)
         {
@@ -198,7 +200,7 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
                 Logging.info(this, t.toString());
             }
         }
-        return active.get();
+        return false;
     }
 
     private void processInputData(ByteBuffer buffer)
@@ -298,12 +300,6 @@ class MessageChannel extends AsyncTask<Void, Void, Void>
                 bytes = Utils.catBuffer(bytes, bytes.length - remaining, remaining);
             }
         }
-    }
-
-    @Override
-    protected void onProgressUpdate(Void... result)
-    {
-        // empty
     }
 
     void sendMessage(EISCPMessage eiscpMessage)

@@ -153,7 +153,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
-        messageChannel.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        messageChannel.start();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
@@ -229,11 +229,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
                 final ISCPMessage msg = inputQueue.take();
 
-                if (msg instanceof BroadcastResponseMsg && deviceList != null)
-                {
-                    handleMultiroom();
-                }
-
                 if (msg instanceof ZonedMessage)
                 {
                     final ZonedMessage zMsg = (ZonedMessage) msg;
@@ -255,6 +250,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     Logging.info(this, "cannot process message: " + e.getLocalizedMessage());
                 }
 
+                if (msg instanceof BroadcastResponseMsg && deviceList != null)
+                {
+                    handleMultiroom();
+                }
+
                 if (changed && timerQueue.isEmpty())
                 {
                     final Timer t = new Timer();
@@ -273,6 +273,22 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             catch (Exception e)
             {
                 Logging.info(this, "interrupted: " + e.getLocalizedMessage());
+                break;
+            }
+        }
+
+        while (true)
+        {
+            int activeCount = 0;
+            for (MessageChannel m : multiroomChannels.values())
+            {
+                if (m.isActive())
+                {
+                    activeCount++;
+                }
+            }
+            if (activeCount == 0)
+            {
                 break;
             }
         }
@@ -582,7 +598,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 continue;
             }
             Logging.info(this, "connecting to multiroom device: " + msg.getDevice());
-            MessageChannel m = new MessageChannel(connectionState, inputQueue);
+            final MessageChannel m = new MessageChannel(connectionState, inputQueue);
             for (String code : multiroomQueries)
             {
                 m.addAllowedMessage(code);
@@ -592,7 +608,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             if (m.connectToServer(msg.getHost(), msg.getPort()))
             {
                 multiroomChannels.put(msg.getHost(), m);
-                m.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+                m.start();
             }
         }
     }
