@@ -362,7 +362,9 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             stateHolder.setStateManager(new StateManager(
                     deviceList, connectionState, this,
-                    device, port, zone, configuration.isAutoPower(),
+                    device, port, zone,
+                    configuration.isAutoPower(),
+                    configuration.keepPlaybackMode(),
                     savedReceiverInformation));
             savedReceiverInformation = null;
             // Default receiver information used if ReceiverInformationMsg is missing

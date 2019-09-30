@@ -81,6 +81,8 @@
     <string name="pref_back_as_return_summary">Zurück-Taste verwenden um in Medien übergeordneter Ordner zu wählen</string>
     <string name="pref_advanced_queue">Erweiterte Optionen von Play Queue</string>
     <string name="pref_advanced_queue_summary">Experimentell: fortgeschrittene Funktionen in Play Queue verwenden</string>
+    <string name="pref_keep_playback_mode">Abspielmodus behalten</string>
+    <string name="pref_keep_playback_mode_summary">Während die Wiedergabe aktiv ist, Abspielmodus in MEDIEN behalten</string>
     <string name="pref_exit_confirm">Zweimal zurück zum beenden</string>
     <string name="pref_keep_screen_on">Bildschirm aktiv lassen</string>
     <string name="pref_developer_mode">Entwicklereinstellungen</string>

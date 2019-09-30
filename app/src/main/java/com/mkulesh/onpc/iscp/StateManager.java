@@ -111,6 +111,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     };
 
     private boolean autoPower = false;
+    private final boolean keepPlaybackMode;
     private final boolean useBmpImages;
 
     private final BlockingQueue<ISCPMessage> inputQueue = new ArrayBlockingQueue<>(MessageChannel.QUEUE_SIZE, true);
@@ -119,7 +120,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                         final ConnectionState connectionState,
                         final StateListener stateListener,
                         final String device, final int port,
-                        final int zone, boolean autoPower,
+                        final int zone,
+                        final boolean autoPower,
+                        final boolean keepPlaybackMode,
                         String savedReceiverInformation) throws Exception
     {
         this.deviceList = deviceList;
@@ -139,6 +142,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         useBmpImages = !connectionState.isWifi();
 
         this.autoPower = autoPower;
+        this.keepPlaybackMode = keepPlaybackMode;
+
         if (savedReceiverInformation != null)
         {
             try
@@ -168,6 +173,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel = new MessageChannel(connectionState, inputQueue);
         state = new MockupState(zone);
         useBmpImages = false;
+        keepPlaybackMode = false;
         messageChannel.start();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -358,7 +364,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             playbackMode.set(state.isPlaybackMode());
         }
-        if (msg instanceof PlayStatusMsg &&
+        if (!keepPlaybackMode &&
+            msg instanceof PlayStatusMsg &&
             playbackMode.get() &&
             state.isPlaying() &&
             state.serviceType != ServiceType.TUNEIN_RADIO)

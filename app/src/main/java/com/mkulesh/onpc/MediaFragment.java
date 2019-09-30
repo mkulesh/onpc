@@ -232,6 +232,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         else if (eventChanges.contains(State.ChangeType.COMMON))
         {
             updateSelectorButtonsState(state);
+            updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
         }
     }
 
