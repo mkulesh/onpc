@@ -160,6 +160,7 @@ public class State
     // Multiroom
     public String multiroomDeviceId = "";
     public final Map<String, MultiroomDeviceInformationMsg> multiroomLayout = new HashMap<>();
+    public final Map<String, String> multiroomNames = new HashMap<>();
     public MultiroomDeviceInformationMsg.ChannelType multiroomChannel = MultiroomDeviceInformationMsg.ChannelType.NONE;
 
     // Popup
@@ -534,9 +535,14 @@ public class State
 
     private boolean process(FriendlyNameMsg msg)
     {
-        final boolean changed = !friendlyName.equals(msg.getFriendlyName());
-        friendlyName = msg.getFriendlyName();
-        return changed;
+        multiroomNames.put(msg.sourceHost, msg.getFriendlyName());
+        if (!isAnotherHost(msg))
+        {
+            final boolean changed = !friendlyName.equals(msg.getFriendlyName());
+            friendlyName = msg.getFriendlyName();
+            return changed;
+        }
+        return false;
     }
 
     private boolean process(InputSelectorMsg msg)

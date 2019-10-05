@@ -107,7 +107,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     };
 
     private final static String multiroomQueries[] = new String[]{
-            MultiroomDeviceInformationMsg.CODE
+            MultiroomDeviceInformationMsg.CODE,
+            FriendlyNameMsg.CODE
     };
 
     private boolean autoPower = false;

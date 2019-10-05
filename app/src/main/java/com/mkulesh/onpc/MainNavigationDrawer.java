@@ -255,7 +255,7 @@ class MainNavigationDrawer
                     final MenuItem m = g.getSubMenu().getItem(i);
                     if (g.isVisible() && i < devices.size())
                     {
-                        m.setTitle(devices.get(i).getDevice());
+                        m.setTitle(activity.getMultiroomDeviceName(devices.get(i)));
                         m.setVisible(true);
                         m.setChecked(devices.get(i).getIdentifier().equals(activity.myDeviceId()));
                     }

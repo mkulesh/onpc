@@ -114,7 +114,7 @@ class MultiroomManager
             view.setCheckBoxVisibility(View.GONE);
             tz = zone;
         }
-        view.setText(msg.getDevice());
+        view.setText(activity.getMultiroomDeviceName(msg));
         String description = activity.getString(R.string.multiroom_none);
         boolean attached = false;
         if (di != null)
