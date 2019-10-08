@@ -11,7 +11,7 @@
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
-This app allows remote control of an Onkyo/Integra/Pioneer Network Player or a Network A/V Receiver via the
+This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - One-click access to music playback actions
@@ -21,6 +21,7 @@ This app allows remote control of an Onkyo/Integra/Pioneer Network Player or a N
 - Tuneln Radio and Deezer streaming (if supported by receiver)
 - DAB / FM (if supported by receiver)
 - Multi-zone support (if supported by receiver)
+- Multi-room support: Allows control groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
 - Control of devices attached via RI
 - Enhanced Play Queue support (add, replace, remove, clear, change playback order)
 - Display device details and control device settings such as dimmer level, digital filter, auto power
@@ -32,6 +33,7 @@ Currently, this app is only tested with following devices:
 - [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html)
 - [ONKYO TX-NR686](https://www.eu.onkyo.com/en/products/tx-nr686-148905.html)
 - [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
+- [Wireless Audio System NCP-302](https://www.eu.onkyo.com/en/products/ncp-302-137564.html)
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
