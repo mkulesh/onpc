@@ -46,22 +46,44 @@ public class ToneCommandMsg extends ZonedMessage
         super(raw, ZONE_COMMANDS);
         for (int i = 0; i < data.length(); i++)
         {
-            if (data.charAt(i) == BASS_MARKER)
+            if (data.charAt(i) == BASS_MARKER && data.length() > i + 2)
             {
                 try
                 {
-                    bassLevel = Integer.parseInt(data.substring(i + 1, i + 3), 16);
+                    if (data.charAt(i + 1) == '+')
+                    {
+                        bassLevel = Integer.parseInt(data.substring(i + 2, i + 3), 16);
+                    }
+                    else if (data.charAt(i + 1) == '-')
+                    {
+                        bassLevel = -Integer.parseInt(data.substring(i + 2, i + 3), 16);
+                    }
+                    else
+                    {
+                        bassLevel = Integer.parseInt(data.substring(i + 1, i + 3), 16);
+                    }
                 }
                 catch (Exception e)
                 {
                     bassLevel = NO_LEVEL;
                 }
             }
-            if (data.charAt(i) == TREBLE_MARKER)
+            if (data.charAt(i) == TREBLE_MARKER && data.length() > i + 2)
             {
                 try
                 {
-                    trebleLevel = Integer.parseInt(data.substring(i + 1, i + 3), 16);
+                    if (data.charAt(i + 1) == '+')
+                    {
+                        trebleLevel = Integer.parseInt(data.substring(i + 2, i + 3), 16);
+                    }
+                    else if (data.charAt(i + 1) == '-')
+                    {
+                        trebleLevel = -Integer.parseInt(data.substring(i + 2, i + 3), 16);
+                    }
+                    else
+                    {
+                        trebleLevel = Integer.parseInt(data.substring(i + 1, i + 3), 16);
+                    }
                 }
                 catch (Exception e)
                 {
