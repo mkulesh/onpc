@@ -16,9 +16,9 @@
     <string name="dashed_string" translatable="false">---</string>
 
     <!-- Main view -->
-    <string name="app_name">Enhanced Controller for Onkyo</string>
+    <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo devices: listen to music properly!</string>
+    <string name="app_description">Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</string>
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
@@ -26,9 +26,9 @@
     <string name="action_cancel">Cancel</string>
 
     <string name="html_about"><![CDATA[
-    <p>Enhanced controller for Onkyo devices: listen to music properly!</p>
+    <p>Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</p>
     <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>This app allows remote control of an Onkyo/Integra Network Player or a Network A/V Receiver via the
+    <p>This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
        "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.</p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
     <h5>License</h5>
@@ -94,7 +94,7 @@
 
     <string name="pref_auto_power">Switch-on remote device on app startup</string>
     <string name="pref_friendly_names">Friendly selector and device names</string>
-    <string name="pref_friendly_names_summary_on">Use friendly names provided by Onkyo device</string>
+    <string name="pref_friendly_names_summary_on">Use friendly names provided by remote device</string>
     <string name="pref_friendly_names_summary_off">Use build-in names</string>
 
     <!-- Sound Control -->
@@ -555,8 +555,8 @@
     <!-- Errors -->
     <string name="error_invalid_device_address">Invalid device name or port</string>
     <string name="error_connection_no_network">No connection to the network</string>
-    <string name="error_connection_no_wifi">No connection to Wi-Fi. Please input Onkyo device IP and port manually</string>
-    <string name="error_connection_no_device">Onkyo device not found</string>
-    <string name="error_connection_no_response">Onkyo device %s not responding</string>
+    <string name="error_connection_no_wifi">No connection to Wi-Fi. Please input remote device IP and port manually</string>
+    <string name="error_connection_no_device">Remote device not found</string>
+    <string name="error_connection_no_response">Remote device %s not responding</string>
 
 </resources>

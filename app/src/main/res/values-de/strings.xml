@@ -14,9 +14,9 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Erweiterte Bedienung für Onkyo</string>
+    <string name="app_name">Erweiterte Bedienung für Onkyo und Pioneer</string>
     <string name="app_short_name">Musik Kontrolle</string>
-    <string name="app_description">Verbesserte Fernsteuerung für Onkyo Geräte: Musik richtig hören!</string>
+    <string name="app_description">Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</string>
     <string name="state_not_connected">Nicht verbunden</string>
     <string name="state_standby">Schlafmodus</string>
     <string name="action_exit_confirm">Zum Beenden zurück erneut drücken</string>
@@ -24,9 +24,9 @@
     <string name="action_cancel">Abbrechen</string>
 
     <string name="html_about"><![CDATA[
-    <p>Verbesserte Fernsteuerung für Onkyo Geräte: Musik richtig hören!</p>
+    <p>Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</p>
     <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>Diese App steuert Onkyo/Integra Netzwerk Abspielgeräte und A/V Receiver über das
+    <p>Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das
        "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.</p>
     <p><a href="https://github.com/mkulesh/onpc">Öffentliches repository</a></p>
     <h5>Lizenz</h5>
