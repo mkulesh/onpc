@@ -307,6 +307,10 @@ public class State
                 msg.logParameters();
             }
         }
+        else if (msg instanceof TimeInfoMsg && Logging.isTimeMsgEnabled())
+        {
+            Logging.info(msg, "<< " + msg.toString());
+        }
 
         //Common
         if (msg instanceof PowerStatusMsg)
