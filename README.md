@@ -38,6 +38,7 @@ Currently, this app is only tested with following devices:
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
 - [Pioneer VSX-LX303](https://www.pioneerelectronics.com/PUSA/Home/AV-Receivers/Elite+Receivers/VSX-LX303)
+- [Teac NT-503](http://audio.teac.com/product/nt-503)
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark theme

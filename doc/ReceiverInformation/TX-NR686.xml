@@ -53,7 +53,7 @@
             <selector id="80" value="1" name="Source" zone="02" />
         </selectorlist>
         <presetlist count="40">
-            <preset id="01" band="1" freq="89.90" name="LightFM" />
+            <preset id="01" band="1" freq="89.90" name="" />
             <preset id="02" band="1" freq="90.70" name="" />
             <preset id="03" band="1" freq="91.50" name="smoothfm" />
             <preset id="04" band="1" freq="96.50" name="" />
@@ -72,9 +72,9 @@
             <preset id="11" band="0" freq="0" name="" />
             <preset id="12" band="0" freq="0" name="" />
             <preset id="13" band="0" freq="0" name="" />
-            <preset id="14" band="0" freq="0" name="" />
-            <preset id="15" band="0" freq="0" name="" />
-            <preset id="16" band="0" freq="0" name="" />
+            <preset id="14" band="2" freq="621" name="" />
+            <preset id="15" band="2" freq="693" name="" />
+            <preset id="16" band="2" freq="774" name="" />
             <preset id="17" band="0" freq="0" name="" />
             <preset id="18" band="0" freq="0" name="" />
             <preset id="19" band="0" freq="0" name="" />
