@@ -251,7 +251,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             return id;
         }
 
-        public int getBand()
+        int getBand()
         {
             return band;
         }
@@ -259,6 +259,26 @@ public class ReceiverInformationMsg extends ISCPMessage
         public String getName()
         {
             return name;
+        }
+
+        boolean isFreqValid()
+        {
+            return freq != null && !freq.equals("0");
+        }
+
+        public boolean isFm()
+        {
+            return getBand() == 1;
+        }
+
+        public boolean isAm()
+        {
+            return getBand() == 2 && isFreqValid();
+        }
+
+        public boolean isDab()
+        {
+            return getBand() == 2 && !isFreqValid();
         }
 
         @NonNull
@@ -271,21 +291,35 @@ public class ReceiverInformationMsg extends ISCPMessage
         @NonNull
         public String displayedString()
         {
-            return name + ((freq != null && !freq.equals("0")) ? ("/" + freq) : "");
+            String res = name.trim();
+            final String band = (isFm() ? " MHz" : (isAm() ? " kHz" : " "));
+            if (!res.isEmpty() && isFreqValid())
+            {
+                res += " - " + freq + band;
+            }
+            else if (res.isEmpty())
+            {
+                res = freq + band;
+            }
+            return res;
         }
 
         @DrawableRes
         public int getImageId()
         {
-            switch (band)
+            if (isAm())
             {
-            case 1:
-                return R.drawable.media_item_radio_fm;
-            case 2:
-                return R.drawable.media_item_radio_dab;
-            default:
-                return R.drawable.media_item_unknown;
+                return R.drawable.media_item_radio_am;
             }
+            else if (isFm())
+            {
+                return R.drawable.media_item_radio_fm;
+            }
+            else if (isDab())
+            {
+                return R.drawable.media_item_radio_dab;
+            }
+            return R.drawable.media_item_unknown;
         }
     }
 

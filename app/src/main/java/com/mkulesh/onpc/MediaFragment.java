@@ -93,7 +93,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    public void onCreateContextMenu(@NonNull ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         selectedItem = null;
         if (v.getId() == listView.getId() && activity.isConnected())
@@ -142,7 +142,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item)
+    public boolean onContextItemSelected(@NonNull MenuItem item)
     {
         if (selectedItem != null && activity.isConnected())
         {
@@ -347,8 +347,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             for (ReceiverInformationMsg.Preset p : state.presetList)
             {
-                if ((state.inputType == InputSelectorMsg.InputType.FM && p.getBand() == 1)
-                        || (state.inputType == InputSelectorMsg.InputType.DAB && p.getBand() == 2))
+                if ((state.inputType == InputSelectorMsg.InputType.FM && p.isFm())
+                    || (state.inputType == InputSelectorMsg.InputType.AM && p.isAm())
+                    || (state.inputType == InputSelectorMsg.InputType.DAB && p.isDab()))
                 {
                     final boolean isPlaying = (p.getId() == state.preset);
                     newItems.add(new PresetCommandMsg(
