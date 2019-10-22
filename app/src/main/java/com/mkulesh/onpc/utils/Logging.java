@@ -36,7 +36,7 @@ public final class Logging
     public static boolean isTimeMsgEnabled()
     {
         // Should be false in release build
-        return true;
+        return false;
     }
 
     @SuppressLint("DefaultLocale")

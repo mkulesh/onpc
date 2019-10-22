@@ -219,11 +219,24 @@ public class Utils
     {
         try
         {
+            // #88: Track time seek is frozen on NT-503
+            // some players like NT-503 use format MM:SS
+            // instead of HH:MM:SS
             String[] tokens = timestampStr.split(":");
-            int hours = Integer.parseInt(tokens[0]);
-            int minutes = Integer.parseInt(tokens[1]);
-            int seconds = Integer.parseInt(tokens[2]);
-            return 3600 * hours + 60 * minutes + seconds;
+            if (tokens.length == 3)
+            {
+                int hours = Integer.parseInt(tokens[0]);
+                int minutes = Integer.parseInt(tokens[1]);
+                int seconds = Integer.parseInt(tokens[2]);
+                return 3600 * hours + 60 * minutes + seconds;
+            }
+            else
+            {
+                int hours = 0;
+                int minutes = Integer.parseInt(tokens[0]);
+                int seconds = Integer.parseInt(tokens[1]);
+                return 3600 * hours + 60 * minutes + seconds;
+            }
         }
         catch (Exception ex)
         {
