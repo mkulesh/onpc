@@ -25,7 +25,7 @@
     <string name="action_ok">OK</string>
     <string name="action_cancel">Cancel</string>
 
-    <string name="html_about"><![CDATA[
+    <string name="about_text"><![CDATA[
     <p>Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</p>
     <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
@@ -52,7 +52,9 @@
     <string name="drawer_device">Device</string>
     <string name="drawer_device_connect">Connect</string>
     <string name="drawer_device_search">Search</string>
+    <string name="drawer_device_searching">Searching for compatible devices…</string>
     <string name="drawer_device_application">Application</string>
+    <string name="drawer_app_settings">Settings</string>
     <string name="drawer_about">About</string>
 
     <!-- Connection dialog -->
@@ -61,7 +63,6 @@
 
     <!-- Main menu -->
     <string name="menu_power_power">On/Standby</string>
-    <string name="menu_app_settings">Settings</string>
     <string name="menu_receiver_information">Receiver information</string>
     <string name="menu_latest_logging">Latest logging</string>
 
@@ -106,7 +107,7 @@
         <item>Automatic</item>
     </string-array>
 
-    <string name="pref_default_sound_control" translatable="false">device</string>
+    <string name="pref_sound_control_default" translatable="false">device</string>
     <string-array name="pref_sound_control_codes" translatable="false">
         <item>none</item>
         <item>external-amplifier</item>
@@ -115,7 +116,7 @@
     </string-array>
 
     <!-- App themes -->
-    <string name="pref_app_theme">Theme</string>
+    <string name="pref_theme">Theme</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Black and Lime)</item>
         <item>Dark (Dim Gray and Cyan)</item>
@@ -126,7 +127,7 @@
         <item>Light (Purple and Green)</item>
     </string-array>
 
-    <string name="pref_default_theme_code" translatable="false">indigo-orange</string>
+    <string name="pref_theme_default" translatable="false">indigo-orange</string>
     <string-array name="pref_theme_codes" translatable="false">
         <item>black-lime</item>
         <item>dim-gray-cyan</item>
@@ -167,12 +168,30 @@
     </string-array>
 
     <!-- Non-Translatable parameters of languages -->
-    <string name="pref_default_language_code" translatable="false">system</string>
+    <string name="pref_language_default" translatable="false">system</string>
     <string-array name="pref_language_codes" translatable="false">
         <item>system</item>
         <item>en</item>
         <item>ru</item>
         <item>de</item>
+    </string-array>
+
+    <!-- Application settings: Text size -->
+    <string name="pref_text_size">Text and buttons size</string>
+    <string-array name="pref_text_size_names">
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Big</item>
+        <item>Huge</item>
+    </string-array>
+
+    <!-- Non-Translatable parameters of text size -->
+    <string name="pref_text_size_default" translatable="false">normal</string>
+    <string-array name="pref_text_size_codes" translatable="false">
+        <item>small</item>
+        <item>normal</item>
+        <item>big</item>
+        <item>huge</item>
     </string-array>
 
     <!-- Playback tab -->
@@ -302,11 +321,11 @@
     <string name="cmd_description_memory">Memory(Add Favorite)</string>
     <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
     <string name="cmd_description_f2">Negative Feed</string>
+    <string name="cmd_track_menu">Track menu</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">items</string>
     <string name="medialist_processing">Processing…</string>
-    <string name="medialist_track_menu">Track menu</string>
     <string name="medialist_playback_mode">Playback mode</string>
     <string name="medialist_no_items">No items</string>
 
@@ -411,7 +430,8 @@
     <string name="device_firmware_none">N/A</string>
     <string name="device_firmware_actual">Latest version</string>
     <string name="device_firmware_new_version">New version exists</string>
-    <string name="device_firmware_update_complete">Update completed</string>
+    <string name="device_firmware_update_started">Update started, please wait</string>
+    <string name="device_firmware_update_complete">Update completed, please wait until device is rebooted and reconnect it</string>
     <string name="device_firmware_net">Start device update via network</string>
 
     <!-- Dimmer Level -->
@@ -438,10 +458,10 @@
     <string name="device_two_way_switch_toggle">Toggle</string>
 
     <!-- Two-way switches -->
-    <string name="music_optimizer">Music optimizer</string>
+    <string name="device_music_optimizer">Music optimizer</string>
     <string name="device_auto_power">Auto power</string>
-    <string name="hdmi_cec">HDMI CEC</string>
-    <string name="google_cast_analytics">Google Cast analytics</string>
+    <string name="device_hdmi_cec">HDMI CEC</string>
+    <string name="device_google_cast_analytics">Google Cast analytics</string>
 
     <!-- Speaker A Command -->
     <string name="speaker_a_command_toggle">Sets speaker A switch wrap-around</string>

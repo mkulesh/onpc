@@ -73,7 +73,7 @@
             android:paddingRight="@dimen/button_margin_horizontal"
             android:id="@+id/btn_track_menu"
             android:src="@drawable/cmd_menu"
-            android:contentDescription="@string/medialist_track_menu"
+            android:contentDescription="@string/cmd_track_menu"
             android:visibility="invisible"
             android:tag="MENU" />
 

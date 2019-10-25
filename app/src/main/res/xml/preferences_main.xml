@@ -16,16 +16,16 @@
 
     <ListPreference
         app:icon="@drawable/pref_app_theme"
-        android:defaultValue="@string/pref_default_theme_code"
+        android:defaultValue="@string/pref_theme_default"
         android:entries="@array/pref_theme_names"
         android:entryValues="@array/pref_theme_codes"
         android:key="app_theme"
         android:summary="%s"
-        android:title="@string/pref_app_theme" />
+        android:title="@string/pref_theme" />
 
     <ListPreference
         app:icon="@drawable/pref_language"
-        android:defaultValue="@string/pref_default_language_code"
+        android:defaultValue="@string/pref_language_default"
         android:entries="@array/pref_language_names"
         android:entryValues="@array/pref_language_codes"
         android:key="app_language"
@@ -52,7 +52,7 @@
 
         <ListPreference
             app:icon="@drawable/pref_sound_control"
-            android:defaultValue="@string/pref_default_sound_control"
+            android:defaultValue="@string/pref_sound_control_default"
             android:entries="@array/pref_sound_control_names"
             android:entryValues="@array/pref_sound_control_codes"
             android:key="sound_control"

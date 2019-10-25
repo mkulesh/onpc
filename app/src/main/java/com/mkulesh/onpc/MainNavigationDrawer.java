@@ -99,7 +99,7 @@ class MainNavigationDrawer
             break;
         case R.id.drawer_about:
             HtmlDialogBuilder.buildHtmlDialog(activity,
-                    R.mipmap.ic_launcher, R.string.app_name, R.string.html_about).show();
+                    R.mipmap.ic_launcher, R.string.app_name, R.string.about_text).show();
         }
     }
 

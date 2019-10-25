@@ -50,6 +50,6 @@
     <item
         android:id="@+id/playlist_track_menu"
         android:icon="@drawable/cmd_menu"
-        android:title="@string/medialist_track_menu" />
+        android:title="@string/cmd_track_menu" />
 
 </menu>

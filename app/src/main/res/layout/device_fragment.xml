@@ -171,7 +171,7 @@
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:text="@string/music_optimizer" />
+                    android:text="@string/device_music_optimizer" />
 
                 <TextView
                     style="@style/DeviceValueViewStyle"
@@ -209,7 +209,7 @@
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:text="@string/hdmi_cec" />
+                    android:text="@string/device_hdmi_cec" />
 
                 <TextView
                     style="@style/DeviceValueViewStyle"
@@ -247,7 +247,7 @@
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:text="@string/google_cast_analytics" />
+                    android:text="@string/device_google_cast_analytics" />
 
                 <TextView
                     style="@style/DeviceValueViewStyle"

@@ -111,7 +111,7 @@ public class Configuration
         devicePort = preferences.getInt(Configuration.SERVER_PORT, BroadcastSearch.ISCP_PORT);
 
         soundControl = preferences.getString(Configuration.SOUND_CONTROL,
-                context.getResources().getString(R.string.pref_default_sound_control));
+                context.getResources().getString(R.string.pref_sound_control_default));
 
         remoteInterface = preferences.getBoolean(Configuration.REMOTE_INTERFACE, false);
         remoteInterfaceAmp = preferences.getBoolean(Configuration.REMOTE_INTERFACE_AMP, false);
@@ -122,7 +122,7 @@ public class Configuration
     public int getTheme(ThemeType type)
     {
         final String themeCode = preferences.getString(Configuration.APP_THEME,
-                context.getResources().getString(R.string.pref_default_theme_code));
+                context.getResources().getString(R.string.pref_theme_default));
 
         final CharSequence[] allThemes = context.getResources().getStringArray(R.array.pref_theme_codes);
         int themeIndex = 0;

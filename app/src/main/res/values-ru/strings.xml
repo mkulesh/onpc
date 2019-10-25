@@ -23,7 +23,7 @@
     <string name="action_ok">OK</string>
     <string name="action_cancel">Отмена</string>
 
-    <string name="html_about"><![CDATA[
+    <string name="about_text"><![CDATA[
     <p>Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!</p>
     <p>Copyright © 2018-2019 by <b>Михаил Кулеш, Александр Гоманюк</b></p>
     <p>Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Pioneer/Integra по
@@ -53,7 +53,9 @@
     <string name="drawer_device">Устройство</string>
     <string name="drawer_device_connect">Соединение</string>
     <string name="drawer_device_search">Поиск</string>
+    <string name="drawer_device_searching">Поиск совестимых устройств…</string>
     <string name="drawer_device_application">Приложение</string>
+    <string name="drawer_app_settings">Настройки</string>
     <string name="drawer_about">О программе</string>
 
     <!-- Connection dialog -->
@@ -62,7 +64,6 @@
 
     <!-- Main menu -->
     <string name="menu_power_power">Вкл/выкл</string>
-    <string name="menu_app_settings">Настройки</string>
     <string name="menu_receiver_information">Информация об устройстве</string>
     <string name="menu_latest_logging">Лог приложения</string>
 
@@ -108,7 +109,7 @@
     </string-array>
 
     <!-- App themes -->
-    <string name="pref_app_theme">Тема</string>
+    <string name="pref_theme">Тема</string>
     <string-array name="pref_theme_names">
         <item>Контрастная темная (черно-желтая)</item>
         <item>Темная (серая и сине-зеленая)</item>
@@ -125,6 +126,15 @@
         <item>English</item>
         <item>Русский</item>
         <item>Deutsch</item>
+    </string-array>
+
+    <!-- Application settings: Text size -->
+    <string name="pref_text_size">Размер кнопок и текста</string>
+    <string-array name="pref_text_size_names">
+        <item>Маленький</item>
+        <item>Нормальный</item>
+        <item>Большой</item>
+        <item>Огромный</item>
     </string-array>
 
     <!-- Playback tab -->
@@ -254,11 +264,11 @@
     <string name="cmd_description_memory">Добавить в избранное</string>
     <string name="cmd_description_f1">Нравится</string>
     <string name="cmd_description_f2">Не нравится</string>
+    <string name="cmd_track_menu">Меню трека</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">элементов</string>
     <string name="medialist_processing">Ждите…</string>
-    <string name="medialist_track_menu">Меню трека</string>
     <string name="medialist_playback_mode">Режим воспроизведения</string>
     <string name="medialist_no_items">Список пуст</string>
 
@@ -363,6 +373,7 @@
     <string name="device_firmware_none">Неизвестно</string>
     <string name="device_firmware_actual">Актуальная версия</string>
     <string name="device_firmware_new_version">Обнаружена новая версия</string>
+    <string name="device_firmware_update_started">Обновление началось, ждите</string>
     <string name="device_firmware_update_complete">Обновление завершено</string>
     <string name="device_firmware_net">Обновить устройство по сети</string>
 
@@ -390,10 +401,10 @@
     <string name="device_two_way_switch_toggle">Изменить</string>
 
     <!-- Two-way switches -->
-    <string name="music_optimizer">Оптимизация звука</string>
+    <string name="device_music_optimizer">Оптимизация звука</string>
     <string name="device_auto_power">Авто-отключение</string>
-    <string name="hdmi_cec">HDMI CEC</string>
-    <string name="google_cast_analytics">Аналитика Google Cast</string>
+    <string name="device_hdmi_cec">HDMI CEC</string>
+    <string name="device_google_cast_analytics">Аналитика Google Cast</string>
 
     <!-- Speaker A Command -->
     <string name="speaker_a_command_toggle">Вкл/выкл динамик A</string>

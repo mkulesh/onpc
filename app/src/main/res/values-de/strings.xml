@@ -23,7 +23,7 @@
     <string name="action_ok">OK</string>
     <string name="action_cancel">Abbrechen</string>
 
-    <string name="html_about"><![CDATA[
+    <string name="about_text"><![CDATA[
     <p>Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</p>
     <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das
@@ -50,7 +50,9 @@
     <string name="drawer_device">Gerät</string>
     <string name="drawer_device_connect">Verbinden</string>
     <string name="drawer_device_search">Suchen</string>
+    <string name="drawer_device_searching">Suchen…</string>
     <string name="drawer_device_application">Anwendung</string>
+    <string name="drawer_app_settings">Einstellungen</string>
     <string name="drawer_about">Über</string>
 
     <!-- Connection dialog -->
@@ -59,7 +61,6 @@
 
     <!-- Main menu -->
     <string name="menu_power_power">An/Standby</string>
-    <string name="menu_app_settings">Einstellungen</string>
     <string name="menu_receiver_information">Receiver Informationen</string>
     <string name="menu_latest_logging">Letzte Log</string>
 
@@ -105,7 +106,7 @@
     </string-array>
 
     <!-- App themes -->
-    <string name="pref_app_theme">Thema</string>
+    <string name="pref_theme">Thema</string>
     <string-array name="pref_theme_names">
         <item>OLED (Schwarz und Limette)</item>
         <item>Dunkel (Dunkelgrau und Blau)</item>
@@ -124,6 +125,15 @@
         <item>English</item>
         <item>Русский</item>
         <item>Deutsch</item>
+    </string-array>
+
+    <!-- Application settings: Text size -->
+    <string name="pref_text_size">Beschriftungs- und Tastengröße</string>
+    <string-array name="pref_text_size_names">
+        <item>Klein</item>
+        <item>Normal</item>
+        <item>Groß</item>
+        <item>Riesig</item>
     </string-array>
 
     <!-- Playback tab -->
@@ -253,11 +263,11 @@
     <string name="cmd_description_memory">Speichern(Favorit hinzufügen)</string>
     <string name="cmd_description_f1">Positiv markieren/demarkieren</string>
     <string name="cmd_description_f2">Negativ markieren</string>
+    <string name="cmd_track_menu">Titel Menü</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">Elemente</string>
     <string name="medialist_processing">Bearbeite…</string>
-    <string name="medialist_track_menu">Titel Menü</string>
     <string name="medialist_playback_mode">Abspielmodus</string>
     <string name="medialist_no_items">Keine Elemente</string>
 
@@ -362,6 +372,7 @@
     <string name="device_firmware_none">N/A</string>
     <string name="device_firmware_actual">Aktuellste Version</string>
     <string name="device_firmware_new_version">Es gibt eine neue Version</string>
+    <string name="device_firmware_update_started">Update gestartet, bitte warten</string>
     <string name="device_firmware_update_complete">Update abgeschlossen</string>
     <string name="device_firmware_net">Update über Netzwerk starten</string>
 
@@ -389,10 +400,10 @@
     <string name="device_two_way_switch_toggle">Wechseln</string>
 
     <!-- Two-way switches -->
-    <string name="music_optimizer">Musikoptimierung</string>
+    <string name="device_music_optimizer">Musikoptimierung</string>
     <string name="device_auto_power">Auto an/aus</string>
-    <string name="hdmi_cec">HDMI CEC</string>
-    <string name="google_cast_analytics">Google Cast analytics</string>
+    <string name="device_hdmi_cec">HDMI CEC</string>
+    <string name="device_google_cast_analytics">Google Cast analytics</string>
 
     <!-- Speaker A Command -->
     <string name="speaker_a_command_toggle">Lautsprecher A umschalten</string>
