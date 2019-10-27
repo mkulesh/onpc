@@ -962,13 +962,22 @@ public class MonitorFragment extends BaseFragment
         final State state = activity.getStateManager().getState();
         final int currTime = Utils.timeToSeconds(state.currentTime);
         final int maxTime = Utils.timeToSeconds(state.maxTime);
+        boolean fullFormat = true;
+        try
+        {
+            fullFormat = state.currentTime.split(":").length == 3;
+        }
+        catch (Exception e)
+        {
+            // nothing to do
+        }
         if (currTime >= 0 && maxTime >= 0)
         {
             final int hour = newSec / 3600;
             final int min = (newSec - hour * 3600) / 60;
             final int sec = newSec - hour * 3600 - min * 60;
             activity.getStateManager().requestSkipNextTimeMsg(2);
-            final TimeSeekMsg msg = new TimeSeekMsg(hour, min, sec);
+            final TimeSeekMsg msg = fullFormat ? new TimeSeekMsg(hour, min, sec) : new TimeSeekMsg(min, sec);
             state.currentTime = msg.getTimeAsString();
             ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
             activity.getStateManager().sendMessage(msg);

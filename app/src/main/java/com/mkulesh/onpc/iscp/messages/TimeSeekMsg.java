@@ -27,12 +27,23 @@ public class TimeSeekMsg extends ISCPMessage
 {
     private final static String CODE = "NTS";
 
+    private final boolean fullFormat;
     private final int hours, minutes, seconds;
 
     public TimeSeekMsg(final int hours, final int minutes, final int seconds)
     {
         super(0, null);
+        this.fullFormat = true;
         this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
+    }
+
+    public TimeSeekMsg(final int minutes, final int seconds)
+    {
+        super(0, null);
+        this.fullFormat = false;
+        this.hours = 0;
         this.minutes = minutes;
         this.seconds = seconds;
     }
@@ -41,17 +52,16 @@ public class TimeSeekMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + Integer.toString(hours)
-                + ":" + Integer.toString(minutes)
-                + ":" + Integer.toString(seconds) + "]";
+        return CODE + "[" + hours + ":" + minutes + ":" + seconds + "]";
     }
 
     @SuppressLint("DefaultLocale")
     public String getTimeAsString()
     {
-        return String.format("%02d", hours)
-                + ":" + String.format("%02d", minutes)
-                + ":" + String.format("%02d", seconds);
+        return fullFormat ?
+                String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds)
+                :
+                String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
     }
 
     @Override
