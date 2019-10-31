@@ -1,0 +1,455 @@
+/*
+ * Copyright (C) 2019. Mikhail Kulesh
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details. You should have received a copy of the GNU General
+ * Public License along with this program.
+ */
+
+import "package:xml/xml.dart" as xml;
+
+import "../constants/Drawables.dart";
+import "../utils/Logging.dart";
+import "ISCPMessage.dart";
+import "messages/AlbumNameMsg.dart";
+import "messages/ArtistNameMsg.dart";
+import "messages/AudioMutingMsg.dart";
+import "messages/AutoPowerMsg.dart";
+import "messages/CenterLevelCommandMsg.dart";
+import "messages/CustomPopupMsg.dart";
+import "messages/DeviceNameMsg.dart";
+import "messages/DigitalFilterMsg.dart";
+import "messages/DimmerLevelMsg.dart";
+import "messages/FileFormatMsg.dart";
+import "messages/FirmwareUpdateMsg.dart";
+import "messages/FriendlyNameMsg.dart";
+import 'messages/GoogleCastAnalyticsMsg.dart';
+import "messages/GoogleCastVersionMsg.dart";
+import "messages/HdmiCecMsg.dart";
+import "messages/InputSelectorMsg.dart";
+import "messages/JacketArtMsg.dart";
+import "messages/ListInfoMsg.dart";
+import "messages/ListTitleInfoMsg.dart";
+import "messages/ListeningModeMsg.dart";
+import "messages/MasterVolumeMsg.dart";
+import "messages/MenuStatusMsg.dart";
+import "messages/MusicOptimizerMsg.dart";
+import "messages/PlayStatusMsg.dart";
+import "messages/PowerStatusMsg.dart";
+import "messages/PresetCommandMsg.dart";
+import "messages/ReceiverInformationMsg.dart";
+import "messages/ServiceType.dart";
+import "messages/SpeakerACommandMsg.dart";
+import "messages/SpeakerBCommandMsg.dart";
+import "messages/SubwooferLevelCommandMsg.dart";
+import "messages/TimeInfoMsg.dart";
+import "messages/TitleNameMsg.dart";
+import "messages/ToneCommandMsg.dart";
+import "messages/TrackInfoMsg.dart";
+import "messages/TuningCommandMsg.dart";
+import "messages/XmlListInfoMsg.dart";
+import "state/DeviceSettingsState.dart";
+import "state/MediaListState.dart";
+import "state/MultiroomState.dart";
+import "state/PlaybackState.dart";
+import "state/RadioState.dart";
+import "state/ReceiverInformation.dart";
+import "state/SoundControlState.dart";
+import "state/TrackState.dart";
+
+class State
+{
+    // Connection state
+    bool _connected = false;
+
+    bool get isConnected
+    => _connected;
+
+    // Receiver information
+    final ReceiverInformation _receiverInformation = ReceiverInformation();
+
+    ReceiverInformation get receiverInformation
+    => _receiverInformation;
+
+    bool get isOn
+    => _receiverInformation.powerStatus == PowerStatus.ON;
+
+    // Device settings
+    final DeviceSettingsState _deviceSettingsState = DeviceSettingsState();
+
+    DeviceSettingsState get deviceSettingsState
+    => _deviceSettingsState;
+
+    // Active zone
+    static const int DEFAULT_ACTIVE_ZONE = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
+    int _activeZone = DEFAULT_ACTIVE_ZONE;
+
+    int get getActiveZone
+    => _activeZone;
+
+    Zone get getActiveZoneInfo
+    => _activeZone < _receiverInformation.zones.length ? _receiverInformation.zones[_activeZone] : null;
+
+    bool get isExtendedZone
+    => _activeZone < _receiverInformation.zones.length && _activeZone != DEFAULT_ACTIVE_ZONE;
+
+    bool get isDefaultZone
+    => _activeZone == DEFAULT_ACTIVE_ZONE;
+
+    // Track state
+    final TrackState _trackState = TrackState();
+
+    TrackState get trackState
+    => _trackState;
+
+    // Playback state
+    final PlaybackState _playbackState = PlaybackState();
+
+    PlaybackState get playbackState
+    => _playbackState;
+
+    bool get isPlaying
+    => playbackState.playStatus != PlayStatus.STOP;
+
+    // Media list
+    final MediaListState _mediaListState = MediaListState();
+
+    MediaListState get mediaListState
+    => _mediaListState;
+
+    // Sound control state
+    final SoundControlState _soundControlState = SoundControlState();
+
+    SoundControlState get soundControlState
+    => _soundControlState;
+
+    // Radio state
+    final RadioState _radioState = RadioState();
+
+    RadioState get radioState
+    => _radioState;
+
+    // Popup
+    xml.XmlDocument _popupDocument;
+
+    // Multiroom
+    final MultiroomState _multiroomState = MultiroomState();
+
+    MultiroomState get multiroomState
+    => _multiroomState;
+
+    // Update logic
+    String _isChange(String type, bool change)
+    => change ? type : null;
+
+    bool updateConnection(bool c)
+    {
+        final changed = _connected != c;
+        _connected = c;
+        if (!isConnected)
+        {
+            clear();
+        }
+        else
+        {
+            _receiverInformation.createDefaultReceiverInfo();
+        }
+        return changed;
+    }
+
+    bool changeZone(String getId)
+    {
+        for (int i = 0; i < _receiverInformation.zones.length; i++)
+        {
+            if (_receiverInformation.zones[i].getId == getId)
+            {
+                Logging.info(this, "requesting new zone: " + i.toString());
+                clear();
+                _activeZone = i;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    String update(ISCPMessage msg)
+    {
+        // Note: Use zone-independent message CODE here
+        // instead od zone-dependent msg.getCode
+
+        // Receiver info
+        if (msg is ReceiverInformationMsg)
+        {
+            return _isChange(ReceiverInformationMsg.CODE,
+                _receiverInformation.processReceiverInformation(msg));
+        }
+        else if (msg is FriendlyNameMsg)
+        {
+            return _isChange(FriendlyNameMsg.CODE,
+                _receiverInformation.processFriendlyName(msg));
+        }
+        else if (msg is DeviceNameMsg)
+        {
+            return _isChange(DeviceNameMsg.CODE,
+                _receiverInformation.processDeviceName(msg));
+        }
+        else if (msg is PowerStatusMsg)
+        {
+            final String changed = _isChange(PowerStatusMsg.CODE,
+                _receiverInformation.processPowerStatus(msg));
+            if (changed != null && !isOn)
+            {
+                _mediaListState.clearItems();
+                trackState.clear();
+            }
+            return changed;
+        }
+        else if (msg is FirmwareUpdateMsg)
+        {
+            return _isChange(FirmwareUpdateMsg.CODE,
+                _receiverInformation.processFirmwareUpdate(msg));
+        }
+        else if (msg is GoogleCastVersionMsg)
+        {
+            return _isChange(GoogleCastVersionMsg.CODE,
+                _receiverInformation.processGoogleCastVersion(msg));
+        }
+
+        // Device settings
+        if (msg is DimmerLevelMsg)
+        {
+            return _isChange(DimmerLevelMsg.CODE, _deviceSettingsState.processDimmerLevel(msg));
+        }
+        else if (msg is DigitalFilterMsg)
+        {
+            return _isChange(DigitalFilterMsg.CODE, _deviceSettingsState.processDigitalFilter(msg));
+        }
+        else if (msg is MusicOptimizerMsg)
+        {
+            return _isChange(MusicOptimizerMsg.CODE, _deviceSettingsState.processMusicOptimizer(msg));
+        }
+        else if (msg is AutoPowerMsg)
+        {
+            return _isChange(AutoPowerMsg.CODE, _deviceSettingsState.processAutoPower(msg));
+        }
+        else if (msg is HdmiCecMsg)
+        {
+            return _isChange(HdmiCecMsg.CODE, _deviceSettingsState.processHdmiCec(msg));
+        }
+        else if (msg is SpeakerACommandMsg)
+        {
+            return _isChange(SpeakerACommandMsg.CODE, _deviceSettingsState.processSpeakerACommand(msg));
+        }
+        else if (msg is SpeakerBCommandMsg)
+        {
+            return _isChange(SpeakerBCommandMsg.CODE, _deviceSettingsState.processSpeakerBCommand(msg));
+        }
+        else if (msg is GoogleCastAnalyticsMsg)
+        {
+            return _isChange(GoogleCastAnalyticsMsg.CODE, _deviceSettingsState.processGoogleCastAnalytics(msg));
+        }
+
+        // Track info
+        if (msg is AlbumNameMsg)
+        {
+            return _isChange(AlbumNameMsg.CODE, _trackState.processAlbumName(msg));
+        }
+        else if (msg is ArtistNameMsg)
+        {
+            return _isChange(ArtistNameMsg.CODE, _trackState.processArtistName(msg));
+        }
+        else if (msg is TitleNameMsg)
+        {
+            return _isChange(TitleNameMsg.CODE, _trackState.processTitleName(msg));
+        }
+        else if (msg is FileFormatMsg)
+        {
+            return _isChange(FileFormatMsg.CODE, _trackState.processFileFormat(msg));
+        }
+        else if (msg is TrackInfoMsg)
+        {
+            return _isChange(TrackInfoMsg.CODE, _trackState.processTrackInfo(msg));
+        }
+        else if (msg is TimeInfoMsg)
+        {
+            return _isChange(TimeInfoMsg.CODE, _trackState.processTimeInfo(msg));
+        }
+        else if (msg is JacketArtMsg)
+        {
+            return _isChange(JacketArtMsg.CODE, _trackState.processJacketArt(msg));
+        }
+
+        // Playback state
+        if (msg is PlayStatusMsg)
+        {
+            return _isChange(PlayStatusMsg.CODE, _playbackState.processPlayStatus(msg));
+        }
+        else if (msg is MenuStatusMsg)
+        {
+            return _isChange(MenuStatusMsg.CODE, _playbackState.processMenuStatus(msg));
+        }
+
+        // Media list state
+        if (msg is InputSelectorMsg)
+        {
+            final String changed = _isChange(InputSelectorMsg.CODE, _mediaListState.processInputSelector(msg));
+            if (_mediaListState.isRadioInput)
+            {
+                _mediaListState.fillRadioPresets(getActiveZone, _receiverInformation.presetList);
+            }
+            if (!_mediaListState.inputType.isMediaList)
+            {
+                _trackState.clear();
+            }
+            if (_mediaListState.isSimpleInput)
+            {
+                _playbackState.clear();
+            }
+            return changed;
+        }
+        else if (msg is ListTitleInfoMsg)
+        {
+            return _isChange(ListTitleInfoMsg.CODE, _mediaListState.processListTitleInfo(msg));
+        }
+        else if (msg is XmlListInfoMsg)
+        {
+            final String changed = _isChange(XmlListInfoMsg.CODE, _mediaListState.processXmlListInfo(msg));
+            if (changed != null && _mediaListState.serviceType.key == ServiceType.PLAYQUEUE)
+            {
+                // Corner case; receiver does not provide track information for play queue,
+                // However, we can obtain this track information from XML media items
+                _trackState.processXmlListItem(_mediaListState.mediaItems);
+            }
+            return changed;
+        }
+        else if (msg is ListInfoMsg)
+        {
+            return _isChange(ListInfoMsg.CODE, _mediaListState.processListInfo(msg, _receiverInformation.networkServices));
+        }
+
+        // Sound control
+        if (msg is AudioMutingMsg)
+        {
+            return _isChange(AudioMutingMsg.CODE, _soundControlState.processAudioMuting(msg));
+        }
+        else if (msg is MasterVolumeMsg)
+        {
+            return _isChange(MasterVolumeMsg.CODE, _soundControlState.processMasterVolume(msg));
+        }
+        else if (msg is ToneCommandMsg)
+        {
+            return _isChange(ToneCommandMsg.CODE, _soundControlState.processToneCommand(msg));
+        }
+        else if (msg is SubwooferLevelCommandMsg)
+        {
+            return _isChange(SubwooferLevelCommandMsg.CODE, _soundControlState.processSubwooferLevelCommand(msg));
+        }
+        else if (msg is CenterLevelCommandMsg)
+        {
+            return _isChange(CenterLevelCommandMsg.CODE, _soundControlState.processCenterLevelCommand(msg));
+        }
+        else if (msg is ListeningModeMsg)
+        {
+            return _isChange(ListeningModeMsg.CODE, _soundControlState.processListeningMode(msg));
+        }
+
+        // Radio
+        if (msg is PresetCommandMsg)
+        {
+            return _isChange(PresetCommandMsg.CODE, _radioState.processPresetCommand(msg));
+        }
+        if (msg is TuningCommandMsg)
+        {
+            return _isChange(TuningCommandMsg.CODE, _radioState.processTuningCommand(msg));
+        }
+
+        // Popup
+        if (msg is CustomPopupMsg)
+        {
+            return _isChange(CustomPopupMsg.CODE, _processCustomPopup(msg));
+        }
+
+        return null;
+    }
+
+    Selector get getActualSelector
+    => _receiverInformation.deviceSelectors.firstWhere((s) => s.getId == mediaListState.inputType.getCode, orElse: () => null);
+
+    NetworkService get getNetworkService
+    => (_mediaListState.serviceType != null) ? _receiverInformation.getNetworkService(_mediaListState.serviceType.getCode) : null;
+
+    bool _processCustomPopup(CustomPopupMsg msg)
+    {
+        if (msg.popupDocument.findElements("popup").isNotEmpty &&
+            msg.popupDocument.findElements("popup").first != null)
+        {
+            _popupDocument = msg.popupDocument;
+        }
+        else
+        {
+            Logging.info(this, "received a popup with emply content. Ignored.");
+        }
+        return _popupDocument != null;
+    }
+
+    bool isSimplePopupMessage()
+    => _popupDocument != null &&
+       _popupDocument.findElements("popup").length == 1 &&
+       _popupDocument.findAllElements("textboxgroup").isEmpty &&
+       _popupDocument.findAllElements("buttongroup").isEmpty &&
+       _popupDocument.findAllElements("label").isNotEmpty;
+
+    String retrieveSimplePopupMessage()
+    {
+        if (isSimplePopupMessage())
+        {
+            final xml.XmlElement popupElement = _popupDocument.findElements("popup").first;
+            String retValue = popupElement.getAttribute("title") + ": ";
+            popupElement.findElements("label").forEach((label)
+            {
+                label.findElements("line").forEach((line) => retValue += line.getAttribute("text"));
+            });
+            _popupDocument = null;
+            return retValue;
+        }
+        return null;
+    }
+
+    xml.XmlDocument retrievePopup()
+    {
+        final xml.XmlDocument retValue = _popupDocument;
+        _popupDocument = null;
+        return retValue;
+    }
+
+    String getServiceIcon()
+    {
+        String serviceIcon = playbackState.serviceIcon.icon;
+        if (serviceIcon == null)
+        {
+            serviceIcon = mediaListState.inputType.icon;
+        }
+        if (serviceIcon == null)
+        {
+            serviceIcon = Drawables.media_item_unknown;
+        }
+        return serviceIcon;
+    }
+
+    void clear()
+    {
+        _receiverInformation.clear();
+        _deviceSettingsState.clear();
+        _trackState.clear();
+        _playbackState.clear();
+        _mediaListState.clear();
+        _soundControlState.clear();
+        _radioState.clear();
+        _popupDocument = null;
+    }
+}

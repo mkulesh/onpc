@@ -1,0 +1,10 @@
+include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  exclude: [build/**]
+
+
+linter:
+  rules:
+    prefer_final_fields: true
+    prefer_final_locals: true

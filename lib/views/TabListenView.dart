@@ -1,0 +1,92 @@
+/*
+ * Copyright (C) 2019. Mikhail Kulesh
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details. You should have received a copy of the GNU General
+ * Public License along with this program.
+ */
+import "package:flutter/material.dart";
+
+import "../iscp/StateManager.dart";
+import "../iscp/messages/InputSelectorMsg.dart";
+import "../iscp/state/SoundControlState.dart";
+import "DeviceVolumeView.dart";
+import "ExtAmpVolumeView.dart";
+import "ListeningModeView.dart";
+import "PlayControlView.dart";
+import 'RadioControlView.dart';
+import "TrackInfoView.dart";
+import "UpdatableView.dart";
+
+class TabListenView extends UpdatableView
+{
+    static const List<String> UPDATE_TRIGGERS = [
+        StateManager.ZONE_EVENT,
+        InputSelectorMsg.CODE
+    ];
+
+    TabListenView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+
+    @override
+    Widget createView(BuildContext context, VoidCallback updateCallback)
+    {
+        final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+        final List<Widget> widgets = List<Widget>();
+
+        final SoundControlType soundControl = state.soundControlState.soundControlType(
+            configuration.soundControl, state.getActiveZoneInfo);
+
+        if (soundControl == SoundControlType.DEVICE)
+        {
+            widgets.add(Center(child: UpdatableWidget(child: ListeningModeView(viewContext))));
+        }
+
+        // Sound controls depends on orientation and configuration
+        Widget soundControlView;
+        switch (soundControl)
+        {
+            case SoundControlType.DEVICE:
+                soundControlView = UpdatableWidget(child: DeviceVolumeView(viewContext));
+                break;
+            case SoundControlType.RI_AMP:
+                soundControlView = UpdatableWidget(child: ExtAmpVolumeView(viewContext));
+                break;
+            default:
+                soundControlView = null;
+                break;
+        }
+        if (isPortrait && soundControlView != null)
+        {
+            widgets.add(soundControlView);
+        }
+
+        // Track info always in the middle of screen
+        widgets.add(Expanded(child: UpdatableWidget(child: TrackInfoView(viewContext)), flex: 1));
+
+        // Play controls depends on input type
+        final Widget playControlView = (state.mediaListState.isRadioInput) ?
+            UpdatableWidget(child: RadioControlView(viewContext))
+            : UpdatableWidget(child: PlayControlView(viewContext));
+        final List<Widget> playControlList = List();
+        if (!isPortrait && soundControlView != null)
+        {
+            playControlList.add(soundControlView);
+        }
+        playControlList.add(playControlView);
+        final Widget playControl = Center(
+            child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: playControlList))
+        );
+        widgets.add(playControl);
+
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: widgets
+        );
+    }
+}
