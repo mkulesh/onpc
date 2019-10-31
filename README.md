@@ -1,15 +1,8 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
-[![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.5-debug.apk)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo and Pioneer
 
 *Enhanced controller for Onkyo/Pioneer devices: listen to music properly!*
-
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
-      alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
-[<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
-      alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management. Other benefits include:
@@ -40,21 +33,6 @@ Currently, this app is only tested with following devices:
 - [Pioneer VSX-LX303](https://www.pioneerelectronics.com/PUSA/Home/AV-Receivers/Elite+Receivers/VSX-LX303)
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
 
-## Screenshots
-* Playback screen in landscape orientation, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center">
-
-* Playback screen in portrait orientation, Strong Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_vert.png" align="center" height="800">
-
-* Playback screen and navigation drawer in landscape orientation, 10 Inch tablet, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/tablet_ns_6130_playback_hor.png" align="center">
-
-* Media screen (network services), Light theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_media_top_vert.png" align="center" height="800">
-
-For more screenshots, see directory images/screenshots.
-
 ## Limitations
 Some network services like Spotify, Tidal, AirPlay are currently not yet tested and may not work.
 
@@ -62,14 +40,12 @@ Some network services like Spotify, Tidal, AirPlay are currently not yet tested 
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in this repository on in 'doc' directory.
 
 ## Publications:
-
 * [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985/)
 * [Logo design for Enhanced Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
 
 ## Used Open Source Libraries
 * Material Design Icons: http://materialdesignicons.com
 * Material Design Palette: https://www.materialpalette.com
-* DragSortListView (drag-and-drop reordering of list items): https://github.com/bauerca/drag-sort-listview
 
 ## Acknowledgement
 * Thank to [Tebriz](https://github.com/tebriz159) for Logo design
