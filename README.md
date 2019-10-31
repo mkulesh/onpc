@@ -1,4 +1,5 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
+[![Flutter Logo](https://github.com/mkulesh/onpc/blob/onpc-flutter/images/flutter-logo.png)](https://flutter.dev)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo and Pioneer
 
