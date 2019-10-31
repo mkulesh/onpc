@@ -30,7 +30,7 @@
         android:entryValues="@array/pref_language_codes"
         android:key="app_language"
         android:summary="%s"
-        android:title="@string/pref_app_language"/>
+        android:title="@string/pref_language"/>
 
     <PreferenceCategory android:title="@string/pref_category_device_options">
 

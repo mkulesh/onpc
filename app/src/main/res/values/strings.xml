@@ -159,7 +159,7 @@
     </array>
 
     <!-- Application settings: Languages -->
-    <string name="pref_app_language">App language</string>
+    <string name="pref_language">App language</string>
     <string-array name="pref_language_names">
         <item>System language</item>
         <item>English</item>
