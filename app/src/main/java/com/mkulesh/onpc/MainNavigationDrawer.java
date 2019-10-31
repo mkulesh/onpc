@@ -136,7 +136,7 @@ class MainNavigationDrawer
         final EditText devicePort = frameView.findViewById(R.id.device_port);
         devicePort.setText(configuration.getDevicePortAsString());
 
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.device_connect);
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.drawer_connect);
         Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
         final AlertDialog dialog = new AlertDialog.Builder(activity)
                 .setTitle(R.string.drawer_device_connect)

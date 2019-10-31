@@ -153,7 +153,7 @@
             android:summary="@string/pref_advanced_queue_summary" />
 
         <SwitchPreferenceCompat
-            app:icon="@drawable/cmd_menu"
+            app:icon="@drawable/cmd_track_menu"
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="keep_playback_mode"

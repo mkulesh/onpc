@@ -50,7 +50,7 @@
                 <androidx.appcompat.widget.AppCompatImageButton
                     style="@style/ImageButtonSecondaryStyle"
                     android:id="@+id/device_change_friendly_name"
-                    android:src="@drawable/pref_friendly_name"
+                    android:src="@drawable/cmd_friendly_name"
                     android:contentDescription="@string/device_change_friendly_name" />
             </LinearLayout>
 
@@ -101,7 +101,7 @@
                     style="@style/ImageButtonSecondaryStyle"
                     android:visibility="gone"
                     android:id="@+id/btn_firmware_update"
-                    android:src="@drawable/firmware_update"
+                    android:src="@drawable/cmd_firmware_update"
                     android:contentDescription="@string/device_firmware_net" />
             </LinearLayout>
 

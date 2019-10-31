@@ -49,7 +49,7 @@
         android:title="@string/playlist_move_to" />
     <item
         android:id="@+id/playlist_track_menu"
-        android:icon="@drawable/cmd_menu"
+        android:icon="@drawable/cmd_track_menu"
         android:title="@string/cmd_track_menu" />
 
 </menu>

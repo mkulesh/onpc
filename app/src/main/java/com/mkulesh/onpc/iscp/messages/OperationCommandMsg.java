@@ -75,7 +75,7 @@ public class OperationCommandMsg extends ZonedMessage
         RETURN("RETURN", R.string.cmd_description_return, R.drawable.cmd_return),
         CHUP("CHUP", R.string.cmd_description_chup),
         CHDN("CHDN", R.string.cmd_description_chdn),
-        MENU("MENU", R.string.cmd_description_menu, R.drawable.cmd_menu),
+        MENU("MENU", R.string.cmd_description_menu, R.drawable.cmd_track_menu),
         TOP("TOP", R.string.cmd_description_top, R.drawable.cmd_top),
         MODE("MODE", R.string.cmd_description_mode),
         LIST("LIST", R.string.cmd_description_list),

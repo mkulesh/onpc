@@ -20,12 +20,12 @@
         <menu>
             <item
                 android:id="@+id/drawer_device_search"
-                android:icon="@drawable/media_item_search"
+                android:icon="@drawable/drawer_search"
                 android:orderInCategory="0"
                 android:title="@string/drawer_device_search" />
             <item
                 android:id="@+id/drawer_device_connect"
-                android:icon="@drawable/device_connect"
+                android:icon="@drawable/drawer_connect"
                 android:orderInCategory="1"
                 android:title="@string/drawer_device_connect" />
         </menu>
@@ -39,22 +39,22 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/drawer_zone_1"
-                    android:icon="@drawable/zone_1"
+                    android:icon="@drawable/drawer_zone_1"
                     android:orderInCategory="0"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_zone_2"
-                    android:icon="@drawable/zone_2"
+                    android:icon="@drawable/drawer_zone_2"
                     android:orderInCategory="1"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_zone_3"
-                    android:icon="@drawable/zone_3"
+                    android:icon="@drawable/drawer_zone_3"
                     android:orderInCategory="2"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_zone_4"
-                    android:icon="@drawable/zone_4"
+                    android:icon="@drawable/drawer_zone_4"
                     android:orderInCategory="3"
                     android:title="@string/dashed_string" />
             </group>
@@ -69,32 +69,32 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/drawer_multiroom_1"
-                    android:icon="@drawable/alpha_a_box_outline"
+                    android:icon="@drawable/multiroom_device_0"
                     android:orderInCategory="0"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_multiroom_2"
-                    android:icon="@drawable/alpha_b_box_outline"
+                    android:icon="@drawable/multiroom_device_1"
                     android:orderInCategory="1"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_multiroom_3"
-                    android:icon="@drawable/alpha_c_box_outline"
+                    android:icon="@drawable/multiroom_device_2"
                     android:orderInCategory="2"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_multiroom_4"
-                    android:icon="@drawable/alpha_d_box_outline"
+                    android:icon="@drawable/multiroom_device_3"
                     android:orderInCategory="3"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_multiroom_5"
-                    android:icon="@drawable/alpha_e_box_outline"
+                    android:icon="@drawable/multiroom_device_4"
                     android:orderInCategory="4"
                     android:title="@string/dashed_string" />
                 <item
                     android:id="@+id/drawer_multiroom_6"
-                    android:icon="@drawable/alpha_f_box_outline"
+                    android:icon="@drawable/multiroom_device_5"
                     android:orderInCategory="5"
                     android:title="@string/dashed_string" />
             </group>
@@ -107,7 +107,7 @@
         <menu>
             <item
                 android:id="@+id/drawer_app_settings"
-                android:icon="@drawable/menu_app_settings"
+                android:icon="@drawable/drawer_app_settings"
                 android:title="@string/drawer_app_settings" />
             <item
                 android:id="@+id/drawer_about"
