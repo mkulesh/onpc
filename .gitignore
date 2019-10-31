@@ -1,0 +1,9 @@
+.idea
+.flutter-plugins
+.packages
+build
+patches
+release
+/android/.gradle
+/android/key.properties
+/android/local.properties
