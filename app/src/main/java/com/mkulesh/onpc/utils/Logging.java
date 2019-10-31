@@ -30,13 +30,13 @@ public final class Logging
     public static boolean isEnabled()
     {
         // Should be false in release build
-        return true;
+        return false;
     }
 
     public static boolean isTimeMsgEnabled()
     {
         // Should be false in release build
-        return true;
+        return false;
     }
 
     @SuppressLint("DefaultLocale")
