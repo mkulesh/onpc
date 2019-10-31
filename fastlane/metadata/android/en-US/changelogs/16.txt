@@ -1,2 +1,0 @@
-• Teac NT-503 is now supported
-• Fixed a bug: AM radio presets are missed

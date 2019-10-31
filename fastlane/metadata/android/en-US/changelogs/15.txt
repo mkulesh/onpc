@@ -1,2 +1,0 @@
-• Added multi-room support. Now it is possible to control groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
-• Added new setting "Keep playback mode" that allows to keep receiver in the playback mode when a song is playing

@@ -1,3 +1,0 @@
-• Fixed auto-detection of Pioneer receiver
-• Improved app behavior on device orientation change
-• Menu "Settings" is moved into Navigation Drawer

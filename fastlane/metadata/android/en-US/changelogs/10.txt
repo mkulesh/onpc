@@ -1,5 +1,0 @@
-Fix: next / previous Track in NET/USB (#44)
-Fix: empty content of DLNA list (#49)
-Fix: Problem with speaker toggle (#50)
-Fix: TuneIn streams stop playing (#51)
-Fix: Album art for mp3 files (#40)

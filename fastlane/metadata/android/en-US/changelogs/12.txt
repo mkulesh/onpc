@@ -1,4 +1,0 @@
-• Added new "Music Optimizer" device setting
-• Added full tone control (bass, center, treble and sub-woofer levels)
-• Added new icon for DAB to differentiate it from internet radio
-• Time and cover display is now disabled for "simple" input selectors

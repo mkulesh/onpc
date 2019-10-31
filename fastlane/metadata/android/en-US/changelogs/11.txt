@@ -1,3 +1,0 @@
-• Expanded the set of listening modes
-• Added configuration parameter that allows us to use the hardware "Back" button as of "Return" in the media list
-• Advanced queue processing: "Replace" and "Replace and play" commands
