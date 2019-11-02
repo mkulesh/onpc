@@ -145,7 +145,7 @@ class DrawerView extends UpdatableView
                     ),
                     CustomTextLabel.small(Strings.app_name,
                         color: td.accentColor, textAlign: TextAlign.center, bold: true),
-                    CustomTextLabel.small("v." + configuration.packageInfo.version,
+                    CustomTextLabel.small(configuration.appVersion,
                         color: td.accentColor, textAlign: TextAlign.center),
                 ],
             )

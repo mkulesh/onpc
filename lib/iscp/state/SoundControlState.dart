@@ -174,7 +174,7 @@ class SoundControlState
                 return (zone != null && zone.getVolMax == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE;
             case "device":
                 return SoundControlType.DEVICE;
-            case "ri-amplifier":
+            case "external-amplifier":
                 return SoundControlType.RI_AMP;
             default:
                 return SoundControlType.NONE;

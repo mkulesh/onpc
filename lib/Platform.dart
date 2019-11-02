@@ -12,6 +12,7 @@
  */
 
 import 'dart:typed_data';
+import 'dart:io' as io;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -63,5 +64,22 @@ class Platform
             }
         }
         return NetworkState.NONE;
+    }
+
+    static bool get isAndroid => io.Platform.isAndroid;
+
+    static Future<ByteData> requestNetworkState()
+    {
+        if (isAndroid)
+        {
+            return sendPlatformCommand(PlatformCmd.NETWORK_STATE);
+        }
+        else
+        {
+            final WriteBuffer buffer = WriteBuffer();
+            buffer.putUint8(PlatformCmd.NETWORK_STATE.index);
+            buffer.putUint8(NetworkState.WIFI.index);
+            return Future.value(buffer.done());
+        }
     }
 }

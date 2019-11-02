@@ -11,7 +11,6 @@
  * Public License along with this program.
  */
 
-import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import "../constants/Strings.dart";
@@ -24,7 +23,7 @@ class Configuration
 {
     static const String CONFIGURATION_EVENT = "CONFIG";
     final SharedPreferences preferences;
-    final PackageInfo packageInfo;
+    String appVersion;
 
     // Theme
     static const Pair<String, String> THEME = Pair<String, String>("theme", Strings.pref_theme_default);
@@ -163,11 +162,10 @@ class Configuration
     => _exitConfirm;
 
 
-    Configuration(this.preferences, this.packageInfo)
+    Configuration(this.preferences, packageInfo)
     {
-        Logging.info(this,
-            "Application started: " + packageInfo.appName + ", " +
-                packageInfo.version);
+        this.appVersion = "v." + packageInfo.version;
+        Logging.info(this, "Application started: " + appVersion);
     }
 
     void read()

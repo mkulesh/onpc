@@ -153,7 +153,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         if (_configuration.isDeviceValid)
         {
-            Platform.sendPlatformCommand(PlatformCmd.NETWORK_STATE).then((replay)
+            Platform.requestNetworkState().then((replay)
             {
                 _processNetworkStateChange(replay);
             });
@@ -181,7 +181,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this, "Application state change: " + state.toString());
         if (state == AppLifecycleState.resumed)
         {
-            Platform.sendPlatformCommand(PlatformCmd.NETWORK_STATE).then((replay)
+            Platform.requestNetworkState().then((replay)
             {
                 _processNetworkStateChange(replay);
             });
@@ -288,7 +288,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _startSearch()
     {
-        Platform.sendPlatformCommand(PlatformCmd.NETWORK_STATE).then((replay)
+        Platform.requestNetworkState().then((replay)
         {
             final NetworkState n = Platform.parseNetworkState(replay);
             _stateManager.networkState = n;
