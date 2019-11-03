@@ -8,3 +8,4 @@ release
 /android/.gradle
 /android/key.properties
 /android/local.properties
+/images/svgcleaner/svgcleaner

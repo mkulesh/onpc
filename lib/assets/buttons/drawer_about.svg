@@ -1,29 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   id="svg11300"
-   height="48"
-   width="48"
-   version="1.1">
-  <metadata
-     id="metadata9">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="com.mkulesh.micromath" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs3" />
-  <path
-     style="fill:#000000;fill-opacity:1"
-     id="path4"
-     d="m 22,17.999999 h 4 v -4 H 22 M 24,40 C 15.18,40 8,32.82 8,23.999999 c 0,-8.82 7.18,-15.9999988 16,-15.9999988 8.82,0 16,7.1799988 16,15.9999988 C 40,32.82 32.82,40 24,40 M 24,4.0000002 A 20,20 0 0 0 4,23.999999 20,20 0 0 0 24,44 20,20 0 0 0 44,23.999999 20,20 0 0 0 24,4.0000002 M 22,34 h 4 V 21.999999 H 22 V 34 z" />
+<svg height="48" width="48" xmlns="http://www.w3.org/2000/svg">
+    <path d="m22 17.999999h4v-4h-4m2 26.000001c-8.82 0-16-7.18-16-16.000001 0-8.82 7.18-15.9999988 16-15.9999988s16 7.1799988 16 15.9999988c0 8.820001-7.18 16.000001-16 16.000001m0-35.9999998a20 20 0 0 0 -20 19.9999988 20 20 0 0 0 20 20.000001 20 20 0 0 0 20-20.000001 20 20 0 0 0 -20-19.9999988m-2 29.9999998h4v-12.000001h-4z" />
 </svg>
