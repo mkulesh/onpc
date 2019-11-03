@@ -52,11 +52,14 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
 
     private enum PlatformCmd
     {
-        NETWORK_STATE(0),
-        VOLUME_UP(1),
-        VOLUME_DOWN(2),
-        RESTART(3),
-        INVALID(4);
+        NETWORK_STATE           (0),
+        VOLUME_UP               (1),
+        VOLUME_DOWN             (2),
+        VOLUME_KEYS_ENABLED     (3),
+        VOLUME_KEYS_DISABLED    (4),
+        KEEP_SCREEN_ON_ENABLED  (5),
+        KEEP_SCREEN_ON_DISABLED (6),
+        INVALID                 (7);
 
         final int code;
 
@@ -207,21 +210,36 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
                 PlatformCmd.values()[input] : PlatformCmd.INVALID;
 
         Log.d("onpc", "platform command from dart code: " + cmd.toString());
+        ByteBuffer r = null;
+        boolean newKeepScreenOn = keepScreenOn;
         switch (cmd)
         {
             case VOLUME_UP:
             case VOLUME_DOWN:
             case INVALID:
                 // nothing to do
-                binaryReply.reply(null);
                 break;
-            case RESTART:
-                binaryReply.reply(null);
-                restartActivity();
+            case VOLUME_KEYS_ENABLED:
+                volumeKeys = true;
+                break;
+            case VOLUME_KEYS_DISABLED:
+                volumeKeys = false;
+                break;
+            case KEEP_SCREEN_ON_ENABLED:
+                newKeepScreenOn = true;
+                break;
+            case KEEP_SCREEN_ON_DISABLED:
+                newKeepScreenOn = false;
                 break;
             case NETWORK_STATE:
-                binaryReply.reply(getNetworkStateMsg(receiver.isConnected(), receiver.isWifi()));
+                r = getNetworkStateMsg(receiver.isConnected(), receiver.isWifi());
                 break;
+        }
+
+        binaryReply.reply(r);
+        if (newKeepScreenOn != keepScreenOn)
+        {
+            restartActivity();
         }
     }
 

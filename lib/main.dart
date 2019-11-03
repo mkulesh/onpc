@@ -93,7 +93,7 @@ class MusicControllerApp extends StatefulWidget
 }
 
 class MusicControllerAppState extends State<MusicControllerApp>
-    with WidgetsBindingObserver, SingleTickerProviderStateMixin
+    with WidgetsBindingObserver, TickerProviderStateMixin
 {
     final ViewContext _viewContext;
     TabController _tabController;
@@ -115,18 +115,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
         super.initState();
         BackButtonInterceptor.add(_onBackPressed);
 
-        _tabs.add(AppTabs.LISTEN);
-        _tabs.add(AppTabs.MEDIA);
-        _tabs.add(AppTabs.DEVICE);
-        _tabs.add(AppTabs.RC);
-        if (_configuration.riAmp || _configuration.riCd)
-        {
-            _tabs.add(AppTabs.RI);
-        }
+        _applyConfiguration(informPlatform: false);
 
-        _tabController = TabController(vsync: this, length: _tabs.length);
         _stateManager.autoPower = _configuration.autoPower;
-        _stateManager.keepPlaybackMode = _configuration.keepPlaybackMode;
         _stateManager.addListeners(_onStateChanged, _onOutputMessage, _showToast);
         _exitConfirm = false;
         WidgetsBinding.instance.addObserver(this);
@@ -197,6 +188,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
     {
         Logging.info(this, "Rebuild widget");
 
+        final ThemeData td = BaseAppTheme.getThemeData(
+            _configuration.theme, _configuration.language, _configuration.textSize);
+
         final UpdatableAppBarWidget appBarView = UpdatableAppBarWidget(context,
             AppBarView(_viewContext, _tabController, _tabs)
         );
@@ -238,13 +232,15 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         final double appBarHeight = ActivityDimens.appBarHeight(context) + ActivityDimens.tabBarHeight(context);
 
-        return Scaffold(
+        final Widget scaffold = Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(appBarHeight), // desired height of appBar + tabBar
                 child: appBarView),
             drawer: UpdatableWidget(child: DrawerView(context, _viewContext)),
             body: tabBar
         );
+
+        return Theme(data: td, child: scaffold);
     }
 
     void _onStateChanged(Set<String> changes)
@@ -258,7 +254,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
             switch (c)
             {
                 case Configuration.CONFIGURATION_EVENT:
-                    Platform.sendPlatformCommand(PlatformCmd.RESTART);
+                    setState(()
+                    {
+                        _configuration.read();
+                        _applyConfiguration(informPlatform: true);
+                    });
                     break;
                 case StateManager.START_SEARCH_EVENT:
                     _startSearch();
@@ -415,6 +415,44 @@ class MusicControllerAppState extends State<MusicControllerApp>
               _connectToDevice(n);
             }
             break;
+        }
+    }
+
+    void _applyConfiguration({bool informPlatform = false})
+    {
+        // Update tabs
+        int _index = 0;
+        if (_tabController != null)
+        {
+            _index = _tabController.index;
+        }
+        _tabs.clear();
+        _tabs.add(AppTabs.LISTEN);
+        _tabs.add(AppTabs.MEDIA);
+        _tabs.add(AppTabs.DEVICE);
+        _tabs.add(AppTabs.RC);
+        if (_configuration.riAmp || _configuration.riCd)
+        {
+            _tabs.add(AppTabs.RI);
+        }
+
+        if (_tabController == null || _tabs.length != _tabController.length)
+        {
+            _tabController = TabController(vsync: this, length: _tabs.length);
+            _tabController.index = _index < _tabs.length ? _index : _tabs.length - 1;
+        }
+
+        // Inform state manager about configuration change
+        _stateManager.keepPlaybackMode = _configuration.keepPlaybackMode;
+
+        // Inform platform code about configuration change.
+        // Depending on new setting, app may be restarted by platform code here
+        if (informPlatform)
+        {
+            Platform.sendPlatformCommand(_configuration.volumeKeys ?
+                PlatformCmd.VOLUME_KEYS_ENABLED : PlatformCmd.VOLUME_KEYS_DISABLED);
+            Platform.sendPlatformCommand(_configuration.keepScreenOn ?
+                PlatformCmd.KEEP_SCREEN_ON_ENABLED : PlatformCmd.KEEP_SCREEN_ON_DISABLED);
         }
     }
 }

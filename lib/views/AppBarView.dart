@@ -41,14 +41,6 @@ class AppBarView extends UpdatableView
         PowerStatusMsg.CODE
     ];
 
-    static List<String> TAB_NAMES = [
-        Strings.title_monitor,
-        Strings.title_media,
-        Strings.title_device,
-        Strings.title_remote_control,
-        Strings.title_remote_interface
-    ];
-
     final TabController _tabController;
     final List<AppTabs> _tabs;
 
@@ -108,6 +100,14 @@ class AppBarView extends UpdatableView
 
     Widget _buildTabs(final ThemeData td)
     {
+        final List<String> TAB_NAMES = [
+            Strings.title_monitor,
+            Strings.title_media,
+            Strings.title_device,
+            Strings.title_remote_control,
+            Strings.title_remote_interface
+        ];
+
         return Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
