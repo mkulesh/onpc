@@ -1,6 +1,7 @@
 .idea
 .flutter-plugins
 .packages
+.metadata
 build
 patches
 release
