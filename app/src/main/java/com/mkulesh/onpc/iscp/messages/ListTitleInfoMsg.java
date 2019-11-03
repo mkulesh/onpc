@@ -334,6 +334,7 @@ public class ListTitleInfoMsg extends ISCPMessage
         return (serviceType == ServiceType.USB_FRONT
                  || serviceType == ServiceType.USB_REAR
                  || serviceType == ServiceType.MUSIC_SERVER
+                 || serviceType == ServiceType.HOME_MEDIA
                ) && layerInfo == LayerInfo.SERVICE_TOP;
     }
 }
