@@ -343,6 +343,6 @@ class ListTitleInfoMsg extends ISCPMessage
             && _layerInfo.key == LayerInfo.NET_TOP;
 
     bool get isXmlListTopService
-    => [ServiceType.USB_FRONT, ServiceType.USB_REAR, ServiceType.MUSIC_SERVER].contains(_serviceType.key)
+    => [ServiceType.USB_FRONT, ServiceType.USB_REAR, ServiceType.MUSIC_SERVER, ServiceType.HOME_MEDIA].contains(_serviceType.key)
             && _layerInfo.key == LayerInfo.SERVICE_TOP;
 }
