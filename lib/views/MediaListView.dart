@@ -108,7 +108,7 @@ class MediaListView extends UpdatableView
         final bool isPlayback = items.isEmpty && ms.isPlaybackMode;
 
         // Add "Return" button if necessary
-        if (!state.mediaListState.isTopLayer() && !configuration.backAsReturn)
+        if (state.isOn && !state.mediaListState.isTopLayer() && !configuration.backAsReturn)
         {
             if (items.isEmpty || !(items.first is OperationCommandMsg))
             {
