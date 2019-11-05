@@ -235,7 +235,7 @@ class ReceiverInformation
             }
             // fallback to ReceiverInformationMsg
             final String name = _deviceProperties["friendlyname"];
-            if (name != null)
+            if (name != null && name.isNotEmpty)
             {
                 return name;
             }
