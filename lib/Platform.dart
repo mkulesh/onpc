@@ -69,6 +69,7 @@ class Platform
         return NetworkState.NONE;
     }
 
+    static String get operatingSystem => io.Platform.operatingSystem;
     static bool get isAndroid => io.Platform.isAndroid;
 
     static Future<ByteData> requestNetworkState()

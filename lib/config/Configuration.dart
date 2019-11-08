@@ -13,6 +13,7 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import "../Platform.dart";
 import "../constants/Strings.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
@@ -131,19 +132,19 @@ class Configuration
     => _riCd;
 
     // Advanced options
-    static const Pair<String, bool> VOLUME_KEYS = Pair<String, bool>("volume_keys", true);
+    static const Pair<String, bool> VOLUME_KEYS = Pair<String, bool>("volume_keys", true); // For Android only
     bool _volumeKeys;
 
     bool get volumeKeys
     => _volumeKeys;
 
-    static const Pair<String, bool> KEEP_SCREEN_ON = Pair<String, bool>("keep_screen_on", false);
+    static const Pair<String, bool> KEEP_SCREEN_ON = Pair<String, bool>("keep_screen_on", false); // For Android only
     bool _keepScreenOn;
 
     bool get keepScreenOn
     => _keepScreenOn;
 
-    static const Pair<String, bool> BACK_AS_RETURN = Pair<String, bool>("back_as_return", true);
+    static const Pair<String, bool> BACK_AS_RETURN = Pair<String, bool>("back_as_return", true); // For Android only
     bool _backAsReturn;
 
     bool get backAsReturn
@@ -165,7 +166,7 @@ class Configuration
     Configuration(this.preferences, packageInfo)
     {
         this.appVersion = "v." + packageInfo.version;
-        Logging.info(this, "Application started: " + appVersion);
+        Logging.info(this, "Application started: " + appVersion + ", OS: " + Platform.operatingSystem);
     }
 
     void read()
@@ -191,11 +192,11 @@ class Configuration
         _riCd = getBool(RI_CD, doLog: true);
 
         // Advanced options
-        _volumeKeys = getBool(VOLUME_KEYS, doLog: true);
-        _keepScreenOn = getBool(KEEP_SCREEN_ON, doLog: true);
-        _backAsReturn = getBool(BACK_AS_RETURN, doLog: true);
         _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);
-        _exitConfirm = getBool(EXIT_CONFIRM, doLog: true);
+        _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
+        _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
+        _keepScreenOn = Platform.isAndroid ? getBool(KEEP_SCREEN_ON, doLog: true) : false;
+        _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
     }
 
     String getString(Pair<String, String> par, {doLog = false})

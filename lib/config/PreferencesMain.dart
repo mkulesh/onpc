@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:preferences/preferences.dart';
 
+import "../Platform.dart";
 import "../constants/Activities.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
@@ -49,137 +50,142 @@ class _PreferencesMainState extends State<PreferencesMain>
         final ThemeData td = BaseAppTheme.getThemeData(
             _configuration.theme, _configuration.language, _configuration.textSize);
 
+        final List<Widget> elements = List();
+
+        // Theme
+        elements.add(_customDropdownPreference(td,
+            Strings.pref_theme,
+            Configuration.THEME,
+            icon: Drawables.pref_app_theme,
+            values: Strings.pref_theme_codes,
+            displayValues: Strings.pref_theme_names,
+            onChange: (String val)
+            {
+                setState(()
+                {
+                    _configuration.theme = val;
+                    _configuration.saveStringParameter(Configuration.THEME, val);
+                });
+            }));
+
+        // Language
+        elements.add(_customDropdownPreference(td,
+            Strings.pref_language,
+            Configuration.LANGUAGE,
+            icon: Drawables.pref_language,
+            values: Strings.pref_language_codes,
+            displayValues: Strings.pref_language_names,
+            onChange: (String val)
+            {
+                setState(()
+                {
+                    _configuration.language = val;
+                    _configuration.saveStringParameter(Configuration.LANGUAGE, val);
+                });
+            }));
+
+        // Text size
+        elements.add(_customDropdownPreference(td,
+            Strings.pref_text_size,
+            Configuration.TEXT_SIZE,
+            icon: Drawables.pref_text_size,
+            values: Strings.pref_text_size_codes,
+            displayValues: Strings.pref_text_size_names,
+            onChange: (String val)
+            {
+                setState(()
+                {
+                    _configuration.textSize = val;
+                    _configuration.saveStringParameter(Configuration.TEXT_SIZE, val);
+                });
+            }));
+
+        // Device options
+        elements.add(CustomDivider());
+        elements.add(PreferenceTitle(Strings.pref_category_device_options));
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_auto_power,
+            Configuration.AUTO_POWER,
+            icon: Drawables.pref_auto_power));
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_friendly_names,
+            Configuration.FRIENDLY_NAMES,
+            icon: Drawables.pref_friendly_name,
+            desc: Strings.pref_friendly_names_summary_on));
+        elements.add(_customDropdownPreference(td,
+            Strings.pref_sound_control,
+            Configuration.SOUND_CONTROL,
+            icon: Drawables.pref_sound_control,
+            values: Strings.pref_sound_control_codes,
+            displayValues: Strings.pref_sound_control_names,
+            onChange: (String val)
+            {
+                setState(()
+                {
+                    _configuration.saveStringParameter(Configuration.SOUND_CONTROL, val);
+                });
+            }));
+        elements.add(_customPreferenceScreen(td,
+            Strings.pref_device_selectors,
+            icon: Drawables.pref_device_selectors,
+            activity: Activities.activity_device_selectors));
+        elements.add(_customPreferenceScreen(td,
+            Strings.pref_listening_modes,
+            icon: Drawables.pref_listening_modes,
+            activity: Activities.activity_listening_modes));
+        elements.add(_customPreferenceScreen(td,
+            Strings.pref_network_services,
+            icon: Drawables.pref_network_services,
+            activity: Activities.activity_network_services));
+
+        // Remote interface
+        elements.add(CustomDivider());
+        elements.add(PreferenceTitle(Strings.pref_category_ri_options));
+        elements.add(_customSwitchPreference(td,
+            Strings.remote_interface_amp,
+            Configuration.RI_AMP,
+            icon: Drawables.pref_ri_amplifier));
+        elements.add(_customSwitchPreference(td,
+            Strings.remote_interface_cd,
+            Configuration.RI_CD,
+            icon: Drawables.pref_ri_disc_player));
+
+        // Advanced options
+        elements.add(CustomDivider());
+        elements.add(PreferenceTitle(Strings.pref_category_advanced_options));
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_keep_playback_mode,
+            Configuration.KEEP_PLAYBACK_MODE,
+            icon: Drawables.cmd_track_menu,
+            desc: Strings.pref_keep_playback_mode_summary));
+        if (Platform.isAndroid)
+        {
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_volume_title,
+                Configuration.VOLUME_KEYS,
+                icon: Drawables.pref_volume_keys,
+                desc: Strings.pref_volume_summary));
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_back_as_return,
+                Configuration.BACK_AS_RETURN,
+                icon: Drawables.cmd_return,
+                desc: Strings.pref_back_as_return_summary));
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_keep_screen_on,
+                Configuration.KEEP_SCREEN_ON,
+                icon: Drawables.pref_keep_screen_on));
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_exit_confirm,
+                Configuration.EXIT_CONFIRM,
+                icon: Drawables.pref_exit_confirm));
+        }
+
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, null))),
-            body: DropdownButtonHideUnderline(child: PreferencePage([
-                // Theme
-                _customDropdownPreference(td,
-                    Strings.pref_theme,
-                    Configuration.THEME,
-                    icon: Drawables.pref_app_theme,
-                    values: Strings.pref_theme_codes,
-                    displayValues: Strings.pref_theme_names,
-                    onChange: (String val)
-                    {
-                        setState(()
-                        {
-                            _configuration.theme = val;
-                            _configuration.saveStringParameter(Configuration.THEME, val);
-                        });
-                    }),
-
-                // Language
-                _customDropdownPreference(td,
-                    Strings.pref_language,
-                    Configuration.LANGUAGE,
-                    icon: Drawables.pref_language,
-                    values: Strings.pref_language_codes,
-                    displayValues: Strings.pref_language_names,
-                    onChange: (String val)
-                    {
-                        setState(()
-                        {
-                            _configuration.language = val;
-                            _configuration.saveStringParameter(Configuration.LANGUAGE, val);
-                        });
-                    }),
-
-                // Text size
-                _customDropdownPreference(td,
-                    Strings.pref_text_size,
-                    Configuration.TEXT_SIZE,
-                    icon: Drawables.pref_text_size,
-                    values: Strings.pref_text_size_codes,
-                    displayValues: Strings.pref_text_size_names,
-                    onChange: (String val)
-                    {
-                        setState(()
-                        {
-                            _configuration.textSize = val;
-                            _configuration.saveStringParameter(Configuration.TEXT_SIZE, val);
-                        });
-                    }),
-
-                // Device options
-                CustomDivider(),
-                PreferenceTitle(Strings.pref_category_device_options),
-                _customSwitchPreference(td,
-                    Strings.pref_auto_power,
-                    Configuration.AUTO_POWER,
-                    icon: Drawables.pref_auto_power),
-                _customSwitchPreference(td,
-                    Strings.pref_friendly_names,
-                    Configuration.FRIENDLY_NAMES,
-                    icon: Drawables.pref_friendly_name,
-                    desc: Strings.pref_friendly_names_summary_on),
-                _customDropdownPreference(td,
-                    Strings.pref_sound_control,
-                    Configuration.SOUND_CONTROL,
-                    icon: Drawables.pref_sound_control,
-                    values: Strings.pref_sound_control_codes,
-                    displayValues: Strings.pref_sound_control_names,
-                    onChange: (String val)
-                    {
-                        setState(()
-                        {
-                            _configuration.saveStringParameter(Configuration.SOUND_CONTROL, val);
-                        });
-                    }),
-                _customPreferenceScreen(td,
-                    Strings.pref_device_selectors,
-                    icon: Drawables.pref_device_selectors,
-                    activity: Activities.activity_device_selectors),
-                _customPreferenceScreen(td,
-                    Strings.pref_listening_modes,
-                    icon: Drawables.pref_listening_modes,
-                    activity: Activities.activity_listening_modes),
-                _customPreferenceScreen(td,
-                    Strings.pref_network_services,
-                    icon: Drawables.pref_network_services,
-                    activity: Activities.activity_network_services),
-
-                // Remote interface
-                CustomDivider(),
-                PreferenceTitle(Strings.pref_category_ri_options),
-                _customSwitchPreference(td,
-                    Strings.remote_interface_amp,
-                    Configuration.RI_AMP,
-                    icon: Drawables.pref_ri_amplifier),
-                _customSwitchPreference(td,
-                    Strings.remote_interface_cd,
-                    Configuration.RI_CD,
-                    icon: Drawables.pref_ri_disc_player),
-
-                // Advanced options
-                CustomDivider(),
-                PreferenceTitle(Strings.pref_category_advanced_options),
-                _customSwitchPreference(td,
-                    Strings.pref_volume_title,
-                    Configuration.VOLUME_KEYS,
-                    icon: Drawables.pref_volume_keys,
-                    desc: Strings.pref_volume_summary),
-                _customSwitchPreference(td,
-                    Strings.pref_keep_screen_on,
-                    Configuration.KEEP_SCREEN_ON,
-                    icon: Drawables.pref_keep_screen_on),
-                _customSwitchPreference(td,
-                    Strings.pref_back_as_return,
-                    Configuration.BACK_AS_RETURN,
-                    icon: Drawables.cmd_return,
-                    desc: Strings.pref_back_as_return_summary),
-                _customSwitchPreference(td,
-                    Strings.pref_keep_playback_mode,
-                    Configuration.KEEP_PLAYBACK_MODE,
-                    icon: Drawables.cmd_track_menu,
-                    desc: Strings.pref_keep_playback_mode_summary),
-                _customSwitchPreference(td,
-                    Strings.pref_exit_confirm,
-                    Configuration.EXIT_CONFIRM,
-                    icon: Drawables.pref_exit_confirm)
-            ])
-        ));
+            body: DropdownButtonHideUnderline(child: PreferencePage(elements))
+        );
 
         return Theme(data: td, child: scaffold);
     }
