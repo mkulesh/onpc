@@ -49,6 +49,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     private static final String PLATFORM_CHANNEL = "platform_channel";
     private static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
     private static final String VERSION_NAME = "version_name";
+    private static final String MODEL = "model";
 
     private enum PlatformCmd
     {
@@ -122,8 +123,9 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         {
             final SharedPreferences oldPrefs = PreferenceManager.getDefaultSharedPreferences(this);
             final String oldVer = oldPrefs.getString(VERSION_NAME, "1.0");
+            final String oldModel = oldPrefs.getString(MODEL, "");
             final PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
-            if (oldVer.startsWith("1.0") && pi.versionName.startsWith("2"))
+            if (oldVer.startsWith("1.0") && !oldModel.isEmpty() && pi.versionName.startsWith("2"))
             {
                 exportPreferences1xTo2x();
             }
