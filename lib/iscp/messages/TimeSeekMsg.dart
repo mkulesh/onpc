@@ -20,14 +20,22 @@ class TimeSeekMsg extends ISCPMessage
 {
     static const String CODE = "NTS";
 
-    TimeSeekMsg.output(final int hours, final int minutes, final int seconds) :
-            super.output(CODE, _getParameterAsString(hours, minutes, seconds));
+    TimeSeekMsg.output(final bool sendHours, final int hours, final int minutes, final int seconds) :
+            super.output(CODE, _getParameterAsString(sendHours, hours, minutes, seconds));
 
-    static String _getParameterAsString(final int hours, final int minutes, final int seconds)
+    static String _getParameterAsString(final bool sendHours, final int hours, final int minutes, final int seconds)
     {
-        return hours.toString().padLeft(2, '0')
-            + ":" + minutes.toString().padLeft(2, '0')
-            + ":" + seconds.toString().padLeft(2, '0');
+        if (sendHours)
+        {
+            return hours.toString().padLeft(2, '0')
+                + ":" + minutes.toString().padLeft(2, '0')
+                + ":" + seconds.toString().padLeft(2, '0');
+        }
+        else
+        {
+            return minutes.toString().padLeft(2, '0')
+                + ":" + seconds.toString().padLeft(2, '0');
+        }
     }
 
     @override
