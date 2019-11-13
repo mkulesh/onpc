@@ -27,11 +27,13 @@ public class TimeSeekMsg extends ISCPMessage
 {
     private final static String CODE = "NTS";
 
+    private final boolean sendHours;
     private final int hours, minutes, seconds;
 
-    public TimeSeekMsg(final int hours, final int minutes, final int seconds)
+    public TimeSeekMsg(final boolean sendHours, final int hours, final int minutes, final int seconds)
     {
         super(0, null);
+        this.sendHours = sendHours;
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
@@ -41,17 +43,23 @@ public class TimeSeekMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + Integer.toString(hours)
-                + ":" + Integer.toString(minutes)
-                + ":" + Integer.toString(seconds) + "]";
+        return CODE + "[" + hours + ":" + minutes + ":" + seconds + "]";
     }
 
     @SuppressLint("DefaultLocale")
     public String getTimeAsString()
     {
-        return String.format("%02d", hours)
-                + ":" + String.format("%02d", minutes)
-                + ":" + String.format("%02d", seconds);
+        if (sendHours)
+        {
+            return String.format("%02d", hours)
+                    + ":" + String.format("%02d", minutes)
+                    + ":" + String.format("%02d", seconds);
+        }
+        else
+        {
+            return String.format("%02d", minutes)
+                    + ":" + String.format("%02d", seconds);
+        }
     }
 
     @Override
