@@ -92,7 +92,7 @@ class TrackTimeView extends UpdatableView
             final int hour = (newSec / 3600).floor();
             final int min = ((newSec - hour * 3600) / 60).floor();
             final int sec = newSec - hour * 3600 - min * 60;
-            stateManager.sendTimeMsg(TimeSeekMsg.output(sendHours, hour, min, sec), 2);
+            stateManager.sendTimeMsg(TimeSeekMsg.output(sendHours, hour, min, sec), 3);
         }
     }
 }
