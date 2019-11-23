@@ -9,3 +9,7 @@ release
 /android/key.properties
 /android/local.properties
 /images/svgcleaner/svgcleaner
+.dart_tool/
+.flutter-plugins-dependencies
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
