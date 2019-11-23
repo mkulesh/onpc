@@ -28,7 +28,7 @@ import "messages/DimmerLevelMsg.dart";
 import "messages/FileFormatMsg.dart";
 import "messages/FirmwareUpdateMsg.dart";
 import "messages/FriendlyNameMsg.dart";
-import 'messages/GoogleCastAnalyticsMsg.dart';
+import "messages/GoogleCastAnalyticsMsg.dart";
 import "messages/GoogleCastVersionMsg.dart";
 import "messages/HdmiCecMsg.dart";
 import "messages/InputSelectorMsg.dart";
@@ -39,6 +39,7 @@ import "messages/ListeningModeMsg.dart";
 import "messages/MasterVolumeMsg.dart";
 import "messages/MenuStatusMsg.dart";
 import "messages/MusicOptimizerMsg.dart";
+import "messages/PhaseMatchingBassMsg.dart";
 import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
 import "messages/PresetCommandMsg.dart";
@@ -240,6 +241,10 @@ class State
         else if (msg is HdmiCecMsg)
         {
             return _isChange(HdmiCecMsg.CODE, _deviceSettingsState.processHdmiCec(msg));
+        }
+        else if (msg is PhaseMatchingBassMsg)
+        {
+            return _isChange(PhaseMatchingBassMsg.CODE, _deviceSettingsState.processPhaseMatchingBass(msg));
         }
         else if (msg is SpeakerACommandMsg)
         {

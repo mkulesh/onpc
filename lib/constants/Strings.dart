@@ -1853,6 +1853,12 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         /*de*/ "HDMI CEC"];
     static String get device_hdmi_cec => l_device_hdmi_cec[_language];
 
+    static const List<String> l_device_phase_matching_bass = [
+        /*en*/ "PM Bass",
+        /*ru*/ "PM Bass",
+        /*de*/ "PM Bass"];
+    static String get device_phase_matching_bass => l_device_phase_matching_bass[_language];
+
     static const List<String> l_device_google_cast_analytics = [
         /*en*/ "Google Cast analytics",
         /*ru*/ "Аналитика Google Cast",

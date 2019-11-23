@@ -407,6 +407,7 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="device_music_optimizer">Оптимизация звука</string>
     <string name="device_auto_power">Авто-отключение</string>
     <string name="device_hdmi_cec">HDMI CEC</string>
+    <string name="device_phase_matching_bass">PM Bass</string>
     <string name="device_google_cast_analytics">Аналитика Google Cast</string>
 
     <!-- Speaker A Command -->

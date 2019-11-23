@@ -19,6 +19,7 @@ import "../messages/EnumParameterMsg.dart";
 import "../messages/GoogleCastAnalyticsMsg.dart";
 import "../messages/HdmiCecMsg.dart";
 import "../messages/MusicOptimizerMsg.dart";
+import "../messages/PhaseMatchingBassMsg.dart";
 import "../messages/PrivacyPolicyStatusMsg.dart";
 import "../messages/SpeakerACommandMsg.dart";
 import "../messages/SpeakerBCommandMsg.dart";
@@ -50,6 +51,11 @@ class DeviceSettingsState
     EnumItem<HdmiCec> get hdmiCec
     => _hdmiCec;
 
+    EnumItem<PhaseMatchingBass> _phaseMatchingBass;
+
+    EnumItem<PhaseMatchingBass> get phaseMatchingBass
+    => _phaseMatchingBass;
+
     EnumItem<SpeakerACommand> _speakerA;
 
     EnumItem<SpeakerACommand> get speakerA
@@ -79,6 +85,7 @@ class DeviceSettingsState
             MusicOptimizerMsg.CODE,
             AutoPowerMsg.CODE,
             HdmiCecMsg.CODE,
+            PhaseMatchingBassMsg.CODE,
             SpeakerACommandMsg.ZONE_COMMANDS[zone],
             SpeakerBCommandMsg.ZONE_COMMANDS[zone],
             GoogleCastAnalyticsMsg.CODE,
@@ -93,6 +100,7 @@ class DeviceSettingsState
         _musicOptimizer = MusicOptimizerMsg.ValueEnum.defValue;
         _autoPower = AutoPowerMsg.ValueEnum.defValue;
         _hdmiCec = HdmiCecMsg.ValueEnum.defValue;
+        _phaseMatchingBass = PhaseMatchingBassMsg.ValueEnum.defValue;
         _speakerA = SpeakerACommandMsg.ValueEnum.defValue;
         _speakerB = SpeakerBCommandMsg.ValueEnum.defValue;
         _googleCastAnalytics = GoogleCastAnalyticsMsg.ValueEnum.defValue;
@@ -130,6 +138,13 @@ class DeviceSettingsState
     {
         final bool changed = _hdmiCec.key != msg.getValue.key;
         _hdmiCec = msg.getValue;
+        return changed;
+    }
+
+    bool processPhaseMatchingBass(PhaseMatchingBassMsg msg)
+    {
+        final bool changed = _phaseMatchingBass.key != msg.getValue.key;
+        _phaseMatchingBass = msg.getValue;
         return changed;
     }
 

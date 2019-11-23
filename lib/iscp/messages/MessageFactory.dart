@@ -40,6 +40,7 @@ import "MenuStatusMsg.dart";
 import "MultiroomChannelSettingMsg.dart";
 import "MultiroomDeviceInformationMsg.dart";
 import "MusicOptimizerMsg.dart";
+import "PhaseMatchingBassMsg.dart";
 import "PlayStatusMsg.dart";
 import "PowerStatusMsg.dart";
 import "PresetCommandMsg.dart";
@@ -89,6 +90,8 @@ class MessageFactory
                 return AutoPowerMsg(raw);
             case HdmiCecMsg.CODE:
                 return HdmiCecMsg(raw);
+            case PhaseMatchingBassMsg.CODE:
+                return PhaseMatchingBassMsg(raw);
             case SpeakerACommandMsg.CODE:
             case SpeakerACommandMsg.ZONE2_CODE:
                 return SpeakerACommandMsg(raw);

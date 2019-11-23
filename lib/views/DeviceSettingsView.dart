@@ -24,6 +24,7 @@ import "../iscp/messages/DimmerLevelMsg.dart";
 import "../iscp/messages/GoogleCastAnalyticsMsg.dart";
 import "../iscp/messages/HdmiCecMsg.dart";
 import "../iscp/messages/MusicOptimizerMsg.dart";
+import "../iscp/messages/PhaseMatchingBassMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/SpeakerACommandMsg.dart";
 import "../iscp/messages/SpeakerBCommandMsg.dart";
@@ -53,6 +54,7 @@ class DeviceSettingsView extends UpdatableView
         MusicOptimizerMsg.CODE,
         AutoPowerMsg.CODE,
         HdmiCecMsg.CODE,
+        PhaseMatchingBassMsg.CODE,
         SpeakerACommandMsg.CODE,
         SpeakerBCommandMsg.CODE,
         GoogleCastAnalyticsMsg.CODE
@@ -114,6 +116,15 @@ class DeviceSettingsView extends UpdatableView
                 ds.hdmiCec.description,
                 Strings.device_two_way_switch_toggle,
                 HdmiCecMsg.output(HdmiCec.TOGGLE)));
+        }
+
+        if (ds.phaseMatchingBass.key != PhaseMatchingBass.NONE)
+        {
+            rows.add(_buildRow(td,
+                Strings.device_phase_matching_bass,
+                ds.phaseMatchingBass.description,
+                Strings.device_two_way_switch_toggle,
+                PhaseMatchingBassMsg.output(PhaseMatchingBass.TOGGLE)));
         }
 
         // Speaker A/B (For Main zone and Zone 2 only)
