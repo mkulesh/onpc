@@ -32,6 +32,7 @@ import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
+import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -107,6 +108,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.music_optimizer_toggle, new MusicOptimizerMsg(MusicOptimizerMsg.Status.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
         prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
+        prepareImageButton(R.id.phase_matching_bass_toggle, new PhaseMatchingBassMsg(PhaseMatchingBassMsg.Status.TOGGLE));
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
 
@@ -130,6 +132,7 @@ public class DeviceFragment extends BaseFragment
                     R.id.device_digital_filter_layout,
                     R.id.device_auto_power_layout,
                     R.id.hdmi_cec_layout,
+                    R.id.phase_matching_bass_layout,
                     R.id.speaker_ab_layout,
                     R.id.google_cast_analytics_layout
             };
@@ -210,6 +213,10 @@ public class DeviceFragment extends BaseFragment
         prepareSettingPanel(state, state.hdmiCec != HdmiCecMsg.Status.NONE,
                 R.id.hdmi_cec_layout, state.hdmiCec.getDescriptionId(), null);
 
+        // Phase Matching Bass Command
+        prepareSettingPanel(state, state.phaseMatchingBass != PhaseMatchingBassMsg.Status.NONE,
+                R.id.phase_matching_bass_layout, state.phaseMatchingBass.getDescriptionId(), null);
+
         // Speaker A/B (For Main zone and Zone 2 only)
         {
             final int zone = state.getActiveZone();
@@ -259,7 +266,7 @@ public class DeviceFragment extends BaseFragment
 
     private void sendQueries(int zone)
     {
-        final String speakerStateQueries[] = new String[]{
+        final String[] speakerStateQueries = new String[]{
                 SpeakerACommandMsg.ZONE_COMMANDS[zone],
                 SpeakerBCommandMsg.ZONE_COMMANDS[zone]
         };

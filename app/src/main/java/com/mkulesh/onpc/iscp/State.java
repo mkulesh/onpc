@@ -43,6 +43,7 @@ import com.mkulesh.onpc.iscp.messages.MultiroomChannelSettingMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
+import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
@@ -109,6 +110,7 @@ public class State
     public MusicOptimizerMsg.Status musicOptimizer = MusicOptimizerMsg.Status.NONE;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
+    public PhaseMatchingBassMsg.Status phaseMatchingBass = PhaseMatchingBassMsg.Status.NONE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
     public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
 
@@ -350,6 +352,10 @@ public class State
         if (msg instanceof AutoPowerMsg)
         {
             return isCommonChange(process((AutoPowerMsg) msg));
+        }
+        if (msg instanceof PhaseMatchingBassMsg)
+        {
+            return isCommonChange(process((PhaseMatchingBassMsg) msg));
         }
         if (msg instanceof HdmiCecMsg)
         {
@@ -660,6 +666,13 @@ public class State
     {
         final boolean changed = hdmiCec != msg.getStatus();
         hdmiCec = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(PhaseMatchingBassMsg msg)
+    {
+        final boolean changed = phaseMatchingBass != msg.getStatus();
+        phaseMatchingBass = msg.getStatus();
         return changed;
     }
 

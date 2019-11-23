@@ -41,6 +41,7 @@ import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
@@ -400,6 +401,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     MusicOptimizerMsg.CODE,
                     AutoPowerMsg.CODE,
                     HdmiCecMsg.CODE,
+                    PhaseMatchingBassMsg.CODE,
                     GoogleCastAnalyticsMsg.CODE,
                     SpeakerACommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     SpeakerBCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
