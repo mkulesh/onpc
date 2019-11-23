@@ -403,7 +403,7 @@
     <string name="device_music_optimizer">Musikoptimierung</string>
     <string name="device_auto_power">Auto an/aus</string>
     <string name="device_hdmi_cec">HDMI CEC</string>
-    <string name="phase_matching_bass">PM Bass</string>
+    <string name="device_phase_matching_bass">PM Bass</string>
     <string name="device_google_cast_analytics">Google Cast analytics</string>
 
     <!-- Speaker A Command -->

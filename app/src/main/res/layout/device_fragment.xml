@@ -228,7 +228,7 @@
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
-                    android:text="@string/phase_matching_bass" />
+                    android:text="@string/device_phase_matching_bass" />
 
                 <TextView
                     style="@style/DeviceValueViewStyle"
