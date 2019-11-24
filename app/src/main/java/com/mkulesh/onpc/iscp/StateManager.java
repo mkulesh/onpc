@@ -48,6 +48,7 @@ import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
+import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
@@ -402,6 +403,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     AutoPowerMsg.CODE,
                     HdmiCecMsg.CODE,
                     PhaseMatchingBassMsg.CODE,
+                    SleepSetCommandMsg.CODE,
                     GoogleCastAnalyticsMsg.CODE,
                     SpeakerACommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     SpeakerBCommandMsg.ZONE_COMMANDS[state.getActiveZone()],

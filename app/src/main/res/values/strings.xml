@@ -462,6 +462,8 @@
     <string name="device_auto_power">Auto power</string>
     <string name="device_hdmi_cec">HDMI CEC</string>
     <string name="device_phase_matching_bass">PM Bass</string>
+    <string name="device_sleep_time">Sleep Time</string>
+    <string name="device_sleep_time_minutes">min</string>
     <string name="device_google_cast_analytics">Google Cast analytics</string>
 
     <!-- Speaker A Command -->

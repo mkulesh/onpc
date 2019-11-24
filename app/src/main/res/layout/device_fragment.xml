@@ -243,6 +243,25 @@
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle"
+                android:id="@+id/sleep_time_layout" >
+
+                <TextView
+                    style="@style/DeviceLabelViewStyle"
+                    android:text="@string/device_sleep_time" />
+
+                <TextView
+                    style="@style/DeviceValueViewStyle"
+                    android:tag="VALUE"
+                    android:gravity="center" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonSecondaryStyle"
+                    android:id="@+id/sleep_time_toggle"
+                    android:src="@drawable/wrap_around"
+                    android:contentDescription="@string/device_two_way_switch_toggle" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/DeviceRowStyle"
                 android:id="@+id/speaker_ab_layout" >
 
                 <TextView

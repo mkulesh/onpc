@@ -50,6 +50,7 @@ import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
+import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
@@ -111,6 +112,7 @@ public class State
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
     public PhaseMatchingBassMsg.Status phaseMatchingBass = PhaseMatchingBassMsg.Status.NONE;
+    public int sleepTime = SleepSetCommandMsg.NOT_APPLICABLE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
     public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
 
@@ -356,6 +358,10 @@ public class State
         if (msg instanceof PhaseMatchingBassMsg)
         {
             return isCommonChange(process((PhaseMatchingBassMsg) msg));
+        }
+        if (msg instanceof SleepSetCommandMsg)
+        {
+            return isCommonChange(process((SleepSetCommandMsg) msg));
         }
         if (msg instanceof HdmiCecMsg)
         {
@@ -673,6 +679,13 @@ public class State
     {
         final boolean changed = phaseMatchingBass != msg.getStatus();
         phaseMatchingBass = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(SleepSetCommandMsg msg)
+    {
+        final boolean changed = sleepTime != msg.getSleepTime();
+        sleepTime = msg.getSleepTime();
         return changed;
     }
 

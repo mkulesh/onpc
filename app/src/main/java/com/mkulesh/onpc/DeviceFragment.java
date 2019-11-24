@@ -33,6 +33,7 @@ import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
+import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -109,6 +110,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
         prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
         prepareImageButton(R.id.phase_matching_bass_toggle, new PhaseMatchingBassMsg(PhaseMatchingBassMsg.Status.TOGGLE));
+        prepareImageButton(R.id.sleep_time_toggle, null);
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
 
@@ -133,6 +135,7 @@ public class DeviceFragment extends BaseFragment
                     R.id.device_auto_power_layout,
                     R.id.hdmi_cec_layout,
                     R.id.phase_matching_bass_layout,
+                    R.id.sleep_time_layout,
                     R.id.speaker_ab_layout,
                     R.id.google_cast_analytics_layout
             };
@@ -217,6 +220,16 @@ public class DeviceFragment extends BaseFragment
         prepareSettingPanel(state, state.phaseMatchingBass != PhaseMatchingBassMsg.Status.NONE,
                 R.id.phase_matching_bass_layout, state.phaseMatchingBass.getDescriptionId(), null);
 
+        // Sleep time
+        {
+            final String description = state.sleepTime == SleepSetCommandMsg.SLEEP_OFF ?
+                    getString(R.string.device_two_way_switch_off) :
+                    state.sleepTime + " " + getString(R.string.device_sleep_time_minutes);
+            prepareSettingPanel(state, state.sleepTime != SleepSetCommandMsg.NOT_APPLICABLE,
+                    R.id.sleep_time_layout, description,
+                    new SleepSetCommandMsg(SleepSetCommandMsg.toggle(state.sleepTime)));
+        }
+
         // Speaker A/B (For Main zone and Zone 2 only)
         {
             final int zone = state.getActiveZone();
@@ -276,6 +289,12 @@ public class DeviceFragment extends BaseFragment
     private void prepareSettingPanel(@NonNull final State state, boolean visible, @IdRes int layoutId,
                                      @StringRes int descriptionId, final ISCPMessage msg)
     {
+        prepareSettingPanel(state, visible, layoutId, getString(descriptionId), msg);
+    }
+
+    private void prepareSettingPanel(@NonNull final State state, boolean visible, @IdRes int layoutId,
+                                     final String description, final ISCPMessage msg)
+    {
         final LinearLayout layout = rootView.findViewById(layoutId);
         if (!visible || !state.isOn())
         {
@@ -296,7 +315,7 @@ public class DeviceFragment extends BaseFragment
                 tv = (TextView) child;
                 if (tv.getTag() != null && "VALUE".equals(tv.getTag()))
                 {
-                    tv.setText(descriptionId);
+                    tv.setText(description);
                 }
             }
             if (child instanceof AppCompatImageButton)
