@@ -61,6 +61,7 @@ void main() async
     // Will slow down animations by this factor
     timeDilation = 1.0;
 
+    WidgetsFlutterBinding.ensureInitialized();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final Configuration configuration = Configuration(prefs, packageInfo);

@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,8 +21,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -75,17 +79,18 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         }
     }
 
+    @SuppressLint("NewApi")
     class ConnectivityChangeReceiver extends BroadcastReceiver
     {
         private final NetworkStateListener listener;
         private final ConnectivityManager connectivity;
-        private final WifiManager wifi;
+        private final Context context;
 
         ConnectivityChangeReceiver(NetworkStateListener listener, Context context)
         {
             this.listener = listener;
             this.connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            this.wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            this.context = context;
         }
 
         @Override
@@ -96,15 +101,50 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
 
         boolean isConnected()
         {
-            final NetworkInfo netInfo = connectivity.getActiveNetworkInfo();
-            return netInfo != null && netInfo.isConnected();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                final Network net = connectivity.getActiveNetwork();
+                if (net == null)
+                {
+                    return false;
+                }
+                return connectivity.getNetworkCapabilities(net) != null;
+            }
+            else
+            {
+                final NetworkInfo netInfo = connectivity.getActiveNetworkInfo();
+                return netInfo != null && netInfo.isConnected();
+            }
         }
 
         boolean isWifi()
         {
-            return wifi.isWifiEnabled() &&
-                   wifi.getConnectionInfo() != null &&
-                   wifi.getConnectionInfo().getNetworkId() != -1;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                final Network net = connectivity.getActiveNetwork();
+                if (net == null)
+                {
+                    return false;
+                }
+                final NetworkCapabilities cap = connectivity.getNetworkCapabilities(net);
+                if (cap == null)
+                {
+                    return false;
+                }
+                return cap.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                        || cap.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
+            }
+            else
+            {
+                final WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                if (wifi == null)
+                {
+                    return false;
+                }
+                return wifi.isWifiEnabled() &&
+                       wifi.getConnectionInfo() != null &&
+                       wifi.getConnectionInfo().getNetworkId() != -1;
+            }
         }
     }
 
