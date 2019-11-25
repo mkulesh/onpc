@@ -108,7 +108,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
         try
         {
-            final InetAddress target = connectionState.getBroadcastAddress();
+            final InetAddress target = InetAddress.getByName("255.255.255.255");
 
             final DatagramSocket socket = new DatagramSocket(null);
             socket.setReuseAddress(true);

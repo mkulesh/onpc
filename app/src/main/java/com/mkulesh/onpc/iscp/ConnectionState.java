@@ -13,11 +13,15 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
@@ -29,6 +33,7 @@ import java.net.InetAddress;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
+@SuppressLint("NewApi")
 public class ConnectionState extends AppTask
 {
     public enum FailureReason
@@ -71,29 +76,46 @@ public class ConnectionState extends AppTask
 
     boolean isNetwork()
     {
-        final NetworkInfo netInfo = connectivity.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnected();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            final Network net = connectivity.getActiveNetwork();
+            if (net == null)
+            {
+                return false;
+            }
+            return connectivity.getNetworkCapabilities(net) != null;
+        }
+        else
+        {
+            final NetworkInfo netInfo = connectivity.getActiveNetworkInfo();
+            return netInfo != null && netInfo.isConnected();
+        }
     }
 
     boolean isWifi()
     {
-        return wifi.isWifiEnabled() && wifi.getConnectionInfo() != null && wifi.getConnectionInfo().getNetworkId() != -1;
-    }
-
-    InetAddress getBroadcastAddress() throws Exception
-    {
-        final DhcpInfo dhcp = wifi.getDhcpInfo();
-        if (dhcp == null)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
-            throw new Exception("can not access DHCP");
+            final Network net = connectivity.getActiveNetwork();
+            if (net == null)
+            {
+                return false;
+            }
+            final NetworkCapabilities cap = connectivity.getNetworkCapabilities(net);
+            if (cap == null)
+            {
+                return false;
+            }
+            return cap.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    || cap.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
         }
-        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-        byte[] quads = new byte[4];
-        for (int k = 0; k < 4; k++)
+        else
         {
-            quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+            return wifi != null &&
+                    wifi.isWifiEnabled() &&
+                    wifi.getConnectionInfo() != null &&
+                    wifi.getConnectionInfo().getNetworkId() != -1;
         }
-        return InetAddress.getByAddress(quads);
     }
 
     public void showFailure(@NonNull final FailureReason reason)
