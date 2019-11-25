@@ -302,6 +302,8 @@ public class DeviceFragment extends BaseFragment
             return;
         }
 
+        final EditText deviceName = rootView.findViewById(R.id.device_edit_friendly_name);
+
         rootView.findViewById(R.id.settings_title).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.settings_divider).setVisibility(View.VISIBLE);
         layout.setVisibility(View.VISIBLE);
@@ -322,7 +324,9 @@ public class DeviceFragment extends BaseFragment
             {
                 if (msg != null)
                 {
-                    prepareButtonListeners(child, msg);
+                    // In order to avoid scrolling up if device name field is focused,
+                    // clear its focus
+                    prepareButtonListeners(child, msg, () -> deviceName.clearFocus());
                 }
                 setButtonEnabled(child, state.isOn());
                 if (state.isOn())
