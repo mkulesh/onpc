@@ -215,8 +215,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 FriendlyNameMsg.CODE,
                 FirmwareUpdateMsg.CODE,
                 GoogleCastVersionMsg.CODE,
-                PrivacyPolicyStatusMsg.CODE,
-                ListeningModeMsg.CODE
+                PrivacyPolicyStatusMsg.CODE
         };
 
         sendQueries(powerStateQueries, "requesting power state...");
@@ -396,7 +395,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
                     ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
             final String playStateQueries[] = new String[]{
+                    // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    PlayStatusMsg.CODE,
+                    // DeviceSettingsState
                     DimmerLevelMsg.CODE,
                     DigitalFilterMsg.CODE,
                     MusicOptimizerMsg.CODE,
@@ -407,15 +409,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     GoogleCastAnalyticsMsg.CODE,
                     SpeakerACommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     SpeakerBCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    // SoundControlState
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],
                     toneCommand,
                     SubwooferLevelCommandMsg.CODE,
                     CenterLevelCommandMsg.CODE,
-                    PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
-                    TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     ListeningModeMsg.CODE,
-                    PlayStatusMsg.CODE,
+                    // RadioState
+                    PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()]
             };
             sendQueries(playStateQueries, "requesting play state...");
             requestListState();
