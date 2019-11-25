@@ -1859,6 +1859,18 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         /*de*/ "PM Bass"];
     static String get device_phase_matching_bass => l_device_phase_matching_bass[_language];
 
+    static const List<String> l_device_sleep_time = [
+        /*en*/ "Sleep Time",
+        /*ru*/ "Таймер сна",
+        /*de*/ "Ruhemodus-Zeit"];
+    static String get device_sleep_time => l_device_sleep_time[_language];
+
+    static const List<String> l_device_sleep_time_minutes = [
+        /*en*/ "min",
+        /*ru*/ "мин",
+        /*de*/ "min"];
+    static String get device_sleep_time_minutes => l_device_sleep_time_minutes[_language];
+
     static const List<String> l_device_google_cast_analytics = [
         /*en*/ "Google Cast analytics",
         /*ru*/ "Аналитика Google Cast",

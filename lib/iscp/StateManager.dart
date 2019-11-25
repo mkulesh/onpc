@@ -358,8 +358,10 @@ class StateManager
 
         if (msg is PowerStatusMsg)
         {
-            sendQueries(_state.deviceSettingsState.getQueries(state.getActiveZone));
+            // #58: delayed response for InputSelectorMsg was observed:
+            // Send this request first
             sendQueries(_state.playbackState.getQueries(state.getActiveZone));
+            sendQueries(_state.deviceSettingsState.getQueries(state.getActiveZone));
             sendQueries(_state.soundControlState.getQueries(state.getActiveZone));
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
             _requestListState();

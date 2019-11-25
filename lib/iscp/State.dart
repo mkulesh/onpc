@@ -45,6 +45,7 @@ import "messages/PowerStatusMsg.dart";
 import "messages/PresetCommandMsg.dart";
 import "messages/ReceiverInformationMsg.dart";
 import "messages/ServiceType.dart";
+import "messages/SleepSetCommandMsg.dart";
 import "messages/SpeakerACommandMsg.dart";
 import "messages/SpeakerBCommandMsg.dart";
 import "messages/SubwooferLevelCommandMsg.dart";
@@ -245,6 +246,10 @@ class State
         else if (msg is PhaseMatchingBassMsg)
         {
             return _isChange(PhaseMatchingBassMsg.CODE, _deviceSettingsState.processPhaseMatchingBass(msg));
+        }
+        else if (msg is SleepSetCommandMsg)
+        {
+            return _isChange(SleepSetCommandMsg.CODE, _deviceSettingsState.processSleepSet(msg));
         }
         else if (msg is SpeakerACommandMsg)
         {

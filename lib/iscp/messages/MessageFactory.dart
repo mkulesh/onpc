@@ -46,6 +46,7 @@ import "PowerStatusMsg.dart";
 import "PresetCommandMsg.dart";
 import "PrivacyPolicyStatusMsg.dart";
 import "ReceiverInformationMsg.dart";
+import "SleepSetCommandMsg.dart";
 import "SpeakerACommandMsg.dart";
 import "SpeakerBCommandMsg.dart";
 import "SubwooferLevelCommandMsg.dart";
@@ -92,6 +93,8 @@ class MessageFactory
                 return HdmiCecMsg(raw);
             case PhaseMatchingBassMsg.CODE:
                 return PhaseMatchingBassMsg(raw);
+            case SleepSetCommandMsg.CODE:
+                return SleepSetCommandMsg(raw);
             case SpeakerACommandMsg.CODE:
             case SpeakerACommandMsg.ZONE2_CODE:
                 return SpeakerACommandMsg(raw);

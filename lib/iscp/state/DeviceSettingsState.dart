@@ -21,6 +21,7 @@ import "../messages/HdmiCecMsg.dart";
 import "../messages/MusicOptimizerMsg.dart";
 import "../messages/PhaseMatchingBassMsg.dart";
 import "../messages/PrivacyPolicyStatusMsg.dart";
+import "../messages/SleepSetCommandMsg.dart";
 import "../messages/SpeakerACommandMsg.dart";
 import "../messages/SpeakerBCommandMsg.dart";
 
@@ -56,6 +57,11 @@ class DeviceSettingsState
     EnumItem<PhaseMatchingBass> get phaseMatchingBass
     => _phaseMatchingBass;
 
+    int _sleepTime;
+
+    int get sleepTime
+    => _sleepTime;
+
     EnumItem<SpeakerACommand> _speakerA;
 
     EnumItem<SpeakerACommand> get speakerA
@@ -86,6 +92,7 @@ class DeviceSettingsState
             AutoPowerMsg.CODE,
             HdmiCecMsg.CODE,
             PhaseMatchingBassMsg.CODE,
+            SleepSetCommandMsg.CODE,
             SpeakerACommandMsg.ZONE_COMMANDS[zone],
             SpeakerBCommandMsg.ZONE_COMMANDS[zone],
             GoogleCastAnalyticsMsg.CODE,
@@ -101,6 +108,7 @@ class DeviceSettingsState
         _autoPower = AutoPowerMsg.ValueEnum.defValue;
         _hdmiCec = HdmiCecMsg.ValueEnum.defValue;
         _phaseMatchingBass = PhaseMatchingBassMsg.ValueEnum.defValue;
+        _sleepTime = SleepSetCommandMsg.NOT_APPLICABLE;
         _speakerA = SpeakerACommandMsg.ValueEnum.defValue;
         _speakerB = SpeakerBCommandMsg.ValueEnum.defValue;
         _googleCastAnalytics = GoogleCastAnalyticsMsg.ValueEnum.defValue;
@@ -145,6 +153,13 @@ class DeviceSettingsState
     {
         final bool changed = _phaseMatchingBass.key != msg.getValue.key;
         _phaseMatchingBass = msg.getValue;
+        return changed;
+    }
+
+    bool processSleepSet(SleepSetCommandMsg msg)
+    {
+        final bool changed = _sleepTime != msg.sleepTime;
+        _sleepTime = msg.sleepTime;
         return changed;
     }
 

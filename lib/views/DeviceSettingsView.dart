@@ -26,6 +26,7 @@ import "../iscp/messages/HdmiCecMsg.dart";
 import "../iscp/messages/MusicOptimizerMsg.dart";
 import "../iscp/messages/PhaseMatchingBassMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
+import "../iscp/messages/SleepSetCommandMsg.dart";
 import "../iscp/messages/SpeakerACommandMsg.dart";
 import "../iscp/messages/SpeakerBCommandMsg.dart";
 import "../iscp/state/DeviceSettingsState.dart";
@@ -55,6 +56,7 @@ class DeviceSettingsView extends UpdatableView
         AutoPowerMsg.CODE,
         HdmiCecMsg.CODE,
         PhaseMatchingBassMsg.CODE,
+        SleepSetCommandMsg.CODE,
         SpeakerACommandMsg.CODE,
         SpeakerBCommandMsg.CODE,
         GoogleCastAnalyticsMsg.CODE
@@ -125,6 +127,18 @@ class DeviceSettingsView extends UpdatableView
                 ds.phaseMatchingBass.description,
                 Strings.device_two_way_switch_toggle,
                 PhaseMatchingBassMsg.output(PhaseMatchingBass.TOGGLE)));
+        }
+
+        if (ds.sleepTime != SleepSetCommandMsg.NOT_APPLICABLE)
+        {
+            final String description = ds.sleepTime == SleepSetCommandMsg.SLEEP_OFF ?
+                Strings.device_two_way_switch_off :
+                ds.sleepTime.toString() + " " + Strings.device_sleep_time_minutes;
+            rows.add(_buildRow(td,
+                Strings.device_sleep_time,
+                description,
+                Strings.device_two_way_switch_toggle,
+                SleepSetCommandMsg.output(SleepSetCommandMsg.toggle(ds.sleepTime))));
         }
 
         // Speaker A/B (For Main zone and Zone 2 only)
@@ -231,7 +245,15 @@ class DeviceSettingsView extends UpdatableView
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
                 Expanded(
-                    child: CustomTextLabel.normal(value, textAlign: TextAlign.center),
+                    child: InkWell(
+                        child: CustomTextLabel.normal(value, textAlign: TextAlign.center),
+                        onTap: ()
+                        {
+                            if (isEnabled)
+                            {
+                                _onPress(cmd, postMessages: postMessages, postQueries: postQueries);
+                            }
+                        }),
                     flex: 1),
                 CustomImageButton.small(
                     Drawables.wrap_around,
@@ -240,15 +262,7 @@ class DeviceSettingsView extends UpdatableView
                     {
                         if (isEnabled)
                         {
-                            stateManager.sendMessage(cmd);
-                            if (postMessages != null)
-                            {
-                                postMessages.forEach((p) => stateManager.sendMessage(p));
-                            }
-                            if (postQueries != null)
-                            {
-                                stateManager.sendQueries(postQueries);
-                            }
+                            _onPress(cmd, postMessages: postMessages, postQueries: postQueries);
                         }
                     },
                     isEnabled: isEnabled,
@@ -258,6 +272,19 @@ class DeviceSettingsView extends UpdatableView
         );
 
         return TableRow(children: [rowTitle, rowValue]);
+    }
+
+    void _onPress(final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
+    {
+        stateManager.sendMessage(cmd);
+        if (postMessages != null)
+        {
+            postMessages.forEach((p) => stateManager.sendMessage(p));
+        }
+        if (postQueries != null)
+        {
+            stateManager.sendQueries(postQueries);
+        }
     }
 
     _SpeakerABStatus _getSpeakerABStatus(SpeakerACommand speakerA, SpeakerBCommand speakerB)
