@@ -67,6 +67,11 @@ class DeviceSettingsView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
+        if (!state.isOn)
+        {
+            return SizedBox.shrink();
+        }
+
         Logging.info(this, "rebuild widget");
 
         final ThemeData td = Theme.of(context);
