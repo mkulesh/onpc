@@ -78,7 +78,7 @@ void main() async
             Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(configuration),
             Activities.activity_listening_modes: (BuildContext context) => ListeningModes(configuration),
             Activities.activity_network_services: (BuildContext context) => NetworkServices(configuration),
-            Activities.activity_about_screen: (BuildContext context) => AboutScreen(),
+            Activities.activity_about_screen: (BuildContext context) => AboutScreen(configuration, viewContext.state.receiverInformation.xml),
         }));
 }
 
@@ -170,7 +170,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     @override
     void didChangeAppLifecycleState(AppLifecycleState state)
     {
-        Logging.info(this, "Application state change: " + state.toString());
+        Logging.info(this.widget, "Application state change: " + state.toString());
         if (state == AppLifecycleState.resumed)
         {
             Platform.requestNetworkState().then((replay)
@@ -187,7 +187,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     @override
     Widget build(BuildContext context)
     {
-        Logging.info(this, "Rebuild widget");
+        Logging.info(this.widget, "Rebuild widget");
 
         final ThemeData td = BaseAppTheme.getThemeData(
             _configuration.theme, _configuration.language, _configuration.textSize);
@@ -248,7 +248,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     {
         if (!changes.every((c) => c == TimeInfoMsg.CODE))
         {
-            Logging.info(this, "Event changes: " + changes.toString());
+            Logging.info(this.widget, "Event changes: " + changes.toString());
         }
         changes.forEach((c)
         {
@@ -307,7 +307,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     {
         if (!_stateManager.isConnected && _configuration.isDeviceValid)
         {
-            Logging.info(this, "Use stored connection data: "
+            Logging.info(this.widget, "Use stored connection data: "
                 + _configuration.getDeviceName + "/" + _configuration.getDevicePort.toString());
             _stateManager.connect(_configuration.getDeviceName, _configuration.getDevicePort);
         }
@@ -348,7 +348,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         // Processing on "Back" button
         final AppTabs tab = AppTabs.values[_tabController.index];
         final bool isTop = _viewContext.state.mediaListState.isTopLayer();
-        Logging.info(this, "pressed back button, tab=" + tab.toString() + ", top=" + isTop.toString());
+        Logging.info(this.widget, "pressed back button, tab=" + tab.toString() + ", top=" + isTop.toString());
         if (tab == AppTabs.MEDIA && !isTop && _configuration.backAsReturn)
         {
             _stateManager.sendMessage(StateManager.commandReturnMsg, waitingForData: true);

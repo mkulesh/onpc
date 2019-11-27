@@ -19,6 +19,7 @@ import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../iscp/State.dart" as remote_state;
 import "../iscp/StateManager.dart";
+import "../utils/Logging.dart";
 
 class ViewContext
 {
@@ -133,6 +134,14 @@ class _UpdatableWidgetState extends State<UpdatableWidget>
     @override
     Widget build(BuildContext context)
     {
-        return widget.child.createView(context, _updateCallback);
+        try
+        {
+            return widget.child.createView(context, _updateCallback);
+        }
+        catch (e)
+        {
+            Logging.info(widget.child, "ERROR: " + e.toString());
+            return Logging.isEnabled ? Text(e.toString()) : SizedBox.shrink();
+        }
     }
 }
