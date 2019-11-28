@@ -317,6 +317,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     {
         _stateManager.disconnect(false);
         _stateManager.stopSearch();
+        _stateManager.state.clear();
     }
 
     void _onOutputMessage(ISCPMessage msg)
@@ -402,10 +403,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
         switch(n)
         {
         case NetworkState.NONE:
-            _disconnect();
             setState(()
             {
-                _stateManager.state.clear();
+                _disconnect();
             });
             _showToast(Strings.error_connection_no_network);
             break;

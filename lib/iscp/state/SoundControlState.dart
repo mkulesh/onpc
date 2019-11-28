@@ -155,7 +155,7 @@ class SoundControlState
     {
         if (zone != null && zone.getVolumeStep == 0)
         {
-            return sprintf("%1.1f", volumeLevel / 2.0);
+            return sprintf("%1.1f", [volumeLevel / 2.0]);
         }
         else
         {
