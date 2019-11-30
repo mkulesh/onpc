@@ -1,0 +1,3 @@
+• Added Sleep Time and Phase Matching Bass settings
+• Fixed a problem related to detection of WiFi on Android 10
+• Fixed some bugs for Teac NT-503

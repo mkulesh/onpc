@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response status="ok">
+    <device id="CR-N765">
+        <brand>Onkyo</brand>
+        <category>Network Receiver</category>
+        <year>2014</year>
+        <model>CR-N765</model>
+        <destination>xx</destination>
+        <firmwareversion>1051-0600-0000-0000</firmwareversion>
+        <netservicelist count="16">
+            <netservice id="0e" value="1" name="TuneIn" account="Username" password="Password" />
+            <netservice id="04" value="0" name="Pandora" account="Email" password="Password" />
+            <netservice id="05" value="0" name="Rhapsody" account="Username" password="Password" />
+            <netservice id="03" value="0" name="SiriusXM Internet Radio" account="User Name" password="Password" />
+            <netservice id="06" value="0" name="Last.fm Internet Radio" account="User Name" password="Password" />
+            <netservice id="08" value="0" name="Slacker Personal Radio" account="Email" password="Password" />
+            <netservice id="0a" value="1" name="Spotify" account="Username" password="Password" />
+            <netservice id="0b" value="1" name="AUPEO! PERSONAL RADIO" account="User Name" password="Password" />
+            <netservice id="0d" value="0" name="e-onkyo music" />
+            <netservice id="0c" value="0" name="radiko.jp" />
+            <netservice id="10" value="0" name="simfy" account="Username or email address." password="Password" />
+            <netservice id="0f" value="0" name="MP3tunes" account="Email" password="Password" />
+            <netservice id="12" value="1" name="Deezer" account="Email address" password="Password" />
+            <netservice id="01" value="1" name="My Favorites" />
+            <netservice id="00" value="1" name="DLNA" />
+            <netservice id="11" value="1" name="Home Media" account="User Name" password="Password" />
+        </netservicelist>
+        <zonelist count="4">
+            <zone id="1" value="1" name="Main" name_type="FriendlyName" volmax="42" volstep="1" />
+            <zone id="2" value="0" name="Zone2" volmax="0" volstep="0" />
+            <zone id="3" value="0" name="Zone3" volmax="0" volstep="0" />
+            <zone id="4" value="0" name="Zone4" volmax="0" volstep="0" />
+        </zonelist>
+        <selectorlist count="11">
+            <selector id="23" value="1" name="CD" zone="01" iconid="47" />
+            <selector id="2b" value="1" name="NET" zone="01" iconid="2b" />
+            <selector id="29" value="1" name="USB(F)" zone="01" iconid="29" />
+            <selector id="2a" value="1" name="USB(R)" zone="01" iconid="2a" />
+            <selector id="44" value="1" name="OPTICAL" zone="01" iconid="44" />
+            <selector id="45" value="1" name="COAXIAL" zone="01" iconid="45" />
+            <selector id="25" value="1" name="AM" zone="01" iconid="25" />
+            <selector id="24" value="1" name="FM" zone="01" iconid="24" />
+            <selector id="41" value="1" name="LINE1" zone="01" iconid="46" />
+            <selector id="42" value="1" name="LINE2" zone="01" iconid="46" />
+            <selector id="03" value="1" name="AUX IN" zone="01" iconid="46" />
+        </selectorlist>
+        <presetlist count="40">
+            <preset id="01" band="0" freq="0" name="" />
+            <preset id="02" band="0" freq="0" name="" />
+            <preset id="03" band="0" freq="0" name="" />
+            <preset id="04" band="0" freq="0" name="" />
+            <preset id="05" band="0" freq="0" name="" />
+            <preset id="06" band="0" freq="0" name="" />
+            <preset id="07" band="0" freq="0" name="" />
+            <preset id="08" band="0" freq="0" name="" />
+            <preset id="09" band="0" freq="0" name="" />
+            <preset id="0a" band="0" freq="0" name="" />
+            <preset id="0b" band="0" freq="0" name="" />
+            <preset id="0c" band="0" freq="0" name="" />
+            <preset id="0d" band="0" freq="0" name="" />
+            <preset id="0e" band="0" freq="0" name="" />
+            <preset id="0f" band="0" freq="0" name="" />
+            <preset id="10" band="0" freq="0" name="" />
+            <preset id="11" band="0" freq="0" name="" />
+            <preset id="12" band="0" freq="0" name="" />
+            <preset id="13" band="0" freq="0" name="" />
+            <preset id="14" band="0" freq="0" name="" />
+            <preset id="15" band="0" freq="0" name="" />
+            <preset id="16" band="0" freq="0" name="" />
+            <preset id="17" band="0" freq="0" name="" />
+            <preset id="18" band="0" freq="0" name="" />
+            <preset id="19" band="0" freq="0" name="" />
+            <preset id="1a" band="0" freq="0" name="" />
+            <preset id="1b" band="0" freq="0" name="" />
+            <preset id="1c" band="0" freq="0" name="" />
+            <preset id="1d" band="0" freq="0" name="" />
+            <preset id="1e" band="0" freq="0" name="" />
+            <preset id="1f" band="0" freq="0" name="" />
+            <preset id="20" band="0" freq="0" name="" />
+            <preset id="21" band="0" freq="0" name="" />
+            <preset id="22" band="0" freq="0" name="" />
+            <preset id="23" band="0" freq="0" name="" />
+            <preset id="24" band="0" freq="0" name="" />
+            <preset id="25" band="0" freq="0" name="" />
+            <preset id="26" band="0" freq="0" name="" />
+            <preset id="27" band="0" freq="0" name="" />
+            <preset id="28" band="0" freq="0" name="" />
+        </presetlist>
+        <controllist count="33">
+            <control id="Bass" value="1" zone="1" min="-3" max="3" step="1" />
+            <control id="Treble" value="1" zone="1" min="-3" max="3" step="1" />
+            <control id="Center Level" value="0" zone="0" min="0" max="0" step="0" />
+            <control id="Subwoofer Level" value="0" zone="0" min="0" max="0" step="0" />
+            <control id="Subwoofer1 Level" value="0" zone="0" min="0" max="0" step="0" />
+            <control id="Subwoofer2 Level" value="0" zone="0" min="0" max="0" step="0" />
+            <control id="Phase Matching Bass" value="1" />
+            <control id="Tone Direct" value="1" />
+            <control id="LMD Movie/TV" value="0" code="MOVIE" position="0" />
+            <control id="LMD Music" value="0" code="MUSIC" position="0" />
+            <control id="LMD Game" value="0" code="GAME" position="0" />
+            <control id="LMD THX" value="0" code="04" position="0" />
+            <control id="LMD Stereo" value="0" code="00" position="0" />
+            <control id="LMD Direct" value="0" code="01" position="0" />
+            <control id="LMD Pure Audio" value="0" code="11" position="0" />
+            <control id="TUNER Control" value="1" />
+            <control id="TUNER Freq Control" value="1" />
+            <control id="Info" value="1" />
+            <control id="NoVideoInfo" value="1" />
+            <control id="NoAudioInfo" value="0" />
+            <control id="Cursor" value="1" />
+            <control id="Home" value="0" code="HOME" position="0" />
+            <control id="Quick" value="0" code="QUICK" position="0" />
+            <control id="Menu" value="1" code="MENU" position="1" />
+            <control id="AMP Control(RI)" value="0" />
+            <control id="CD Control(RI)" value="0" />
+            <control id="CD Control" value="1" />
+            <control id="BD Control(CEC)" value="0" />
+            <control id="TV Control(CEC)" value="0" />
+            <control id="NoVolume" value="0" />
+            <control id="NoPowerButton" value="0" />
+            <control id="DownSample" value="0" />
+            <control id="Dimmer" value="0" />
+        </controllist>
+        <functionlist count="6">
+            <function id="UsbUpdate" value="0" />
+            <function id="NetUpdate" value="0" />
+            <function id="WebSetup" value="0" />
+            <function id="WifiSetup" value="0" />
+            <function id="Nettune" value="0" />
+            <function id="Initialize" value="0" />
+        </functionlist>
+    </device>
+</response>
