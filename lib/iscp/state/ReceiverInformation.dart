@@ -15,6 +15,7 @@ import 'dart:collection';
 
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
+import "../messages/CenterLevelCommandMsg.dart";
 import "../messages/DeviceNameMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/FirmwareUpdateMsg.dart";
@@ -23,6 +24,7 @@ import "../messages/GoogleCastVersionMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/PowerStatusMsg.dart";
 import "../messages/ReceiverInformationMsg.dart";
+import "../messages/SubwooferLevelCommandMsg.dart";
 import "../messages/ToneCommandMsg.dart";
 
 class ReceiverInformation
@@ -138,6 +140,10 @@ class ReceiverInformation
             ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2);
         _toneControls[ToneCommandMsg.TREBLE_KEY] =
             ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
+        _toneControls[SubwooferLevelCommandMsg.KEY] =
+            ToneControl(SubwooferLevelCommandMsg.KEY, -15, 12, 1);
+        _toneControls[CenterLevelCommandMsg.KEY] =
+            ToneControl(CenterLevelCommandMsg.KEY, -12, 12, 1);
         // Default zones:
         _zones.clear();
         _zones.addAll(ReceiverInformationMsg.defaultZones);
