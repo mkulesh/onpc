@@ -861,7 +861,7 @@ public class MonitorFragment extends BaseFragment
         final TextView labelField = toneGroup.findViewWithTag("tone_label");
         if (labelField != null)
         {
-            labelField.setText(labelText + ": " + Integer.toString(toneLevel));
+            labelField.setText(labelText + ": " + toneLevel);
         }
 
         final TextView minText = toneGroup.findViewWithTag("tone_min_value");
@@ -896,7 +896,7 @@ public class MonitorFragment extends BaseFragment
                 progressChanged = progress;
                 if (labelField != null)
                 {
-                    labelField.setText(labelText + ": " + Integer.toString(getScaledProgress()));
+                    labelField.setText(labelText + ": " + getScaledProgress());
                 }
             }
 

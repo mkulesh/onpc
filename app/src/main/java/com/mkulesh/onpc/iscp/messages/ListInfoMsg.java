@@ -148,7 +148,7 @@ public class ListInfoMsg extends ISCPMessage
     {
         return CODE + "[" + data
                 + "; INF_TYPE=" + informationType.toString()
-                + "; LINE_INFO=" + Integer.toString(lineInfo)
+                + "; LINE_INFO=" + lineInfo
                 + "; PROPERTY=" + property.toString()
                 + "; UPD_TYPE=" + updateType.toString()
                 + "; LIST_DATA=" + listedData

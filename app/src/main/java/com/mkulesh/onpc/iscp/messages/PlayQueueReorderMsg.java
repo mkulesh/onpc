@@ -44,7 +44,7 @@ public class PlayQueueReorderMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[INDEX=" + Integer.toString(itemIndex) + "; TARGET=" + Integer.toString(targetIndex) + "]";
+        return CODE + "[INDEX=" + itemIndex + "; TARGET=" + targetIndex + "]";
     }
 
     @Override

@@ -42,14 +42,13 @@ public class PlayQueueRemoveMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[TYPE=" + Integer.toString(type) + "; INDEX=" + Integer.toString(itemIndex) + "]";
+        return CODE + "[TYPE=" + type + "; INDEX=" + itemIndex + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        final String param = Integer.toString(type) +
-                String.format("%04x", itemIndex);
+        final String param = type + String.format("%04x", itemIndex);
         return new EISCPMessage(CODE, param);
     }
 }

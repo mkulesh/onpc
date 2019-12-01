@@ -48,15 +48,14 @@ public class PlayQueueAddMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[INDEX=" + Integer.toString(itemIndex) + "; TYPE=" + Integer.toString(type) + "]";
+        return CODE + "[INDEX=" + itemIndex + "; TYPE=" + type + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
         final String param = String.format("%04x", itemIndex) +
-                Integer.toString(type) +
-                String.format("%04x", targetIndex);
+                type + String.format("%04x", targetIndex);
         return new EISCPMessage(CODE, param);
     }
 }

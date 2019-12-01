@@ -121,7 +121,7 @@ public class XmlListItemMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return "ITEM[" + Integer.toString(messageId) + ": " + title
+        return "ITEM[" + messageId + ": " + title
                 + "; ICON_TYPE=" + iconType
                 + "; ICON_ID=" + iconId
                 + "; ICON=" + icon.toString()

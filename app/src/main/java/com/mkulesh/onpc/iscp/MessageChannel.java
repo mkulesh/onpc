@@ -169,7 +169,7 @@ class MessageChannel extends AppTask implements Runnable
 
     boolean connectToServer(String server, int port)
     {
-        final String addr = server + ":" + Integer.toString(port);
+        final String addr = server + ":" + port;
 
         try
         {

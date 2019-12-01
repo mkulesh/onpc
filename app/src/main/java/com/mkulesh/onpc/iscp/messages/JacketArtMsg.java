@@ -130,7 +130,7 @@ public class JacketArtMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "/" + Integer.toString(messageId) + "[" + data.substring(0, 2) + "..."
+        return CODE + "/" + messageId + "[" + data.substring(0, 2) + "..."
                 + "; TYPE=" + imageType.toString()
                 + "; PACKET=" + packetFlag.toString()
                 + "; URL=" + url
