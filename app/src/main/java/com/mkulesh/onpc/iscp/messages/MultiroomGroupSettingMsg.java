@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
  */
 public class MultiroomGroupSettingMsg extends ISCPMessage
 {
-    public final static String CODE = "MGS";
+    private final static String CODE = "MGS";
     public final static int TARGET_ZONE_ID = 1;
 
     public enum Command

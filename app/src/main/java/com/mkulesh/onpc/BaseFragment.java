@@ -47,7 +47,7 @@ abstract public class BaseFragment extends Fragment
     /**
      * Constants used to save/restore the instance state.
      */
-    public static final String FRAGMENT_NUMBER = "fragment_number";
+    static final String FRAGMENT_NUMBER = "fragment_number";
 
     private boolean visibleToUser = false;
     MainActivity activity = null;
@@ -281,7 +281,7 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    protected boolean onBackPressed()
+    boolean onBackPressed()
     {
         // No default processing for Back button
         return false;

@@ -98,7 +98,7 @@ public class EISCPMessage
         return res;
     }
 
-    protected boolean isMultiline()
+    private boolean isMultiline()
     {
         return parameters.length() > LOG_LINE_LENGTH;
     }

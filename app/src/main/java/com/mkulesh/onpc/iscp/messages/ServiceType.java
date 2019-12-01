@@ -70,14 +70,14 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     NET("F3", "NET", R.string.service_net, R.drawable.media_item_net),
     BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth, R.drawable.media_item_bluetooth);
 
-    final String code;
-    final String name;
+    private final String code;
+    private final String name;
 
     @StringRes
-    final int descriptionId;
+    private final int descriptionId;
 
     @DrawableRes
-    final int imageId;
+    private final int imageId;
 
     ServiceType(final String code, final String name, @StringRes final int descriptionId, @DrawableRes final int imageId)
     {

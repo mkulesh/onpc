@@ -128,7 +128,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
                     + ", delay=" + delay;
         }
 
-        public int getId()
+        int getId()
         {
             return id;
         }

@@ -71,7 +71,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             this.addToQueue = addToQueue;
         }
 
-        public String getId()
+        String getId()
         {
             return id;
         }
@@ -125,7 +125,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             volMax = e.hasAttribute("volmax") ? Integer.parseInt(e.getAttribute("volmax")) : 0;
         }
 
-        public Zone(final String id, final String name, final int volumeStep, final int volMax)
+        Zone(final String id, final String name, final int volumeStep, final int volMax)
         {
             this.id = id;
             this.name = name;
@@ -349,7 +349,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             return e.hasAttribute("min") && e.hasAttribute("max") && e.hasAttribute("step");
         }
 
-        public String getId()
+        String getId()
         {
             return id;
         }

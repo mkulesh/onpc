@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String versionName = null;
-    int startRequestCode, orientation;
+    private int startRequestCode;
+    int orientation;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
