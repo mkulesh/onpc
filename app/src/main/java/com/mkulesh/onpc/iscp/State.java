@@ -734,7 +734,7 @@ public class State
         }
         else if (msg.getRawData() != null)
         {
-            final byte in[] = msg.getRawData();
+            final byte[] in = msg.getRawData();
             if (msg.getPacketFlag() == JacketArtMsg.PacketFlag.START)
             {
                 Logging.info(msg, "<< " + msg.toString());

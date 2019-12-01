@@ -102,13 +102,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final EISCPMessage commandListMsg = new EISCPMessage(
             OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString());
 
-    private final static String trackStateQueries[] = new String[]{
+    private final static String[] trackStateQueries = new String[]{
             ArtistNameMsg.CODE, AlbumNameMsg.CODE, TitleNameMsg.CODE,
             FileFormatMsg.CODE, TrackInfoMsg.CODE, TimeInfoMsg.CODE,
             MenuStatusMsg.CODE
     };
 
-    private final static String multiroomQueries[] = new String[]{
+    private final static String[] multiroomQueries = new String[]{
             MultiroomDeviceInformationMsg.CODE,
             FriendlyNameMsg.CODE
     };
@@ -208,7 +208,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 new EISCPMessage(JacketArtMsg.CODE,
                         useBmpImages ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
 
-        final String powerStateQueries[] = new String[]{
+        final String[] powerStateQueries = new String[]{
                 ReceiverInformationMsg.CODE,
                 MultiroomDeviceInformationMsg.CODE,
                 PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
@@ -394,7 +394,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             // Send this request first
             final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
                     ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
-            final String playStateQueries[] = new String[]{
+            final String[] playStateQueries = new String[]{
                     // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     PlayStatusMsg.CODE,

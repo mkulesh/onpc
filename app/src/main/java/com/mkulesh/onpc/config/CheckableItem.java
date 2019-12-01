@@ -120,7 +120,7 @@ class CheckableItem
             {
                 for (String d : items)
                 {
-                    String item[] = d.split(",");
+                    String[] item = d.split(",");
                     if (item.length == 1)
                     {
                         retValue.add(new CheckableItem(item[0], true));

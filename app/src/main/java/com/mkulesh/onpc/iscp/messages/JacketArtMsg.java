@@ -214,7 +214,7 @@ public class JacketArtMsg extends ISCPMessage
             Logging.info(this, "loading image from stream");
             coverBuffer.flush();
             coverBuffer.close();
-            final byte out[] = coverBuffer.toByteArray();
+            final byte[] out = coverBuffer.toByteArray();
             cover = BitmapFactory.decodeByteArray(out, 0, out.length);
         }
         catch (Exception e)

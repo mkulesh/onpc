@@ -230,7 +230,7 @@ public class EISCPMessage
 
     byte[] getBytes()
     {
-        byte parametersBin[] = parameters.getBytes(UTF_8);
+        byte[] parametersBin = parameters.getBytes(UTF_8);
         int dSize = 2 + code.length() + parametersBin.length + 1;
 
         if (headerSize + dSize < MIN_MSG_LENGTH)
