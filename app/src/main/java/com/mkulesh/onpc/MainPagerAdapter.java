@@ -41,12 +41,11 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
     }
 
     @Override
+    @NonNull
     public Fragment getItem(int position)
     {
         switch (position)
         {
-        case 0:
-            return prepareFragment(new MonitorFragment(), position);
         case 1:
             return prepareFragment(new MediaFragment(), position);
         case 2:
@@ -56,7 +55,7 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
         case 4:
             return prepareFragment(new RemoteInterfaceFragment(), position);
         }
-        return null;
+        return prepareFragment(new MonitorFragment(), position);
     }
 
     private Fragment prepareFragment(Fragment fragment, int position)

@@ -326,7 +326,7 @@ public class DeviceFragment extends BaseFragment
                 {
                     // In order to avoid scrolling up if device name field is focused,
                     // clear its focus
-                    prepareButtonListeners(child, msg, () -> deviceName.clearFocus());
+                    prepareButtonListeners(child, msg, deviceName::clearFocus);
                 }
                 setButtonEnabled(child, state.isOn());
                 if (state.isOn())

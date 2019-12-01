@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
+    public void onSaveInstanceState(@NonNull Bundle outState)
     {
         super.onSaveInstanceState(outState);
         try
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
     }
 
-    public void onRestoreInstanceState(Bundle inState)
+    public void onRestoreInstanceState(@NonNull Bundle inState)
     {
         super.onRestoreInstanceState(inState);
         try
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem)
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem)
     {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.

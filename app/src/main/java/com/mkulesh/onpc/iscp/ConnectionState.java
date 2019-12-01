@@ -16,7 +16,6 @@ package com.mkulesh.onpc.iscp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.DhcpInfo;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
@@ -27,8 +26,6 @@ import android.widget.Toast;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
-
-import java.net.InetAddress;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;

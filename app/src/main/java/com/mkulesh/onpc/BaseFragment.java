@@ -82,7 +82,7 @@ abstract public class BaseFragment extends Fragment
     {
         activity = (MainActivity) getActivity();
         initializeFragment(inflater, container,
-                activity.orientation == Configuration.ORIENTATION_PORTRAIT ? layoutPort : layoutLand);
+                (activity != null && activity.orientation == Configuration.ORIENTATION_LANDSCAPE) ? layoutLand : layoutPort);
     }
 
     @Override
