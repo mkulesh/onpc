@@ -43,7 +43,6 @@ public class HtmlDialogBuilder
         return buildHtmlDialog(context, icon, title, text, false);
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     private static AlertDialog buildHtmlDialog(Context context, @DrawableRes int icon,
                                                @StringRes int title, final String text, final boolean isHtml)

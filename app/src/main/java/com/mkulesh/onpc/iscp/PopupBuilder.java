@@ -157,7 +157,6 @@ public class PopupBuilder
         return alertDialog;
     }
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     private TextView createTextView(final Element textBox, final int style)
     {
