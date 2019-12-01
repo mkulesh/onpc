@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.mkulesh.onpc"
         minSdkVersion 14
-        targetSdkVersion 28
-        versionCode 17
-        versionName "1.6"
+        targetSdkVersion 29
+        versionCode 18
+        versionName "1.7"
         setProperty("archivesBaseName", "onpc-v" + versionName)
     }
 
