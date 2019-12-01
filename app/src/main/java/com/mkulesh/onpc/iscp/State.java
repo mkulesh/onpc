@@ -279,6 +279,10 @@ public class State
                 new ReceiverInformationMsg.ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2));
         toneControls.put(ToneCommandMsg.TREBLE_KEY,
                 new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2));
+        toneControls.put(SubwooferLevelCommandMsg.KEY,
+                new ReceiverInformationMsg.ToneControl(SubwooferLevelCommandMsg.KEY, -15, 12, 1));
+        toneControls.put(CenterLevelCommandMsg.KEY,
+                new ReceiverInformationMsg.ToneControl(CenterLevelCommandMsg.KEY, -12, 12, 1));
         // Default zones:
         zones = ReceiverInformationMsg.getDefaultZones();
     }
