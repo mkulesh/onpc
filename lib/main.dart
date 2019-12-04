@@ -34,7 +34,6 @@ import "config/PreferencesMain.dart";
 import "constants/Activities.dart";
 import "constants/Dimens.dart";
 import "constants/Strings.dart";
-import "constants/Themes.dart";
 import "dialogs/CustomPopupDialog.dart";
 import "dialogs/DeviceSearchDialog.dart";
 import "iscp/ISCPMessage.dart";
@@ -70,8 +69,7 @@ void main() async
     final ViewContext viewContext = ViewContext(configuration, StateManager(), StreamController.broadcast());
 
     runApp(MaterialApp(title: Strings.app_short_name,
-        theme: BaseAppTheme.getThemeData(
-            configuration.theme, configuration.language, configuration.textSize),
+        theme: viewContext.getThemeData(),
         home: MusicControllerApp(viewContext),
         routes: <String, WidgetBuilder> {
             Activities.activity_preferences: (BuildContext context) => PreferencesMain(configuration),
@@ -189,8 +187,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     {
         Logging.info(this.widget, "Rebuild widget");
 
-        final ThemeData td = BaseAppTheme.getThemeData(
-            _configuration.theme, _configuration.language, _configuration.textSize);
+        final ThemeData td = _viewContext.getThemeData();
 
         final UpdatableAppBarWidget appBarView = UpdatableAppBarWidget(context,
             AppBarView(_viewContext, _tabController, _tabs)

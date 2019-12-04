@@ -39,13 +39,14 @@ class _GroupControlDialogState extends State<GroupControlDialog>
     @override
     Widget build(BuildContext context)
     {
+        final ThemeData td = Theme.of(context);
         return AlertDialog(
             title: CustomDialogTitle(Strings.cmd_multiroom_group, Drawables.cmd_multiroom_group),
             contentPadding: DialogDimens.contentPadding,
             content: UpdatableWidget(child: GroupControlView(viewContext)),
             actions: <Widget>[
                 FlatButton(
-                    child: Text(Strings.action_cancel.toUpperCase()),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )

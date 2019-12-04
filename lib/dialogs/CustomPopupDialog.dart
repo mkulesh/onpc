@@ -86,24 +86,28 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
     @override
     Widget build(BuildContext context)
     {
+        final ThemeData td = _viewContext.getThemeData();
+
         Widget _content;
         try
         {
-            _content = _buildContent(context);
+            _content = _buildContent(td, context);
         }
         on Exception catch (e)
         {
             _content = Text("Cannot create dialog: " + e.toString());
         }
 
-        return AlertDialog(
+        final Widget dialog = AlertDialog(
             title: CustomDialogTitle(_dialogTitle, _viewContext.state.getServiceIcon()),
             contentPadding: DialogDimens.contentPadding,
             content: _content,
         );
+
+        return Theme(data: td, child: dialog);
     }
 
-    Widget _buildContent(BuildContext context)
+    Widget _buildContent(final ThemeData td, BuildContext context)
     {
         PopupUiType uiType;
 
@@ -135,7 +139,7 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
                 {
                     uiType = PopupUiType.POPUP;
                 }
-                elements.add(_createButton(context, button, uiType));
+                elements.add(_createButton(td, context, button, uiType));
             });
         });
 
@@ -147,13 +151,11 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
         );
     }
 
-    Widget _createButton(BuildContext context, final xml.XmlElement button, final PopupUiType uiType)
+    Widget _createButton(final ThemeData td, BuildContext context, final xml.XmlElement button, final PopupUiType uiType)
     {
-        final ThemeData td = Theme.of(context);
-
         final Widget btn = MaterialButton(
             child: CustomTextLabel.normal(button.getAttribute("text")),
-            color: td.backgroundColor,
+            color: td.canvasColor,
             elevation: 1,
             minWidth: 0,
             onPressed: ()

@@ -63,6 +63,11 @@ class BaseAppTheme
                 elevation: ActivityDimens.elevation,
             ),
 
+            tabBarTheme: TabBarTheme(
+                labelStyle: TextStyle(fontSize: ActivityDimens.secondaryFontSize),
+                unselectedLabelStyle: TextStyle(fontSize: ActivityDimens.secondaryFontSize),
+            ),
+
             textTheme: TextTheme(
                 // Title in activity and dialogs
                 title: TextStyle(color: textColor, fontSize: ActivityDimens.titleFontSize),

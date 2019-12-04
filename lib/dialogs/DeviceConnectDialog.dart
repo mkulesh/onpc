@@ -52,6 +52,8 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
     @override
     Widget build(BuildContext context)
     {
+        final ThemeData td = viewContext.getThemeData();
+
         final Widget row1 = Padding(
             padding: DialogDimens.rowPadding,
             child: Column(
@@ -74,7 +76,7 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
             )
         );
 
-        return AlertDialog(
+        final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.drawer_device_connect, Drawables.drawer_connect),
             contentPadding: DialogDimens.contentPadding,
             content: Column(
@@ -84,13 +86,13 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                 children: [row1, row2]),
             actions: <Widget>[
                 FlatButton(
-                    child: Text(Strings.action_cancel.toUpperCase()),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();
                     }),
                 FlatButton(
-                    child: Text(Strings.action_ok.toUpperCase()),
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();
@@ -100,6 +102,8 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                     }),
             ]
         );
+
+        return Theme(data: td, child: dialog);
     }
 
     @override

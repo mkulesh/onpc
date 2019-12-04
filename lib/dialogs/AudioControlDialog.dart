@@ -39,13 +39,14 @@ class _AudioControlDialogState extends State<AudioControlDialog>
     @override
     Widget build(BuildContext context)
     {
+        final ThemeData td = Theme.of(context);
         return AlertDialog(
             title: CustomDialogTitle(Strings.audio_control, Drawables.volume_audio_control),
             contentPadding: DialogDimens.contentPadding,
             content: UpdatableWidget(child: AudioControlView(viewContext)),
             actions: <Widget>[
                 FlatButton(
-                    child: Text(Strings.action_cancel.toUpperCase()),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )

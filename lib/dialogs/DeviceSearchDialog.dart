@@ -42,7 +42,9 @@ class _DeviceSearchDialogState extends State<DeviceSearchDialog>
     @override
     Widget build(BuildContext context)
     {
-        return AlertDialog(
+        final ThemeData td = viewContext.getThemeData();
+
+        final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.drawer_device_search, Drawables.drawer_search),
             contentPadding: DialogDimens.contentPadding,
             content: UpdatableWidget(child: DeviceSearchView(viewContext, (d)
@@ -52,12 +54,14 @@ class _DeviceSearchDialogState extends State<DeviceSearchDialog>
             })),
             actions: <Widget>[
                 FlatButton(
-                    child: Text(Strings.action_cancel.toUpperCase()),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )
             ]
         );
+
+        return Theme(data: td, child: dialog);
     }
 
     @override

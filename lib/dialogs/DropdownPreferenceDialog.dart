@@ -32,6 +32,7 @@ class DropdownPreferenceDialog extends StatelessWidget
     @override
     Widget build(BuildContext context)
     {
+        final ThemeData td = Theme.of(context);
         final List<Widget> controls = List();
 
         int index = 0;
@@ -63,7 +64,7 @@ class DropdownPreferenceDialog extends StatelessWidget
                 child: ListBody(children: controls)),
             actions: <Widget>[
                 FlatButton(
-                    child: Text(Strings.action_cancel.toUpperCase()),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )

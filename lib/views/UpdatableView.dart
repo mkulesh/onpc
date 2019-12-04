@@ -17,6 +17,7 @@ import "package:flutter/material.dart";
 
 import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
+import "../constants/Themes.dart";
 import "../iscp/State.dart" as remote_state;
 import "../iscp/StateManager.dart";
 import "../utils/Logging.dart";
@@ -31,6 +32,9 @@ class ViewContext
 
     remote_state.State get state
     => stateManager.state;
+
+    ThemeData getThemeData()
+    => BaseAppTheme.getThemeData(configuration.theme, configuration.language, configuration.textSize);
 }
 
 abstract class UpdatableView
