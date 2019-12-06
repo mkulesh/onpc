@@ -63,36 +63,46 @@ class AboutScreenState extends State<AboutScreen>
         final ThemeData td = BaseAppTheme.getThemeData(
             _configuration.theme, _configuration.language, _configuration.textSize);
 
-        final double tabBarHeight = ActivityDimens.tabBarHeight(context);
-        final Widget tabBar = TabBarView(
-            controller: _tabController,
-            children: _tabs.map((AboutScreenTabs tab)
-            {
-                Widget tabContent;
-                switch (tab)
+        double tabBarHeight = 0;
+        Widget scaffoldBody;
+        if (_configuration.developerMode)
+        {
+            tabBarHeight = ActivityDimens.tabBarHeight(context);
+            scaffoldBody = TabBarView(
+                controller: _tabController,
+                children: _tabs.map((AboutScreenTabs tab)
                 {
-                    case AboutScreenTabs.ABOUT:
-                        tabContent = _buildMarkdownView(td, Strings.about_text);
-                        break;
-                    case AboutScreenTabs.RECEIVER:
-                        tabContent = _buildTextView(td, _receiverInformation);
-                        break;
-                    case AboutScreenTabs.LOGGING:
-                        tabContent = _buildTextView(td, Logging.getLatestLogging());
-                        break;
-                }
-                return Container(
-                    margin: ActivityDimens.activityMargins(context),
-                    child: tabContent
-                );
-            }).toList(),
-        );
+                    Widget tabContent;
+                    switch (tab)
+                    {
+                        case AboutScreenTabs.ABOUT:
+                            tabContent = _buildMarkdownView(td, Strings.about_text, ActivityDimens.noPadding);
+                            break;
+                        case AboutScreenTabs.RECEIVER:
+                            tabContent = _buildTextView(td, _receiverInformation);
+                            break;
+                        case AboutScreenTabs.LOGGING:
+                            tabContent = _buildTextView(td, Logging.getLatestLogging());
+                            break;
+                    }
+                    return Container(
+                        margin: ActivityDimens.activityMargins(context),
+                        child: tabContent
+                    );
+                }).toList(),
+            );
+
+        }
+        else
+        {
+            scaffoldBody = _buildMarkdownView(td, Strings.about_text, ActivityDimens.activityMargins(context));
+        }
 
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context) + tabBarHeight), // desired height of appBar + tabBar
                 child: _buildAppBar(td, tabBarHeight)),
-            body: tabBar
+            body: scaffoldBody
         );
 
         return Theme(data: td, child: scaffold);
@@ -107,6 +117,11 @@ class AboutScreenState extends State<AboutScreen>
 
     Widget _buildAppBar(final ThemeData td, final double tabBarHeight)
     {
+        if (tabBarHeight == 0)
+        {
+            return AppBar(title: CustomActivityTitle(Strings.drawer_about, null));
+        }
+
         final List<String> TAB_NAMES = [
             Strings.drawer_about,
             Strings.menu_receiver_information,
@@ -146,7 +161,7 @@ class AboutScreenState extends State<AboutScreen>
         );
     }
 
-    Widget _buildMarkdownView(final ThemeData td, final String data)
+    Widget _buildMarkdownView(final ThemeData td, final String data, final EdgeInsetsGeometry padding)
     {
         final MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(td).copyWith(
             h1: td.textTheme.subhead.copyWith(fontWeight: FontWeight.bold),
@@ -157,7 +172,7 @@ class AboutScreenState extends State<AboutScreen>
         return Markdown(
             data: data,
             styleSheet: styleSheet,
-            padding: ActivityDimens.noPadding,
+            padding: padding,
             onTapLink: (String href)
             {
                 Logging.info(this, "Pressed " + href);

@@ -158,6 +158,7 @@ class _PreferencesMainState extends State<PreferencesMain>
             Configuration.KEEP_PLAYBACK_MODE,
             icon: Drawables.cmd_track_menu,
             desc: Strings.pref_keep_playback_mode_summary));
+
         if (Platform.isAndroid)
         {
             elements.add(_customSwitchPreference(td,
@@ -179,6 +180,11 @@ class _PreferencesMainState extends State<PreferencesMain>
                 Configuration.EXIT_CONFIRM,
                 icon: Drawables.pref_exit_confirm));
         }
+
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_developer_mode,
+            Configuration.DEVELOPER_MODE,
+            icon: Drawables.pref_developer_mode));
 
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(

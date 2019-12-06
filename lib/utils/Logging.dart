@@ -13,15 +13,25 @@
 
 class Logging
 {
-    static int LOG_SIZE = 5000;
+    static const int DEFAULT_LOG_SIZE = 1000;
+
     static List<String> latestLogging = List();
     static int logLineNumber = 0;
 
     static bool get isEnabled
     => true;
 
-    static bool get isSaved
-    => true;
+    static int _logSize = DEFAULT_LOG_SIZE;
+
+    static set logSize(int value)
+    {
+        _logSize = value;
+        if (_logSize == 0)
+        {
+            latestLogging.clear();
+            logLineNumber = 0;
+        }
+    }
 
     static bool get isVisualLayout
     => false;
@@ -47,11 +57,11 @@ class Logging
             logLineNumber++;
             final out = "#" + logLineNumber.toRadixString(10).padLeft(4, '0') + " " + name + ": " + text;
 
-            if (isSaved)
+            if (_logSize > 0)
             {
                 try
                 {
-                    if (latestLogging.length >= LOG_SIZE - 1)
+                    if (latestLogging.length >= _logSize - 1)
                     {
                         latestLogging.removeAt(0);
                     }

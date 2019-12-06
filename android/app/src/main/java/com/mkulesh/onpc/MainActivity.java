@@ -350,6 +350,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             boolParameters.add(new Pair<>("back_as_return", "flutter.back_as_return"));
             boolParameters.add(new Pair<>("keep_playback_mode", "flutter.keep_playback_mode"));
             boolParameters.add(new Pair<>("exit_confirm",  "flutter.exit_confirm"));
+            boolParameters.add(new Pair<>("developer_mode",  "flutter.developer_mode"));
             for (Pair<String, String> par : boolParameters)
             {
                 boolean val = oldPrefs.getBoolean(par.first, par.first.equals("pref_friendly_names"));

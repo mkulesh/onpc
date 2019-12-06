@@ -418,6 +418,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _applyConfiguration({bool informPlatform = false})
     {
+        // Update logging
+        Logging.logSize = _configuration.developerMode ? Logging.DEFAULT_LOG_SIZE : 0;
+
         // Update tabs
         int _index = 0;
         if (_tabController != null)

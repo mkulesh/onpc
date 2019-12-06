@@ -162,6 +162,11 @@ class Configuration
     bool get exitConfirm
     => _exitConfirm;
 
+    static const Pair<String, bool> DEVELOPER_MODE = Pair<String, bool>("developer_mode", false);
+    bool _developerMode;
+
+    bool get developerMode
+    => _developerMode;
 
     Configuration(this.preferences, packageInfo)
     {
@@ -197,6 +202,7 @@ class Configuration
         _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
         _keepScreenOn = Platform.isAndroid ? getBool(KEEP_SCREEN_ON, doLog: true) : false;
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
+        _developerMode = getBool(DEVELOPER_MODE, doLog: true);
     }
 
     String getString(Pair<String, String> par, {doLog = false})
