@@ -64,7 +64,6 @@ class _PreferencesMainState extends State<PreferencesMain>
                 setState(()
                 {
                     _configuration.theme = val;
-                    _configuration.saveStringParameter(Configuration.THEME, val);
                 });
             }));
 
@@ -80,7 +79,6 @@ class _PreferencesMainState extends State<PreferencesMain>
                 setState(()
                 {
                     _configuration.language = val;
-                    _configuration.saveStringParameter(Configuration.LANGUAGE, val);
                 });
             }));
 
@@ -96,7 +94,6 @@ class _PreferencesMainState extends State<PreferencesMain>
                 setState(()
                 {
                     _configuration.textSize = val;
-                    _configuration.saveStringParameter(Configuration.TEXT_SIZE, val);
                 });
             }));
 
@@ -122,7 +119,7 @@ class _PreferencesMainState extends State<PreferencesMain>
             {
                 setState(()
                 {
-                    _configuration.saveStringParameter(Configuration.SOUND_CONTROL, val);
+                    _configuration.soundControl = val;
                 });
             }));
         elements.add(_customPreferenceScreen(td,

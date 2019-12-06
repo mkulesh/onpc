@@ -66,7 +66,7 @@ void main() async
     final Configuration configuration = Configuration(prefs, packageInfo);
     configuration.read();
 
-    final ViewContext viewContext = ViewContext(configuration, StateManager(), StreamController.broadcast());
+    final ViewContext viewContext = ViewContext(configuration, StateManager(configuration.activeZone), StreamController.broadcast());
 
     runApp(MaterialApp(title: Strings.app_short_name,
         theme: viewContext.getThemeData(),

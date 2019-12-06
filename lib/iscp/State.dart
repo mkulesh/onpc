@@ -91,6 +91,12 @@ class State
     static const int DEFAULT_ACTIVE_ZONE = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
     int _activeZone = DEFAULT_ACTIVE_ZONE;
 
+    set activeZone(int value)
+    {
+        _activeZone = value;
+        Logging.info(this, "set active zone: " + value.toString());
+    }
+
     int get getActiveZone
     => _activeZone;
 

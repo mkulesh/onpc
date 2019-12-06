@@ -36,6 +36,7 @@ class Configuration
     set theme(String value)
     {
         _theme = value;
+        _saveStringParameter(Configuration.THEME, value);
     }
 
     // Language
@@ -48,6 +49,7 @@ class Configuration
     set language(String value)
     {
         _language = value;
+        _saveStringParameter(Configuration.LANGUAGE, value);
     }
 
     // Text size
@@ -60,6 +62,7 @@ class Configuration
     set textSize(String value)
     {
         _textSize = value;
+        _saveStringParameter(Configuration.TEXT_SIZE, value);
     }
 
     // Connection options
@@ -77,6 +80,18 @@ class Configuration
 
     bool get isDeviceValid
     => _deviceName.isNotEmpty && _devicePort > 0;
+
+    static const Pair<String, int> ACTIVE_ZONE = Pair<String, int>("active_zone", 0);
+    int _activeZone;
+
+    int get activeZone
+    => _activeZone;
+
+    set activeZone(int value)
+    {
+        _activeZone = value;
+        _saveIntegerParameter(ACTIVE_ZONE, value);
+    }
 
     // Device options
     static const Pair<String, bool> AUTO_POWER = Pair<String, bool>("auto_power", false);
@@ -96,6 +111,12 @@ class Configuration
 
     String get soundControl
     => _soundControl;
+
+    set soundControl(String value)
+    {
+        _soundControl = value;
+        _saveStringParameter(Configuration.SOUND_CONTROL, value);
+    }
 
     static const Pair<String, String> MODEL = Pair<String, String>("model", "NONE");
 
@@ -186,6 +207,7 @@ class Configuration
         // Connection options
         _deviceName = getString(SERVER_NAME, doLog: true);
         _devicePort = getInt(SERVER_PORT, doLog: true);
+        _activeZone = getInt(ACTIVE_ZONE, doLog: true);
 
         // Device options
         _autoPower = getBool(AUTO_POWER, doLog: true);
@@ -265,10 +287,16 @@ class Configuration
         return val;
     }
 
-    void saveStringParameter(final Pair<String, String> par, final String value) async
+    void _saveStringParameter(final Pair<String, String> par, final String value) async
     {
         Logging.info(this, "Save parameter: " + par.item1 + ":" + value);
         await preferences.setString(par.item1, value);
+    }
+
+    void _saveIntegerParameter(final Pair<String, int> par, final int value) async
+    {
+        Logging.info(this, "Save parameter: " + par.item1 + ":" + value.toString());
+        await preferences.setInt(par.item1, value);
     }
 
     void saveDevice(final String device, final int port) async

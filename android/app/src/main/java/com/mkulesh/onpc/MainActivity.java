@@ -324,6 +324,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             stringsParameters.add(new Pair<>("app_theme", "flutter.theme"));
             stringsParameters.add(new Pair<>("app_language", "flutter.language"));
             stringsParameters.add(new Pair<>("server_name", "flutter.server_name"));
+            stringsParameters.add(new Pair<>("active_zone", "flutter.active_zone"));
             stringsParameters.add(new Pair<>("sound_control", "flutter.sound_control"));
             stringsParameters.add(new Pair<>("selected_listening_modes", "flutter.selected_listening_modes" + model));
             stringsParameters.add(new Pair<>("selected_network_services" + model, "flutter.selected_network_services" + model));

@@ -129,9 +129,10 @@ class StateManager
     State get state
     => _state;
 
-    StateManager()
+    StateManager(final int zoneId)
     {
         _messageChannel = MessageChannel(_onConnected, _onNewEISCPMessage, _onDisconnected);
+        _state.activeZone = zoneId;
         _state.trackState.coverDownloadFinished = _onProcessFinished;
     }
 
@@ -179,13 +180,14 @@ class StateManager
     bool isSourceHost(final ISCPMessage msg)
     => msg.sourceHost == sourceHost;
 
-    changeZone(String getId)
+    int changeZone(String getId)
     {
         if (_state.changeZone(getId))
         {
             sendQueries(_state.receiverInformation.getQueries(_state.getActiveZone));
             triggerStateEvent(ZONE_EVENT);
         }
+        return _state.getActiveZone;
     }
 
     void _onConnected(MessageChannel channel, String server, int port)
