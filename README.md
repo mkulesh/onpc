@@ -1,5 +1,6 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
+![Build Status](https://img.shields.io/github/v/release/mkulesh/onpc)
 [![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.7-debug.apk)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo and Pioneer
@@ -11,20 +12,22 @@
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
+*To join the Enhanced Controller for Onkyo iOS beta*, install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
+
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
 "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
+- The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - Full tone control (bass, center, treble and subwoofer levels)
-- The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - Tuneln Radio and Deezer streaming (if supported by receiver)
-- DAB / FM (if supported by receiver)
+- DAB / FM / AM (if supported by receiver)
 - Multi-zone support (if supported by receiver)
 - Multi-room support: Allows control groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
 - Control of devices attached via RI
 - Enhanced Play Queue support (add, replace, remove, clear, change playback order)
-- Display device details and control device settings such as dimmer level, digital filter, auto power
+- Display device details and control device settings such as dimmer level, digital filter, auto power, sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
 ## Supported devices
@@ -33,6 +36,7 @@ Currently, this app is only tested with following devices:
 - [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html)
 - [ONKYO TX-NR686](https://www.eu.onkyo.com/en/products/tx-nr686-148905.html)
 - [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
+- [ONKYO RN-855](https://www.de.onkyo.com/de/produkte/r-n855-133057.html)
 - [Wireless Audio System NCP-302](https://www.eu.onkyo.com/en/products/ncp-302-137564.html)
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
