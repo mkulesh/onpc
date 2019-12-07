@@ -24,3 +24,5 @@ rm -rf ios/Pods/
 rm -rf ios/ServiceDefinitions.json
 rm -rf ios/Runner.xcworkspace/xcshareddata/
 rm -rf ios/Runner.xcworkspace/xcuserdata/
+find . -name .DS_Store -exec rm -f {} \;
+

@@ -50,6 +50,16 @@ void main(List<String> arguments) async
 
         final xml.XmlDocument document = xml.parse(inContent);
 
+        outContent.writeln("    /* All supported languages */");
+        outContent.writeln("");
+        outContent.writeln("    static const List<String> app_languages = [");
+        outContent.writeln('        /*en*/ "en",');
+        for(int i = 0; i < TRANSLATIONS.length; i++)
+        {
+            outContent.writeln('        /*' + TRANSLATIONS[i] + '*/ "' + TRANSLATIONS[i] + (i + 1 < TRANSLATIONS.length ? '",' : '"];'));
+        }
+        outContent.writeln("");
+
         outContent.writeln("    /* Current language */");
         outContent.writeln("");
         outContent.writeln("    static int _language = 0;");

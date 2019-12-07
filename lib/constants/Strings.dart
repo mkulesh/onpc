@@ -4,6 +4,13 @@
 /* Class collects all strings that can be shown to the user */
 class Strings
 {
+    /* All supported languages */
+
+    static const List<String> app_languages = [
+        /*en*/ "en",
+        /*ru*/ "ru",
+        /*de*/ "de"];
+
     /* Current language */
 
     static int _language = 0;
@@ -24,7 +31,7 @@ class Strings
     static const String dashed_string = "---";
     static const String pref_sound_control_default = "device";
     static const String pref_theme_default = "indigo-orange";
-    static const String pref_language_default = "en";
+    static const String pref_language_default = "system";
     static const String pref_text_size_default = "normal";
 
     /* Non-translatable arrays */
@@ -43,6 +50,7 @@ class Strings
         "teal-deep-orange",
         "purple-green"];
     static const List<String> pref_language_codes = [
+        "system",
         "en",
         "ru",
         "de"];
@@ -2519,13 +2527,16 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     static List<String> get pref_theme_names => l_pref_theme_names[_language];
 
     static const List<List<String>> l_pref_language_names = [
-        /*en*/ ["English",
+        /*en*/ ["System language",
+                "English",
                 "Русский",
                 "Deutsch"],
-        /*ru*/ ["English",
+        /*ru*/ ["Системный язык",
+                "English",
                 "Русский",
                 "Deutsch"],
-        /*de*/ ["English",
+        /*de*/ ["Systemsprache",
+                "English",
                 "Русский",
                 "Deutsch"]];
     static List<String> get pref_language_names => l_pref_language_names[_language];

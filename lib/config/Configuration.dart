@@ -11,6 +11,8 @@
  * Public License along with this program.
  */
 
+import 'dart:ui';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import "../Platform.dart";
@@ -39,12 +41,29 @@ class Configuration
         _saveStringParameter(Configuration.THEME, value);
     }
 
+    // System language
+    static const Locale DEFAULT_LOCALE = Locale("en", "US");
+    Locale _systemLocale;
+
+    set systemLocale(Locale value)
+    {
+        _systemLocale = value;
+        Logging.info(this, "system locale: " + _systemLocale.toString());
+    }
+
     // Language
     static const Pair<String, String> LANGUAGE = Pair<String, String>("language", Strings.pref_language_default);
     String _language;
 
     String get language
-    => _language;
+    {
+        if (_language == "system")
+        {
+            return _systemLocale != null && Strings.app_languages.contains(_systemLocale.languageCode) ?
+                _systemLocale.languageCode : DEFAULT_LOCALE.languageCode;
+        }
+        return _language;
+    }
 
     set language(String value)
     {

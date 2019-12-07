@@ -68,10 +68,20 @@ void main() async
 
     final ViewContext viewContext = ViewContext(configuration, StateManager(configuration.activeZone), StreamController.broadcast());
 
-    runApp(MaterialApp(title: Strings.app_short_name,
+    runApp(MaterialApp(
+        title: Strings.app_short_name,
         theme: viewContext.getThemeData(),
         home: MusicControllerApp(viewContext),
-        routes: <String, WidgetBuilder> {
+        localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales)
+        {
+            if (locale != null)
+            {
+                configuration.systemLocale = locale;
+            }
+            return Configuration.DEFAULT_LOCALE;
+        },
+        routes: <String, WidgetBuilder>
+        {
             Activities.activity_preferences: (BuildContext context) => PreferencesMain(configuration),
             Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(configuration),
             Activities.activity_listening_modes: (BuildContext context) => ListeningModes(configuration),
@@ -120,7 +130,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _stateManager.addListeners(_onStateChanged, _onOutputMessage, _showToast);
         _exitConfirm = false;
         WidgetsBinding.instance.addObserver(this);
-        defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
+        ServicesBinding.instance.defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
         {
             final PlatformCmd cmd = Platform.readPlatformCommand(message);
             if (cmd == PlatformCmd.NETWORK_STATE)

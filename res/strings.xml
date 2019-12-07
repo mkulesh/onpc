@@ -150,14 +150,16 @@ Enjoy!""</string>
     <!-- Application settings: Languages -->
     <string name="pref_language">App language</string>
     <string-array name="pref_language_names">
+        <item>System language</item>
         <item>English</item>
         <item>Русский</item>
         <item>Deutsch</item>
     </string-array>
 
     <!-- Non-Translatable parameters of languages -->
-    <string name="pref_language_default" translatable="false">en</string>
+    <string name="pref_language_default" translatable="false">system</string>
     <string-array name="pref_language_codes" translatable="false">
+        <item>system</item>
         <item>en</item>
         <item>ru</item>
         <item>de</item>
