@@ -52,10 +52,10 @@
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B130158D239B0CC200A6595D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B130158E239B0CC200A6595D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B130158F239B0D1800A6595D /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B1301590239B0D2000A6595D /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ru; path = ru.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B19D10BD239D92A900716A0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B19D10BE239D92A900716A0A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EFB57E51BDD216F5BF0D7563 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -195,6 +195,7 @@
 				en,
 				de,
 				ru,
+				Base,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -304,9 +305,9 @@
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B130158D239B0CC200A6595D /* en */,
 				B130158F239B0D1800A6595D /* de */,
 				B1301590239B0D2000A6595D /* ru */,
+				B19D10BD239D92A900716A0A /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -314,7 +315,7 @@
 		97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B130158E239B0CC200A6595D /* en */,
+				B19D10BE239D92A900716A0A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
