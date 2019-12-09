@@ -44,7 +44,7 @@ Currently, this app is only tested with following devices:
 <img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/phone_ns_6130_playback_hor.png" align="center">
 
 * Playback screen in portrait orientation, Strong Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/phone_ncp_302_playback_vert" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/phone_ncp_302_playback_vert.png" align="center" height="800">
 
 * Playback screen and navigation drawer in landscape orientation, 10 Inch iPad, Dark theme
 <img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/ipad_ns_6130_playback_hor.png" align="center">
