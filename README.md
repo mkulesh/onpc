@@ -1,24 +1,28 @@
 [![Flutter Logo](https://github.com/mkulesh/onpc/blob/onpc-flutter/images/flutter_logo.png)](https://flutter.dev)
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
+[![Download APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v2.0-release.apk)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo and Pioneer
+# <img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo and Pioneer
 
 *Enhanced controller for Onkyo/Pioneer devices: listen to music properly!*
 
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
-"Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management. Other benefits include:
+*To join the Enhanced Controller for Onkyo iOS beta*, install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
+
+This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
+
+The two most popular features of the app are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
+- The modern Material design supports different color themes, font sizes and works on smartphones and/or tablets in portrait and landscape mode
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - Full tone control (bass, center, treble and subwoofer levels)
-- The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
-- Tuneln Radio and Deezer streaming (if supported by receiver)
-- DAB / FM (if supported by receiver)
-- Multi-zone support (if supported by receiver)
-- Multi-room support: Allows control groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
-- Control of devices attached via RI
 - Enhanced Play Queue support (add, replace, remove, clear, change playback order)
-- Display device details and control device settings such as dimmer level, digital filter, auto power
+- Tuneln Radio and Deezer streaming (if supported by receiver)
+- DAB / FM / AM (if supported by receiver)
+- Multi-zone support (if supported by receiver)
+- Multi-room support: Allows control of groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
+- Control of devices attached via RI
+- Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
 ## Supported devices
@@ -27,6 +31,7 @@ Currently, this app is only tested with following devices:
 - [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html)
 - [ONKYO TX-NR686](https://www.eu.onkyo.com/en/products/tx-nr686-148905.html)
 - [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
+- [ONKYO RN-855](https://www.de.onkyo.com/de/produkte/r-n855-133057.html)
 - [Wireless Audio System NCP-302](https://www.eu.onkyo.com/en/products/ncp-302-137564.html)
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
@@ -34,7 +39,23 @@ Currently, this app is only tested with following devices:
 - [Pioneer VSX-LX303](https://www.pioneerelectronics.com/PUSA/Home/AV-Receivers/Elite+Receivers/VSX-LX303)
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
 
+## Screenshots
+* Playback screen in landscape orientation, Dark theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center">
+
+* Playback screen in portrait orientation, Strong Dark theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ncp_302_playback_vert" align="center" height="800">
+
+* Playback screen and navigation drawer in landscape orientation, 10 Inch iPad, Dark theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/ipad_ns_6130_playback_hor.png" align="center">
+
+* Media screen (network services), Light theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ncp_302_media_top_vert.png" align="center" height="800">
+
+For more screenshots, see directory images/screenshots.
+
 ## Limitations
+Please note that the app does not support the music streaming from your phone to the network player or the receiver.
 Some network services like Spotify, Tidal, AirPlay are currently not yet tested and may not work.
 
 ## Documentation
