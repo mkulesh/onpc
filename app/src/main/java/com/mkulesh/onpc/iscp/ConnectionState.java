@@ -73,17 +73,20 @@ public class ConnectionState extends AppTask
 
     boolean isNetwork()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
+            // getActiveNetwork Added in API level 23
             final Network net = connectivity.getActiveNetwork();
             if (net == null)
             {
                 return false;
             }
+            // getNetworkCapabilities Added in API level 21
             return connectivity.getNetworkCapabilities(net) != null;
         }
         else
         {
+            // getActiveNetworkInfo, Added in API level 1, Deprecated in API level 29
             final NetworkInfo netInfo = connectivity.getActiveNetworkInfo();
             return netInfo != null && netInfo.isConnected();
         }
@@ -91,23 +94,29 @@ public class ConnectionState extends AppTask
 
     boolean isWifi()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
+            // getActiveNetwork Added in API level 23
             final Network net = connectivity.getActiveNetwork();
             if (net == null)
             {
                 return false;
             }
+            // getNetworkCapabilities Added in API level 21
             final NetworkCapabilities cap = connectivity.getNetworkCapabilities(net);
             if (cap == null)
             {
                 return false;
             }
+            // hasTransport Added in API level 21
             return cap.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     || cap.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
         }
         else
         {
+            // If app targets Android 10 or higher, it must have the ACCESS_FINE_LOCATION permission
+            // in order to use getConnectionInfo(), see
+            // https://developer.android.com/about/versions/10/privacy/changes
             return wifi != null &&
                     wifi.isWifiEnabled() &&
                     wifi.getConnectionInfo() != null &&
