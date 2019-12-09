@@ -1,0 +1,2 @@
+• Fixed application crash in Android 5.0 and 5.1
+• Allow subwoofer and center level for TX-NR509

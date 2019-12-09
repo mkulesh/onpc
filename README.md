@@ -14,20 +14,21 @@
 
 *To join the Enhanced Controller for Onkyo iOS beta*, install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
 
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
-"Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management. Other benefits include:
+This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
+
+The two most popular features of the app are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
-- The modern material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
+- The modern Material design supports different color themes, font sizes and works on smartphones and/or tablets in portrait and landscape mode
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - Full tone control (bass, center, treble and subwoofer levels)
+- Enhanced Play Queue support (add, replace, remove, clear, change playback order)
 - Tuneln Radio and Deezer streaming (if supported by receiver)
 - DAB / FM / AM (if supported by receiver)
 - Multi-zone support (if supported by receiver)
-- Multi-room support: Allows control groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
+- Multi-room support: Allows control of groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
 - Control of devices attached via RI
-- Enhanced Play Queue support (add, replace, remove, clear, change playback order)
-- Display device details and control device settings such as dimmer level, digital filter, auto power, sleep timer
+- Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
 ## Supported devices
@@ -60,6 +61,7 @@ Currently, this app is only tested with following devices:
 For more screenshots, see directory images/screenshots.
 
 ## Limitations
+Please note that the app does not support the music streaming from your phone to the network player or the receiver.
 Some network services like Spotify, Tidal, AirPlay are currently not yet tested and may not work.
 
 ## Documentation
