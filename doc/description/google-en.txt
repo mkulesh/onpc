@@ -2,7 +2,7 @@ This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a N
 
 The two most popular features of the app are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
-- The modern Material design supports different color themes, font sizes and works on smartphones and/or tablets in portrait and landscape mode
+- The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - Full tone control (bass, center, treble and subwoofer levels)
