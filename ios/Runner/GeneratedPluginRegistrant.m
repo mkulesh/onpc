@@ -16,14 +16,14 @@
 @import package_info;
 #endif
 
-#if __has_include(<shared_preferences/SharedPreferencesPlugin.h>)
-#import <shared_preferences/SharedPreferencesPlugin.h>
+#if __has_include(<shared_preferences/FLTSharedPreferencesPlugin.h>)
+#import <shared_preferences/FLTSharedPreferencesPlugin.h>
 #else
 @import shared_preferences;
 #endif
 
-#if __has_include(<url_launcher/UrlLauncherPlugin.h>)
-#import <url_launcher/UrlLauncherPlugin.h>
+#if __has_include(<url_launcher/FLTURLLauncherPlugin.h>)
+#import <url_launcher/FLTURLLauncherPlugin.h>
 #else
 @import url_launcher;
 #endif
@@ -34,7 +34,7 @@
   [FluttertoastPlugin registerWithRegistrar:[registry registrarForPlugin:@"FluttertoastPlugin"]];
   [FLTPackageInfoPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
-  [FLTUrlLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTUrlLauncherPlugin"]];
+  [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
 }
 
 @end
