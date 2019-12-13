@@ -445,7 +445,7 @@ class State
 
     String getServiceIcon()
     {
-        String serviceIcon = playbackState.serviceIcon.icon;
+        String serviceIcon = isPlaying? playbackState.serviceIcon.icon : mediaListState.serviceType.icon;
         if (serviceIcon == null)
         {
             serviceIcon = mediaListState.inputType.icon;

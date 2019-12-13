@@ -153,6 +153,12 @@ class MediaListState
             Logging.info(msg, "skipped: input channel " + inputType.toString() + " is not a media list");
             return true;
         }
+        if (isPopupMode)
+        {
+            clearItems();
+            Logging.info(msg, "skipped: it is a POPUP message");
+            return true;
+        }
         try
         {
             clearItems();
@@ -218,6 +224,9 @@ class MediaListState
 
     bool get isMenuMode
     => _uiType != null && _uiType == UIType.MENU;
+
+    bool get isPopupMode
+    => _uiType != null && _uiType == UIType.POPUP;
 
     bool get isQueue
     => serviceType.key == ServiceType.PLAYQUEUE;
