@@ -102,6 +102,7 @@ class MediaListState
         _inputType = msg.getValue;
         if (!_inputType.isMediaList)
         {
+            _serviceType = Services.ServiceTypeEnum.defValue;
             clearItems();
         }
         return changed;
@@ -243,7 +244,7 @@ class MediaListState
 
     bool get isSimpleInput
     => _inputType != null &&
-        (isRadioInput || [InputSelector.TAPE1, InputSelector.TV].contains(_inputType.key));
+        (isRadioInput || [InputSelector.TAPE1, InputSelector.TV, InputSelector.VIDEO4, InputSelector.VIDEO5].contains(_inputType.key));
 
     bool get isUsb
     => _serviceType != null &&

@@ -21,7 +21,9 @@ import "../iscp/messages/AlbumNameMsg.dart";
 import "../iscp/messages/ArtistNameMsg.dart";
 import "../iscp/messages/DisplayModeMsg.dart";
 import "../iscp/messages/FileFormatMsg.dart";
+import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/JacketArtMsg.dart";
+import "../iscp/messages/ListTitleInfoMsg.dart";
 import "../iscp/messages/MenuStatusMsg.dart";
 import "../iscp/messages/MultiroomDeviceInformationMsg.dart";
 import "../iscp/messages/OperationCommandMsg.dart";
@@ -50,6 +52,8 @@ class TrackInfoView extends UpdatableView
         MenuStatusMsg.CODE,
         ReceiverInformationMsg.CODE,
         PresetCommandMsg.CODE,
+        ListTitleInfoMsg.CODE,
+        InputSelectorMsg.CODE,
         MultiroomDeviceInformationMsg.CODE
     ];
 
