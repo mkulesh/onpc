@@ -71,7 +71,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class State
 {
@@ -217,6 +219,11 @@ public class State
     public boolean isPlaybackMode()
     {
         return uiType == ListTitleInfoMsg.UIType.PLAYBACK;
+    }
+
+    private boolean isPopupMode()
+    {
+        return uiType == ListTitleInfoMsg.UIType.POPUP;
     }
 
     public boolean isMenuMode()
@@ -570,6 +577,7 @@ public class State
         final boolean changed = inputType != msg.getInputType();
         inputType = msg.getInputType();
         serviceIcon = ServiceType.UNKNOWN;
+        serviceType = null;
         if (!inputType.isMediaList())
         {
             Logging.info(msg, "New selector is not a media list. Clearing...");
@@ -916,6 +924,12 @@ public class State
                 Logging.info(msg, "skipped: input channel " + inputType.toString() + " is not a media list");
                 return true;
             }
+            if (isPopupMode())
+            {
+                clearItems();
+                Logging.info(msg, "skipped: it is a POPUP message");
+                return true;
+            }
             try
             {
                 Logging.info(msg, "processing XmlListInfoMsg");
@@ -1234,5 +1248,17 @@ public class State
         final boolean changed = multiroomChannel != msg.getChannelType();
         multiroomChannel = msg.getChannelType();
         return changed;
+    }
+
+    @DrawableRes
+    public int getServiceIcon()
+    {
+        @DrawableRes int serviceIcon = isPlaying() ? this.serviceIcon.getImageId() :
+                (this.serviceType != null ? this.serviceType.getImageId() : R.drawable.media_item_unknown);
+        if (serviceIcon == R.drawable.media_item_unknown)
+        {
+            serviceIcon = inputType.getImageId();
+        }
+        return serviceIcon;
     }
 }

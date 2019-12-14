@@ -426,11 +426,7 @@ public class MonitorFragment extends BaseFragment
         // service icon and track
         {
             final TextView track = rootView.findViewById(R.id.tv_track);
-            @DrawableRes int icon = state.serviceIcon.getImageId();
-            if (icon == R.drawable.media_item_unknown)
-            {
-                icon = state.inputType.getImageId();
-            }
+            @DrawableRes int icon = state.getServiceIcon();
             final Drawable bg = Utils.getDrawable(activity, icon);
             Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
             track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);

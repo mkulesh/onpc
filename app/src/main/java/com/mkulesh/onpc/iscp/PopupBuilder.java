@@ -47,6 +47,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
@@ -64,6 +65,9 @@ public class PopupBuilder
     private final String artist;
     private final ButtonListener buttonListener;
 
+    @DrawableRes
+    private final int serviceIcon;
+
     public PopupBuilder(final @NonNull Context context,
                         final @NonNull State state,
                         final @NonNull ButtonListener buttonListener)
@@ -72,6 +76,7 @@ public class PopupBuilder
         this.serviceType = state.serviceType;
         this.artist = state.artist;
         this.buttonListener = buttonListener;
+        this.serviceIcon = state.getServiceIcon();
     }
 
     public AlertDialog build(final CustomPopupMsg pMsg) throws Exception
@@ -94,9 +99,9 @@ public class PopupBuilder
                 .setView(frameView);
 
         // icon
-        if (serviceType != null)
+        if (serviceIcon != R.drawable.media_item_unknown)
         {
-            final Drawable bg = Utils.getDrawable(context, serviceType.getImageId());
+            final Drawable bg = Utils.getDrawable(context, serviceIcon);
             Utils.setDrawableColorAttr(context, bg, android.R.attr.textColorSecondary);
             builder.setIcon(bg);
         }
