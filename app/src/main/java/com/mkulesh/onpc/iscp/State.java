@@ -73,7 +73,6 @@ import java.util.Map;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class State
 {
@@ -576,18 +575,18 @@ public class State
     {
         final boolean changed = inputType != msg.getInputType();
         inputType = msg.getInputType();
-        serviceIcon = ServiceType.UNKNOWN;
-        serviceType = null;
         if (!inputType.isMediaList())
         {
             Logging.info(msg, "New selector is not a media list. Clearing...");
             clearTrackInfo();
+            serviceType = null;
             clearItems();
         }
 
         if (isSimpleInput())
         {
             timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
+            serviceIcon = ServiceType.UNKNOWN;
         }
 
         return changed;
@@ -1061,7 +1060,8 @@ public class State
      */
     public boolean isSimpleInput()
     {
-        return inputType == InputSelectorMsg.InputType.TAPE1 || inputType == InputSelectorMsg.InputType.TV || isRadioInput();
+        return inputType == InputSelectorMsg.InputType.TAPE1 || inputType == InputSelectorMsg.InputType.TV ||
+                inputType == InputSelectorMsg.InputType.VIDEO4 || inputType == InputSelectorMsg.InputType.VIDEO5 ||isRadioInput();
     }
 
     public boolean isUsb()
