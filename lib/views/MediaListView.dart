@@ -105,7 +105,7 @@ class MediaListView extends UpdatableView
         final List<ISCPMessage> items = ms.isNetworkServices ?
             _getSortedNetworkServices(state.playbackState.serviceIcon, ms.mediaItems) : ms.mediaItems;
 
-        final bool isPlayback = items.isEmpty && ms.isPlaybackMode;
+        final bool isPlayback = state.isOn && items.isEmpty && (ms.isPlaybackMode || ms.isSimpleInput);
 
         // Add "Return" button if necessary
         if (state.isOn && !state.mediaListState.isTopLayer() && !configuration.backAsReturn)
@@ -378,13 +378,17 @@ class MediaListView extends UpdatableView
     {
         String title = "";
         final MediaListState ms = state.mediaListState;
-        if (ms.isPlaybackMode || ms.isMenuMode)
-        {
-            title += state.trackState.title;
-        }
-        else if (ms.isSimpleInput)
+        if (ms.isSimpleInput)
         {
             title += ms.inputType.description;
+            if (state.trackState.title.isNotEmpty)
+            {
+                title += ": " + ms.inputType.description;
+            }
+        }
+        else if (ms.isPlaybackMode || ms.isMenuMode)
+        {
+            title += state.trackState.title;
         }
         else if (ms.inputType.isMediaList)
         {
