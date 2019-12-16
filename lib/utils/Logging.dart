@@ -36,6 +36,9 @@ class Logging
     static bool get isVisualLayout
     => false;
 
+    static bool get isDebugBanner
+    => true;
+
     static void info(Object o, String text)
     {
         if (isEnabled)

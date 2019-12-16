@@ -69,6 +69,7 @@ void main() async
     final ViewContext viewContext = ViewContext(configuration, StateManager(configuration.activeZone), StreamController.broadcast());
 
     runApp(MaterialApp(
+        debugShowCheckedModeBanner: Logging.isDebugBanner,
         title: Strings.app_short_name,
         theme: viewContext.getThemeData(),
         home: MusicControllerApp(viewContext),
