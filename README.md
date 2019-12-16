@@ -41,16 +41,16 @@ Currently, this app is only tested with following devices:
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/phone_ns_6130_playback_hor.png" align="center">
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android/phone_ns_6130_playback_hor.png" align="center">
 
 * Playback screen in portrait orientation, Strong Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/phone_ncp_302_playback_vert.png" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android/phone_ncp_302_playback_vert.png" align="center" height="800">
 
-* Playback screen and navigation drawer in landscape orientation, 10 Inch iPad, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/ipad_ns_6130_playback_hor.png" align="center">
+* Playback screen and navigation drawer in landscape orientation, 12 Inch iPad, Strong Dark theme
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/iPad-12.9-inch-3gen/listen.png" align="center">
 
 * Media screen (network services), Light theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/phone_ncp_302_media_top_vert.png" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android/phone_ncp_302_media_top_vert.png" align="center" height="800">
 
 ## Limitations
 Please note that the app does not support the music streaming from your phone to the network player or the receiver.
