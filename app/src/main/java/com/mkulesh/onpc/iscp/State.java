@@ -980,20 +980,38 @@ public class State
         }
         if (serviceType == ServiceType.NET)
         {
-            // Since the names in ListInfoMsg and ReceiverInformationMsg are
-            // not consistent for some services (see https://github.com/mkulesh/onpc/issues/35)
-            // we just clone here networkServices provided by ReceiverInformationMsg
-            // into serviceItems list by any NET ListInfoMsg
             synchronized (serviceItems)
             {
-                serviceItems.clear();
-                for (final String code : networkServices.keySet())
+                // Since the names in ListInfoMsg and ReceiverInformationMsg are
+                // not consistent for some services (see https://github.com/mkulesh/onpc/issues/35)
+                // we just clone here networkServices provided by ReceiverInformationMsg
+                // into serviceItems list by any NET ListInfoMsg (is ReceiverInformationMsg exists)
+                if (!networkServices.isEmpty())
                 {
-                    final ServiceType service =
-                            (ServiceType) ISCPMessage.searchParameter(code, ServiceType.values(), ServiceType.UNKNOWN);
-                    if (service != ServiceType.UNKNOWN)
+                    serviceItems.clear();
+                    for (final String code : networkServices.keySet())
                     {
-                        serviceItems.add(new NetworkServiceMsg(service));
+                        final ServiceType service =
+                                (ServiceType) ISCPMessage.searchParameter(code, ServiceType.values(), ServiceType.UNKNOWN);
+                        if (service != ServiceType.UNKNOWN)
+                        {
+                            serviceItems.add(new NetworkServiceMsg(service));
+                        }
+                    }
+                }
+                else // fallback: parse listData from ListInfoMsg
+                {
+                    for (NetworkServiceMsg i : serviceItems)
+                    {
+                        if (i.getService().getName().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                        {
+                            return false;
+                        }
+                    }
+                    final NetworkServiceMsg nsMsg = new NetworkServiceMsg(msg.getListedData());
+                    if (nsMsg.getService() != ServiceType.UNKNOWN)
+                    {
+                        serviceItems.add(nsMsg);
                     }
                 }
             }

@@ -33,6 +33,12 @@ public class NetworkServiceMsg extends ISCPMessage
         this.service = service;
     }
 
+    public NetworkServiceMsg(@NonNull final String name)
+    {
+        super(0, null);
+        this.service = searchByName(name);
+    }
+
     public NetworkServiceMsg(NetworkServiceMsg other)
     {
         super(other);
@@ -56,6 +62,18 @@ public class NetworkServiceMsg extends ISCPMessage
     {
         final String param = service.getCode() + "0";
         return new EISCPMessage(CODE, param);
+    }
+
+    private ServiceType searchByName(@NonNull final String name)
+    {
+        for (ServiceType t : ServiceType.values())
+        {
+            if (t.getName().toUpperCase().equals(name.toUpperCase()))
+            {
+                return t;
+            }
+        }
+        return ServiceType.UNKNOWN;
     }
 }
 

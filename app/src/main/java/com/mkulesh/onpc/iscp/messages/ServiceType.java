@@ -35,18 +35,18 @@ import androidx.annotation.StringRes;
 public enum ServiceType implements ISCPMessage.StringParameterIf
 {
     UNKNOWN("XX", "", R.string.dashed_string),
-    MUSIC_SERVER("00", "Music Server", R.string.service_music_server, R.drawable.media_item_media_server),
-    FAVORITE("01", "Favorite", R.string.service_favorite, R.drawable.media_item_favorite),
-    VTUNER("02", "vTuner", R.string.service_vtuner),
+    MUSIC_SERVER("00", "DLNA", R.string.service_music_server, R.drawable.media_item_media_server),
+    FAVORITE("01", "My Favorites", R.string.service_favorite, R.drawable.media_item_favorite),
+    VTUNER("02", "vTuner Internet Radio", R.string.service_vtuner),
     SIRIUSXM("03", "SiriusXM", R.string.service_siriusxm),
     PANDORA("04", "Pandora", R.string.service_pandora, R.drawable.media_item_pandora),
     RHAPSODY("05", "Rhapsody", R.string.service_rhapsody),
-    LAST_FM("06", "Last.fm", R.string.service_last),
+    LAST_FM("06", "Last.fm Internet Radio", R.string.service_last),
     NAPSTER("07", "Napster", R.string.service_napster),
     SLACKER("08", "Slacker", R.string.service_slacker),
     MEDIAFLY("09", "Mediafly", R.string.service_mediafly),
     SPOTIFY("0A", "Spotify", R.string.service_spotify, R.drawable.media_item_spotify),
-    AUPEO("0B", "AUPEO!", R.string.service_aupeo),
+    AUPEO("0B", "AUPEO! PERSONAL RADIO", R.string.service_aupeo),
     RADIKO("0C", "Radiko", R.string.service_radiko),
     E_ONKYO("0D", "e-onkyo", R.string.service_e_onkyo),
     TUNEIN_RADIO("0E", "TuneIn", R.string.service_tunein_radio, R.drawable.media_item_tunein),
@@ -98,6 +98,11 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     public String getCode()
     {
         return code;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
     @StringRes
