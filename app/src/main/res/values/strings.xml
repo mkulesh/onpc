@@ -163,6 +163,7 @@
     <string-array name="pref_language_names">
         <item>System language</item>
         <item>English</item>
+        <item>Français</item>
         <item>Русский</item>
         <item>Deutsch</item>
     </string-array>
@@ -172,6 +173,7 @@
     <string-array name="pref_language_codes" translatable="false">
         <item>system</item>
         <item>en</item>
+        <item>fr</item>
         <item>ru</item>
         <item>de</item>
     </string-array>

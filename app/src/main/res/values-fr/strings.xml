@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2019. Mikhail Kulesh
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+  ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+  ~ even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details. You should have received a copy of the GNU General
+  ~ Public License along with this program.
+  -->
+
+<resources>
+
+    <!-- Main view -->
+    <string name="app_name">Contrôleur optimisé pour Onkyo et Pioneer</string>
+    <string name="app_short_name">Music Control</string>
+    <string name="app_description">Contrôleur optimisé pour Onkyo/Pioneer: Ecoutez votre musique correctement!</string>
+    <string name="state_not_connected">Pas de connexion</string>
+    <string name="state_standby">Eteint</string>
+    <string name="action_exit_confirm">Appuyez sur retour pour quitter</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Annuler</string>
+
+    <string name="about_text"><![CDATA[
+    <p>Contrôleur optimisé pour Onkyo/Pioneer: Ecoutez votre musique correctement!</p>
+    <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol".
+Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.</p>
+    <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
+    <h5>Licence</h5>
+    <p>Ce programme est à usage gratuit: vous pouvez le distribuer et/ou le modifier celon les termes de GNU
+       La "General Public License" telle que publiée par le "Free Software Foundation", sous la version 3 de la licence
+       ou (à votre choix) toute version posterieure.</p>
+    <p>Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; sans même
+       la garantie implicite d\'une QUALITE MARCHANDE ou sa FIABILITE POUR UN USAGE QUELCONQUE. Voir
+       GNU General Public License pour plus d\'information. Vous devez avoir reçu une copie de la GNU General
+       Public License avec ce programme.</p>
+    <h5>Used Open Source Libraries</h5>
+    <p>&#8226; <a href="http://materialdesignicons.com">Material Design Icons</a></p>
+    <p>&#8226; <a href="https://www.materialpalette.com">Material Design Palette</a></p>
+    <p>&#8226; <a href="https://github.com/bauerca/drag-sort-listview">DragSortListView</a></p>
+    ]]></string>
+
+    <!-- Navigation drawer -->
+    <string name="drawer_open">Ouvrir le panneau de navigation</string>
+    <string name="drawer_group_zone">Zone</string>
+    <string name="drawer_multiroom">Groupe</string>
+    <string name="drawer_device">Equipement</string>
+    <string name="drawer_device_connect">Conencter</string>
+    <string name="drawer_device_search">Recherche</string>
+    <string name="drawer_device_searching">Recherche d\'équipements compatibles…</string>
+    <string name="drawer_device_application">Application</string>
+    <string name="drawer_app_settings">Paramètres</string>
+    <string name="drawer_about">A propos</string>
+
+    <!-- Connection dialog -->
+    <string name="connect_dialog_address">Adresse IP</string>
+    <string name="connect_dialog_port">Port (optionel)</string>
+
+    <!-- Main menu -->
+    <string name="menu_power_power">marche/arrêt</string>
+    <string name="menu_receiver_information">Information du récépteur</string>
+    <string name="menu_latest_logging">Dernière entrée</string>
+
+    <!-- Tabs -->
+    <string name="title_monitor">Ecoute</string>
+    <string name="title_media">Source</string>
+    <string name="title_device">Device</string>
+    <string name="title_remote_control">RC</string>
+    <string name="title_remote_interface">RI</string>
+
+    <!-- Application settings -->
+    <string name="pref_category_device_options">Options dispositif</string>
+    <string name="pref_category_ri_options">Contrôl interface</string>
+    <string name="pref_category_advanced_options">Avancé</string>
+
+    <string name="pref_volume_title">Boutons volume</string>
+    <string name="pref_volume_summary">Utilise les boutons volume pour modifier le volume de l\'appareil connecté</string>
+    <string name="pref_back_as_return">Bouton retour</string>
+    <string name="pref_back_as_return_summary">Utilise le bouton Retour pour remonter au niveau parent de la liste des médias</string>
+    <string name="pref_advanced_queue">Files d\'attentes avancée</string>
+    <string name="pref_advanced_queue_summary">Experimentale: gestion évoluée des files d\'attentes</string>
+    <string name="pref_keep_playback_mode">Maintenir le mode lécture</string>
+    <string name="pref_keep_playback_mode_summary">Toujours conserver le mode lécture dans l\'onglet SOURCE quand l\'écoute est en cours</string>
+    <string name="pref_exit_confirm">Bouton retour deux fois pour quitter</string>
+    <string name="pref_keep_screen_on">Ecran toujours allumé</string>
+    <string name="pref_developer_mode">Options développeurs</string>
+    <string name="pref_device_selectors">Selection des sources</string>
+    <string name="pref_listening_modes">Modes d\'écoutes</string>
+    <string name="pref_network_services">Sources réseau</string>
+
+    <string name="pref_auto_power">Allumer le dispositif au démarrage de l\'application</string>
+    <string name="pref_friendly_names">Noms personalisés des sources et dispositifs</string>
+    <string name="pref_friendly_names_summary_on">Utilise les noms personalisés émis par le dispositif</string>
+    <string name="pref_friendly_names_summary_off">Utilise les noms génériques</string>
+
+    <!-- Sound Control -->
+    <string name="pref_sound_control">Contrôle du son</string>
+    <string-array name="pref_sound_control_names">
+        <item>Aucun</item>
+        <item>Amplificateur Externe (RI)</item>
+        <item>Dispositif</item>
+        <item>Automatique</item>
+    </string-array>
+
+    <!-- App themes -->
+    <string name="pref_theme">Theme</string>
+    <string-array name="pref_theme_names">
+        <item>Très sombre (Noir et jaune)</item>
+        <item>Sombre (Gris et bleu)</item>
+        <item>Sombre (Gris et orange)</item>
+        <item>Clair (Gris et violet)</item>
+        <item>Clair (Bleu and Orange)</item>
+        <item>Clair (Emeraude et magenta)</item>
+        <item>Clair (Violet et vert)</item>
+    </string-array>
+
+
+    <!-- Application settings: Languages -->
+    <string name="pref_language">Langue</string>
+    <string-array name="pref_language_names">
+        <item>Langue système</item>
+        <item>English</item>
+        <item>Français</item>
+        <item>Русский</item>
+        <item>Deutsch</item>
+    </string-array>
+
+    <!-- Application settings: Text size -->
+    <string name="pref_text_size">Taille texte et boutons</string>
+    <string-array name="pref_text_size_names">
+        <item>Petit</item>
+        <item>Normal</item>
+        <item>Grand</item>
+        <item>Enorme</item>
+    </string-array>
+
+    <!-- Playback tab -->
+    <string name="tv_display_mode">Mode affichage sur le dispositif</string>
+
+    <!-- Amplifier commands (RI interface) -->
+    <string name="amp_cmd_volume_up">Niveau volume haut</string>
+    <string name="amp_cmd_volume_down">Niveau volume bas</string>
+    <string name="amp_cmd_selector_up">Molette de selection haut</string>
+    <string name="amp_cmd_selector_down">Molette de selection bas</string>
+    <string name="amp_cmd_audio_muting_off">Silence désactivé</string>
+    <string name="amp_cmd_audio_muting_on">Silence activé</string>
+    <string name="amp_cmd_audio_muting_toggle">Interrupteur mode silence</string>
+    <string name="amp_cmd_system_on">Ampli Marche</string>
+    <string name="amp_cmd_system_standby">Ampli Arrêt</string>
+    <string name="amp_cmd_system_on_toggle">Ampli marche/arrêt</string>
+
+    <!-- CD player commands (RI interface) -->
+    <string name="cd_cmd_power">CD player marche/arrêt</string>
+    <string name="cd_cmd_track">Morceau suivant</string>
+    <string name="cd_cmd_play">Lecture</string>
+    <string name="cd_cmd_stop">Stop</string>
+    <string name="cd_cmd_pause">Pause</string>
+    <string name="cd_cmd_skip_f">Avance rapide</string>
+    <string name="cd_cmd_skip_r">Retour rapide</string>
+    <string name="cd_cmd_memory">Memoire</string>
+    <string name="cd_cmd_clear">Effacer</string>
+    <string name="cd_cmd_repeat">répéter</string>
+    <string name="cd_cmd_random">Aléatoire</string>
+    <string name="cd_cmd_disp">Affichage</string>
+    <string name="cd_cmd_d_mode">Mode</string>
+    <string name="cd_cmd_ff">Touche FF</string>
+    <string name="cd_cmd_rew">Touche REW</string>
+    <string name="cd_cmd_op_cl">Ouvrir/Fermer</string>
+    <string name="cd_cmd_number_1">Num 1</string>
+    <string name="cd_cmd_number_2">Num 2</string>
+    <string name="cd_cmd_number_3">Num 3</string>
+    <string name="cd_cmd_number_4">Num 4</string>
+    <string name="cd_cmd_number_5">Num 5</string>
+    <string name="cd_cmd_number_6">Num 6</string>
+    <string name="cd_cmd_number_7">Num 7</string>
+    <string name="cd_cmd_number_8">Num 8</string>
+    <string name="cd_cmd_number_9">Num 9</string>
+    <string name="cd_cmd_number_0">Num 0</string>
+    <string name="cd_cmd_number_10">Num 10</string>
+    <string name="cd_cmd_number_greater_10">Num supp. à 10</string>
+    <string name="cd_cmd_disc_f">Disque suivant</string>
+    <string name="cd_cmd_disc_r">Disque précédant</string>
+    <string name="cd_cmd_disc1">Disque 1</string>
+    <string name="cd_cmd_disc2">Disque 2</string>
+    <string name="cd_cmd_disc3">Disque 3</string>
+    <string name="cd_cmd_disc4">Disque 4</string>
+    <string name="cd_cmd_disc5">Disque 5</string>
+    <string name="cd_cmd_disc6">Disque 6</string>
+    
+    <!-- Device audio muting, duplicate some amplifier commands -->
+    <string name="audio_muting_none">N/A</string>
+    <string name="audio_muting_off">Audio silence desactivé</string>
+    <string name="audio_muting_on">Audio silence activé</string>
+    <string name="audio_muting_toggle">Interrupteur silence audio</string>
+
+    <!-- Audio Control Command  -->
+    <string name="audio_control">Règlages Audio</string>
+    <string name="tone_bass">Basses</string>
+    <string name="tone_treble">Aigues</string>
+    <string name="subwoofer_level">Niveau Subwoofer</string>
+    <string name="center_level">Niveau Centre</string>
+    <string name="master_volume">Volume principal</string>
+    <string name="master_volume_up">Niveau volume haut</string>
+    <string name="master_volume_down">Niveau volume bas</string>
+    <string name="master_volume_up1">Augmentation volume d\'1dB</string>
+    <string name="master_volume_down1">Diminution volume d\'1dB</string>
+
+    <!-- Preset Command  -->
+    <string name="preset_command_up">Préselection haut</string>
+    <string name="preset_command_down">Préselection bas</string>
+
+    <!-- Tuning Command  -->
+    <string name="tuning_command_up">Changement fréquence haut</string>
+    <string name="tuning_command_down">Changement fréquence bas</string>
+
+    <!-- Network/USB Operation Command  -->
+    <string name="cmd_description_play">Lécture</string>
+    <string name="cmd_description_stop">Stop</string>
+    <string name="cmd_description_pause">Pause</string>
+    <string name="cmd_description_p_p">Lecture/Pause</string>
+    <string name="cmd_description_trup">Piste haut</string>
+    <string name="cmd_description_trdn">Piste bas</string>
+    <string name="cmd_description_ff">Avancer (maintenir)</string>
+    <string name="cmd_description_rew">Reculer (maintenir)</string>
+    <string name="cmd_description_repeat">Répétition</string>
+    <string name="cmd_description_random">Aléatoire</string>
+    <string name="cmd_description_rep_shf">Répétition/Aléatoire</string>
+    <string name="cmd_description_display">Affichage</string>
+    <string name="cmd_description_album">Album</string>
+    <string name="cmd_description_artist">Artiste</string>
+    <string name="cmd_description_genre">Genre</string>
+    <string name="cmd_description_playlist">Playlist</string>
+    <string name="cmd_description_right">Droite</string>
+    <string name="cmd_description_left">Gauche</string>
+    <string name="cmd_description_up">Haut</string>
+    <string name="cmd_description_down">Bas</string>
+    <string name="cmd_description_select">Selection</string>
+    <string name="cmd_description_key_0">0</string>
+    <string name="cmd_description_key_1">1</string>
+    <string name="cmd_description_key_2">2</string>
+    <string name="cmd_description_key_3">3</string>
+    <string name="cmd_description_key_4">4</string>
+    <string name="cmd_description_key_5">5</string>
+    <string name="cmd_description_key_6">6</string>
+    <string name="cmd_description_key_7">7</string>
+    <string name="cmd_description_key_8">8</string>
+    <string name="cmd_description_key_9">9</string>
+    <string name="cmd_description_delete">Effacer</string>
+    <string name="cmd_description_caps">Maj</string>
+    <string name="cmd_description_location">Lieu</string>
+    <string name="cmd_description_language">Language</string>
+    <string name="cmd_description_setup">Paramètre</string>
+    <string name="cmd_description_return">Retour</string>
+    <string name="cmd_description_chup">Ch haut(Iradio)</string>
+    <string name="cmd_description_chdn">Ch bas(Iradio)</string>
+    <string name="cmd_description_menu">Menu</string>
+    <string name="cmd_description_quick_menu">Menu rapide</string>
+    <string name="cmd_description_top">Haut Menu</string>
+    <string name="cmd_description_mode">Mode(Pour Ipod)</string>
+    <string name="cmd_description_list">Liste/Lecture</string>
+    <string name="cmd_description_memory">Mémoire (Ajout favoris)</string>
+    <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
+    <string name="cmd_description_f2">Negative Feed</string>
+    <string name="cmd_track_menu">Menu des pistes</string>
+
+    <!-- Media list tab -->
+    <string name="medialist_items">Elements</string>
+    <string name="medialist_processing">Traitement…</string>
+    <string name="medialist_playback_mode">Mode de lécture</string>
+    <string name="medialist_no_items">Pas d\'éléments</string>
+
+    <!-- Input selectors -->
+    <string name="input_selector_video1">VCR/DVR</string>
+    <string name="input_selector_video2">CBL/SAT</string>
+    <string name="input_selector_video3">GAME</string>
+    <string name="input_selector_video4">AUX</string>
+    <string name="input_selector_video5">AUX2</string>
+    <string name="input_selector_video6">PC</string>
+    <string name="input_selector_video7">VIDEO 7</string>
+    <string name="input_selector_bd_dvd">BD/DVD</string>
+    <string name="input_selector_strm_box">STRM BOX</string>
+    <string name="input_selector_tv">TV</string>
+    <string name="input_selector_tape1">TAPE</string>
+    <string name="input_selector_tape2">TAPE 2</string>
+    <string name="input_selector_phono">PHONO</string>
+    <string name="input_selector_tv_cd">CD</string>
+    <string name="input_selector_fm">FM</string>
+    <string name="input_selector_am">AM</string>
+    <string name="input_selector_tuner">TUNER</string>
+    <string name="input_selector_music_server">DLNA</string>
+    <string name="input_selector_internet_radio">INTERNET RADIO</string>
+    <string name="input_selector_usb_front">USB(F)</string>
+    <string name="input_selector_usb_rear">USB(R)</string>
+    <string name="input_selector_net">NET</string>
+    <string name="input_selector_usb_toggle">USB TOGGLE</string>
+    <string name="input_selector_airplay">AIRPLAY</string>
+    <string name="input_selector_bluetooth">BLUETOOTH</string>
+    <string name="input_selector_usb_dac_in">USB DAC</string>
+    <string name="input_selector_line">LINE</string>
+    <string name="input_selector_line2">LINE 2</string>
+    <string name="input_selector_optical">OPTICAL</string>
+    <string name="input_selector_coaxial">COAXIAL</string>
+    <string name="input_selector_universal_port">UNIVERSAL PORT</string>
+    <string name="input_selector_multi_ch">MULTI CH</string>
+    <string name="input_selector_xm">XM</string>
+    <string name="input_selector_sirius">SIRIUS</string>
+    <string name="input_selector_dab">DAB</string>
+    <string name="input_selector_hdmi_5">HDMI 5</string>
+    <string name="input_selector_hdmi_6">HDMI 6</string>
+    <string name="input_selector_hdmi_7">HDMI 7</string>
+
+    <!-- Services -->
+    <string name="service_music_server">Music Server (DLNA)</string>
+    <string name="service_favorite">Favorite</string>
+    <string name="service_vtuner">vTuner</string>
+    <string name="service_siriusxm">SiriusXM</string>
+    <string name="service_pandora">Pandora</string>
+    <string name="service_rhapsody">Rhapsody</string>
+    <string name="service_last">Last.fm</string>
+    <string name="service_napster">Napster</string>
+    <string name="service_slacker">Slacker</string>
+    <string name="service_mediafly">Mediafly</string>
+    <string name="service_spotify">Spotify</string>
+    <string name="service_aupeo">AUPEO!</string>
+    <string name="service_radiko">Radiko</string>
+    <string name="service_e_onkyo">e-onkyo</string>
+    <string name="service_tunein_radio">TuneIn Radio</string>
+    <string name="service_mp3tunes">mp3tunes</string>
+    <string name="service_simfy">Simfy</string>
+    <string name="service_home_media">Home Media</string>
+    <string name="service_deezer">Deezer</string>
+    <string name="service_iheartradio">iHeartRadio</string>
+    <string name="service_airplay">AirPlay</string>
+    <string name="service_onkyo_music">Onkyo Music</string>
+    <string name="service_tidal">Tidal</string>
+    <string name="service_amazon_music">Amazon Music</string>
+    <string name="service_playqueue">Play Queue</string>
+    <string name="service_chromecast">Chromecast</string>
+    <string name="service_fireconnect">FireConnect</string>
+    <string name="service_flareconnect">FlareConnect</string>
+    <string name="service_usb_front">USB avant</string>
+    <string name="service_usb_rear">USB arrière</string>
+    <string name="service_internet_radio">Internet Radio</string>
+    <string name="service_play_fi">Play-Fi</string>
+    <string name="service_net">Network</string>
+    <string name="service_bluetooth">Bluetooth</string>
+
+    <string name="playlist_options">File de lécture</string>
+    <string name="playlist_add">Ajouter</string>
+    <string name="playlist_add_and_play">Ajouter et lire</string>
+    <string name="playlist_replace">Remplacer</string>
+    <string name="playlist_replace_and_play">Remplacer et lire</string>
+    <string name="playlist_remove">Supprimer élément</string>
+    <string name="playlist_remove_all">Supprimer tout</string>
+    <string name="playlist_move_from">Déplacer depuis</string>
+    <string name="playlist_move_to">Déplacer vers</string>
+
+    <!-- Device tab -->
+    <string name="device_friendly_name">Nom personnalisé</string>
+    <string name="device_change_friendly_name">Changer le nom personnalisé</string>
+    <string name="device_info">Information Dispositif</string>
+    <string name="device_brand">Marque</string>
+    <string name="device_model">Modèle</string>
+    <string name="device_year">Année</string>
+    <string name="google_cast_version">Google Cast</string>
+    <string name="device_settings">Paramètres</string>
+
+    <!-- Firmware -->
+    <string name="device_firmware">Firmware</string>
+    <string name="device_firmware_none">N/A</string>
+    <string name="device_firmware_actual">Latest version</string>
+    <string name="device_firmware_new_version">Nouvelle version disponible</string>
+    <string name="device_firmware_update_started">Mise à jour en cours, patienter…</string>
+    <string name="device_firmware_update_complete">Mise à jour terminée, merci d\'attendre le redémarrage et connecter de nouveau</string>
+    <string name="device_firmware_net">Lancer la mise à jour en réseau</string>
+
+    <!-- Dimmer Level -->
+    <string name="device_dimmer_level">Niveau éclairage</string>
+    <string name="device_dimmer_level_none">N/A</string>
+    <string name="device_dimmer_level_bright">Lumineux</string>
+    <string name="device_dimmer_level_dim">Doux</string>
+    <string name="device_dimmer_level_dark">Sombre</string>
+    <string name="device_dimmer_level_off">Eteint</string>
+    <string name="device_dimmer_level_toggle">Changer niveau luminosité</string>
+
+    <!-- Digital Filter -->
+    <string name="device_digital_filter">Filtre Digital</string>
+    <string name="device_digital_filter_none">N/A</string>
+    <string name="device_digital_filter_slow">Lent</string>
+    <string name="device_digital_filter_sharp">Précis</string>
+    <string name="device_digital_filter_short">Court</string>
+    <string name="device_digital_filter_toggle">Changer filtre digital</string>
+
+    <!-- Any two-way switch commands -->
+    <string name="device_two_way_switch_none">N/A</string>
+    <string name="device_two_way_switch_off">Arrêt</string>
+    <string name="device_two_way_switch_on">Marche</string>
+    <string name="device_two_way_switch_toggle">Changer</string>
+
+    <!-- Two-way switches -->
+    <string name="device_music_optimizer">Optimiseur audio</string>
+    <string name="device_auto_power">Allumage auto</string>
+    <string name="device_hdmi_cec">HDMI CEC</string>
+    <string name="device_phase_matching_bass">Basses avec adaptation de phase</string>
+    <string name="device_sleep_time">Arrêt automatique</string>
+    <string name="device_sleep_time_minutes">min</string>
+    <string name="device_google_cast_analytics">Google Cast analytics</string>
+
+    <!-- Speaker A Command -->
+    <string name="speaker_a_command_toggle">Selecteur Sortie A</string>
+
+    <!-- Speaker B Command -->
+    <string name="speaker_b_command_toggle">Selecteur Sortie B</string>
+
+    <!-- Speaker A/B three-way switch -->
+    <string name="speaker_ab_command">Sortie A/B</string>
+    <string name="speaker_ab_command_toggle">Changement sortie</string>
+    <string name="speaker_ab_command_ab_off">Toutes éteintes</string>
+    <string name="speaker_ab_command_ab_on">Toutes allumlées</string>
+    <string name="speaker_ab_command_a_only">A seulement</string>
+    <string name="speaker_ab_command_b_only">B seulement</string>
+
+    <!-- Privacy Policy Status -->
+    <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
+    <string name="privacy_policy_google">Agree Google Cast License</string>
+    <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+
+    <!-- Listening Mode Command -->
+    <string name="listening_mode_mode_00">STEREO</string>
+    <string name="listening_mode_mode_01">DIRECT</string>
+    <string name="listening_mode_mode_02">SURROUND</string>
+    <string name="listening_mode_mode_03">FILM</string>
+    <string name="listening_mode_mode_04">THX</string>
+    <string name="listening_mode_mode_05">ACTION</string>
+    <string name="listening_mode_mode_06">MUSICAL</string>
+    <string name="listening_mode_mode_07">MONO MOVIE</string>
+    <string name="listening_mode_mode_08">ORCHESTRA</string>
+    <string name="listening_mode_mode_09">UNPLUGGED</string>
+    <string name="listening_mode_mode_0a">STUDIO-MIX</string>
+    <string name="listening_mode_mode_0b">TV LOGIC</string>
+    <string name="listening_mode_mode_0c">ALL CH STEREO</string>
+    <string name="listening_mode_mode_0d">THEATER-DIMENSIONAL</string>
+    <string name="listening_mode_mode_0e">ENHANCED 7/ENHANCE</string>
+    <string name="listening_mode_mode_0f">MONO</string>
+    <string name="listening_mode_mode_11">PURE AUDIO</string>
+    <string name="listening_mode_mode_12">MULTIPLEX</string>
+    <string name="listening_mode_mode_13">FULL MONO</string>
+    <string name="listening_mode_mode_14">DOLBY VIRTUAL</string>
+    <string name="listening_mode_mode_15">DTS Surround Sensation</string>
+    <string name="listening_mode_mode_16">Audyssey DSX</string>
+    <string name="listening_mode_mode_1f">Whole House Mode</string>
+    <string name="listening_mode_mode_40">5.1ch Surround</string>
+    <string name="listening_mode_mode_41">Dolby EX/DTS ES</string>
+    <string name="listening_mode_mode_42">THX Cinema</string>
+    <string name="listening_mode_mode_43">THX Surround EX</string>
+    <string name="listening_mode_mode_44">THX Music</string>
+    <string name="listening_mode_mode_45">THX Games</string>
+    <string name="listening_mode_mode_50">THX U(2)/S(2)/I/S Cinema/Cinema2</string>
+    <string name="listening_mode_mode_51">THX MusicMode</string>
+    <string name="listening_mode_mode_52">THX Games Mode</string>
+    <string name="listening_mode_mode_80">DOLBY SURROUND</string>
+    <string name="listening_mode_mode_81">PLII/PLIIx Music</string>
+    <string name="listening_mode_mode_82">DTS NEURAL:X</string>
+    <string name="listening_mode_mode_83">Neo:6 Music/Neo:X Music</string>
+    <string name="listening_mode_mode_84">PLII/PLIIx THX Cinema  </string>
+    <string name="listening_mode_mode_85">Neo:6/Neo:X THX Cinema</string>
+    <string name="listening_mode_mode_86">PLII/PLIIx Game</string>
+    <string name="listening_mode_mode_87">Neural Surr*3</string>
+    <string name="listening_mode_mode_88">Neural THX/Neural Surround</string>
+    <string name="listening_mode_mode_89">PLII/PLIIx THX Games</string>
+    <string name="listening_mode_mode_8a">Neo:6/Neo:X THX Games</string>
+    <string name="listening_mode_mode_8b">PLII/PLIIx THX Music </string>
+    <string name="listening_mode_mode_8c">Neo:6/Neo:X THX Music</string>
+    <string name="listening_mode_mode_8d">Neural THX Cinema</string>
+    <string name="listening_mode_mode_8e">Neural THX Music</string>
+    <string name="listening_mode_mode_8f">Neural THX Games</string>
+    <string name="listening_mode_mode_90">PLIIz Height</string>
+    <string name="listening_mode_mode_91">Neo:6 Cinema DTS Surround Sensation</string>
+    <string name="listening_mode_mode_92">Neo:6 Music DTS Surround Sensation</string>
+    <string name="listening_mode_mode_93">Neural Digital Music</string>
+    <string name="listening_mode_mode_94">PLIIz Height + THX Cinema</string>
+    <string name="listening_mode_mode_95">PLIIz Height + THX Music</string>
+    <string name="listening_mode_mode_96">PLIIz Height + THX Games</string>
+    <string name="listening_mode_mode_97">PLIIz Height + THX U2/S2 Cinema</string>
+    <string name="listening_mode_mode_98">PLIIz Height + THX U2/S2 Music</string>
+    <string name="listening_mode_mode_99">PLIIz Height + THX U2/S2 Games</string>
+    <string name="listening_mode_mode_9a">Neo:X Game</string>
+    <string name="listening_mode_mode_a0">PLIIx/PLII Movie + Audyssey DSX</string>
+    <string name="listening_mode_mode_a1">PLIIx/PLII Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a2">PLIIx/PLII Game + Audyssey DSX</string>
+    <string name="listening_mode_mode_a3">Neo:6 Cinema + Audyssey DSX</string>
+    <string name="listening_mode_mode_a4">Neo:6 Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a5">Neural Surround + Audyssey DSX</string>
+    <string name="listening_mode_mode_a6">Neural Digital Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
+    <string name="listening_mode_mode_ff">Auto Surround</string>
+    <string name="listening_mode_up">Changer mode d\'écoute</string>
+
+    <!-- Remote interface (RI) -->
+    <string name="remote_interface">Utilise des dispositifs connectés par Remote Interface (RI)</string>
+    <string name="remote_interface_amp">Amplificateur</string>
+    <string name="remote_interface_cd">CD Player</string>
+    <string name="remote_interface_power">Marche</string>
+    <string name="remote_interface_common">Commun</string>
+    <string name="remote_interface_input">Entrée</string>
+    <string name="remote_interface_volume">Volume</string>
+    <string name="remote_interface_playback">Lecture</string>
+
+    <!-- Multiroom properties -->
+    <string name="cmd_multiroom_group">Grouper/dégrouper dispositifs</string>
+    <string name="cmd_multiroom_channel">Changer le canal</string>
+    <string name="multiroom_group">Grouper</string>
+    <string name="multiroom_master">Maître</string>
+    <string name="multiroom_slave">Esclave</string>
+    <string name="multiroom_none">Pas connecté</string>
+    <string name="multiroom_channel">Canal</string>
+
+    <!-- Errors -->
+    <string name="error_invalid_device_address">Nom ou port du dispositif invalide</string>
+    <string name="error_connection_no_network">Pas de connexion réseau</string>
+    <string name="error_connection_no_wifi">Pas de connexion Wi-Fi. Merci d\'entrer l\'IP et port du dispositif manuellement</string>
+    <string name="error_connection_no_device">Dispositif distant non trouvé</string>
+    <string name="error_connection_no_response">Dispositif distant %s ne répond pas</string>
+
+</resources>

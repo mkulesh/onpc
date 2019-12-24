@@ -124,6 +124,7 @@
     <string-array name="pref_language_names">
         <item>Системный язык</item>
         <item>English</item>
+        <item>Français</item>
         <item>Русский</item>
         <item>Deutsch</item>
     </string-array>
