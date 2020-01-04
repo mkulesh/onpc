@@ -280,6 +280,8 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="input_selector_video5">AUX2</string>
     <string name="input_selector_video6">PC</string>
     <string name="input_selector_video7">VIDEO 7</string>
+    <string name="input_selector_extra1">EXTRA 1</string>
+    <string name="input_selector_extra2">EXTRA 2</string>
     <string name="input_selector_bd_dvd">BD/DVD</string>
     <string name="input_selector_strm_box">STRM BOX</string>
     <string name="input_selector_tv">TV</string>

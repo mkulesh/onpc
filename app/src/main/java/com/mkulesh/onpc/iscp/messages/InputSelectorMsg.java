@@ -42,6 +42,8 @@ public class InputSelectorMsg extends ZonedMessage
         VIDEO5("04", R.string.input_selector_video5, R.drawable.media_item_aux),
         VIDEO6("05", R.string.input_selector_video6),
         VIDEO7("06", R.string.input_selector_video7),
+        EXTRA1("07", R.string.input_selector_extra1),
+        EXTRA2("08", R.string.input_selector_extra2),
         BD_DVD("10", R.string.input_selector_bd_dvd),
         STRM_BOX("11", R.string.input_selector_strm_box),
         TV("12", R.string.input_selector_tv, R.drawable.media_item_tv),
