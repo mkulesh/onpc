@@ -12,7 +12,10 @@
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
-*To join the Enhanced Controller for Onkyo iOS beta*, install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
+*iOS Version*
+- Download on the [App Store](https://apps.apple.com/app/id1490166845)
+- Do you want try the last version in development? Install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
+- The iOS version is developed with Flutter, see [onpc-flutter branch](https://github.com/mkulesh/onpc/tree/onpc-flutter)
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
