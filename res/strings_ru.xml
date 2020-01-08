@@ -128,6 +128,7 @@ Copyright © 2019 by __Михаил Кулеш__
     <string-array name="pref_language_names">
         <item>Системный язык</item>
         <item>English</item>
+        <item>Français</item>
         <item>Русский</item>
         <item>Deutsch</item>
     </string-array>
@@ -284,6 +285,8 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="input_selector_video5">AUX2</string>
     <string name="input_selector_video6">PC</string>
     <string name="input_selector_video7">VIDEO 7</string>
+    <string name="input_selector_extra1">EXTRA 1</string>
+    <string name="input_selector_extra2">EXTRA 2</string>
     <string name="input_selector_bd_dvd">BD/DVD</string>
     <string name="input_selector_strm_box">STRM BOX</string>
     <string name="input_selector_tv">TV</string>

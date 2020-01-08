@@ -9,7 +9,8 @@ class Strings
     static const List<String> app_languages = [
         /*en*/ "en",
         /*ru*/ "ru",
-        /*de*/ "de"];
+        /*de*/ "de",
+        /*fr*/ "fr"];
 
     /* Current language */
 
@@ -22,6 +23,7 @@ class Strings
             case "en": _language = 0; break;
             case "ru": _language = 1; break;
             case "de": _language = 2; break;
+            case "fr": _language = 3; break;
             default: _language = 0; break;
         }
     }
@@ -52,6 +54,7 @@ class Strings
     static const List<String> pref_language_codes = [
         "system",
         "en",
+        "fr",
         "ru",
         "de"];
     static const List<String> pref_text_size_codes = [
@@ -65,49 +68,57 @@ class Strings
     static const List<String> l_app_name = [
         /*en*/ "Enhanced Controller for Onkyo and Pioneer",
         /*ru*/ "Enhanced Controller for Onkyo and Pioneer",
-        /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer"];
+        /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer",
+        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer"];
     static String get app_name => l_app_name[_language];
 
     static const List<String> l_app_short_name = [
         /*en*/ "Music Control",
         /*ru*/ "Music Control",
-        /*de*/ "Musik Kontrolle"];
+        /*de*/ "Musik Kontrolle",
+        /*fr*/ "Music Control"];
     static String get app_short_name => l_app_short_name[_language];
 
     static const List<String> l_app_description = [
         /*en*/ "Enhanced controller for Onkyo/Pioneer devices: listen to music properly!",
         /*ru*/ "Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!",
-        /*de*/ "Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!"];
+        /*de*/ "Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!",
+        /*fr*/ "Contrôleur optimisé pour Onkyo/Pioneer: Ecoutez votre musique correctement!"];
     static String get app_description => l_app_description[_language];
 
     static const List<String> l_state_not_connected = [
         /*en*/ "Not connected",
         /*ru*/ "Отсутствует соединение",
-        /*de*/ "Nicht verbunden"];
+        /*de*/ "Nicht verbunden",
+        /*fr*/ "Pas de connexion"];
     static String get state_not_connected => l_state_not_connected[_language];
 
     static const List<String> l_state_standby = [
         /*en*/ "Standby",
         /*ru*/ "Ожидание",
-        /*de*/ "Schlafmodus"];
+        /*de*/ "Schlafmodus",
+        /*fr*/ "Eteint"];
     static String get state_standby => l_state_standby[_language];
 
     static const List<String> l_action_exit_confirm = [
         /*en*/ "Press back button again to exit",
         /*ru*/ "Для выхода нажмите Назад дважды",
-        /*de*/ "Zum Beenden zurück erneut drücken"];
+        /*de*/ "Zum Beenden zurück erneut drücken",
+        /*fr*/ "Appuyez sur retour pour quitter"];
     static String get action_exit_confirm => l_action_exit_confirm[_language];
 
     static const List<String> l_action_ok = [
         /*en*/ "OK",
         /*ru*/ "OK",
-        /*de*/ "OK"];
+        /*de*/ "OK",
+        /*fr*/ "OK"];
     static String get action_ok => l_action_ok[_language];
 
     static const List<String> l_action_cancel = [
         /*en*/ "Cancel",
         /*ru*/ "Отмена",
-        /*de*/ "Abbrechen"];
+        /*de*/ "Abbrechen",
+        /*fr*/ "Annuler"];
     static String get action_cancel => l_action_cancel[_language];
 
     static const List<String> l_about_text = [
@@ -190,2299 +201,2720 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 * Material Design Icons: [http://materialdesignicons.com](http://materialdesignicons.com)
 * Material Design Palette: [https://www.materialpalette.com](https://www.materialpalette.com)
 * Flutter: [https://flutter.dev](https://flutter.dev)
-* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)"""];
+* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)""",
+        /*fr*/ """
+# Contrôleur optimisé pour Onkyo/Pioneer:
+Ecoutez votre musique correctement!
+
+Copyright © 2018-2019 by __Mikhail Kulesh__
+
+Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol". Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.
+
+## License
+
+Ce programme est à usage gratuit: vous pouvez le distribuer et/ou le modifier celon les termes de GNU La "General Public License" telle que publiée par le "Free Software Foundation", sous la version 3 de la licence ou (à votre choix) toute version posterieure.
+
+Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; sans même la garantie implicite d\'une QUALITE MARCHANDE ou sa FIABILITE POUR UN USAGE QUELCONQUE. Voir GNU General Public License pour plus d\'information. Vous devez avoir reçu une copie de la GNU General Public License avec ce programme.
+
+## Links
+
+Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+## Used Open Source Libraries
+
+* Material Design Icons: [http://materialdesignicons.com](http://materialdesignicons.com)
+* Material Design Palette: [https://www.materialpalette.com](https://www.materialpalette.com)
+* Flutter: [https://flutter.dev](https://flutter.dev)
+* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)
+"""];
     static String get about_text => l_about_text[_language];
 
     static const List<String> l_drawer_open = [
         /*en*/ "Open navigation drawer",
         /*ru*/ "Открыть панель навигатора",
-        /*de*/ "Navigation drawer öffnen"];
+        /*de*/ "Navigation drawer öffnen",
+        /*fr*/ "Ouvrir le panneau de navigation"];
     static String get drawer_open => l_drawer_open[_language];
 
     static const List<String> l_drawer_group_zone = [
         /*en*/ "Zone",
         /*ru*/ "Зона",
-        /*de*/ "Zone"];
+        /*de*/ "Zone",
+        /*fr*/ "Zone"];
     static String get drawer_group_zone => l_drawer_group_zone[_language];
 
     static const List<String> l_drawer_multiroom = [
         /*en*/ "Group",
         /*ru*/ "Группа",
-        /*de*/ "Gruppe"];
+        /*de*/ "Gruppe",
+        /*fr*/ "Groupe"];
     static String get drawer_multiroom => l_drawer_multiroom[_language];
 
     static const List<String> l_drawer_device = [
         /*en*/ "Device",
         /*ru*/ "Устройство",
-        /*de*/ "Gerät"];
+        /*de*/ "Gerät",
+        /*fr*/ "Equipement"];
     static String get drawer_device => l_drawer_device[_language];
 
     static const List<String> l_drawer_device_connect = [
         /*en*/ "Connect",
         /*ru*/ "Соединение",
-        /*de*/ "Verbinden"];
+        /*de*/ "Verbinden",
+        /*fr*/ "Conencter"];
     static String get drawer_device_connect => l_drawer_device_connect[_language];
 
     static const List<String> l_drawer_device_search = [
         /*en*/ "Search",
         /*ru*/ "Поиск",
-        /*de*/ "Suchen"];
+        /*de*/ "Suchen",
+        /*fr*/ "Recherche"];
     static String get drawer_device_search => l_drawer_device_search[_language];
 
     static const List<String> l_drawer_device_searching = [
         /*en*/ "Searching for compatible devices…",
         /*ru*/ "Поиск совестимых устройств…",
-        /*de*/ "Suchen…"];
+        /*de*/ "Suchen…",
+        /*fr*/ "Recherche d\'équipements compatibles…"];
     static String get drawer_device_searching => l_drawer_device_searching[_language];
 
     static const List<String> l_drawer_device_application = [
         /*en*/ "Application",
         /*ru*/ "Приложение",
-        /*de*/ "Anwendung"];
+        /*de*/ "Anwendung",
+        /*fr*/ "Application"];
     static String get drawer_device_application => l_drawer_device_application[_language];
 
     static const List<String> l_drawer_app_settings = [
         /*en*/ "Settings",
         /*ru*/ "Настройки",
-        /*de*/ "Einstellungen"];
+        /*de*/ "Einstellungen",
+        /*fr*/ "Paramètres"];
     static String get drawer_app_settings => l_drawer_app_settings[_language];
 
     static const List<String> l_drawer_about = [
         /*en*/ "About",
         /*ru*/ "О программе",
-        /*de*/ "Über"];
+        /*de*/ "Über",
+        /*fr*/ "A propos"];
     static String get drawer_about => l_drawer_about[_language];
 
     static const List<String> l_connect_dialog_address = [
         /*en*/ "Address",
         /*ru*/ "Адрес",
-        /*de*/ "Adresse"];
+        /*de*/ "Adresse",
+        /*fr*/ "Adresse IP"];
     static String get connect_dialog_address => l_connect_dialog_address[_language];
 
     static const List<String> l_connect_dialog_port = [
         /*en*/ "Port (optional)",
         /*ru*/ "Порт (необязательно)",
-        /*de*/ "Port (optional)"];
+        /*de*/ "Port (optional)",
+        /*fr*/ "Port (optionel)"];
     static String get connect_dialog_port => l_connect_dialog_port[_language];
 
     static const List<String> l_menu_power_power = [
         /*en*/ "On/Standby",
         /*ru*/ "Вкл/выкл",
-        /*de*/ "An/Standby"];
+        /*de*/ "An/Standby",
+        /*fr*/ "marche/arrêt"];
     static String get menu_power_power => l_menu_power_power[_language];
 
     static const List<String> l_menu_receiver_information = [
         /*en*/ "Receiver information",
         /*ru*/ "Информация об устройстве",
-        /*de*/ "Receiver Informationen"];
+        /*de*/ "Receiver Informationen",
+        /*fr*/ "Information du récépteur"];
     static String get menu_receiver_information => l_menu_receiver_information[_language];
 
     static const List<String> l_menu_latest_logging = [
         /*en*/ "Latest logging",
         /*ru*/ "Лог приложения",
-        /*de*/ "Letzte Log"];
+        /*de*/ "Letzte Log",
+        /*fr*/ "Dernière entrée"];
     static String get menu_latest_logging => l_menu_latest_logging[_language];
 
     static const List<String> l_title_monitor = [
         /*en*/ "Listen",
         /*ru*/ "Музыка",
-        /*de*/ "Hören"];
+        /*de*/ "Hören",
+        /*fr*/ "Ecoute"];
     static String get title_monitor => l_title_monitor[_language];
 
     static const List<String> l_title_media = [
         /*en*/ "Media",
         /*ru*/ "Каналы",
-        /*de*/ "Medien"];
+        /*de*/ "Medien",
+        /*fr*/ "Source"];
     static String get title_media => l_title_media[_language];
 
     static const List<String> l_title_device = [
         /*en*/ "Device",
         /*ru*/ "Система",
-        /*de*/ "Gerät"];
+        /*de*/ "Gerät",
+        /*fr*/ "Device"];
     static String get title_device => l_title_device[_language];
 
     static const List<String> l_title_remote_control = [
         /*en*/ "RC",
         /*ru*/ "Пульт",
-        /*de*/ "RC"];
+        /*de*/ "RC",
+        /*fr*/ "RC"];
     static String get title_remote_control => l_title_remote_control[_language];
 
     static const List<String> l_title_remote_interface = [
         /*en*/ "RI",
         /*ru*/ "RI",
-        /*de*/ "RI"];
+        /*de*/ "RI",
+        /*fr*/ "RI"];
     static String get title_remote_interface => l_title_remote_interface[_language];
 
     static const List<String> l_pref_category_device_options = [
         /*en*/ "Device options",
         /*ru*/ "Настройки устройства",
-        /*de*/ "Gerät Optionen"];
+        /*de*/ "Gerät Optionen",
+        /*fr*/ "Options dispositif"];
     static String get pref_category_device_options => l_pref_category_device_options[_language];
 
     static const List<String> l_pref_category_ri_options = [
         /*en*/ "Remote interface",
         /*ru*/ "Удаленный интерфейс (RI)",
-        /*de*/ "Remote interface"];
+        /*de*/ "Remote interface",
+        /*fr*/ "Contrôl interface"];
     static String get pref_category_ri_options => l_pref_category_ri_options[_language];
 
     static const List<String> l_pref_category_advanced_options = [
         /*en*/ "Advanced",
         /*ru*/ "Дополнительно",
-        /*de*/ "Erweitert"];
+        /*de*/ "Erweitert",
+        /*fr*/ "Avancé"];
     static String get pref_category_advanced_options => l_pref_category_advanced_options[_language];
 
     static const List<String> l_pref_volume_title = [
         /*en*/ "Volume keys turning",
         /*ru*/ "Управление громкостью",
-        /*de*/ "Lautstärketasten weiterleiten"];
+        /*de*/ "Lautstärketasten weiterleiten",
+        /*fr*/ "Boutons volume"];
     static String get pref_volume_title => l_pref_volume_title[_language];
 
     static const List<String> l_pref_volume_summary = [
         /*en*/ "Use volume keys to change master volume on remote device",
         /*ru*/ "Используйте кнопки управления громкостью для изменения уровня звука на удаленном устройстве",
-        /*de*/ "Lautstärketasten verwenden um master Lautstärke zu ändern"];
+        /*de*/ "Lautstärketasten verwenden um master Lautstärke zu ändern",
+        /*fr*/ "Utilise les boutons volume pour modifier le volume de l\'appareil connecté"];
     static String get pref_volume_summary => l_pref_volume_summary[_language];
 
     static const List<String> l_pref_back_as_return = [
         /*en*/ "Back button as \"Return\"",
         /*ru*/ "Кнопка возврата как \"Назад\"",
-        /*de*/ "Zurück-Taste in Medien"];
+        /*de*/ "Zurück-Taste in Medien",
+        /*fr*/ "Bouton retour"];
     static String get pref_back_as_return => l_pref_back_as_return[_language];
 
     static const List<String> l_pref_back_as_return_summary = [
         /*en*/ "Use back button to switch to the parent level in the media list",
         /*ru*/ "Использовать кнопку возврата для перехода на предыдущий уровень в медиатеке",
-        /*de*/ "Zurück-Taste verwenden um in Medien übergeordneter Ordner zu wählen"];
+        /*de*/ "Zurück-Taste verwenden um in Medien übergeordneter Ordner zu wählen",
+        /*fr*/ "Utilise le bouton Retour pour remonter au niveau parent de la liste des médias"];
     static String get pref_back_as_return_summary => l_pref_back_as_return_summary[_language];
 
     static const List<String> l_pref_advanced_queue = [
         /*en*/ "Advanced play queue options",
         /*ru*/ "Расширенные возможности Play Queue",
-        /*de*/ "Erweiterte Optionen von Play Queue"];
+        /*de*/ "Erweiterte Optionen von Play Queue",
+        /*fr*/ "Files d\'attentes avancée"];
     static String get pref_advanced_queue => l_pref_advanced_queue[_language];
 
     static const List<String> l_pref_advanced_queue_summary = [
         /*en*/ "Experimental: use advanced play queue features",
         /*ru*/ "Использовать экспериментальные возможности очереди воспроизведения",
-        /*de*/ "Experimentell: fortgeschrittene Funktionen in Play Queue verwenden"];
+        /*de*/ "Experimentell: fortgeschrittene Funktionen in Play Queue verwenden",
+        /*fr*/ "Experimentale: gestion évoluée des files d\'attentes"];
     static String get pref_advanced_queue_summary => l_pref_advanced_queue_summary[_language];
 
     static const List<String> l_pref_keep_playback_mode = [
         /*en*/ "Keep playback mode",
         /*ru*/ "Режим воспроизведения",
-        /*de*/ "Abspielmodus behalten"];
+        /*de*/ "Abspielmodus behalten",
+        /*fr*/ "Maintenir le mode lécture"];
     static String get pref_keep_playback_mode => l_pref_keep_playback_mode[_language];
 
     static const List<String> l_pref_keep_playback_mode_summary = [
         /*en*/ "Always keep playback mode in MEDIA tab while playing",
         /*ru*/ "Во вкладке КАНАЛЫ всегда остваться в режиме воспроизведения.",
-        /*de*/ "Während die Wiedergabe aktiv ist, Abspielmodus in MEDIEN behalten"];
+        /*de*/ "Während die Wiedergabe aktiv ist, Abspielmodus in MEDIEN behalten",
+        /*fr*/ "Toujours conserver le mode lécture dans l\'onglet SOURCE quand l\'écoute est en cours"];
     static String get pref_keep_playback_mode_summary => l_pref_keep_playback_mode_summary[_language];
 
     static const List<String> l_pref_exit_confirm = [
         /*en*/ "Press back button twice for exit",
         /*ru*/ "Для выхода нажмите Назад дважды",
-        /*de*/ "Zweimal zurück zum beenden"];
+        /*de*/ "Zweimal zurück zum beenden",
+        /*fr*/ "Bouton retour deux fois pour quitter"];
     static String get pref_exit_confirm => l_pref_exit_confirm[_language];
 
     static const List<String> l_pref_keep_screen_on = [
         /*en*/ "Keep the screen turned on",
         /*ru*/ "Не гасить экран",
-        /*de*/ "Bildschirm aktiv lassen"];
+        /*de*/ "Bildschirm aktiv lassen",
+        /*fr*/ "Ecran toujours allumé"];
     static String get pref_keep_screen_on => l_pref_keep_screen_on[_language];
 
     static const List<String> l_pref_developer_mode = [
         /*en*/ "Developer options",
         /*ru*/ "Для разработчика",
-        /*de*/ "Entwicklereinstellungen"];
+        /*de*/ "Entwicklereinstellungen",
+        /*fr*/ "Options développeurs"];
     static String get pref_developer_mode => l_pref_developer_mode[_language];
 
     static const List<String> l_pref_device_selectors = [
         /*en*/ "Input selectors",
         /*ru*/ "Входные каналы",
-        /*de*/ "Eingangskanäle"];
+        /*de*/ "Eingangskanäle",
+        /*fr*/ "Selection des sources"];
     static String get pref_device_selectors => l_pref_device_selectors[_language];
 
     static const List<String> l_pref_listening_modes = [
         /*en*/ "Listening modes",
         /*ru*/ "Звуковые профили",
-        /*de*/ "Klangprofile"];
+        /*de*/ "Klangprofile",
+        /*fr*/ "Modes d\'écoutes"];
     static String get pref_listening_modes => l_pref_listening_modes[_language];
 
     static const List<String> l_pref_network_services = [
         /*en*/ "Network services",
         /*ru*/ "Сетевые сервисы",
-        /*de*/ "Netzwerkdienste"];
+        /*de*/ "Netzwerkdienste",
+        /*fr*/ "Sources réseau"];
     static String get pref_network_services => l_pref_network_services[_language];
 
     static const List<String> l_pref_auto_power = [
         /*en*/ "Switch-on remote device on app startup",
         /*ru*/ "Включить удаленное устройство при запуске приложения",
-        /*de*/ "Remote-Gerät beim Start der App einschalten"];
+        /*de*/ "Remote-Gerät beim Start der App einschalten",
+        /*fr*/ "Allumer le dispositif au démarrage de l\'application"];
     static String get pref_auto_power => l_pref_auto_power[_language];
 
     static const List<String> l_pref_friendly_names = [
         /*en*/ "Friendly selector and device names",
         /*ru*/ "Удобные названия каналов и устройства",
-        /*de*/ "Lesbare Kanal- und Gerätenamen"];
+        /*de*/ "Lesbare Kanal- und Gerätenamen",
+        /*fr*/ "Noms personalisés des sources et dispositifs"];
     static String get pref_friendly_names => l_pref_friendly_names[_language];
 
     static const List<String> l_pref_friendly_names_summary_on = [
         /*en*/ "Use friendly names provided by remote device",
         /*ru*/ "Использовать удобные названия, предоставленные удалённым устройством",
-        /*de*/ "Lesbare Namen vom Onkyo-Gerät nutzen"];
+        /*de*/ "Lesbare Namen vom Onkyo-Gerät nutzen",
+        /*fr*/ "Utilise les noms personalisés émis par le dispositif"];
     static String get pref_friendly_names_summary_on => l_pref_friendly_names_summary_on[_language];
 
     static const List<String> l_pref_friendly_names_summary_off = [
         /*en*/ "Use build-in names",
         /*ru*/ "Использовать встроенные названия",
-        /*de*/ "Namen des Protokolls nutzen"];
+        /*de*/ "Namen des Protokolls nutzen",
+        /*fr*/ "Utilise les noms génériques"];
     static String get pref_friendly_names_summary_off => l_pref_friendly_names_summary_off[_language];
 
     static const List<String> l_pref_sound_control = [
         /*en*/ "Sound control",
         /*ru*/ "Управление звуком",
-        /*de*/ "Lautstärkekontrolle"];
+        /*de*/ "Lautstärkekontrolle",
+        /*fr*/ "Contrôle du son"];
     static String get pref_sound_control => l_pref_sound_control[_language];
 
     static const List<String> l_pref_theme = [
         /*en*/ "Theme",
         /*ru*/ "Тема",
-        /*de*/ "Thema"];
+        /*de*/ "Thema",
+        /*fr*/ "Theme"];
     static String get pref_theme => l_pref_theme[_language];
 
     static const List<String> l_pref_language = [
         /*en*/ "App language",
         /*ru*/ "Язык приложения",
-        /*de*/ "App Sprache"];
+        /*de*/ "App Sprache",
+        /*fr*/ "Langue"];
     static String get pref_language => l_pref_language[_language];
 
     static const List<String> l_pref_text_size = [
         /*en*/ "Text and buttons size",
         /*ru*/ "Размер кнопок и текста",
-        /*de*/ "Beschriftungs- und Tastengröße"];
+        /*de*/ "Beschriftungs- und Tastengröße",
+        /*fr*/ "Taille texte et boutons"];
     static String get pref_text_size => l_pref_text_size[_language];
 
     static const List<String> l_tv_display_mode = [
         /*en*/ "Display mode on device",
         /*ru*/ "Режим отображения на дисплее устройства",
-        /*de*/ "Anzeigemodus am Gerät"];
+        /*de*/ "Anzeigemodus am Gerät",
+        /*fr*/ "Mode affichage sur le dispositif"];
     static String get tv_display_mode => l_tv_display_mode[_language];
 
     static const List<String> l_amp_cmd_volume_up = [
         /*en*/ "Volume level up",
         /*ru*/ "Увеличить громкость усилителя",
-        /*de*/ "Lauter"];
+        /*de*/ "Lauter",
+        /*fr*/ "Niveau volume haut"];
     static String get amp_cmd_volume_up => l_amp_cmd_volume_up[_language];
 
     static const List<String> l_amp_cmd_volume_down = [
         /*en*/ "Volume level down",
         /*ru*/ "Понизить громкость усилителя",
-        /*de*/ "Leiser"];
+        /*de*/ "Leiser",
+        /*fr*/ "Niveau volume bas"];
     static String get amp_cmd_volume_down => l_amp_cmd_volume_down[_language];
 
     static const List<String> l_amp_cmd_selector_up = [
         /*en*/ "Selector position wrap-around up",
         /*ru*/ "Выбрать следующий входной канал",
-        /*de*/ "Selector position wrap-around up"];
+        /*de*/ "Selector position wrap-around up",
+        /*fr*/ "Molette de selection haut"];
     static String get amp_cmd_selector_up => l_amp_cmd_selector_up[_language];
 
     static const List<String> l_amp_cmd_selector_down = [
         /*en*/ "Selector position wrap-around down",
         /*ru*/ "Выбрать предыдущий входной канал",
-        /*de*/ "Selector position wrap-around down"];
+        /*de*/ "Selector position wrap-around down",
+        /*fr*/ "Molette de selection bas"];
     static String get amp_cmd_selector_down => l_amp_cmd_selector_down[_language];
 
     static const List<String> l_amp_cmd_audio_muting_off = [
         /*en*/ "Amplifier audio muting off",
         /*ru*/ "Выключить звук усилителя",
-        /*de*/ "Verstärker stumm ausschalten"];
+        /*de*/ "Verstärker stumm ausschalten",
+        /*fr*/ "Silence désactivé"];
     static String get amp_cmd_audio_muting_off => l_amp_cmd_audio_muting_off[_language];
 
     static const List<String> l_amp_cmd_audio_muting_on = [
         /*en*/ "Amplifier audio muting on",
         /*ru*/ "Включить звук усилителя",
-        /*de*/ "Verstärker stummschalten"];
+        /*de*/ "Verstärker stummschalten",
+        /*fr*/ "Silence activé"];
     static String get amp_cmd_audio_muting_on => l_amp_cmd_audio_muting_on[_language];
 
     static const List<String> l_amp_cmd_audio_muting_toggle = [
         /*en*/ "Sets amplifier audio muting wrap-around",
         /*ru*/ "Вкл/выкл звука усилителя",
-        /*de*/ "Verstärker Stummschaltung wechseln"];
+        /*de*/ "Verstärker Stummschaltung wechseln",
+        /*fr*/ "Interrupteur mode silence"];
     static String get amp_cmd_audio_muting_toggle => l_amp_cmd_audio_muting_toggle[_language];
 
     static const List<String> l_amp_cmd_system_on = [
         /*en*/ "Amplifier on",
         /*ru*/ "Усилитель включен",
-        /*de*/ "RI Gerät anschalten"];
+        /*de*/ "RI Gerät anschalten",
+        /*fr*/ "Ampli Marche"];
     static String get amp_cmd_system_on => l_amp_cmd_system_on[_language];
 
     static const List<String> l_amp_cmd_system_standby = [
         /*en*/ "Amplifier standby",
         /*ru*/ "Усилитель выключен",
-        /*de*/ "RI Gerät standby"];
+        /*de*/ "RI Gerät standby",
+        /*fr*/ "Ampli Arrêt"];
     static String get amp_cmd_system_standby => l_amp_cmd_system_standby[_language];
 
     static const List<String> l_amp_cmd_system_on_toggle = [
         /*en*/ "Amplifier on/standby toggle",
         /*ru*/ "Усилитель вкл/выкл",
-        /*de*/ "RI Gerät an/aus wechseln"];
+        /*de*/ "RI Gerät an/aus wechseln",
+        /*fr*/ "Ampli marche/arrêt"];
     static String get amp_cmd_system_on_toggle => l_amp_cmd_system_on_toggle[_language];
 
     static const List<String> l_cd_cmd_power = [
         /*en*/ "CD player on/standby toggle",
         /*ru*/ "CD-проигрыватель вкл/выкл",
-        /*de*/ "CD Spieler an/standby"];
+        /*de*/ "CD Spieler an/standby",
+        /*fr*/ "CD player marche/arrêt"];
     static String get cd_cmd_power => l_cd_cmd_power[_language];
 
     static const List<String> l_cd_cmd_track = [
         /*en*/ "Next track",
         /*ru*/ "Следующий трек",
-        /*de*/ "Nächster Titel"];
+        /*de*/ "Nächster Titel",
+        /*fr*/ "Morceau suivant"];
     static String get cd_cmd_track => l_cd_cmd_track[_language];
 
     static const List<String> l_cd_cmd_play = [
         /*en*/ "Play",
         /*ru*/ "Воспроизведение",
-        /*de*/ "Wiedergabe"];
+        /*de*/ "Wiedergabe",
+        /*fr*/ "Lecture"];
     static String get cd_cmd_play => l_cd_cmd_play[_language];
 
     static const List<String> l_cd_cmd_stop = [
         /*en*/ "Stop",
         /*ru*/ "Стоп",
-        /*de*/ "Stopp"];
+        /*de*/ "Stopp",
+        /*fr*/ "Stop"];
     static String get cd_cmd_stop => l_cd_cmd_stop[_language];
 
     static const List<String> l_cd_cmd_pause = [
         /*en*/ "Pause",
         /*ru*/ "Пауза",
-        /*de*/ "Pause"];
+        /*de*/ "Pause",
+        /*fr*/ "Pause"];
     static String get cd_cmd_pause => l_cd_cmd_pause[_language];
 
     static const List<String> l_cd_cmd_skip_f = [
         /*en*/ "Skip forward",
         /*ru*/ "Пропуск трека вперед",
-        /*de*/ "Vorwärts springen"];
+        /*de*/ "Vorwärts springen",
+        /*fr*/ "Avance rapide"];
     static String get cd_cmd_skip_f => l_cd_cmd_skip_f[_language];
 
     static const List<String> l_cd_cmd_skip_r = [
         /*en*/ "Skip backwards",
         /*ru*/ "Пропуск трека назад",
-        /*de*/ "Zurück springen"];
+        /*de*/ "Zurück springen",
+        /*fr*/ "Retour rapide"];
     static String get cd_cmd_skip_r => l_cd_cmd_skip_r[_language];
 
     static const List<String> l_cd_cmd_memory = [
         /*en*/ "Memory",
         /*ru*/ "Память",
-        /*de*/ "Speicher"];
+        /*de*/ "Speicher",
+        /*fr*/ "Memoire"];
     static String get cd_cmd_memory => l_cd_cmd_memory[_language];
 
     static const List<String> l_cd_cmd_clear = [
         /*en*/ "Clear",
         /*ru*/ "Очистка",
-        /*de*/ "Leeren"];
+        /*de*/ "Leeren",
+        /*fr*/ "Effacer"];
     static String get cd_cmd_clear => l_cd_cmd_clear[_language];
 
     static const List<String> l_cd_cmd_repeat = [
         /*en*/ "Repeat",
         /*ru*/ "Повтор",
-        /*de*/ "Wiederholen"];
+        /*de*/ "Wiederholen",
+        /*fr*/ "répéter"];
     static String get cd_cmd_repeat => l_cd_cmd_repeat[_language];
 
     static const List<String> l_cd_cmd_random = [
         /*en*/ "Random",
         /*ru*/ "Случайно",
-        /*de*/ "Zufall"];
+        /*de*/ "Zufall",
+        /*fr*/ "Aléatoire"];
     static String get cd_cmd_random => l_cd_cmd_random[_language];
 
     static const List<String> l_cd_cmd_disp = [
         /*en*/ "Display",
         /*ru*/ "Режим отображения на дисплее",
-        /*de*/ "Anzeige"];
+        /*de*/ "Anzeige",
+        /*fr*/ "Affichage"];
     static String get cd_cmd_disp => l_cd_cmd_disp[_language];
 
     static const List<String> l_cd_cmd_d_mode = [
         /*en*/ "Disk mode",
         /*ru*/ "Режим диска",
-        /*de*/ "Disk Modus"];
+        /*de*/ "Disk Modus",
+        /*fr*/ "Mode"];
     static String get cd_cmd_d_mode => l_cd_cmd_d_mode[_language];
 
     static const List<String> l_cd_cmd_ff = [
         /*en*/ "FF key",
         /*ru*/ "Перемотка вперед",
-        /*de*/ "FF Taste"];
+        /*de*/ "FF Taste",
+        /*fr*/ "Touche FF"];
     static String get cd_cmd_ff => l_cd_cmd_ff[_language];
 
     static const List<String> l_cd_cmd_rew = [
         /*en*/ "REW key",
         /*ru*/ "Перемотка назад",
-        /*de*/ "REW Taste"];
+        /*de*/ "REW Taste",
+        /*fr*/ "Touche REW"];
     static String get cd_cmd_rew => l_cd_cmd_rew[_language];
 
     static const List<String> l_cd_cmd_op_cl = [
         /*en*/ "Open/Close",
         /*ru*/ "Открыть/закрыть",
-        /*de*/ "Öffnen/schließen"];
+        /*de*/ "Öffnen/schließen",
+        /*fr*/ "Ouvrir/Fermer"];
     static String get cd_cmd_op_cl => l_cd_cmd_op_cl[_language];
 
     static const List<String> l_cd_cmd_number_1 = [
         /*en*/ "Number 1",
         /*ru*/ "Номер 1",
-        /*de*/ "Nummer 1"];
+        /*de*/ "Nummer 1",
+        /*fr*/ "Num 1"];
     static String get cd_cmd_number_1 => l_cd_cmd_number_1[_language];
 
     static const List<String> l_cd_cmd_number_2 = [
         /*en*/ "Number 2",
         /*ru*/ "Номер 2",
-        /*de*/ "Nummer 2"];
+        /*de*/ "Nummer 2",
+        /*fr*/ "Num 2"];
     static String get cd_cmd_number_2 => l_cd_cmd_number_2[_language];
 
     static const List<String> l_cd_cmd_number_3 = [
         /*en*/ "Number 3",
         /*ru*/ "Номер 3",
-        /*de*/ "Nummer 3"];
+        /*de*/ "Nummer 3",
+        /*fr*/ "Num 3"];
     static String get cd_cmd_number_3 => l_cd_cmd_number_3[_language];
 
     static const List<String> l_cd_cmd_number_4 = [
         /*en*/ "Number 4",
         /*ru*/ "Номер 4",
-        /*de*/ "Nummer 4"];
+        /*de*/ "Nummer 4",
+        /*fr*/ "Num 4"];
     static String get cd_cmd_number_4 => l_cd_cmd_number_4[_language];
 
     static const List<String> l_cd_cmd_number_5 = [
         /*en*/ "Number 5",
         /*ru*/ "Номер 5",
-        /*de*/ "Nummer 5"];
+        /*de*/ "Nummer 5",
+        /*fr*/ "Num 5"];
     static String get cd_cmd_number_5 => l_cd_cmd_number_5[_language];
 
     static const List<String> l_cd_cmd_number_6 = [
         /*en*/ "Number 6",
         /*ru*/ "Номер 6",
-        /*de*/ "Nummer 6"];
+        /*de*/ "Nummer 6",
+        /*fr*/ "Num 6"];
     static String get cd_cmd_number_6 => l_cd_cmd_number_6[_language];
 
     static const List<String> l_cd_cmd_number_7 = [
         /*en*/ "Number 7",
         /*ru*/ "Номер 7",
-        /*de*/ "Nummer 7"];
+        /*de*/ "Nummer 7",
+        /*fr*/ "Num 7"];
     static String get cd_cmd_number_7 => l_cd_cmd_number_7[_language];
 
     static const List<String> l_cd_cmd_number_8 = [
         /*en*/ "Number 8",
         /*ru*/ "Номер 8",
-        /*de*/ "Nummer 8"];
+        /*de*/ "Nummer 8",
+        /*fr*/ "Num 8"];
     static String get cd_cmd_number_8 => l_cd_cmd_number_8[_language];
 
     static const List<String> l_cd_cmd_number_9 = [
         /*en*/ "Number 9",
         /*ru*/ "Номер 9",
-        /*de*/ "Nummer 9"];
+        /*de*/ "Nummer 9",
+        /*fr*/ "Num 9"];
     static String get cd_cmd_number_9 => l_cd_cmd_number_9[_language];
 
     static const List<String> l_cd_cmd_number_0 = [
         /*en*/ "Number 0",
         /*ru*/ "Номер 0",
-        /*de*/ "Nummer 0"];
+        /*de*/ "Nummer 0",
+        /*fr*/ "Num 0"];
     static String get cd_cmd_number_0 => l_cd_cmd_number_0[_language];
 
     static const List<String> l_cd_cmd_number_10 = [
         /*en*/ "Number 10",
         /*ru*/ "Номер 10",
-        /*de*/ "Nummer 10"];
+        /*de*/ "Nummer 10",
+        /*fr*/ "Num 10"];
     static String get cd_cmd_number_10 => l_cd_cmd_number_10[_language];
 
     static const List<String> l_cd_cmd_number_greater_10 = [
         /*en*/ "Number greater 10",
         /*ru*/ "Номер больше 10",
-        /*de*/ "Nummer größer 10"];
+        /*de*/ "Nummer größer 10",
+        /*fr*/ "Num supp. à 10"];
     static String get cd_cmd_number_greater_10 => l_cd_cmd_number_greater_10[_language];
 
     static const List<String> l_cd_cmd_disc_f = [
         /*en*/ "Next Disk",
         /*ru*/ "Следующий диск",
-        /*de*/ "Nächste Disk"];
+        /*de*/ "Nächste Disk",
+        /*fr*/ "Disque suivant"];
     static String get cd_cmd_disc_f => l_cd_cmd_disc_f[_language];
 
     static const List<String> l_cd_cmd_disc_r = [
         /*en*/ "Previous disk",
         /*ru*/ "Предыдущий диск",
-        /*de*/ "Vorige Disk"];
+        /*de*/ "Vorige Disk",
+        /*fr*/ "Disque précédant"];
     static String get cd_cmd_disc_r => l_cd_cmd_disc_r[_language];
 
     static const List<String> l_cd_cmd_disc1 = [
         /*en*/ "Disk 1",
         /*ru*/ "Диск 1",
-        /*de*/ "Disk 1"];
+        /*de*/ "Disk 1",
+        /*fr*/ "Disque 1"];
     static String get cd_cmd_disc1 => l_cd_cmd_disc1[_language];
 
     static const List<String> l_cd_cmd_disc2 = [
         /*en*/ "Disk 2",
         /*ru*/ "Диск 2",
-        /*de*/ "Disk 2"];
+        /*de*/ "Disk 2",
+        /*fr*/ "Disque 2"];
     static String get cd_cmd_disc2 => l_cd_cmd_disc2[_language];
 
     static const List<String> l_cd_cmd_disc3 = [
         /*en*/ "Disk 3",
         /*ru*/ "Диск 3",
-        /*de*/ "Disk 3"];
+        /*de*/ "Disk 3",
+        /*fr*/ "Disque 3"];
     static String get cd_cmd_disc3 => l_cd_cmd_disc3[_language];
 
     static const List<String> l_cd_cmd_disc4 = [
         /*en*/ "Disk 4",
         /*ru*/ "Диск 4",
-        /*de*/ "Disk 4"];
+        /*de*/ "Disk 4",
+        /*fr*/ "Disque 4"];
     static String get cd_cmd_disc4 => l_cd_cmd_disc4[_language];
 
     static const List<String> l_cd_cmd_disc5 = [
         /*en*/ "Disk 5",
         /*ru*/ "Диск 5",
-        /*de*/ "Disk 5"];
+        /*de*/ "Disk 5",
+        /*fr*/ "Disque 5"];
     static String get cd_cmd_disc5 => l_cd_cmd_disc5[_language];
 
     static const List<String> l_cd_cmd_disc6 = [
         /*en*/ "Disk 6",
         /*ru*/ "Диск 6",
-        /*de*/ "Disk 6"];
+        /*de*/ "Disk 6",
+        /*fr*/ "Disque 6"];
     static String get cd_cmd_disc6 => l_cd_cmd_disc6[_language];
 
     static const List<String> l_audio_muting_none = [
         /*en*/ "N/A",
         /*ru*/ "Нет",
-        /*de*/ "N/A"];
+        /*de*/ "N/A",
+        /*fr*/ "N/A"];
     static String get audio_muting_none => l_audio_muting_none[_language];
 
     static const List<String> l_audio_muting_off = [
         /*en*/ "Player audio muting off",
         /*ru*/ "Выключить звук устройства",
-        /*de*/ "Ton Stumm aus"];
+        /*de*/ "Ton Stumm aus",
+        /*fr*/ "Audio silence desactivé"];
     static String get audio_muting_off => l_audio_muting_off[_language];
 
     static const List<String> l_audio_muting_on = [
         /*en*/ "Player audio muting on",
         /*ru*/ "Включить звук устройства",
-        /*de*/ "Ton Stumm an"];
+        /*de*/ "Ton Stumm an",
+        /*fr*/ "Audio silence activé"];
     static String get audio_muting_on => l_audio_muting_on[_language];
 
     static const List<String> l_audio_muting_toggle = [
         /*en*/ "Sets player audio muting wrap-around",
         /*ru*/ "Вкл/выкл звука устройства",
-        /*de*/ "Stummschaltung wechseln"];
+        /*de*/ "Stummschaltung wechseln",
+        /*fr*/ "Interrupteur silence audio"];
     static String get audio_muting_toggle => l_audio_muting_toggle[_language];
 
     static const List<String> l_audio_control = [
         /*en*/ "Audio control",
         /*ru*/ "Контроль звука",
-        /*de*/ "Audiosteuerung"];
+        /*de*/ "Audiosteuerung",
+        /*fr*/ "Règlages Audio"];
     static String get audio_control => l_audio_control[_language];
 
     static const List<String> l_tone_bass = [
         /*en*/ "Bass",
         /*ru*/ "Тембр НЧ",
-        /*de*/ "Bass"];
+        /*de*/ "Bass",
+        /*fr*/ "Basses"];
     static String get tone_bass => l_tone_bass[_language];
 
     static const List<String> l_tone_treble = [
         /*en*/ "Treble",
         /*ru*/ "Тембр ВЧ",
-        /*de*/ "Höhen"];
+        /*de*/ "Höhen",
+        /*fr*/ "Aigues"];
     static String get tone_treble => l_tone_treble[_language];
 
     static const List<String> l_subwoofer_level = [
         /*en*/ "Subwoofer level",
         /*ru*/ "Уровень сабвуфера",
-        /*de*/ "Subwoofer-Pegel"];
+        /*de*/ "Subwoofer-Pegel",
+        /*fr*/ "Niveau Subwoofer"];
     static String get subwoofer_level => l_subwoofer_level[_language];
 
     static const List<String> l_center_level = [
         /*en*/ "Center level",
         /*ru*/ "Уровень центра",
-        /*de*/ "Center-Lautstärke"];
+        /*de*/ "Center-Lautstärke",
+        /*fr*/ "Niveau Centre"];
     static String get center_level => l_center_level[_language];
 
     static const List<String> l_master_volume = [
         /*en*/ "Master volume",
         /*ru*/ "Громкость",
-        /*de*/ "Haupt Lautstärke"];
+        /*de*/ "Haupt Lautstärke",
+        /*fr*/ "Volume principal"];
     static String get master_volume => l_master_volume[_language];
 
     static const List<String> l_master_volume_up = [
         /*en*/ "Sets volume level up",
         /*ru*/ "Увеличить громкость",
-        /*de*/ "Lauter"];
+        /*de*/ "Lauter",
+        /*fr*/ "Niveau volume haut"];
     static String get master_volume_up => l_master_volume_up[_language];
 
     static const List<String> l_master_volume_down = [
         /*en*/ "Sets volume level down",
         /*ru*/ "Понизить громкость",
-        /*de*/ "Leiser"];
+        /*de*/ "Leiser",
+        /*fr*/ "Niveau volume bas"];
     static String get master_volume_down => l_master_volume_down[_language];
 
     static const List<String> l_master_volume_up1 = [
         /*en*/ "Sets volume level up 1dB step",
         /*ru*/ "Повысить громкость на 1dB",
-        /*de*/ "1dB lauter"];
+        /*de*/ "1dB lauter",
+        /*fr*/ "Augmentation volume d\'1dB"];
     static String get master_volume_up1 => l_master_volume_up1[_language];
 
     static const List<String> l_master_volume_down1 = [
         /*en*/ "Sets volume level down 1dB step",
         /*ru*/ "Понизить громкость на 1dB",
-        /*de*/ "1dB leiser"];
+        /*de*/ "1dB leiser",
+        /*fr*/ "Diminution volume d\'1dB"];
     static String get master_volume_down1 => l_master_volume_down1[_language];
 
     static const List<String> l_preset_command_up = [
         /*en*/ "Sets preset wrap-around up",
         /*ru*/ "Следующий канал",
-        /*de*/ "Nächster gespeicherter Sender"];
+        /*de*/ "Nächster gespeicherter Sender",
+        /*fr*/ "Préselection haut"];
     static String get preset_command_up => l_preset_command_up[_language];
 
     static const List<String> l_preset_command_down = [
         /*en*/ "Sets preset wrap-around down",
         /*ru*/ "Предыдущий канал",
-        /*de*/ "Voriger gespeicherter Sender"];
+        /*de*/ "Voriger gespeicherter Sender",
+        /*fr*/ "Préselection bas"];
     static String get preset_command_down => l_preset_command_down[_language];
 
     static const List<String> l_tuning_command_up = [
         /*en*/ "Sets tuning frequency wrap-around up",
         /*ru*/ "Повысить частоту приема",
-        /*de*/ "Nächsten Sender suchen"];
+        /*de*/ "Nächsten Sender suchen",
+        /*fr*/ "Changement fréquence haut"];
     static String get tuning_command_up => l_tuning_command_up[_language];
 
     static const List<String> l_tuning_command_down = [
         /*en*/ "Sets tuning frequency wrap-around down",
         /*ru*/ "Понизить частоту приема",
-        /*de*/ "Vorigen Sender suchen"];
+        /*de*/ "Vorigen Sender suchen",
+        /*fr*/ "Changement fréquence bas"];
     static String get tuning_command_down => l_tuning_command_down[_language];
 
     static const List<String> l_cmd_description_play = [
         /*en*/ "Play",
         /*ru*/ "Воспроизведение",
-        /*de*/ "Abspielen"];
+        /*de*/ "Abspielen",
+        /*fr*/ "Lécture"];
     static String get cmd_description_play => l_cmd_description_play[_language];
 
     static const List<String> l_cmd_description_stop = [
         /*en*/ "Stop",
         /*ru*/ "Стоп",
-        /*de*/ "Stopp"];
+        /*de*/ "Stopp",
+        /*fr*/ "Stop"];
     static String get cmd_description_stop => l_cmd_description_stop[_language];
 
     static const List<String> l_cmd_description_pause = [
         /*en*/ "Pause",
         /*ru*/ "Пауза",
-        /*de*/ "Pause"];
+        /*de*/ "Pause",
+        /*fr*/ "Pause"];
     static String get cmd_description_pause => l_cmd_description_pause[_language];
 
     static const List<String> l_cmd_description_p_p = [
         /*en*/ "Play/Pause",
         /*ru*/ "Воспроизведение/Пауза",
-        /*de*/ "Abspielen/Pause"];
+        /*de*/ "Abspielen/Pause",
+        /*fr*/ "Lecture/Pause"];
     static String get cmd_description_p_p => l_cmd_description_p_p[_language];
 
     static const List<String> l_cmd_description_trup = [
         /*en*/ "Track Up",
         /*ru*/ "Следующий трек",
-        /*de*/ "nächster Titel"];
+        /*de*/ "nächster Titel",
+        /*fr*/ "Piste haut"];
     static String get cmd_description_trup => l_cmd_description_trup[_language];
 
     static const List<String> l_cmd_description_trdn = [
         /*en*/ "Track Down",
         /*ru*/ "Предыдущий трек",
-        /*de*/ "voriger Titel"];
+        /*de*/ "voriger Titel",
+        /*fr*/ "Piste bas"];
     static String get cmd_description_trdn => l_cmd_description_trdn[_language];
 
     static const List<String> l_cmd_description_ff = [
         /*en*/ "FF Key(Continuous)",
         /*ru*/ "Перемотка вперед",
-        /*de*/ "FF Taste(fortlaufend)"];
+        /*de*/ "FF Taste(fortlaufend)",
+        /*fr*/ "Avancer (maintenir)"];
     static String get cmd_description_ff => l_cmd_description_ff[_language];
 
     static const List<String> l_cmd_description_rew = [
         /*en*/ "REW Key(Continuous)",
         /*ru*/ "Перемотка назад",
-        /*de*/ "REW Taste(fortlaufend)"];
+        /*de*/ "REW Taste(fortlaufend)",
+        /*fr*/ "Reculer (maintenir)"];
     static String get cmd_description_rew => l_cmd_description_rew[_language];
 
     static const List<String> l_cmd_description_repeat = [
         /*en*/ "Repeat",
         /*ru*/ "Повтор",
-        /*de*/ "Wiederholen"];
+        /*de*/ "Wiederholen",
+        /*fr*/ "Répétition"];
     static String get cmd_description_repeat => l_cmd_description_repeat[_language];
 
     static const List<String> l_cmd_description_random = [
         /*en*/ "Random",
         /*ru*/ "Случайно",
-        /*de*/ "Zufall"];
+        /*de*/ "Zufall",
+        /*fr*/ "Aléatoire"];
     static String get cmd_description_random => l_cmd_description_random[_language];
 
     static const List<String> l_cmd_description_rep_shf = [
         /*en*/ "Repeat/Shuffle",
         /*ru*/ "Повтор/случайно",
-        /*de*/ "Wiederholen/Zufall"];
+        /*de*/ "Wiederholen/Zufall",
+        /*fr*/ "Répétition/Aléatoire"];
     static String get cmd_description_rep_shf => l_cmd_description_rep_shf[_language];
 
     static const List<String> l_cmd_description_display = [
         /*en*/ "Display",
         /*ru*/ "Режим отображения на дисплее устройства",
-        /*de*/ "Anzeige"];
+        /*de*/ "Anzeige",
+        /*fr*/ "Affichage"];
     static String get cmd_description_display => l_cmd_description_display[_language];
 
     static const List<String> l_cmd_description_album = [
         /*en*/ "Album",
         /*ru*/ "Альбом",
-        /*de*/ "Album"];
+        /*de*/ "Album",
+        /*fr*/ "Album"];
     static String get cmd_description_album => l_cmd_description_album[_language];
 
     static const List<String> l_cmd_description_artist = [
         /*en*/ "Artist",
         /*ru*/ "Артист",
-        /*de*/ "Künstler"];
+        /*de*/ "Künstler",
+        /*fr*/ "Artiste"];
     static String get cmd_description_artist => l_cmd_description_artist[_language];
 
     static const List<String> l_cmd_description_genre = [
         /*en*/ "Genre",
         /*ru*/ "Жанр",
-        /*de*/ "Genre"];
+        /*de*/ "Genre",
+        /*fr*/ "Genre"];
     static String get cmd_description_genre => l_cmd_description_genre[_language];
 
     static const List<String> l_cmd_description_playlist = [
         /*en*/ "Playlist",
         /*ru*/ "Список",
-        /*de*/ "Abspielliste"];
+        /*de*/ "Abspielliste",
+        /*fr*/ "Playlist"];
     static String get cmd_description_playlist => l_cmd_description_playlist[_language];
 
     static const List<String> l_cmd_description_right = [
         /*en*/ "Right",
         /*ru*/ "Вправо",
-        /*de*/ "Nächstes"];
+        /*de*/ "Nächstes",
+        /*fr*/ "Droite"];
     static String get cmd_description_right => l_cmd_description_right[_language];
 
     static const List<String> l_cmd_description_left = [
         /*en*/ "Left",
         /*ru*/ "Влево",
-        /*de*/ "Voriges"];
+        /*de*/ "Voriges",
+        /*fr*/ "Gauche"];
     static String get cmd_description_left => l_cmd_description_left[_language];
 
     static const List<String> l_cmd_description_up = [
         /*en*/ "Up",
         /*ru*/ "Вверх",
-        /*de*/ "Hoch"];
+        /*de*/ "Hoch",
+        /*fr*/ "Haut"];
     static String get cmd_description_up => l_cmd_description_up[_language];
 
     static const List<String> l_cmd_description_down = [
         /*en*/ "Down",
         /*ru*/ "Вниз",
-        /*de*/ "Runter"];
+        /*de*/ "Runter",
+        /*fr*/ "Bas"];
     static String get cmd_description_down => l_cmd_description_down[_language];
 
     static const List<String> l_cmd_description_select = [
         /*en*/ "Select",
         /*ru*/ "Выбор",
-        /*de*/ "Auswählen"];
+        /*de*/ "Auswählen",
+        /*fr*/ "Selection"];
     static String get cmd_description_select => l_cmd_description_select[_language];
 
     static const List<String> l_cmd_description_key_0 = [
         /*en*/ "0",
         /*ru*/ "Номер 0",
-        /*de*/ "0"];
+        /*de*/ "0",
+        /*fr*/ "0"];
     static String get cmd_description_key_0 => l_cmd_description_key_0[_language];
 
     static const List<String> l_cmd_description_key_1 = [
         /*en*/ "1",
         /*ru*/ "Номер 1",
-        /*de*/ "1"];
+        /*de*/ "1",
+        /*fr*/ "1"];
     static String get cmd_description_key_1 => l_cmd_description_key_1[_language];
 
     static const List<String> l_cmd_description_key_2 = [
         /*en*/ "2",
         /*ru*/ "Номер 2",
-        /*de*/ "2"];
+        /*de*/ "2",
+        /*fr*/ "2"];
     static String get cmd_description_key_2 => l_cmd_description_key_2[_language];
 
     static const List<String> l_cmd_description_key_3 = [
         /*en*/ "3",
         /*ru*/ "Номер 3",
-        /*de*/ "3"];
+        /*de*/ "3",
+        /*fr*/ "3"];
     static String get cmd_description_key_3 => l_cmd_description_key_3[_language];
 
     static const List<String> l_cmd_description_key_4 = [
         /*en*/ "4",
         /*ru*/ "Номер 4",
-        /*de*/ "4"];
+        /*de*/ "4",
+        /*fr*/ "4"];
     static String get cmd_description_key_4 => l_cmd_description_key_4[_language];
 
     static const List<String> l_cmd_description_key_5 = [
         /*en*/ "5",
         /*ru*/ "Номер 5",
-        /*de*/ "5"];
+        /*de*/ "5",
+        /*fr*/ "5"];
     static String get cmd_description_key_5 => l_cmd_description_key_5[_language];
 
     static const List<String> l_cmd_description_key_6 = [
         /*en*/ "6",
         /*ru*/ "Номер 6",
-        /*de*/ "6"];
+        /*de*/ "6",
+        /*fr*/ "6"];
     static String get cmd_description_key_6 => l_cmd_description_key_6[_language];
 
     static const List<String> l_cmd_description_key_7 = [
         /*en*/ "7",
         /*ru*/ "Номер 7",
-        /*de*/ "7"];
+        /*de*/ "7",
+        /*fr*/ "7"];
     static String get cmd_description_key_7 => l_cmd_description_key_7[_language];
 
     static const List<String> l_cmd_description_key_8 = [
         /*en*/ "8",
         /*ru*/ "Номер 8",
-        /*de*/ "8"];
+        /*de*/ "8",
+        /*fr*/ "8"];
     static String get cmd_description_key_8 => l_cmd_description_key_8[_language];
 
     static const List<String> l_cmd_description_key_9 = [
         /*en*/ "9",
         /*ru*/ "Номер 9",
-        /*de*/ "9"];
+        /*de*/ "9",
+        /*fr*/ "9"];
     static String get cmd_description_key_9 => l_cmd_description_key_9[_language];
 
     static const List<String> l_cmd_description_delete = [
         /*en*/ "Delete",
         /*ru*/ "Удалить",
-        /*de*/ "Entfernen"];
+        /*de*/ "Entfernen",
+        /*fr*/ "Effacer"];
     static String get cmd_description_delete => l_cmd_description_delete[_language];
 
     static const List<String> l_cmd_description_caps = [
         /*en*/ "Caps",
         /*ru*/ "Регистр",
-        /*de*/ "Großbuchstaben"];
+        /*de*/ "Großbuchstaben",
+        /*fr*/ "Maj"];
     static String get cmd_description_caps => l_cmd_description_caps[_language];
 
     static const List<String> l_cmd_description_location = [
         /*en*/ "Location",
         /*ru*/ "Расположение",
-        /*de*/ "Ort"];
+        /*de*/ "Ort",
+        /*fr*/ "Lieu"];
     static String get cmd_description_location => l_cmd_description_location[_language];
 
     static const List<String> l_cmd_description_language = [
         /*en*/ "Language",
         /*ru*/ "Язык",
-        /*de*/ "Sprache"];
+        /*de*/ "Sprache",
+        /*fr*/ "Language"];
     static String get cmd_description_language => l_cmd_description_language[_language];
 
     static const List<String> l_cmd_description_setup = [
         /*en*/ "Setup",
         /*ru*/ "Настройки",
-        /*de*/ "Einrichten"];
+        /*de*/ "Einrichten",
+        /*fr*/ "Paramètre"];
     static String get cmd_description_setup => l_cmd_description_setup[_language];
 
     static const List<String> l_cmd_description_return = [
         /*en*/ "Return",
         /*ru*/ "Назад",
-        /*de*/ "Zurück"];
+        /*de*/ "Zurück",
+        /*fr*/ "Retour"];
     static String get cmd_description_return => l_cmd_description_return[_language];
 
     static const List<String> l_cmd_description_chup = [
         /*en*/ "Ch Up(For Iradio)",
         /*ru*/ "Следующий канал для Iradio",
-        /*de*/ "Voriger Kanal (Iradio)"];
+        /*de*/ "Voriger Kanal (Iradio)",
+        /*fr*/ "Ch haut(Iradio)"];
     static String get cmd_description_chup => l_cmd_description_chup[_language];
 
     static const List<String> l_cmd_description_chdn = [
         /*en*/ "Ch Down(For Iradio)",
         /*ru*/ "Предыдущий канал для Iradio",
-        /*de*/ "Nächster Kanal (Iradio)"];
+        /*de*/ "Nächster Kanal (Iradio)",
+        /*fr*/ "Ch bas(Iradio)"];
     static String get cmd_description_chdn => l_cmd_description_chdn[_language];
 
     static const List<String> l_cmd_description_menu = [
         /*en*/ "Menu",
         /*ru*/ "Меню",
-        /*de*/ "Menü"];
+        /*de*/ "Menü",
+        /*fr*/ "Menu"];
     static String get cmd_description_menu => l_cmd_description_menu[_language];
 
     static const List<String> l_cmd_description_quick_menu = [
         /*en*/ "Quick menu",
         /*ru*/ "Меню",
-        /*de*/ "Schnellmenü"];
+        /*de*/ "Schnellmenü",
+        /*fr*/ "Menu rapide"];
     static String get cmd_description_quick_menu => l_cmd_description_quick_menu[_language];
 
     static const List<String> l_cmd_description_top = [
         /*en*/ "Top Menu",
         /*ru*/ "Наверх",
-        /*de*/ "Hauptmenü"];
+        /*de*/ "Hauptmenü",
+        /*fr*/ "Haut Menu"];
     static String get cmd_description_top => l_cmd_description_top[_language];
 
     static const List<String> l_cmd_description_mode = [
         /*en*/ "Mode(For Ipod)",
         /*ru*/ "Режим Ipod",
-        /*de*/ "Modus (Ipod)"];
+        /*de*/ "Modus (Ipod)",
+        /*fr*/ "Mode(Pour Ipod)"];
     static String get cmd_description_mode => l_cmd_description_mode[_language];
 
     static const List<String> l_cmd_description_list = [
         /*en*/ "List/Playback",
         /*ru*/ "Переключение между списком и режимом воспроизведения",
-        /*de*/ "Liste/Abspielen"];
+        /*de*/ "Liste/Abspielen",
+        /*fr*/ "Liste/Lecture"];
     static String get cmd_description_list => l_cmd_description_list[_language];
 
     static const List<String> l_cmd_description_memory = [
         /*en*/ "Memory(Add Favorite)",
         /*ru*/ "Добавить в избранное",
-        /*de*/ "Speichern(Favorit hinzufügen)"];
+        /*de*/ "Speichern(Favorit hinzufügen)",
+        /*fr*/ "Mémoire (Ajout favoris)"];
     static String get cmd_description_memory => l_cmd_description_memory[_language];
 
     static const List<String> l_cmd_description_f1 = [
         /*en*/ "Positive Feed Or Mark/Unmark",
         /*ru*/ "Нравится",
-        /*de*/ "Positiv markieren/demarkieren"];
+        /*de*/ "Positiv markieren/demarkieren",
+        /*fr*/ "Positive Feed Or Mark/Unmark"];
     static String get cmd_description_f1 => l_cmd_description_f1[_language];
 
     static const List<String> l_cmd_description_f2 = [
         /*en*/ "Negative Feed",
         /*ru*/ "Не нравится",
-        /*de*/ "Negativ markieren"];
+        /*de*/ "Negativ markieren",
+        /*fr*/ "Negative Feed"];
     static String get cmd_description_f2 => l_cmd_description_f2[_language];
 
     static const List<String> l_cmd_track_menu = [
         /*en*/ "Track menu",
         /*ru*/ "Меню трека",
-        /*de*/ "Titel Menü"];
+        /*de*/ "Titel Menü",
+        /*fr*/ "Menu des pistes"];
     static String get cmd_track_menu => l_cmd_track_menu[_language];
 
     static const List<String> l_medialist_items = [
         /*en*/ "items",
         /*ru*/ "элементов",
-        /*de*/ "Elemente"];
+        /*de*/ "Elemente",
+        /*fr*/ "Elements"];
     static String get medialist_items => l_medialist_items[_language];
 
     static const List<String> l_medialist_processing = [
         /*en*/ "Processing…",
         /*ru*/ "Ждите…",
-        /*de*/ "Bearbeite…"];
+        /*de*/ "Bearbeite…",
+        /*fr*/ "Traitement…"];
     static String get medialist_processing => l_medialist_processing[_language];
 
     static const List<String> l_medialist_playback_mode = [
         /*en*/ "Playback mode",
         /*ru*/ "Режим воспроизведения",
-        /*de*/ "Abspielmodus"];
+        /*de*/ "Abspielmodus",
+        /*fr*/ "Mode de lécture"];
     static String get medialist_playback_mode => l_medialist_playback_mode[_language];
 
     static const List<String> l_medialist_no_items = [
         /*en*/ "No items",
         /*ru*/ "Список пуст",
-        /*de*/ "Keine Elemente"];
+        /*de*/ "Keine Elemente",
+        /*fr*/ "Pas d\'éléments"];
     static String get medialist_no_items => l_medialist_no_items[_language];
 
     static const List<String> l_input_selector_video1 = [
         /*en*/ "VCR/DVR",
         /*ru*/ "VCR/DVR",
-        /*de*/ "VCR/DVR"];
+        /*de*/ "VCR/DVR",
+        /*fr*/ "VCR/DVR"];
     static String get input_selector_video1 => l_input_selector_video1[_language];
 
     static const List<String> l_input_selector_video2 = [
         /*en*/ "CBL/SAT",
         /*ru*/ "CBL/SAT",
-        /*de*/ "CBL/SAT"];
+        /*de*/ "CBL/SAT",
+        /*fr*/ "CBL/SAT"];
     static String get input_selector_video2 => l_input_selector_video2[_language];
 
     static const List<String> l_input_selector_video3 = [
         /*en*/ "GAME",
         /*ru*/ "GAME",
-        /*de*/ "GAME"];
+        /*de*/ "GAME",
+        /*fr*/ "GAME"];
     static String get input_selector_video3 => l_input_selector_video3[_language];
 
     static const List<String> l_input_selector_video4 = [
         /*en*/ "AUX",
         /*ru*/ "AUX",
-        /*de*/ "AUX"];
+        /*de*/ "AUX",
+        /*fr*/ "AUX"];
     static String get input_selector_video4 => l_input_selector_video4[_language];
 
     static const List<String> l_input_selector_video5 = [
         /*en*/ "AUX2",
         /*ru*/ "AUX2",
-        /*de*/ "AUX2"];
+        /*de*/ "AUX2",
+        /*fr*/ "AUX2"];
     static String get input_selector_video5 => l_input_selector_video5[_language];
 
     static const List<String> l_input_selector_video6 = [
         /*en*/ "PC",
         /*ru*/ "PC",
-        /*de*/ "PC"];
+        /*de*/ "PC",
+        /*fr*/ "PC"];
     static String get input_selector_video6 => l_input_selector_video6[_language];
 
     static const List<String> l_input_selector_video7 = [
         /*en*/ "VIDEO 7",
         /*ru*/ "VIDEO 7",
-        /*de*/ "VIDEO 7"];
+        /*de*/ "VIDEO 7",
+        /*fr*/ "VIDEO 7"];
     static String get input_selector_video7 => l_input_selector_video7[_language];
+
+    static const List<String> l_input_selector_extra1 = [
+        /*en*/ "EXTRA 1",
+        /*ru*/ "EXTRA 1",
+        /*de*/ "EXTRA 1",
+        /*fr*/ "EXTRA 1"];
+    static String get input_selector_extra1 => l_input_selector_extra1[_language];
+
+    static const List<String> l_input_selector_extra2 = [
+        /*en*/ "EXTRA 2",
+        /*ru*/ "EXTRA 2",
+        /*de*/ "EXTRA 2",
+        /*fr*/ "EXTRA 2"];
+    static String get input_selector_extra2 => l_input_selector_extra2[_language];
 
     static const List<String> l_input_selector_bd_dvd = [
         /*en*/ "BD/DVD",
         /*ru*/ "BD/DVD",
-        /*de*/ "BD/DVD"];
+        /*de*/ "BD/DVD",
+        /*fr*/ "BD/DVD"];
     static String get input_selector_bd_dvd => l_input_selector_bd_dvd[_language];
 
     static const List<String> l_input_selector_strm_box = [
         /*en*/ "STRM BOX",
         /*ru*/ "STRM BOX",
-        /*de*/ "STRM BOX"];
+        /*de*/ "STRM BOX",
+        /*fr*/ "STRM BOX"];
     static String get input_selector_strm_box => l_input_selector_strm_box[_language];
 
     static const List<String> l_input_selector_tv = [
         /*en*/ "TV",
         /*ru*/ "TV",
-        /*de*/ "TV"];
+        /*de*/ "TV",
+        /*fr*/ "TV"];
     static String get input_selector_tv => l_input_selector_tv[_language];
 
     static const List<String> l_input_selector_tape1 = [
         /*en*/ "TAPE",
         /*ru*/ "TAPE",
-        /*de*/ "TAPE"];
+        /*de*/ "TAPE",
+        /*fr*/ "TAPE"];
     static String get input_selector_tape1 => l_input_selector_tape1[_language];
 
     static const List<String> l_input_selector_tape2 = [
         /*en*/ "TAPE 2",
         /*ru*/ "TAPE 2",
-        /*de*/ "TAPE 2"];
+        /*de*/ "TAPE 2",
+        /*fr*/ "TAPE 2"];
     static String get input_selector_tape2 => l_input_selector_tape2[_language];
 
     static const List<String> l_input_selector_phono = [
         /*en*/ "PHONO",
         /*ru*/ "PHONO",
-        /*de*/ "PHONO"];
+        /*de*/ "PHONO",
+        /*fr*/ "PHONO"];
     static String get input_selector_phono => l_input_selector_phono[_language];
 
     static const List<String> l_input_selector_tv_cd = [
         /*en*/ "CD",
         /*ru*/ "CD",
-        /*de*/ "CD"];
+        /*de*/ "CD",
+        /*fr*/ "CD"];
     static String get input_selector_tv_cd => l_input_selector_tv_cd[_language];
 
     static const List<String> l_input_selector_fm = [
         /*en*/ "FM",
         /*ru*/ "FM",
-        /*de*/ "FM"];
+        /*de*/ "FM",
+        /*fr*/ "FM"];
     static String get input_selector_fm => l_input_selector_fm[_language];
 
     static const List<String> l_input_selector_am = [
         /*en*/ "AM",
         /*ru*/ "AM",
-        /*de*/ "AM"];
+        /*de*/ "AM",
+        /*fr*/ "AM"];
     static String get input_selector_am => l_input_selector_am[_language];
 
     static const List<String> l_input_selector_tuner = [
         /*en*/ "TUNER",
         /*ru*/ "TUNER",
-        /*de*/ "TUNER"];
+        /*de*/ "TUNER",
+        /*fr*/ "TUNER"];
     static String get input_selector_tuner => l_input_selector_tuner[_language];
 
     static const List<String> l_input_selector_music_server = [
         /*en*/ "DLNA",
         /*ru*/ "DLNA",
-        /*de*/ "DLNA"];
+        /*de*/ "DLNA",
+        /*fr*/ "DLNA"];
     static String get input_selector_music_server => l_input_selector_music_server[_language];
 
     static const List<String> l_input_selector_internet_radio = [
         /*en*/ "INTERNET RADIO",
         /*ru*/ "INTERNET RADIO",
-        /*de*/ "INTERNET RADIO"];
+        /*de*/ "INTERNET RADIO",
+        /*fr*/ "INTERNET RADIO"];
     static String get input_selector_internet_radio => l_input_selector_internet_radio[_language];
 
     static const List<String> l_input_selector_usb_front = [
         /*en*/ "USB(F)",
         /*ru*/ "USB(F)",
-        /*de*/ "USB(F)"];
+        /*de*/ "USB(F)",
+        /*fr*/ "USB(F)"];
     static String get input_selector_usb_front => l_input_selector_usb_front[_language];
 
     static const List<String> l_input_selector_usb_rear = [
         /*en*/ "USB(R)",
         /*ru*/ "USB(R)",
-        /*de*/ "USB(R)"];
+        /*de*/ "USB(R)",
+        /*fr*/ "USB(R)"];
     static String get input_selector_usb_rear => l_input_selector_usb_rear[_language];
 
     static const List<String> l_input_selector_net = [
         /*en*/ "NET",
         /*ru*/ "NET",
-        /*de*/ "NET"];
+        /*de*/ "NET",
+        /*fr*/ "NET"];
     static String get input_selector_net => l_input_selector_net[_language];
 
     static const List<String> l_input_selector_usb_toggle = [
         /*en*/ "USB TOGGLE",
         /*ru*/ "USB TOGGLE",
-        /*de*/ "USB TOGGLE"];
+        /*de*/ "USB TOGGLE",
+        /*fr*/ "USB TOGGLE"];
     static String get input_selector_usb_toggle => l_input_selector_usb_toggle[_language];
 
     static const List<String> l_input_selector_airplay = [
         /*en*/ "AIRPLAY",
         /*ru*/ "AIRPLAY",
-        /*de*/ "AIRPLAY"];
+        /*de*/ "AIRPLAY",
+        /*fr*/ "AIRPLAY"];
     static String get input_selector_airplay => l_input_selector_airplay[_language];
 
     static const List<String> l_input_selector_bluetooth = [
         /*en*/ "BLUETOOTH",
         /*ru*/ "BLUETOOTH",
-        /*de*/ "BLUETOOTH"];
+        /*de*/ "BLUETOOTH",
+        /*fr*/ "BLUETOOTH"];
     static String get input_selector_bluetooth => l_input_selector_bluetooth[_language];
 
     static const List<String> l_input_selector_usb_dac_in = [
         /*en*/ "USB DAC",
         /*ru*/ "USB DAC",
-        /*de*/ "USB DAC"];
+        /*de*/ "USB DAC",
+        /*fr*/ "USB DAC"];
     static String get input_selector_usb_dac_in => l_input_selector_usb_dac_in[_language];
 
     static const List<String> l_input_selector_line = [
         /*en*/ "LINE",
         /*ru*/ "LINE",
-        /*de*/ "LINE"];
+        /*de*/ "LINE",
+        /*fr*/ "LINE"];
     static String get input_selector_line => l_input_selector_line[_language];
 
     static const List<String> l_input_selector_line2 = [
         /*en*/ "LINE 2",
         /*ru*/ "LINE 2",
-        /*de*/ "LINE 2"];
+        /*de*/ "LINE 2",
+        /*fr*/ "LINE 2"];
     static String get input_selector_line2 => l_input_selector_line2[_language];
 
     static const List<String> l_input_selector_optical = [
         /*en*/ "OPTICAL",
         /*ru*/ "OPTICAL",
-        /*de*/ "OPTICAL"];
+        /*de*/ "OPTICAL",
+        /*fr*/ "OPTICAL"];
     static String get input_selector_optical => l_input_selector_optical[_language];
 
     static const List<String> l_input_selector_coaxial = [
         /*en*/ "COAXIAL",
         /*ru*/ "COAXIAL",
-        /*de*/ "COAXIAL"];
+        /*de*/ "COAXIAL",
+        /*fr*/ "COAXIAL"];
     static String get input_selector_coaxial => l_input_selector_coaxial[_language];
 
     static const List<String> l_input_selector_universal_port = [
         /*en*/ "UNIVERSAL PORT",
         /*ru*/ "UNIVERSAL PORT",
-        /*de*/ "UNIVERSAL PORT"];
+        /*de*/ "UNIVERSAL PORT",
+        /*fr*/ "UNIVERSAL PORT"];
     static String get input_selector_universal_port => l_input_selector_universal_port[_language];
 
     static const List<String> l_input_selector_multi_ch = [
         /*en*/ "MULTI CH",
         /*ru*/ "MULTI CH",
-        /*de*/ "MULTI CH"];
+        /*de*/ "MULTI CH",
+        /*fr*/ "MULTI CH"];
     static String get input_selector_multi_ch => l_input_selector_multi_ch[_language];
 
     static const List<String> l_input_selector_xm = [
         /*en*/ "XM",
         /*ru*/ "XM",
-        /*de*/ "XM"];
+        /*de*/ "XM",
+        /*fr*/ "XM"];
     static String get input_selector_xm => l_input_selector_xm[_language];
 
     static const List<String> l_input_selector_sirius = [
         /*en*/ "SIRIUS",
         /*ru*/ "SIRIUS",
-        /*de*/ "SIRIUS"];
+        /*de*/ "SIRIUS",
+        /*fr*/ "SIRIUS"];
     static String get input_selector_sirius => l_input_selector_sirius[_language];
 
     static const List<String> l_input_selector_dab = [
         /*en*/ "DAB",
         /*ru*/ "DAB",
-        /*de*/ "DAB"];
+        /*de*/ "DAB",
+        /*fr*/ "DAB"];
     static String get input_selector_dab => l_input_selector_dab[_language];
 
     static const List<String> l_input_selector_hdmi_5 = [
         /*en*/ "HDMI 5",
         /*ru*/ "HDMI 5",
-        /*de*/ "HDMI 5"];
+        /*de*/ "HDMI 5",
+        /*fr*/ "HDMI 5"];
     static String get input_selector_hdmi_5 => l_input_selector_hdmi_5[_language];
 
     static const List<String> l_input_selector_hdmi_6 = [
         /*en*/ "HDMI 6",
         /*ru*/ "HDMI 6",
-        /*de*/ "HDMI 6"];
+        /*de*/ "HDMI 6",
+        /*fr*/ "HDMI 6"];
     static String get input_selector_hdmi_6 => l_input_selector_hdmi_6[_language];
 
     static const List<String> l_input_selector_hdmi_7 = [
         /*en*/ "HDMI 7",
         /*ru*/ "HDMI 7",
-        /*de*/ "HDMI 7"];
+        /*de*/ "HDMI 7",
+        /*fr*/ "HDMI 7"];
     static String get input_selector_hdmi_7 => l_input_selector_hdmi_7[_language];
 
     static const List<String> l_service_music_server = [
         /*en*/ "Music Server (DLNA)",
         /*ru*/ "Домашний музыкальный сервер",
-        /*de*/ "Musik Server (DLNA)"];
+        /*de*/ "Musik Server (DLNA)",
+        /*fr*/ "Music Server (DLNA)"];
     static String get service_music_server => l_service_music_server[_language];
 
     static const List<String> l_service_favorite = [
         /*en*/ "Favorite",
         /*ru*/ "Любимые",
-        /*de*/ "Favoriten"];
+        /*de*/ "Favoriten",
+        /*fr*/ "Favorite"];
     static String get service_favorite => l_service_favorite[_language];
 
     static const List<String> l_service_vtuner = [
         /*en*/ "vTuner",
         /*ru*/ "vTuner",
-        /*de*/ "vTuner"];
+        /*de*/ "vTuner",
+        /*fr*/ "vTuner"];
     static String get service_vtuner => l_service_vtuner[_language];
 
     static const List<String> l_service_siriusxm = [
         /*en*/ "SiriusXM",
         /*ru*/ "SiriusXM",
-        /*de*/ "SiriusXM"];
+        /*de*/ "SiriusXM",
+        /*fr*/ "SiriusXM"];
     static String get service_siriusxm => l_service_siriusxm[_language];
 
     static const List<String> l_service_pandora = [
         /*en*/ "Pandora",
         /*ru*/ "Pandora",
-        /*de*/ "Pandora"];
+        /*de*/ "Pandora",
+        /*fr*/ "Pandora"];
     static String get service_pandora => l_service_pandora[_language];
 
     static const List<String> l_service_rhapsody = [
         /*en*/ "Rhapsody",
         /*ru*/ "Rhapsody",
-        /*de*/ "Rhapsody"];
+        /*de*/ "Rhapsody",
+        /*fr*/ "Rhapsody"];
     static String get service_rhapsody => l_service_rhapsody[_language];
 
     static const List<String> l_service_last = [
         /*en*/ "Last.fm",
         /*ru*/ "Last.fm",
-        /*de*/ "Last.fm"];
+        /*de*/ "Last.fm",
+        /*fr*/ "Last.fm"];
     static String get service_last => l_service_last[_language];
 
     static const List<String> l_service_napster = [
         /*en*/ "Napster",
         /*ru*/ "Napster",
-        /*de*/ "Napster"];
+        /*de*/ "Napster",
+        /*fr*/ "Napster"];
     static String get service_napster => l_service_napster[_language];
 
     static const List<String> l_service_slacker = [
         /*en*/ "Slacker",
         /*ru*/ "Slacker",
-        /*de*/ "Slacker"];
+        /*de*/ "Slacker",
+        /*fr*/ "Slacker"];
     static String get service_slacker => l_service_slacker[_language];
 
     static const List<String> l_service_mediafly = [
         /*en*/ "Mediafly",
         /*ru*/ "Mediafly",
-        /*de*/ "Mediafly"];
+        /*de*/ "Mediafly",
+        /*fr*/ "Mediafly"];
     static String get service_mediafly => l_service_mediafly[_language];
 
     static const List<String> l_service_spotify = [
         /*en*/ "Spotify",
         /*ru*/ "Spotify",
-        /*de*/ "Spotify"];
+        /*de*/ "Spotify",
+        /*fr*/ "Spotify"];
     static String get service_spotify => l_service_spotify[_language];
 
     static const List<String> l_service_aupeo = [
         /*en*/ "AUPEO!",
         /*ru*/ "AUPEO!",
-        /*de*/ "AUPEO!"];
+        /*de*/ "AUPEO!",
+        /*fr*/ "AUPEO!"];
     static String get service_aupeo => l_service_aupeo[_language];
 
     static const List<String> l_service_radiko = [
         /*en*/ "Radiko",
         /*ru*/ "Radiko",
-        /*de*/ "Radiko"];
+        /*de*/ "Radiko",
+        /*fr*/ "Radiko"];
     static String get service_radiko => l_service_radiko[_language];
 
     static const List<String> l_service_e_onkyo = [
         /*en*/ "e-onkyo",
         /*ru*/ "e-onkyo",
-        /*de*/ "e-onkyo"];
+        /*de*/ "e-onkyo",
+        /*fr*/ "e-onkyo"];
     static String get service_e_onkyo => l_service_e_onkyo[_language];
 
     static const List<String> l_service_tunein_radio = [
         /*en*/ "TuneIn Radio",
         /*ru*/ "TuneIn Radio",
-        /*de*/ "TuneIn Radio"];
+        /*de*/ "TuneIn Radio",
+        /*fr*/ "TuneIn Radio"];
     static String get service_tunein_radio => l_service_tunein_radio[_language];
 
     static const List<String> l_service_mp3tunes = [
         /*en*/ "mp3tunes",
         /*ru*/ "mp3tunes",
-        /*de*/ "mp3tunes"];
+        /*de*/ "mp3tunes",
+        /*fr*/ "mp3tunes"];
     static String get service_mp3tunes => l_service_mp3tunes[_language];
 
     static const List<String> l_service_simfy = [
         /*en*/ "Simfy",
         /*ru*/ "Simfy",
-        /*de*/ "Simfy"];
+        /*de*/ "Simfy",
+        /*fr*/ "Simfy"];
     static String get service_simfy => l_service_simfy[_language];
 
     static const List<String> l_service_home_media = [
         /*en*/ "Home Media",
         /*ru*/ "Home Media",
-        /*de*/ "Home Media"];
+        /*de*/ "Home Media",
+        /*fr*/ "Home Media"];
     static String get service_home_media => l_service_home_media[_language];
 
     static const List<String> l_service_deezer = [
         /*en*/ "Deezer",
         /*ru*/ "Deezer",
-        /*de*/ "Deezer"];
+        /*de*/ "Deezer",
+        /*fr*/ "Deezer"];
     static String get service_deezer => l_service_deezer[_language];
 
     static const List<String> l_service_iheartradio = [
         /*en*/ "iHeartRadio",
         /*ru*/ "iHeartRadio",
-        /*de*/ "iHeartRadio"];
+        /*de*/ "iHeartRadio",
+        /*fr*/ "iHeartRadio"];
     static String get service_iheartradio => l_service_iheartradio[_language];
 
     static const List<String> l_service_airplay = [
         /*en*/ "AirPlay",
         /*ru*/ "AirPlay",
-        /*de*/ "AirPlay"];
+        /*de*/ "AirPlay",
+        /*fr*/ "AirPlay"];
     static String get service_airplay => l_service_airplay[_language];
 
     static const List<String> l_service_onkyo_music = [
         /*en*/ "Onkyo Music",
         /*ru*/ "Onkyo Music",
-        /*de*/ "Onkyo Music"];
+        /*de*/ "Onkyo Music",
+        /*fr*/ "Onkyo Music"];
     static String get service_onkyo_music => l_service_onkyo_music[_language];
 
     static const List<String> l_service_tidal = [
         /*en*/ "Tidal",
         /*ru*/ "Tidal",
-        /*de*/ "Tidal"];
+        /*de*/ "Tidal",
+        /*fr*/ "Tidal"];
     static String get service_tidal => l_service_tidal[_language];
 
     static const List<String> l_service_amazon_music = [
         /*en*/ "Amazon Music",
         /*ru*/ "Amazon Music",
-        /*de*/ "Amazon Music"];
+        /*de*/ "Amazon Music",
+        /*fr*/ "Amazon Music"];
     static String get service_amazon_music => l_service_amazon_music[_language];
 
     static const List<String> l_service_playqueue = [
         /*en*/ "Play Queue",
         /*ru*/ "Play Queue",
-        /*de*/ "Play Queue"];
+        /*de*/ "Play Queue",
+        /*fr*/ "Play Queue"];
     static String get service_playqueue => l_service_playqueue[_language];
 
     static const List<String> l_service_chromecast = [
         /*en*/ "Chromecast",
         /*ru*/ "Chromecast",
-        /*de*/ "Chromecast"];
+        /*de*/ "Chromecast",
+        /*fr*/ "Chromecast"];
     static String get service_chromecast => l_service_chromecast[_language];
 
     static const List<String> l_service_fireconnect = [
         /*en*/ "FireConnect",
         /*ru*/ "FireConnect",
-        /*de*/ "FireConnect"];
+        /*de*/ "FireConnect",
+        /*fr*/ "FireConnect"];
     static String get service_fireconnect => l_service_fireconnect[_language];
 
     static const List<String> l_service_flareconnect = [
         /*en*/ "FlareConnect",
         /*ru*/ "FlareConnect",
-        /*de*/ "FlareConnect"];
+        /*de*/ "FlareConnect",
+        /*fr*/ "FlareConnect"];
     static String get service_flareconnect => l_service_flareconnect[_language];
 
     static const List<String> l_service_usb_front = [
         /*en*/ "Front USB",
         /*ru*/ "Передний USB",
-        /*de*/ "USB vorne"];
+        /*de*/ "USB vorne",
+        /*fr*/ "USB avant"];
     static String get service_usb_front => l_service_usb_front[_language];
 
     static const List<String> l_service_usb_rear = [
         /*en*/ "Rear USB",
         /*ru*/ "Задний USB",
-        /*de*/ "USB hinten"];
+        /*de*/ "USB hinten",
+        /*fr*/ "USB arrière"];
     static String get service_usb_rear => l_service_usb_rear[_language];
 
     static const List<String> l_service_internet_radio = [
         /*en*/ "Internet Radio",
         /*ru*/ "Internet Radio",
-        /*de*/ "Internet Radio"];
+        /*de*/ "Internet Radio",
+        /*fr*/ "Internet Radio"];
     static String get service_internet_radio => l_service_internet_radio[_language];
 
     static const List<String> l_service_play_fi = [
         /*en*/ "Play-Fi",
         /*ru*/ "Play-Fi",
-        /*de*/ "Play-Fi"];
+        /*de*/ "Play-Fi",
+        /*fr*/ "Play-Fi"];
     static String get service_play_fi => l_service_play_fi[_language];
 
     static const List<String> l_service_net = [
         /*en*/ "Network",
         /*ru*/ "Сеть",
-        /*de*/ "Netzwerk"];
+        /*de*/ "Netzwerk",
+        /*fr*/ "Network"];
     static String get service_net => l_service_net[_language];
 
     static const List<String> l_service_bluetooth = [
         /*en*/ "Bluetooth",
         /*ru*/ "Bluetooth",
-        /*de*/ "Bluetooth"];
+        /*de*/ "Bluetooth",
+        /*fr*/ "Bluetooth"];
     static String get service_bluetooth => l_service_bluetooth[_language];
 
     static const List<String> l_playlist_options = [
         /*en*/ "Play queue",
         /*ru*/ "Очередь воспроизведения",
-        /*de*/ "Abspielliste"];
+        /*de*/ "Abspielliste",
+        /*fr*/ "File de lécture"];
     static String get playlist_options => l_playlist_options[_language];
 
     static const List<String> l_playlist_add = [
         /*en*/ "Add",
         /*ru*/ "Добавить",
-        /*de*/ "Hnzufügen"];
+        /*de*/ "Hnzufügen",
+        /*fr*/ "Ajouter"];
     static String get playlist_add => l_playlist_add[_language];
 
     static const List<String> l_playlist_add_and_play = [
         /*en*/ "Add and play",
         /*ru*/ "Добавить и воспроизвести",
-        /*de*/ "Hinzufügen und abspielen"];
+        /*de*/ "Hinzufügen und abspielen",
+        /*fr*/ "Ajouter et lire"];
     static String get playlist_add_and_play => l_playlist_add_and_play[_language];
 
     static const List<String> l_playlist_replace = [
         /*en*/ "Replace",
         /*ru*/ "Заменить",
-        /*de*/ "Ersetzen"];
+        /*de*/ "Ersetzen",
+        /*fr*/ "Remplacer"];
     static String get playlist_replace => l_playlist_replace[_language];
 
     static const List<String> l_playlist_replace_and_play = [
         /*en*/ "Replace and play",
         /*ru*/ "Заменить и воспроизвести",
-        /*de*/ "Ersetzen und abspielen"];
+        /*de*/ "Ersetzen und abspielen",
+        /*fr*/ "Remplacer et lire"];
     static String get playlist_replace_and_play => l_playlist_replace_and_play[_language];
 
     static const List<String> l_playlist_remove = [
         /*en*/ "Remove item",
         /*ru*/ "Удалить позицию",
-        /*de*/ "Element entfernen"];
+        /*de*/ "Element entfernen",
+        /*fr*/ "Supprimer élément"];
     static String get playlist_remove => l_playlist_remove[_language];
 
     static const List<String> l_playlist_remove_all = [
         /*en*/ "Remove all",
         /*ru*/ "Удалить все",
-        /*de*/ "Alle entfernen"];
+        /*de*/ "Alle entfernen",
+        /*fr*/ "Supprimer tout"];
     static String get playlist_remove_all => l_playlist_remove_all[_language];
 
     static const List<String> l_playlist_move_from = [
         /*en*/ "Move from",
         /*ru*/ "Вырезать",
-        /*de*/ "Verschiebe von"];
+        /*de*/ "Verschiebe von",
+        /*fr*/ "Déplacer depuis"];
     static String get playlist_move_from => l_playlist_move_from[_language];
 
     static const List<String> l_playlist_move_to = [
         /*en*/ "Move to",
         /*ru*/ "Вставить",
-        /*de*/ "Verschiebe nach"];
+        /*de*/ "Verschiebe nach",
+        /*fr*/ "Déplacer vers"];
     static String get playlist_move_to => l_playlist_move_to[_language];
 
     static const List<String> l_device_friendly_name = [
         /*en*/ "Friendly name",
         /*ru*/ "Удобное название",
-        /*de*/ "Gewählter Name"];
+        /*de*/ "Gewählter Name",
+        /*fr*/ "Nom personnalisé"];
     static String get device_friendly_name => l_device_friendly_name[_language];
 
     static const List<String> l_device_change_friendly_name = [
         /*en*/ "Change friendly name",
         /*ru*/ "Изменить удобное название",
-        /*de*/ "Namen bearbeiten"];
+        /*de*/ "Namen bearbeiten",
+        /*fr*/ "Changer le nom personnalisé"];
     static String get device_change_friendly_name => l_device_change_friendly_name[_language];
 
     static const List<String> l_device_info = [
         /*en*/ "Device info",
         /*ru*/ "Информация",
-        /*de*/ "Gerätinformationen"];
+        /*de*/ "Gerätinformationen",
+        /*fr*/ "Information Dispositif"];
     static String get device_info => l_device_info[_language];
 
     static const List<String> l_device_brand = [
         /*en*/ "Brand",
         /*ru*/ "Производитель",
-        /*de*/ "Marke"];
+        /*de*/ "Marke",
+        /*fr*/ "Marque"];
     static String get device_brand => l_device_brand[_language];
 
     static const List<String> l_device_model = [
         /*en*/ "Model",
         /*ru*/ "Модель",
-        /*de*/ "Modell"];
+        /*de*/ "Modell",
+        /*fr*/ "Modèle"];
     static String get device_model => l_device_model[_language];
 
     static const List<String> l_device_year = [
         /*en*/ "Year",
         /*ru*/ "Год",
-        /*de*/ "Jahr"];
+        /*de*/ "Jahr",
+        /*fr*/ "Année"];
     static String get device_year => l_device_year[_language];
 
     static const List<String> l_google_cast_version = [
         /*en*/ "Google Cast",
         /*ru*/ "Google Cast",
-        /*de*/ "Google Cast"];
+        /*de*/ "Google Cast",
+        /*fr*/ "Google Cast"];
     static String get google_cast_version => l_google_cast_version[_language];
 
     static const List<String> l_device_settings = [
         /*en*/ "Settings",
         /*ru*/ "Настройки",
-        /*de*/ "Einstellungen"];
+        /*de*/ "Einstellungen",
+        /*fr*/ "Paramètres"];
     static String get device_settings => l_device_settings[_language];
 
     static const List<String> l_device_firmware = [
         /*en*/ "Firmware",
         /*ru*/ "Прошивка",
-        /*de*/ "Firmware"];
+        /*de*/ "Firmware",
+        /*fr*/ "Firmware"];
     static String get device_firmware => l_device_firmware[_language];
 
     static const List<String> l_device_firmware_none = [
         /*en*/ "N/A",
         /*ru*/ "Неизвестно",
-        /*de*/ "N/A"];
+        /*de*/ "N/A",
+        /*fr*/ "N/A"];
     static String get device_firmware_none => l_device_firmware_none[_language];
 
     static const List<String> l_device_firmware_actual = [
         /*en*/ "Latest version",
         /*ru*/ "Актуальная версия",
-        /*de*/ "Aktuellste Version"];
+        /*de*/ "Aktuellste Version",
+        /*fr*/ "Latest version"];
     static String get device_firmware_actual => l_device_firmware_actual[_language];
 
     static const List<String> l_device_firmware_new_version = [
         /*en*/ "New version exists",
         /*ru*/ "Обнаружена новая версия",
-        /*de*/ "Es gibt eine neue Version"];
+        /*de*/ "Es gibt eine neue Version",
+        /*fr*/ "Nouvelle version disponible"];
     static String get device_firmware_new_version => l_device_firmware_new_version[_language];
 
     static const List<String> l_device_firmware_update_started = [
         /*en*/ "Update started, please wait",
         /*ru*/ "Обновление началось, ждите",
-        /*de*/ "Update gestartet, bitte warten"];
+        /*de*/ "Update gestartet, bitte warten",
+        /*fr*/ "Mise à jour en cours, patienter…"];
     static String get device_firmware_update_started => l_device_firmware_update_started[_language];
 
     static const List<String> l_device_firmware_update_complete = [
         /*en*/ "Update completed, please wait until device is rebooted and reconnect it",
         /*ru*/ "Обновление завершено",
-        /*de*/ "Update abgeschlossen"];
+        /*de*/ "Update abgeschlossen",
+        /*fr*/ "Mise à jour terminée, merci d\'attendre le redémarrage et connecter de nouveau"];
     static String get device_firmware_update_complete => l_device_firmware_update_complete[_language];
 
     static const List<String> l_device_firmware_net = [
         /*en*/ "Start device update via network",
         /*ru*/ "Обновить устройство по сети",
-        /*de*/ "Update über Netzwerk starten"];
+        /*de*/ "Update über Netzwerk starten",
+        /*fr*/ "Lancer la mise à jour en réseau"];
     static String get device_firmware_net => l_device_firmware_net[_language];
 
     static const List<String> l_device_dimmer_level = [
         /*en*/ "Dimmer level",
         /*ru*/ "Яркость дисплея",
-        /*de*/ "Anzeigehelligkeit"];
+        /*de*/ "Anzeigehelligkeit",
+        /*fr*/ "Niveau éclairage"];
     static String get device_dimmer_level => l_device_dimmer_level[_language];
 
     static const List<String> l_device_dimmer_level_none = [
         /*en*/ "N/A",
         /*ru*/ "Пусто",
-        /*de*/ "N/A"];
+        /*de*/ "N/A",
+        /*fr*/ "N/A"];
     static String get device_dimmer_level_none => l_device_dimmer_level_none[_language];
 
     static const List<String> l_device_dimmer_level_bright = [
         /*en*/ "Bright",
         /*ru*/ "Ярко",
-        /*de*/ "Hell"];
+        /*de*/ "Hell",
+        /*fr*/ "Lumineux"];
     static String get device_dimmer_level_bright => l_device_dimmer_level_bright[_language];
 
     static const List<String> l_device_dimmer_level_dim = [
         /*en*/ "Dim",
         /*ru*/ "Неярко",
-        /*de*/ "Mittel"];
+        /*de*/ "Mittel",
+        /*fr*/ "Doux"];
     static String get device_dimmer_level_dim => l_device_dimmer_level_dim[_language];
 
     static const List<String> l_device_dimmer_level_dark = [
         /*en*/ "Dark",
         /*ru*/ "Тускло",
-        /*de*/ "Dunkel"];
+        /*de*/ "Dunkel",
+        /*fr*/ "Sombre"];
     static String get device_dimmer_level_dark => l_device_dimmer_level_dark[_language];
 
     static const List<String> l_device_dimmer_level_off = [
         /*en*/ "Off",
         /*ru*/ "Выключено",
-        /*de*/ "Aus"];
+        /*de*/ "Aus",
+        /*fr*/ "Eteint"];
     static String get device_dimmer_level_off => l_device_dimmer_level_off[_language];
 
     static const List<String> l_device_dimmer_level_toggle = [
         /*en*/ "Sets dimmer level wrap-around",
         /*ru*/ "Изменить яркость дисплея",
-        /*de*/ "Helligkeitseinstellung wechseln"];
+        /*de*/ "Helligkeitseinstellung wechseln",
+        /*fr*/ "Changer niveau luminosité"];
     static String get device_dimmer_level_toggle => l_device_dimmer_level_toggle[_language];
 
     static const List<String> l_device_digital_filter = [
         /*en*/ "Digital filter",
         /*ru*/ "Цифровой фильтр",
-        /*de*/ "Digitalfilter"];
+        /*de*/ "Digitalfilter",
+        /*fr*/ "Filtre Digital"];
     static String get device_digital_filter => l_device_digital_filter[_language];
 
     static const List<String> l_device_digital_filter_none = [
         /*en*/ "N/A",
         /*ru*/ "Нет",
-        /*de*/ "N/A"];
+        /*de*/ "N/A",
+        /*fr*/ "N/A"];
     static String get device_digital_filter_none => l_device_digital_filter_none[_language];
 
     static const List<String> l_device_digital_filter_slow = [
         /*en*/ "Slow",
         /*ru*/ "Slow",
-        /*de*/ "Langsam"];
+        /*de*/ "Langsam",
+        /*fr*/ "Lent"];
     static String get device_digital_filter_slow => l_device_digital_filter_slow[_language];
 
     static const List<String> l_device_digital_filter_sharp = [
         /*en*/ "Sharp",
         /*ru*/ "Sharp",
-        /*de*/ "Klar"];
+        /*de*/ "Klar",
+        /*fr*/ "Précis"];
     static String get device_digital_filter_sharp => l_device_digital_filter_sharp[_language];
 
     static const List<String> l_device_digital_filter_short = [
         /*en*/ "Short",
         /*ru*/ "Short",
-        /*de*/ "Kurz"];
+        /*de*/ "Kurz",
+        /*fr*/ "Court"];
     static String get device_digital_filter_short => l_device_digital_filter_short[_language];
 
     static const List<String> l_device_digital_filter_toggle = [
         /*en*/ "Sets digital filter wrap-around",
         /*ru*/ "Изменить цифровой фильтр",
-        /*de*/ "Digitalfilter wechseln"];
+        /*de*/ "Digitalfilter wechseln",
+        /*fr*/ "Changer filtre digital"];
     static String get device_digital_filter_toggle => l_device_digital_filter_toggle[_language];
 
     static const List<String> l_device_two_way_switch_none = [
         /*en*/ "N/A",
         /*ru*/ "Нет",
-        /*de*/ "N/A"];
+        /*de*/ "N/A",
+        /*fr*/ "N/A"];
     static String get device_two_way_switch_none => l_device_two_way_switch_none[_language];
 
     static const List<String> l_device_two_way_switch_off = [
         /*en*/ "Off",
         /*ru*/ "Выкл",
-        /*de*/ "Aus"];
+        /*de*/ "Aus",
+        /*fr*/ "Arrêt"];
     static String get device_two_way_switch_off => l_device_two_way_switch_off[_language];
 
     static const List<String> l_device_two_way_switch_on = [
         /*en*/ "On",
         /*ru*/ "Вкл",
-        /*de*/ "An"];
+        /*de*/ "An",
+        /*fr*/ "Marche"];
     static String get device_two_way_switch_on => l_device_two_way_switch_on[_language];
 
     static const List<String> l_device_two_way_switch_toggle = [
         /*en*/ "Toggle",
         /*ru*/ "Изменить",
-        /*de*/ "Wechseln"];
+        /*de*/ "Wechseln",
+        /*fr*/ "Changer"];
     static String get device_two_way_switch_toggle => l_device_two_way_switch_toggle[_language];
 
     static const List<String> l_device_music_optimizer = [
         /*en*/ "Music optimizer",
         /*ru*/ "Оптимизация звука",
-        /*de*/ "Musikoptimierung"];
+        /*de*/ "Musikoptimierung",
+        /*fr*/ "Optimiseur audio"];
     static String get device_music_optimizer => l_device_music_optimizer[_language];
 
     static const List<String> l_device_auto_power = [
         /*en*/ "Auto power",
         /*ru*/ "Авто-отключение",
-        /*de*/ "Auto an/aus"];
+        /*de*/ "Auto an/aus",
+        /*fr*/ "Allumage auto"];
     static String get device_auto_power => l_device_auto_power[_language];
 
     static const List<String> l_device_hdmi_cec = [
         /*en*/ "HDMI CEC",
         /*ru*/ "HDMI CEC",
-        /*de*/ "HDMI CEC"];
+        /*de*/ "HDMI CEC",
+        /*fr*/ "HDMI CEC"];
     static String get device_hdmi_cec => l_device_hdmi_cec[_language];
 
     static const List<String> l_device_phase_matching_bass = [
         /*en*/ "PM Bass",
         /*ru*/ "PM Bass",
-        /*de*/ "PM Bass"];
+        /*de*/ "PM Bass",
+        /*fr*/ "Basses avec adaptation de phase"];
     static String get device_phase_matching_bass => l_device_phase_matching_bass[_language];
 
     static const List<String> l_device_sleep_time = [
         /*en*/ "Sleep Time",
         /*ru*/ "Таймер сна",
-        /*de*/ "Ruhemodus-Zeit"];
+        /*de*/ "Ruhemodus-Zeit",
+        /*fr*/ "Arrêt automatique"];
     static String get device_sleep_time => l_device_sleep_time[_language];
 
     static const List<String> l_device_sleep_time_minutes = [
         /*en*/ "min",
         /*ru*/ "мин",
-        /*de*/ "min"];
+        /*de*/ "min",
+        /*fr*/ "min"];
     static String get device_sleep_time_minutes => l_device_sleep_time_minutes[_language];
 
     static const List<String> l_device_google_cast_analytics = [
         /*en*/ "Google Cast analytics",
         /*ru*/ "Аналитика Google Cast",
-        /*de*/ "Google Cast analytics"];
+        /*de*/ "Google Cast analytics",
+        /*fr*/ "Google Cast analytics"];
     static String get device_google_cast_analytics => l_device_google_cast_analytics[_language];
 
     static const List<String> l_speaker_a_command_toggle = [
         /*en*/ "Sets speaker A switch wrap-around",
         /*ru*/ "Вкл/выкл динамик A",
-        /*de*/ "Lautsprecher A umschalten"];
+        /*de*/ "Lautsprecher A umschalten",
+        /*fr*/ "Selecteur Sortie A"];
     static String get speaker_a_command_toggle => l_speaker_a_command_toggle[_language];
 
     static const List<String> l_speaker_b_command_toggle = [
         /*en*/ "Sets speaker B switch wrap-around",
         /*ru*/ "Вкл/выкл динамик B",
-        /*de*/ "Lautsprecher B umschalten"];
+        /*de*/ "Lautsprecher B umschalten",
+        /*fr*/ "Selecteur Sortie B"];
     static String get speaker_b_command_toggle => l_speaker_b_command_toggle[_language];
 
     static const List<String> l_speaker_ab_command = [
         /*en*/ "Speaker A/B",
         /*ru*/ "Динамик A/B",
-        /*de*/ "Lautsprecher A/B"];
+        /*de*/ "Lautsprecher A/B",
+        /*fr*/ "Sortie A/B"];
     static String get speaker_ab_command => l_speaker_ab_command[_language];
 
     static const List<String> l_speaker_ab_command_toggle = [
         /*en*/ "Toggle between speakers",
         /*ru*/ "Переключить динамик",
-        /*de*/ "Zwischen Lautsprechern wechseln"];
+        /*de*/ "Zwischen Lautsprechern wechseln",
+        /*fr*/ "Changement sortie"];
     static String get speaker_ab_command_toggle => l_speaker_ab_command_toggle[_language];
 
     static const List<String> l_speaker_ab_command_ab_off = [
         /*en*/ "Both off",
         /*ru*/ "оба выкл.",
-        /*de*/ "Beide aus"];
+        /*de*/ "Beide aus",
+        /*fr*/ "Toutes éteintes"];
     static String get speaker_ab_command_ab_off => l_speaker_ab_command_ab_off[_language];
 
     static const List<String> l_speaker_ab_command_ab_on = [
         /*en*/ "Both on",
         /*ru*/ "оба вкл.",
-        /*de*/ "Beide an"];
+        /*de*/ "Beide an",
+        /*fr*/ "Toutes allumlées"];
     static String get speaker_ab_command_ab_on => l_speaker_ab_command_ab_on[_language];
 
     static const List<String> l_speaker_ab_command_a_only = [
         /*en*/ "A only",
         /*ru*/ "только A",
-        /*de*/ "nur A"];
+        /*de*/ "nur A",
+        /*fr*/ "A seulement"];
     static String get speaker_ab_command_a_only => l_speaker_ab_command_a_only[_language];
 
     static const List<String> l_speaker_ab_command_b_only = [
         /*en*/ "B only",
         /*ru*/ "только B",
-        /*de*/ "nur B"];
+        /*de*/ "nur B",
+        /*fr*/ "B seulement"];
     static String get speaker_ab_command_b_only => l_speaker_ab_command_b_only[_language];
 
     static const List<String> l_privacy_policy_onkyo = [
         /*en*/ "Agree Onkyo Privacy Policy",
         /*ru*/ "Подтвердить соглашение Onkyo Privacy",
-        /*de*/ "Onkyo Datenschutzerklärung zustimmen"];
+        /*de*/ "Onkyo Datenschutzerklärung zustimmen",
+        /*fr*/ "Agree Onkyo Privacy Policy"];
     static String get privacy_policy_onkyo => l_privacy_policy_onkyo[_language];
 
     static const List<String> l_privacy_policy_google = [
         /*en*/ "Agree Google Cast License",
         /*ru*/ "Подтвердить лицензию Google Cast",
-        /*de*/ "Google Cast Lizenz zustimmen"];
+        /*de*/ "Google Cast Lizenz zustimmen",
+        /*fr*/ "Agree Google Cast License"];
     static String get privacy_policy_google => l_privacy_policy_google[_language];
 
     static const List<String> l_privacy_policy_sue = [
         /*en*/ "Agree SUE - Privacy Policy",
         /*ru*/ "Подтвердить соглашение SUE-Privacy",
-        /*de*/ "SUE - Datenschutzerklärung zustimmen"];
+        /*de*/ "SUE - Datenschutzerklärung zustimmen",
+        /*fr*/ "Agree SUE - Privacy Policy"];
     static String get privacy_policy_sue => l_privacy_policy_sue[_language];
 
     static const List<String> l_listening_mode_mode_00 = [
         /*en*/ "STEREO",
         /*ru*/ "STEREO",
-        /*de*/ "STEREO"];
+        /*de*/ "STEREO",
+        /*fr*/ "STEREO"];
     static String get listening_mode_mode_00 => l_listening_mode_mode_00[_language];
 
     static const List<String> l_listening_mode_mode_01 = [
         /*en*/ "DIRECT",
         /*ru*/ "DIRECT",
-        /*de*/ "DIREKT"];
+        /*de*/ "DIREKT",
+        /*fr*/ "DIRECT"];
     static String get listening_mode_mode_01 => l_listening_mode_mode_01[_language];
 
     static const List<String> l_listening_mode_mode_02 = [
         /*en*/ "SURROUND",
         /*ru*/ "SURROUND",
-        /*de*/ "SURROUND"];
+        /*de*/ "SURROUND",
+        /*fr*/ "SURROUND"];
     static String get listening_mode_mode_02 => l_listening_mode_mode_02[_language];
 
     static const List<String> l_listening_mode_mode_03 = [
         /*en*/ "FILM",
         /*ru*/ "FILM",
-        /*de*/ "FILM"];
+        /*de*/ "FILM",
+        /*fr*/ "FILM"];
     static String get listening_mode_mode_03 => l_listening_mode_mode_03[_language];
 
     static const List<String> l_listening_mode_mode_04 = [
         /*en*/ "THX",
         /*ru*/ "THX",
-        /*de*/ "THX"];
+        /*de*/ "THX",
+        /*fr*/ "THX"];
     static String get listening_mode_mode_04 => l_listening_mode_mode_04[_language];
 
     static const List<String> l_listening_mode_mode_05 = [
         /*en*/ "ACTION",
         /*ru*/ "ACTION",
-        /*de*/ "ACTION"];
+        /*de*/ "ACTION",
+        /*fr*/ "ACTION"];
     static String get listening_mode_mode_05 => l_listening_mode_mode_05[_language];
 
     static const List<String> l_listening_mode_mode_06 = [
         /*en*/ "MUSICAL",
         /*ru*/ "MUSICAL",
-        /*de*/ "MUSICAL"];
+        /*de*/ "MUSICAL",
+        /*fr*/ "MUSICAL"];
     static String get listening_mode_mode_06 => l_listening_mode_mode_06[_language];
 
     static const List<String> l_listening_mode_mode_07 = [
         /*en*/ "MONO MOVIE",
         /*ru*/ "MONO MOVIE",
-        /*de*/ "MONO FILM"];
+        /*de*/ "MONO FILM",
+        /*fr*/ "MONO MOVIE"];
     static String get listening_mode_mode_07 => l_listening_mode_mode_07[_language];
 
     static const List<String> l_listening_mode_mode_08 = [
         /*en*/ "ORCHESTRA",
         /*ru*/ "ORCHESTRA",
-        /*de*/ "ORCHESTER"];
+        /*de*/ "ORCHESTER",
+        /*fr*/ "ORCHESTRA"];
     static String get listening_mode_mode_08 => l_listening_mode_mode_08[_language];
 
     static const List<String> l_listening_mode_mode_09 = [
         /*en*/ "UNPLUGGED",
         /*ru*/ "UNPLUGGED",
-        /*de*/ "UNPLUGGED"];
+        /*de*/ "UNPLUGGED",
+        /*fr*/ "UNPLUGGED"];
     static String get listening_mode_mode_09 => l_listening_mode_mode_09[_language];
 
     static const List<String> l_listening_mode_mode_0a = [
         /*en*/ "STUDIO-MIX",
         /*ru*/ "STUDIO-MIX",
-        /*de*/ "STUDIO-MIX"];
+        /*de*/ "STUDIO-MIX",
+        /*fr*/ "STUDIO-MIX"];
     static String get listening_mode_mode_0a => l_listening_mode_mode_0a[_language];
 
     static const List<String> l_listening_mode_mode_0b = [
         /*en*/ "TV LOGIC",
         /*ru*/ "TV LOGIC",
-        /*de*/ "TV LOGIC"];
+        /*de*/ "TV LOGIC",
+        /*fr*/ "TV LOGIC"];
     static String get listening_mode_mode_0b => l_listening_mode_mode_0b[_language];
 
     static const List<String> l_listening_mode_mode_0c = [
         /*en*/ "ALL CH STEREO",
         /*ru*/ "ALL CH STEREO",
-        /*de*/ "ALL CH STEREO"];
+        /*de*/ "ALL CH STEREO",
+        /*fr*/ "ALL CH STEREO"];
     static String get listening_mode_mode_0c => l_listening_mode_mode_0c[_language];
 
     static const List<String> l_listening_mode_mode_0d = [
         /*en*/ "THEATER-DIMENSIONAL",
         /*ru*/ "THEATER-DIMENSIONAL",
-        /*de*/ "THEATER-DIMENSIONAL"];
+        /*de*/ "THEATER-DIMENSIONAL",
+        /*fr*/ "THEATER-DIMENSIONAL"];
     static String get listening_mode_mode_0d => l_listening_mode_mode_0d[_language];
 
     static const List<String> l_listening_mode_mode_0e = [
         /*en*/ "ENHANCED 7/ENHANCE",
         /*ru*/ "ENHANCED 7/ENHANCE",
-        /*de*/ "SPIELE-SPORT"];
+        /*de*/ "SPIELE-SPORT",
+        /*fr*/ "ENHANCED 7/ENHANCE"];
     static String get listening_mode_mode_0e => l_listening_mode_mode_0e[_language];
 
     static const List<String> l_listening_mode_mode_0f = [
         /*en*/ "MONO",
         /*ru*/ "MONO",
-        /*de*/ "MONO"];
+        /*de*/ "MONO",
+        /*fr*/ "MONO"];
     static String get listening_mode_mode_0f => l_listening_mode_mode_0f[_language];
 
     static const List<String> l_listening_mode_mode_11 = [
         /*en*/ "PURE AUDIO",
         /*ru*/ "PURE AUDIO",
-        /*de*/ "PURE AUDIO"];
+        /*de*/ "PURE AUDIO",
+        /*fr*/ "PURE AUDIO"];
     static String get listening_mode_mode_11 => l_listening_mode_mode_11[_language];
 
     static const List<String> l_listening_mode_mode_12 = [
         /*en*/ "MULTIPLEX",
         /*ru*/ "MULTIPLEX",
-        /*de*/ "MULTIPLEX"];
+        /*de*/ "MULTIPLEX",
+        /*fr*/ "MULTIPLEX"];
     static String get listening_mode_mode_12 => l_listening_mode_mode_12[_language];
 
     static const List<String> l_listening_mode_mode_13 = [
         /*en*/ "FULL MONO",
         /*ru*/ "FULL MONO",
-        /*de*/ "FULL MONO"];
+        /*de*/ "FULL MONO",
+        /*fr*/ "FULL MONO"];
     static String get listening_mode_mode_13 => l_listening_mode_mode_13[_language];
 
     static const List<String> l_listening_mode_mode_14 = [
         /*en*/ "DOLBY VIRTUAL",
         /*ru*/ "DOLBY VIRTUAL",
-        /*de*/ "DOLBY VIRTUAL"];
+        /*de*/ "DOLBY VIRTUAL",
+        /*fr*/ "DOLBY VIRTUAL"];
     static String get listening_mode_mode_14 => l_listening_mode_mode_14[_language];
 
     static const List<String> l_listening_mode_mode_15 = [
         /*en*/ "DTS Surround Sensation",
         /*ru*/ "DTS Surround Sensation",
-        /*de*/ "DTS Surround Sensation"];
+        /*de*/ "DTS Surround Sensation",
+        /*fr*/ "DTS Surround Sensation"];
     static String get listening_mode_mode_15 => l_listening_mode_mode_15[_language];
 
     static const List<String> l_listening_mode_mode_16 = [
         /*en*/ "Audyssey DSX",
         /*ru*/ "Audyssey DSX",
-        /*de*/ "Audyssey DSX"];
+        /*de*/ "Audyssey DSX",
+        /*fr*/ "Audyssey DSX"];
     static String get listening_mode_mode_16 => l_listening_mode_mode_16[_language];
 
     static const List<String> l_listening_mode_mode_1f = [
         /*en*/ "Whole House Mode",
         /*ru*/ "Whole House Mode",
-        /*de*/ "Whole House Mode"];
+        /*de*/ "Whole House Mode",
+        /*fr*/ "Whole House Mode"];
     static String get listening_mode_mode_1f => l_listening_mode_mode_1f[_language];
 
     static const List<String> l_listening_mode_mode_40 = [
         /*en*/ "5.1ch Surround",
         /*ru*/ "5.1ch Surround",
-        /*de*/ "5.1ch Surround"];
+        /*de*/ "5.1ch Surround",
+        /*fr*/ "5.1ch Surround"];
     static String get listening_mode_mode_40 => l_listening_mode_mode_40[_language];
 
     static const List<String> l_listening_mode_mode_41 = [
         /*en*/ "Dolby EX/DTS ES",
         /*ru*/ "Dolby EX/DTS ES",
-        /*de*/ "Dolby EX/DTS ES"];
+        /*de*/ "Dolby EX/DTS ES",
+        /*fr*/ "Dolby EX/DTS ES"];
     static String get listening_mode_mode_41 => l_listening_mode_mode_41[_language];
 
     static const List<String> l_listening_mode_mode_42 = [
         /*en*/ "THX Cinema",
         /*ru*/ "THX Cinema",
-        /*de*/ "THX Kino"];
+        /*de*/ "THX Kino",
+        /*fr*/ "THX Cinema"];
     static String get listening_mode_mode_42 => l_listening_mode_mode_42[_language];
 
     static const List<String> l_listening_mode_mode_43 = [
         /*en*/ "THX Surround EX",
         /*ru*/ "THX Surround EX",
-        /*de*/ "THX Surround EX"];
+        /*de*/ "THX Surround EX",
+        /*fr*/ "THX Surround EX"];
     static String get listening_mode_mode_43 => l_listening_mode_mode_43[_language];
 
     static const List<String> l_listening_mode_mode_44 = [
         /*en*/ "THX Music",
         /*ru*/ "THX Music",
-        /*de*/ "THX Musik"];
+        /*de*/ "THX Musik",
+        /*fr*/ "THX Music"];
     static String get listening_mode_mode_44 => l_listening_mode_mode_44[_language];
 
     static const List<String> l_listening_mode_mode_45 = [
         /*en*/ "THX Games",
         /*ru*/ "THX Games",
-        /*de*/ "THX Spiele"];
+        /*de*/ "THX Spiele",
+        /*fr*/ "THX Games"];
     static String get listening_mode_mode_45 => l_listening_mode_mode_45[_language];
 
     static const List<String> l_listening_mode_mode_50 = [
         /*en*/ "THX U(2)/S(2)/I/S Cinema/Cinema2",
         /*ru*/ "THX U(2)/S(2)/I/S Cinema/Cinema2",
-        /*de*/ "THX U(2)/S(2)/I/S Kino/Kino2"];
+        /*de*/ "THX U(2)/S(2)/I/S Kino/Kino2",
+        /*fr*/ "THX U(2)/S(2)/I/S Cinema/Cinema2"];
     static String get listening_mode_mode_50 => l_listening_mode_mode_50[_language];
 
     static const List<String> l_listening_mode_mode_51 = [
         /*en*/ "THX MusicMode",
         /*ru*/ "THX MusicMode",
-        /*de*/ "THX MusikModus"];
+        /*de*/ "THX MusikModus",
+        /*fr*/ "THX MusicMode"];
     static String get listening_mode_mode_51 => l_listening_mode_mode_51[_language];
 
     static const List<String> l_listening_mode_mode_52 = [
         /*en*/ "THX Games Mode",
         /*ru*/ "THX Games Mode",
-        /*de*/ "THX Spiele Modus"];
+        /*de*/ "THX Spiele Modus",
+        /*fr*/ "THX Games Mode"];
     static String get listening_mode_mode_52 => l_listening_mode_mode_52[_language];
 
     static const List<String> l_listening_mode_mode_80 = [
         /*en*/ "DOLBY SURROUND",
         /*ru*/ "PLII/PLIIx Movie ",
-        /*de*/ "PLII/PLIIx Film "];
+        /*de*/ "PLII/PLIIx Film ",
+        /*fr*/ "DOLBY SURROUND"];
     static String get listening_mode_mode_80 => l_listening_mode_mode_80[_language];
 
     static const List<String> l_listening_mode_mode_81 = [
         /*en*/ "PLII/PLIIx Music",
         /*ru*/ "PLII/PLIIx Music",
-        /*de*/ "PLII/PLIIx Musik"];
+        /*de*/ "PLII/PLIIx Musik",
+        /*fr*/ "PLII/PLIIx Music"];
     static String get listening_mode_mode_81 => l_listening_mode_mode_81[_language];
 
     static const List<String> l_listening_mode_mode_82 = [
         /*en*/ "DTS NEURAL:X",
         /*ru*/ "Neo:6 Cinema/Neo:X Cinema",
-        /*de*/ "Neo:6 Kino/Neo:X Kino"];
+        /*de*/ "Neo:6 Kino/Neo:X Kino",
+        /*fr*/ "DTS NEURAL:X"];
     static String get listening_mode_mode_82 => l_listening_mode_mode_82[_language];
 
     static const List<String> l_listening_mode_mode_83 = [
         /*en*/ "Neo:6 Music/Neo:X Music",
         /*ru*/ "Neo:6 Music/Neo:X Music",
-        /*de*/ "Neo:6 Musik/Neo:X Musik"];
+        /*de*/ "Neo:6 Musik/Neo:X Musik",
+        /*fr*/ "Neo:6 Music/Neo:X Music"];
     static String get listening_mode_mode_83 => l_listening_mode_mode_83[_language];
 
     static const List<String> l_listening_mode_mode_84 = [
         /*en*/ "PLII/PLIIx THX Cinema  ",
         /*ru*/ "PLII/PLIIx THX Cinema  ",
-        /*de*/ "PLII/PLIIx THX Kino  "];
+        /*de*/ "PLII/PLIIx THX Kino  ",
+        /*fr*/ "PLII/PLIIx THX Cinema  "];
     static String get listening_mode_mode_84 => l_listening_mode_mode_84[_language];
 
     static const List<String> l_listening_mode_mode_85 = [
         /*en*/ "Neo:6/Neo:X THX Cinema",
         /*ru*/ "Neo:6/Neo:X THX Cinema",
-        /*de*/ "Neo:6/Neo:X THX Kino"];
+        /*de*/ "Neo:6/Neo:X THX Kino",
+        /*fr*/ "Neo:6/Neo:X THX Cinema"];
     static String get listening_mode_mode_85 => l_listening_mode_mode_85[_language];
 
     static const List<String> l_listening_mode_mode_86 = [
         /*en*/ "PLII/PLIIx Game",
         /*ru*/ "PLII/PLIIx Game",
-        /*de*/ "PLII/PLIIx Spiele"];
+        /*de*/ "PLII/PLIIx Spiele",
+        /*fr*/ "PLII/PLIIx Game"];
     static String get listening_mode_mode_86 => l_listening_mode_mode_86[_language];
 
     static const List<String> l_listening_mode_mode_87 = [
         /*en*/ "Neural Surr*3",
         /*ru*/ "Neural Surr*3",
-        /*de*/ "Neural Surr*3"];
+        /*de*/ "Neural Surr*3",
+        /*fr*/ "Neural Surr*3"];
     static String get listening_mode_mode_87 => l_listening_mode_mode_87[_language];
 
     static const List<String> l_listening_mode_mode_88 = [
         /*en*/ "Neural THX/Neural Surround",
         /*ru*/ "Neural THX/Neural Surround",
-        /*de*/ "Neural THX/Neural Surround"];
+        /*de*/ "Neural THX/Neural Surround",
+        /*fr*/ "Neural THX/Neural Surround"];
     static String get listening_mode_mode_88 => l_listening_mode_mode_88[_language];
 
     static const List<String> l_listening_mode_mode_89 = [
         /*en*/ "PLII/PLIIx THX Games",
         /*ru*/ "PLII/PLIIx THX Games",
-        /*de*/ "PLII/PLIIx THX Spiele"];
+        /*de*/ "PLII/PLIIx THX Spiele",
+        /*fr*/ "PLII/PLIIx THX Games"];
     static String get listening_mode_mode_89 => l_listening_mode_mode_89[_language];
 
     static const List<String> l_listening_mode_mode_8a = [
         /*en*/ "Neo:6/Neo:X THX Games",
         /*ru*/ "Neo:6/Neo:X THX Games",
-        /*de*/ "Neo:6/Neo:X THX Spiele"];
+        /*de*/ "Neo:6/Neo:X THX Spiele",
+        /*fr*/ "Neo:6/Neo:X THX Games"];
     static String get listening_mode_mode_8a => l_listening_mode_mode_8a[_language];
 
     static const List<String> l_listening_mode_mode_8b = [
         /*en*/ "PLII/PLIIx THX Music ",
         /*ru*/ "PLII/PLIIx THX Music ",
-        /*de*/ "PLII/PLIIx THX Musik "];
+        /*de*/ "PLII/PLIIx THX Musik ",
+        /*fr*/ "PLII/PLIIx THX Music "];
     static String get listening_mode_mode_8b => l_listening_mode_mode_8b[_language];
 
     static const List<String> l_listening_mode_mode_8c = [
         /*en*/ "Neo:6/Neo:X THX Music",
         /*ru*/ "Neo:6/Neo:X THX Music",
-        /*de*/ "Neo:6/Neo:X THX Musik"];
+        /*de*/ "Neo:6/Neo:X THX Musik",
+        /*fr*/ "Neo:6/Neo:X THX Music"];
     static String get listening_mode_mode_8c => l_listening_mode_mode_8c[_language];
 
     static const List<String> l_listening_mode_mode_8d = [
         /*en*/ "Neural THX Cinema",
         /*ru*/ "Neural THX Cinema",
-        /*de*/ "Neural THX Kino"];
+        /*de*/ "Neural THX Kino",
+        /*fr*/ "Neural THX Cinema"];
     static String get listening_mode_mode_8d => l_listening_mode_mode_8d[_language];
 
     static const List<String> l_listening_mode_mode_8e = [
         /*en*/ "Neural THX Music",
         /*ru*/ "Neural THX Music",
-        /*de*/ "Neural THX Musik"];
+        /*de*/ "Neural THX Musik",
+        /*fr*/ "Neural THX Music"];
     static String get listening_mode_mode_8e => l_listening_mode_mode_8e[_language];
 
     static const List<String> l_listening_mode_mode_8f = [
         /*en*/ "Neural THX Games",
         /*ru*/ "Neural THX Games",
-        /*de*/ "Neural THX Spiele"];
+        /*de*/ "Neural THX Spiele",
+        /*fr*/ "Neural THX Games"];
     static String get listening_mode_mode_8f => l_listening_mode_mode_8f[_language];
 
     static const List<String> l_listening_mode_mode_90 = [
         /*en*/ "PLIIz Height",
         /*ru*/ "PLIIz Height",
-        /*de*/ "PLIIz Height"];
+        /*de*/ "PLIIz Height",
+        /*fr*/ "PLIIz Height"];
     static String get listening_mode_mode_90 => l_listening_mode_mode_90[_language];
 
     static const List<String> l_listening_mode_mode_91 = [
         /*en*/ "Neo:6 Cinema DTS Surround Sensation",
         /*ru*/ "Neo:6 Cinema DTS Surround Sensation",
-        /*de*/ "Neo:6 Kino DTS Surround Sensation"];
+        /*de*/ "Neo:6 Kino DTS Surround Sensation",
+        /*fr*/ "Neo:6 Cinema DTS Surround Sensation"];
     static String get listening_mode_mode_91 => l_listening_mode_mode_91[_language];
 
     static const List<String> l_listening_mode_mode_92 = [
         /*en*/ "Neo:6 Music DTS Surround Sensation",
         /*ru*/ "Neo:6 Music DTS Surround Sensation",
-        /*de*/ "Neo:6 Musik DTS Surround Sensation"];
+        /*de*/ "Neo:6 Musik DTS Surround Sensation",
+        /*fr*/ "Neo:6 Music DTS Surround Sensation"];
     static String get listening_mode_mode_92 => l_listening_mode_mode_92[_language];
 
     static const List<String> l_listening_mode_mode_93 = [
         /*en*/ "Neural Digital Music",
         /*ru*/ "Neural Digital Music",
-        /*de*/ "Neural Digital Musik"];
+        /*de*/ "Neural Digital Musik",
+        /*fr*/ "Neural Digital Music"];
     static String get listening_mode_mode_93 => l_listening_mode_mode_93[_language];
 
     static const List<String> l_listening_mode_mode_94 = [
         /*en*/ "PLIIz Height + THX Cinema",
         /*ru*/ "PLIIz Height + THX Cinema",
-        /*de*/ "PLIIz Height + THX Kino"];
+        /*de*/ "PLIIz Height + THX Kino",
+        /*fr*/ "PLIIz Height + THX Cinema"];
     static String get listening_mode_mode_94 => l_listening_mode_mode_94[_language];
 
     static const List<String> l_listening_mode_mode_95 = [
         /*en*/ "PLIIz Height + THX Music",
         /*ru*/ "PLIIz Height + THX Music",
-        /*de*/ "PLIIz Height + THX Musik"];
+        /*de*/ "PLIIz Height + THX Musik",
+        /*fr*/ "PLIIz Height + THX Music"];
     static String get listening_mode_mode_95 => l_listening_mode_mode_95[_language];
 
     static const List<String> l_listening_mode_mode_96 = [
         /*en*/ "PLIIz Height + THX Games",
         /*ru*/ "PLIIz Height + THX Games",
-        /*de*/ "PLIIz Height + THX Spiele"];
+        /*de*/ "PLIIz Height + THX Spiele",
+        /*fr*/ "PLIIz Height + THX Games"];
     static String get listening_mode_mode_96 => l_listening_mode_mode_96[_language];
 
     static const List<String> l_listening_mode_mode_97 = [
         /*en*/ "PLIIz Height + THX U2/S2 Cinema",
         /*ru*/ "PLIIz Height + THX U2/S2 Cinema",
-        /*de*/ "PLIIz Height + THX U2/S2 Kino"];
+        /*de*/ "PLIIz Height + THX U2/S2 Kino",
+        /*fr*/ "PLIIz Height + THX U2/S2 Cinema"];
     static String get listening_mode_mode_97 => l_listening_mode_mode_97[_language];
 
     static const List<String> l_listening_mode_mode_98 = [
         /*en*/ "PLIIz Height + THX U2/S2 Music",
         /*ru*/ "PLIIz Height + THX U2/S2 Music",
-        /*de*/ "PLIIz Height + THX U2/S2 Musik"];
+        /*de*/ "PLIIz Height + THX U2/S2 Musik",
+        /*fr*/ "PLIIz Height + THX U2/S2 Music"];
     static String get listening_mode_mode_98 => l_listening_mode_mode_98[_language];
 
     static const List<String> l_listening_mode_mode_99 = [
         /*en*/ "PLIIz Height + THX U2/S2 Games",
         /*ru*/ "PLIIz Height + THX U2/S2 Games",
-        /*de*/ "PLIIz Height + THX U2/S2 Spiele"];
+        /*de*/ "PLIIz Height + THX U2/S2 Spiele",
+        /*fr*/ "PLIIz Height + THX U2/S2 Games"];
     static String get listening_mode_mode_99 => l_listening_mode_mode_99[_language];
 
     static const List<String> l_listening_mode_mode_9a = [
         /*en*/ "Neo:X Game",
         /*ru*/ "Neo:X Game",
-        /*de*/ "Neo:X Spiele"];
+        /*de*/ "Neo:X Spiele",
+        /*fr*/ "Neo:X Game"];
     static String get listening_mode_mode_9a => l_listening_mode_mode_9a[_language];
 
     static const List<String> l_listening_mode_mode_a0 = [
         /*en*/ "PLIIx/PLII Movie + Audyssey DSX",
         /*ru*/ "PLIIx/PLII Movie + Audyssey DSX",
-        /*de*/ "PLIIx/PLII Movie + Audyssey DSX"];
+        /*de*/ "PLIIx/PLII Movie + Audyssey DSX",
+        /*fr*/ "PLIIx/PLII Movie + Audyssey DSX"];
     static String get listening_mode_mode_a0 => l_listening_mode_mode_a0[_language];
 
     static const List<String> l_listening_mode_mode_a1 = [
         /*en*/ "PLIIx/PLII Music + Audyssey DSX",
         /*ru*/ "PLIIx/PLII Music + Audyssey DSX",
-        /*de*/ "PLIIx/PLII Musik + Audyssey DSX"];
+        /*de*/ "PLIIx/PLII Musik + Audyssey DSX",
+        /*fr*/ "PLIIx/PLII Music + Audyssey DSX"];
     static String get listening_mode_mode_a1 => l_listening_mode_mode_a1[_language];
 
     static const List<String> l_listening_mode_mode_a2 = [
         /*en*/ "PLIIx/PLII Game + Audyssey DSX",
         /*ru*/ "PLIIx/PLII Game + Audyssey DSX",
-        /*de*/ "PLIIx/PLII Spiele + Audyssey DSX"];
+        /*de*/ "PLIIx/PLII Spiele + Audyssey DSX",
+        /*fr*/ "PLIIx/PLII Game + Audyssey DSX"];
     static String get listening_mode_mode_a2 => l_listening_mode_mode_a2[_language];
 
     static const List<String> l_listening_mode_mode_a3 = [
         /*en*/ "Neo:6 Cinema + Audyssey DSX",
         /*ru*/ "Neo:6 Cinema + Audyssey DSX",
-        /*de*/ "Neo:6 Kino + Audyssey DSX"];
+        /*de*/ "Neo:6 Kino + Audyssey DSX",
+        /*fr*/ "Neo:6 Cinema + Audyssey DSX"];
     static String get listening_mode_mode_a3 => l_listening_mode_mode_a3[_language];
 
     static const List<String> l_listening_mode_mode_a4 = [
         /*en*/ "Neo:6 Music + Audyssey DSX",
         /*ru*/ "Neo:6 Music + Audyssey DSX",
-        /*de*/ "Neo:6 Musik + Audyssey DSX"];
+        /*de*/ "Neo:6 Musik + Audyssey DSX",
+        /*fr*/ "Neo:6 Music + Audyssey DSX"];
     static String get listening_mode_mode_a4 => l_listening_mode_mode_a4[_language];
 
     static const List<String> l_listening_mode_mode_a5 = [
         /*en*/ "Neural Surround + Audyssey DSX",
         /*ru*/ "Neural Surround + Audyssey DSX",
-        /*de*/ "Neural Surround + Audyssey DSX"];
+        /*de*/ "Neural Surround + Audyssey DSX",
+        /*fr*/ "Neural Surround + Audyssey DSX"];
     static String get listening_mode_mode_a5 => l_listening_mode_mode_a5[_language];
 
     static const List<String> l_listening_mode_mode_a6 = [
         /*en*/ "Neural Digital Music + Audyssey DSX",
         /*ru*/ "Neural Digital Music + Audyssey DSX",
-        /*de*/ "Neural Digital Musik + Audyssey DSX"];
+        /*de*/ "Neural Digital Musik + Audyssey DSX",
+        /*fr*/ "Neural Digital Music + Audyssey DSX"];
     static String get listening_mode_mode_a6 => l_listening_mode_mode_a6[_language];
 
     static const List<String> l_listening_mode_mode_a7 = [
         /*en*/ "Dolby EX + Audyssey DSX",
         /*ru*/ "Dolby EX + Audyssey DSX",
-        /*de*/ "Dolby EX + Audyssey DSX"];
+        /*de*/ "Dolby EX + Audyssey DSX",
+        /*fr*/ "Dolby EX + Audyssey DSX"];
     static String get listening_mode_mode_a7 => l_listening_mode_mode_a7[_language];
 
     static const List<String> l_listening_mode_mode_ff = [
         /*en*/ "Auto Surround",
         /*ru*/ "Auto Surround",
-        /*de*/ "Auto Surround"];
+        /*de*/ "Auto Surround",
+        /*fr*/ "Auto Surround"];
     static String get listening_mode_mode_ff => l_listening_mode_mode_ff[_language];
 
     static const List<String> l_listening_mode_up = [
         /*en*/ "Sets listening mode wrap-around up",
         /*ru*/ "Изменить звуковой профиль",
-        /*de*/ "Klangprofile durchwechseln"];
+        /*de*/ "Klangprofile durchwechseln",
+        /*fr*/ "Changer mode d\'écoute"];
     static String get listening_mode_up => l_listening_mode_up[_language];
 
     static const List<String> l_remote_interface = [
         /*en*/ "Use devices connected via Remote Interface (RI)",
         /*ru*/ "Использовать устройства, подключенные через удаленный интерфейс (RI)",
-        /*de*/ "Über RI Verbundene Geräte nutzen"];
+        /*de*/ "Über RI Verbundene Geräte nutzen",
+        /*fr*/ "Utilise des dispositifs connectés par Remote Interface (RI)"];
     static String get remote_interface => l_remote_interface[_language];
 
     static const List<String> l_remote_interface_amp = [
         /*en*/ "Amplifier",
         /*ru*/ "Усилитель",
-        /*de*/ "Verstärker"];
+        /*de*/ "Verstärker",
+        /*fr*/ "Amplificateur"];
     static String get remote_interface_amp => l_remote_interface_amp[_language];
 
     static const List<String> l_remote_interface_cd = [
         /*en*/ "CD Player",
         /*ru*/ "CD-проигрыватель",
-        /*de*/ "CD Player"];
+        /*de*/ "CD Player",
+        /*fr*/ "CD Player"];
     static String get remote_interface_cd => l_remote_interface_cd[_language];
 
     static const List<String> l_remote_interface_power = [
         /*en*/ "Power",
         /*ru*/ "Питание",
-        /*de*/ "An/Aus"];
+        /*de*/ "An/Aus",
+        /*fr*/ "Marche"];
     static String get remote_interface_power => l_remote_interface_power[_language];
 
     static const List<String> l_remote_interface_common = [
         /*en*/ "Common",
         /*ru*/ "Общий",
-        /*de*/ "Common"];
+        /*de*/ "Common",
+        /*fr*/ "Commun"];
     static String get remote_interface_common => l_remote_interface_common[_language];
 
     static const List<String> l_remote_interface_input = [
         /*en*/ "Input",
         /*ru*/ "Вход",
-        /*de*/ "Eingang"];
+        /*de*/ "Eingang",
+        /*fr*/ "Entrée"];
     static String get remote_interface_input => l_remote_interface_input[_language];
 
     static const List<String> l_remote_interface_volume = [
         /*en*/ "Volume",
         /*ru*/ "Громкость",
-        /*de*/ "Lautstärke"];
+        /*de*/ "Lautstärke",
+        /*fr*/ "Volume"];
     static String get remote_interface_volume => l_remote_interface_volume[_language];
 
     static const List<String> l_remote_interface_playback = [
         /*en*/ "Playback",
         /*ru*/ "Воспроизведение",
-        /*de*/ "Abspieler"];
+        /*de*/ "Abspieler",
+        /*fr*/ "Lecture"];
     static String get remote_interface_playback => l_remote_interface_playback[_language];
 
     static const List<String> l_cmd_multiroom_group = [
         /*en*/ "Group/Ungroup devices",
         /*ru*/ "Сгруппировать/Разгруппировать",
-        /*de*/ "Gruppieren/Aufheben"];
+        /*de*/ "Gruppieren/Aufheben",
+        /*fr*/ "Grouper/dégrouper dispositifs"];
     static String get cmd_multiroom_group => l_cmd_multiroom_group[_language];
 
     static const List<String> l_cmd_multiroom_channel = [
         /*en*/ "Change speaker channel",
         /*ru*/ "Изменить канал колонок",
-        /*de*/ "Lautsprecherkanal ändern"];
+        /*de*/ "Lautsprecherkanal ändern",
+        /*fr*/ "Changer le canal"];
     static String get cmd_multiroom_channel => l_cmd_multiroom_channel[_language];
 
     static const List<String> l_multiroom_group = [
         /*en*/ "Group",
         /*ru*/ "Группа",
-        /*de*/ "Gruppe"];
+        /*de*/ "Gruppe",
+        /*fr*/ "Grouper"];
     static String get multiroom_group => l_multiroom_group[_language];
 
     static const List<String> l_multiroom_master = [
         /*en*/ "Master",
         /*ru*/ "Ведущий",
-        /*de*/ "Master"];
+        /*de*/ "Master",
+        /*fr*/ "Maître"];
     static String get multiroom_master => l_multiroom_master[_language];
 
     static const List<String> l_multiroom_slave = [
         /*en*/ "Slave",
         /*ru*/ "Ведомый",
-        /*de*/ "Slave"];
+        /*de*/ "Slave",
+        /*fr*/ "Esclave"];
     static String get multiroom_slave => l_multiroom_slave[_language];
 
     static const List<String> l_multiroom_none = [
         /*en*/ "Not attached",
         /*ru*/ "Не связан",
-        /*de*/ "Nicht verbunden"];
+        /*de*/ "Nicht verbunden",
+        /*fr*/ "Pas connecté"];
     static String get multiroom_none => l_multiroom_none[_language];
 
     static const List<String> l_multiroom_channel = [
         /*en*/ "Channel",
         /*ru*/ "Канал",
-        /*de*/ "Kanal"];
+        /*de*/ "Kanal",
+        /*fr*/ "Canal"];
     static String get multiroom_channel => l_multiroom_channel[_language];
 
     static const List<String> l_error_invalid_device_address = [
         /*en*/ "Invalid device name or port",
         /*ru*/ "Неправильный адрес устройства или порт",
-        /*de*/ "Ungültiger Gerätename oder Port"];
+        /*de*/ "Ungültiger Gerätename oder Port",
+        /*fr*/ "Nom ou port du dispositif invalide"];
     static String get error_invalid_device_address => l_error_invalid_device_address[_language];
 
     static const List<String> l_error_connection_no_network = [
         /*en*/ "No connection to the network",
         /*ru*/ "Нет соединения с сетью",
-        /*de*/ "Keine Verbindung zum Netzwerk"];
+        /*de*/ "Keine Verbindung zum Netzwerk",
+        /*fr*/ "Pas de connexion réseau"];
     static String get error_connection_no_network => l_error_connection_no_network[_language];
 
     static const List<String> l_error_connection_no_wifi = [
         /*en*/ "No connection to Wi-Fi. Please input remote device IP and port manually",
         /*ru*/ "Нет подключения к Wi-Fi. Введите адрес и порт устройства вручную",
-        /*de*/ "Keine WLAN Verbindung, bitte IP und Port manuell eingeben"];
+        /*de*/ "Keine WLAN Verbindung, bitte IP und Port manuell eingeben",
+        /*fr*/ "Pas de connexion Wi-Fi. Merci d\'entrer l\'IP et port du dispositif manuellement"];
     static String get error_connection_no_wifi => l_error_connection_no_wifi[_language];
 
     static const List<String> l_error_connection_no_device = [
         /*en*/ "Remote device not found",
         /*ru*/ "Устройство не найдено",
-        /*de*/ "Onkyo Gerät nicht gefunden"];
+        /*de*/ "Onkyo Gerät nicht gefunden",
+        /*fr*/ "Dispositif distant non trouvé"];
     static String get error_connection_no_device => l_error_connection_no_device[_language];
 
     static const List<String> l_error_connection_no_response = [
         /*en*/ "Remote device %s not responding",
         /*ru*/ "Устойство %s не отвечает",
-        /*de*/ "Onkyo Gerät %s antwortet nicht"];
+        /*de*/ "Onkyo Gerät %s antwortet nicht",
+        /*fr*/ "Dispositif distant %s ne répond pas"];
     static String get error_connection_no_response => l_error_connection_no_response[_language];
 
     /* Translatable arrays */
@@ -2499,7 +2931,11 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         /*de*/ ["Keine",
                 "Externer Verstärker (RI)",
                 "Gerät",
-                "Automatisch"]];
+                "Automatisch"],
+        /*fr*/ ["Aucun",
+                "Amplificateur Externe (RI)",
+                "Dispositif",
+                "Automatique"]];
     static List<String> get pref_sound_control_names => l_pref_sound_control_names[_language];
 
     static const List<List<String>> l_pref_theme_names = [
@@ -2523,20 +2959,35 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
                 "Hell (Grau und Lila)",
                 "Hell (Indigo und Orange)",
                 "Hell (Türkis und sattes Orange)",
-                "Hell (Lila und Grün)"]];
+                "Hell (Lila und Grün)"],
+        /*fr*/ ["Très sombre (Noir et jaune)",
+                "Sombre (Gris et bleu)",
+                "Sombre (Gris et orange)",
+                "Clair (Gris et violet)",
+                "Clair (Bleu and Orange)",
+                "Clair (Emeraude et magenta)",
+                "Clair (Violet et vert)"]];
     static List<String> get pref_theme_names => l_pref_theme_names[_language];
 
     static const List<List<String>> l_pref_language_names = [
         /*en*/ ["System language",
                 "English",
+                "Français",
                 "Русский",
                 "Deutsch"],
         /*ru*/ ["Системный язык",
                 "English",
+                "Français",
                 "Русский",
                 "Deutsch"],
         /*de*/ ["Systemsprache",
                 "English",
+                "Français",
+                "Русский",
+                "Deutsch"],
+        /*fr*/ ["Langue système",
+                "English",
+                "Français",
                 "Русский",
                 "Deutsch"]];
     static List<String> get pref_language_names => l_pref_language_names[_language];
@@ -2553,6 +3004,10 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         /*de*/ ["Klein",
                 "Normal",
                 "Groß",
-                "Riesig"]];
+                "Riesig"],
+        /*fr*/ ["Petit",
+                "Normal",
+                "Grand",
+                "Enorme"]];
     static List<String> get pref_text_size_names => l_pref_text_size_names[_language];
 }

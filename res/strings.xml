@@ -152,6 +152,7 @@ Enjoy!""</string>
     <string-array name="pref_language_names">
         <item>System language</item>
         <item>English</item>
+        <item>Français</item>
         <item>Русский</item>
         <item>Deutsch</item>
     </string-array>
@@ -161,6 +162,7 @@ Enjoy!""</string>
     <string-array name="pref_language_codes" translatable="false">
         <item>system</item>
         <item>en</item>
+        <item>fr</item>
         <item>ru</item>
         <item>de</item>
     </string-array>
@@ -326,6 +328,8 @@ Enjoy!""</string>
     <string name="input_selector_video5">AUX2</string>
     <string name="input_selector_video6">PC</string>
     <string name="input_selector_video7">VIDEO 7</string>
+    <string name="input_selector_extra1">EXTRA 1</string>
+    <string name="input_selector_extra2">EXTRA 2</string>
     <string name="input_selector_bd_dvd">BD/DVD</string>
     <string name="input_selector_strm_box">STRM BOX</string>
     <string name="input_selector_tv">TV</string>
