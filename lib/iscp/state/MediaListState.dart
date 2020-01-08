@@ -186,16 +186,34 @@ class MediaListState
             // Since the names in ListInfoMsg and ReceiverInformationMsg are
             // not consistent for some services (see https://github.com/mkulesh/onpc/issues/35)
             // we just clone here networkServices provided by ReceiverInformationMsg
-            // into serviceItems list by any NET ListInfoMsg
-            _mediaItems.clear();
-            networkServices.forEach((s)
+            // into serviceItems list by any NET ListInfoMsg (if ReceiverInformationMsg exists)
+            if (networkServices.isNotEmpty)
             {
-                final EnumItem<ServiceType> service = Services.ServiceTypeEnum.valueByCode(s.getId);
-                if (service.key != ServiceType.UNKNOWN)
+                _mediaItems.clear();
+                networkServices.forEach((s)
                 {
-                    _mediaItems.add(NetworkServiceMsg.output(service.key));
+                    final EnumItem<ServiceType> service = Services.ServiceTypeEnum.valueByCode(s.getId);
+                    if (service.key != ServiceType.UNKNOWN)
+                    {
+                        _mediaItems.add(NetworkServiceMsg.output(service.key));
+                    }
+                });
+            }
+            else // fallback: parse listData from ListInfoMsg
+            {
+                for (NetworkServiceMsg i in _mediaItems)
+                {
+                    if (i.getValue.name.toUpperCase() == msg.getListedData.toUpperCase())
+                    {
+                        return false;
+                    }
                 }
-            });
+                final NetworkServiceMsg nsMsg = NetworkServiceMsg.fromName(msg.getListedData);
+                if (nsMsg.getValue.key != ServiceType.UNKNOWN)
+                {
+                    _mediaItems.add(nsMsg);
+                }
+            }
             return _mediaItems.isNotEmpty;
         }
         else if (isUsb)

@@ -25,9 +25,16 @@ class NetworkServiceMsg extends EnumParameterMsg<ServiceType>
     NetworkServiceMsg.output(ServiceType v) :
             super.output(CODE, v, Services.ServiceTypeEnum);
 
+    NetworkServiceMsg.fromName(final String name) :
+            super.output(CODE, _searchByName(name).key, Services.ServiceTypeEnum);
+
     @override
     EISCPMessage getCmdMsg()
     {
         return EISCPMessage.output(getCode, getData + "0");
     }
+
+    static EnumItem<ServiceType> _searchByName(final String name)
+    => Services.ServiceTypeEnum.values.firstWhere((t) => t.name.toUpperCase() == name.toUpperCase(),
+        orElse: () => Services.ServiceTypeEnum.defValue);
 }
