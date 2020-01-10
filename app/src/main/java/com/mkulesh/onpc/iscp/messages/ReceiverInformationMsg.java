@@ -437,6 +437,12 @@ public class ReceiverInformationMsg extends ISCPMessage
     }
 
     @NonNull
+    public Set<String> getControlList()
+    {
+        return controlList;
+    }
+
+    @NonNull
     @Override
     public String toString()
     {

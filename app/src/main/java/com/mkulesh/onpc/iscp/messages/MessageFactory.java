@@ -117,6 +117,8 @@ public class MessageFactory
             return new ListeningModeMsg(raw);
         case HdmiCecMsg.CODE:
             return new HdmiCecMsg(raw);
+        case DirectCommandMsg.CODE:
+            return new DirectCommandMsg(raw);
         case PhaseMatchingBassMsg.CODE:
             return new PhaseMatchingBassMsg(raw);
         case SleepSetCommandMsg.CODE:

@@ -26,6 +26,7 @@ import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
+import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
@@ -68,8 +69,10 @@ import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -98,6 +101,7 @@ public class State
     private final int activeZone;
     List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    private Set<String> controlList = new HashSet<>();
     public HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
     //Common
@@ -112,6 +116,7 @@ public class State
     public MusicOptimizerMsg.Status musicOptimizer = MusicOptimizerMsg.Status.NONE;
     public AutoPowerMsg.Status autoPower = AutoPowerMsg.Status.NONE;
     public HdmiCecMsg.Status hdmiCec = HdmiCecMsg.Status.NONE;
+    public DirectCommandMsg.Status toneDirect = DirectCommandMsg.Status.NONE;
     public PhaseMatchingBassMsg.Status phaseMatchingBass = PhaseMatchingBassMsg.Status.NONE;
     public int sleepTime = SleepSetCommandMsg.NOT_APPLICABLE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
@@ -293,6 +298,11 @@ public class State
         zones = ReceiverInformationMsg.getDefaultZones();
     }
 
+    boolean isControlExists(@NonNull final String control)
+    {
+        return controlList != null && controlList.contains(control);
+    }
+
     private void clearTrackInfo()
     {
         cover = null;
@@ -376,6 +386,10 @@ public class State
         if (msg instanceof HdmiCecMsg)
         {
             return isCommonChange(process((HdmiCecMsg) msg));
+        }
+        if (msg instanceof DirectCommandMsg)
+        {
+            return isCommonChange(process((DirectCommandMsg) msg));
         }
         if (msg instanceof SpeakerACommandMsg)
         {
@@ -540,7 +554,6 @@ public class State
             networkServices = msg.getNetworkServices();
             zones = msg.getZones();
             deviceSelectors.clear();
-            presetList = msg.getPresetList();
             for (ReceiverInformationMsg.Selector s : msg.getDeviceSelectors())
             {
                 if (s.isActiveForZone(activeZone))
@@ -548,7 +561,9 @@ public class State
                     deviceSelectors.add(s);
                 }
             }
+            controlList = msg.getControlList();
             toneControls = msg.getToneControls();
+            presetList = msg.getPresetList();
 
             return true;
         }
@@ -683,6 +698,13 @@ public class State
     {
         final boolean changed = hdmiCec != msg.getStatus();
         hdmiCec = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(DirectCommandMsg msg)
+    {
+        final boolean changed = toneDirect != msg.getStatus();
+        toneDirect = msg.getStatus();
         return changed;
     }
 

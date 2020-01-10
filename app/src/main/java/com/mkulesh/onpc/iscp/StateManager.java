@@ -24,6 +24,7 @@ import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
+import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.FileFormatMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
@@ -395,6 +396,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             // Send this request first
             final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
                     ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
+            final String toneDirect = state.isControlExists(DirectCommandMsg.CONTROL) ?
+                    DirectCommandMsg.CODE : null;
             final String[] playStateQueries = new String[]{
                     // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
@@ -405,6 +408,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     MusicOptimizerMsg.CODE,
                     AutoPowerMsg.CODE,
                     HdmiCecMsg.CODE,
+                    toneDirect,
                     PhaseMatchingBassMsg.CODE,
                     SleepSetCommandMsg.CODE,
                     GoogleCastAnalyticsMsg.CODE,
