@@ -1,4 +1,4 @@
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
+This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models are also supported.
 
 The two most popular features of the app are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
@@ -17,6 +17,6 @@ The two most popular features of the app are music playback and sound profile ma
 
 Please note that the app does not support the music streaming from your phone to the network player or the receiver.
 
-At the moment, the app is tested with following devices: ONKYO NS-6130, TX-NR676E, TX-NR686, TX-8150, RN-855; Wireless Audio System NCP-302; Integra DRX-5.2, DTR 30.7, DTR 40.7; Pioneer VSX-LX303; Teac NT-503
+At the moment, the app is tested with following devices: ONKYO NS-6130, TX-NR676E, TX-NR686, TX-8150, RN-855; Wireless Audio System NCP-302; Integra DRX-5.2, DTR 30.7, DTR 40.7; Pioneer VSX-LX303; Teac NT-503, AG-D500
 
 The app is 100% open source. Please feel free to download, explore, fork or contribute to it on https://github.com/mkulesh/onpc

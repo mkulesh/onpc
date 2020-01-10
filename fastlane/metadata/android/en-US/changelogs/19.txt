@@ -1,0 +1,4 @@
+• Added French localization
+• TX-8050: fixed a bug with empty NET items list
+• R-N855: Fixed a bug with sound profile flip-flop
+• Teac AG-D500: added EXTRA1 and EXTRA2 input selectors
