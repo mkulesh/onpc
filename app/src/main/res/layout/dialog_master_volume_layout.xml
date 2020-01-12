@@ -38,6 +38,23 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/tone_direct_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="?dialogPreferredPadding">
+                <CheckBox
+                    android:id="@+id/tone_direct_checkbox"
+                    style="@style/SecondaryTextViewStyle"
+                    android:gravity="left|center_vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                    android:text="@string/tone_direct"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/bass_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

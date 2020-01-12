@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -32,6 +33,7 @@ import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
+import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
@@ -597,13 +599,11 @@ public class MonitorFragment extends BaseFragment
         switch (state.playStatus)
         {
         case STOP:
+        case PAUSE:
             btnPausePlay.setImageResource(R.drawable.cmd_play);
             break;
         case PLAY:
             btnPausePlay.setImageResource(R.drawable.cmd_pause);
-            break;
-        case PAUSE:
-            btnPausePlay.setImageResource(R.drawable.cmd_play);
             break;
         default:
             break;
@@ -751,7 +751,6 @@ public class MonitorFragment extends BaseFragment
                 scale * zone.getVolMax() :
                 Math.max(state.volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
 
-
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_layout, frameView);
 
@@ -805,18 +804,51 @@ public class MonitorFragment extends BaseFragment
         }
 
         // Tone control
-        final boolean isDirectMode = state.listeningMode != null && state.listeningMode.isDirectMode();
+        final LinearLayout toneDirectLayout = frameView.findViewById(R.id.tone_direct_layout);
+        boolean isDirectCmdAvailable = state.toneDirect != DirectCommandMsg.Status.NONE;
+        toneDirectLayout.setVisibility(isDirectCmdAvailable ? View.VISIBLE : View.GONE);
+        if (isDirectCmdAvailable)
+        {
+            final boolean isDirectMode = state.toneDirect == DirectCommandMsg.Status.ON;
 
-        prepareToneControl(ToneCommandMsg.BASS_KEY, R.string.tone_bass,
-                frameView.findViewById(R.id.bass_group),
-                isDirectMode ? ToneCommandMsg.NO_LEVEL : state.bassLevel,
-                ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+            final LinearLayout bassGroup = prepareToneControl(ToneCommandMsg.BASS_KEY, R.string.tone_bass,
+                    frameView.findViewById(R.id.bass_group),
+                    state.bassLevel,
+                    ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+            bassGroup.setVisibility(isDirectMode ? View.GONE : View.VISIBLE);
 
-        prepareToneControl(ToneCommandMsg.TREBLE_KEY, R.string.tone_treble,
-                frameView.findViewById(R.id.treble_group),
-                isDirectMode ? ToneCommandMsg.NO_LEVEL : state.trebleLevel,
-                ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+            final LinearLayout trebleGroup = prepareToneControl(ToneCommandMsg.TREBLE_KEY, R.string.tone_treble,
+                    frameView.findViewById(R.id.treble_group),
+                    state.trebleLevel,
+                    ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+            trebleGroup.setVisibility(isDirectMode ? View.GONE : View.VISIBLE);
 
+            final CheckBox toneDirectCheckBox = frameView.findViewById(R.id.tone_direct_checkbox);
+            toneDirectCheckBox.setChecked(isDirectMode);
+            toneDirectCheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+            {
+                bassGroup.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+                trebleGroup.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+                activity.getStateManager().sendMessage(new DirectCommandMsg(
+                        isChecked ? DirectCommandMsg.Status.ON : DirectCommandMsg.Status.OFF));
+            });
+        }
+        else
+        {
+            final boolean isDirectMode = state.listeningMode != null && state.listeningMode.isDirectMode();
+
+            prepareToneControl(ToneCommandMsg.BASS_KEY, R.string.tone_bass,
+                    frameView.findViewById(R.id.bass_group),
+                    isDirectMode ? ToneCommandMsg.NO_LEVEL : state.bassLevel,
+                    ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+
+            prepareToneControl(ToneCommandMsg.TREBLE_KEY, R.string.tone_treble,
+                    frameView.findViewById(R.id.treble_group),
+                    isDirectMode ? ToneCommandMsg.NO_LEVEL : state.trebleLevel,
+                    ToneCommandMsg.NO_LEVEL, ToneCommandMsg.ZONE_COMMANDS.length);
+        }
+
+        // Level for single channels
         prepareToneControl(SubwooferLevelCommandMsg.KEY, R.string.subwoofer_level,
                 frameView.findViewById(R.id.subwoofer_level_group), state.subwooferLevel,
                 SubwooferLevelCommandMsg.NO_LEVEL, 1);
@@ -839,7 +871,7 @@ public class MonitorFragment extends BaseFragment
     }
 
     @SuppressLint("SetTextI18n")
-    private void prepareToneControl(final String toneKey, final int labelId, final LinearLayout toneGroup,
+    private LinearLayout prepareToneControl(final String toneKey, final int labelId, final LinearLayout toneGroup,
                                     int toneLevel, final int noLevel, final int maxZone)
     {
         final ReceiverInformationMsg.ToneControl toneControl =
@@ -850,7 +882,7 @@ public class MonitorFragment extends BaseFragment
         toneGroup.setVisibility(isTone ? View.VISIBLE : View.GONE);
         if (!isTone)
         {
-            return;
+            return toneGroup;
         }
 
         final String labelText = activity.getString(labelId);
@@ -928,6 +960,8 @@ public class MonitorFragment extends BaseFragment
                 }
             }
         });
+
+        return toneGroup;
     }
 
 

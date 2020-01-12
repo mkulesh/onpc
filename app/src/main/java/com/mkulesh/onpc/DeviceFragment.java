@@ -27,7 +27,6 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
-import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
@@ -110,7 +109,6 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.music_optimizer_toggle, new MusicOptimizerMsg(MusicOptimizerMsg.Status.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
         prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
-        prepareImageButton(R.id.tone_direct_toggle, new DirectCommandMsg(DirectCommandMsg.Status.TOGGLE));
         prepareImageButton(R.id.phase_matching_bass_toggle, new PhaseMatchingBassMsg(PhaseMatchingBassMsg.Status.TOGGLE));
         prepareImageButton(R.id.sleep_time_toggle, null);
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
@@ -136,7 +134,6 @@ public class DeviceFragment extends BaseFragment
                     R.id.device_digital_filter_layout,
                     R.id.device_auto_power_layout,
                     R.id.hdmi_cec_layout,
-                    R.id.tone_direct_layout,
                     R.id.phase_matching_bass_layout,
                     R.id.sleep_time_layout,
                     R.id.speaker_ab_layout,
@@ -218,10 +215,6 @@ public class DeviceFragment extends BaseFragment
         // HDMI CEC
         prepareSettingPanel(state, state.hdmiCec != HdmiCecMsg.Status.NONE,
                 R.id.hdmi_cec_layout, state.hdmiCec.getDescriptionId(), null);
-
-        // Tone Direct Command
-        prepareSettingPanel(state, state.toneDirect != DirectCommandMsg.Status.NONE,
-                R.id.tone_direct_layout, state.toneDirect.getDescriptionId(), null);
 
         // Phase Matching Bass Command
         prepareSettingPanel(state, state.phaseMatchingBass != PhaseMatchingBassMsg.Status.NONE,

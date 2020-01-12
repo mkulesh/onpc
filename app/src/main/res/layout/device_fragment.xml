@@ -224,25 +224,6 @@
             </LinearLayout>
 
             <LinearLayout style="@style/DeviceRowStyle"
-                    android:id="@+id/tone_direct_layout" >
-
-                <TextView
-                        style="@style/DeviceLabelViewStyle"
-                        android:text="@string/device_tone_direct" />
-
-                <TextView
-                        style="@style/DeviceValueViewStyle"
-                        android:tag="VALUE"
-                        android:gravity="center" />
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                        style="@style/ImageButtonSecondaryStyle"
-                        android:id="@+id/tone_direct_toggle"
-                        android:src="@drawable/wrap_around"
-                        android:contentDescription="@string/device_two_way_switch_toggle" />
-            </LinearLayout>
-            
-            <LinearLayout style="@style/DeviceRowStyle"
                 android:id="@+id/phase_matching_bass_layout" >
 
                 <TextView
