@@ -33,9 +33,7 @@ import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
-import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
-import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
@@ -562,7 +560,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 if (event.getAction() == KeyEvent.ACTION_DOWN)
                 {
                     Logging.info(this, "Key event: " + event);
-                    changeMasterVolume(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
+                    getStateManager().changeMasterVolume(configuration.getSoundControl(),
+                            event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
                     return true;
                 }
                 else if (event.getAction() == KeyEvent.ACTION_UP)
@@ -573,26 +572,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             }
         }
         return super.dispatchKeyEvent(event);
-    }
-
-    private void changeMasterVolume(boolean isUp)
-    {
-        switch (configuration.getSoundControl())
-        {
-        case "none":
-            // nothing to do
-            break;
-        case "external-amplifier":
-            getStateManager().sendMessage(new AmpOperationCommandMsg(isUp ?
-                    AmpOperationCommandMsg.Command.MVLUP.getCode() :
-                    AmpOperationCommandMsg.Command.MVLDOWN.getCode()));
-            break;
-        case "device":
-            final int zone = getStateManager().getState().getActiveZone();
-            getStateManager().sendMessage(new MasterVolumeMsg(zone, isUp ?
-                    MasterVolumeMsg.Command.UP : MasterVolumeMsg.Command.DOWN));
-            break;
-        }
     }
 
     @NonNull

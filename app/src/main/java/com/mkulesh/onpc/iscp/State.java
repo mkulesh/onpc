@@ -123,6 +123,13 @@ public class State
     public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
 
     // Sound control
+    public enum SoundControlType
+    {
+        DEVICE,
+        RI_AMP,
+        NONE
+    }
+
     public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
     public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
     public int bassLevel = ToneCommandMsg.NO_LEVEL;
@@ -1300,5 +1307,20 @@ public class State
             serviceIcon = inputType.getImageId();
         }
         return serviceIcon;
+    }
+
+    public SoundControlType soundControlType(final String config, ReceiverInformationMsg.Zone zone)
+    {
+        switch (config)
+        {
+            case "auto":
+                return (zone != null && zone.getVolMax() == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE;
+            case "device":
+                return SoundControlType.DEVICE;
+            case "external-amplifier":
+                return SoundControlType.RI_AMP;
+            default:
+                return SoundControlType.NONE;
+        }
     }
 }

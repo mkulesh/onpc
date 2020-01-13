@@ -131,20 +131,8 @@ public class MonitorFragment extends BaseFragment
         fmDabButtons.add(rootView.findViewById(R.id.btn_tuning_down));
         prepareFmDabButtons();
 
-        // Amplifier command buttons
-        switch (activity.getConfiguration().getSoundControl())
-        {
-        case "none":
-            // nothing to do
-            break;
-        case "external-amplifier":
-            prepareAmplifierButtons();
-            break;
-        case "device":
-        case "auto":
-            prepareDeviceSoundButtons();
-            break;
-        }
+        // Audio control buttons
+        prepareDeviceSoundButtons();
 
         cover = rootView.findViewById(R.id.tv_cover);
         cover.setContentDescription(activity.getResources().getString(R.string.tv_display_mode));
@@ -392,17 +380,19 @@ public class MonitorFragment extends BaseFragment
         Logging.info(this, "Updating playback monitor");
 
         // Auto volume control
-        final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-        if (activity.getConfiguration().getSoundControl().equals("auto"))
+        final State.SoundControlType soundControl = state.soundControlType(
+                activity.getConfiguration().getSoundControl(), state.getActiveZoneInfo());
+        switch (soundControl)
         {
-            if (zone != null && zone.getVolMax() == 0)
-            {
+            case RI_AMP:
                 prepareAmplifierButtons();
-            }
-            else
-            {
+                break;
+            case DEVICE:
                 prepareDeviceSoundButtons();
-            }
+                break;
+            default:
+                // Nothing to do
+                break;
         }
 
         // Text (album and artist)

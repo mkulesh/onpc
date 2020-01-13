@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.StrictMode;
 
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
+import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
@@ -630,6 +631,29 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 multiroomChannels.put(msg.getHost(), m);
                 m.start();
             }
+        }
+    }
+
+    public void changeMasterVolume(@NonNull final String soundControlStr, boolean isUp)
+    {
+        final State.SoundControlType soundControl = state.soundControlType(
+                soundControlStr, state.getActiveZoneInfo());
+
+        switch (soundControl)
+        {
+            case DEVICE:
+                sendMessage(new MasterVolumeMsg(getState().getActiveZone(), isUp ?
+                        MasterVolumeMsg.Command.UP :
+                        MasterVolumeMsg.Command.DOWN));
+                break;
+            case RI_AMP:
+                sendMessage(new AmpOperationCommandMsg(isUp ?
+                        AmpOperationCommandMsg.Command.MVLUP.getCode() :
+                        AmpOperationCommandMsg.Command.MVLDOWN.getCode()));
+                break;
+            case NONE:
+                // Nothing to do
+                break;
         }
     }
 }
