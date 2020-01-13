@@ -177,14 +177,24 @@ abstract public class BaseFragment extends Fragment
         return b;
     }
 
-    void prepareButton(
-            @NonNull AppCompatImageButton b, final ISCPMessage msg, @DrawableRes final int imageId, @StringRes final int descriptionId)
+    void prepareButton(@NonNull AppCompatImageButton b,
+                       @DrawableRes final int imageId,
+                       @StringRes final int descriptionId)
     {
         b.setImageResource(imageId);
         if (descriptionId != -1)
         {
             b.setContentDescription(activity.getResources().getString(descriptionId));
         }
+    }
+
+    void prepareButton(@NonNull AppCompatImageButton b,
+                       final ISCPMessage msg,
+                       @DrawableRes final int imageId,
+                       @StringRes final int descriptionId)
+    {
+        prepareButton(b, imageId, descriptionId);
+        b.setImageResource(imageId);
         prepareButtonListeners(b, msg);
         setButtonEnabled(b, false);
     }

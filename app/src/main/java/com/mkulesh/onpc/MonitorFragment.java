@@ -32,9 +32,11 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
+import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
+import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -536,31 +538,47 @@ public class MonitorFragment extends BaseFragment
     {
         setButtonsVisibility(fmDabButtons, View.GONE);
         setButtonsVisibility(playbackButtons, View.VISIBLE);
-        setButtonsEnabled(playbackButtons, true);
+
+        final boolean isCdInput = (state.inputType == InputSelectorMsg.InputType.TV_CD) &&
+                (state.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
+                        state.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
 
         for (AppCompatImageButton b : playbackButtons)
         {
-            final OperationCommandMsg msg = new OperationCommandMsg(state.getActiveZone(), (String) (b.getTag()));
-            prepareButtonListeners(b, null, () ->
+            final String opCommand = (String) (b.getTag());
+            if (isCdInput)
             {
-                if (activity.getStateManager() != null)
+                final String ccdCommand = CdPlayerOperationCommandMsg.convertOpCommand(opCommand);
+                final CdPlayerOperationCommandMsg msg = new CdPlayerOperationCommandMsg(ccdCommand);
+                prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+            }
+            else
+            {
+                final OperationCommandMsg msg = new OperationCommandMsg(state.getActiveZone(), opCommand);
+                prepareButton(b, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+                prepareButtonListeners(b, null, () ->
                 {
-                    if (!state.isPlaybackMode() && state.isUsb() &&
-                            (msg.getCommand() == OperationCommandMsg.Command.TRDN ||
-                                    msg.getCommand() == OperationCommandMsg.Command.TRUP))
+                    if (activity.getStateManager() != null)
                     {
-                        // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
-                        // in playback mode. Therefore, switch to this mode before
-                        // send OperationCommandMsg if current mode is LIST
-                        activity.getStateManager().sendTrackMsg(msg, false);
+                        if (!state.isPlaybackMode() && state.isUsb() &&
+                                (msg.getCommand() == OperationCommandMsg.Command.TRDN ||
+                                        msg.getCommand() == OperationCommandMsg.Command.TRUP))
+                        {
+                            // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
+                            // in playback mode. Therefore, switch to this mode before
+                            // send OperationCommandMsg if current mode is LIST
+                            activity.getStateManager().sendTrackMsg(msg, false);
+                        }
+                        else
+                        {
+                            activity.getStateManager().sendMessage(msg);
+                        }
                     }
-                    else
-                    {
-                        activity.getStateManager().sendMessage(msg);
-                    }
-                }
-            });
+                });
+            }
         }
+
+        setButtonsEnabled(playbackButtons, true);
 
         btnRepeat.setImageResource(state.repeatStatus.getImageId());
         if (state.repeatStatus == PlayStatusMsg.RepeatStatus.DISABLE)

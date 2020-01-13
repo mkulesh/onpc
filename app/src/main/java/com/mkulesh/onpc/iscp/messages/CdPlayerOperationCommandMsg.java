@@ -28,6 +28,10 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
 {
     public final static String CODE = "CCD";
 
+    // Controls that allow the control of build-in CD player via CCD command
+    public final static String CONTROL_CD_INT1 = "CD Control";
+    public final static String CONTROL_CD_INT2 = "CD Control(NewRemote)";
+
     public enum Command implements StringParameterIf
     {
         POWER(R.string.cd_cmd_power, R.drawable.menu_power_standby),
@@ -163,5 +167,19 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    @NonNull
+    public static String convertOpCommand(@NonNull final String opCommand)
+    {
+        switch (opCommand)
+        {
+            case "TRDN":
+                return Command.SKIP_R.getCode();
+            case "TRUP":
+                return Command.SKIP_F.getCode();
+            default:
+                return opCommand;
+        }
     }
 }
