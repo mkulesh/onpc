@@ -22,6 +22,7 @@ import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
@@ -305,7 +306,7 @@ public class State
         zones = ReceiverInformationMsg.getDefaultZones();
     }
 
-    public boolean isControlExists(@NonNull final String control)
+    boolean isControlExists(@NonNull final String control)
     {
         return controlList != null && controlList.contains(control);
     }
@@ -1322,5 +1323,12 @@ public class State
             default:
                 return SoundControlType.NONE;
         }
+    }
+
+    public boolean isCdInput()
+    {
+        return (inputType == InputSelectorMsg.InputType.TV_CD) &&
+                (isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
+                        isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
     }
 }

@@ -21,11 +21,12 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
 /*
- * NET/USB Play Status (3 letters)
+ * NET/USB/CD Play Status (3 letters)
  */
 public class PlayStatusMsg extends ISCPMessage
 {
     public final static String CODE = "NST";
+    public final static String CD_CODE = "CST";
 
     /*
      * Play Status: "S": STOP, "P": Play, "p": Pause, "F": FF, "R": FR, "E": EOF

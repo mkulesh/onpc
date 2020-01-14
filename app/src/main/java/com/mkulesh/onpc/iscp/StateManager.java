@@ -431,6 +431,14 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             return true;
         }
 
+        if (msg instanceof InputSelectorMsg && state.isCdInput())
+        {
+            final String[] cdStateQueries = new String[]{
+                    PlayStatusMsg.CD_CODE
+            };
+            sendQueries(cdStateQueries, "requesting CD state...");
+        }
+
         if (msg instanceof PlayStatusMsg && playStatus != state.playStatus)
         {
             if (state.isPlaying())

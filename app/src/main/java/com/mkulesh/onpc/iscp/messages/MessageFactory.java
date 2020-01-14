@@ -58,6 +58,7 @@ public class MessageFactory
         case TrackInfoMsg.CODE:
             return new TrackInfoMsg(raw);
         case PlayStatusMsg.CODE:
+        case PlayStatusMsg.CD_CODE:
             return new PlayStatusMsg(raw);
         case ListTitleInfoMsg.CODE:
             return new ListTitleInfoMsg(raw);

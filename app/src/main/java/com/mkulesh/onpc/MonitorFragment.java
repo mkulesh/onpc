@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
@@ -36,7 +37,6 @@ import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
-import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -539,14 +539,21 @@ public class MonitorFragment extends BaseFragment
         setButtonsVisibility(fmDabButtons, View.GONE);
         setButtonsVisibility(playbackButtons, View.VISIBLE);
 
-        final boolean isCdInput = (state.inputType == InputSelectorMsg.InputType.TV_CD) &&
-                (state.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
-                        state.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
-
         for (AppCompatImageButton b : playbackButtons)
         {
-            final String opCommand = (String) (b.getTag());
-            if (isCdInput)
+            String opCommand = (String) (b.getTag());
+
+            if (b.getId() == btnPausePlay.getId())
+            {
+                // For common btnPausePlay button, set desired command (PLAY or PAUSE)
+                // depending on current play state
+                final boolean isPaused = (state.playStatus == PlayStatusMsg.PlayStatus.STOP ||
+                        state.playStatus == PlayStatusMsg.PlayStatus.PAUSE);
+                opCommand = isPaused ? OperationCommandMsg.Command.PLAY.toString() :
+                        OperationCommandMsg.Command.PAUSE.toString();
+            }
+
+            if (state.isCdInput())
             {
                 final String ccdCommand = CdPlayerOperationCommandMsg.convertOpCommand(opCommand);
                 final CdPlayerOperationCommandMsg msg = new CdPlayerOperationCommandMsg(ccdCommand);
@@ -554,8 +561,13 @@ public class MonitorFragment extends BaseFragment
             }
             else
             {
-                final OperationCommandMsg msg = new OperationCommandMsg(state.getActiveZone(), opCommand);
-                prepareButton(b, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+                final OperationCommandMsg.Command netCommand = (OperationCommandMsg.Command)
+                        ISCPMessage.searchParameter(opCommand, OperationCommandMsg.Command.values(), null);
+                prepareButton(b, netCommand.getImageId(), netCommand.getDescriptionId());
+                // To start play in normal mode, PAUSE shall be issue instead of PLAY command
+                final OperationCommandMsg msg = (netCommand == OperationCommandMsg.Command.PLAY) ?
+                        new OperationCommandMsg(state.getActiveZone(), OperationCommandMsg.Command.PAUSE.toString()) :
+                        new OperationCommandMsg(state.getActiveZone(), netCommand.toString());
                 prepareButtonListeners(b, null, () ->
                 {
                     if (activity.getStateManager() != null)
@@ -576,9 +588,8 @@ public class MonitorFragment extends BaseFragment
                     }
                 });
             }
+            setButtonEnabled(b, true);
         }
-
-        setButtonsEnabled(playbackButtons, true);
 
         btnRepeat.setImageResource(state.repeatStatus.getImageId());
         if (state.repeatStatus == PlayStatusMsg.RepeatStatus.DISABLE)
@@ -603,19 +614,6 @@ public class MonitorFragment extends BaseFragment
 
         setButtonEnabled(btnPrevious, state.isPlaying());
         setButtonEnabled(btnNext, state.isPlaying());
-
-        switch (state.playStatus)
-        {
-        case STOP:
-        case PAUSE:
-            btnPausePlay.setImageResource(R.drawable.cmd_play);
-            break;
-        case PLAY:
-            btnPausePlay.setImageResource(R.drawable.cmd_pause);
-            break;
-        default:
-            break;
-        }
         setButtonEnabled(btnPausePlay, state.isOn());
     }
 
