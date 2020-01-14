@@ -24,6 +24,7 @@ import "messages/CenterLevelCommandMsg.dart";
 import "messages/CustomPopupMsg.dart";
 import "messages/DeviceNameMsg.dart";
 import "messages/DigitalFilterMsg.dart";
+import "messages/DirectCommandMsg.dart";
 import "messages/DimmerLevelMsg.dart";
 import "messages/FileFormatMsg.dart";
 import "messages/FirmwareUpdateMsg.dart";
@@ -360,6 +361,10 @@ class State
         else if (msg is ToneCommandMsg)
         {
             return _isChange(ToneCommandMsg.CODE, _soundControlState.processToneCommand(msg));
+        }
+        else if (msg is DirectCommandMsg)
+        {
+            return _isChange(DirectCommandMsg.CODE, _soundControlState.processDirectCommand(msg));
         }
         else if (msg is SubwooferLevelCommandMsg)
         {

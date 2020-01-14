@@ -364,7 +364,7 @@ class StateManager
             // Send this request first
             sendQueries(_state.playbackState.getQueries(state.getActiveZone));
             sendQueries(_state.deviceSettingsState.getQueries(state.getActiveZone));
-            sendQueries(_state.soundControlState.getQueries(state.getActiveZone));
+            sendQueries(_state.soundControlState.getQueries(state.getActiveZone, state.receiverInformation));
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
             _requestListState();
             return changed;

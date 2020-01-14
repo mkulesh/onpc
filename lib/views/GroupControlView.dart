@@ -118,11 +118,6 @@ class GroupControlView extends UpdatableView
                 CustomTextLabel.small(description)
             ]);
 
-        final Widget timerSand = CustomImageButton.small(
-            Drawables.timer_sand, "",
-            padding: EdgeInsets.symmetric(horizontal: ButtonDimens.textButtonPadding),
-            isEnabled: false);
-
         final Widget checkBox = Checkbox(
             value: attached,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -135,7 +130,7 @@ class GroupControlView extends UpdatableView
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                    stateManager.waitingForData ? timerSand : checkBox,
+                    stateManager.waitingForData ? createTimerSand() : checkBox,
                     result
                 ]);
 

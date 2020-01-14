@@ -16,12 +16,14 @@ import 'package:sprintf/sprintf.dart';
 import "../../utils/Logging.dart";
 import "../messages/AudioMutingMsg.dart";
 import "../messages/CenterLevelCommandMsg.dart";
+import "../messages/DirectCommandMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/ListeningModeMsg.dart";
 import "../messages/MasterVolumeMsg.dart";
 import "../messages/ReceiverInformationMsg.dart";
 import "../messages/SubwooferLevelCommandMsg.dart";
 import "../messages/ToneCommandMsg.dart";
+import "ReceiverInformation.dart";
 
 enum SoundControlType
 {
@@ -55,6 +57,11 @@ class SoundControlState
     int get trebleLevel
     => _trebleLevel;
 
+    EnumItem<DirectCommand> _toneDirect;
+
+    EnumItem<DirectCommand> get toneDirect
+    => _toneDirect;
+
     // Levels
     int _subwooferLevel;
 
@@ -77,7 +84,7 @@ class SoundControlState
         clear();
     }
 
-    List<String> getQueries(int zone)
+    List<String> getQueries(int zone, final ReceiverInformation ri)
     {
         Logging.info(this, "Requesting data for zone " + zone.toString() + "...");
         final List<String> cmd = [
@@ -92,6 +99,11 @@ class SoundControlState
         {
             cmd.add(ToneCommandMsg.ZONE_COMMANDS[zone]);
         }
+
+        if (ri.isControlExists(DirectCommandMsg.CONTROL))
+        {
+            cmd.add(DirectCommandMsg.CODE);
+        }
         return cmd;
     }
 
@@ -101,6 +113,7 @@ class SoundControlState
         _volumeLevel = MasterVolumeMsg.NO_LEVEL;
         _bassLevel = ToneCommandMsg.NO_LEVEL;
         _trebleLevel = ToneCommandMsg.NO_LEVEL;
+        _toneDirect = DirectCommandMsg.ValueEnum.defValue;
         _subwooferLevel = SubwooferLevelCommandMsg.NO_LEVEL;
         _centerLevel = CenterLevelCommandMsg.NO_LEVEL;
         _listeningMode = ListeningModeMsg.ValueEnum.defValue;
@@ -127,6 +140,13 @@ class SoundControlState
                 (msg.getTrebleLevel != ToneCommandMsg.NO_LEVEL && _trebleLevel != msg.getTrebleLevel);
         _bassLevel = msg.getBassLevel;
         _trebleLevel = msg.getTrebleLevel;
+        return changed;
+    }
+
+    bool processDirectCommand(DirectCommandMsg msg)
+    {
+        final bool changed = _toneDirect.key != msg.getValue.key;
+        _toneDirect = msg.getValue;
         return changed;
     }
 

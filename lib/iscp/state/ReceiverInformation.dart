@@ -255,5 +255,10 @@ class ReceiverInformation
 
     Preset getPreset(int preset)
     => _presetList.firstWhere((p) => p.getId == preset, orElse: () => null);
+
+    bool isControlExists(final String control)
+    {
+        return _controlList.isNotEmpty && _controlList.contains(control);
+    }
 }
 

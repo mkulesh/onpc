@@ -22,6 +22,7 @@ import "CustomPopupMsg.dart";
 import "DeviceNameMsg.dart";
 import "DigitalFilterMsg.dart";
 import "DimmerLevelMsg.dart";
+import "DirectCommandMsg.dart";
 import "DisplayModeMsg.dart";
 import "FileFormatMsg.dart";
 import "FirmwareUpdateMsg.dart";
@@ -156,6 +157,8 @@ class MessageFactory
             case ToneCommandMsg.ZONE2_CODE:
             case ToneCommandMsg.ZONE3_CODE:
                 return ToneCommandMsg(raw);
+            case DirectCommandMsg.CODE:
+                return DirectCommandMsg(raw);
             case SubwooferLevelCommandMsg.CODE:
                 return SubwooferLevelCommandMsg(raw);
             case CenterLevelCommandMsg.CODE:

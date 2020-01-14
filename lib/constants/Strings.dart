@@ -971,6 +971,13 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
         /*fr*/ "Diminution volume d\'1dB"];
     static String get master_volume_down1 => l_master_volume_down1[_language];
 
+    static const List<String> l_tone_direct = [
+        /*en*/ "Tone Direct",
+        /*ru*/ "DIRECT",
+        /*de*/ "Ton Direct",
+        /*fr*/ "DIRECT"];
+    static String get tone_direct => l_tone_direct[_language];
+
     static const List<String> l_preset_command_up = [
         /*en*/ "Sets preset wrap-around up",
         /*ru*/ "Следующий канал",

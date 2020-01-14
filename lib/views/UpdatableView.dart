@@ -15,12 +15,14 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 
+import "../constants/Drawables.dart";
 import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Themes.dart";
 import "../iscp/State.dart" as remote_state;
 import "../iscp/StateManager.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomImageButton.dart";
 
 class ViewContext
 {
@@ -60,6 +62,12 @@ abstract class UpdatableView
 
     remote_state.State get state
     => _viewContext.stateManager.state;
+
+    Widget createTimerSand()
+    => CustomImageButton.small(
+        Drawables.timer_sand, "",
+        padding: EdgeInsets.symmetric(horizontal: ButtonDimens.textButtonPadding),
+        isEnabled: false);
 }
 
 class UpdatableWidget extends StatefulWidget

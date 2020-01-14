@@ -15,9 +15,13 @@ import "dart:async";
 import "dart:math";
 
 import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 
+import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
+import "../iscp/StateManager.dart";
 import "../iscp/messages/CenterLevelCommandMsg.dart";
+import "../iscp/messages/DirectCommandMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/SubwooferLevelCommandMsg.dart";
@@ -25,13 +29,16 @@ import "../iscp/messages/ToneCommandMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomProgressBar.dart";
+import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
 class AudioControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
+        StateManager.WAITING_FOR_DATA_EVENT,
         MasterVolumeMsg.CODE,
         ToneCommandMsg.CODE,
+        DirectCommandMsg.CODE,
         SubwooferLevelCommandMsg.CODE,
         CenterLevelCommandMsg.CODE
     ];
@@ -69,22 +76,45 @@ class AudioControlView extends UpdatableView
         }
 
         // Bass and treble control
-        if (!soundControl.isDirectListeningMode && zone < ToneCommandMsg.ZONE_COMMANDS.length)
+        final bool isDirectCmdAvailable = soundControl.toneDirect.key != DirectCommand.NONE;
+        if (isDirectCmdAvailable)
         {
-            // Bass
-            final Widget bassControl = _createControl(ToneCommandMsg.BASS_KEY,
-                soundControl.bassLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_bass);
-            if (bassControl != null)
+            final bool isDirectMode = soundControl.toneDirect.key == DirectCommand.ON;
+
+            final Widget checkBox = Checkbox(
+                value: isDirectMode,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (bool newValue)
+                => stateManager.sendMessage(DirectCommandMsg.output(DirectCommand.TOGGLE), waitingForData: true));
+
+            Widget checkBoxRow = Padding(padding: EdgeInsets.only(bottom: DialogDimens.rowPadding.vertical), child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                    CustomTextLabel.normal(Strings.tone_direct),
+                    stateManager.waitingForData ? createTimerSand() : checkBox
+                ]));
+
+            if (!stateManager.waitingForData)
             {
-                controls.add(bassControl);
+                checkBoxRow = InkWell(
+                    child: checkBoxRow,
+                    onTap: ()
+                    => stateManager.sendMessage(DirectCommandMsg.output(DirectCommand.TOGGLE), waitingForData: true)
+                );
             }
-            // Treble
-            final Widget trebleControl = _createControl(ToneCommandMsg.TREBLE_KEY,
-                soundControl.trebleLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_treble);
-            if (trebleControl != null)
+
+            controls.add(checkBoxRow);
+
+            if (!isDirectMode)
             {
-                controls.add(trebleControl);
+                _addToneControls(controls, soundControl);
             }
+        }
+        else if (!soundControl.isDirectListeningMode && zone < ToneCommandMsg.ZONE_COMMANDS.length)
+        {
+            _addToneControls(controls, soundControl);
         }
 
         // Subwoofer and Center Level
@@ -154,5 +184,23 @@ class AudioControlView extends UpdatableView
             );
         }
         return null;
+    }
+
+    void _addToneControls(List<Widget> controls, SoundControlState soundControl)
+    {
+        // Bass
+        final Widget bassControl = _createControl(ToneCommandMsg.BASS_KEY,
+            soundControl.bassLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_bass);
+        if (bassControl != null)
+        {
+            controls.add(bassControl);
+        }
+        // Treble
+        final Widget trebleControl = _createControl(ToneCommandMsg.TREBLE_KEY,
+            soundControl.trebleLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_treble);
+        if (trebleControl != null)
+        {
+            controls.add(trebleControl);
+        }
     }
 }
