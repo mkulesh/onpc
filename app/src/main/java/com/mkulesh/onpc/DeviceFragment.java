@@ -78,6 +78,8 @@ public class DeviceFragment extends BaseFragment
         }
     }
 
+    private EditText friendlyName = null;
+
     public DeviceFragment()
     {
         // Empty constructor required for fragment subclasses
@@ -90,7 +92,7 @@ public class DeviceFragment extends BaseFragment
 
         // Friendly name
         {
-            final EditText friendlyName = rootView.findViewById(R.id.device_edit_friendly_name);
+            friendlyName = rootView.findViewById(R.id.device_edit_friendly_name);
             final AppCompatImageButton b = rootView.findViewById(R.id.device_change_friendly_name);
             prepareButtonListeners(b, null, () ->
             {
@@ -98,9 +100,20 @@ public class DeviceFragment extends BaseFragment
                 {
                     activity.getStateManager().sendMessage(
                             new FriendlyNameMsg(friendlyName.getText().toString()));
+                    // #119: Improve clearing focus for friendly name edit field
+                    friendlyName.clearFocus();
                 }
             });
             setButtonEnabled(b, true);
+
+            // #119: Improve clearing focus for friendly name edit field
+            // OnClick for background layout: clear focus for friendly name text field
+            {
+                LinearLayout l = rootView.findViewById(R.id.device_background_layout);
+                l.setClickable(true);
+                l.setEnabled(true);
+                l.setOnClickListener((v) -> friendlyName.clearFocus());
+            }
         }
 
         prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
@@ -159,7 +172,7 @@ public class DeviceFragment extends BaseFragment
 
     private void updateDeviceProperties(@NonNull final State state)
     {
-        ((EditText) rootView.findViewById(R.id.device_edit_friendly_name)).setText(state.getDeviceName(true));
+        friendlyName.setText(state.getDeviceName(true));
 
         if (!state.deviceProperties.isEmpty())
         {
@@ -307,8 +320,6 @@ public class DeviceFragment extends BaseFragment
             return;
         }
 
-        final EditText deviceName = rootView.findViewById(R.id.device_edit_friendly_name);
-
         rootView.findViewById(R.id.settings_title).setVisibility(View.VISIBLE);
         rootView.findViewById(R.id.settings_divider).setVisibility(View.VISIBLE);
         layout.setVisibility(View.VISIBLE);
@@ -331,7 +342,7 @@ public class DeviceFragment extends BaseFragment
                 {
                     // In order to avoid scrolling up if device name field is focused,
                     // clear its focus
-                    prepareButtonListeners(child, msg, deviceName::clearFocus);
+                    prepareButtonListeners(child, msg, friendlyName::clearFocus);
                 }
                 setButtonEnabled(child, state.isOn());
                 if (state.isOn())
@@ -356,7 +367,7 @@ public class DeviceFragment extends BaseFragment
     private void prepareImageButton(@IdRes int buttonId, final ISCPMessage msg)
     {
         final AppCompatImageButton b = rootView.findViewById(buttonId);
-        prepareButtonListeners(b, msg);
+        prepareButtonListeners(b, msg, friendlyName::clearFocus);
         setButtonEnabled(b, false);
     }
 
