@@ -50,7 +50,9 @@ class InputSelectorView extends UpdatableView
         buttons.add(CustomImageButton.small(
             StateManager.commandTopMsg.getValue.icon,
             StateManager.commandTopMsg.getValue.description,
-            padding: EdgeInsets.only(right: ButtonDimens.textButtonPadding),
+            padding: EdgeInsets.symmetric(
+                vertical: ButtonDimens.textButtonPadding,
+                horizontal: MediaListDimens.itemPadding),
             onPressed: ()
             => stateManager.sendMessage(StateManager.commandTopMsg, waitingForData: true),
             isEnabled: state.isOn && !state.mediaListState.isTopLayer()

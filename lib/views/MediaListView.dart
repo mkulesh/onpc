@@ -197,12 +197,13 @@ class MediaListView extends UpdatableView
         final bool isMoved = _moveFrom >= 0 && cmd is XmlListItemMsg && cmd.getMessageId == _moveFrom;
         return PositionedTapDetector(
             child: ListTile(
-                contentPadding: ActivityDimens.noPadding,
+                contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
                 dense: true,
                 leading: CustomImageButton.normal(
                     icon, null,
                     isEnabled: iconEnabled || isPlaying,
                     isSelected: isPlaying,
+                    padding: ActivityDimens.noPadding,
                 ),
                 title: CustomTextLabel.normal(title, color: isMoved ? td.accentColor : null),
                 onTap: ()

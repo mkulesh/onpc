@@ -145,6 +145,10 @@ class MediaListDimens
     // Padding of header line
     static EdgeInsetsGeometry get headerPadding
     => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0));
+
+    // Padding of media item
+    static double get itemPadding
+    => DimensTransform.scale(5);
 }
 
 class DialogDimens
