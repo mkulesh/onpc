@@ -74,15 +74,13 @@ class DeviceSettingsView extends UpdatableView
 
         Logging.info(this, "rebuild widget");
 
-        final ThemeData td = Theme.of(context);
-
         final List<TableRow> rows = List();
 
         final DeviceSettingsState ds = state.deviceSettingsState;
 
         if (ds.dimmerLevel.key != DimmerLevel.NONE)
         {
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_dimmer_level,
                 ds.dimmerLevel.description,
                 Strings.device_dimmer_level_toggle,
@@ -91,7 +89,7 @@ class DeviceSettingsView extends UpdatableView
 
         if (ds.digitalFilter.key != DigitalFilter.NONE)
         {
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_digital_filter,
                 ds.digitalFilter.description,
                 Strings.device_digital_filter_toggle,
@@ -100,7 +98,7 @@ class DeviceSettingsView extends UpdatableView
 
         if (ds.musicOptimizer.key != MusicOptimizer.NONE)
         {
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_music_optimizer,
                 ds.musicOptimizer.description,
                 Strings.device_two_way_switch_toggle,
@@ -109,7 +107,7 @@ class DeviceSettingsView extends UpdatableView
 
         if (ds.autoPower.key != AutoPower.NONE)
         {
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_auto_power,
                 ds.autoPower.description,
                 Strings.device_two_way_switch_toggle,
@@ -118,7 +116,7 @@ class DeviceSettingsView extends UpdatableView
 
         if (ds.hdmiCec.key != HdmiCec.NONE)
         {
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_hdmi_cec,
                 ds.hdmiCec.description,
                 Strings.device_two_way_switch_toggle,
@@ -127,7 +125,7 @@ class DeviceSettingsView extends UpdatableView
 
         if (ds.phaseMatchingBass.key != PhaseMatchingBass.NONE)
         {
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_phase_matching_bass,
                 ds.phaseMatchingBass.description,
                 Strings.device_two_way_switch_toggle,
@@ -139,7 +137,7 @@ class DeviceSettingsView extends UpdatableView
             final String description = ds.sleepTime == SleepSetCommandMsg.SLEEP_OFF ?
                 Strings.device_two_way_switch_off :
                 ds.sleepTime.toString() + " " + Strings.device_sleep_time_minutes;
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_sleep_time,
                 description,
                 Strings.device_two_way_switch_toggle,
@@ -155,7 +153,7 @@ class DeviceSettingsView extends UpdatableView
             switch (spState)
             {
                 case _SpeakerABStatus.OFF: // OFF -> A_ONLY
-                    rows.add(_buildRow(td,
+                    rows.add(_buildRow(context,
                         Strings.speaker_ab_command,
                         Strings.speaker_ab_command_ab_off,
                         Strings.speaker_ab_command_toggle,
@@ -166,7 +164,7 @@ class DeviceSettingsView extends UpdatableView
                     ));
                     break;
                 case _SpeakerABStatus.A_ONLY: // A_ONLY -> B_ONLY
-                    rows.add(_buildRow(td,
+                    rows.add(_buildRow(context,
                         Strings.speaker_ab_command,
                         Strings.speaker_ab_command_a_only,
                         Strings.speaker_ab_command_toggle,
@@ -181,7 +179,7 @@ class DeviceSettingsView extends UpdatableView
                     ));
                     break;
                 case _SpeakerABStatus.B_ONLY: // B_ONLY -> ON
-                    rows.add(_buildRow(td,
+                    rows.add(_buildRow(context,
                         Strings.speaker_ab_command,
                         Strings.speaker_ab_command_b_only,
                         Strings.speaker_ab_command_toggle,
@@ -192,7 +190,7 @@ class DeviceSettingsView extends UpdatableView
                     ));
                     break;
                 case _SpeakerABStatus.ON: // ON -> A_ONLY
-                    rows.add(_buildRow(td,
+                    rows.add(_buildRow(context,
                         Strings.speaker_ab_command,
                         Strings.speaker_ab_command_ab_on,
                         Strings.speaker_ab_command_toggle,
@@ -210,7 +208,7 @@ class DeviceSettingsView extends UpdatableView
 
         if (ds.googleCastAnalytics.key != GoogleCastAnalytics.NONE)
         {
-            rows.add(_buildRow(td,
+            rows.add(_buildRow(context,
                 Strings.device_google_cast_analytics,
                 ds.googleCastAnalytics.description,
                 Strings.device_two_way_switch_toggle,
@@ -237,7 +235,7 @@ class DeviceSettingsView extends UpdatableView
             ]);
     }
 
-    TableRow _buildRow(final ThemeData td, final String title,
+    TableRow _buildRow(BuildContext context, final String title,
         final String value, final buttonDescription,
         final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
     {
@@ -256,7 +254,7 @@ class DeviceSettingsView extends UpdatableView
                         {
                             if (isEnabled)
                             {
-                                _onPress(cmd, postMessages: postMessages, postQueries: postQueries);
+                                _onPress(context, cmd, postMessages: postMessages, postQueries: postQueries);
                             }
                         }),
                     flex: 1),
@@ -267,7 +265,7 @@ class DeviceSettingsView extends UpdatableView
                     {
                         if (isEnabled)
                         {
-                            _onPress(cmd, postMessages: postMessages, postQueries: postQueries);
+                            _onPress(context, cmd, postMessages: postMessages, postQueries: postQueries);
                         }
                     },
                     isEnabled: isEnabled,
@@ -279,8 +277,9 @@ class DeviceSettingsView extends UpdatableView
         return TableRow(children: [rowTitle, rowValue]);
     }
 
-    void _onPress(final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
+    void _onPress(BuildContext context, final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
     {
+        FocusScope.of(context).unfocus();
         stateManager.sendMessage(cmd);
         if (postMessages != null)
         {

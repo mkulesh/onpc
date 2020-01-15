@@ -71,6 +71,7 @@ class DeviceInfoView extends UpdatableView
                         if (isData && stateManager.state.isOn)
                         {
                             stateManager.sendMessage(FriendlyNameMsg.output(_friendlyName.text));
+                            FocusScope.of(context).unfocus();
                         }
                     },
                     isEnabled: isData && stateManager.state.isOn,
@@ -159,8 +160,8 @@ class DeviceInfoView extends UpdatableView
         ]));
 
         final Map<int, TableColumnWidth> columnWidths = Map();
-        columnWidths[0] = FractionColumnWidth(0.35);
-        columnWidths[1] = FractionColumnWidth(0.65);
+        columnWidths[0] = FractionColumnWidth(0.37);
+        columnWidths[1] = FractionColumnWidth(0.63);
 
         final Widget table = Table(
             columnWidths: columnWidths,

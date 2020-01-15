@@ -28,12 +28,20 @@ class TabDeviceView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
+        final result = ListBody(children: [
+            UpdatableWidget(child: DeviceInfoView(viewContext)),
+            UpdatableWidget(child: DeviceSettingsView(viewContext))
+        ]);
+
         return SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: ListBody(children: [
-                UpdatableWidget(child: DeviceInfoView(viewContext)),
-                UpdatableWidget(child: DeviceSettingsView(viewContext))
-            ])
+            child: InkWell(
+                child: result,
+                enableFeedback: false,
+                splashColor: Colors.transparent,
+                onTap: ()
+                => FocusScope.of(context).unfocus()
+            )
         );
     }
 }
