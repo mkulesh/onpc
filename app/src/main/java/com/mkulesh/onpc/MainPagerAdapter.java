@@ -35,7 +35,7 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
 
     MainPagerAdapter(final Context context, final FragmentManager fm, final Configuration configuration)
     {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.context = context;
         this.items = configuration.isRemoteInterface() ? 5 : 4;
     }

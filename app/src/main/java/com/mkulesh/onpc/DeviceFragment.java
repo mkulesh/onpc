@@ -132,6 +132,16 @@ public class DeviceFragment extends BaseFragment
     }
 
     @Override
+    public void onResume()
+    {
+        if (friendlyName != null)
+        {
+            friendlyName.clearFocus();
+        }
+        super.onResume();
+    }
+
+    @Override
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         if (state != null)

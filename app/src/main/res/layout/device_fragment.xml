@@ -15,7 +15,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mkulesh.onpc.MainActivity">
+    tools:context="com.mkulesh.onpc.MainActivity"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:layout_width="fill_parent"

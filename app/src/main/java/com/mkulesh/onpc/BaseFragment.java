@@ -62,7 +62,6 @@ abstract public class BaseFragment extends Fragment
         void onPostProcessing();
     }
 
-
     public BaseFragment()
     {
         // Empty constructor required for fragment subclasses
@@ -86,14 +85,21 @@ abstract public class BaseFragment extends Fragment
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
+    public void onResume()
     {
-        super.setUserVisibleHint(isVisibleToUser);
-        visibleToUser = isVisibleToUser;
+        super.onResume();
+        visibleToUser = true;
         if (activity != null)
         {
             updateContent();
         }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        visibleToUser = false;
     }
 
     void updateContent()
