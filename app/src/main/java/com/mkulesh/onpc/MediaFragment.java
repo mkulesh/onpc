@@ -249,7 +249,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.TOP);
             final AppCompatImageButton b = createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand(), 0, buttonMarginHorizontal, 0);
+                    msg, msg.getCommand(), 0, buttonMarginHorizontal, R.dimen.button_margin_vertical);
             prepareButtonListeners(b, msg, () -> progressIndicator.setVisibility(View.VISIBLE));
             selectorPaletteLayout.addView(b);
         }
