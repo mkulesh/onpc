@@ -63,6 +63,10 @@ class CdPlayerOperationCommandMsg extends EnumParameterMsg<CdPlayerOperationComm
 {
     static const String CODE = "CCD";
 
+    // Controls that allow the control of build-in CD player via CCD command
+    static const String CONTROL_CD_INT1 = "CD Control";
+    static const String CONTROL_CD_INT2 = "CD Control(NewRemote)";
+
     static const ExtEnum<CdPlayerOperationCommand> ValueEnum = ExtEnum<CdPlayerOperationCommand>([
         EnumItem.code(CdPlayerOperationCommand.UNDEFINED, "N/A",
             descr: Strings.dashed_string, defValue: true),

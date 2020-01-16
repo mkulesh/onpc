@@ -77,6 +77,14 @@ class PlaybackState
         ];
     }
 
+    List<String> getCdQueries()
+    {
+        Logging.info(this, "Requesting CD data...");
+        return [
+            PlayStatusMsg.CD_CODE
+        ];
+    }
+
     clear()
     {
         _playStatus = PlayStatus.STOP;

@@ -19,7 +19,8 @@ import "DeviceVolumeView.dart";
 import "ExtAmpVolumeView.dart";
 import "ListeningModeView.dart";
 import "PlayControlView.dart";
-import 'RadioControlView.dart';
+import "PlayCdControlView.dart";
+import "RadioControlView.dart";
 import "TrackInfoView.dart";
 import "UpdatableView.dart";
 
@@ -70,15 +71,14 @@ class TabListenView extends UpdatableView
         widgets.add(Expanded(child: UpdatableWidget(child: TrackInfoView(viewContext)), flex: 1));
 
         // Play controls depends on input type
-        final Widget playControlView = (state.mediaListState.isRadioInput) ?
-            UpdatableWidget(child: RadioControlView(viewContext))
-            : UpdatableWidget(child: PlayControlView(viewContext));
+        final UpdatableView playControlView = state.mediaListState.isRadioInput ? RadioControlView(viewContext) :
+            (state.isCdInput ? PlayCdControlView(viewContext) : PlayControlView(viewContext));
         final List<Widget> playControlList = List();
         if (!isPortrait && soundControlView != null)
         {
             playControlList.add(soundControlView);
         }
-        playControlList.add(playControlView);
+        playControlList.add(UpdatableWidget(child: playControlView));
         final Widget playControl = Center(
             child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: playControlList))
         );

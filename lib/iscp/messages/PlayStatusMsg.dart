@@ -45,11 +45,12 @@ enum ShuffleStatus
 }
 
 /*
- * NET/USB Play Status (3 letters)
+ * NET/USB/CD Play Status (3 letters)
  */
 class PlayStatusMsg extends ISCPMessage
 {
     static const String CODE = "NST";
+    static const String CD_CODE = "CST";
 
     /*
      * Play Status: "S": STOP, "P": Play, "p": Pause, "F": FF, "R": FR, "E": EOF

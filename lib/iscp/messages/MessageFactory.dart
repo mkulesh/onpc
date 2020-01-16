@@ -130,6 +130,7 @@ class MessageFactory
             case InputSelectorMsg.ZONE4_CODE:
                 return InputSelectorMsg(raw);
             case PlayStatusMsg.CODE:
+            case PlayStatusMsg.CD_CODE:
                 return PlayStatusMsg(raw);
             case ListInfoMsg.CODE:
                 return ListInfoMsg(raw);

@@ -24,6 +24,7 @@ import "State.dart";
 import "messages/AmpOperationCommandMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
 import "messages/DisplayModeMsg.dart";
+import "messages/InputSelectorMsg.dart";
 import "messages/JacketArtMsg.dart";
 import "messages/ListInfoMsg.dart";
 import "messages/ListTitleInfoMsg.dart";
@@ -368,6 +369,12 @@ class StateManager
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
             _requestListState();
             return changed;
+        }
+
+        // #118: CR-N575D allow to use play control buttons to control CD player
+        if (msg is InputSelectorMsg && state.isCdInput)
+        {
+            sendQueries(_state.playbackState.getCdQueries());
         }
 
         if (msg is PlayStatusMsg && playStatus != state.playbackState.playStatus)

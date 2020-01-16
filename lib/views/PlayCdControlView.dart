@@ -1,0 +1,87 @@
+/*
+ * Copyright (C) 2019. Mikhail Kulesh
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details. You should have received a copy of the GNU General
+ * Public License along with this program.
+ */
+
+import "package:flutter/material.dart";
+
+import "../iscp/StateManager.dart";
+import "../iscp/messages/CdPlayerOperationCommandMsg.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
+import "../iscp/messages/PlayStatusMsg.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
+import "../utils/Logging.dart";
+import "../widgets/CustomImageButton.dart";
+import "UpdatableView.dart";
+
+class PlayCdControlView extends UpdatableView
+{
+    static const List<String> UPDATE_TRIGGERS = [
+        StateManager.ZONE_EVENT,
+        PowerStatusMsg.CODE,
+        PlayStatusMsg.CODE
+    ];
+
+    PlayCdControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+
+    @override
+    Widget createView(BuildContext context, VoidCallback updateCallback)
+    {
+        Logging.info(this, "rebuild widget for CD control");
+
+        final bool isPaused = [PlayStatus.STOP, PlayStatus.PAUSE].contains(state.playbackState.playStatus);
+        final List<CdPlayerOperationCommand> cmd = [
+            CdPlayerOperationCommand.REPEAT,
+            CdPlayerOperationCommand.SKIP_R,
+            CdPlayerOperationCommand.STOP,
+            isPaused ? CdPlayerOperationCommand.PLAY : CdPlayerOperationCommand.PAUSE,
+            CdPlayerOperationCommand.SKIP_F,
+            CdPlayerOperationCommand.RANDOM
+        ];
+
+        final List<Widget> buttons = List();
+
+        cmd.forEach((cmdEnum)
+        {
+            final EnumItem<CdPlayerOperationCommand> cmd = CdPlayerOperationCommandMsg.ValueEnum.valueByKey(cmdEnum);
+            String icon = cmd.icon;
+            bool selected = false;
+
+            switch (cmd.key)
+            {
+                case CdPlayerOperationCommand.REPEAT:
+                    icon = state.playbackState.repeatStatus.icon;
+                    selected = state.playbackState.repeatStatus.key != RepeatStatus.OFF;
+                    break;
+                case CdPlayerOperationCommand.RANDOM:
+                    selected = state.playbackState.shuffleStatus != ShuffleStatus.OFF;
+                    break;
+                default:
+                    // nothing to do
+                    break;
+            }
+
+            buttons.add(CustomImageButton.normal(
+                icon,
+                cmd.description,
+                onPressed: ()
+                => stateManager.sendMessage(CdPlayerOperationCommandMsg.output(cmd.key)),
+                isEnabled: state.isOn,
+                isSelected: selected
+            ));
+        });
+
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: buttons,
+        );
+    }
+}

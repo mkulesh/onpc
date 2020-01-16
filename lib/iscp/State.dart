@@ -20,6 +20,7 @@ import "messages/AlbumNameMsg.dart";
 import "messages/ArtistNameMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/AutoPowerMsg.dart";
+import "messages/CdPlayerOperationCommandMsg.dart";
 import "messages/CenterLevelCommandMsg.dart";
 import "messages/CustomPopupMsg.dart";
 import "messages/DeviceNameMsg.dart";
@@ -400,6 +401,11 @@ class State
 
     Selector get getActualSelector
     => _receiverInformation.deviceSelectors.firstWhere((s) => s.getId == mediaListState.inputType.getCode, orElse: () => null);
+
+    bool get isCdInput
+    => (mediaListState.inputType.key == InputSelector.TV_CD) &&
+            (_receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
+                _receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
 
     NetworkService get getNetworkService
     => (_mediaListState.serviceType != null) ? _receiverInformation.getNetworkService(_mediaListState.serviceType.getCode) : null;
