@@ -77,7 +77,7 @@ class OperationCommandMsg extends EnumParameterZonedMsg<OperationCommand>
 
     static const List<String> ZONE_COMMANDS = [CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE];
 
-    static const ExtEnum<OperationCommand> OperationCommandEnum = ExtEnum<OperationCommand>([
+    static const ExtEnum<OperationCommand> ValueEnum = ExtEnum<OperationCommand>([
         EnumItem.code(OperationCommand.PLAY, "PLAY",
             descrList: Strings.l_cmd_description_play, icon: Drawables.cmd_play),
         EnumItem.code(OperationCommand.STOP, "STOP",
@@ -173,7 +173,7 @@ class OperationCommandMsg extends EnumParameterZonedMsg<OperationCommand>
     ]);
 
     OperationCommandMsg.output(int zoneIndex, OperationCommand v) :
-            super.output(ZONE_COMMANDS, zoneIndex, v, OperationCommandEnum);
+            super.output(ZONE_COMMANDS, zoneIndex, v, ValueEnum);
 
     @override
     bool hasImpactOnMediaList()

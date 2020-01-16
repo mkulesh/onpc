@@ -87,7 +87,7 @@ class TrackInfoView extends UpdatableView
                     Drawables.cmd_track_menu,
                     Strings.cmd_track_menu,
                     onPressed: ()
-                    => stateManager.sendTrackCmd(OperationCommand.MENU, false),
+                    => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false),
                     isEnabled: isTrackMenu
                 ),
             ]);
@@ -154,7 +154,7 @@ class TrackInfoView extends UpdatableView
                 state.playbackState.negativeFeed.icon,
                 Strings.cmd_description_f2,
                 onPressed: ()
-                => stateManager.sendTrackCmd(OperationCommand.F2, false),
+                => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.F2, false),
                 isEnabled: true
             ));
         }
@@ -165,7 +165,7 @@ class TrackInfoView extends UpdatableView
                 state.playbackState.positiveFeed.icon,
                 Strings.cmd_description_f1,
                 onPressed: ()
-                => stateManager.sendTrackCmd(OperationCommand.F1, false),
+                => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.F1, false),
                 isEnabled: true,
                 isSelected: state.playbackState.positiveFeed.key == FeedType.LOVE
             ));

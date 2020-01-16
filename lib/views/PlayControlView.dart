@@ -35,28 +35,29 @@ class PlayControlView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.info(this, "rebuild widget for NET control");
 
-        final List<OperationCommandMsg> cmd = [
-            OperationCommandMsg.output(state.getActiveZone, OperationCommand.REPEAT),
-            OperationCommandMsg.output(state.getActiveZone, OperationCommand.TRDN),
-            OperationCommandMsg.output(state.getActiveZone, OperationCommand.STOP),
-            OperationCommandMsg.output(state.getActiveZone, OperationCommand.PAUSE),
-            OperationCommandMsg.output(state.getActiveZone, OperationCommand.TRUP),
-            OperationCommandMsg.output(state.getActiveZone, OperationCommand.RANDOM)
+        final bool isPaused = [PlayStatus.STOP, PlayStatus.PAUSE].contains(state.playbackState.playStatus);
+
+        final List<OperationCommand> cmd = [
+            OperationCommand.REPEAT,
+            OperationCommand.TRDN,
+            OperationCommand.STOP,
+            isPaused ? OperationCommand.PLAY : OperationCommand.PAUSE,
+            OperationCommand.TRUP,
+            OperationCommand.RANDOM
         ];
 
-        final EnumItem<OperationCommand> play =
-            OperationCommandMsg.OperationCommandEnum.valueByKey(OperationCommand.PLAY);
         final List<Widget> buttons = List<Widget>();
 
-        cmd.forEach((cmd)
+        cmd.forEach((cmdEnum)
         {
-            String icon = cmd.getValue.icon;
+            final EnumItem<OperationCommand> cmd = OperationCommandMsg.ValueEnum.valueByKey(cmdEnum);
+            String icon = cmd.icon;
             bool enabled = state.isOn;
             bool selected = false;
 
-            switch (cmd.getValue.key)
+            switch (cmd.key)
             {
                 case OperationCommand.REPEAT:
                     icon = state.playbackState.repeatStatus.icon;
@@ -71,10 +72,6 @@ class PlayControlView extends UpdatableView
                 case OperationCommand.TRUP:
                     enabled = state.isPlaying;
                     break;
-                case OperationCommand.PAUSE:
-                    icon = [PlayStatus.STOP, PlayStatus.PAUSE].contains(state.playbackState.playStatus) ?
-                        play.icon : cmd.getValue.icon;
-                    break;
                 default:
                     // nothing to do
                     break;
@@ -82,9 +79,9 @@ class PlayControlView extends UpdatableView
 
             buttons.add(CustomImageButton.normal(
                 icon,
-                cmd.getValue.description,
+                cmd.description,
                 onPressed: ()
-                => stateManager.sendMessage(cmd),
+                => _sendCommand(cmd.key),
                 isEnabled: enabled,
                 isSelected: selected
             ));
@@ -94,5 +91,27 @@ class PlayControlView extends UpdatableView
             mainAxisAlignment: MainAxisAlignment.center,
             children: buttons,
         );
+    }
+
+    _sendCommand(OperationCommand key)
+    {
+        if (!state.mediaListState.isPlaybackMode
+            && state.mediaListState.isUsb
+            && [OperationCommand.TRDN, OperationCommand.TRUP].contains(key))
+        {
+            // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
+            // in playback mode. Therefore, switch to this mode before
+            // send OperationCommandMsg if current mode is LIST
+            stateManager.sendTrackCmd(state.getActiveZone, key, false);
+        }
+        else if (key == OperationCommand.PLAY)
+        {
+            // To start play in normal mode, PAUSE shall be issue instead of PLAY command
+            stateManager.sendMessage(OperationCommandMsg.output(state.getActiveZone, OperationCommand.PAUSE));
+        }
+        else
+        {
+            stateManager.sendMessage(OperationCommandMsg.output(state.getActiveZone, key));
+        }
     }
 }

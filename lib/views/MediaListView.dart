@@ -364,7 +364,7 @@ class MediaListView extends UpdatableView
                 _moveFrom = -1;
                 break;
             case MediaContextMenu.TRACK_MENU:
-                stateManager.sendTrackCmd(OperationCommand.MENU, false);
+                stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false);
                 break;
             case MediaContextMenu.PLAYBACK_MODE:
                 stateManager.sendMessage(playbackModeCmd);

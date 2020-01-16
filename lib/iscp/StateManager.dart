@@ -520,14 +520,14 @@ class StateManager
         state.trackState.currentTime = msg.getData;
     }
 
-    void sendTrackCmd(OperationCommand menu, bool doReturn)
+    void sendTrackCmd(int zone, OperationCommand menu, bool doReturn)
     {
-        Logging.info(this, "sending track cmd: " + menu.toString());
+        Logging.info(this, "sending track cmd: " + menu.toString() + " for zone " + zone.toString());
         if (!state.mediaListState.isPlaybackMode)
         {
             _messageChannel.sendMessage(commandListMsg.getCmdMsg());
         }
-        final OperationCommandMsg msg = OperationCommandMsg.output(State.DEFAULT_ACTIVE_ZONE, menu);
+        final OperationCommandMsg msg = OperationCommandMsg.output(zone, menu);
         _messageChannel.sendMessage(msg.getCmdMsg());
         if (doReturn)
         {
