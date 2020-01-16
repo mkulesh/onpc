@@ -46,10 +46,15 @@ class DeviceSearchView extends UpdatableView
 
         devices.forEach((d)
         {
+            final String titleStr = d.getDeviceName(configuration.friendlyNames);
+            final Widget title = CustomTextLabel.normal(titleStr);
+            final Widget subTitle = d.getId() != titleStr ? CustomTextLabel.small(d.getId()) : null;
+
             final Widget item = ListTile(
                 contentPadding: ActivityDimens.noPadding,
                 dense: true,
-                title: CustomTextLabel.normal(d.getDeviceName(configuration.friendlyNames)),
+                title: title,
+                subtitle: subTitle,
                 onTap: ()
                 => onDeviceFound(d.responseMsg)
             );
