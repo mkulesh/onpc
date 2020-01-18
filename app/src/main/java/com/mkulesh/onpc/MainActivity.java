@@ -532,11 +532,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
     }
 
-    void selectRightTab()
-    {
-        viewPager.arrowScroll(View.FOCUS_RIGHT);
-    }
-
     /**
      * Navigation drawer: When using the ActionBarDrawerToggle,
      * you must call it during onPostCreate() and onConfigurationChanged()...

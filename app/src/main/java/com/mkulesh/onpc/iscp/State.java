@@ -160,6 +160,7 @@ public class State
     public PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
     public MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
     public MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
+    private boolean trackMenuReceived = false;
     public MenuStatusMsg.Feed positiveFeed = MenuStatusMsg.Feed.DISABLE;
     public MenuStatusMsg.Feed negativeFeed = MenuStatusMsg.Feed.DISABLE;
     public ServiceType serviceIcon = ServiceType.UNKNOWN; // service that is currently playing
@@ -240,7 +241,8 @@ public class State
 
     public boolean isMenuMode()
     {
-        return uiType == ListTitleInfoMsg.UIType.MENU;
+        return uiType == ListTitleInfoMsg.UIType.MENU ||
+                uiType == ListTitleInfoMsg.UIType.MENU_LIST;
     }
 
     @NonNull
@@ -927,6 +929,7 @@ public class State
     {
         synchronized (mediaItems)
         {
+            trackMenuReceived = false;
             mediaItems.clear();
         }
         synchronized (serviceItems)
@@ -939,6 +942,7 @@ public class State
     {
         synchronized (mediaItems)
         {
+            trackMenuReceived = false;
             return new ArrayList<>(mediaItems);
         }
     }
@@ -1070,6 +1074,11 @@ public class State
                 final XmlListItemMsg nsMsg = new XmlListItemMsg(
                         msg.getLineInfo(), 0, msg.getListedData(), XmlListItemMsg.Icon.UNKNOWN, true);
                 mediaItems.add(nsMsg);
+                if (mediaItems.size() == numberOfItems)
+                {
+                    Logging.info(this, "received track menu with " + numberOfItems + " items");
+                    trackMenuReceived = true;
+                }
             }
             return true;
         }
@@ -1330,5 +1339,10 @@ public class State
         return (inputType == InputSelectorMsg.InputType.TV_CD) &&
                 (isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                         isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
+    }
+
+    public boolean isTrackMenuReceived()
+    {
+        return trackMenuReceived;
     }
 }

@@ -121,6 +121,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private final BlockingQueue<ISCPMessage> inputQueue = new ArrayBlockingQueue<>(MessageChannel.QUEUE_SIZE, true);
 
+    public final static OperationCommandMsg RETURN_MSG = new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
+
     public StateManager(final DeviceList deviceList,
                         final ConnectionState connectionState,
                         final StateListener stateListener,

@@ -61,7 +61,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private XmlListItemMsg selectedItem = null;
     int moveFrom = -1;
     private int filteredItems = 0;
-    private final OperationCommandMsg returnMsg = new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
     private AppCompatImageView progressIndicator;
 
     public MediaFragment()
@@ -315,7 +314,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         ArrayList<ISCPMessage> newItems = new ArrayList<>();
         if (!state.isTopLayer() && !activity.getConfiguration().isBackAsReturn())
         {
-            newItems.add(returnMsg);
+            newItems.add(StateManager.RETURN_MSG);
         }
         int playing = -1;
         if (!mediaItems.isEmpty())
@@ -440,7 +439,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         moveFrom = -1;
         updateTitle(stateManager.getState(), true);
-        stateManager.sendMessage(returnMsg);
+        stateManager.sendMessage(StateManager.RETURN_MSG);
         return true;
     }
 }
