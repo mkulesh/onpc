@@ -507,7 +507,7 @@ public class MonitorFragment extends BaseFragment
         {
             final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE &&
                     state.playStatus != PlayStatusMsg.PlayStatus.STOP;
-            btnTrackMenu.setVisibility(isTrackMenu ? View.VISIBLE : View.GONE);
+            btnTrackMenu.setVisibility(View.VISIBLE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
         }
         if (state.isTrackMenuReceived())
