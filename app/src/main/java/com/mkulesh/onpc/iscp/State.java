@@ -241,8 +241,7 @@ public class State
 
     public boolean isMenuMode()
     {
-        return uiType == ListTitleInfoMsg.UIType.MENU ||
-                uiType == ListTitleInfoMsg.UIType.MENU_LIST;
+        return uiType == ListTitleInfoMsg.UIType.MENU;
     }
 
     @NonNull
@@ -972,6 +971,11 @@ public class State
                 {
                     trackInfoFromList(mediaItems);
                 }
+                if (uiType == ListTitleInfoMsg.UIType.MENU_LIST)
+                {
+                    Logging.info(this, "received track menu list with " + mediaItems.size() + " items");
+                    trackMenuReceived = true;
+                }
                 return true;
             }
             catch (Exception e)
@@ -1077,7 +1081,7 @@ public class State
                 mediaItems.add(nsMsg);
                 if (mediaItems.size() == numberOfItems)
                 {
-                    Logging.info(this, "received track menu with " + numberOfItems + " items");
+                    Logging.info(this, "received track menu with " + mediaItems.size() + " items");
                     trackMenuReceived = true;
                 }
             }

@@ -335,7 +335,7 @@ public class MonitorFragment extends BaseFragment
 
         TextView track = rootView.findViewById(R.id.tv_track);
         track.setText("");
-        track.setCompoundDrawables(null, null, null, null);
+        updateInputSource(R.drawable.media_item_unknown, false);
 
         ((TextView) rootView.findViewById(R.id.tv_album)).setText("");
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText("");
@@ -420,11 +420,8 @@ public class MonitorFragment extends BaseFragment
         // service icon and track
         {
             final TextView track = rootView.findViewById(R.id.tv_track);
-            @DrawableRes int icon = state.getServiceIcon();
-            final Drawable bg = Utils.getDrawable(activity, icon);
-            Utils.setDrawableColorAttr(activity, bg, android.R.attr.textColorSecondary);
-            track.setCompoundDrawablesWithIntrinsicBounds(bg, null, null, null);
             track.setText(state.getTrackInfo(activity));
+            updateInputSource(state.getServiceIcon(), true);
         }
 
         // cover
@@ -534,6 +531,13 @@ public class MonitorFragment extends BaseFragment
         setButtonsEnabled(fmDabButtons, true);
     }
 
+    private void updateInputSource(@DrawableRes int imageId, final boolean visible)
+    {
+        AppCompatImageButton btn = rootView.findViewById(R.id.btn_input_selector);
+        btn.setImageResource(imageId);
+        btn.setVisibility(visible? View.VISIBLE : View.GONE);
+        setButtonEnabled(btn, false);
+    }
 
     /*
      * Playback control
