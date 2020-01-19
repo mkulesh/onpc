@@ -16,13 +16,17 @@ package com.mkulesh.onpc;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomGroupSettingMsg;
+import com.mkulesh.onpc.rememberedgroups.GroupStore;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -73,26 +77,70 @@ class MultiroomManager
         final int maxGroupId = _maxGroupId;
         Logging.info(activity, "    Maximum group ID=" + maxGroupId);
 
+        // saved groups name, show-saved button
+        EditText group_name = frameView.findViewById(R.id.device_group_name);
+
+        ImageButton show_saved = frameView.findViewById(R.id.device_group_show_saved);
+        show_saved.setOnClickListener((_x) -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle("Pick Saved Group");
+
+            String[] storedGroups = GroupStore.getI(activity)
+                    .knownGroups().toArray(new String[0]);
+
+            builder.setItems(storedGroups, (dialog, which) -> {
+                String name = storedGroups[which];
+                group_name.setText(name);
+                Map<String, Boolean> selectedDevices = GroupStore.getI(activity).get(name);
+                setCheckmarks(deviceGroup, selectedDevices);
+            });
+            builder.show();
+        });
+
+
         // Create dialog
         final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_multiroom_group);
         Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
 
-        return new AlertDialog.Builder(activity)
+        AlertDialog d = new AlertDialog.Builder(activity)
                 .setTitle(title)
                 .setIcon(icon)
                 .setCancelable(true)
                 .setView(frameView)
-                .setNegativeButton(R.string.action_cancel, (dialog1, which) -> dialog1.dismiss())
-                .setPositiveButton(R.string.action_ok, (dialog2, which) ->
-                {
-                    int groupId = myGroupId;
-                    if (myGroupId == MultiroomDeviceInformationMsg.NO_GROUP)
-                    {
-                        groupId = maxGroupId + 1;
-                    }
-                    sendGroupUpdates(activity, deviceGroup, attachedDevices, myZone, groupId);
-                    dialog2.dismiss();
-                }).create();
+                .create();
+
+        // Save/Delete Cancel/Ok buttons
+        Button save = frameView.findViewById(R.id.device_group_save);
+        // TODO the current "master" device is currently not saved, nor are saved groups filtered
+        // by master device
+        save.setOnClickListener((_x) -> {
+            GroupStore.getI(activity).save(
+                    group_name.getText().toString(),
+                    gatherSelectedDevices(deviceGroup));
+        });
+
+        Button delete = frameView.findViewById(R.id.device_group_delete);
+        delete.setOnClickListener((_x) -> {
+            GroupStore.getI(activity).deleteGroup(group_name.getText().toString());
+            group_name.setText("");
+        });
+
+        Button cancel = frameView.findViewById(R.id.device_group_cancel);
+        cancel.setOnClickListener((_x) -> d.dismiss());
+
+        Button ok = frameView.findViewById(R.id.device_group_ok);
+        ok.setOnClickListener((_x)  ->
+        {
+            int groupId = myGroupId;
+            if (myGroupId == MultiroomDeviceInformationMsg.NO_GROUP)
+            {
+                groupId = maxGroupId + 1;
+            }
+            sendGroupUpdates(activity, deviceGroup, attachedDevices, myZone, groupId);
+            d.dismiss();
+        });
+
+        return d;
     }
 
     private static MultiroomDeviceItem createDeviceItem(
@@ -188,6 +236,34 @@ class MultiroomManager
         if (addCmd.getDevice().size() > 0)
         {
             activity.getStateManager().sendMessage(addCmd);
+        }
+    }
+
+    private static Map<String, Boolean> gatherSelectedDevices(LinearLayout deviceGroup){
+        Map<String, Boolean> selection = new HashMap<>();
+
+        for (int i = 0; i < deviceGroup.getChildCount(); i++)
+        {
+            MultiroomDeviceItem cv = (MultiroomDeviceItem) deviceGroup.getChildAt(i);
+            final String id = (String) cv.getTag();
+
+            selection.put(id, cv.isChecked());
+        }
+
+        return selection;
+    }
+
+    private static void setCheckmarks(LinearLayout deviceGroup, Map<String, Boolean> grouping){
+        for (int i = 0; i < deviceGroup.getChildCount(); i++)
+        {
+            MultiroomDeviceItem cv = (MultiroomDeviceItem) deviceGroup.getChildAt(i);
+            final String id = (String) cv.getTag();
+            if (grouping.containsKey(id)){
+                Boolean b = grouping.get(id);
+                if (b != null){
+                    cv.setChecked(b);
+                }
+            }
         }
     }
 

@@ -1,0 +1,47 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "3a99d9e86da892e12d8ad8bf27b38291",
+    "entities": [
+      {
+        "tableName": "GroupMembership",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_name` TEXT NOT NULL, `device` TEXT NOT NULL, `connected` INTEGER NOT NULL, PRIMARY KEY(`group_name`, `device`))",
+        "fields": [
+          {
+            "fieldPath": "group",
+            "columnName": "group_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "device",
+            "columnName": "device",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "connected",
+            "columnName": "connected",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_name",
+            "device"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3a99d9e86da892e12d8ad8bf27b38291')"
+    ]
+  }
+}

@@ -24,22 +24,95 @@
 
     <View style="@style/HorizontalDividerStyle" />
 
-    <ScrollView
+
+    <LinearLayout
+        android:id="@+id/device_group_container"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/device_group"
+        <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <!-- Will be filled programmatically -->
+            <LinearLayout
+                android:id="@+id/device_group"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </ScrollView>
+                <!-- Will be filled programmatically -->
+
+            </LinearLayout>
+        </ScrollView>
+
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout01"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <EditText
+                android:id="@+id/device_group_name"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/device_group_show_saved"
+                android:inputType="text"
+                android:hint="@string/name_this_group"
+                 />
+
+            <ImageButton
+                android:id="@+id/device_group_show_saved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_expand_more_black_24dp"
+                />
+
+        </RelativeLayout>
+    </LinearLayout>
 
     <View style="@style/HorizontalDividerStyle" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/device_group_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/action_save"/>
+
+        <Button
+            android:id="@+id/device_group_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/action_delete"/>
+
+        <Button
+            android:id="@+id/device_group_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/action_cancel"/>
+
+        <Button
+            android:id="@+id/device_group_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/action_ok"/>
+
+    </LinearLayout>
+
+
+
 
 </LinearLayout>
