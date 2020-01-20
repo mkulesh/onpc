@@ -61,8 +61,8 @@
             style="@style/ImageButtonSecondaryStyle"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:paddingLeft="@dimen/button_margin_horizontal"
-            android:paddingRight="@dimen/button_margin_horizontal"
+            android:paddingTop="@dimen/button_margin_horizontal"
+            android:paddingBottom="@dimen/button_margin_horizontal"
             android:id="@+id/btn_input_selector"
             android:src="@drawable/media_item_unknown" />
 
@@ -105,6 +105,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/button_margin_horizontal"
+            android:textScaleX="0.85"
             android:maxLines="2"
             android:gravity="right" />
 
@@ -112,8 +114,8 @@
             style="@style/ImageButtonSecondaryStyle"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:paddingLeft="@dimen/button_margin_horizontal"
-            android:paddingRight="@dimen/button_margin_horizontal"
+            android:paddingTop="@dimen/button_margin_horizontal"
+            android:paddingBottom="@dimen/button_margin_horizontal"
             android:id="@+id/btn_track_menu"
             android:src="@drawable/cmd_track_menu"
             android:contentDescription="@string/cmd_track_menu"
