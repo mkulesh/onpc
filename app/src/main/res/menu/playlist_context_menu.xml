@@ -17,42 +17,32 @@
 
     <item
         android:id="@+id/playlist_menu_replace_and_play"
-        android:icon="@drawable/playlist_add"
         android:title="@string/playlist_replace_and_play" />
     <item
         android:id="@+id/playlist_menu_add"
-        android:icon="@drawable/playlist_add"
         android:title="@string/playlist_add" />
     <item
         android:id="@+id/playlist_menu_replace"
-        android:icon="@drawable/playlist_add"
         android:title="@string/playlist_replace" />
     <item
         android:id="@+id/playlist_menu_add_and_play"
-        android:icon="@drawable/playlist_add"
         android:title="@string/playlist_add_and_play" />
     <item
         android:id="@+id/playlist_menu_remove"
-        android:icon="@drawable/playlist_remove"
         android:title="@string/playlist_remove" />
     <item
         android:id="@+id/playlist_menu_remove_all"
-        android:icon="@drawable/playlist_remove_all"
         android:title="@string/playlist_remove_all" />
     <item
         android:id="@+id/playlist_menu_move_from"
-        android:icon="@drawable/playlist_move_from"
         android:title="@string/playlist_move_from" />
     <item
         android:id="@+id/playlist_menu_move_to"
-        android:icon="@drawable/playlist_move_to"
         android:title="@string/playlist_move_to" />
     <item
         android:id="@+id/playlist_track_menu"
-        android:icon="@drawable/cmd_track_menu"
         android:title="@string/cmd_track_menu" />
     <item
         android:id="@+id/cmd_playback_mode"
-        android:icon="@drawable/cmd_track_menu"
         android:title="@string/medialist_playback_mode" />
 </menu>
