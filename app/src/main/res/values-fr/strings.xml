@@ -82,8 +82,6 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="pref_back_as_return_summary">Utilise le bouton Retour pour remonter au niveau parent de la liste des médias</string>
     <string name="pref_advanced_queue">Files d\'attentes avancée</string>
     <string name="pref_advanced_queue_summary">Experimentale: gestion évoluée des files d\'attentes</string>
-    <string name="pref_keep_playback_mode">Maintenir le mode lécture</string>
-    <string name="pref_keep_playback_mode_summary">Toujours conserver le mode lécture dans l\'onglet SOURCE quand l\'écoute est en cours</string>
     <string name="pref_exit_confirm">Bouton retour deux fois pour quitter</string>
     <string name="pref_keep_screen_on">Ecran toujours allumé</string>
     <string name="pref_developer_mode">Options développeurs</string>

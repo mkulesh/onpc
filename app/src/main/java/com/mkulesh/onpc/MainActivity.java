@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                     deviceList, connectionState, this,
                     device, port, zone,
                     configuration.isAutoPower(),
-                    configuration.keepPlaybackMode(),
+                    true,
                     savedReceiverInformation));
             savedReceiverInformation = null;
             // Default receiver information used if ReceiverInformationMsg is missing
