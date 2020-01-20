@@ -47,7 +47,6 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     style="@style/DeviceEditableViewStyle"
                     android:id="@+id/device_edit_friendly_name"
-                    android:inputType="text"
                     android:focusable="true" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
