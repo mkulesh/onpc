@@ -154,7 +154,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE;
                     final boolean isPlaying = selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY;
                     menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu && isPlaying && !isQueue);
-                    menu.findItem(R.id.cmd_playback_mode).setVisible(isPlaying);
+                    menu.findItem(R.id.cmd_playback_mode).setVisible(isPlaying && !state.isPlaybackMode());
                 }
             }
         }
