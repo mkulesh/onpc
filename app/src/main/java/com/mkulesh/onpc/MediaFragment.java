@@ -92,6 +92,25 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (activity != null && activity.isConnected() &&
+            activity.getStateManager().getState().isPlaybackMode())
+        {
+            activity.getStateManager().setPlaybackMode(false);
+            activity.getStateManager().sendMessage(StateManager.LIST_MSG);
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        updateStandbyView(null, new HashSet<>());
+    }
+
+    @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         selectedItem = null;
@@ -133,8 +152,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                             isQueue && isMoveToValid(selectedItem.getMessageId()));
 
                     final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE;
-                    menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu &&
-                            selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY && !isQueue);
+                    final boolean isPlaying = selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY;
+                    menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu && isPlaying && !isQueue);
+                    menu.findItem(R.id.cmd_playback_mode).setVisible(isPlaying);
                 }
             }
         }
@@ -191,6 +211,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 return true;
             case R.id.playlist_track_menu:
                 activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
+                return true;
+            case R.id.cmd_playback_mode:
+                activity.getStateManager().sendMessage(StateManager.LIST_MSG);
                 return true;
             }
         }

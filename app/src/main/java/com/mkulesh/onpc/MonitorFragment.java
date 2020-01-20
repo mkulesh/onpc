@@ -190,6 +190,25 @@ public class MonitorFragment extends BaseFragment
         return rootView;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (activity != null && activity.isConnected() &&
+            !activity.getStateManager().getState().isPlaybackMode())
+        {
+            activity.getStateManager().setPlaybackMode(true);
+            activity.getStateManager().sendMessage(StateManager.LIST_MSG);
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        updateStandbyView(null, new HashSet<>());
+    }
+
     private void prepareFmDabButtons()
     {
         for (AppCompatImageButton b : fmDabButtons)

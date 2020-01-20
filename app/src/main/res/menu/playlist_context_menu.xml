@@ -51,5 +51,8 @@
         android:id="@+id/playlist_track_menu"
         android:icon="@drawable/cmd_track_menu"
         android:title="@string/cmd_track_menu" />
-
+    <item
+        android:id="@+id/cmd_playback_mode"
+        android:icon="@drawable/cmd_track_menu"
+        android:title="@string/medialist_playback_mode" />
 </menu>

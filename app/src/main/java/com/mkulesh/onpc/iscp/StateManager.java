@@ -101,8 +101,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
     private int xmlReqId = 0;
     private ISCPMessage circlePlayQueueMsg = null;
-    private final EISCPMessage commandListMsg = new EISCPMessage(
-            OperationCommandMsg.CODE, OperationCommandMsg.Command.LIST.toString());
 
     private final static String[] trackStateQueries = new String[]{
             ArtistNameMsg.CODE, AlbumNameMsg.CODE, TitleNameMsg.CODE,
@@ -116,12 +114,15 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     };
 
     private boolean autoPower = false;
-    private final boolean keepPlaybackMode;
+    private final AtomicBoolean keepPlaybackMode = new AtomicBoolean();
     private final boolean useBmpImages;
 
     private final BlockingQueue<ISCPMessage> inputQueue = new ArrayBlockingQueue<>(MessageChannel.QUEUE_SIZE, true);
 
-    public final static OperationCommandMsg RETURN_MSG = new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
+    public final static OperationCommandMsg LIST_MSG =
+            new OperationCommandMsg(OperationCommandMsg.Command.LIST);
+    public final static OperationCommandMsg RETURN_MSG =
+            new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
 
     public StateManager(final DeviceList deviceList,
                         final ConnectionState connectionState,
@@ -149,7 +150,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         useBmpImages = !connectionState.isWifi();
 
         this.autoPower = autoPower;
-        this.keepPlaybackMode = keepPlaybackMode;
+        setPlaybackMode(keepPlaybackMode);
 
         if (savedReceiverInformation != null)
         {
@@ -180,12 +181,17 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel = new MessageChannel(connectionState, inputQueue);
         state = new MockupState(zone);
         useBmpImages = false;
-        keepPlaybackMode = false;
+        setPlaybackMode(false);
         messageChannel.start();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+    }
+
+    public void setPlaybackMode(boolean flag)
+    {
+        keepPlaybackMode.set(flag);
     }
 
     public void stop()
@@ -371,7 +377,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             playbackMode.set(state.isPlaybackMode());
         }
-        if (!keepPlaybackMode &&
+        if (!keepPlaybackMode.get() &&
             msg instanceof PlayStatusMsg &&
             playbackMode.get() &&
             state.isPlaying() &&
@@ -380,7 +386,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             // Notes for not requesting list mode for some service Types:
             // #51: List mode stops playing TUNEIN_RADIO for some models
             Logging.info(this, "requesting list mode...");
-            messageChannel.sendMessage(commandListMsg);
+            messageChannel.sendMessage(LIST_MSG.getCmdMsg());
             playbackMode.set(false);
         }
 
@@ -598,12 +604,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "sending track cmd: " + msg.toString());
         if (!state.isPlaybackMode())
         {
-            messageChannel.sendMessage(commandListMsg);
+            messageChannel.sendMessage(LIST_MSG.getCmdMsg());
         }
         messageChannel.sendMessage(msg.getCmdMsg());
         if (doReturn)
         {
-            messageChannel.sendMessage(commandListMsg);
+            messageChannel.sendMessage(LIST_MSG.getCmdMsg());
         }
     }
 
