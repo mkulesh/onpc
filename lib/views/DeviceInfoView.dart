@@ -61,19 +61,16 @@ class DeviceInfoView extends UpdatableView
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
                 Expanded(
-                    child: CustomTextField(_friendlyName, isFocused: false),
+                    child: CustomTextField(_friendlyName,
+                        isFocused: false,
+                        onPressed: ()
+                        => _submitDeviceName(context, state.isConnected && state.isOn)),
                     flex: 1),
                 CustomImageButton.small(
                     Drawables.cmd_friendly_name,
                     Strings.device_change_friendly_name,
                     onPressed: ()
-                    {
-                        if (isData && stateManager.state.isOn)
-                        {
-                            stateManager.sendMessage(FriendlyNameMsg.output(_friendlyName.text));
-                            FocusScope.of(context).unfocus();
-                        }
-                    },
+                    => _submitDeviceName(context, state.isConnected && state.isOn),
                     isEnabled: isData && stateManager.state.isOn,
                     isSelected: false,
                 )
@@ -180,4 +177,13 @@ class DeviceInfoView extends UpdatableView
 
     Widget _buildRowTitle(final String title)
     => CustomTextLabel.small(title, padding: DeviceInfoDimens.rowPadding);
+
+    _submitDeviceName(BuildContext context, final bool isEnabled)
+    {
+        if (isEnabled)
+        {
+            stateManager.sendMessage(FriendlyNameMsg.output(_friendlyName.text));
+            FocusScope.of(context).unfocus();
+        }
+    }
 }

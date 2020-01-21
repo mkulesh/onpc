@@ -73,8 +73,9 @@ abstract class UpdatableView
 class UpdatableWidget extends StatefulWidget
 {
     final UpdatableView child;
+    final bool clearFocus;
 
-    UpdatableWidget({this.child});
+    UpdatableWidget({this.child, this.clearFocus = false});
 
     @override _UpdatableWidgetState createState()
     => _UpdatableWidgetState();
@@ -148,6 +149,10 @@ class _UpdatableWidgetState extends State<UpdatableWidget>
     {
         try
         {
+            if (widget.clearFocus)
+            {
+                FocusScope.of(context).unfocus();
+            }
             return widget.child.createView(context, _updateCallback);
         }
         catch (e)

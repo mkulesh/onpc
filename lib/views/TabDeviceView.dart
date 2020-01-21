@@ -39,6 +39,7 @@ class TabDeviceView extends UpdatableView
                 child: result,
                 enableFeedback: false,
                 splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onTap: ()
                 => FocusScope.of(context).unfocus()
             )

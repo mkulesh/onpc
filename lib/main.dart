@@ -213,23 +213,28 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 {
                     case AppTabs.LISTEN:
                         tabContent = UpdatableWidget(
-                            child: TabListenView(_viewContext));
+                            child: TabListenView(_viewContext),
+                            clearFocus: true);
                         break;
                     case AppTabs.MEDIA:
                         tabContent = UpdatableWidget(
-                            child: TabMediaView(_viewContext));
+                            child: TabMediaView(_viewContext),
+                            clearFocus: true);
                         break;
                     case AppTabs.DEVICE:
                         tabContent = UpdatableWidget(
-                            child: TabDeviceView(_viewContext));
+                            child: TabDeviceView(_viewContext),
+                            clearFocus: false);
                         break;
                     case AppTabs.RC:
                         tabContent = UpdatableWidget(
-                            child: TabRemoteControlView(_viewContext));
+                            child: TabRemoteControlView(_viewContext),
+                            clearFocus: true);
                         break;
                     case AppTabs.RI:
                         tabContent = UpdatableWidget(
-                            child: TabRemoteInterfaceView(_viewContext));
+                            child: TabRemoteInterfaceView(_viewContext),
+                            clearFocus: true);
                         break;
                 }
                 return Container(

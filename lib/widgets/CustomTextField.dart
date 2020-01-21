@@ -20,8 +20,9 @@ class CustomTextField extends StatelessWidget
 {
     final TextEditingController text;
     final bool isFocused;
+    final VoidCallback onPressed;
 
-    CustomTextField(this.text, { this.isFocused = false });
+    CustomTextField(this.text, { this.isFocused = false, this.onPressed });
 
     @override
     Widget build(BuildContext context)
@@ -33,6 +34,11 @@ class CustomTextField extends StatelessWidget
                 controller: text,
                 autofocus: isFocused,
                 style: td.textTheme.subhead,
+                autovalidate: false,
+                autocorrect: false,
+                enableSuggestions: false,
+                textInputAction: onPressed != null ? TextInputAction.done : null,
+                onEditingComplete: onPressed,
                 cursorColor: td.accentColor,
                 decoration: InputDecoration(
                     contentPadding: DialogDimens.textFieldPadding,
