@@ -31,6 +31,10 @@ class TabRemoteControlView extends UpdatableView
         PowerStatusMsg.CODE
     ];
 
+    static final SetupOperationCommandMsg _setupQuickCmd = SetupOperationCommandMsg.output(SetupOperationCommand.QUICK);
+    static final SetupOperationCommandMsg _setupSetupCmd = SetupOperationCommandMsg.output(SetupOperationCommand.MENU);
+    static final SetupOperationCommandMsg _setupExitCmd = SetupOperationCommandMsg.output(SetupOperationCommand.EXIT);
+
     TabRemoteControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
@@ -49,16 +53,25 @@ class TabRemoteControlView extends UpdatableView
         final List<TableRow> topRows = List();
         topRows.add(TableRow(children: [
             SizedBox.shrink(),
-            CustomTextLabel.small(Strings.cmd_description_quick_menu, textAlign: TextAlign.center),
-            CustomTextLabel.small(Strings.cmd_description_setup, textAlign: TextAlign.center),
-            CustomTextLabel.small(Strings.cmd_description_return, textAlign: TextAlign.center),
+            InkWell(
+                child: CustomTextLabel.small(Strings.cmd_description_quick_menu, textAlign: TextAlign.center),
+                onTap: () => stateManager.sendMessage(_setupQuickCmd)
+            ),
+            InkWell(
+                child: CustomTextLabel.small(Strings.cmd_description_setup, textAlign: TextAlign.center),
+                onTap: () => stateManager.sendMessage(_setupSetupCmd)
+            ),
+            InkWell(
+                child: CustomTextLabel.small(Strings.cmd_description_return, textAlign: TextAlign.center),
+                onTap: () => stateManager.sendMessage(_setupExitCmd)
+            ),
             SizedBox.shrink()
         ]));
         topRows.add(TableRow(children: [
             SizedBox.shrink(),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.QUICK)),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.MENU)),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.EXIT)),
+            _buildBtn(_setupQuickCmd),
+            _buildBtn(_setupSetupCmd),
+            _buildBtn(_setupExitCmd),
             SizedBox.shrink()
         ]));
 

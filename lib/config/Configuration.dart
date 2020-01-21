@@ -190,6 +190,12 @@ class Configuration
     bool get backAsReturn
     => _backAsReturn;
 
+    static const Pair<String, bool> ADVANCED_QUEUE = Pair<String, bool>("advanced_queue", true);
+    bool _advancedQueue;
+
+    bool get isAdvancedQueue
+    => _advancedQueue;
+
     static const Pair<String, bool> KEEP_PLAYBACK_MODE = Pair<String, bool>("keep_playback_mode", false);
     bool _keepPlaybackMode;
 
@@ -238,10 +244,11 @@ class Configuration
         _riCd = getBool(RI_CD, doLog: true);
 
         // Advanced options
-        _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);
         _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
-        _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
         _keepScreenOn = Platform.isAndroid ? getBool(KEEP_SCREEN_ON, doLog: true) : false;
+        _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
+        _advancedQueue = getBool(ADVANCED_QUEUE, doLog: true);
+        _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
     }

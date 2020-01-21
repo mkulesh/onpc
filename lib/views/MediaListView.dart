@@ -260,6 +260,7 @@ class MediaListView extends UpdatableView
             final bool isQueue = state.mediaListState.isQueue;
             final bool addToQueue = selector.isAddToQueue ||
                 (networkService != null && networkService.isAddToQueue);
+            final bool isAdvQueue = configuration.isAdvancedQueue;
 
             if (isQueue || addToQueue)
             {
@@ -269,12 +270,18 @@ class MediaListView extends UpdatableView
 
             if (!isQueue && addToQueue)
             {
-                contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_replace_and_play), value: MediaContextMenu.REPLACE_AND_PLAY));
+                if (isAdvQueue)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: Text(Strings.playlist_replace_and_play), value: MediaContextMenu.REPLACE_AND_PLAY));
+                }
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
                     child: Text(Strings.playlist_add), value: MediaContextMenu.ADD));
-                contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_replace), value: MediaContextMenu.REPLACE));
+                if (isAdvQueue)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: Text(Strings.playlist_replace), value: MediaContextMenu.REPLACE));
+                }
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
                     child: Text(Strings.playlist_add_and_play), value: MediaContextMenu.ADD_AND_PLAY));
             }
@@ -340,7 +347,14 @@ class MediaListView extends UpdatableView
                 stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(0, idx), false);
                 break;
             case MediaContextMenu.REMOVE_ALL:
-                stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(0, 0), true);
+                if (configuration.isAdvancedQueue)
+                {
+                    stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(1, 0), false);
+                }
+                else
+                {
+                    stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(0, 0), true);
+                }
                 break;
             case MediaContextMenu.MOVE_FROM:
                 _moveFrom = idx;

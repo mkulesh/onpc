@@ -150,11 +150,6 @@ class _PreferencesMainState extends State<PreferencesMain>
         // Advanced options
         elements.add(CustomDivider());
         elements.add(PreferenceTitle(Strings.pref_category_advanced_options));
-        elements.add(_customSwitchPreference(td,
-            Strings.pref_keep_playback_mode,
-            Configuration.KEEP_PLAYBACK_MODE,
-            icon: Drawables.cmd_track_menu,
-            desc: Strings.pref_keep_playback_mode_summary));
 
         if (Platform.isAndroid)
         {
@@ -164,14 +159,30 @@ class _PreferencesMainState extends State<PreferencesMain>
                 icon: Drawables.pref_volume_keys,
                 desc: Strings.pref_volume_summary));
             elements.add(_customSwitchPreference(td,
+                Strings.pref_keep_screen_on,
+                Configuration.KEEP_SCREEN_ON,
+                icon: Drawables.pref_keep_screen_on));
+            elements.add(_customSwitchPreference(td,
                 Strings.pref_back_as_return,
                 Configuration.BACK_AS_RETURN,
                 icon: Drawables.cmd_return,
                 desc: Strings.pref_back_as_return_summary));
-            elements.add(_customSwitchPreference(td,
-                Strings.pref_keep_screen_on,
-                Configuration.KEEP_SCREEN_ON,
-                icon: Drawables.pref_keep_screen_on));
+        }
+
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_advanced_queue,
+            Configuration.ADVANCED_QUEUE,
+            icon: Drawables.pref_advanced_queue,
+            desc: Strings.pref_advanced_queue_summary));
+
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_keep_playback_mode,
+            Configuration.KEEP_PLAYBACK_MODE,
+            icon: Drawables.cmd_track_menu,
+            desc: Strings.pref_keep_playback_mode_summary));
+
+        if (Platform.isAndroid)
+        {
             elements.add(_customSwitchPreference(td,
                 Strings.pref_exit_confirm,
                 Configuration.EXIT_CONFIRM,
