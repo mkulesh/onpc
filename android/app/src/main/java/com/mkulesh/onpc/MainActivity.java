@@ -357,7 +357,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             boolParameters.add(new Pair<>("volume_keys", "flutter.volume_keys"));
             boolParameters.add(new Pair<>("keep_screen_on", "flutter.keep_screen_on"));
             boolParameters.add(new Pair<>("back_as_return", "flutter.back_as_return"));
-            boolParameters.add(new Pair<>("keep_playback_mode", "flutter.keep_playback_mode"));
+            boolParameters.add(new Pair<>("advanced_queue", "flutter.advanced_queue"));
             boolParameters.add(new Pair<>("exit_confirm",  "flutter.exit_confirm"));
             boolParameters.add(new Pair<>("developer_mode",  "flutter.developer_mode"));
             for (Pair<String, String> par : boolParameters)
