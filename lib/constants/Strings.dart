@@ -432,20 +432,6 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
         /*fr*/ "Experimentale: gestion évoluée des files d\'attentes"];
     static String get pref_advanced_queue_summary => l_pref_advanced_queue_summary[_language];
 
-    static const List<String> l_pref_keep_playback_mode = [
-        /*en*/ "Keep playback mode",
-        /*ru*/ "Режим воспроизведения",
-        /*de*/ "Abspielmodus behalten",
-        /*fr*/ "Maintenir le mode lécture"];
-    static String get pref_keep_playback_mode => l_pref_keep_playback_mode[_language];
-
-    static const List<String> l_pref_keep_playback_mode_summary = [
-        /*en*/ "Always keep playback mode in MEDIA tab while playing",
-        /*ru*/ "Во вкладке КАНАЛЫ всегда остваться в режиме воспроизведения.",
-        /*de*/ "Während die Wiedergabe aktiv ist, Abspielmodus in MEDIEN behalten",
-        /*fr*/ "Toujours conserver le mode lécture dans l\'onglet SOURCE quand l\'écoute est en cours"];
-    static String get pref_keep_playback_mode_summary => l_pref_keep_playback_mode_summary[_language];
-
     static const List<String> l_pref_exit_confirm = [
         /*en*/ "Press back button twice for exit",
         /*ru*/ "Для выхода нажмите Назад дважды",

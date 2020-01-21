@@ -450,12 +450,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         if (_tabController == null || _tabs.length != _tabController.length)
         {
-            _tabController = TabController(vsync: this, length: _tabs.length);
-            _tabController.index = _index < _tabs.length ? _index : _tabs.length - 1;
+            _updateTabs(_index);
         }
 
         // Inform state manager about configuration change
-        _stateManager.keepPlaybackMode = _configuration.keepPlaybackMode;
+        _stateManager.keepPlaybackMode = _index == 0;
 
         // Inform platform code about configuration change.
         // Depending on new setting, app may be restarted by platform code here
@@ -465,6 +464,36 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 PlatformCmd.VOLUME_KEYS_ENABLED : PlatformCmd.VOLUME_KEYS_DISABLED);
             Platform.sendPlatformCommand(_configuration.keepScreenOn ?
                 PlatformCmd.KEEP_SCREEN_ON_ENABLED : PlatformCmd.KEEP_SCREEN_ON_DISABLED);
+        }
+    }
+
+    void _updateTabs(int index)
+    {
+        if (_tabController != null)
+        {
+            _tabController.dispose();
+        }
+        _tabController = TabController(vsync: this, length: _tabs.length);
+        _tabController.addListener(_handleTabSelection);
+        _tabController.index = index < _tabs.length ? index : _tabs.length - 1;
+    }
+
+    void _handleTabSelection()
+    {
+        if (!_tabController.indexIsChanging && _tabController.index < AppTabs.values.length)
+        {
+            final AppTabs tab = AppTabs.values[_tabController.index];
+            Logging.info(this.widget, "selected new tab: " + tab.toString());
+
+            if([AppTabs.LISTEN, AppTabs.MEDIA].contains(tab) && _stateManager.isConnected)
+            {
+                final bool desiredPlayback = tab == AppTabs.LISTEN;
+                _stateManager.keepPlaybackMode = desiredPlayback;
+                if (desiredPlayback != _stateManager.state.mediaListState.isPlaybackMode)
+                {
+                    _stateManager.sendMessage(StateManager.commandListMsg);
+                }
+            }
         }
     }
 }
