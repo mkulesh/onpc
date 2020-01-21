@@ -23,7 +23,6 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
-import "../iscp/messages/DisplayModeMsg.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ListInfoMsg.dart";
@@ -78,15 +77,6 @@ class MediaListView extends UpdatableView
     static final XmlListItemMsg playbackIndicationItem = XmlListItemMsg.details(
         -1, 0, Strings.medialist_playback_mode, ListItemIcon.PLAY, false);
 
-    static final OperationCommandMsg playbackModeCmd = OperationCommandMsg.output(
-        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.LIST);
-
-    static final OperationCommandMsg returnItemCmd = OperationCommandMsg.output(
-        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
-
-    static final DisplayModeMsg displayModeCmd = DisplayModeMsg.output(
-        DisplayModeMsg.TOGGLE);
-
     VoidCallback _updateCallback;
     int _moveFrom = -1;
     int _numberOfItems = 0;
@@ -112,7 +102,7 @@ class MediaListView extends UpdatableView
         {
             if (items.isEmpty || !(items.first is OperationCommandMsg))
             {
-                items.insert(0, returnItemCmd);
+                items.insert(0, StateManager.commandReturnMsg);
             }
         }
 
@@ -208,7 +198,7 @@ class MediaListView extends UpdatableView
                 title: CustomTextLabel.normal(title, color: isMoved ? td.accentColor : null),
                 onTap: ()
                 {
-                    stateManager.sendMessage(cmd, waitingForData: cmd != displayModeCmd);
+                    stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.displayModeCmd);
                     _updateCallback();
                 }),
             onLongPress: (position)
@@ -235,7 +225,7 @@ class MediaListView extends UpdatableView
             serviceIcon = Drawables.media_item_unknown;
         }
         final bool isPlaying = rowMsg.getIcon.key == ListItemIcon.PLAY;
-        final cmd = rowMsg == playbackIndicationItem ? displayModeCmd : rowMsg;
+        final cmd = rowMsg == playbackIndicationItem ? StateManager.displayModeCmd : rowMsg;
         return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getTitle, cmd);
     }
 
@@ -367,7 +357,7 @@ class MediaListView extends UpdatableView
                 stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false);
                 break;
             case MediaContextMenu.PLAYBACK_MODE:
-                stateManager.sendMessage(playbackModeCmd);
+                stateManager.sendMessage(StateManager.commandListMsg);
                 break;
         }
     }

@@ -17,9 +17,9 @@ import "package:flutter_svg/svg.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../iscp/StateManager.dart";
 import "../iscp/messages/AlbumNameMsg.dart";
 import "../iscp/messages/ArtistNameMsg.dart";
-import "../iscp/messages/DisplayModeMsg.dart";
 import "../iscp/messages/FileFormatMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/JacketArtMsg.dart";
@@ -136,7 +136,7 @@ class TrackInfoView extends UpdatableView
                             alignment: Alignment.center,
                             tooltip: Strings.tv_display_mode,
                             onPressed: ()
-                            => stateManager.sendMessage(DisplayModeMsg.output(DisplayModeMsg.TOGGLE))
+                            => stateManager.sendMessage(StateManager.displayModeCmd)
                     ))
                 )
             ),

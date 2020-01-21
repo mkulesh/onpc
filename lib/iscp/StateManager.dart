@@ -119,10 +119,15 @@ class StateManager
     // Common List commands
     static final OperationCommandMsg commandListMsg = OperationCommandMsg.output(
         State.DEFAULT_ACTIVE_ZONE, OperationCommand.LIST);
+
     static final OperationCommandMsg commandReturnMsg = OperationCommandMsg.output(
         State.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
+
     static final OperationCommandMsg commandTopMsg = OperationCommandMsg.output(
         State.DEFAULT_ACTIVE_ZONE, OperationCommand.TOP);
+
+    static final DisplayModeMsg displayModeCmd = DisplayModeMsg.output(
+        DisplayModeMsg.TOGGLE);
 
     // State
     final State _state = State();
