@@ -464,7 +464,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     requestListState();
                 }
             }
-            else
+            else if (!state.isPopupMode())
             {
                 requestListState();
             }
@@ -525,7 +525,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             Logging.info(this, "requesting XML list state skipped");
         }
         else if (liMsg.getUiType() == ListTitleInfoMsg.UIType.PLAYBACK
-                || liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU)
+                || liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU
+                || liMsg.getUiType() == ListTitleInfoMsg.UIType.POPUP)
         {
             Logging.info(this, "requesting XML list state skipped");
         }

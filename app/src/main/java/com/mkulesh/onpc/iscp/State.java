@@ -74,6 +74,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -183,7 +184,7 @@ public class State
     public MultiroomDeviceInformationMsg.ChannelType multiroomChannel = MultiroomDeviceInformationMsg.ChannelType.NONE;
 
     // Popup
-    public CustomPopupMsg popup = null;
+    public AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
 
     State(final String host, int activeZone)
     {
@@ -234,7 +235,7 @@ public class State
         return uiType == ListTitleInfoMsg.UIType.PLAYBACK;
     }
 
-    private boolean isPopupMode()
+    boolean isPopupMode()
     {
         return uiType == ListTitleInfoMsg.UIType.POPUP;
     }
@@ -904,6 +905,10 @@ public class State
         {
             uiType = msg.getUiType();
             clearItems();
+            if (!isPopupMode())
+            {
+                popup.set(null);
+            }
             changed = true;
         }
         if (!titleBar.equals(msg.getTitleBar()))
@@ -1092,8 +1097,8 @@ public class State
 
     private boolean process(CustomPopupMsg msg)
     {
-        popup = msg;
-        return popup != null;
+        popup.set(msg);
+        return msg != null;
     }
 
     public ReceiverInformationMsg.Selector getActualSelector()

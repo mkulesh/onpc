@@ -122,10 +122,9 @@ abstract public class BaseFragment extends Fragment
         {
             updateActiveView(state, eventChanges);
         }
-        if (activity.isConnected() && state != null && state.popup != null)
+        if (activity.isConnected() && state != null && state.popup.get() != null)
         {
-            final CustomPopupMsg inMsg = state.popup;
-            state.popup = null;
+            final CustomPopupMsg inMsg = state.popup.getAndSet(null);
             processPopup(inMsg, state);
         }
     }
