@@ -232,7 +232,7 @@ class MediaListState
             {
                 return false;
             }
-            _mediaItems.add(XmlListItemMsg.details(msg.getLineInfo, 0, msg.getListedData, ListItemIcon.UNKNOWN, true));
+            _mediaItems.add(XmlListItemMsg.details(msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true));
             return true;
         }
         return false;

@@ -55,11 +55,11 @@ class XmlListItemMsg extends ISCPMessage
     }
 
     XmlListItemMsg.details(final int id, final int numberOfLayers, final String title,
-        final ListItemIcon icon, final bool selectable) :
+        final String iconType, final ListItemIcon icon, final bool selectable) :
             super.output(CODE, _getParameterAsString(id, numberOfLayers))
     {
         this._title = title;
-        _iconType = "";
+        _iconType = iconType;
         this._icon = ListItemIconEnum.valueByKey(icon);
         _iconId = this._icon.getCode;
         this._selectable = selectable;
@@ -74,6 +74,9 @@ class XmlListItemMsg extends ISCPMessage
 
     String get getTitle
     => _title;
+
+    String get iconType
+    => _iconType;
 
     EnumItem<ListItemIcon> get getIcon
     => _icon;

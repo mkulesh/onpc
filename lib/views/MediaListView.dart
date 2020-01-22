@@ -74,9 +74,7 @@ class MediaListView extends UpdatableView
         PresetCommandMsg.CODE
     ];
 
-    static final XmlListItemMsg playbackIndicationItem = XmlListItemMsg.details(
-        -1, 0, Strings.medialist_playback_mode, ListItemIcon.PLAY, false);
-
+    static final String _PLAYBACK_STRING = "_PLAYBACK_STRING_";
     VoidCallback _updateCallback;
     int _moveFrom = -1;
     int _numberOfItems = 0;
@@ -107,6 +105,9 @@ class MediaListView extends UpdatableView
         }
 
         // Add "Playback" indication if necessary
+        final XmlListItemMsg playbackIndicationItem = XmlListItemMsg.details(
+            -1, 0, Strings.medialist_playback_mode, _PLAYBACK_STRING, ListItemIcon.PLAY, false);
+
         if (isPlayback)
         {
             items.add(playbackIndicationItem);
@@ -225,7 +226,7 @@ class MediaListView extends UpdatableView
             serviceIcon = Drawables.media_item_unknown;
         }
         final bool isPlaying = rowMsg.getIcon.key == ListItemIcon.PLAY;
-        final cmd = rowMsg == playbackIndicationItem ? StateManager.displayModeCmd : rowMsg;
+        final cmd = rowMsg.iconType == _PLAYBACK_STRING ? StateManager.displayModeCmd : rowMsg;
         return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getTitle, cmd);
     }
 
@@ -252,7 +253,7 @@ class MediaListView extends UpdatableView
         final NetworkService networkService = state.getNetworkService;
         final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
 
-        if (cmd is XmlListItemMsg && cmd != playbackIndicationItem && selector != null)
+        if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && selector != null)
         {
             Logging.info(this, "Context menu for selector [" + selector.toString() +
                 (networkService != null ? "] and service [" + networkService.toString() + "]" : ""));
