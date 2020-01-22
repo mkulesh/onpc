@@ -7,6 +7,8 @@
 
 *Enhanced controller for Onkyo/Pioneer devices: listen to music properly!*
 
+[<img src="https://github.com/mkulesh/onpc/blob/master/images/download_on_the_app_store_badge.svg"
+      alt="Download on the App Store" height="75">](https://apps.apple.com/app/id1490166845)
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
