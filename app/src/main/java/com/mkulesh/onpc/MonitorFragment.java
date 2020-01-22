@@ -73,6 +73,7 @@ public class MonitorFragment extends BaseFragment
     private final static String VOLUME_LEVEL = "volume_level";
 
     private HorizontalScrollView listeningModeLayout;
+    private LinearLayout soundControlLayout;
     private AppCompatImageButton btnRepeat;
     private AppCompatImageButton btnPrevious;
     private AppCompatImageButton btnPausePlay;
@@ -101,6 +102,7 @@ public class MonitorFragment extends BaseFragment
         rootView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
+        soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
 
         // Command Buttons
         btnRepeat = rootView.findViewById(R.id.btn_repeat);
@@ -241,7 +243,7 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
-    private void clearSoundVolumeButtons(final LinearLayout soundControlLayout)
+    private void clearSoundVolumeButtons()
     {
         amplifierButtons.clear();
         deviceSoundButtons.clear();
@@ -250,9 +252,9 @@ public class MonitorFragment extends BaseFragment
 
     private void prepareAmplifierButtons()
     {
-        final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
-        clearSoundVolumeButtons(soundControlLayout);
+        clearSoundVolumeButtons();
         soundControlLayout.setVisibility(View.VISIBLE);
+        listeningModeLayout.setVisibility(View.GONE);
 
         final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]
         {
@@ -273,8 +275,7 @@ public class MonitorFragment extends BaseFragment
 
     private void prepareDeviceSoundButtons()
     {
-        final LinearLayout soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
-        clearSoundVolumeButtons(soundControlLayout);
+        clearSoundVolumeButtons();
         soundControlLayout.setVisibility(View.VISIBLE);
 
         // Here, we create zone-dependent buttons without command message.
@@ -318,6 +319,7 @@ public class MonitorFragment extends BaseFragment
         if (listeningModeLayout.getChildCount() == 1)
         {
             final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
+            l.removeAllViews();
             for (ListeningModeMsg.Mode m : activity.getConfiguration().getSortedListeningModes(true, null))
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
