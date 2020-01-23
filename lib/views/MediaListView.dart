@@ -100,7 +100,8 @@ class MediaListView extends UpdatableView
         {
             if (items.isEmpty || !(items.first is OperationCommandMsg))
             {
-                items.insert(0, StateManager.commandReturnMsg);
+                items.insert(0, OperationCommandMsg.output(
+                    ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN));
             }
         }
 
@@ -199,7 +200,7 @@ class MediaListView extends UpdatableView
                 title: CustomTextLabel.normal(title, color: isMoved ? td.accentColor : null),
                 onTap: ()
                 {
-                    stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.displayModeCmd);
+                    stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.DISPLAY_MSG);
                     _updateCallback();
                 }),
             onLongPress: (position)
@@ -226,7 +227,7 @@ class MediaListView extends UpdatableView
             serviceIcon = Drawables.media_item_unknown;
         }
         final bool isPlaying = rowMsg.getIcon.key == ListItemIcon.PLAY;
-        final cmd = rowMsg.iconType == _PLAYBACK_STRING ? StateManager.displayModeCmd : rowMsg;
+        final cmd = rowMsg.iconType == _PLAYBACK_STRING ? StateManager.DISPLAY_MSG : rowMsg;
         return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getTitle, cmd);
     }
 
@@ -372,7 +373,7 @@ class MediaListView extends UpdatableView
                 stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false);
                 break;
             case MediaContextMenu.PLAYBACK_MODE:
-                stateManager.sendMessage(StateManager.commandListMsg);
+                stateManager.sendMessage(StateManager.LIST_MSG);
                 break;
         }
     }

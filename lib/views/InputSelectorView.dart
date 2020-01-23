@@ -20,6 +20,7 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ListTitleInfoMsg.dart";
+import "../iscp/messages/OperationCommandMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
@@ -47,14 +48,17 @@ class InputSelectorView extends UpdatableView
 
         final List<Widget> buttons = List<Widget>();
 
+        final OperationCommandMsg commandTopMsg = OperationCommandMsg.output(
+            ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.TOP);
+
         buttons.add(CustomImageButton.small(
-            StateManager.commandTopMsg.getValue.icon,
-            StateManager.commandTopMsg.getValue.description,
+            commandTopMsg.getValue.icon,
+            commandTopMsg.getValue.description,
             padding: EdgeInsets.symmetric(
                 vertical: ButtonDimens.textButtonPadding,
                 horizontal: MediaListDimens.itemPadding),
             onPressed: ()
-            => stateManager.sendMessage(StateManager.commandTopMsg, waitingForData: true),
+            => stateManager.sendMessage(commandTopMsg, waitingForData: true),
             isEnabled: state.isOn && !state.mediaListState.isTopLayer()
         )
         );

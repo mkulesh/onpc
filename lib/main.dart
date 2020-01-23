@@ -365,7 +365,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this.widget, "pressed back button, tab=" + tab.toString() + ", top=" + isTop.toString());
         if (tab == AppTabs.MEDIA && !isTop && _configuration.backAsReturn)
         {
-            _stateManager.sendMessage(StateManager.commandReturnMsg, waitingForData: true);
+            _stateManager.sendMessage(OperationCommandMsg.output(
+                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN),
+                waitingForData: true);
             return true;
         }
         else if (_configuration.exitConfirm)
@@ -496,7 +498,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 _stateManager.keepPlaybackMode = desiredPlayback;
                 if (desiredPlayback != _stateManager.state.mediaListState.isPlaybackMode)
                 {
-                    _stateManager.sendMessage(StateManager.commandListMsg);
+                    _stateManager.sendMessage(StateManager.LIST_MSG);
                 }
             }
         }

@@ -136,7 +136,7 @@ class TrackInfoView extends UpdatableView
                             alignment: Alignment.center,
                             tooltip: Strings.tv_display_mode,
                             onPressed: ()
-                            => stateManager.sendMessage(StateManager.displayModeCmd)
+                            => stateManager.sendMessage(StateManager.DISPLAY_MSG)
                     ))
                 )
             ),

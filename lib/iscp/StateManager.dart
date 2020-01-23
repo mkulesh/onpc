@@ -117,16 +117,10 @@ class StateManager
     int _xmlReqId = 0;
 
     // Common List commands
-    static final OperationCommandMsg commandListMsg = OperationCommandMsg.output(
+    static final OperationCommandMsg LIST_MSG = OperationCommandMsg.output(
         State.DEFAULT_ACTIVE_ZONE, OperationCommand.LIST);
 
-    static final OperationCommandMsg commandReturnMsg = OperationCommandMsg.output(
-        State.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
-
-    static final OperationCommandMsg commandTopMsg = OperationCommandMsg.output(
-        State.DEFAULT_ACTIVE_ZONE, OperationCommand.TOP);
-
-    static final DisplayModeMsg displayModeCmd = DisplayModeMsg.output(
+    static final DisplayModeMsg DISPLAY_MSG = DisplayModeMsg.output(
         DisplayModeMsg.TOGGLE);
 
     // State
@@ -351,7 +345,7 @@ class StateManager
             // Note: see Issue 51. Do not request list mode for TUNEIN_RADIO since it tops
             // playing for some models
             Logging.info(this, "requesting list mode...");
-            _messageChannel.sendMessage(commandListMsg.getCmdMsg());
+            _messageChannel.sendMessage(LIST_MSG.getCmdMsg());
             _playbackMode = false;
         }
 
@@ -537,13 +531,13 @@ class StateManager
         Logging.info(this, "sending track cmd: " + menu.toString() + " for zone " + zone.toString());
         if (!state.mediaListState.isPlaybackMode)
         {
-            _messageChannel.sendMessage(commandListMsg.getCmdMsg());
+            _messageChannel.sendMessage(LIST_MSG.getCmdMsg());
         }
         final OperationCommandMsg msg = OperationCommandMsg.output(zone, menu);
         _messageChannel.sendMessage(msg.getCmdMsg());
         if (doReturn)
         {
-            _messageChannel.sendMessage(commandListMsg.getCmdMsg());
+            _messageChannel.sendMessage(LIST_MSG.getCmdMsg());
         }
         if (_onOutputMessage != null)
         {
