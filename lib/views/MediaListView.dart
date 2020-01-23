@@ -92,6 +92,10 @@ class MediaListView extends UpdatableView
         // Get items
         final List<ISCPMessage> items = ms.isNetworkServices ?
             _getSortedNetworkServices(state.playbackState.serviceIcon, ms.mediaItems) : ms.mediaItems;
+        if (ms.isTrackMenuReceived)
+        {
+            ms.retrieveMenu();
+        }
 
         final bool isPlayback = state.isOn && items.isEmpty && (ms.isPlaybackMode || ms.isSimpleInput);
 

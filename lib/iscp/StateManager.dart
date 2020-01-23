@@ -99,7 +99,6 @@ class StateManager
 
     // Events
     OnStateChanged _onStateChanged;
-    OnOutputMessage _onOutputMessage;
     OnConnectionError _onConnectionError;
     final Set<String> _eventChanges = HashSet<String>();
 
@@ -136,10 +135,9 @@ class StateManager
         _state.trackState.coverDownloadFinished = _onProcessFinished;
     }
 
-    void addListeners(OnStateChanged onStateChanged, OnOutputMessage onOutputMessage, OnConnectionError onConnectionError)
+    void addListeners(OnStateChanged onStateChanged, OnConnectionError onConnectionError)
     {
         _onStateChanged = onStateChanged;
-        _onOutputMessage = onOutputMessage;
         _onConnectionError = onConnectionError;
     }
 
@@ -396,7 +394,7 @@ class StateManager
                     _requestListState();
                 }
             }
-            else
+            else if (!state.mediaListState.isPopupMode)
             {
                 _requestListState();
             }
@@ -468,7 +466,8 @@ class StateManager
             Logging.info(this, "requesting XML list state skipped");
         }
         else if (liMsg.getUiType.key == UIType.PLAYBACK
-            || liMsg.getUiType.key == UIType.MENU)
+            || liMsg.getUiType.key == UIType.MENU
+            || liMsg.getUiType.key == UIType.POPUP)
         {
             Logging.info(this, "requesting XML list state skipped");
         }
@@ -493,10 +492,6 @@ class StateManager
             _requestXmlList = true;
         }
         _messageChannel.sendMessage(msg.getCmdMsg());
-        if (_onOutputMessage != null)
-        {
-            _onOutputMessage(msg);
-        }
         if (waitingForData)
         {
             _waitingForData = true;
@@ -538,10 +533,6 @@ class StateManager
         if (doReturn)
         {
             _messageChannel.sendMessage(LIST_MSG.getCmdMsg());
-        }
-        if (_onOutputMessage != null)
-        {
-            _onOutputMessage(msg);
         }
     }
 

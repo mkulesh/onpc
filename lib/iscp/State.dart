@@ -332,7 +332,12 @@ class State
         }
         else if (msg is ListTitleInfoMsg)
         {
-            return _isChange(ListTitleInfoMsg.CODE, _mediaListState.processListTitleInfo(msg));
+            final String changed = _isChange(ListTitleInfoMsg.CODE, _mediaListState.processListTitleInfo(msg));
+            if (!_mediaListState.isPopupMode)
+            {
+                _popupDocument = null;
+            }
+            return changed;
         }
         else if (msg is XmlListInfoMsg)
         {

@@ -72,6 +72,11 @@ class MediaListState
     int get numberOfItems
     => _mediaItems.length;
 
+    bool _trackMenuReceived = false;
+
+    bool get isTrackMenuReceived
+    => _trackMenuReceived;
+
     final List<String> listInfoItems = List<String>();
 
     MediaListState()
@@ -93,6 +98,7 @@ class MediaListState
 
     void clearItems()
     {
+        _trackMenuReceived = false;
         _mediaItems.clear();
     }
 
@@ -164,6 +170,11 @@ class MediaListState
         {
             clearItems();
             msg.parseXml(_mediaItems, _numberOfLayers);
+            if (_uiType == UIType.MENU_LIST)
+            {
+                Logging.info(this, "received track menu list with " + _mediaItems.length.toString() + " items");
+                _trackMenuReceived = true;
+            }
             return true;
         }
         on Exception catch (e)
@@ -228,11 +239,16 @@ class MediaListState
         else if (isMenuMode)
         {
             if (_mediaItems.any((i)
-            => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase())))
+            => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase() && i.getMessageId == msg.getLineInfo)))
             {
                 return false;
             }
             _mediaItems.add(XmlListItemMsg.details(msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true));
+            if (_mediaItems.length == numberOfItems)
+            {
+                Logging.info(this, "received track menu with " + _mediaItems.length.toString() + " items");
+                _trackMenuReceived = true;
+            }
             return true;
         }
         return false;
@@ -333,5 +349,19 @@ class MediaListState
         {
             mediaItems.clear();
         }
+    }
+
+    List<XmlListItemMsg> retrieveMenu()
+    {
+        _trackMenuReceived = false;
+        final List<XmlListItemMsg> retValue = List();
+        _mediaItems.forEach((msg)
+        {
+            if (msg is XmlListItemMsg)
+            {
+                retValue.add(msg);
+            }
+        });
+        return retValue;
     }
 }

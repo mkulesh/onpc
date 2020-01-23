@@ -36,12 +36,13 @@ import "constants/Dimens.dart";
 import "constants/Strings.dart";
 import "dialogs/CustomPopupDialog.dart";
 import "dialogs/DeviceSearchDialog.dart";
-import "iscp/ISCPMessage.dart";
+import "dialogs/TrackMenuDialog.dart";
 import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
 import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
+import 'iscp/messages/XmlListItemMsg.dart';
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
@@ -128,7 +129,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _applyConfiguration(informPlatform: false);
 
         _stateManager.autoPower = _configuration.autoPower;
-        _stateManager.addListeners(_onStateChanged, _onOutputMessage, _showToast);
+        _stateManager.addListeners(_onStateChanged, _showToast);
         _exitConfirm = false;
         WidgetsBinding.instance.addObserver(this);
         ServicesBinding.instance.defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
@@ -292,10 +293,16 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     }
                     break;
                 case CustomPopupMsg.CODE:
-                    _onPopup();
+                    Timer(StateManager.GUI_UPDATE_DELAY, ()
+                    => _onPopup());
                     break;
             }
         });
+
+        if (activeTab == AppTabs.LISTEN && _stateManager.state.mediaListState.isTrackMenuReceived)
+        {
+            _onTrackMenu();
+        }
 
         _viewContext.updateNotifier.sink.add(changes);
     }
@@ -331,15 +338,6 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _stateManager.disconnect(false);
         _stateManager.stopSearch();
         _stateManager.state.clear();
-    }
-
-    void _onOutputMessage(ISCPMessage msg)
-    {
-        // Switch tabs on OperationCommand.MENU
-        if (msg is OperationCommandMsg && msg.getValue.key == OperationCommand.MENU)
-        {
-            _tabController.index = 1;
-        }
     }
 
     void _showToast(String msg)
@@ -410,6 +408,18 @@ class MusicControllerAppState extends State<MusicControllerApp>
             );
         }
     }
+
+    void _onTrackMenu()
+    {
+        final List<XmlListItemMsg> menu = _stateManager.state.mediaListState.retrieveMenu();
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => TrackMenuDialog(_viewContext, menu)
+        );
+    }
+
 
     void _processNetworkStateChange(final ByteData state)
     {
@@ -485,11 +495,14 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _tabController.index = index < _tabs.length ? index : _tabs.length - 1;
     }
 
+    AppTabs get activeTab
+    => _tabController != null && _tabController.index < AppTabs.values.length ? AppTabs.values[_tabController.index] : null;
+
     void _handleTabSelection()
     {
-        if (!_tabController.indexIsChanging && _tabController.index < AppTabs.values.length)
+        if (!_tabController.indexIsChanging && activeTab != null)
         {
-            final AppTabs tab = AppTabs.values[_tabController.index];
+            final AppTabs tab = activeTab;
             Logging.info(this.widget, "selected new tab: " + tab.toString());
 
             if([AppTabs.LISTEN, AppTabs.MEDIA].contains(tab) && _stateManager.isConnected)
