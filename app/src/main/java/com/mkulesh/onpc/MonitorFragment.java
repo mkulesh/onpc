@@ -52,7 +52,6 @@ import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
-import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -533,7 +532,11 @@ public class MonitorFragment extends BaseFragment
         }
         if (state.isTrackMenuReceived())
         {
-            showTrackMenuDialog(activity, state);
+            popupManager.showTrackMenuDialog(activity, state);
+        }
+        if (!state.isMenuMode() && !state.isMenuListMode())
+        {
+            popupManager.closeTrackMenuDialog();
         }
 
         // Multiroom groups
@@ -1056,54 +1059,5 @@ public class MonitorFragment extends BaseFragment
             setButtonEnabled(btn, true);
             setButtonSelected(btn, feed == MenuStatusMsg.Feed.LOVE);
         }
-    }
-
-    private void showTrackMenuDialog(@NonNull final MainActivity activity, @NonNull final State state)
-    {
-        final FrameLayout frameView = new FrameLayout(activity);
-
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_track_menu);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.cmd_track_menu)
-                .setIcon(icon)
-                .setCancelable(false)
-                .setView(frameView)
-                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (d, which) ->
-                {
-                    if (activity.isConnected())
-                    {
-                        activity.getStateManager().sendMessage(StateManager.RETURN_MSG);
-                    }
-                    d.dismiss();
-                })
-                .create();
-
-        dialog.getLayoutInflater().inflate(R.layout.dialog_track_menu, frameView);
-
-        final LinearLayout menuGroup = frameView.findViewById(R.id.track_menu_layout);
-        final List<XmlListItemMsg> menuItems = state.cloneMediaItems();
-        for (final XmlListItemMsg msg : menuItems)
-        {
-            final LinearLayout itemView = (LinearLayout) LayoutInflater.from(getContext()).
-                    inflate(R.layout.media_item, frameView, false);
-            final View textView = itemView.findViewById(R.id.media_item_title);
-            if (textView != null)
-            {
-                ((TextView) textView).setText(msg.getTitle());
-            }
-            itemView.setOnClickListener((View v) ->
-            {
-                if (activity.isConnected())
-                {
-                    activity.getStateManager().sendMessage(msg);
-                }
-                dialog.dismiss();
-            });
-            menuGroup.addView(itemView);
-        }
-
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 }

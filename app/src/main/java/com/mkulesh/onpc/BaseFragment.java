@@ -21,10 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
-import com.mkulesh.onpc.iscp.PopupBuilder;
 import com.mkulesh.onpc.iscp.State;
-import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
-import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
@@ -36,7 +33,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -56,6 +52,7 @@ abstract public class BaseFragment extends Fragment
     private int buttonSize = 0;
     int buttonMarginHorizontal = 0;
     private int buttonMarginVertical = 0;
+    final PopupManager popupManager = new PopupManager();
 
     interface ButtonListener
     {
@@ -122,34 +119,16 @@ abstract public class BaseFragment extends Fragment
         {
             updateActiveView(state, eventChanges);
         }
-        if (activity.isConnected() && state != null && state.popup.get() != null)
+        if (activity.isConnected() && state != null)
         {
-            final CustomPopupMsg inMsg = state.popup.getAndSet(null);
-            processPopup(inMsg, state);
-        }
-    }
-
-    private void processPopup(CustomPopupMsg inMsg, @NonNull final State state)
-    {
-        try
-        {
-            PopupBuilder builder = new PopupBuilder(activity, state, (outMsg) ->
+            if (state.popup.get() != null)
             {
-                if (activity != null)
-                {
-                    activity.getStateManager().sendMessage(outMsg);
-                }
-            });
-            final AlertDialog alertDialog = builder.build(inMsg);
-            if (alertDialog != null)
-            {
-                alertDialog.show();
-                Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
+                popupManager.showPopupDialog(activity, state);
             }
-        }
-        catch (Exception e)
-        {
-            Logging.info(this, "Can not create popup dialog: " + e.getLocalizedMessage());
+            if (!state.isPopupMode())
+            {
+                popupManager.closePopupDialog();
+            }
         }
     }
 

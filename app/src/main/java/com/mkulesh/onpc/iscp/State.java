@@ -235,14 +235,19 @@ public class State
         return uiType == ListTitleInfoMsg.UIType.PLAYBACK;
     }
 
-    boolean isPopupMode()
+    public boolean isPopupMode()
     {
-        return uiType == ListTitleInfoMsg.UIType.POPUP;
+        return uiType == ListTitleInfoMsg.UIType.POPUP || uiType == ListTitleInfoMsg.UIType.KEYBOARD;
     }
 
     public boolean isMenuMode()
     {
         return uiType == ListTitleInfoMsg.UIType.MENU;
+    }
+
+    public boolean isMenuListMode()
+    {
+        return uiType == ListTitleInfoMsg.UIType.MENU_LIST;
     }
 
     @NonNull
@@ -976,7 +981,7 @@ public class State
                 {
                     trackInfoFromList(mediaItems);
                 }
-                if (uiType == ListTitleInfoMsg.UIType.MENU_LIST)
+                if (isMenuListMode())
                 {
                     Logging.info(this, "received track menu list with " + mediaItems.size() + " items");
                     trackMenuReceived = true;
