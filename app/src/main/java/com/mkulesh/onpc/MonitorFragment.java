@@ -866,6 +866,12 @@ public class MonitorFragment extends BaseFragment
                 trebleGroup.setVisibility(isChecked ? View.GONE : View.VISIBLE);
                 activity.getStateManager().sendMessage(new DirectCommandMsg(
                         isChecked ? DirectCommandMsg.Status.ON : DirectCommandMsg.Status.OFF));
+                final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
+                        ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
+                if (toneCommand != null)
+                {
+                    activity.getStateManager().sendQueries(new String[]{toneCommand}, "requesting tone state");
+                }
             });
         }
         else
