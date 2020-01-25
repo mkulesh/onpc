@@ -26,6 +26,7 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomGroupSettingMsg;
+import com.mkulesh.onpc.rememberedgroups.GroupConfig;
 import com.mkulesh.onpc.rememberedgroups.GroupStore;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -86,12 +87,14 @@ class MultiroomManager
             builder.setTitle("Pick Saved Group");
 
             String[] storedGroups = GroupStore.getI(activity)
-                    .knownGroups().toArray(new String[0]);
+                    .groupsWithMaster(state.getHost()) // TODO use mac instead of ip (or other id?)
+                    .toArray(new String[0]);
 
             builder.setItems(storedGroups, (dialog, which) -> {
                 String name = storedGroups[which];
                 group_name.setText(name);
-                Map<String, Boolean> selectedDevices = GroupStore.getI(activity).get(name);
+                GroupConfig group = GroupStore.getI(activity).get(name);
+                Map<String, Boolean> selectedDevices = group.getSlave_selection();
                 setCheckmarks(deviceGroup, selectedDevices);
             });
             builder.show();
@@ -114,9 +117,14 @@ class MultiroomManager
         // TODO the current "master" device is currently not saved, nor are saved groups filtered
         // by master device
         save.setOnClickListener((_x) -> {
+            String master = state.getHost();
+            int port = state.getPort();
             GroupStore.getI(activity).save(
                     group_name.getText().toString(),
-                    gatherSelectedDevices(deviceGroup));
+                    new GroupConfig(
+                            master,
+                            port,
+                            gatherSelectedDevices(deviceGroup)));
         });
 
         Button delete = frameView.findViewById(R.id.device_group_delete);

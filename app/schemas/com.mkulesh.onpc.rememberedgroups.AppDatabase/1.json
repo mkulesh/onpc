@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3a99d9e86da892e12d8ad8bf27b38291",
+    "identityHash": "421ae65dda9baf930ac2aeb40633b272",
     "entities": [
       {
-        "tableName": "GroupMembership",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_name` TEXT NOT NULL, `device` TEXT NOT NULL, `connected` INTEGER NOT NULL, PRIMARY KEY(`group_name`, `device`))",
+        "tableName": "GroupSlaveSelection",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_name` TEXT NOT NULL, `device` TEXT NOT NULL, `connected` INTEGER NOT NULL, PRIMARY KEY(`group_name`, `device`), FOREIGN KEY(`group_name`) REFERENCES `GroupName`(`group_name`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "group",
@@ -35,13 +35,101 @@
           "autoGenerate": false
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "GroupName",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "group_name"
+            ],
+            "referencedColumns": [
+              "group_name"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "GroupMaster",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_name` TEXT NOT NULL, `master_device` TEXT NOT NULL, `port` INTEGER NOT NULL, PRIMARY KEY(`group_name`), FOREIGN KEY(`group_name`) REFERENCES `GroupName`(`group_name`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "group_name",
+            "columnName": "group_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "master_device",
+            "columnName": "master_device",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "port",
+            "columnName": "port",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "GroupName",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "group_name"
+            ],
+            "referencedColumns": [
+              "group_name"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "GroupName",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_name` TEXT NOT NULL, PRIMARY KEY(`group_name`), FOREIGN KEY(`group_name`) REFERENCES `GroupMaster`(`group_name`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "group_name",
+            "columnName": "group_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "GroupMaster",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "group_name"
+            ],
+            "referencedColumns": [
+              "group_name"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3a99d9e86da892e12d8ad8bf27b38291')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '421ae65dda9baf930ac2aeb40633b272')"
     ]
   }
 }

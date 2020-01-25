@@ -93,6 +93,7 @@ public class State
 
     // main host
     private final String host;
+    private final int port;
 
     // Receiver Information
     public String receiverInformation = "";
@@ -187,8 +188,13 @@ public class State
 
     State(final String host, int activeZone)
     {
+        this(host, activeZone, 0);  // TODO check if port should be part of state in general
+    }
+
+    State(final String host, int activeZone, int port){
         this.host = host;
         this.activeZone = activeZone;
+        this.port = port;
         clearTrackInfo();
     }
 
@@ -208,6 +214,15 @@ public class State
     {
         return activeZone;
     }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getHost(){
+        return host; // TODO we should probably use the MAC instead
+    }
+
 
     public boolean isExtendedZone()
     {

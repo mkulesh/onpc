@@ -142,7 +142,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             throw new Exception("Cannot connect to server");
         }
 
-        state = new State(device, zone);
+        state = new State(device, zone, port);
 
         // In LTE mode, always use BMP images instead of links since direct links
         // can be not available
