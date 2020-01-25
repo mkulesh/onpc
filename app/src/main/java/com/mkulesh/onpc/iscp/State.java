@@ -89,6 +89,7 @@ public class State
         TIME_SEEK,
         MEDIA_ITEMS,
         RECEIVER_INFO,
+        AUDIO_CONTROL,
         MULTIROOM_INFO
     }
 
@@ -402,10 +403,6 @@ public class State
         {
             return isCommonChange(process((HdmiCecMsg) msg));
         }
-        if (msg instanceof DirectCommandMsg)
-        {
-            return isCommonChange(process((DirectCommandMsg) msg));
-        }
         if (msg instanceof SpeakerACommandMsg)
         {
             return isCommonChange(process((SpeakerACommandMsg) msg));
@@ -418,23 +415,27 @@ public class State
         // Sound control
         if (msg instanceof ListeningModeMsg)
         {
-            return isCommonChange(process((ListeningModeMsg) msg));
+            return process((ListeningModeMsg) msg) ? ChangeType.AUDIO_CONTROL : ChangeType.NONE;
         }
         if (msg instanceof MasterVolumeMsg)
         {
-            return isCommonChange(process((MasterVolumeMsg) msg));
+            return process((MasterVolumeMsg) msg) ? ChangeType.AUDIO_CONTROL : ChangeType.NONE;
+        }
+        if (msg instanceof DirectCommandMsg)
+        {
+            return process((DirectCommandMsg) msg) ? ChangeType.AUDIO_CONTROL : ChangeType.NONE;
         }
         if (msg instanceof ToneCommandMsg)
         {
-            return isCommonChange(process((ToneCommandMsg) msg));
+            return process((ToneCommandMsg) msg) ? ChangeType.AUDIO_CONTROL : ChangeType.NONE;
         }
         if (msg instanceof SubwooferLevelCommandMsg)
         {
-            return isCommonChange(process((SubwooferLevelCommandMsg) msg));
+            return process((SubwooferLevelCommandMsg) msg) ? ChangeType.AUDIO_CONTROL : ChangeType.NONE;
         }
         if (msg instanceof CenterLevelCommandMsg)
         {
-            return isCommonChange(process((CenterLevelCommandMsg) msg));
+            return process((CenterLevelCommandMsg) msg) ? ChangeType.AUDIO_CONTROL : ChangeType.NONE;
         }
 
         // Google cast
