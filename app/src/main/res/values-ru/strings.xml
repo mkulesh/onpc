@@ -85,6 +85,8 @@
     <string name="pref_back_as_return_summary">Использовать кнопку возврата для перехода на предыдущий уровень в медиатеке</string>
     <string name="pref_advanced_queue">Расширенные возможности Play Queue</string>
     <string name="pref_advanced_queue_summary">Использовать экспериментальные возможности очереди воспроизведения</string>
+    <string name="pref_keep_playback_mode">Режим воспроизведения</string>
+    <string name="pref_keep_playback_mode_summary">Во вкладке КАНАЛЫ всегда оставаться в режиме воспроизведения.</string>
     <string name="pref_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="pref_keep_screen_on">Не гасить экран</string>
     <string name="pref_developer_mode">Для разработчика</string>

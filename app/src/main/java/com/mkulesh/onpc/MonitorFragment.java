@@ -189,11 +189,14 @@ public class MonitorFragment extends BaseFragment
     public void onResume()
     {
         super.onResume();
-        if (activity != null && activity.isConnected() &&
-            !activity.getStateManager().getState().isPlaybackMode())
+        if (activity != null && activity.isConnected())
         {
             activity.getStateManager().setPlaybackMode(true);
-            activity.getStateManager().sendMessage(StateManager.LIST_MSG);
+            final State state = activity.getStateManager().getState();
+            if (state.isUiTypeValid() && !state.isPlaybackMode())
+            {
+                activity.getStateManager().sendMessage(StateManager.LIST_MSG);
+            }
         }
     }
 

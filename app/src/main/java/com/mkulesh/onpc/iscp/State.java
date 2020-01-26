@@ -231,6 +231,11 @@ public class State
         return playStatus != PlayStatusMsg.PlayStatus.STOP;
     }
 
+    public boolean isUiTypeValid()
+    {
+        return uiType != null;
+    }
+
     public boolean isPlaybackMode()
     {
         return uiType == ListTitleInfoMsg.UIType.PLAYBACK;

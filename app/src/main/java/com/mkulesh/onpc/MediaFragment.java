@@ -95,11 +95,15 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     public void onResume()
     {
         super.onResume();
-        if (activity != null && activity.isConnected() &&
-            activity.getStateManager().getState().isPlaybackMode())
+        if (activity != null && activity.isConnected())
         {
-            activity.getStateManager().setPlaybackMode(false);
-            activity.getStateManager().sendMessage(StateManager.LIST_MSG);
+            final boolean keepPlaybackMode = activity.getConfiguration().keepPlaybackMode();
+            activity.getStateManager().setPlaybackMode(keepPlaybackMode);
+            final State state = activity.getStateManager().getState();
+            if (!keepPlaybackMode && state.isUiTypeValid() && state.isPlaybackMode())
+            {
+                activity.getStateManager().sendMessage(StateManager.LIST_MSG);
+            }
         }
     }
 
