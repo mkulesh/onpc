@@ -507,9 +507,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
             if([AppTabs.LISTEN, AppTabs.MEDIA].contains(tab) && _stateManager.isConnected)
             {
-                final bool desiredPlayback = tab == AppTabs.LISTEN;
+                final bool desiredPlayback = tab == AppTabs.LISTEN || _configuration.keepPlaybackMode;
                 _stateManager.keepPlaybackMode = desiredPlayback;
-                if (desiredPlayback != _stateManager.state.mediaListState.isPlaybackMode)
+                if (_stateManager.state.mediaListState.isUiTypeValid &&
+                    desiredPlayback != _stateManager.state.mediaListState.isPlaybackMode)
                 {
                     _stateManager.sendMessage(StateManager.LIST_MSG);
                 }

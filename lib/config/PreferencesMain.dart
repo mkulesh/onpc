@@ -175,6 +175,12 @@ class _PreferencesMainState extends State<PreferencesMain>
             icon: Drawables.pref_advanced_queue,
             desc: Strings.pref_advanced_queue_summary));
 
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_keep_playback_mode,
+            Configuration.KEEP_PLAYBACK_MODE,
+            icon: Drawables.cmd_track_menu,
+            desc: Strings.pref_keep_playback_mode_summary));
+
         if (Platform.isAndroid)
         {
             elements.add(_customSwitchPreference(td,

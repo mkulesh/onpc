@@ -254,6 +254,9 @@ class MediaListState
         return false;
     }
 
+    bool get isUiTypeValid
+    => _uiType != null;
+
     bool get isPlaybackMode
     => _uiType != null && _uiType == UIType.PLAYBACK;
 

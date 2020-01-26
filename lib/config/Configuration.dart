@@ -196,6 +196,12 @@ class Configuration
     bool get isAdvancedQueue
     => _advancedQueue;
 
+    static const Pair<String, bool> KEEP_PLAYBACK_MODE = Pair<String, bool>("keep_playback_mode", false);
+    bool _keepPlaybackMode;
+
+    bool get keepPlaybackMode
+    => _keepPlaybackMode;
+
     static const Pair<String, bool> EXIT_CONFIRM = Pair<String, bool>("exit_confirm", false);
     bool _exitConfirm;
 
@@ -242,6 +248,7 @@ class Configuration
         _keepScreenOn = Platform.isAndroid ? getBool(KEEP_SCREEN_ON, doLog: true) : false;
         _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
         _advancedQueue = getBool(ADVANCED_QUEUE, doLog: true);
+        _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
     }

@@ -93,6 +93,8 @@ Enjoy!""</string>
     <string name="pref_back_as_return_summary">Use back button to switch to the parent level in the media list</string>
     <string name="pref_advanced_queue">Advanced play queue options</string>
     <string name="pref_advanced_queue_summary">Experimental: use advanced play queue features</string>
+    <string name="pref_keep_playback_mode">Keep playback mode</string>
+    <string name="pref_keep_playback_mode_summary">Always keep playback mode in MEDIA tab while playing</string>
     <string name="pref_exit_confirm">Press back button twice for exit</string>
     <string name="pref_keep_screen_on">Keep the screen turned on</string>
     <string name="pref_developer_mode">Developer options</string>
