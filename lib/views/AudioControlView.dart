@@ -85,7 +85,15 @@ class AudioControlView extends UpdatableView
                 value: isDirectMode,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 onChanged: (bool newValue)
-                => stateManager.sendMessage(DirectCommandMsg.output(DirectCommand.TOGGLE), waitingForData: true));
+                {
+                    stateManager.sendMessage(DirectCommandMsg.output(DirectCommand.TOGGLE), waitingForData: true);
+                    if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
+                    {
+                        final List<String> cmd = List();
+                        cmd.add(ToneCommandMsg.ZONE_COMMANDS[zone]);
+                        stateManager.sendQueries(cmd);
+                    }
+                });
 
             Widget checkBoxRow = Padding(padding: EdgeInsets.only(bottom: DialogDimens.rowPadding.vertical), child: Row(
                 mainAxisSize: MainAxisSize.max,
