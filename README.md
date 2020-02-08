@@ -11,9 +11,10 @@
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
-
+[<img src="https://github.com/mkulesh/onpc/blob/master/images/app_store_badge.png"
+      alt="Download on the App Store" height="110">](https://apps.apple.com/app/id1490166845)
+      
 *iOS Version*
-- Download on the [App Store](https://apps.apple.com/app/id1490166845)
 - Do you want try the last version in development? Install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
 - The iOS version is developed with Flutter, see [onpc-flutter branch](https://github.com/mkulesh/onpc/tree/onpc-flutter)
 
@@ -41,6 +42,7 @@ Currently, this app is only tested with following devices:
 - [ONKYO TX-NR686](https://www.eu.onkyo.com/en/products/tx-nr686-148905.html)
 - [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
 - [ONKYO RN-855](https://www.de.onkyo.com/de/produkte/r-n855-133057.html)
+- [ONKYO CR-N765](https://www.eu.onkyo.com/en/products/cr-n765-120317.html)
 - [Wireless Audio System NCP-302](https://www.eu.onkyo.com/en/products/ncp-302-137564.html)
 - [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
