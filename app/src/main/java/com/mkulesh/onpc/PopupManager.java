@@ -36,46 +36,71 @@ import java.util.List;
 class PopupManager
 {
     private AlertDialog trackMenuDialog = null;
+    private LinearLayout trackMenuGroup = null;
     private AlertDialog popupDialog = null;
 
     void showTrackMenuDialog(@NonNull final MainActivity activity, @NonNull final State state)
     {
-        closeTrackMenuDialog();
-
         if (!state.isTrackMenuReceived())
         {
+            closeTrackMenuDialog();
             return;
         }
 
-        Logging.info(this, "open track menu dialog");
-        final FrameLayout frameView = new FrameLayout(activity);
+        if (trackMenuDialog == null)
+        {
+            Logging.info(this, "create track menu dialog");
+            final FrameLayout frameView = new FrameLayout(activity);
 
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_track_menu);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+            final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_track_menu);
+            Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
 
-        trackMenuDialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.cmd_track_menu)
-                .setIcon(icon)
-                .setCancelable(false)
-                .setView(frameView)
-                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (d, which) ->
-                {
-                    if (activity.isConnected())
+            trackMenuDialog = new AlertDialog.Builder(activity)
+                    .setTitle(R.string.cmd_track_menu)
+                    .setIcon(icon)
+                    .setCancelable(false)
+                    .setView(frameView)
+                    .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (d, which) ->
                     {
-                        activity.getStateManager().sendMessage(StateManager.RETURN_MSG);
-                    }
-                    d.dismiss();
-                })
-                .create();
+                        if (activity.isConnected())
+                        {
+                            activity.getStateManager().sendMessage(StateManager.RETURN_MSG);
+                        }
+                        d.dismiss();
+                    })
+                    .create();
 
-        trackMenuDialog.getLayoutInflater().inflate(R.layout.dialog_track_menu, frameView);
+            trackMenuDialog.getLayoutInflater().inflate(R.layout.dialog_track_menu, frameView);
+            trackMenuDialog.setOnDismissListener((d) ->
+            {
+                Logging.info(this, "close track menu dialog");
+                trackMenuDialog = null;
+                trackMenuGroup = null;
+            });
 
-        final LinearLayout menuGroup = frameView.findViewById(R.id.track_menu_layout);
+            trackMenuGroup = frameView.findViewById(R.id.track_menu_layout);
+            updateTrackMenuGroup(activity, state, trackMenuGroup);
+
+            trackMenuDialog.show();
+            Utils.fixIconColor(trackMenuDialog, android.R.attr.textColorSecondary);
+        }
+        else if (trackMenuGroup != null)
+        {
+            Logging.info(this, "update track menu dialog");
+            updateTrackMenuGroup(activity, state, trackMenuGroup);
+        }
+    }
+
+    private void updateTrackMenuGroup(@NonNull final MainActivity activity,
+                                      @NonNull final State state,
+                                      @NonNull LinearLayout trackMenuGroup)
+    {
+        trackMenuGroup.removeAllViews();
         final List<XmlListItemMsg> menuItems = state.cloneMediaItems();
         for (final XmlListItemMsg msg : menuItems)
         {
             final LinearLayout itemView = (LinearLayout) LayoutInflater.from(activity).
-                    inflate(R.layout.media_item, frameView, false);
+                    inflate(R.layout.media_item, trackMenuGroup, false);
             final View textView = itemView.findViewById(R.id.media_item_title);
             if (textView != null)
             {
@@ -87,29 +112,24 @@ class PopupManager
                 {
                     activity.getStateManager().sendMessage(msg);
                 }
-                trackMenuDialog.dismiss();
+                if (trackMenuDialog != null)
+                {
+                    trackMenuDialog.dismiss();
+                }
             });
-            menuGroup.addView(itemView);
+            trackMenuGroup.addView(itemView);
         }
-
-        trackMenuDialog.setOnDismissListener((d) ->
-        {
-            Logging.info(this, "closing track menu dialog");
-            trackMenuDialog = null;
-        });
-
-        trackMenuDialog.show();
-        Utils.fixIconColor(trackMenuDialog, android.R.attr.textColorSecondary);
     }
 
     void closeTrackMenuDialog()
     {
         if (trackMenuDialog != null)
         {
-            Logging.info(this, "closing track menu dialog");
+            Logging.info(this, "close track menu dialog");
             trackMenuDialog.setOnDismissListener(null);
             trackMenuDialog.dismiss();
             trackMenuDialog = null;
+            trackMenuGroup = null;
         }
     }
 

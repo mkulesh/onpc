@@ -1095,9 +1095,8 @@ public class State
                 final XmlListItemMsg nsMsg = new XmlListItemMsg(
                         msg.getLineInfo(), 0, msg.getListedData(), XmlListItemMsg.Icon.UNKNOWN, true);
                 mediaItems.add(nsMsg);
-                if (mediaItems.size() == numberOfItems)
+                if (!mediaItems.isEmpty())
                 {
-                    Logging.info(this, "received track menu with " + mediaItems.size() + " items");
                     trackMenuReceived = true;
                 }
             }
