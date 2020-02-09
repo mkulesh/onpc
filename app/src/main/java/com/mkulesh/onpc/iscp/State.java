@@ -1086,8 +1086,7 @@ public class State
             {
                 for (XmlListItemMsg i : mediaItems)
                 {
-                    if (i.getTitle().toUpperCase().equals(msg.getListedData().toUpperCase())
-                            && i.getMessageId() == msg.getLineInfo())
+                    if (i.getTitle().toUpperCase().equals(msg.getListedData().toUpperCase()))
                     {
                         return false;
                     }

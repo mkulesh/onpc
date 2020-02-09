@@ -525,12 +525,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             Logging.info(this, "requesting XML list state skipped");
         }
         else if (liMsg.getUiType() == ListTitleInfoMsg.UIType.PLAYBACK
-                || liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU
                 || liMsg.getUiType() == ListTitleInfoMsg.UIType.POPUP)
         {
             Logging.info(this, "requesting XML list state skipped");
         }
-        else if (liMsg.isXmlListTopService() || liMsg.getNumberOfLayers() > 0)
+        else if (liMsg.isXmlListTopService()
+                || liMsg.getNumberOfLayers() > 0
+                || liMsg.getUiType() == ListTitleInfoMsg.UIType.MENU)
         {
             Logging.info(this, "requesting XML list state");
             messageChannel.sendMessage(
