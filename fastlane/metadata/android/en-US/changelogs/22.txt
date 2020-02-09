@@ -1,0 +1,6 @@
+• The track menu can now be opened in the Listen tab
+• Switching between "Media" and "Listen" tab results the playback/list mode change on the receiver
+• Improved focus clearing for friendly device name edit field in "Device" tab
+• CR-N575D: now it is possible to use play control buttons in the Listen tab to control CD player
+• CR-N575D: added "Tone Direct" setting in the "Audio Control" dialog
+• Increased paddings in the "Media" tab
