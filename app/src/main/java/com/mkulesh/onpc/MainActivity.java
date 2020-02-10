@@ -116,6 +116,15 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
 
         initGUI();
+        try
+        {
+            viewPager.setCurrentItem(configuration.getOpenedTab());
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "can not restore opened tab: " + ex.getLocalizedMessage());
+        }
+
         updateToolbar(null);
     }
 
@@ -434,6 +443,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     protected void onPause()
     {
         super.onPause();
+        configuration.setOpenedTab(viewPager.getCurrentItem());
         if (getStateManager() != null)
         {
             savedReceiverInformation = getStateManager().getState().receiverInformation;

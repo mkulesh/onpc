@@ -71,6 +71,8 @@ public class Configuration
     private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
 
+    private static final String OPENED_TAB = "opened_tab";
+
     static final ListeningModeMsg.Mode[] DEFAULT_LISTENING_MODES = new ListeningModeMsg.Mode[]{
         ListeningModeMsg.Mode.MODE_00,
         ListeningModeMsg.Mode.MODE_01,
@@ -406,4 +408,16 @@ public class Configuration
         return preferences.getBoolean(DEVELOPER_MODE, false);
     }
 
+    public int getOpenedTab()
+    {
+        return preferences.getInt(OPENED_TAB, 0);
+    }
+
+    public void setOpenedTab(int tab)
+    {
+        Logging.info(this, "Save opened tab: " + tab);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putInt(OPENED_TAB, tab);
+        prefEditor.apply();
+    }
 }
