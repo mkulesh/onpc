@@ -221,6 +221,11 @@ public class State
         return activeZone < zones.size() ? zones.get(activeZone) : null;
     }
 
+    private boolean isReceiverInformation()
+    {
+        return receiverInformation != null && !receiverInformation.isEmpty();
+    }
+
     public boolean isOn()
     {
         return powerStatus == PowerStatusMsg.PowerStatus.ON;
@@ -1080,7 +1085,7 @@ public class State
             }
             return false;
         }
-        else if (isMenuMode())
+        else if (isMenuMode() || !isReceiverInformation())
         {
             synchronized (mediaItems)
             {
@@ -1094,7 +1099,7 @@ public class State
                 final XmlListItemMsg nsMsg = new XmlListItemMsg(
                         msg.getLineInfo(), 0, msg.getListedData(), XmlListItemMsg.Icon.UNKNOWN, true);
                 mediaItems.add(nsMsg);
-                if (!mediaItems.isEmpty())
+                if (isMenuMode() && !mediaItems.isEmpty())
                 {
                     trackMenuReceived = true;
                 }
