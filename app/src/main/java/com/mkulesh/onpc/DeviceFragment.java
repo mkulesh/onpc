@@ -155,6 +155,7 @@ public class DeviceFragment extends BaseFragment
                     R.id.settings_divider,
                     R.id.device_dimmer_level_layout,
                     R.id.device_digital_filter_layout,
+                    R.id.music_optimizer_layout,
                     R.id.device_auto_power_layout,
                     R.id.hdmi_cec_layout,
                     R.id.phase_matching_bass_layout,
