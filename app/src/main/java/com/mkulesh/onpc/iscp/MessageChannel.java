@@ -185,8 +185,16 @@ class MessageChannel extends AppTask implements Runnable
                     throw new Exception("connection timeout");
                 }
             }
-            Logging.info(this, "connected to " + addr);
-            this.sourceHost = server;
+            if (socket.socket().getInetAddress() != null
+                    && socket.socket().getInetAddress().getHostAddress() != null)
+            {
+                sourceHost = socket.socket().getInetAddress().getHostAddress();
+            }
+            else
+            {
+                sourceHost = server;
+            }
+            Logging.info(this, "connected to " + addr + ", host=" + sourceHost);
             return true;
         }
         catch (Exception e)
