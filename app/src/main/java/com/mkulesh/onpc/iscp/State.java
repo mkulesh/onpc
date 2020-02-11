@@ -98,7 +98,7 @@ public class State
 
     // Receiver Information
     public String receiverInformation = "";
-    String friendlyName = "";
+    String friendlyName = null;
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
     private final int activeZone;
@@ -221,9 +221,14 @@ public class State
         return activeZone < zones.size() ? zones.get(activeZone) : null;
     }
 
-    private boolean isReceiverInformation()
+    public boolean isReceiverInformation()
     {
         return receiverInformation != null && !receiverInformation.isEmpty();
+    }
+
+    public boolean isFriendlyName()
+    {
+        return friendlyName != null;
     }
 
     public boolean isOn()
@@ -605,6 +610,10 @@ public class State
         multiroomNames.put(msg.sourceHost, msg.getFriendlyName());
         if (!isAnotherHost(msg))
         {
+            if (friendlyName == null)
+            {
+                friendlyName = "";
+            }
             final boolean changed = !friendlyName.equals(msg.getFriendlyName());
             friendlyName = msg.getFriendlyName();
             return changed;

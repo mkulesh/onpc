@@ -31,14 +31,17 @@
 
             <TextView
                 style="@style/SecondaryTextViewStyle"
+                android:id="@+id/device_info_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:text="@string/device_info" />
 
-            <View style="@style/HorizontalDividerStyle" />
+            <View style="@style/HorizontalDividerStyle"
+                android:id="@+id/device_info_divider" />
 
-            <LinearLayout style="@style/DeviceRowStyle">
+            <LinearLayout style="@style/DeviceRowStyle"
+                android:id="@+id/device_friendly_name">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -56,66 +59,73 @@
                     android:contentDescription="@string/device_change_friendly_name" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle">
+            <LinearLayout
+                android:id="@+id/device_receiver_information"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    style="@style/DeviceLabelViewStyle"
-                    android:text="@string/device_brand" />
+                <LinearLayout style="@style/DeviceRowStyle">
 
-                <TextView
-                    style="@style/DeviceValueViewStyle"
-                    android:id="@+id/device_brand" />
-            </LinearLayout>
+                    <TextView
+                        style="@style/DeviceLabelViewStyle"
+                        android:text="@string/device_brand" />
 
-            <LinearLayout style="@style/DeviceRowStyle">
+                    <TextView
+                        style="@style/DeviceValueViewStyle"
+                        android:id="@+id/device_brand" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/DeviceLabelViewStyle"
-                    android:text="@string/device_model" />
+                <LinearLayout style="@style/DeviceRowStyle">
 
-                <TextView
-                    style="@style/DeviceValueViewStyle"
-                    android:id="@+id/device_model" />
-            </LinearLayout>
+                    <TextView
+                        style="@style/DeviceLabelViewStyle"
+                        android:text="@string/device_model" />
 
-            <LinearLayout style="@style/DeviceRowStyle">
+                    <TextView
+                        style="@style/DeviceValueViewStyle"
+                        android:id="@+id/device_model" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/DeviceLabelViewStyle"
-                    android:text="@string/device_year" />
+                <LinearLayout style="@style/DeviceRowStyle">
 
-                <TextView
-                    style="@style/DeviceValueViewStyle"
-                    android:id="@+id/device_year" />
-            </LinearLayout>
+                    <TextView
+                        style="@style/DeviceLabelViewStyle"
+                        android:text="@string/device_year" />
 
-            <LinearLayout style="@style/DeviceRowStyle">
+                    <TextView
+                        style="@style/DeviceValueViewStyle"
+                        android:id="@+id/device_year" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/DeviceLabelViewStyle"
-                    android:text="@string/device_firmware" />
+                <LinearLayout style="@style/DeviceRowStyle">
 
-                <TextView
-                    style="@style/DeviceValueViewStyle"
-                    android:id="@+id/device_firmware" />
+                    <TextView
+                        style="@style/DeviceLabelViewStyle"
+                        android:text="@string/device_firmware" />
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    style="@style/ImageButtonSecondaryStyle"
-                    android:visibility="gone"
-                    android:id="@+id/btn_firmware_update"
-                    android:src="@drawable/cmd_firmware_update"
-                    android:contentDescription="@string/device_firmware_net" />
-            </LinearLayout>
+                    <TextView
+                        style="@style/DeviceValueViewStyle"
+                        android:id="@+id/device_firmware" />
 
-            <LinearLayout style="@style/DeviceRowStyle">
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        style="@style/ImageButtonSecondaryStyle"
+                        android:visibility="gone"
+                        android:id="@+id/btn_firmware_update"
+                        android:src="@drawable/cmd_firmware_update"
+                        android:contentDescription="@string/device_firmware_net" />
+                </LinearLayout>
 
-                <TextView
-                    style="@style/DeviceLabelViewStyle"
-                    android:text="@string/google_cast_version" />
+                <LinearLayout style="@style/DeviceRowStyle">
 
-                <TextView
-                    style="@style/DeviceValueViewStyle"
-                    android:id="@+id/google_cast_version" />
+                    <TextView
+                        style="@style/DeviceLabelViewStyle"
+                        android:text="@string/google_cast_version" />
+
+                    <TextView
+                        style="@style/DeviceValueViewStyle"
+                        android:id="@+id/google_cast_version" />
+                </LinearLayout>
             </LinearLayout>
 
             <TextView

@@ -144,9 +144,10 @@ public class DeviceFragment extends BaseFragment
     @Override
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
+        updateDeviceInformation(state);
         if (state != null)
         {
-            updateDeviceProperties(state);
+            updateDeviceSettings(state);
         }
         else
         {
@@ -177,16 +178,33 @@ public class DeviceFragment extends BaseFragment
                 eventChanges.contains(State.ChangeType.RECEIVER_INFO))
         {
             Logging.info(this, "Updating device properties");
-            updateDeviceProperties(state);
+            updateDeviceInformation(state);
+            updateDeviceSettings(state);
         }
     }
 
-    private void updateDeviceProperties(@NonNull final State state)
+    private void updateDeviceInformation(@Nullable final State state)
     {
-        friendlyName.setText(state.getDeviceName(true));
-
-        if (!state.deviceProperties.isEmpty())
+        // Friendly name
+        final boolean isFnValid = state != null
+                && state.isFriendlyName();
+        final LinearLayout fnLayout = rootView.findViewById(R.id.device_friendly_name);
+        fnLayout.setVisibility(isFnValid ? View.VISIBLE : View.GONE);
+        if (isFnValid)
         {
+            // Friendly name
+            friendlyName.setText(state.getDeviceName(true));
+        }
+
+        // Receiver information
+        final boolean isRiValid = state != null
+                && state.isReceiverInformation()
+                && !state.deviceProperties.isEmpty();
+        final LinearLayout riLayout = rootView.findViewById(R.id.device_receiver_information);
+        riLayout.setVisibility(isRiValid ? View.VISIBLE : View.GONE);
+        if (isRiValid)
+        {
+            // Common properties
             ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
             ((TextView) rootView.findViewById(R.id.device_model)).setText(state.getModel());
             ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
@@ -205,17 +223,29 @@ public class DeviceFragment extends BaseFragment
             {
                 final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
                 b.setVisibility((state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION ||
-                                 state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_FORCE)?
+                        state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_FORCE)?
                         View.VISIBLE : View.GONE);
                 if (b.getVisibility() == View.VISIBLE)
                 {
                     setButtonEnabled(b, true);
                 }
             }
+            // Google cast version
+            ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
         }
 
-        ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
+        final int[] deviceInfoLayout = new int[]{
+                R.id.device_info_title,
+                R.id.device_info_divider
+        };
+        for (int layoutId : deviceInfoLayout)
+        {
+            rootView.findViewById(layoutId).setVisibility(isFnValid || isRiValid ? View.VISIBLE : View.GONE);
+        }
+    }
 
+    private void updateDeviceSettings(@NonNull final State state)
+    {
         // Update settings
         rootView.findViewById(R.id.settings_title).setVisibility(View.GONE);
         rootView.findViewById(R.id.settings_divider).setVisibility(View.GONE);
