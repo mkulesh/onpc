@@ -250,6 +250,9 @@ class ReceiverInformation
         return model;
     }
 
+    bool get isOn
+    => powerStatus == PowerStatus.ON;
+
     NetworkService getNetworkService(String id)
     => _networkServices.firstWhere((s) => s.getId == id, orElse: () => null);
 

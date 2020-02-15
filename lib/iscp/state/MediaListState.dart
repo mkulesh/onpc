@@ -188,6 +188,12 @@ class MediaListState
 
     bool processListInfo(ListInfoMsg msg, final ReceiverInformation ri)
     {
+        if (!ri.isOn)
+        {
+            // Some receivers send this message before receiver information and power status.
+            // In such cases, just ignore it
+            return false;
+        }
         final List<NetworkService> networkServices = ri.networkServices;
         if (msg.getInformationType.key == InformationType.CURSOR)
         {

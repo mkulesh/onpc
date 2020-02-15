@@ -81,7 +81,7 @@ class State
     => _receiverInformation;
 
     bool get isOn
-    => _receiverInformation.powerStatus == PowerStatus.ON;
+    => _receiverInformation.isOn;
 
     // Device settings
     final DeviceSettingsState _deviceSettingsState = DeviceSettingsState();
