@@ -214,8 +214,7 @@ public class DeviceFragment extends BaseFragment
                 version.append(state.deviceProperties.get("firmwareversion"));
                 if (state.firmwareStatus != FirmwareUpdateMsg.Status.NONE)
                 {
-                    version.append(", ").append(
-                            activity.getResources().getString(state.firmwareStatus.getDescriptionId()));
+                    version.append(", ").append(getStringValue(state.firmwareStatus.getDescriptionId()));
                 }
                 ((TextView) rootView.findViewById(R.id.device_firmware)).setText(version.toString());
             }
@@ -277,8 +276,8 @@ public class DeviceFragment extends BaseFragment
         // Sleep time
         {
             final String description = state.sleepTime == SleepSetCommandMsg.SLEEP_OFF ?
-                    getString(R.string.device_two_way_switch_off) :
-                    state.sleepTime + " " + getString(R.string.device_sleep_time_minutes);
+                    getStringValue(R.string.device_two_way_switch_off) :
+                    state.sleepTime + " " + getStringValue(R.string.device_sleep_time_minutes);
             prepareSettingPanel(state, state.sleepTime != SleepSetCommandMsg.NOT_APPLICABLE,
                     R.id.sleep_time_layout, description,
                     new SleepSetCommandMsg(SleepSetCommandMsg.toggle(state.sleepTime)));
@@ -339,16 +338,7 @@ public class DeviceFragment extends BaseFragment
     private void prepareSettingPanel(@NonNull final State state, boolean visible, @IdRes int layoutId,
                                      @StringRes int descriptionId, final ISCPMessage msg)
     {
-        String value = "";
-        try
-        {
-            value = getString(descriptionId);
-        }
-        catch (Exception ex)
-        {
-            // nothing to do
-        }
-        prepareSettingPanel(state, visible, layoutId, value, msg);
+        prepareSettingPanel(state, visible, layoutId, getStringValue(descriptionId), msg);
     }
 
     private void prepareSettingPanel(@NonNull final State state, boolean visible, @IdRes int layoutId,

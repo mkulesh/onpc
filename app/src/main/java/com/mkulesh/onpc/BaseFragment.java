@@ -280,4 +280,19 @@ abstract public class BaseFragment extends Fragment
         // No default processing for Back button
         return false;
     }
+
+    @NonNull
+    protected String getStringValue(@StringRes int descriptionId)
+    {
+        String value = "";
+        try
+        {
+            value = getString(descriptionId);
+        }
+        catch (Exception ex)
+        {
+            // nothing to do
+        }
+        return value;
+    }
 }
