@@ -42,7 +42,7 @@ class TrackMenuView extends UpdatableView
             final Widget item = ListTile(
                 contentPadding: ActivityDimens.noPadding,
                 dense: true,
-                title: CustomTextLabel.normal(msg.getTitle),
+                title: msg.isSelectable ? CustomTextLabel.normal(msg.getTitle) : CustomTextLabel.small(msg.getTitle),
                 onTap: ()
                 => _onMenuSelected(msg)
             );

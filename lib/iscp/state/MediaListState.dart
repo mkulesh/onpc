@@ -170,7 +170,7 @@ class MediaListState
         {
             clearItems();
             msg.parseXml(_mediaItems, _numberOfLayers);
-            if (_uiType == UIType.MENU_LIST)
+            if ([UIType.MENU_LIST, UIType.MENU].contains(_uiType))
             {
                 Logging.info(this, "received track menu list with " + _mediaItems.length.toString() + " items");
                 _trackMenuReceived = true;
@@ -238,15 +238,13 @@ class MediaListState
         }
         else if (isMenuMode)
         {
-            if (_mediaItems.any((i)
-            => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase() && i.getMessageId == msg.getLineInfo)))
+            if (_mediaItems.any((i) => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase())))
             {
                 return false;
             }
             _mediaItems.add(XmlListItemMsg.details(msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true));
-            if (_mediaItems.length == numberOfItems)
+            if (_mediaItems.isNotEmpty)
             {
-                Logging.info(this, "received track menu with " + _mediaItems.length.toString() + " items");
                 _trackMenuReceived = true;
             }
             return true;
@@ -360,7 +358,7 @@ class MediaListState
         final List<XmlListItemMsg> retValue = List();
         _mediaItems.forEach((msg)
         {
-            if (msg is XmlListItemMsg)
+            if (msg is XmlListItemMsg && msg.getTitle != null && msg.getTitle.isNotEmpty)
             {
                 retValue.add(msg);
             }

@@ -466,12 +466,13 @@ class StateManager
             Logging.info(this, "requesting XML list state skipped");
         }
         else if (liMsg.getUiType.key == UIType.PLAYBACK
-            || liMsg.getUiType.key == UIType.MENU
             || liMsg.getUiType.key == UIType.POPUP)
         {
             Logging.info(this, "requesting XML list state skipped");
         }
-        else if (liMsg.isXmlListTopService || liMsg.getNumberOfLayers > 0)
+        else if (liMsg.isXmlListTopService
+            || liMsg.getNumberOfLayers > 0
+            || liMsg.getUiType.key == UIType.MENU)
         {
             _xmlReqId++;
             Logging.info(this, "requesting XML list state (id: " + _xmlReqId.toString() + ")...");
