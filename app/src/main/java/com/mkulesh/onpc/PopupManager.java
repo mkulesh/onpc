@@ -14,6 +14,7 @@
 package com.mkulesh.onpc;
 
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -99,12 +100,24 @@ class PopupManager
         final List<XmlListItemMsg> menuItems = state.cloneMediaItems();
         for (final XmlListItemMsg msg : menuItems)
         {
+            if (msg.getTitle() == null || msg.getTitle().isEmpty())
+            {
+                continue;
+            }
+            Logging.info(this, "    menu item: " + msg.toString());
             final LinearLayout itemView = (LinearLayout) LayoutInflater.from(activity).
                     inflate(R.layout.media_item, trackMenuGroup, false);
             final View textView = itemView.findViewById(R.id.media_item_title);
             if (textView != null)
             {
                 ((TextView) textView).setText(msg.getTitle());
+                if (!msg.isSelectable())
+                {
+                    ((TextView) textView).setTextColor(Utils.getThemeColorAttr(activity,
+                            android.R.attr.textColorSecondary));
+                    ((TextView) textView).setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                            activity.getResources().getDimensionPixelSize(R.dimen.secondary_text_size));
+                }
             }
             itemView.setOnClickListener((View v) ->
             {
