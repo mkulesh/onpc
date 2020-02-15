@@ -84,6 +84,18 @@ class Configuration
         _saveStringParameter(Configuration.TEXT_SIZE, value);
     }
 
+    static const Pair<String, int> OPENED_TAB = Pair<String, int>("opened_tab", 0);
+    int _openedTab;
+
+    int get openedTab
+    => _openedTab;
+
+    set openedTab(int value)
+    {
+        _openedTab = value;
+        _saveIntegerParameter(OPENED_TAB, value);
+    }
+
     // Connection options
     static const Pair<String, String> SERVER_NAME = Pair<String, String>("server_name", "");
     String _deviceName;
@@ -228,6 +240,7 @@ class Configuration
         _theme = getString(THEME, doLog: true);
         _language = getString(LANGUAGE, doLog: true);
         _textSize = getString(TEXT_SIZE, doLog: true);
+        _openedTab = getInt(OPENED_TAB, doLog: true);
 
         // Connection options
         _deviceName = getString(SERVER_NAME, doLog: true);

@@ -352,7 +352,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     bool _onBackPressed(bool stopDefaultButtonEvent)
     {
-        if (Navigator.canPop(context))
+        if (Navigator.canPop(context) || !_stateManager.isConnected || !_stateManager.state.isOn)
         {
             // For pushed activities we always allow back
             return false;
@@ -450,11 +450,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.logSize = _configuration.developerMode ? Logging.DEFAULT_LOG_SIZE : 0;
 
         // Update tabs
-        int _index = 0;
-        if (_tabController != null)
-        {
-            _index = _tabController.index;
-        }
+        final int _index = (_tabController != null) ? _tabController.index : _configuration.openedTab;
+
         _tabs.clear();
         _tabs.add(AppTabs.LISTEN);
         _tabs.add(AppTabs.MEDIA);
@@ -503,7 +500,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (!_tabController.indexIsChanging && activeTab != null)
         {
             final AppTabs tab = activeTab;
-            Logging.info(this.widget, "selected new tab: " + tab.toString());
+            _configuration.openedTab = tab.index;
 
             if([AppTabs.LISTEN, AppTabs.MEDIA].contains(tab) && _stateManager.isConnected)
             {
