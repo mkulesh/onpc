@@ -1041,6 +1041,12 @@ public class State
 
     private boolean process(ListInfoMsg msg)
     {
+        if (!isOn())
+        {
+            // Some receivers send this message before receiver information and power status.
+            // In such cases, just ignore it
+            return false;
+        }
         if (msg.getInformationType() == ListInfoMsg.InformationType.CURSOR)
         {
             listInfoItems.clear();
