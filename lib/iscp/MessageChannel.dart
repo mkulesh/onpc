@@ -88,9 +88,16 @@ class MessageChannel
                 onDone: _onDone,
                 cancelOnError: false);
             _state = MessageChannelState.RUNNING;
-            _sourceHost = server;
+            if (sock.address != null && sock.address.host != null && sock.address.host.isNotEmpty)
+            {
+                _sourceHost = sock.address.address;
+            }
+            else
+            {
+                _sourceHost = server;
+            }
             _sourcePort = port;
-            _onConnected(this, server, port);
+            _onConnected(this, _sourceHost, port);
         }).catchError((dynamic e)
         {
             _state = MessageChannelState.IDLE;

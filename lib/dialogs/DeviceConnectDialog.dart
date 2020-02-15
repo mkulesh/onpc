@@ -98,7 +98,7 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                         Navigator.of(context).pop();
                         final int port1 = int.tryParse(_port.text);
                         final int port2 = port1 == null ? Configuration.SERVER_PORT.item2 : port1;
-                        viewContext.stateManager.connect(_address.text, port2);
+                        viewContext.stateManager.connect(_address.text, port2, saveRequestedHost: true);
                     }),
             ]
         );

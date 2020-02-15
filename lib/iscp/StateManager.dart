@@ -115,6 +115,12 @@ class StateManager
     ISCPMessage _circlePlayRemoveMsg;
     int _xmlReqId = 0;
 
+    // Device name as manually given by the user
+    String _requestedHost;
+
+    String get requestedHost
+    => _requestedHost;
+
     // Common List commands
     static final OperationCommandMsg LIST_MSG = OperationCommandMsg.output(
         State.DEFAULT_ACTIVE_ZONE, OperationCommand.LIST);
@@ -141,8 +147,9 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
-    void connect(String server, int port)
+    void connect(String server, int port, {bool saveRequestedHost: false})
     {
+        _requestedHost = saveRequestedHost ? server : null;
         if (isConnected)
         {
             disconnect(true);
