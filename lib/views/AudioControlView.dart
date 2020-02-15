@@ -80,6 +80,10 @@ class AudioControlView extends UpdatableView
         if (isDirectCmdAvailable)
         {
             final bool isDirectMode = soundControl.toneDirect.key == DirectCommand.ON;
+            if (!isDirectMode)
+            {
+                _addToneControls(controls, soundControl);
+            }
 
             final Widget checkBox = Checkbox(
                 value: isDirectMode,
@@ -114,11 +118,6 @@ class AudioControlView extends UpdatableView
             }
 
             controls.add(checkBoxRow);
-
-            if (!isDirectMode)
-            {
-                _addToneControls(controls, soundControl);
-            }
         }
         else if (!soundControl.isDirectListeningMode && zone < ToneCommandMsg.ZONE_COMMANDS.length)
         {
