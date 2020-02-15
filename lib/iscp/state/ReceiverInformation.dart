@@ -260,5 +260,8 @@ class ReceiverInformation
     {
         return _controlList.isNotEmpty && _controlList.contains(control);
     }
+
+    bool get isReceiverInformation
+    => _xml != null && _xml.isNotEmpty;
 }
 

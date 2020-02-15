@@ -23,6 +23,7 @@ import "../messages/ReceiverInformationMsg.dart";
 import "../messages/ServiceType.dart";
 import "../messages/XmlListInfoMsg.dart";
 import "../messages/XmlListItemMsg.dart";
+import "ReceiverInformation.dart";
 
 class MediaListState
 {
@@ -185,8 +186,9 @@ class MediaListState
         return false;
     }
 
-    bool processListInfo(ListInfoMsg msg, final List<NetworkService> networkServices)
+    bool processListInfo(ListInfoMsg msg, final ReceiverInformation ri)
     {
+        final List<NetworkService> networkServices = ri.networkServices;
         if (msg.getInformationType.key == InformationType.CURSOR)
         {
             listInfoItems.clear();
@@ -236,14 +238,14 @@ class MediaListState
             }
             return false;
         }
-        else if (isMenuMode)
+        else if (isMenuMode || !ri.isReceiverInformation)
         {
             if (_mediaItems.any((i) => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase())))
             {
                 return false;
             }
             _mediaItems.add(XmlListItemMsg.details(msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true));
-            if (_mediaItems.isNotEmpty)
+            if (isMenuMode && _mediaItems.isNotEmpty)
             {
                 _trackMenuReceived = true;
             }

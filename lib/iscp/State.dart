@@ -352,7 +352,7 @@ class State
         }
         else if (msg is ListInfoMsg)
         {
-            return _isChange(ListInfoMsg.CODE, _mediaListState.processListInfo(msg, _receiverInformation.networkServices));
+            return _isChange(ListInfoMsg.CODE, _mediaListState.processListInfo(msg, _receiverInformation));
         }
 
         // Sound control
