@@ -165,7 +165,7 @@ class MainNavigationDrawer
                     {
                         final String device = deviceName.getText().toString();
                         final int port = Integer.parseInt(devicePort.getText().toString());
-                        if (activity.connectToDevice(device, port))
+                        if (activity.connectToDevice(device, port, false))
                         {
                             configuration.saveDevice(device, port);
                         }

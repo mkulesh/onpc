@@ -42,6 +42,7 @@ import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +52,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-public class MainActivity extends AppCompatActivity implements StateManager.StateListener
+public class MainActivity extends AppCompatActivity implements StateManager.StateListener, DeviceList.BackgroundEventListener
 {
     public static final int SETTINGS_ACTIVITY_REQID = 256;
 
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private ActionBarDrawerToggle mDrawerToggle;
     private String versionName = null;
     private int startRequestCode;
+    private final AtomicBoolean connectToAnyDevice = new AtomicBoolean(false);
     int orientation;
 
     // #58: observed missed receiver information message on device rotation.
@@ -104,13 +106,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
 
         connectionState = new ConnectionState(this);
-        deviceList = new DeviceList(this, connectionState, (di) ->
-        {
-            if (isConnected())
-            {
-                getStateManager().inform(di.message);
-            }
-        });
+        deviceList = new DeviceList(this, connectionState, this);
 
         // Initially reset zone state
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
@@ -186,7 +182,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(this, navigationDrawer.getDrawerLayout(), toolbar,
-                R.string.drawer_open, R.string.drawer_open){
+                R.string.drawer_open, R.string.drawer_open)
+        {
             public void onDrawerOpened(View drawerView)
             {
                 super.onDrawerOpened(drawerView);
@@ -354,13 +351,13 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
 
     public void connectToDevice(BroadcastResponseMsg response)
     {
-        if (connectToDevice(response.getHost(), response.getPort()))
+        if (connectToDevice(response.getHost(), response.getPort(), false))
         {
             configuration.saveDevice(response.getHost(), response.getPort());
         }
     }
 
-    public boolean connectToDevice(final String device, final int port)
+    public boolean connectToDevice(final String device, final int port, final boolean connectToAnyInErrorCase)
     {
         stateHolder.release(false, "reconnect");
         stateHolder.waitForRelease();
@@ -395,8 +392,27 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 updateConfiguration(stateHolder.getState());
                 return true;
             }
+            else if (deviceList.isActive() && connectToAnyInErrorCase)
+            {
+                Logging.info(this, "searching for any device to connect");
+                connectToAnyDevice.set(true);
+            }
         }
         return false;
+    }
+
+    @Override
+    public void onDeviceFound(DeviceList.DeviceInfo di)
+    {
+        if (isConnected())
+        {
+            getStateManager().inform(di.message);
+        }
+        else if (connectToAnyDevice.get())
+        {
+            connectToAnyDevice.set(false);
+            connectToDevice(di.message);
+        }
     }
 
     public boolean isConnected()
@@ -431,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             Logging.info(this, "use stored connection data: "
                     + configuration.getDeviceName() + "/" + configuration.getDevicePort());
-            connectToDevice(configuration.getDeviceName(), configuration.getDevicePort());
+            connectToDevice(configuration.getDeviceName(), configuration.getDevicePort(), true);
         }
         else
         {
