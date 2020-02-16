@@ -448,10 +448,10 @@ class StateManager
         }
     }
 
-    void _onDisconnected(String result, bool showError)
+    void _onDisconnected(ConnectionErrorType errorType, String result)
     {
         Logging.info(this, result);
-        if (showError && _onConnectionError != null)
+        if (errorType == ConnectionErrorType.HOST_NOT_AVAILABLE && _onConnectionError != null)
         {
             _onConnectionError(result);
         }
@@ -646,7 +646,7 @@ class StateManager
         channel.sendQueries(state.multiroomState.getQueries());
     }
 
-    void _onMultiroomDeviceDisconnected(String result, bool showError)
+    void _onMultiroomDeviceDisconnected(ConnectionErrorType errorType, String result)
     {
         Logging.info(this, result);
     }

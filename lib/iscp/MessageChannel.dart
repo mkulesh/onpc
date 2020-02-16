@@ -20,9 +20,15 @@ import "../utils/Logging.dart";
 import "EISCPMessage.dart";
 import "messages/TimeInfoMsg.dart";
 
+enum ConnectionErrorType
+{
+    HOST_NOT_AVAILABLE,
+    CONNECTION_CLOSED
+}
+
 typedef OnConnected = void Function(MessageChannel channel, String server, int port);
 typedef OnNewEISCPMessage = void Function(EISCPMessage message, String host);
-typedef OnDisconnected = void Function(String result, bool showError);
+typedef OnDisconnected = void Function(ConnectionErrorType errorType, String result);
 
 
 // The current state of the message channel.
@@ -103,7 +109,7 @@ class MessageChannel
             _state = MessageChannelState.IDLE;
             _sourceHost = "";
             _sourcePort = 0;
-            _onDisconnected(sprintf(Strings.error_connection_no_response, [_serverDescription]), true);
+            _onDisconnected(ConnectionErrorType.HOST_NOT_AVAILABLE, sprintf(Strings.error_connection_no_response, [_serverDescription]));
         });
     }
 
@@ -135,7 +141,7 @@ class MessageChannel
     {
         _state = MessageChannelState.IDLE;
         _socket = null;
-        _onDisconnected("Disconnected from " + sourceHost, false);
+        _onDisconnected(ConnectionErrorType.CONNECTION_CLOSED, "Disconnected from " + sourceHost);
         _sourceHost = "";
         _sourcePort = 0;
     }

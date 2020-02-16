@@ -103,11 +103,22 @@ class MusicControllerApp extends StatefulWidget
     => MusicControllerAppState(_viewContext);
 }
 
+enum ConnectionState
+{
+    NONE,
+    CONNECTING_TO_SAVED,
+    CONNECTING_TO_ANY,
+    CONNECTED
+}
+
 class MusicControllerAppState extends State<MusicControllerApp>
     with WidgetsBindingObserver, TickerProviderStateMixin
 {
     final ViewContext _viewContext;
+    final List<AppTabs> _tabs = List();
     TabController _tabController;
+
+    ConnectionState _connectionState;
     bool _exitConfirm;
 
     MusicControllerAppState(this._viewContext);
@@ -118,8 +129,6 @@ class MusicControllerAppState extends State<MusicControllerApp>
     StateManager get _stateManager
     => _viewContext.stateManager;
 
-    final List<AppTabs> _tabs = List();
-
     @override
     void initState()
     {
@@ -129,7 +138,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _applyConfiguration(informPlatform: false);
 
         _stateManager.autoPower = _configuration.autoPower;
-        _stateManager.addListeners(_onStateChanged, _showToast);
+        _stateManager.addListeners(_onStateChanged, _onConnectionError);
+
+        _connectionState = ConnectionState.NONE;
         _exitConfirm = false;
         WidgetsBinding.instance.addObserver(this);
         ServicesBinding.instance.defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
@@ -282,6 +293,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     if (_stateManager.isConnected)
                     {
                         final String host = _stateManager.requestedHost ?? _stateManager.sourceHost;
+                        _connectionState = ConnectionState.CONNECTED;
                         _configuration.saveDevice(host, _stateManager.sourcePort);
                         _configuration.setReceiverInformation(_viewContext.state.receiverInformation);
                         _stateManager.startSearch(limited: true);
@@ -330,6 +342,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         {
             Logging.info(this.widget, "Use stored connection data: "
                 + _configuration.getDeviceName + "/" + _configuration.getDevicePort.toString());
+            _connectionState = ConnectionState.CONNECTING_TO_SAVED;
             _stateManager.connect(
                 _configuration.getDeviceName, _configuration.getDevicePort, saveRequestedHost: true);
         }
@@ -337,9 +350,21 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _disconnect()
     {
+        _connectionState = ConnectionState.NONE;
         _stateManager.disconnect(false);
         _stateManager.stopSearch();
         _stateManager.state.clear();
+    }
+
+    void _onConnectionError(String result)
+    {
+        _showToast(result);
+        if (_connectionState == ConnectionState.CONNECTING_TO_SAVED)
+        {
+            Logging.info(this.widget, "Searching for any device to connect");
+            _connectionState = ConnectionState.CONNECTING_TO_ANY;
+            _startSearch();
+        }
     }
 
     void _showToast(String msg)
@@ -421,7 +446,6 @@ class MusicControllerAppState extends State<MusicControllerApp>
             => TrackMenuDialog(_viewContext, menu)
         );
     }
-
 
     void _processNetworkStateChange(final ByteData state)
     {
