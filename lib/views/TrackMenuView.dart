@@ -15,21 +15,22 @@ import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
 import "../iscp/messages/XmlListItemMsg.dart";
+import "../iscp/messages/ListInfoMsg.dart";
+import "../iscp/messages/XmlListInfoMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
-typedef OnMenuSelected = void Function(XmlListItemMsg msg);
-
 class TrackMenuView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
+        ListInfoMsg.CODE,
+        XmlListInfoMsg.CODE
     ];
 
-    final List<XmlListItemMsg> _menu;
-    final OnMenuSelected _onMenuSelected;
+    final void Function(XmlListItemMsg msg) _onMenuSelected;
 
-    TrackMenuView(final ViewContext viewContext, this._menu, this._onMenuSelected) : super(viewContext, UPDATE_TRIGGERS);
+    TrackMenuView(final ViewContext viewContext, this._onMenuSelected) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -37,7 +38,7 @@ class TrackMenuView extends UpdatableView
         Logging.info(this, "rebuild widget");
 
         final List<Widget> controls = List<Widget>();
-        _menu.forEach((msg)
+        state.mediaListState.retrieveMenu().forEach((msg)
         {
             final Widget item = ListTile(
                 contentPadding: ActivityDimens.noPadding,

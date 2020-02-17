@@ -73,11 +73,6 @@ class MediaListState
     int get numberOfItems
     => _mediaItems.length;
 
-    bool _trackMenuReceived = false;
-
-    bool get isTrackMenuReceived
-    => _trackMenuReceived;
-
     final List<String> listInfoItems = List<String>();
 
     MediaListState()
@@ -99,7 +94,6 @@ class MediaListState
 
     void clearItems()
     {
-        _trackMenuReceived = false;
         _mediaItems.clear();
     }
 
@@ -171,11 +165,6 @@ class MediaListState
         {
             clearItems();
             msg.parseXml(_mediaItems, _numberOfLayers);
-            if ([UIType.MENU_LIST, UIType.MENU].contains(_uiType))
-            {
-                Logging.info(this, "received track menu list with " + _mediaItems.length.toString() + " items");
-                _trackMenuReceived = true;
-            }
             return true;
         }
         on Exception catch (e)
@@ -251,10 +240,6 @@ class MediaListState
                 return false;
             }
             _mediaItems.add(XmlListItemMsg.details(msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true));
-            if (isMenuMode && _mediaItems.isNotEmpty)
-            {
-                _trackMenuReceived = true;
-            }
             return true;
         }
         return false;
@@ -267,10 +252,10 @@ class MediaListState
     => _uiType != null && _uiType == UIType.PLAYBACK;
 
     bool get isMenuMode
-    => _uiType != null && _uiType == UIType.MENU;
+    => _uiType != null && [UIType.MENU, UIType.MENU_LIST].contains(_uiType);
 
     bool get isPopupMode
-    => _uiType != null && _uiType == UIType.POPUP;
+    => _uiType != null && [UIType.POPUP, UIType.KEYBOARD].contains(_uiType);
 
     bool get isQueue
     => serviceType.key == ServiceType.PLAYQUEUE;
@@ -362,7 +347,6 @@ class MediaListState
 
     List<XmlListItemMsg> retrieveMenu()
     {
-        _trackMenuReceived = false;
         final List<XmlListItemMsg> retValue = List();
         _mediaItems.forEach((msg)
         {
@@ -372,5 +356,13 @@ class MediaListState
             }
         });
         return retValue;
+    }
+
+    void clearMenu()
+    {
+        if (isMenuMode)
+        {
+            clearItems();
+        }
     }
 }

@@ -30,8 +30,9 @@ class CustomPopupDialog extends StatefulWidget
 {
     final ViewContext _viewContext;
     final xml.XmlDocument _popupDocument;
+    final void Function() _onDispose;
 
-    CustomPopupDialog(this._viewContext, this._popupDocument);
+    CustomPopupDialog(this._viewContext, this._popupDocument, this._onDispose);
 
     @override _CustomPopupDialogState createState()
     => _CustomPopupDialogState(_viewContext, _popupDocument);
@@ -79,8 +80,9 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
     @override
     void dispose()
     {
-        _textFields.forEach((t) => t.item2.dispose());
         super.dispose();
+        _textFields.forEach((t) => t.item2.dispose());
+        widget._onDispose();
     }
 
     @override

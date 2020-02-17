@@ -27,21 +27,20 @@ import "../widgets/CustomDialogTitle.dart";
 class TrackMenuDialog extends StatefulWidget
 {
     final ViewContext _viewContext;
-    final List<XmlListItemMsg> _menu;
+    final void Function() _onDispose;
 
-    TrackMenuDialog(this._viewContext, this._menu);
+    TrackMenuDialog(this._viewContext,this._onDispose);
 
     @override _TrackMenuDialogState createState()
-    => _TrackMenuDialogState(_viewContext, _menu);
+    => _TrackMenuDialogState(_viewContext);
 }
 
 class _TrackMenuDialogState extends State<TrackMenuDialog>
 {
     final ViewContext _viewContext;
-    final List<XmlListItemMsg> _menu;
     XmlListItemMsg _selectedItem;
 
-    _TrackMenuDialogState(this._viewContext, this._menu);
+    _TrackMenuDialogState(this._viewContext);
 
     @override
     Widget build(BuildContext context)
@@ -51,7 +50,7 @@ class _TrackMenuDialogState extends State<TrackMenuDialog>
         final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.cmd_track_menu, Drawables.cmd_track_menu),
             contentPadding: DialogDimens.contentPadding,
-            content: UpdatableWidget(child: TrackMenuView(_viewContext, _menu, (msg)
+            content: UpdatableWidget(child: TrackMenuView(_viewContext, (msg)
             {
                 _selectedItem = msg;
                 _viewContext.stateManager.sendMessage(msg);
@@ -73,7 +72,9 @@ class _TrackMenuDialogState extends State<TrackMenuDialog>
     void dispose()
     {
         super.dispose();
-        if (_selectedItem == null)
+        widget._onDispose();
+        _viewContext.stateManager.state.mediaListState.clearMenu();
+        if (_selectedItem == null && _viewContext.stateManager.state.mediaListState.isMenuMode)
         {
             _viewContext.stateManager.sendMessage(OperationCommandMsg.output(
                 ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN));

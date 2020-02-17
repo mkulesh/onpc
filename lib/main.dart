@@ -23,7 +23,6 @@ import "package:flutter/services.dart";
 import "package:fluttertoast/fluttertoast.dart";
 import "package:package_info/package_info.dart";
 import "package:shared_preferences/shared_preferences.dart";
-import "package:xml/xml.dart" as xml;
 
 import "Platform.dart";
 import "config/Configuration.dart";
@@ -34,15 +33,13 @@ import "config/PreferencesMain.dart";
 import "constants/Activities.dart";
 import "constants/Dimens.dart";
 import "constants/Strings.dart";
-import "dialogs/CustomPopupDialog.dart";
 import "dialogs/DeviceSearchDialog.dart";
-import "dialogs/TrackMenuDialog.dart";
+import "dialogs/PopupManager.dart";
 import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
 import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
-import 'iscp/messages/XmlListItemMsg.dart';
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
@@ -117,6 +114,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     final ViewContext _viewContext;
     final List<AppTabs> _tabs = List();
     TabController _tabController;
+    final PopupManager _popupManager = PopupManager();
 
     ConnectionState _connectionState;
     bool _exitConfirm;
@@ -305,16 +303,36 @@ class MusicControllerAppState extends State<MusicControllerApp>
                         _configuration.setReceiverInformation(_viewContext.state.receiverInformation);
                     }
                     break;
-                case CustomPopupMsg.CODE:
-                    Timer(StateManager.GUI_UPDATE_DELAY, ()
-                    => _onPopup());
-                    break;
             }
         });
-
-        if (activeTab == AppTabs.LISTEN && _stateManager.state.mediaListState.isTrackMenuReceived)
+        // update dialogs
+        if (_stateManager.state.isConnected)
         {
-            _onTrackMenu();
+            // Track menu
+            if (activeTab == AppTabs.LISTEN)
+            {
+                final bool isTrackMenu = _stateManager.state.mediaListState.isMenuMode
+                    && !_stateManager.state.mediaListState.isMediaEmpty;
+                if (isTrackMenu)
+                {
+                    _popupManager.showTrackMenuDialog(context, _viewContext);
+                }
+                else
+                {
+                    _popupManager.closeTrackMenuDialog(context);
+                }
+            }
+            // popup
+            {
+                if (changes.contains(CustomPopupMsg.CODE))
+                {
+                    _popupManager.showPopupDialog(context, _viewContext);
+                }
+                if (!_stateManager.state.mediaListState.isPopupMode)
+                {
+                    _popupManager.closePopupDialog(context);
+                }
+            }
         }
 
         _viewContext.updateNotifier.sink.add(changes);
@@ -358,23 +376,13 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _onConnectionError(String result)
     {
-        _showToast(result);
+        _popupManager.showToast(result);
         if (_connectionState == ConnectionState.CONNECTING_TO_SAVED)
         {
             Logging.info(this.widget, "Searching for any device to connect");
             _connectionState = ConnectionState.CONNECTING_TO_ANY;
             _startSearch();
         }
-    }
-
-    void _showToast(String msg)
-    {
-        Fluttertoast.showToast(
-            msg: msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 3
-        );
     }
 
     bool _onBackPressed(bool stopDefaultButtonEvent)
@@ -400,7 +408,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             if (!_exitConfirm)
             {
                 _exitConfirm = true;
-                _showToast(Strings.action_exit_confirm);
+                _popupManager.showToast(Strings.action_exit_confirm);
                 Timer(Duration(seconds: 3), ()
                 {
                     _exitConfirm = false;
@@ -415,37 +423,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         return false;
     }
 
-    void _onPopup()
-    {
-        final String simplePopupMessage = _viewContext.state.retrieveSimplePopupMessage();
-        if (simplePopupMessage != null)
-        {
-            _showToast(simplePopupMessage);
-            return;
-        }
 
-        final xml.XmlDocument popupDocument = _viewContext.state.retrievePopup();
-        if (popupDocument != null)
-        {
-            showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext c)
-                => CustomPopupDialog(_viewContext, popupDocument)
-            );
-        }
-    }
-
-    void _onTrackMenu()
-    {
-        final List<XmlListItemMsg> menu = _stateManager.state.mediaListState.retrieveMenu();
-        showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext c)
-            => TrackMenuDialog(_viewContext, menu)
-        );
-    }
 
     void _processNetworkStateChange(final ByteData state)
     {
@@ -458,7 +436,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             {
                 _disconnect();
             });
-            _showToast(Strings.error_connection_no_network);
+            _popupManager.showToast(Strings.error_connection_no_network);
             break;
         case NetworkState.CELLULAR:
         case NetworkState.WIFI:

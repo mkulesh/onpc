@@ -90,13 +90,10 @@ class MediaListView extends UpdatableView
         final MediaListState ms = state.mediaListState;
 
         // Get items
-        final List<ISCPMessage> items = ms.isNetworkServices ?
-            _getSortedNetworkServices(state.playbackState.serviceIcon, ms.mediaItems) : ms.mediaItems;
-        if (ms.isTrackMenuReceived)
-        {
-            ms.retrieveMenu();
-        }
-
+        final List<ISCPMessage> items =
+            ms.isNetworkServices ? _getSortedNetworkServices(state.playbackState.serviceIcon, ms.mediaItems) :
+            ms.isMenuMode ? ms.retrieveMenu() :
+            ms.mediaItems;
         final bool isPlayback = state.isOn && items.isEmpty && (ms.isPlaybackMode || ms.isSimpleInput);
 
         // Add "Return" button if necessary
