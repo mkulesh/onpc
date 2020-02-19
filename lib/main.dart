@@ -326,7 +326,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
             {
                 if (changes.contains(CustomPopupMsg.CODE))
                 {
-                    _popupManager.showPopupDialog(context, _viewContext);
+                    Timer(StateManager.GUI_UPDATE_DELAY, ()
+                    => _popupManager.showPopupDialog(context, _viewContext));
                 }
                 if (!_stateManager.state.mediaListState.isPopupMode)
                 {

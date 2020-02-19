@@ -85,9 +85,9 @@ class PopupManager
 
     void showPopupDialog(final BuildContext context, final ViewContext viewContext)
     {
-        if (_isDialog(_DialogType.POPUP))
+        if (_openDialogs.isNotEmpty && Navigator.of(context).canPop())
         {
-            return;
+            Navigator.of(context).pop();
         }
 
         final String simplePopupMessage = viewContext.state.retrieveSimplePopupMessage();
@@ -97,11 +97,10 @@ class PopupManager
             return;
         }
 
-        closeTrackMenuDialog(context);
-        _openDialog(_DialogType.POPUP);
         final xml.XmlDocument popupDocument = viewContext.state.retrievePopup();
         if (popupDocument != null)
         {
+            _openDialog(_DialogType.POPUP);
             showDialog(
                 context: context,
                 barrierDismissible: true,
