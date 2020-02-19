@@ -48,6 +48,18 @@ abstract class UpdatableView
 
     Widget createView(BuildContext context, VoidCallback updateCallback);
 
+    @mustCallSuper
+    void initState()
+    {
+        // may be overwritten in the derived class
+    }
+
+    @mustCallSuper
+    void dispose()
+    {
+        // may be overwritten in the derived class
+    }
+
     ViewContext get viewContext
     => _viewContext;
 
@@ -104,6 +116,7 @@ class _UpdatableWidgetState extends State<UpdatableWidget>
     initState()
     {
         super.initState();
+        widget.child.initState();
         _updateStream = widget.child.updateNotifier.stream.listen((code)
         => _update(code));
     }
@@ -124,8 +137,9 @@ class _UpdatableWidgetState extends State<UpdatableWidget>
     @override
     dispose()
     {
-        super.dispose();
         _updateStream.cancel();
+        widget.child.dispose();
+        super.dispose();
     }
 
     _update(Set<String> changes)

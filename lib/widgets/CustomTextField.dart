@@ -21,8 +21,9 @@ class CustomTextField extends StatelessWidget
     final TextEditingController text;
     final bool isFocused;
     final VoidCallback onPressed;
+    final ValueChanged<String> onChanged;
 
-    CustomTextField(this.text, { this.isFocused = false, this.onPressed });
+    CustomTextField(this.text, { this.isFocused = false, this.onPressed, this.onChanged });
 
     @override
     Widget build(BuildContext context)
@@ -32,6 +33,7 @@ class CustomTextField extends StatelessWidget
             padding: ActivityDimens.noPadding,
             child: TextFormField(
                 controller: text,
+                onChanged: onChanged,
                 autofocus: isFocused,
                 style: td.textTheme.subhead,
                 autovalidate: false,

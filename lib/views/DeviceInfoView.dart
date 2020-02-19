@@ -41,9 +41,25 @@ class DeviceInfoView extends UpdatableView
         FirmwareUpdateMsg.CODE
     ];
 
-    final _friendlyName = TextEditingController();
+    String _friendlyNameText;
+    TextEditingController _friendlyNameController;
 
     DeviceInfoView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+
+    @override
+    void initState()
+    {
+        super.initState();
+        _friendlyNameText = "";
+        _friendlyNameController = TextEditingController();
+    }
+
+    @override
+    void dispose()
+    {
+        _friendlyNameController?.dispose();
+        super.dispose();
+    }
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -54,15 +70,19 @@ class DeviceInfoView extends UpdatableView
 
         final bool isData = state.isConnected;
         final ReceiverInformation ri = state.receiverInformation;
-        _friendlyName.text = isData ? state.receiverInformation.getDeviceName(true) : "";
+
+        _friendlyNameText = state.isConnected ? state.receiverInformation.getDeviceName(true) : "";
+        _friendlyNameController?.text = _friendlyNameText;
 
         final Widget friendlyName = Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
                 Expanded(
-                    child: CustomTextField(_friendlyName,
+                    child: CustomTextField(_friendlyNameController,
                         isFocused: false,
+                        onChanged: (v)
+                        => _friendlyNameText = v,
                         onPressed: ()
                         => _submitDeviceName(context, state.isConnected && state.isOn)),
                     flex: 1),
@@ -182,7 +202,7 @@ class DeviceInfoView extends UpdatableView
     {
         if (isEnabled)
         {
-            stateManager.sendMessage(FriendlyNameMsg.output(_friendlyName.text));
+            stateManager.sendMessage(FriendlyNameMsg.output(_friendlyNameText));
             FocusScope.of(context).unfocus();
         }
     }
