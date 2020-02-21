@@ -85,7 +85,7 @@ void main() async
             Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(configuration),
             Activities.activity_listening_modes: (BuildContext context) => ListeningModes(configuration),
             Activities.activity_network_services: (BuildContext context) => NetworkServices(configuration),
-            Activities.activity_about_screen: (BuildContext context) => AboutScreen(configuration, viewContext.state.receiverInformation.xml),
+            Activities.activity_about_screen: (BuildContext context) => AboutScreen(viewContext),
         }));
 }
 

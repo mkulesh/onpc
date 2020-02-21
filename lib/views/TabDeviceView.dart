@@ -29,7 +29,7 @@ class TabDeviceView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         final result = ListBody(children: [
-            UpdatableWidget(child: DeviceInfoView(viewContext)),
+            DeviceInfoView(viewContext),
             UpdatableWidget(child: DeviceSettingsView(viewContext))
         ]);
 

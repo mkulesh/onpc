@@ -28,7 +28,7 @@ class TabMediaView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         final UpdatableWidget inputSelectorView = UpdatableWidget(child: InputSelectorView(viewContext));
-        final UpdatableWidget mediaListView = UpdatableWidget(child: MediaListView(viewContext));
+        final Widget mediaListView = MediaListView(viewContext);
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

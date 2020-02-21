@@ -15,13 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
-import "../constants/Themes.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
+import "UpdatableView.dart";
 
 enum AboutScreenTabs
 {
@@ -30,42 +30,49 @@ enum AboutScreenTabs
 
 class AboutScreen extends StatefulWidget
 {
-    final Configuration _configuration;
-    final String _receiverInformation;
+    final ViewContext _viewContext;
 
-    AboutScreen(this._configuration, this._receiverInformation, {Key key}) : super(key: key);
+    static const List<String> UPDATE_TRIGGERS = [
+        ReceiverInformationMsg.CODE
+    ];
+
+    AboutScreen(this._viewContext);
 
     @override
     AboutScreenState createState()
-    => AboutScreenState(_configuration, _receiverInformation);
+    => AboutScreenState(_viewContext, UPDATE_TRIGGERS);
 }
 
-class AboutScreenState extends State<AboutScreen>
+class AboutScreenState extends WidgetStreamState<AboutScreen>
     with SingleTickerProviderStateMixin
 {
-    final Configuration _configuration;
-    final String _receiverInformation;
     final List<AboutScreenTabs> _tabs = [AboutScreenTabs.ABOUT, AboutScreenTabs.RECEIVER, AboutScreenTabs.LOGGING];
     TabController _tabController;
 
-    AboutScreenState(this._configuration, this._receiverInformation);
+    AboutScreenState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
     @override
     initState()
     {
-        _tabController = TabController(vsync: this, length: _tabs.length);
         super.initState();
+        _tabController = TabController(vsync: this, length: _tabs.length);
     }
 
     @override
-    Widget build(BuildContext context)
+    void dispose()
     {
-        final ThemeData td = BaseAppTheme.getThemeData(
-            _configuration.theme, _configuration.language, _configuration.textSize);
+        _tabController.dispose();
+        super.dispose();
+    }
+
+    @override
+    Widget createView(BuildContext context, VoidCallback _updateCallback)
+    {
+        final ThemeData td = viewContext.getThemeData();
 
         double tabBarHeight = 0;
         Widget scaffoldBody;
-        if (_configuration.developerMode)
+        if (configuration.developerMode)
         {
             tabBarHeight = ActivityDimens.tabBarHeight(context);
             scaffoldBody = TabBarView(
@@ -79,7 +86,7 @@ class AboutScreenState extends State<AboutScreen>
                             tabContent = _buildMarkdownView(td, Strings.about_text, ActivityDimens.noPadding);
                             break;
                         case AboutScreenTabs.RECEIVER:
-                            tabContent = _buildTextView(td, _receiverInformation);
+                            tabContent = _buildTextView(td, state.receiverInformation.xml);
                             break;
                         case AboutScreenTabs.LOGGING:
                             tabContent = _buildTextView(td, Logging.getLatestLogging());
@@ -91,7 +98,6 @@ class AboutScreenState extends State<AboutScreen>
                     );
                 }).toList(),
             );
-
         }
         else
         {
@@ -106,13 +112,6 @@ class AboutScreenState extends State<AboutScreen>
         );
 
         return Theme(data: td, child: scaffold);
-    }
-
-    @override
-    void dispose()
-    {
-        _tabController.dispose();
-        super.dispose();
     }
 
     Widget _buildAppBar(final ThemeData td, final double tabBarHeight)
@@ -175,7 +174,7 @@ class AboutScreenState extends State<AboutScreen>
             padding: padding,
             onTapLink: (String href)
             {
-                Logging.info(this, "Pressed " + href);
+                Logging.info(this.widget, "Pressed " + href);
                 _launchURL(href);
             });
     }

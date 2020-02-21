@@ -39,41 +39,105 @@ class ViewContext
     => BaseAppTheme.getThemeData(configuration.theme, configuration.language, configuration.textSize);
 }
 
-abstract class UpdatableView
+mixin WidgetStreamContext
+{
+    ViewContext get viewContext;
+
+    Configuration get configuration
+    => viewContext.configuration;
+
+    StateManager get stateManager
+    => viewContext.stateManager;
+
+    remote_state.State get state
+    => viewContext.state;
+}
+
+abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with WidgetStreamContext
 {
     final ViewContext _viewContext;
+    ViewContext get viewContext
+    => _viewContext;
+
+    final List<String> _updateTriggers;
+    final bool clearFocus;
+    StreamSubscription _updateStream;
+
+    WidgetStreamState(this._viewContext, this._updateTriggers, {this.clearFocus = false});
+
+    @override
+    initState()
+    {
+        super.initState();
+        _updateStream = _viewContext.updateNotifier.stream.listen((code)
+        => _update(code));
+    }
+
+    @override
+    dispose()
+    {
+        _updateStream.cancel();
+        super.dispose();
+    }
+
+    void updateStream(StreamController updateNotifier)
+    {
+        if (_updateStream != null)
+        {
+            _updateStream.cancel();
+            _updateStream = updateNotifier.stream.listen((code)
+            => _update(code));
+        }
+    }
+
+    _update(Set<String> changes)
+    {
+        if (changes.where((s) => _updateTriggers.contains(s)).isNotEmpty)
+        {
+            _updateCallback();
+        }
+    }
+
+    void _updateCallback()
+    {
+        setState(()
+        {
+            // nothing to do: build will be called
+        });
+    }
+
+    Widget createView(BuildContext context, VoidCallback updateCallback);
+
+    @override
+    Widget build(BuildContext context)
+    {
+        try
+        {
+            if (clearFocus)
+            {
+                FocusScope.of(context).unfocus();
+            }
+            return createView(context, _updateCallback);
+        }
+        catch (e)
+        {
+            Logging.info(this, "ERROR: " + e.toString());
+            return Logging.isEnabled ? Text(e.toString()) : SizedBox.shrink();
+        }
+    }
+}
+
+abstract class UpdatableView with WidgetStreamContext
+{
+    final ViewContext _viewContext;
+    ViewContext get viewContext
+    => _viewContext;
+
     final List<String> _updateTriggers;
 
     UpdatableView(this._viewContext, this._updateTriggers);
 
     Widget createView(BuildContext context, VoidCallback updateCallback);
-
-    @mustCallSuper
-    void initState()
-    {
-        // may be overwritten in the derived class
-    }
-
-    @mustCallSuper
-    void dispose()
-    {
-        // may be overwritten in the derived class
-    }
-
-    ViewContext get viewContext
-    => _viewContext;
-
-    Configuration get configuration
-    => _viewContext.configuration;
-
-    StateManager get stateManager
-    => _viewContext.stateManager;
-
-    StreamController get updateNotifier
-    => _viewContext.updateNotifier;
-
-    remote_state.State get state
-    => _viewContext.stateManager.state;
 
     Widget createTimerSand()
     => CustomImageButton.small(
@@ -90,7 +154,7 @@ class UpdatableWidget extends StatefulWidget
     UpdatableWidget({this.child, this.clearFocus = false});
 
     @override _UpdatableWidgetState createState()
-    => _UpdatableWidgetState();
+    => _UpdatableWidgetState(child._viewContext, child._updateTriggers, clearFocus);
 }
 
 class UpdatableAppBarWidget extends UpdatableWidget
@@ -101,78 +165,31 @@ class UpdatableAppBarWidget extends UpdatableWidget
     UpdatableAppBarWidget(this._context, UpdatableView child) : super(child: child);
 
     @override _UpdatableWidgetState createState()
-    => _UpdatableWidgetState();
+    => _UpdatableWidgetState(child._viewContext, child._updateTriggers, clearFocus);
 
     @override
     Size get preferredSize
     => Size.fromHeight(ActivityDimens.appBarHeight(_context));
 }
 
-class _UpdatableWidgetState extends State<UpdatableWidget>
+class _UpdatableWidgetState extends WidgetStreamState<UpdatableWidget>
 {
-    StreamSubscription _updateStream;
+    _UpdatableWidgetState(final ViewContext _viewContext, final List<String> _updateTriggers, final bool _clearFocus) :
+            super(_viewContext, _updateTriggers, clearFocus: _clearFocus);
 
-    @override
-    initState()
-    {
-        super.initState();
-        widget.child.initState();
-        _updateStream = widget.child.updateNotifier.stream.listen((code)
-        => _update(code));
-    }
+    Widget createView(BuildContext context, VoidCallback updateCallback)
+    => widget.child.createView(context, updateCallback);
 
     @override
     didUpdateWidget(UpdatableWidget old)
     {
         super.didUpdateWidget(old);
         // in case the stream instance changed, subscribe to the new one
-        if (widget.child.updateNotifier != old.child.updateNotifier)
+        if (widget.child.viewContext.updateNotifier != old.child.viewContext.updateNotifier)
         {
             _updateStream.cancel();
-            _updateStream = widget.child.updateNotifier.stream.listen((code)
+            _updateStream = widget.child.viewContext.updateNotifier.stream.listen((code)
             => _update(code));
-        }
-    }
-
-    @override
-    dispose()
-    {
-        _updateStream.cancel();
-        widget.child.dispose();
-        super.dispose();
-    }
-
-    _update(Set<String> changes)
-    {
-        if (changes.where((s) => widget.child._updateTriggers.contains(s)).isNotEmpty)
-        {
-            _updateCallback();
-        }
-    }
-
-    void _updateCallback()
-    {
-        setState(()
-        {
-            // nothing to do: build will be called
-        });
-    }
-
-    @override
-    Widget build(BuildContext context)
-    {
-        try
-        {
-            if (widget.clearFocus)
-            {
-                FocusScope.of(context).unfocus();
-            }
-            return widget.child.createView(context, _updateCallback);
-        }
-        catch (e)
-        {
-            Logging.info(widget.child, "ERROR: " + e.toString());
-            return Logging.isEnabled ? Text(e.toString()) : SizedBox.shrink();
         }
     }
 }

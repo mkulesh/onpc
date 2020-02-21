@@ -30,8 +30,10 @@ import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
-class DeviceInfoView extends UpdatableView
+class DeviceInfoView extends StatefulWidget
 {
+    final ViewContext _viewContext;
+
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.CONNECTION_EVENT,
         ReceiverInformationMsg.CODE,
@@ -41,38 +43,50 @@ class DeviceInfoView extends UpdatableView
         FirmwareUpdateMsg.CODE
     ];
 
-    String _friendlyNameText;
+    DeviceInfoView(this._viewContext);
+
+    @override _DeviceInfoViewState createState()
+    => _DeviceInfoViewState(_viewContext, UPDATE_TRIGGERS);
+}
+
+class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
+{
     TextEditingController _friendlyNameController;
 
-    DeviceInfoView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    _DeviceInfoViewState(final ViewContext _viewContext, final List<String> _updateTriggers) : super(_viewContext, _updateTriggers);
+
+    String get friendlyNameValue
+    => state.isConnected ? state.receiverInformation.getDeviceName(true) : "";
 
     @override
     void initState()
     {
         super.initState();
-        _friendlyNameText = "";
         _friendlyNameController = TextEditingController();
+        _friendlyNameController.text = friendlyNameValue;
     }
 
     @override
     void dispose()
     {
-        _friendlyNameController?.dispose();
+        _friendlyNameController.dispose();
         super.dispose();
     }
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.info(this.widget, "rebuild widget");
 
         final List<TableRow> rows = List();
 
         final bool isData = state.isConnected;
         final ReceiverInformation ri = state.receiverInformation;
 
-        _friendlyNameText = state.isConnected ? state.receiverInformation.getDeviceName(true) : "";
-        _friendlyNameController?.text = _friendlyNameText;
+        if (_friendlyNameController.text.isEmpty)
+        {
+            _friendlyNameController.text = friendlyNameValue;
+        }
 
         final Widget friendlyName = Row(
             mainAxisSize: MainAxisSize.max,
@@ -81,8 +95,6 @@ class DeviceInfoView extends UpdatableView
                 Expanded(
                     child: CustomTextField(_friendlyNameController,
                         isFocused: false,
-                        onChanged: (v)
-                        => _friendlyNameText = v,
                         onPressed: ()
                         => _submitDeviceName(context, state.isConnected && state.isOn)),
                     flex: 1),
@@ -202,7 +214,7 @@ class DeviceInfoView extends UpdatableView
     {
         if (isEnabled)
         {
-            stateManager.sendMessage(FriendlyNameMsg.output(_friendlyNameText));
+            stateManager.sendMessage(FriendlyNameMsg.output(_friendlyNameController.text));
             FocusScope.of(context).unfocus();
         }
     }

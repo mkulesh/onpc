@@ -60,8 +60,10 @@ enum MediaContextMenu
     PLAYBACK_MODE
 }
 
-class MediaListView extends UpdatableView
+class MediaListView extends StatefulWidget
 {
+    final ViewContext _viewContext;
+
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.WAITING_FOR_DATA_EVENT,
         InputSelectorMsg.CODE,
@@ -74,18 +76,39 @@ class MediaListView extends UpdatableView
         PresetCommandMsg.CODE
     ];
 
+    MediaListView(this._viewContext);
+
+    @override _MediaListViewState createState()
+    => _MediaListViewState(_viewContext, UPDATE_TRIGGERS);
+}
+
+class _MediaListViewState extends WidgetStreamState<MediaListView>
+{
     static final String _PLAYBACK_STRING = "_PLAYBACK_STRING_";
-    VoidCallback _updateCallback;
     int _moveFrom = -1;
     int _numberOfItems = 0;
+    ScrollController _scrollController;
 
-    MediaListView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    _MediaListViewState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
     @override
-    Widget createView(BuildContext context, VoidCallback updateCallback)
+    void initState()
     {
-        Logging.info(this, "rebuild widget");
-        _updateCallback = updateCallback;
+        super.initState();
+        _scrollController = ScrollController();
+    }
+
+    @override
+    void dispose()
+    {
+        _scrollController.dispose();
+        super.dispose();
+    }
+
+    @override
+    Widget createView(BuildContext context, VoidCallback _updateCallback)
+    {
+        Logging.info(this.widget, "rebuild widget");
         final ThemeData td = Theme.of(context);
         final MediaListState ms = state.mediaListState;
 
@@ -117,7 +140,6 @@ class MediaListView extends UpdatableView
 
         // Create list
         _numberOfItems = items.length;
-        final ScrollController _scrollController = ScrollController();
 
         final Widget mediaList = DraggableScrollbar.arrows(
             controller: _scrollController,
@@ -202,7 +224,6 @@ class MediaListView extends UpdatableView
                 onTap: ()
                 {
                     stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.DISPLAY_MSG);
-                    _updateCallback();
                 }),
             onLongPress: (position)
             => _onCreateContextMenu(context, position, cmd)
@@ -257,7 +278,7 @@ class MediaListView extends UpdatableView
 
         if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && selector != null)
         {
-            Logging.info(this, "Context menu for selector [" + selector.toString() +
+            Logging.info(this.widget, "Context menu for selector [" + selector.toString() +
                 (networkService != null ? "] and service [" + networkService.toString() + "]" : ""));
 
             final bool isQueue = state.mediaListState.isQueue;
@@ -329,7 +350,7 @@ class MediaListView extends UpdatableView
         {
             return;
         }
-        Logging.info(this, "selected context menu: " + m.toString() + ", index: " + idx.toString());
+        Logging.info(this.widget, "selected context menu: " + m.toString() + ", index: " + idx.toString());
         switch (m)
         {
             case MediaContextMenu.REPLACE_AND_PLAY:
@@ -360,8 +381,10 @@ class MediaListView extends UpdatableView
                 }
                 break;
             case MediaContextMenu.MOVE_FROM:
-                _moveFrom = idx;
-                _updateCallback();
+                setState(()
+                {
+                    _moveFrom = idx;
+                });
                 break;
             case MediaContextMenu.MOVE_TO:
                 if (_isMoveToValid(idx))
