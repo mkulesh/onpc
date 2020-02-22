@@ -1,0 +1,6 @@
+• TX-NR609: fixed missed information about device even if it is connected
+• TX-NR509: fixed empty NET items
+• Fixed duplicated and empty track menu items in Tidal
+• The last opened tab is saved and opened again on app startup
+• Now it is possible to input canonical name as a host name in the "Connect" dialog
+• If stored connection can not be established, the app automatically connects to any found device
