@@ -11,6 +11,8 @@
  * Public License along with this program.
  */
 
+import 'dart:collection';
+
 import "package:xml/xml.dart" as xml;
 
 import "../constants/Drawables.dart";
@@ -156,6 +158,9 @@ class State
     // Update logic
     String _isChange(String type, bool change)
     => change ? type : null;
+
+    // Media list positions
+    final HashMap mediaListPosition = HashMap<int, double>();
 
     bool updateConnection(bool c)
     {
@@ -483,5 +488,6 @@ class State
         _soundControlState.clear();
         _radioState.clear();
         _popupDocument = null;
+        mediaListPosition.clear();
     }
 }

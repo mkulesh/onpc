@@ -88,6 +88,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     int _moveFrom = -1;
     int _numberOfItems = 0;
     ScrollController _scrollController;
+    int _currentLayer = -1;
 
     _MediaListViewState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
@@ -96,6 +97,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     {
         super.initState();
         _scrollController = ScrollController();
+        _scrollController.addListener(()
+        => _saveScrollPosition(state.mediaListState));
+        Logging.info(this.widget, "saved scroll positions: " + state.mediaListPosition.toString());
     }
 
     @override
@@ -141,7 +145,24 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         // Create list
         _numberOfItems = items.length;
 
-        final Widget mediaList = DraggableScrollbar.arrows(
+        // Scroll positions
+        if (!ms.isPlaybackMode && _numberOfItems > 0)
+        {
+            if (_currentLayer < 0 || ms.numberOfLayers < _currentLayer)
+            {
+                state.mediaListPosition.removeWhere((key, v)
+                => (key > ms.numberOfLayers));
+                WidgetsBinding.instance.addPostFrameCallback((_)
+                => _scrollToPosition(ms));
+            }
+            else
+            {
+                _saveScrollPosition(ms);
+            }
+            _currentLayer = ms.numberOfLayers;
+        }
+
+        final Widget mediaList = DraggableScrollbar.rrect(
             controller: _scrollController,
             backgroundColor: td.accentColor,
             child: ListView.separated(
@@ -470,5 +491,27 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
         }
         return result;
+    }
+
+    void _saveScrollPosition(final MediaListState ms)
+    {
+        if (ms.layerInfo == LayerInfo.UNDER_2ND_LAYER && !ms.isPlaybackMode && _scrollController.hasClients)
+        {
+            state.mediaListPosition[ms.numberOfLayers] = _scrollController.offset;
+        }
+    }
+
+    void _scrollToPosition(MediaListState ms)
+    {
+        try
+        {
+            final double pos = state.mediaListPosition.containsKey(ms.numberOfLayers) ? state.mediaListPosition[ms.numberOfLayers] : 0.0;
+            _scrollController.jumpTo(pos);
+            Logging.info(this.widget, "scrolling to positions: " + pos.toString() + "/" + state.mediaListPosition.toString());
+        }
+        catch (e)
+        {
+            // nothing to do
+        }
     }
 }
