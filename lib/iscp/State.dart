@@ -149,6 +149,9 @@ class State
     // Popup
     xml.XmlDocument _popupDocument;
 
+    xml.XmlDocument get popupDocument
+    => _popupDocument;
+
     // Multiroom
     final MultiroomState _multiroomState = MultiroomState();
 
@@ -455,13 +458,6 @@ class State
             return retValue;
         }
         return null;
-    }
-
-    xml.XmlDocument retrievePopup()
-    {
-        final xml.XmlDocument retValue = _popupDocument;
-        _popupDocument = null;
-        return retValue;
     }
 
     String getServiceIcon()

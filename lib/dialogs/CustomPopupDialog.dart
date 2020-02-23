@@ -29,38 +29,42 @@ import "../widgets/CustomTextLabel.dart";
 class CustomPopupDialog extends StatefulWidget
 {
     final ViewContext _viewContext;
-    final xml.XmlDocument _popupDocument;
     final void Function() _onDispose;
 
-    CustomPopupDialog(this._viewContext, this._popupDocument, this._onDispose);
+    static const List<String> UPDATE_TRIGGERS = [
+        CustomPopupMsg.CODE
+    ];
+
+    CustomPopupDialog(this._viewContext, this._onDispose);
 
     @override _CustomPopupDialogState createState()
-    => _CustomPopupDialogState(_viewContext, _popupDocument);
+    => _CustomPopupDialogState(_viewContext, UPDATE_TRIGGERS);
 }
 
-class _CustomPopupDialogState extends State<CustomPopupDialog>
+class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
 {
-    final ViewContext _viewContext;
-    final xml.XmlDocument _popupDocument;
-    final xml.XmlElement _popupElement;
-
-    _CustomPopupDialogState(this._viewContext, this._popupDocument) :
-            _popupElement = _popupDocument.findElements("popup").first;
-
-    EnumItem<ServiceType> _serviceType;
-    String _artist;
+    xml.XmlDocument _popupDocument;
+    String _popupText = "";
+    xml.XmlElement _popupElement;
     String _dialogTitle;
     final List<Pair<xml.XmlElement, TextEditingController>> _textFields = List();
 
-    @override
-    void initState()
-    {
-        super.initState();
-        _serviceType = _viewContext.state.mediaListState.serviceType;
-        _artist = _viewContext.state.trackState.artist;
-        _dialogTitle = _popupElement.getAttribute("title");
-        Logging.info(this, "received popup: " + _dialogTitle);
+    _CustomPopupDialogState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
+    void _initData()
+    {
+        _popupDocument = state.popupDocument;
+        final String newText = _popupDocument.toString();
+        if (_popupText == newText)
+        {
+            return;
+        }
+
+        _popupText = newText;
+        _popupElement = _popupDocument.findElements("popup").first;
+        _dialogTitle = _popupElement.getAttribute("title");
+
+        _textFields.clear();
         _popupElement.findElements("textboxgroup").forEach((group)
         {
             group.findElements("textbox").forEach((textBox)
@@ -75,6 +79,15 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
                 }
             });
         });
+
+        Logging.info(this.widget, "initialize popup: " + _dialogTitle + " with " + _textFields.length.toString() + " fields");
+    }
+
+    @override
+    void initState()
+    {
+        super.initState();
+        _initData();
     }
 
     @override
@@ -86,9 +99,12 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
     }
 
     @override
-    Widget build(BuildContext context)
+    Widget createView(BuildContext context, VoidCallback _updateCallback)
     {
-        final ThemeData td = _viewContext.getThemeData();
+        _initData();
+        Logging.info(this.widget, "rebuild widget");
+
+        final ThemeData td = viewContext.getThemeData();
 
         Widget _content;
         try
@@ -101,7 +117,7 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
         }
 
         final Widget dialog = AlertDialog(
-            title: CustomDialogTitle(_dialogTitle, _viewContext.state.getServiceIcon()),
+            title: CustomDialogTitle(_dialogTitle, viewContext.state.getServiceIcon()),
             contentPadding: DialogDimens.contentPadding,
             content: _content,
         );
@@ -185,22 +201,24 @@ class _CustomPopupDialogState extends State<CustomPopupDialog>
                 t.item1.getAttributeNode("value").value = t.item2.text;
             });
             button.getAttributeNode("selected").value = "true";
-            Logging.info(this, "new doc: " + _popupDocument.toXmlString());
-            _viewContext.stateManager.sendMessage(CustomPopupMsg.output(uiType, _popupDocument));
+            Logging.info(this.widget, "new doc: " + _popupDocument.toXmlString());
+            viewContext.stateManager.sendMessage(CustomPopupMsg.output(uiType, _popupDocument));
         }
         on Exception catch (e)
         {
-            Logging.info(this, "cannot build new popup: " + e.toString());
+            Logging.info(this.widget, "cannot build new popup: " + e.toString());
         }
     }
 
     String _getDefaultValue(final xml.XmlElement box)
     {
+        final EnumItem<ServiceType> _serviceType = viewContext.state.mediaListState.serviceType;
+        final String _artist = viewContext.state.trackState.artist;
         if (_serviceType != null && _serviceType.key == ServiceType.DEEZER &&
             _artist != null && _artist.isNotEmpty &&
             box.getAttribute("text") == "Search")
         {
-            return _artist.contains("(") ? _artist.substring(0, _artist.indexOf("(")) : _artist.trim();
+            return _artist.contains("(") ? _artist.substring(0, _artist.indexOf("(")).trim() : _artist.trim();
         }
         return null;
     }

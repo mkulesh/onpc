@@ -12,7 +12,6 @@
  */
 
 import "package:flutter/material.dart";
-import "package:xml/xml.dart" as xml;
 import "package:fluttertoast/fluttertoast.dart";
 
 import "../utils/Logging.dart";
@@ -48,7 +47,7 @@ class PopupManager
         }
     }
 
-    bool _isDialog(final _DialogType t, {bool last: false})
+    bool _isDialog(final _DialogType t, {bool last = false})
     {
         if (_openDialogs.isNotEmpty)
         {
@@ -85,7 +84,7 @@ class PopupManager
 
     void showPopupDialog(final BuildContext context, final ViewContext viewContext)
     {
-        if (_openDialogs.isNotEmpty && Navigator.of(context).canPop())
+        if (_isDialog(_DialogType.TRACK_MENU) && Navigator.of(context).canPop())
         {
             Navigator.of(context).pop();
         }
@@ -97,15 +96,14 @@ class PopupManager
             return;
         }
 
-        final xml.XmlDocument popupDocument = viewContext.state.retrievePopup();
-        if (popupDocument != null)
+        if (!_isDialog(_DialogType.POPUP) && viewContext.state.popupDocument != null)
         {
             _openDialog(_DialogType.POPUP);
             showDialog(
                 context: context,
                 barrierDismissible: true,
                 builder: (BuildContext c)
-                => CustomPopupDialog(viewContext, popupDocument, ()
+                => CustomPopupDialog(viewContext, ()
                     => _closeDialog(_DialogType.POPUP))
             );
         }
