@@ -148,7 +148,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         // Scroll positions
         if (!ms.isPlaybackMode && _numberOfItems > 0)
         {
-            if (_currentLayer < 0 || ms.numberOfLayers < _currentLayer)
+            if (_currentLayer < 0 || ms.numberOfLayers != _currentLayer)
             {
                 state.mediaListPosition.removeWhere((key, v)
                 => (key > ms.numberOfLayers));
