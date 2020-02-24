@@ -115,7 +115,7 @@ class ReceiverInformation
         _deviceSelectors.clear();
         _presetList.clear();
         _controlList.clear();
-        _friendlyName = "";
+        _friendlyName = null;
         _deviceName = "";
         _powerStatus = PowerStatus.STB;
         _firmwareStatus = FirmwareUpdateMsg.ValueEnum.defValue;
@@ -179,6 +179,10 @@ class ReceiverInformation
 
     bool processFriendlyName(FriendlyNameMsg msg)
     {
+        if (_friendlyName == null)
+        {
+            _friendlyName = "";
+        }
         final bool changed = _friendlyName != msg.getFriendlyName;
         _friendlyName = msg.getFriendlyName;
         return changed;
@@ -235,7 +239,7 @@ class ReceiverInformation
         if (useFriendlyName)
         {
             // name from FriendlyNameMsg (NFN)
-            if (_friendlyName.isNotEmpty)
+            if (_friendlyName != null && _friendlyName.isNotEmpty)
             {
                 return _friendlyName;
             }
@@ -266,5 +270,9 @@ class ReceiverInformation
 
     bool get isReceiverInformation
     => _xml != null && _xml.isNotEmpty;
+
+    bool get isFriendlyName
+    => _friendlyName != null;
+
 }
 

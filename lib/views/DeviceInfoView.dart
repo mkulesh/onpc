@@ -83,110 +83,115 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
         final bool isData = state.isConnected;
         final ReceiverInformation ri = state.receiverInformation;
 
-        if (_friendlyNameController.text.isEmpty)
+        if (ri.isFriendlyName)
         {
-            _friendlyNameController.text = friendlyNameValue;
-        }
+            if (_friendlyNameController.text.isEmpty)
+            {
+                _friendlyNameController.text = friendlyNameValue;
+            }
 
-        final Widget friendlyName = Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-                Expanded(
-                    child: CustomTextField(_friendlyNameController,
-                        isFocused: false,
-                        onPressed: ()
-                        => _submitDeviceName(context, state.isConnected && state.isOn)),
-                    flex: 1),
-                CustomImageButton.small(
-                    Drawables.cmd_friendly_name,
-                    Strings.device_change_friendly_name,
-                    onPressed: ()
-                    => _submitDeviceName(context, state.isConnected && state.isOn),
-                    isEnabled: isData && stateManager.state.isOn,
-                    isSelected: false,
-                )
-            ]);
-
-        // Friendly name
-        rows.add(TableRow(children: [
-            _buildRowTitle(Strings.device_friendly_name),
-            friendlyName
-        ]));
-
-        // Brand
-        rows.add(TableRow(children: [
-            _buildRowTitle(Strings.device_brand),
-            CustomTextLabel.normal(isData ? ri.brand : "")
-        ]));
-
-        // Model
-        rows.add(TableRow(children: [
-            _buildRowTitle(Strings.device_model),
-            CustomTextLabel.normal(isData ? ri.model : "")
-        ]));
-
-        // Year
-        rows.add(TableRow(children: [
-            _buildRowTitle(Strings.device_year),
-            CustomTextLabel.normal(isData ? ri.year : "")
-        ]));
-
-        // Firmware update status
-        Widget firmwareInfo = CustomTextLabel.normal(isData ? ri.firmaware : "");
-
-        if (ri.firmwareStatus.key != FirmwareUpdate.NONE)
-        {
-            firmwareInfo = Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                    firmwareInfo,
-                    CustomTextLabel.small(ri.firmwareStatus.description)
-                ]);
-        }
-
-        if (ri.firmwareStatus.key != FirmwareUpdate.ACTUAL &&
-            ri.firmwareStatus.key != FirmwareUpdate.NONE)
-        {
-            final bool isEnabled = ri.firmwareStatus.key == FirmwareUpdate.NEW_VERSION ||
-                ri.firmwareStatus.key == FirmwareUpdate.NEW_VERSION_FORCE;
-            firmwareInfo = Row(
+            final Widget friendlyName = Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                     Expanded(
-                        child: firmwareInfo,
+                        child: CustomTextField(_friendlyNameController,
+                            isFocused: false,
+                            onPressed: ()
+                            => _submitDeviceName(context, state.isConnected && state.isOn)),
                         flex: 1),
                     CustomImageButton.small(
-                        Drawables.cmd_firmware_update,
-                        Strings.device_firmware_net,
+                        Drawables.cmd_friendly_name,
+                        Strings.device_change_friendly_name,
                         onPressed: ()
-                        {
-                            if (isData && stateManager.state.isOn)
-                            {
-                                stateManager.sendMessage(FirmwareUpdateMsg.output(FirmwareUpdate.NET));
-                            }
-                        },
-                        isEnabled: isData && stateManager.state.isOn && isEnabled,
+                        => _submitDeviceName(context, state.isConnected && state.isOn),
+                        isEnabled: isData && stateManager.state.isOn,
                         isSelected: false,
                     )
                 ]);
+
+            // Friendly name
+            rows.add(TableRow(children: [
+                _buildRowTitle(Strings.device_friendly_name),
+                friendlyName
+            ]));
         }
 
+        if (ri.isReceiverInformation)
+        {
+            // Brand
+            rows.add(TableRow(children: [
+                _buildRowTitle(Strings.device_brand),
+                CustomTextLabel.normal(isData ? ri.brand : "")
+            ]));
 
-        // Firmware
-        rows.add(TableRow(children: [
-            _buildRowTitle(Strings.device_firmware),
-            firmwareInfo
-        ]));
+            // Model
+            rows.add(TableRow(children: [
+                _buildRowTitle(Strings.device_model),
+                CustomTextLabel.normal(isData ? ri.model : "")
+            ]));
 
-        // Google cast
-        rows.add(TableRow(children: [
-            _buildRowTitle(Strings.google_cast_version),
-            CustomTextLabel.normal(isData ? ri.googleCastVersion : "")
-        ]));
+            // Year
+            rows.add(TableRow(children: [
+                _buildRowTitle(Strings.device_year),
+                CustomTextLabel.normal(isData ? ri.year : "")
+            ]));
+
+            // Firmware update status
+            Widget firmwareInfo = CustomTextLabel.normal(isData ? ri.firmaware : "");
+
+            if (ri.firmwareStatus.key != FirmwareUpdate.NONE)
+            {
+                firmwareInfo = Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                        firmwareInfo,
+                        CustomTextLabel.small(ri.firmwareStatus.description)
+                    ]);
+            }
+
+            if (ri.firmwareStatus.key != FirmwareUpdate.ACTUAL &&
+                ri.firmwareStatus.key != FirmwareUpdate.NONE)
+            {
+                final bool isEnabled = ri.firmwareStatus.key == FirmwareUpdate.NEW_VERSION ||
+                    ri.firmwareStatus.key == FirmwareUpdate.NEW_VERSION_FORCE;
+                firmwareInfo = Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                        Expanded(
+                            child: firmwareInfo,
+                            flex: 1),
+                        CustomImageButton.small(
+                            Drawables.cmd_firmware_update,
+                            Strings.device_firmware_net,
+                            onPressed: ()
+                            {
+                                if (isData && stateManager.state.isOn)
+                                {
+                                    stateManager.sendMessage(FirmwareUpdateMsg.output(FirmwareUpdate.NET));
+                                }
+                            },
+                            isEnabled: isData && stateManager.state.isOn && isEnabled,
+                            isSelected: false,
+                        )
+                    ]);
+            }
+
+            // Firmware
+            rows.add(TableRow(children: [
+                _buildRowTitle(Strings.device_firmware),
+                firmwareInfo
+            ]));
+
+            // Google cast
+            rows.add(TableRow(children: [
+                _buildRowTitle(Strings.google_cast_version),
+                CustomTextLabel.normal(isData ? ri.googleCastVersion : "")
+            ]));
+        }
 
         final Map<int, TableColumnWidth> columnWidths = Map();
         columnWidths[0] = FractionColumnWidth(0.37);

@@ -13,6 +13,8 @@
 
 import "package:flutter/material.dart";
 
+import "../iscp/messages/FriendlyNameMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "DeviceInfoView.dart";
 import "DeviceSettingsView.dart";
 import "UpdatableView.dart";
@@ -20,7 +22,8 @@ import "UpdatableView.dart";
 class TabDeviceView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        // empty
+        ReceiverInformationMsg.CODE,
+        FriendlyNameMsg.CODE,
     ];
 
     TabDeviceView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -28,15 +31,18 @@ class TabDeviceView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        final result = ListBody(children: [
-            DeviceInfoView(viewContext),
-            UpdatableWidget(child: DeviceSettingsView(viewContext))
-        ]);
+        final List<Widget> views = List();
+
+        if (state.receiverInformation.isFriendlyName || state.receiverInformation.isReceiverInformation)
+        {
+            views.add(DeviceInfoView(viewContext));
+        }
+        views.add(UpdatableWidget(child: DeviceSettingsView(viewContext)));
 
         return SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: InkWell(
-                child: result,
+                child: ListBody(children: views),
                 enableFeedback: false,
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
