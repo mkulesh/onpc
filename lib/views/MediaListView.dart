@@ -97,8 +97,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     {
         super.initState();
         _scrollController = ScrollController();
-        _scrollController.addListener(()
-        => _saveScrollPosition(state.mediaListState));
         Logging.info(this.widget, "saved scroll positions: " + state.mediaListPosition.toString());
     }
 
@@ -146,20 +144,28 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         _numberOfItems = items.length;
 
         // Scroll positions
-        if (!ms.isPlaybackMode && _numberOfItems > 0)
+        _scrollController.removeListener(_saveScrollPosition);
+        if (state.isOn && ms.isListMode && ms.layerInfo == LayerInfo.UNDER_2ND_LAYER && _numberOfItems > 0)
         {
             if (_currentLayer < 0 || ms.numberOfLayers != _currentLayer)
             {
                 state.mediaListPosition.removeWhere((key, v)
                 => (key > ms.numberOfLayers));
                 WidgetsBinding.instance.addPostFrameCallback((_)
-                => _scrollToPosition(ms));
+                {
+                    _scrollToPosition(ms);
+                    _scrollController.addListener(_saveScrollPosition);
+                });
             }
             else
             {
-                _saveScrollPosition(ms);
+                _scrollController.addListener(_saveScrollPosition);
             }
             _currentLayer = ms.numberOfLayers;
+        }
+        else
+        {
+            _currentLayer = -1;
         }
 
         final Widget mediaList = DraggableScrollbar.rrect(
@@ -493,11 +499,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return result;
     }
 
-    void _saveScrollPosition(final MediaListState ms)
+    void _saveScrollPosition()
     {
-        if (ms.layerInfo == LayerInfo.UNDER_2ND_LAYER && !ms.isPlaybackMode && _scrollController.hasClients)
+        if (_scrollController.hasClients)
         {
-            state.mediaListPosition[ms.numberOfLayers] = _scrollController.offset;
+            state.mediaListPosition[state.mediaListState.numberOfLayers] = _scrollController.offset;
         }
     }
 
