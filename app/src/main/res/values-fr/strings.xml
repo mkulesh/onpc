@@ -126,6 +126,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
         <item>Français</item>
         <item>Русский</item>
         <item>Deutsch</item>
+        <item>Polski</item>
     </string-array>
 
     <!-- Application settings: Text size -->
