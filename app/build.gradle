@@ -7,8 +7,8 @@ android {
         applicationId "com.mkulesh.onpc"
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 23
-        versionName "1.10"
+        versionCode 24
+        versionName "1.11"
         setProperty("archivesBaseName", "onpc-v" + versionName)
     }
 
@@ -34,6 +34,6 @@ android {
 dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.preference:preference:1.1.0'
 }
