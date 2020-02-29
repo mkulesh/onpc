@@ -19,7 +19,7 @@ import 'package:xml/xml.dart';
 const inputFile = "input";
 const outputFile = "output";
 
-final List<String> TRANSLATIONS = ["ru", "de", "fr"];
+final List<String> TRANSLATIONS = ["ru", "de", "fr", "pl"];
 
 void main(List<String> arguments) async
 {
