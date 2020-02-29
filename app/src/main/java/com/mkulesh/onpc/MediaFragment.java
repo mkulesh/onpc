@@ -366,7 +366,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             final XmlListItemMsg nsMsg = new XmlListItemMsg(-1, 0,
                     activity.getResources().getString(R.string.medialist_playback_mode),
-                    XmlListItemMsg.Icon.PLAY, false);
+                    XmlListItemMsg.Icon.PLAY, false, null);
             newItems.add(nsMsg);
         }
         else if (state.isRadioInput())

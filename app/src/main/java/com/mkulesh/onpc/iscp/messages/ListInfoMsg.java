@@ -127,6 +127,16 @@ public class ListInfoMsg extends ISCPMessage
         }
     }
 
+    public ListInfoMsg(final int lineInfo, final String listedData)
+    {
+        super(0, null);
+        informationType = InformationType.UNICODE;
+        this.lineInfo = lineInfo;
+        property = Property.NO;
+        updateType = UpdateType.NO;
+        this.listedData = listedData;
+    }
+
     public InformationType getInformationType()
     {
         return informationType;
@@ -153,5 +163,11 @@ public class ListInfoMsg extends ISCPMessage
                 + "; UPD_TYPE=" + updateType.toString()
                 + "; LIST_DATA=" + listedData
                 + "]";
+    }
+
+    @Override
+    public EISCPMessage getCmdMsg()
+    {
+        return new EISCPMessage(CODE, "L" + lineInfo);
     }
 }

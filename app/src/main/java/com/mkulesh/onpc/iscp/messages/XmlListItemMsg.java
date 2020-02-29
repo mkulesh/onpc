@@ -62,6 +62,7 @@ public class XmlListItemMsg extends ISCPMessage
     private final String iconId;
     private final Icon icon;
     private final boolean selectable;
+    private final EISCPMessage cmdMessage;
 
     XmlListItemMsg(final int id, final int numberOfLayers, final Element src)
     {
@@ -72,10 +73,11 @@ public class XmlListItemMsg extends ISCPMessage
         iconId = src.getAttribute("iconid") == null ? Icon.UNKNOWN.getCode() : src.getAttribute("iconid");
         icon = (Icon) searchParameter(iconId, Icon.values(), Icon.UNKNOWN);
         selectable = Utils.ensureAttribute(src, "selectable", "1");
+        cmdMessage = null;
     }
 
     public XmlListItemMsg(final int id, final int numberOfLayers, final String title,
-                          final Icon icon, final boolean selectable)
+                          final Icon icon, final boolean selectable, final EISCPMessage cmdMessage)
     {
         super(id, null);
         this.numberOfLayers = numberOfLayers;
@@ -84,17 +86,7 @@ public class XmlListItemMsg extends ISCPMessage
         iconId = icon.getCode();
         this.icon = icon;
         this.selectable = selectable;
-    }
-
-    public XmlListItemMsg(XmlListItemMsg other)
-    {
-        super(other);
-        numberOfLayers = other.numberOfLayers;
-        title = other.title;
-        iconType = other.iconType;
-        iconId = other.iconId;
-        icon = other.icon;
-        selectable = other.selectable;
+        this.cmdMessage = cmdMessage;
     }
 
     private int getNumberOfLayers()
@@ -126,14 +118,22 @@ public class XmlListItemMsg extends ISCPMessage
                 + "; ICON_ID=" + iconId
                 + "; ICON=" + icon.toString()
                 + "; SELECTABLE=" + selectable
+                + "; CMD=" + cmdMessage
                 + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        final String param = "I" + String.format("%02x", getNumberOfLayers()) +
-                String.format("%04x", getMessageId()) + "----";
-        return new EISCPMessage("NLA", param);
+        if (cmdMessage != null)
+        {
+            return cmdMessage;
+        }
+        else
+        {
+            final String param = "I" + String.format("%02x", getNumberOfLayers()) +
+                    String.format("%04x", getMessageId()) + "----";
+            return new EISCPMessage("NLA", param);
+        }
     }
 }

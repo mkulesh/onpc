@@ -1111,8 +1111,10 @@ public class State
                         return false;
                     }
                 }
+                final ListInfoMsg cmdMessage = new ListInfoMsg(msg.getLineInfo(), msg.getListedData());
                 final XmlListItemMsg nsMsg = new XmlListItemMsg(
-                        msg.getLineInfo(), 0, msg.getListedData(), XmlListItemMsg.Icon.UNKNOWN, true);
+                        msg.getLineInfo(), 0, msg.getListedData(),
+                        XmlListItemMsg.Icon.UNKNOWN, true, cmdMessage.getCmdMsg());
                 mediaItems.add(nsMsg);
                 if (isMenuMode() && !mediaItems.isEmpty())
                 {
