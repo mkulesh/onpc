@@ -40,14 +40,17 @@ class TrackMenuView extends UpdatableView
         final List<Widget> controls = List<Widget>();
         state.mediaListState.retrieveMenu().forEach((msg)
         {
-            final Widget item = ListTile(
-                contentPadding: ActivityDimens.noPadding,
-                dense: true,
-                title: msg.isSelectable ? CustomTextLabel.normal(msg.getTitle) : CustomTextLabel.small(msg.getTitle),
-                onTap: ()
-                => _onMenuSelected(msg)
-            );
-            controls.add(item);
+            if (msg is XmlListItemMsg)
+            {
+                final Widget item = ListTile(
+                    contentPadding: ActivityDimens.noPadding,
+                    dense: true,
+                    title: msg.isSelectable ? CustomTextLabel.normal(msg.getTitle) : CustomTextLabel.small(msg.getTitle),
+                    onTap: ()
+                    => _onMenuSelected(msg)
+                );
+                controls.add(item);
+            }
         });
 
         return SingleChildScrollView(
