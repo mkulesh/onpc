@@ -162,7 +162,6 @@ public class State
     public PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
     public MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
     public MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
-    private boolean trackMenuReceived = false;
     public MenuStatusMsg.Feed positiveFeed = MenuStatusMsg.Feed.DISABLE;
     public MenuStatusMsg.Feed negativeFeed = MenuStatusMsg.Feed.DISABLE;
     public ServiceType serviceIcon = ServiceType.UNKNOWN; // service that is currently playing
@@ -258,12 +257,7 @@ public class State
 
     public boolean isMenuMode()
     {
-        return uiType == ListTitleInfoMsg.UIType.MENU;
-    }
-
-    public boolean isMenuListMode()
-    {
-        return uiType == ListTitleInfoMsg.UIType.MENU_LIST;
+        return uiType == ListTitleInfoMsg.UIType.MENU || uiType == ListTitleInfoMsg.UIType.MENU_LIST;
     }
 
     @NonNull
@@ -958,7 +952,6 @@ public class State
     {
         synchronized (mediaItems)
         {
-            trackMenuReceived = false;
             mediaItems.clear();
         }
         synchronized (serviceItems)
@@ -971,7 +964,6 @@ public class State
     {
         synchronized (mediaItems)
         {
-            trackMenuReceived = false;
             return new ArrayList<>(mediaItems);
         }
     }
@@ -1000,11 +992,6 @@ public class State
                         (currentTrack == null || maxTrack == null))
                 {
                     trackInfoFromList(mediaItems);
-                }
-                if (isMenuListMode())
-                {
-                    Logging.info(this, "received track menu list with " + mediaItems.size() + " items");
-                    trackMenuReceived = true;
                 }
                 return true;
             }
@@ -1116,10 +1103,6 @@ public class State
                         msg.getLineInfo(), 0, msg.getListedData(),
                         XmlListItemMsg.Icon.UNKNOWN, true, cmdMessage.getCmdMsg());
                 mediaItems.add(nsMsg);
-                if (isMenuMode() && !mediaItems.isEmpty())
-                {
-                    trackMenuReceived = true;
-                }
             }
             return true;
         }
@@ -1380,10 +1363,5 @@ public class State
         return (inputType == InputSelectorMsg.InputType.TV_CD) &&
                 (isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                         isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
-    }
-
-    public boolean isTrackMenuReceived()
-    {
-        return trackMenuReceived;
     }
 }

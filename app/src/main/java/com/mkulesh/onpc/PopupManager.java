@@ -42,12 +42,6 @@ class PopupManager
 
     void showTrackMenuDialog(@NonNull final MainActivity activity, @NonNull final State state)
     {
-        if (!state.isTrackMenuReceived())
-        {
-            closeTrackMenuDialog();
-            return;
-        }
-
         if (trackMenuDialog == null)
         {
             Logging.info(this, "create track menu dialog");

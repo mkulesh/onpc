@@ -193,7 +193,7 @@ public class MonitorFragment extends BaseFragment
         {
             activity.getStateManager().setPlaybackMode(true);
             final State state = activity.getStateManager().getState();
-            if (state.isUiTypeValid() && !state.isPlaybackMode())
+            if (state.isUiTypeValid() && !state.isPlaybackMode() && !state.isMenuMode())
             {
                 activity.getStateManager().sendMessage(StateManager.LIST_MSG);
             }
@@ -532,11 +532,11 @@ public class MonitorFragment extends BaseFragment
             btnTrackMenu.setVisibility(View.VISIBLE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
         }
-        if (state.isTrackMenuReceived())
+        if (state.isMenuMode() && !state.isMediaEmpty())
         {
             popupManager.showTrackMenuDialog(activity, state);
         }
-        if (!state.isMenuMode() && !state.isMenuListMode())
+        else
         {
             popupManager.closeTrackMenuDialog();
         }
