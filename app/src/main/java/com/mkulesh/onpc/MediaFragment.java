@@ -61,7 +61,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private XmlListItemMsg selectedItem = null;
     int moveFrom = -1;
     private int filteredItems = 0;
-    private AppCompatImageView progressIndicator;
 
     public MediaFragment()
     {
@@ -83,9 +82,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.setOnItemClickListener(this);
 
         registerForContextMenu(listView);
-
-        progressIndicator = rootView.findViewById(R.id.progress_indicator);
-        Utils.setImageViewColorAttr(activity, progressIndicator, R.attr.colorButtonDisabled);
 
         updateContent();
         return rootView;
@@ -276,7 +272,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final AppCompatImageButton b = createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand(), 0, buttonMarginHorizontal, R.dimen.button_margin_vertical);
-            prepareButtonListeners(b, msg, () -> progressIndicator.setVisibility(View.VISIBLE));
+            prepareButtonListeners(b, msg, () -> setProgressIndicator(state, true));
             selectorPaletteLayout.addView(b);
         }
 
@@ -291,7 +287,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 continue;
             }
             final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
-                    msg, msg.getInputType(), () -> progressIndicator.setVisibility(View.VISIBLE));
+                    msg, msg.getInputType(), () -> setProgressIndicator(state, true));
             if (activity.getConfiguration().isFriendlyNames())
             {
                 b.setText(s.getName());
@@ -450,7 +446,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         titleBar.setVisibility(View.VISIBLE);
         titleBar.setText(title.toString());
-        progressIndicator.setVisibility(state.inputType.isMediaList() && processing ? View.VISIBLE : View.INVISIBLE);
+        setProgressIndicator(state, state.inputType.isMediaList() && processing);
     }
 
     protected boolean onBackPressed()
@@ -468,5 +464,35 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         updateTitle(stateManager.getState(), true);
         stateManager.sendMessage(StateManager.RETURN_MSG);
         return true;
+    }
+
+    private void setProgressIndicator(@Nullable final State state, boolean visible)
+    {
+        // Progress indicator
+        {
+            final AppCompatImageView btn = rootView.findViewById(R.id.progress_indicator);
+            btn.setVisibility(visible ? View.VISIBLE : View.GONE);
+            Utils.setImageViewColorAttr(activity, btn, R.attr.colorButtonDisabled);
+        }
+
+        // Sort button
+        if (state != null)
+        {
+            final ReceiverInformationMsg.NetworkService networkService = state.getNetworkService();
+            final boolean sort = networkService != null && networkService.isSort();
+            final AppCompatImageButton btn = rootView.findViewById(R.id.cmd_sort);
+            if (!visible && sort)
+            {
+                btn.setVisibility(View.VISIBLE);
+                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.SORT);
+                prepareButton(btn, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+                setButtonEnabled(btn, true);
+            }
+
+            else
+            {
+                btn.setVisibility(View.GONE);
+            }
+        }
     }
 }

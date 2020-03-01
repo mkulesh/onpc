@@ -53,6 +53,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         final String name;
         final int zone;
         final boolean addToQueue;
+        final boolean sort;
 
         NetworkService(Element e)
         {
@@ -60,15 +61,17 @@ public class ReceiverInformationMsg extends ISCPMessage
             name = e.getAttribute("name");
             zone = e.hasAttribute("zone") ? Integer.parseInt(e.getAttribute("zone")) : 1;
             addToQueue = e.hasAttribute("addqueue") && (Integer.parseInt(e.getAttribute("addqueue")) == 1);
+            sort = e.hasAttribute("sort") && (Integer.parseInt(e.getAttribute("sort")) == 1);
         }
 
         public NetworkService(final String id, final String name, final int zone,
-                              final boolean addToQueue)
+                              final boolean addToQueue, final boolean sort)
         {
             this.id = id;
             this.name = name;
             this.zone = zone;
             this.addToQueue = addToQueue;
+            this.sort = sort;
         }
 
         String getId()
@@ -86,6 +89,11 @@ public class ReceiverInformationMsg extends ISCPMessage
             return addToQueue;
         }
 
+        public boolean isSort()
+        {
+            return sort;
+        }
+
         @NonNull
         @Override
         public String toString()
@@ -94,6 +102,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             res.append(id)
                     .append(": ").append(name)
                     .append(", addToQueue=").append(addToQueue)
+                    .append(", sort=").append(sort)
                     .append(", zone=").append(zone)
                     .append(", zones=[");
             for (int z = 0; z <= 3; z++)

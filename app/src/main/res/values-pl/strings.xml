@@ -265,6 +265,7 @@
     <string name="cmd_description_memory">Pamięć(Dodaj ulubione)</string>
     <string name="cmd_description_f1">Positive Feed Lub Zaznacz/Odznacz</string>
     <string name="cmd_description_f2">Negative Feed</string>
+    <string name="cmd_description_sort">Sort</string>
     <string name="cmd_track_menu">Menu utworów</string>
 
     <!-- Media list tab -->

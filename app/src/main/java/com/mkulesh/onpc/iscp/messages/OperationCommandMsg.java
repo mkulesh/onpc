@@ -81,7 +81,8 @@ public class OperationCommandMsg extends ZonedMessage
         LIST("LIST", R.string.cmd_description_list),
         MEMORY("MEMORY", R.string.cmd_description_memory),
         F1("F1", R.string.cmd_description_f1, R.drawable.feed_like),
-        F2("F2", R.string.cmd_description_f2, R.drawable.feed_dont_like);
+        F2("F2", R.string.cmd_description_f2, R.drawable.feed_dont_like),
+        SORT("SORT", R.string.cmd_description_sort, R.drawable.cmd_sort);
 
         final String code;
 
