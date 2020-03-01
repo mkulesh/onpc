@@ -237,6 +237,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.clearChoices();
         listView.invalidate();
         listView.setAdapter(new MediaListAdapter(this, activity, new ArrayList<>()));
+        setProgressIndicator(state, false);
     }
 
     @Override
@@ -476,22 +477,20 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
 
         // Sort button
-        if (state != null)
         {
-            final ReceiverInformationMsg.NetworkService networkService = state.getNetworkService();
-            final boolean sort = networkService != null && networkService.isSort();
             final AppCompatImageButton btn = rootView.findViewById(R.id.cmd_sort);
-            if (!visible && sort)
+            btn.setVisibility(View.GONE);
+            if (state != null && state.isOn())
             {
-                btn.setVisibility(View.VISIBLE);
-                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.SORT);
-                prepareButton(btn, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
-                setButtonEnabled(btn, true);
-            }
-
-            else
-            {
-                btn.setVisibility(View.GONE);
+                final ReceiverInformationMsg.NetworkService networkService = state.getNetworkService();
+                final boolean sort = networkService != null && networkService.isSort();
+                if (!visible && sort)
+                {
+                    btn.setVisibility(View.VISIBLE);
+                    final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.SORT);
+                    prepareButton(btn, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+                    setButtonEnabled(btn, true);
+                }
             }
         }
     }
