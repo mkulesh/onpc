@@ -1,0 +1,3 @@
+• Add Polski translation
+• Enabled sorting of tracks for DLNA server
+• TX-NR509: item from media list can now be selected
