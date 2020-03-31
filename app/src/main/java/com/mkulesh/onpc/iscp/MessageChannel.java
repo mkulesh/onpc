@@ -237,7 +237,12 @@ class MessageChannel extends AppTask implements Runnable
         while (remaining > 0)
         {
             final int startIndex = EISCPMessage.getMsgStartIndex(bytes);
-            if (startIndex != 0)
+            if (startIndex < 0)
+            {
+                Logging.info(this, "<< error: message start marker not found. " + remaining + "B ignored");
+                return;
+            }
+            else if (startIndex > 0)
             {
                 Logging.info(this, "<< error: unexpected position of message start: " + startIndex + ", remaining=" + remaining + "B");
             }
