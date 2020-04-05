@@ -17,7 +17,10 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="?dialogPreferredPadding">
+    android:paddingLeft="?dialogPreferredPadding"
+    android:paddingRight="?dialogPreferredPadding"
+    android:paddingTop="16dp"
+    android:paddingBottom="0dp">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -86,8 +89,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="?dialogPreferredPadding"
-                android:paddingBottom="?dialogPreferredPadding">
+                android:paddingTop="?dialogPreferredPadding" >
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 

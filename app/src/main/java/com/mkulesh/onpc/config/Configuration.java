@@ -72,6 +72,7 @@ public class Configuration
     private static final String DEVELOPER_MODE = "developer_mode";
 
     private static final String OPENED_TAB = "opened_tab";
+    private static final String VOLUME_MAX_LIMIT = "volume_max_limit";
 
     static final ListeningModeMsg.Mode[] DEFAULT_LISTENING_MODES = new ListeningModeMsg.Mode[]{
         ListeningModeMsg.Mode.MODE_00,
@@ -418,6 +419,25 @@ public class Configuration
         Logging.info(this, "Save opened tab: " + tab);
         SharedPreferences.Editor prefEditor = preferences.edit();
         prefEditor.putInt(OPENED_TAB, tab);
+        prefEditor.apply();
+    }
+
+    @NonNull
+    static String getVolumeMaxLimitParameter(final SharedPreferences p)
+    {
+        return Configuration.VOLUME_MAX_LIMIT + "_" + p.getString(MODEL, "NONE");
+    }
+
+    public int getVolumeMaxLimit()
+    {
+        return preferences.getInt(getVolumeMaxLimitParameter(preferences), Integer.MAX_VALUE);
+    }
+
+    public void setVolumeMaxLimit(int limit)
+    {
+        Logging.info(this, "Save volume max limit: " + limit);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putInt(getVolumeMaxLimitParameter(preferences), limit);
         prefEditor.apply();
     }
 }

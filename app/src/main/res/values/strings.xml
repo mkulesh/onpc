@@ -269,6 +269,7 @@
     <string name="master_volume_up1">Sets volume level up 1dB step</string>
     <string name="master_volume_down1">Sets volume level down 1dB step</string>
     <string name="tone_direct">Tone Direct</string>
+    <string name="volume_max_limit">Restrict volume level</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Sets preset wrap-around up</string>

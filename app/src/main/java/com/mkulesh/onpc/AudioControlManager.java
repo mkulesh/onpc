@@ -22,11 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatSeekBar;
-
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -36,6 +31,14 @@ import com.mkulesh.onpc.iscp.messages.SubwooferLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatSeekBar;
 
 class AudioControlManager
 {
@@ -74,6 +77,19 @@ class AudioControlManager
     {
         return (isDirectCmdAvailable(state) && state.toneDirect == DirectCommandMsg.Status.ON) ||
                 (state.listeningMode != null && state.listeningMode.isDirectMode());
+    }
+
+    private AlertDialog createDialog(@NonNull final FrameLayout frameView, @DrawableRes final int iconId, @StringRes final int titleId)
+    {
+        final Drawable icon = Utils.getDrawable(activity, iconId);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+        return new AlertDialog.Builder(activity)
+                .setTitle(titleId)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView)
+                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog1, which) -> dialog1.dismiss())
+                .create();
     }
 
     boolean showAudioControlDialog()
@@ -129,15 +145,7 @@ class AudioControlManager
         prepareToneControl(
                 state, CenterLevelCommandMsg.KEY, centerLevelGroup, R.string.center_level);
 
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.pref_volume_keys);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-
-        audioControlDialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.audio_control)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView).create();
-
+        audioControlDialog = createDialog(frameView, R.drawable.volume_amp_slider, R.string.audio_control);
         audioControlDialog.setOnDismissListener((d) ->
         {
             Logging.info(this, "closing audio control dialog");
@@ -220,6 +228,18 @@ class AudioControlManager
 
     private void prepareVolumeGroup(@NonNull final State state, @NonNull final LinearLayout group)
     {
+        final AppCompatImageButton maxVolumeBtn = group.findViewWithTag("tone_extended_cmd");
+        {
+            maxVolumeBtn.setVisibility(View.VISIBLE);
+            maxVolumeBtn.setImageResource(R.drawable.volume_max_limit);
+            maxVolumeBtn.setContentDescription(activity.getString(R.string.volume_max_limit));
+            maxVolumeBtn.setLongClickable(true);
+            maxVolumeBtn.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));
+            maxVolumeBtn.setClickable(true);
+            maxVolumeBtn.setOnClickListener(v -> showVolumeMaxLimitDialog(state));
+            Utils.setButtonEnabled(activity, maxVolumeBtn, true);
+        }
+
         final AppCompatSeekBar progressBar = group.findViewWithTag("tone_progress_bar");
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
@@ -248,14 +268,19 @@ class AudioControlManager
         });
     }
 
+    private int getVolumeMax(@NonNull final State state, @Nullable final ReceiverInformationMsg.Zone zone)
+    {
+        final int scale = (zone != null && zone.getVolumeStep() == 0) ? 2 : 1;
+        return (zone != null && zone.getVolMax() > 0) ?
+                scale * zone.getVolMax() :
+                Math.max(state.volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
+    }
+
     private void updateVolumeGroup(@NonNull final State state, @NonNull final LinearLayout group)
     {
         final AppCompatSeekBar progressBar = group.findViewWithTag("tone_progress_bar");
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-        final int scale = (zone != null && zone.getVolumeStep() == 0) ? 2 : 1;
-        final int maxVolume = (zone != null && zone.getVolMax() > 0) ?
-                scale * zone.getVolMax() :
-                Math.max(state.volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
+        final int maxVolume = Math.min(getVolumeMax(state, zone), activity.getConfiguration().getVolumeMaxLimit());
 
         updateProgressLabel(group, R.string.master_volume, State.getVolumeLevelStr(state.volumeLevel, zone));
 
@@ -267,6 +292,56 @@ class AudioControlManager
 
         progressBar.setMax(maxVolume);
         progressBar.setProgress(Math.max(0, state.volumeLevel));
+    }
+
+    private void showVolumeMaxLimitDialog(@NonNull final State state)
+    {
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_volume_max_limit, frameView);
+
+        final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+        final int maxVolume = getVolumeMax(state, zone);
+
+        final TextView minValue = frameView.findViewWithTag("tone_min_value");
+        minValue.setText("0");
+
+        final TextView maxValue = frameView.findViewWithTag("tone_max_value");
+        maxValue.setText(State.getVolumeLevelStr(maxVolume, zone));
+
+        final AppCompatSeekBar progressBar = frameView.findViewWithTag("tone_progress_bar");
+        progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            int progressChanged = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
+                progressChanged = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+                // empty
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+                activity.getConfiguration().setVolumeMaxLimit(progressChanged);
+            }
+        });
+        progressBar.setMax(maxVolume);
+        progressBar.setProgress(Math.min(maxVolume, activity.getConfiguration().getVolumeMaxLimit()));
+
+        final AlertDialog volumeMaxLimitDialog = createDialog(frameView, R.drawable.volume_max_limit, R.string.volume_max_limit);
+        volumeMaxLimitDialog.setOnDismissListener((d) ->
+        {
+            if (volumeGroup != null)
+            {
+                updateVolumeGroup(state, volumeGroup);
+            }
+        });
+
+        volumeMaxLimitDialog.show();
+        Utils.fixIconColor(volumeMaxLimitDialog, android.R.attr.textColorSecondary);
     }
 
     private void prepareToneControl(@NonNull final State state,
