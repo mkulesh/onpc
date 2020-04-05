@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import androidx.annotation.AttrRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -212,30 +211,12 @@ abstract public class BaseFragment extends Fragment
 
     void setButtonEnabled(View b, boolean isEnabled)
     {
-        @AttrRes int resId = isEnabled ? R.attr.colorButtonEnabled : R.attr.colorButtonDisabled;
-        b.setEnabled(isEnabled);
-        if (b instanceof AppCompatImageButton)
-        {
-            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton) b, resId);
-        }
-        if (b instanceof AppCompatButton)
-        {
-            ((AppCompatButton) b).setTextColor(Utils.getThemeColorAttr(activity, resId));
-        }
+        Utils.setButtonEnabled(activity, b, isEnabled);
     }
 
     void setButtonSelected(View b, boolean isSelected)
     {
-        @AttrRes int resId = isSelected ? R.attr.colorAccent : R.attr.colorButtonEnabled;
-        b.setSelected(isSelected);
-        if (b instanceof AppCompatImageButton)
-        {
-            Utils.setImageButtonColorAttr(activity, (AppCompatImageButton) b, resId);
-        }
-        if (b instanceof AppCompatButton)
-        {
-            ((AppCompatButton) b).setTextColor(Utils.getThemeColorAttr(activity, resId));
-        }
+        Utils.setButtonSelected(activity, b, isSelected);
     }
 
     AppCompatButton createButton(@StringRes int descriptionId,

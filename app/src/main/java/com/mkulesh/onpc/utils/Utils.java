@@ -46,6 +46,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -151,11 +152,39 @@ public class Utils
     /**
      * Procedure sets AppCompatImageButton color given by attribute ID
      */
-    public static void setImageButtonColorAttr(Context context, AppCompatImageButton b, @AttrRes int resId)
+    private static void setImageButtonColorAttr(Context context, AppCompatImageButton b, @AttrRes int resId)
     {
         final int c = getThemeColorAttr(context, resId);
         b.clearColorFilter();
         b.setColorFilter(c, PorterDuff.Mode.SRC_ATOP);
+    }
+
+    public static void setButtonEnabled(Context context, View b, boolean isEnabled)
+    {
+        @AttrRes int resId = isEnabled ? R.attr.colorButtonEnabled : R.attr.colorButtonDisabled;
+        b.setEnabled(isEnabled);
+        if (b instanceof AppCompatImageButton)
+        {
+            Utils.setImageButtonColorAttr(context, (AppCompatImageButton) b, resId);
+        }
+        if (b instanceof AppCompatButton)
+        {
+            ((AppCompatButton) b).setTextColor(Utils.getThemeColorAttr(context, resId));
+        }
+    }
+
+    public static void setButtonSelected(Context context, View b, boolean isSelected)
+    {
+        @AttrRes int resId = isSelected ? R.attr.colorAccent : R.attr.colorButtonEnabled;
+        b.setSelected(isSelected);
+        if (b instanceof AppCompatImageButton)
+        {
+            Utils.setImageButtonColorAttr(context, (AppCompatImageButton) b, resId);
+        }
+        if (b instanceof AppCompatButton)
+        {
+            ((AppCompatButton) b).setTextColor(Utils.getThemeColorAttr(context, resId));
+        }
     }
 
     /**
