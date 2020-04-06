@@ -147,7 +147,7 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
-    void connect(String server, int port, {bool saveRequestedHost: false})
+    void connect(String server, int port, {bool saveRequestedHost = false})
     {
         _requestedHost = saveRequestedHost ? server : null;
         if (isConnected)

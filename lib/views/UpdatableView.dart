@@ -56,6 +56,8 @@ mixin WidgetStreamContext
 abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with WidgetStreamContext
 {
     final ViewContext _viewContext;
+
+    @override
     ViewContext get viewContext
     => _viewContext;
 
@@ -130,6 +132,8 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
 abstract class UpdatableView with WidgetStreamContext
 {
     final ViewContext _viewContext;
+
+    @override
     ViewContext get viewContext
     => _viewContext;
 
@@ -177,6 +181,7 @@ class _UpdatableWidgetState extends WidgetStreamState<UpdatableWidget>
     _UpdatableWidgetState(final ViewContext _viewContext, final List<String> _updateTriggers, final bool _clearFocus) :
             super(_viewContext, _updateTriggers, clearFocus: _clearFocus);
 
+    @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     => widget.child.createView(context, updateCallback);
 
