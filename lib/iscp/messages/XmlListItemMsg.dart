@@ -14,6 +14,7 @@
 import "package:xml/xml.dart" as xml;
 
 import "../../constants/Drawables.dart";
+import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
@@ -43,6 +44,7 @@ class XmlListItemMsg extends ISCPMessage
     String _title, _iconType, _iconId;
     EnumItem<ListItemIcon> _icon;
     bool _selectable;
+    EISCPMessage _cmdMessage;
 
     XmlListItemMsg.output(final int id, final int numberOfLayers, final xml.XmlElement src) :
             super.outputId(id, CODE, _getParameterAsString(id, numberOfLayers))
@@ -52,17 +54,19 @@ class XmlListItemMsg extends ISCPMessage
         _iconId = ISCPMessage.nonNullString(src.getAttribute("iconid"));
         _icon = ListItemIconEnum.valueByCode(_iconId);
         _selectable = ISCPMessage.nonNullInteger(src.getAttribute("selectable"), 10, 0) == 1;
+        _cmdMessage = null;
     }
 
     XmlListItemMsg.details(final int id, final int numberOfLayers, final String title,
-        final String iconType, final ListItemIcon icon, final bool selectable) :
+        final String iconType, final ListItemIcon icon, final bool selectable, final EISCPMessage cmdMessage) :
             super.output(CODE, _getParameterAsString(id, numberOfLayers))
     {
-        this._title = title;
+        _title = title;
         _iconType = iconType;
-        this._icon = ListItemIconEnum.valueByKey(icon);
+        _icon = ListItemIconEnum.valueByKey(icon);
         _iconId = this._icon.getCode;
-        this._selectable = selectable;
+        _selectable = selectable;
+        _cmdMessage = cmdMessage;
     }
 
     static String _getParameterAsString(final int id, final int numberOfLayers)
@@ -92,5 +96,11 @@ class XmlListItemMsg extends ISCPMessage
             + "; ICON_ID=" + _iconId
             + "; ICON=" + _icon.toString()
             + "; SELECTABLE=" + _selectable.toString()
+            + "; CMD=" + (_cmdMessage == null ? "N/A" : _cmdMessage.toString())
             + "]";
+
+    EISCPMessage getCmdMsg()
+    {
+        return _cmdMessage == null ? super.getCmdMsg() : _cmdMessage;
+    }
 }

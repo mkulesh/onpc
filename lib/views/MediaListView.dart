@@ -133,7 +133,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         // Add "Playback" indication if necessary
         final XmlListItemMsg playbackIndicationItem = XmlListItemMsg.details(
-            -1, 0, Strings.medialist_playback_mode, _PLAYBACK_STRING, ListItemIcon.PLAY, false);
+            -1, 0, Strings.medialist_playback_mode, _PLAYBACK_STRING, ListItemIcon.PLAY, false, null);
 
         if (isPlayback)
         {

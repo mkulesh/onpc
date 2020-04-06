@@ -239,7 +239,10 @@ class MediaListState
             {
                 return false;
             }
-            _mediaItems.add(XmlListItemMsg.details(msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true));
+            // ListInfoMsg is used as an alternative command in this case, but the item is stored as XmlListItemMsg
+            final ListInfoMsg cmdMessage = ListInfoMsg.output(msg.getLineInfo, msg.getListedData);
+            _mediaItems.add(XmlListItemMsg.details(
+                msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true, cmdMessage.getCmdMsg()));
             return true;
         }
         return false;

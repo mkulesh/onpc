@@ -124,6 +124,21 @@ class ListInfoMsg extends ISCPMessage
         }
     }
 
+    ListInfoMsg.output(final int lineInfo, final String listedData) :
+            super.outputId(lineInfo, CODE, _getParameterAsString(lineInfo))
+    {
+        _informationType = InformationTypeEnum.valueByKey(InformationType.UNICODE);
+        _lineInfo = lineInfo;
+        _listProperty = ListPropertyEnum.valueByKey(ListProperty.NO);
+        _updateType = UpdateTypeEnum.valueByKey(UpdateType.NO);
+        _listedData = listedData;
+    }
+
+    static String _getParameterAsString(final int lineInfo)
+    {
+        return "L" + lineInfo.toString();
+    }
+
     EnumItem<InformationType> get getInformationType
     => _informationType;
 
