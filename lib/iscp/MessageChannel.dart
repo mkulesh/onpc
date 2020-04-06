@@ -173,7 +173,13 @@ class MessageChannel
             // remove unused prefix
             {
                 final int startIndex = EISCPMessage.getMsgStartIndex(_buffer);
-                if (startIndex > 0)
+                if (startIndex < 0)
+                {
+                    Logging.info(this, "<< error: message start marker not found. " + remaining.toString() + "B ignored");
+                    _buffer.clear();
+                    return;
+                }
+                else if (startIndex > 0)
                 {
                     Logging.info(this, "<< warning: unexpected position of message start: "
                         + startIndex.toString() + ", remaining=" + remaining.toString() + "B");
