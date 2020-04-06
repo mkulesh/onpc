@@ -62,7 +62,8 @@ enum OperationCommand
     LIST,
     MEMORY,
     F1,
-    F2
+    F2,
+    SORT
 }
 
 /*
@@ -169,7 +170,9 @@ class OperationCommandMsg extends EnumParameterZonedMsg<OperationCommand>
         EnumItem.code(OperationCommand.F1, "F1",
             descrList: Strings.l_cmd_description_f1, icon: Drawables.feed_like),
         EnumItem.code(OperationCommand.F2, "F2",
-            descrList: Strings.l_cmd_description_f2, icon: Drawables.feed_dont_like)
+            descrList: Strings.l_cmd_description_f2, icon: Drawables.feed_dont_like),
+        EnumItem.code(OperationCommand.SORT, "SORT",
+            descrList: Strings.l_cmd_description_sort, icon: Drawables.cmd_sort)
     ]);
 
     OperationCommandMsg.output(int zoneIndex, OperationCommand v) :

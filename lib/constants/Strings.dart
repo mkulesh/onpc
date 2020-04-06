@@ -1532,6 +1532,14 @@ Enjoy!"""];
         /*pl*/ "Negative Feed"];
     static String get cmd_description_f2 => l_cmd_description_f2[_language];
 
+    static const List<String> l_cmd_description_sort = [
+        /*en*/ "Sort",
+        /*ru*/ "Сортировать",
+        /*de*/ "Sortierung",
+        /*fr*/ "Ordre de sélection",
+        /*pl*/ "Sort"];
+    static String get cmd_description_sort => l_cmd_description_sort[_language];
+
     static const List<String> l_cmd_track_menu = [
         /*en*/ "Track menu",
         /*ru*/ "Меню трека",

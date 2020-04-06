@@ -26,6 +26,7 @@ class NetworkService
     String _name;
     int _zone;
     bool _addToQueue;
+    bool _sort;
 
     NetworkService.fromXml(xml.XmlElement e)
     {
@@ -33,9 +34,10 @@ class NetworkService
         _name = ISCPMessage.nonNullString(e.getAttribute("name"));
         _zone = ISCPMessage.nonNullInteger(e.getAttribute("zone"), 10, 1);
         _addToQueue = ISCPMessage.nonNullInteger(e.getAttribute("addqueue"), 10, 0) == 1;
+        _sort = ISCPMessage.nonNullInteger(e.getAttribute("sort"), 10, 0) == 1;
     }
 
-    NetworkService(this._id, this._name, this._zone, this._addToQueue);
+    NetworkService(this._id, this._name, this._zone, this._addToQueue, this._sort);
 
     String get getId
     => _id;
@@ -46,11 +48,15 @@ class NetworkService
     bool get isAddToQueue
     => _addToQueue;
 
+    bool get isSort
+    => _sort;
+
     @override
     String toString()
     {
         String res = _id + ": " + _name
             + ", addToQueue=" + _addToQueue.toString()
+            + ", sort=" + _sort.toString()
             + ", zone=" + _zone.toString()
             + ", zones=[";
         for (int z = 0; z <= 3; z++)

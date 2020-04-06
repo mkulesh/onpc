@@ -206,27 +206,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             )
         );
 
-        final Widget title = Flexible(child: CustomTextLabel.small(_buildTitle()));
-
-        final Widget timerSand = SvgPicture.asset(
-            Drawables.timer_sand,
-            width: MediaListDimens.timerSandSize,
-            height: MediaListDimens.timerSandSize,
-            color: stateManager.waitingForData ? td.disabledColor : td.backgroundColor);
-
-        final Widget headerLine = Padding(
-            padding: MediaListDimens.headerPadding,
-            child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [title, timerSand],
-            )
-        );
-
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                headerLine,
+                _buildHeaderLine(td, state.getNetworkService),
                 CustomDivider(thickness: 1),
                 Expanded(child: mediaList, flex: 1)
             ],
@@ -519,5 +502,59 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             // nothing to do
         }
+    }
+
+    Widget _buildHeaderLine(final ThemeData td, final NetworkService ns)
+    {
+        Widget rightButton;
+        if (state.isOn && stateManager.waitingForData)
+        {
+            // show progress indicator
+            rightButton = SvgPicture.asset(
+                Drawables.timer_sand,
+                width: MediaListDimens.timerSandSize,
+                height: MediaListDimens.timerSandSize,
+                color: td.disabledColor);
+        }
+        else if (state.isOn && ns != null && ns.isSort)
+        {
+            // show sort button
+            final OperationCommandMsg cmd = OperationCommandMsg.output(
+                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.SORT);
+            rightButton = CustomImageButton.small(
+                cmd.getValue.icon,
+                cmd.getValue.description,
+                padding: EdgeInsets.all(MediaListDimens.headerPadding),
+                onPressed: ()
+                => stateManager.sendMessage(cmd));
+        }
+        else
+        {
+            // show invisible placeholder
+            rightButton = SvgPicture.asset(
+                Drawables.timer_sand,
+                width: MediaListDimens.timerSandSize,
+                height: MediaListDimens.timerSandSize,
+                color: td.backgroundColor);
+        }
+
+        final Widget text = Flexible(
+            child: Container(
+                constraints: BoxConstraints(minHeight: ButtonDimens.smallButtonSize + 2.0 * MediaListDimens.headerPadding),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomTextLabel.small(
+                        _buildTitle(),
+                        padding: EdgeInsets.only(left: MediaListDimens.headerPadding))
+                )
+            )
+        );
+
+        return Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [text, rightButton],
+        );
     }
 }

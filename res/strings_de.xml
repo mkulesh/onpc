@@ -273,6 +273,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="cmd_description_memory">Speichern(Favorit hinzufügen)</string>
     <string name="cmd_description_f1">Positiv markieren/demarkieren</string>
     <string name="cmd_description_f2">Negativ markieren</string>
+    <string name="cmd_description_sort">Sortierung</string>
     <string name="cmd_track_menu">Titel Menü</string>
 
     <!-- Media list tab -->

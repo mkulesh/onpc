@@ -47,6 +47,7 @@ class Drawables
     static const String cmd_top = BUTTONS_PATH + "cmd_top.svg";
     static const String cmd_track_menu = BUTTONS_PATH + "cmd_track_menu.svg";
     static const String cmd_up = BUTTONS_PATH + "cmd_up.svg";
+    static const String cmd_sort = BUTTONS_PATH + "cmd_sort.svg";
     static const String drawer_about = BUTTONS_PATH + "drawer_about.svg";
     static const String drawer_app_settings = BUTTONS_PATH + "drawer_app_settings.svg";
     static const String drawer_connect = BUTTONS_PATH + "drawer_connect.svg";
