@@ -84,6 +84,7 @@ class Configuration
         _saveStringParameter(Configuration.TEXT_SIZE, value);
     }
 
+    // The latest opened tab
     static const Pair<String, int> OPENED_TAB = Pair<String, int>("opened_tab", 0);
     int _openedTab;
 
@@ -280,7 +281,7 @@ class Configuration
         }
         if (doLog)
         {
-            Logging.info(this, "    " + par.item1 + ": " + val);
+            Logging.info(this, "  " + par.item1 + ": " + val);
         }
         return val;
     }
@@ -302,7 +303,7 @@ class Configuration
         }
         if (doLog)
         {
-            Logging.info(this, "    " + par.item1 + ": " + val.toString());
+            Logging.info(this, "  " + par.item1 + ": " + val.toString());
         }
         return val;
     }
@@ -321,20 +322,20 @@ class Configuration
         }
         if (doLog)
         {
-            Logging.info(this, "    " + par.item1 + ": " + val.toString());
+            Logging.info(this, "  " + par.item1 + ": " + val.toString());
         }
         return val;
     }
 
-    void _saveStringParameter(final Pair<String, String> par, final String value) async
+    void _saveStringParameter(final Pair<String, String> par, final String value, {String prefix = ""}) async
     {
-        Logging.info(this, "Save parameter: " + par.item1 + ":" + value);
+        Logging.info(this, prefix + "saving " + par.item1 + ": " + value);
         await preferences.setString(par.item1, value);
     }
 
-    void _saveIntegerParameter(final Pair<String, int> par, final int value) async
+    void _saveIntegerParameter(final Pair<String, int> par, final int value, {String prefix = ""}) async
     {
-        Logging.info(this, "Save parameter: " + par.item1 + ":" + value.toString());
+        Logging.info(this, prefix + "saving " + par.item1 + ": " + value.toString());
         await preferences.setInt(par.item1, value);
     }
 
@@ -348,8 +349,13 @@ class Configuration
 
     void setReceiverInformation(ReceiverInformation state)
     {
-        Logging.info(this, "Updating configuration...");
-        preferences.setString(MODEL.item1, state.model);
+        String m = state.model;
+        if (m.isEmpty)
+        {
+            m = MODEL.item2;
+        }
+        Logging.info(this, "Updating configuration for model: " + m);
+        preferences.setString(MODEL.item1, m);
         if (state.networkServices.isNotEmpty)
         {
             String str = "";
@@ -361,8 +367,7 @@ class Configuration
                 }
                 str += p.getId;
             });
-            Logging.info(this, "    Network services: " + str);
-            preferences.setString(NETWORK_SERVICES, str);
+            _saveStringParameter(Pair<String, String>(NETWORK_SERVICES,""), str, prefix: "  ");
         }
         if (state.deviceSelectors.isNotEmpty)
         {
@@ -376,8 +381,7 @@ class Configuration
                 str += d.getId;
                 preferences.setString(DEVICE_SELECTORS + "_" + d.getId, d.getName);
             });
-            Logging.info(this, "    Device selectors: " + str);
-            preferences.setString(DEVICE_SELECTORS, str);
+            _saveStringParameter(Pair<String, String>(DEVICE_SELECTORS,""), str, prefix: "  ");
         }
     }
 

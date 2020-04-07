@@ -298,7 +298,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     }
                     break;
                 case ReceiverInformationMsg.CODE:
-                    if (_stateManager.isConnected)
+                    if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
                     {
                         _configuration.setReceiverInformation(_viewContext.state.receiverInformation);
                     }
