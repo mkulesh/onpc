@@ -211,7 +211,7 @@
     <string name="master_volume_down1">Понизить громкость на 1dB</string>
     <string name="tone_direct">DIRECT</string>
     <string name="master_volume_restrict">Ограничить максимальную громкость</string>
-    <string name="master_volume_max">Миксимум</string>
+    <string name="master_volume_max">Максимум</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Следующий канал</string>
