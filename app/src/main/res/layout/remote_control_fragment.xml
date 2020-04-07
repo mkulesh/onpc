@@ -34,23 +34,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- Menu -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/ClickableLabelStyle"
-                        android:text="@string/cmd_description_quick_menu"
-                        android:tag="OSD:QUICK" />
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        style="@style/BigImageButtonStyle"
-                        android:tag="OSD:QUICK" />
-                </LinearLayout>
-
                 <!-- Settings -->
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -66,6 +49,23 @@
                     <androidx.appcompat.widget.AppCompatImageButton
                         style="@style/BigImageButtonStyle"
                         android:tag="OSD:MENU" />
+                </LinearLayout>
+
+                <!-- Menu -->
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                    <TextView
+                            style="@style/ClickableLabelStyle"
+                            android:text="@string/cmd_description_quick_menu"
+                            android:tag="OSD:QUICK" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                            style="@style/BigImageButtonStyle"
+                            android:tag="OSD:QUICK" />
                 </LinearLayout>
 
                 <!-- Return -->

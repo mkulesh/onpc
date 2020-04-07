@@ -45,12 +45,10 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/activity_bar_height_land"
+                android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
                 app:theme="?attr/themeActivityToolBar"
-                app:popupTheme="?attr/themeActivityPopup"
-                app:titleTextAppearance="@style/ToolbarTitleTextLand"
-                app:subtitleTextAppearance="@style/ToolbarSubTitleTextLand" />
+                app:popupTheme="?attr/themeActivityPopup" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"

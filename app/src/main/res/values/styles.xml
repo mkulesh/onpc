@@ -43,22 +43,6 @@
 
     <!-- Custom styles -->
 
-    <style name="ToolbarTitleTextPort" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="ToolbarTitleTextLand" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="ToolbarSubTitleTextPort" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="ToolbarSubTitleTextLand" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
-        <item name="android:textSize">12sp</item>
-    </style>
-
     <style name="NavigationViewHeaderText" parent="@android:style/TextAppearance">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">?attr/colorAccent</item>
