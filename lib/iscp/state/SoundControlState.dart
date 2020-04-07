@@ -11,7 +11,9 @@
  * Public License along with this program.
  */
 
-import 'package:sprintf/sprintf.dart';
+import "dart:math";
+
+import "package:sprintf/sprintf.dart";
 
 import "../../utils/Logging.dart";
 import "../messages/AudioMutingMsg.dart";
@@ -199,5 +201,13 @@ class SoundControlState
             default:
                 return SoundControlType.NONE;
         }
+    }
+
+    int getVolumeMax(final Zone zoneInfo)
+    {
+        final int scale = (zoneInfo != null && zoneInfo.getVolumeStep == 0) ? 2 : 1;
+        return (zoneInfo != null && zoneInfo.getVolMax > 0) ?
+            scale * zoneInfo.getVolMax :
+            max(volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
     }
 }

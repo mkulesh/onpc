@@ -84,6 +84,19 @@ class Configuration
         _saveStringParameter(Configuration.TEXT_SIZE, value);
     }
 
+    // Master volume maximum
+    static const Pair<String, int> MASTER_VOLUME_MAX = Pair<String, int>("master_volume_max", 9999);
+    int _masterVolumeMax;
+
+    int get masterVolumeMax
+    => _masterVolumeMax;
+
+    set masterVolumeMax(int value)
+    {
+        _masterVolumeMax = value;
+        _saveIntegerParameter(getModelDependentInt(MASTER_VOLUME_MAX), value);
+    }
+
     // The latest opened tab
     static const Pair<String, int> OPENED_TAB = Pair<String, int>("opened_tab", 0);
     int _openedTab;
@@ -383,6 +396,7 @@ class Configuration
             });
             _saveStringParameter(Pair<String, String>(DEVICE_SELECTORS,""), str, prefix: "  ");
         }
+        _masterVolumeMax = getInt(getModelDependentInt(MASTER_VOLUME_MAX), doLog: true);
     }
 
     List<String> getTokens(final String par)
@@ -399,4 +413,7 @@ class Configuration
 
     String getModelDependentParameter(final String par)
     => par + "_" + getString(MODEL);
+
+    Pair<String, int> getModelDependentInt(final Pair<String, int> par)
+    => Pair<String, int>(getModelDependentParameter(par.item1), par.item2);
 }

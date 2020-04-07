@@ -123,5 +123,6 @@ class Drawables
     static const String volume_amp_slider = BUTTONS_PATH + "volume_amp_slider.svg";
     static const String volume_amp_up = BUTTONS_PATH + "volume_amp_up.svg";
     static const String volume_audio_control = BUTTONS_PATH + "volume_audio_control.svg";
+    static const String volume_max_limit = BUTTONS_PATH + "volume_max_limit.svg";
     static const String wrap_around = BUTTONS_PATH + "wrap_around.svg";
 }

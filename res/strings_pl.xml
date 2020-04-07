@@ -217,6 +217,8 @@ Enjoy!""</string>
     <string name="master_volume_up1">Głośniej o 1dB</string>
     <string name="master_volume_down1">Ciszej o 1dB</string>
     <string name="tone_direct">Tone Direct</string>
+    <string name="master_volume_restrict">Restrict volume level</string>
+    <string name="master_volume_max">Maximum</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>

@@ -524,7 +524,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             rightButton = CustomImageButton.small(
                 cmd.getValue.icon,
                 cmd.getValue.description,
-                padding: EdgeInsets.all(MediaListDimens.headerPadding),
                 onPressed: ()
                 => stateManager.sendMessage(cmd));
         }

@@ -18,7 +18,9 @@ import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 
 import "../constants/Dimens.dart";
+import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/AudioControlDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/CenterLevelCommandMsg.dart";
 import "../iscp/messages/DirectCommandMsg.dart";
@@ -28,13 +30,16 @@ import "../iscp/messages/SubwooferLevelCommandMsg.dart";
 import "../iscp/messages/ToneCommandMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomProgressBar.dart";
 import "../widgets/CustomTextLabel.dart";
+import "MasterVolumeMaxView.dart";
 import "UpdatableView.dart";
 
 class AudioControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
+        MasterVolumeMaxView.VOLUME_MAX_EVENT,
         StateManager.WAITING_FOR_DATA_EVENT,
         MasterVolumeMsg.CODE,
         ToneCommandMsg.CODE,
@@ -58,9 +63,14 @@ class AudioControlView extends UpdatableView
 
         // Master volume
         {
-            final int scale = (zoneInfo != null && zoneInfo.getVolumeStep == 0) ? 2 : 1;
-            final int maxVolume = (zoneInfo != null && zoneInfo.getVolMax > 0) ?
-                scale * zoneInfo.getVolMax : max(soundControl.volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
+            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), configuration.masterVolumeMax);
+
+            final Widget maxVolumeBtn = CustomImageButton.small(
+                Drawables.volume_max_limit,
+                Strings.master_volume_restrict,
+                onPressed: ()
+                => _showMasterVolumeMaxDialog(context)
+            );
 
             controls.add(CustomProgressBar(
                 caption: Strings.master_volume,
@@ -71,7 +81,8 @@ class AudioControlView extends UpdatableView
                 onCaption: (v)
                 => SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo),
                 onChanged: (v)
-                => stateManager.sendMessage(MasterVolumeMsg.value(zone, v))
+                => stateManager.sendMessage(MasterVolumeMsg.value(zone, v)),
+                extendedCmd: maxVolumeBtn
             ));
         }
 
@@ -209,5 +220,15 @@ class AudioControlView extends UpdatableView
         {
             controls.add(trebleControl);
         }
+    }
+
+    void _showMasterVolumeMaxDialog(final BuildContext context)
+    {
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => AudioControlDialog(viewContext, AudioControlType.MASTER_VOLUME_MAX)
+        );
     }
 }

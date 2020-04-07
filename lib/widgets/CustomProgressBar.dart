@@ -16,7 +16,8 @@ import 'dart:math';
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
-import 'CustomTextLabel.dart';
+import "../constants/Dimens.dart";
+import "CustomTextLabel.dart";
 
 typedef CaptionCallback = String Function(double);
 typedef NewValueCallback = void Function(int);
@@ -28,8 +29,9 @@ class CustomProgressBar extends StatefulWidget
     final int maxValueNum, currValue;
     final CaptionCallback onCaption;
     final NewValueCallback onChanged;
+    final Widget extendedCmd;
 
-    CustomProgressBar({this.caption, this.minValueStr, this.maxValueStr, this.maxValueNum, this.currValue, this.onCaption, this.onChanged});
+    CustomProgressBar({this.caption, this.minValueStr, this.maxValueStr, this.maxValueNum, this.currValue, this.onCaption, this.onChanged, this.extendedCmd});
 
     @override _CustomProgressBarState createState()
     => _CustomProgressBarState();
@@ -77,7 +79,22 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             {
                 caption += ": " + widget.onCaption(currValue);
             }
-            controls.add(CustomTextLabel.small(caption));
+            if (widget.extendedCmd != null)
+            {
+                controls.add(Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [CustomTextLabel.small(caption), widget.extendedCmd],
+                ));
+            }
+            else
+            {
+                controls.add(Container(
+                    constraints: BoxConstraints(maxHeight: ButtonDimens.smallButtonSize),
+                    child: Align(alignment: Alignment.centerLeft, child: CustomTextLabel.small(caption))
+                ));
+            }
         }
 
         final double minV = 0.0;
@@ -98,11 +115,16 @@ class _CustomProgressBarState extends State<CustomProgressBar>
                 onChangeEnd: widget.onChanged != null ? _onChangeEnd : null)
         );
 
+        final Widget sliderBox = Container(
+            constraints: BoxConstraints(maxHeight: ButtonDimens.normalButtonSize),
+            child: Align(alignment: Alignment.center, child: slider)
+        );
+
         controls.add(Row(
             mainAxisSize: MainAxisSize.max,
             children: [
                 CustomTextLabel.small(widget.minValueStr, textAlign: TextAlign.left),
-                Expanded(child: slider),
+                Expanded(child: sliderBox),
                 CustomTextLabel.small(widget.maxValueStr, textAlign: TextAlign.right)
             ]
         ));
@@ -114,7 +136,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             children: controls);
     }
 
-    _onChangeStart (double v)
+    _onChangeStart(double v)
     {
         isSeeking = true;
         setState(()
@@ -124,7 +146,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         });
     }
 
-    _onChanged (double v)
+    _onChanged(double v)
     {
         isSeeking = true;
         setState(()
@@ -133,7 +155,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         });
     }
 
-    _onChangeEnd (double v)
+    _onChangeEnd(double v)
     {
         isSeeking = false;
         setState(()

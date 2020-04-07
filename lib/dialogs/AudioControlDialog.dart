@@ -18,14 +18,22 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../views/AudioControlView.dart";
+import "../views/MasterVolumeMaxView.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomDialogTitle.dart";
+
+enum AudioControlType
+{
+    TONE_CONTROL,
+    MASTER_VOLUME_MAX
+}
 
 class AudioControlDialog extends StatefulWidget
 {
     final ViewContext _viewContext;
+    final AudioControlType _audioControlType;
 
-    AudioControlDialog(this._viewContext);
+    AudioControlDialog(this._viewContext, this._audioControlType);
 
     @override _AudioControlDialogState createState()
     => _AudioControlDialogState();
@@ -40,13 +48,22 @@ class _AudioControlDialogState extends State<AudioControlDialog>
     Widget build(BuildContext context)
     {
         final ThemeData td = Theme.of(context);
+
+        final Widget dialogTitle = widget._audioControlType == AudioControlType.TONE_CONTROL ?
+        CustomDialogTitle(Strings.audio_control, Drawables.volume_amp_slider) :
+        CustomDialogTitle(Strings.master_volume_restrict, Drawables.volume_max_limit);
+
+        final Widget dialogContent = widget._audioControlType == AudioControlType.TONE_CONTROL ?
+        UpdatableWidget(child: AudioControlView(viewContext)) :
+        UpdatableWidget(child: MasterVolumeMaxView(viewContext));
+
         return AlertDialog(
-            title: CustomDialogTitle(Strings.audio_control, Drawables.volume_audio_control),
+            title: dialogTitle,
             contentPadding: DialogDimens.contentPadding,
-            content: UpdatableWidget(child: AudioControlView(viewContext)),
+            content: dialogContent,
             actions: <Widget>[
                 FlatButton(
-                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )

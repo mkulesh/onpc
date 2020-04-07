@@ -1124,6 +1124,22 @@ Enjoy!"""];
         /*pl*/ "Tone Direct"];
     static String get tone_direct => l_tone_direct[_language];
 
+    static const List<String> l_master_volume_restrict = [
+        /*en*/ "Restrict volume level",
+        /*ru*/ "Ограничить максимальную громкость",
+        /*de*/ "Lautstärke einschränken",
+        /*fr*/ "Restrict volume level",
+        /*pl*/ "Restrict volume level"];
+    static String get master_volume_restrict => l_master_volume_restrict[_language];
+
+    static const List<String> l_master_volume_max = [
+        /*en*/ "Maximum",
+        /*ru*/ "Максимум",
+        /*de*/ "Maximum",
+        /*fr*/ "Maximum",
+        /*pl*/ "Maximum"];
+    static String get master_volume_max => l_master_volume_max[_language];
+
     static const List<String> l_preset_command_up = [
         /*en*/ "Sets preset wrap-around up",
         /*ru*/ "Следующий канал",

@@ -102,7 +102,7 @@ class DeviceVolumeView extends UpdatableView
             context: context,
             barrierDismissible: true,
             builder: (BuildContext c)
-            => AudioControlDialog(viewContext)
+            => AudioControlDialog(viewContext, AudioControlType.TONE_CONTROL)
         );
     }
 }
