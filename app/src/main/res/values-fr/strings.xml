@@ -209,7 +209,8 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="master_volume_up1">Augmentation volume d\'1dB</string>
     <string name="master_volume_down1">Diminution volume d\'1dB</string>
     <string name="tone_direct">DIRECT</string>
-    <string name="volume_max_limit">Restrict volume level</string>
+    <string name="master_volume_restrict">Restrict volume level</string>
+    <string name="master_volume_max">Maximum</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Préselection haut</string>

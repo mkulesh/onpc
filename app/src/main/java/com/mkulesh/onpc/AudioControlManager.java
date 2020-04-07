@@ -16,6 +16,7 @@ package com.mkulesh.onpc;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -209,7 +210,7 @@ class AudioControlManager
         }
     }
 
-    private void updateProgressLabel(@NonNull final LinearLayout group, @StringRes final int labelId, final String value)
+    private void updateProgressLabel(@NonNull final ViewGroup group, @StringRes final int labelId, final String value)
     {
         final TextView labelField = group.findViewWithTag("tone_label");
         try
@@ -232,11 +233,11 @@ class AudioControlManager
         {
             maxVolumeBtn.setVisibility(View.VISIBLE);
             maxVolumeBtn.setImageResource(R.drawable.volume_max_limit);
-            maxVolumeBtn.setContentDescription(activity.getString(R.string.volume_max_limit));
+            maxVolumeBtn.setContentDescription(activity.getString(R.string.master_volume_restrict));
             maxVolumeBtn.setLongClickable(true);
             maxVolumeBtn.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));
             maxVolumeBtn.setClickable(true);
-            maxVolumeBtn.setOnClickListener(v -> showVolumeMaxLimitDialog(state));
+            maxVolumeBtn.setOnClickListener(v -> showMasterVolumeMaxDialog(state));
             Utils.setButtonEnabled(activity, maxVolumeBtn, true);
         }
 
@@ -280,7 +281,7 @@ class AudioControlManager
     {
         final AppCompatSeekBar progressBar = group.findViewWithTag("tone_progress_bar");
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-        final int maxVolume = Math.min(getVolumeMax(state, zone), activity.getConfiguration().getVolumeMaxLimit());
+        final int maxVolume = Math.min(getVolumeMax(state, zone), activity.getConfiguration().getMasterVolumeMax());
 
         updateProgressLabel(group, R.string.master_volume, State.getVolumeLevelStr(state.volumeLevel, zone));
 
@@ -294,10 +295,10 @@ class AudioControlManager
         progressBar.setProgress(Math.max(0, state.volumeLevel));
     }
 
-    private void showVolumeMaxLimitDialog(@NonNull final State state)
+    private void showMasterVolumeMaxDialog(@NonNull final State state)
     {
         final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.dialog_volume_max_limit, frameView);
+        activity.getLayoutInflater().inflate(R.layout.dialog_master_volume_max, frameView);
 
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
         final int maxVolume = getVolumeMax(state, zone);
@@ -316,6 +317,8 @@ class AudioControlManager
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
                 progressChanged = progress;
+                updateProgressLabel(frameView, R.string.master_volume_max,
+                        State.getVolumeLevelStr(progressChanged, state.getActiveZoneInfo()));
             }
 
             public void onStartTrackingTouch(SeekBar seekBar)
@@ -325,14 +328,14 @@ class AudioControlManager
 
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                activity.getConfiguration().setVolumeMaxLimit(progressChanged);
+                activity.getConfiguration().setMasterVolumeMax(progressChanged);
             }
         });
         progressBar.setMax(maxVolume);
-        progressBar.setProgress(Math.min(maxVolume, activity.getConfiguration().getVolumeMaxLimit()));
+        progressBar.setProgress(Math.min(maxVolume, activity.getConfiguration().getMasterVolumeMax()));
 
-        final AlertDialog volumeMaxLimitDialog = createDialog(frameView, R.drawable.volume_max_limit, R.string.volume_max_limit);
-        volumeMaxLimitDialog.setOnDismissListener((d) ->
+        final AlertDialog masterVolumeMaxDialog = createDialog(frameView, R.drawable.volume_max_limit, R.string.master_volume_restrict);
+        masterVolumeMaxDialog.setOnDismissListener((d) ->
         {
             if (volumeGroup != null)
             {
@@ -340,8 +343,8 @@ class AudioControlManager
             }
         });
 
-        volumeMaxLimitDialog.show();
-        Utils.fixIconColor(volumeMaxLimitDialog, android.R.attr.textColorSecondary);
+        masterVolumeMaxDialog.show();
+        Utils.fixIconColor(masterVolumeMaxDialog, android.R.attr.textColorSecondary);
     }
 
     private void prepareToneControl(@NonNull final State state,
