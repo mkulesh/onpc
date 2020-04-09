@@ -54,12 +54,12 @@ class TabRemoteControlView extends UpdatableView
         topRows.add(TableRow(children: [
             SizedBox.shrink(),
             InkWell(
-                child: CustomTextLabel.small(Strings.cmd_description_quick_menu, textAlign: TextAlign.center),
-                onTap: () => stateManager.sendMessage(_setupQuickCmd)
-            ),
-            InkWell(
                 child: CustomTextLabel.small(Strings.cmd_description_setup, textAlign: TextAlign.center),
                 onTap: () => stateManager.sendMessage(_setupSetupCmd)
+            ),
+            InkWell(
+                child: CustomTextLabel.small(Strings.cmd_description_quick_menu, textAlign: TextAlign.center),
+                onTap: () => stateManager.sendMessage(_setupQuickCmd)
             ),
             InkWell(
                 child: CustomTextLabel.small(Strings.cmd_description_return, textAlign: TextAlign.center),
