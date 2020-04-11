@@ -52,6 +52,7 @@ class AudioControlManager
     public interface MasterVolumeInterface
     {
         void onMasterVolumeMaxUpdate(@NonNull final State state);
+        void onMasterVolumeChange(int progressChanged);
     }
 
     private MainActivity activity = null;
@@ -527,6 +528,10 @@ class AudioControlManager
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
                 {
                     progressChanged = progress;
+                    if (masterVolumeInterface != null)
+                    {
+                        masterVolumeInterface.onMasterVolumeChange(progressChanged);
+                    }
                 }
 
                 public void onStartTrackingTouch(SeekBar seekBar)

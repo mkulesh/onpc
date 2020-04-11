@@ -545,7 +545,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
     {
         AppCompatImageButton btn = rootView.findViewById(R.id.btn_input_selector);
         btn.setImageResource(imageId);
-        btn.setVisibility(visible? View.VISIBLE : View.GONE);
+        btn.setVisibility(visible ? View.VISIBLE : View.GONE);
         setButtonEnabled(btn, false);
     }
 
@@ -768,11 +768,34 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
     @Override
     public void onMasterVolumeMaxUpdate(@NonNull final State state)
     {
-        for (View b : deviceSoundButtons)
+        // This callback is called if mater volume maximum is changed.
+        // We shall re-scale master volume slider if it is visible
+        for (View view : deviceSoundButtons)
         {
-            if (audioControlManager.isVolumeLevel(b))
+            if (view instanceof AppCompatSeekBar && audioControlManager.isVolumeLevel(view))
             {
-                updateVolumeLevel(b, state);
+                updateVolumeLevel(view, state);
+            }
+        }
+    }
+
+    @Override
+    public void onMasterVolumeChange(int progressChanged)
+    {
+        // This callback is called when master volume slider is changed.
+        // We shall update the text of the "Audio control" button
+        if (!activity.isConnected())
+        {
+            return;
+        }
+        final State state = activity.getStateManager().getState();
+        for (View view : deviceSoundButtons)
+        {
+            if (view instanceof AppCompatButton && audioControlManager.isVolumeLevel(view))
+            {
+                final AppCompatButton b = (AppCompatButton) view;
+                final String vol = State.getVolumeLevelStr(progressChanged, state.getActiveZoneInfo());
+                b.setText(vol);
             }
         }
     }
