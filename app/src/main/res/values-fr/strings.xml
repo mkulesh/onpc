@@ -102,6 +102,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
         <item>Aucun</item>
         <item>Amplificateur Externe (RI)</item>
         <item>Dispositif</item>
+        <item>Dispositif (Slider)</item>
         <item>Automatique</item>
     </string-array>
 

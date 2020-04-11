@@ -61,7 +61,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
-public class MonitorFragment extends BaseFragment
+public class MonitorFragment extends BaseFragment implements AudioControlManager.MasterVolumeInterface
 {
     private HorizontalScrollView listeningModeLayout;
     private LinearLayout soundControlLayout;
@@ -130,8 +130,8 @@ public class MonitorFragment extends BaseFragment
         prepareFmDabButtons();
 
         // Audio control buttons
-        audioControlManager.setActivity(activity);
-        prepareDeviceSoundButtons();
+        audioControlManager.setActivity(activity, this);
+        clearSoundVolumeButtons();
 
         cover = rootView.findViewById(R.id.tv_cover);
         cover.setContentDescription(activity.getResources().getString(R.string.tv_display_mode));
@@ -244,6 +244,7 @@ public class MonitorFragment extends BaseFragment
         amplifierButtons.clear();
         deviceSoundButtons.clear();
         soundControlLayout.removeAllViews();
+        soundControlLayout.setVisibility(View.GONE);
     }
 
     private void prepareAmplifierButtons()
@@ -269,7 +270,7 @@ public class MonitorFragment extends BaseFragment
         }
     }
 
-    private void prepareDeviceSoundButtons()
+    private void prepareDeviceSoundButtons(final State.SoundControlType soundControl)
     {
         clearSoundVolumeButtons();
         soundControlLayout.setVisibility(View.VISIBLE);
@@ -277,37 +278,19 @@ public class MonitorFragment extends BaseFragment
         // Here, we create zone-dependent buttons without command message.
         // The message for active zone will be assigned in updateActiveView
 
-        // audio muting
+        if (soundControl == State.SoundControlType.DEVICE_SLIDER &&
+                soundControlLayout.getTag() != null && soundControlLayout.getTag().equals("portrait"))
         {
-            final AudioMutingMsg.Status status = AudioMutingMsg.Status.TOGGLE;
-            deviceSoundButtons.add(createButton(
-                    R.drawable.volume_amp_muting, status.getDescriptionId(), null, status));
+            audioControlManager.createSliderSoundControl(this, soundControlLayout);
         }
-        // volume down
+        else
         {
-            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.DOWN;
-            deviceSoundButtons.add(createButton(
-                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
+            audioControlManager.createButtonsSoundControl(this, soundControlLayout);
         }
-        // master volume label
+
+        for (int i = 0; i < soundControlLayout.getChildCount(); i++)
         {
-            final AppCompatButton b = createButton(R.string.dashed_string, null, AudioControlManager.VOLUME_LEVEL, null);
-            ((LinearLayout.LayoutParams) b.getLayoutParams()).setMargins(0, 0, 0, 0);
-            b.setPadding(0, 0, 0, 0);
-            b.setVisibility(View.GONE);
-            b.setContentDescription(activity.getResources().getString(R.string.audio_control));
-            prepareButtonListeners(b, null, audioControlManager::showAudioControlDialog);
-            deviceSoundButtons.add(b);
-        }
-        // volume up
-        {
-            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.UP;
-            deviceSoundButtons.add(createButton(
-                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
-        }
-        for (View b : deviceSoundButtons)
-        {
-            soundControlLayout.addView(b);
+            deviceSoundButtons.add(soundControlLayout.getChildAt(i));
         }
 
         // fast selector for listening mode
@@ -369,7 +352,7 @@ public class MonitorFragment extends BaseFragment
         {
             if (audioControlManager.isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton) b, state);
+                updateVolumeLevel(b, state);
             }
             else
             {
@@ -411,11 +394,12 @@ public class MonitorFragment extends BaseFragment
             case RI_AMP:
                 prepareAmplifierButtons();
                 break;
-            case DEVICE:
-                prepareDeviceSoundButtons();
+            case DEVICE_BUTTONS:
+            case DEVICE_SLIDER:
+                prepareDeviceSoundButtons(soundControl);
                 break;
             default:
-                // Nothing to do
+                clearSoundVolumeButtons();
                 break;
         }
 
@@ -510,7 +494,7 @@ public class MonitorFragment extends BaseFragment
             }
             else if (audioControlManager.isVolumeLevel(b))
             {
-                updateVolumeLevel((AppCompatButton) b, state);
+                updateVolumeLevel(b, state);
             }
         }
 
@@ -747,25 +731,51 @@ public class MonitorFragment extends BaseFragment
     /*
      * Volume control
      */
-    private void updateVolumeLevel(AppCompatButton b, @Nullable final State state)
+    private void updateVolumeLevel(View view, @Nullable final State state)
     {
-        if (state != null && state.isOn() && state.volumeLevel != MasterVolumeMsg.NO_LEVEL)
+        final boolean volumeValid = state != null && state.isOn() && state.volumeLevel != MasterVolumeMsg.NO_LEVEL;
+        if (view instanceof AppCompatButton)
         {
-            b.setVisibility(View.VISIBLE);
-            b.setText(State.getVolumeLevelStr(state.volumeLevel, state.getActiveZoneInfo()));
-            setButtonEnabled(b, true);
+            final AppCompatButton b = (AppCompatButton) view;
             final Drawable icon = Utils.getDrawable(activity, R.drawable.volume_amp_slider);
-            Utils.setDrawableColorAttr(activity, icon, R.attr.colorButtonEnabled);
+            b.setText(volumeValid ?
+                    State.getVolumeLevelStr(state.volumeLevel, state.getActiveZoneInfo()) : "");
+            setButtonEnabled(b, volumeValid);
+            Utils.setDrawableColorAttr(activity, icon, volumeValid ?
+                    R.attr.colorButtonEnabled : R.attr.colorButtonDisabled);
             b.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         }
-        else
+        else if (view instanceof AppCompatSeekBar)
         {
-            b.setVisibility(View.GONE);
-            setButtonEnabled(b, false);
-            b.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            final AppCompatSeekBar b = (AppCompatSeekBar) view;
+            if (volumeValid)
+            {
+                final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+                final int maxVolume = Math.min(audioControlManager.getVolumeMax(state, zone), activity.getConfiguration().getMasterVolumeMax());
+                b.setMax(maxVolume);
+                b.setProgress(Math.max(0, state.volumeLevel));
+
+            }
+            else
+            {
+                b.setMax(10);
+                b.setProgress(0);
+            }
+            b.setEnabled(volumeValid);
         }
     }
 
+    @Override
+    public void onMasterVolumeMaxUpdate(@NonNull final State state)
+    {
+        for (View b : deviceSoundButtons)
+        {
+            if (audioControlManager.isVolumeLevel(b))
+            {
+                updateVolumeLevel(b, state);
+            }
+        }
+    }
 
     /*
      * Timeseek control

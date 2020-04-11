@@ -232,6 +232,7 @@
 
         <LinearLayout
             android:id="@+id/sound_control_layout"
+            android:tag="landscape"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"

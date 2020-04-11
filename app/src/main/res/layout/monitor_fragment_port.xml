@@ -41,7 +41,8 @@
 
     <LinearLayout
         android:id="@+id/sound_control_layout"
-        android:layout_width="wrap_content"
+        android:tag="portrait"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="gone"

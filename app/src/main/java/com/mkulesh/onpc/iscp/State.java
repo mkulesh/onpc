@@ -128,7 +128,8 @@ public class State
     // Sound control
     public enum SoundControlType
     {
-        DEVICE,
+        DEVICE_BUTTONS,
+        DEVICE_SLIDER,
         RI_AMP,
         NONE
     }
@@ -1348,9 +1349,11 @@ public class State
         switch (config)
         {
             case "auto":
-                return (zone != null && zone.getVolMax() == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE;
+                return (zone != null && zone.getVolMax() == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE_SLIDER;
             case "device":
-                return SoundControlType.DEVICE;
+                return SoundControlType.DEVICE_BUTTONS;
+            case "device-slider":
+                return SoundControlType.DEVICE_SLIDER;
             case "external-amplifier":
                 return SoundControlType.RI_AMP;
             default:

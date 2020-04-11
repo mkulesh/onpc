@@ -104,6 +104,7 @@
         <item>None</item>
         <item>External amplifier (RI)</item>
         <item>Device</item>
+        <item>Device (Slider)</item>
         <item>Automatic</item>
     </string-array>
 
@@ -112,6 +113,7 @@
         <item>none</item>
         <item>external-amplifier</item>
         <item>device</item>
+        <item>device-slider</item>
         <item>auto</item>
     </string-array>
 

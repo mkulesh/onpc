@@ -659,7 +659,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         switch (soundControl)
         {
-            case DEVICE:
+            case DEVICE_BUTTONS:
                 sendMessage(new MasterVolumeMsg(getState().getActiveZone(), isUp ?
                         MasterVolumeMsg.Command.UP :
                         MasterVolumeMsg.Command.DOWN));
@@ -669,7 +669,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                         AmpOperationCommandMsg.Command.MVLUP.getCode() :
                         AmpOperationCommandMsg.Command.MVLDOWN.getCode()));
                 break;
-            case NONE:
+            default:
                 // Nothing to do
                 break;
         }

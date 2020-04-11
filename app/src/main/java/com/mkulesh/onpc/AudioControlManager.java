@@ -15,6 +15,7 @@ package com.mkulesh.onpc;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -24,6 +25,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.State;
+import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
@@ -38,14 +40,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
 class AudioControlManager
 {
-    final static String VOLUME_LEVEL = "volume_level";
+    final static private String VOLUME_LEVEL = "volume_level";
+
+    public interface MasterVolumeInterface
+    {
+        void onMasterVolumeMaxUpdate(@NonNull final State state);
+    }
 
     private MainActivity activity = null;
+    private MasterVolumeInterface masterVolumeInterface = null;
     private AlertDialog audioControlDialog = null;
     private LinearLayout volumeGroup = null;
     private LinearLayout toneBassGroup = null;
@@ -54,9 +64,10 @@ class AudioControlManager
     private LinearLayout subwooferLevelGroup = null;
     private LinearLayout centerLevelGroup = null;
 
-    void setActivity(MainActivity activity)
+    void setActivity(MainActivity activity, MasterVolumeInterface masterVolumeInterface)
     {
         this.activity = activity;
+        this.masterVolumeInterface = masterVolumeInterface;
     }
 
     boolean isAudioControlEnabled()
@@ -269,7 +280,7 @@ class AudioControlManager
         });
     }
 
-    private int getVolumeMax(@NonNull final State state, @Nullable final ReceiverInformationMsg.Zone zone)
+    int getVolumeMax(@NonNull final State state, @Nullable final ReceiverInformationMsg.Zone zone)
     {
         final int scale = (zone != null && zone.getVolumeStep() == 0) ? 2 : 1;
         return (zone != null && zone.getVolMax() > 0) ?
@@ -340,6 +351,10 @@ class AudioControlManager
             if (volumeGroup != null)
             {
                 updateVolumeGroup(state, volumeGroup);
+            }
+            if (masterVolumeInterface != null)
+            {
+                masterVolumeInterface.onMasterVolumeMaxUpdate(state);
             }
         });
 
@@ -449,5 +464,93 @@ class AudioControlManager
         final CheckBox checkBox = group.findViewById(R.id.tone_direct_checkbox);
         checkBox.setChecked(isDirectMode(state));
         checkBox.setEnabled(isDirectCmdAvailable(state));
+    }
+
+    void createButtonsSoundControl(
+            @NonNull final BaseFragment fragment,
+            @NonNull final LinearLayout layout)
+    {
+        // audio muting
+        {
+            final AudioMutingMsg.Status status = AudioMutingMsg.Status.TOGGLE;
+            layout.addView(fragment.createButton(
+                    R.drawable.volume_amp_muting, status.getDescriptionId(), null, status));
+        }
+        // volume down
+        {
+            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.DOWN;
+            layout.addView(fragment.createButton(
+                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
+        }
+        // master volume label
+        {
+            final AppCompatButton b = fragment.createButton(
+                    R.string.dashed_string, null, VOLUME_LEVEL, null);
+            ((LinearLayout.LayoutParams) b.getLayoutParams()).setMargins(0, 0, 0, 0);
+            b.setContentDescription(activity.getResources().getString(R.string.audio_control));
+            fragment.prepareButtonListeners(b, null, this::showAudioControlDialog);
+            layout.addView(b);
+        }
+        // volume up
+        {
+            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.UP;
+            layout.addView(fragment.createButton(
+                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
+        }
+    }
+
+    void createSliderSoundControl(
+            @NonNull final BaseFragment fragment,
+            @NonNull final LinearLayout layout)
+    {
+        // master volume label
+        {
+            final AppCompatButton b = fragment.createButton(
+                    R.string.dashed_string, null, VOLUME_LEVEL, null);
+            b.setContentDescription(activity.getResources().getString(R.string.audio_control));
+            fragment.prepareButtonListeners(b, null, this::showAudioControlDialog);
+            layout.addView(b);
+        }
+        // slider
+        {
+            ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.SegBarStyle);
+            final AppCompatSeekBar b = new AppCompatSeekBar(wrappedContext, null, 0);
+            final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.weight = 1;
+            lp.gravity= Gravity.CENTER;
+            b.setLayoutParams(lp);
+            b.setTag(VOLUME_LEVEL);
+            b.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+            {
+                int progressChanged = 0;
+
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+                {
+                    progressChanged = progress;
+                }
+
+                public void onStartTrackingTouch(SeekBar seekBar)
+                {
+                    // empty
+                }
+
+                public void onStopTrackingTouch(SeekBar seekBar)
+                {
+                    if (isAudioControlEnabled())
+                    {
+                        activity.getStateManager().sendMessage(
+                                new MasterVolumeMsg(activity.getStateManager().getState().getActiveZone(), progressChanged));
+                    }
+                }
+            });
+            layout.addView(b);
+        }
+        // audio muting
+        {
+            final AudioMutingMsg.Status status = AudioMutingMsg.Status.TOGGLE;
+            final AppCompatImageButton b = fragment.createButton(
+                    R.drawable.volume_amp_muting, status.getDescriptionId(), null, status);
+            layout.addView(b);
+        }
     }
 }
