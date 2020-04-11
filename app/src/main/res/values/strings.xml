@@ -338,6 +338,7 @@
     <string name="medialist_processing">Processing…</string>
     <string name="medialist_playback_mode">Playback mode</string>
     <string name="medialist_no_items">No items</string>
+    <string name="medialist_filter">Filter items</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>

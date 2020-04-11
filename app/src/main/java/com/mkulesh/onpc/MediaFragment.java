@@ -56,6 +56,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 {
     private TextView titleBar;
     private ListView listView;
+    private final MediaFilter mediaFilter = new MediaFilter();
     private MediaListAdapter listViewAdapter;
     private LinearLayout selectorPaletteLayout;
     private XmlListItemMsg selectedItem = null;
@@ -81,6 +82,15 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemClickListener(this);
 
+        // media filter
+        mediaFilter.init(activity, rootView, () ->
+        {
+            if (activity.isConnected())
+            {
+                updateListView(activity.getStateManager().getState());
+            }
+        });
+
         registerForContextMenu(listView);
 
         updateContent();
@@ -90,7 +100,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     public void onResume()
     {
-        super.onResume();
         if (activity != null && activity.isConnected())
         {
             final boolean keepPlaybackMode = activity.getConfiguration().keepPlaybackMode();
@@ -101,6 +110,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 activity.getStateManager().sendMessage(StateManager.LIST_MSG);
             }
         }
+        mediaFilter.setVisibility(false, true);
+        super.onResume();
     }
 
     @Override
@@ -223,6 +234,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
+        mediaFilter.disable();
         moveFrom = -1;
         if (state != null)
         {
@@ -232,7 +244,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             selectorPaletteLayout.removeAllViews();
         }
-        titleBar.setVisibility(View.GONE);
+        setTitleLayout(false);
+        titleBar.setTag(null);
         titleBar.setText(R.string.dashed_string);
         listView.clearChoices();
         listView.invalidate();
@@ -246,6 +259,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         if (eventChanges.contains(State.ChangeType.MEDIA_ITEMS) || eventChanges.contains(State.ChangeType.RECEIVER_INFO))
         {
             Logging.info(this, "Updating media fragment");
+            mediaFilter.disable();
             moveFrom = -1;
             filteredItems = state.numberOfItems;
             updateSelectorButtons(state);
@@ -343,8 +357,16 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         int playing = -1;
         if (!mediaItems.isEmpty())
         {
+            if (mediaItems.size() > 1)
+            {
+                mediaFilter.enable();
+            }
             for (XmlListItemMsg i : mediaItems)
             {
+                if (i.getTitle() != null && mediaFilter.ignore(i.getTitle()))
+                {
+                    continue;
+                }
                 newItems.add(i);
                 if (i.getIcon() == XmlListItemMsg.Icon.PLAY)
                 {
@@ -397,6 +419,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (selectedItem != null)
             {
                 moveFrom = -1;
+                mediaFilter.setVisibility(false, true);
                 // #6: Unable to play music from NAS: allow to select not selectable items as well
                 updateTitle(activity.getStateManager().getState(), true);
                 activity.getStateManager().sendMessage(selectedItem);
@@ -445,7 +468,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             title.append(state.titleBar).append("/").append(
                     activity.getResources().getString(R.string.medialist_no_items));
         }
-        titleBar.setVisibility(View.VISIBLE);
+        setTitleLayout(true);
+        titleBar.setTag("VISIBLE");
         titleBar.setText(title.toString());
         setProgressIndicator(state, state.inputType.isMediaList() && processing);
     }
@@ -462,18 +486,34 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             return false;
         }
         moveFrom = -1;
+        mediaFilter.setVisibility(false, true);
         updateTitle(stateManager.getState(), true);
         stateManager.sendMessage(StateManager.RETURN_MSG);
         return true;
     }
 
-    private void setProgressIndicator(@Nullable final State state, boolean visible)
+    private void setProgressIndicator(@Nullable final State state, boolean showProgress)
     {
         // Progress indicator
         {
             final AppCompatImageView btn = rootView.findViewById(R.id.progress_indicator);
-            btn.setVisibility(visible ? View.VISIBLE : View.GONE);
+            btn.setVisibility(showProgress ? View.VISIBLE : View.GONE);
             Utils.setImageViewColorAttr(activity, btn, R.attr.colorButtonDisabled);
+        }
+
+        // Filter button
+        {
+            final AppCompatImageButton btn = rootView.findViewById(R.id.cmd_filter);
+            btn.setVisibility(!showProgress && mediaFilter.isEnabled() ? View.VISIBLE : View.GONE);
+            if (btn.getVisibility() == View.VISIBLE)
+            {
+                prepareButtonListeners(btn, null, () ->
+                {
+                    mediaFilter.setVisibility(!mediaFilter.isVisible(), false);
+                    setTitleLayout(titleBar.getTag() != null);
+                });
+                setButtonEnabled(btn, true);
+            }
         }
 
         // Sort button
@@ -484,7 +524,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 final ReceiverInformationMsg.NetworkService networkService = state.getNetworkService();
                 final boolean sort = networkService != null && networkService.isSort();
-                if (!visible && sort)
+                if (!showProgress && sort)
                 {
                     btn.setVisibility(View.VISIBLE);
                     final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.SORT);
@@ -493,5 +533,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
             }
         }
+    }
+
+    private void setTitleLayout(boolean titleVisible)
+    {
+        titleBar.setVisibility(!mediaFilter.isVisible() && titleVisible ? View.VISIBLE : View.GONE);
     }
 }

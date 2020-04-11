@@ -44,6 +44,13 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical">
 
+            <androidx.appcompat.widget.AppCompatEditText
+                style="@style/DeviceEditableViewStyle"
+                android:id="@+id/filter_regex"
+                android:background="@null"
+                android:focusable="true"
+                android:visibility="gone" />
+
             <TextView
                 style="@style/SecondaryTextViewStyle"
                 android:id="@+id/items_list_title_bar"
@@ -53,7 +60,8 @@
                 android:gravity="left|center_vertical"
                 android:minHeight="@dimen/button_size"
                 android:padding="2dp"
-                android:maxLines="9999" />
+                android:maxLines="9999"
+                android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 style="@style/ImageButtonSecondaryStyle"
@@ -68,7 +76,15 @@
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonSecondaryStyle"
+                android:id="@+id/cmd_filter"
+                android:src="@drawable/media_item_filter"
+                android:visibility="gone"
+                android:contentDescription="@string/medialist_filter"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/ImageButtonSecondaryStyle"
                 android:id="@+id/cmd_sort"
+                android:src="@drawable/cmd_sort"
                 android:visibility="gone" />
 
         </LinearLayout>
