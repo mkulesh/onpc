@@ -28,10 +28,11 @@ class CustomProgressBar extends StatefulWidget
     final String minValueStr, maxValueStr;
     final int maxValueNum, currValue;
     final CaptionCallback onCaption;
+    final NewValueCallback onMoving;
     final NewValueCallback onChanged;
     final Widget extendedCmd;
 
-    CustomProgressBar({this.caption, this.minValueStr, this.maxValueStr, this.maxValueNum, this.currValue, this.onCaption, this.onChanged, this.extendedCmd});
+    CustomProgressBar({this.caption, this.minValueStr, this.maxValueStr, this.maxValueNum, this.currValue, this.onCaption, this.onMoving, this.onChanged, this.extendedCmd});
 
     @override _CustomProgressBarState createState()
     => _CustomProgressBarState();
@@ -71,14 +72,11 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             currValue = widget.currValue.toDouble();
         }
 
+        final String extCaption = widget.onCaption != null ? widget.onCaption(currValue) : "";
         final List<Widget> controls = List<Widget>();
         if (widget.caption != null)
         {
-            String caption = widget.caption;
-            if (widget.onCaption != null)
-            {
-                caption += ": " + widget.onCaption(currValue);
-            }
+            String caption = widget.caption + ": " + extCaption;
             if (widget.extendedCmd != null)
             {
                 controls.add(Row(
@@ -97,12 +95,14 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             }
         }
 
+        final double radius = ActivityDimens.progressBarRadius;
         final double minV = 0.0;
         final double maxV = widget.maxValueNum.toDouble();
 
         final Widget slider = SliderTheme(
             data: SliderTheme.of(context).copyWith(
-                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6.0),
+                trackShape: CustomTrackShape(),
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: radius),
                 thumbColor: td.accentColor,
                 activeTrackColor: td.accentColor,
                 inactiveTrackColor: td.disabledColor.withAlpha(125)),
@@ -116,7 +116,8 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         );
 
         final Widget sliderBox = Container(
-            constraints: BoxConstraints(maxHeight: ButtonDimens.normalButtonSize),
+            constraints: BoxConstraints(maxHeight: ActivityDimens.progressBarHeight),
+            padding: EdgeInsets.symmetric(horizontal: 2.0 * radius),
             child: Align(alignment: Alignment.center, child: slider)
         );
 
@@ -149,9 +150,14 @@ class _CustomProgressBarState extends State<CustomProgressBar>
     _onChanged(double v)
     {
         isSeeking = true;
+        final int intVal = v.round();
+        if (intVal != _newSeekValue && widget.onMoving != null)
+        {
+            widget.onMoving(intVal);
+        }
         setState(()
         {
-            _newSeekValue = v.round();
+            _newSeekValue = intVal;
         });
     }
 
@@ -174,5 +180,24 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             // requested to use new widget.currValue on next build
             _currValue = widget.currValue;
         });
+    }
+}
+
+// See https://github.com/flutter/flutter/issues/37057 for more details
+class CustomTrackShape extends RoundedRectSliderTrackShape
+{
+    Rect getPreferredRect({
+        @required RenderBox parentBox,
+        Offset offset = Offset.zero,
+        @required SliderThemeData sliderTheme,
+        bool isEnabled = false,
+        bool isDiscrete = false,
+    })
+    {
+        final double trackHeight = sliderTheme.trackHeight;
+        final double trackLeft = offset.dx;
+        final double trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
+        final double trackWidth = parentBox.size.width;
+        return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
     }
 }
