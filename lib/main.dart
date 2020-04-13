@@ -257,6 +257,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
         final double appBarHeight = ActivityDimens.appBarHeight(context) + ActivityDimens.tabBarHeight(context);
 
         final Widget scaffold = Scaffold(
+            // Disable activity resize when a software keyboard is open:
+            // The keyboard is placed above the activity view
+            resizeToAvoidBottomPadding: false,
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(appBarHeight), // desired height of appBar + tabBar
                 child: appBarView),
