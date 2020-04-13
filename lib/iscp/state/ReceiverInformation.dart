@@ -117,7 +117,7 @@ class ReceiverInformation
         _controlList.clear();
         _friendlyName = null;
         _deviceName = "";
-        _powerStatus = PowerStatus.STB;
+        _powerStatus = PowerStatus.NONE;
         _firmwareStatus = FirmwareUpdateMsg.ValueEnum.defValue;
         _googleCastVersion = Strings.dashed_string;
     }

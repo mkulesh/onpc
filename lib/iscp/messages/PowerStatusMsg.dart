@@ -16,7 +16,7 @@ import "EnumParameterMsg.dart";
 
 enum PowerStatus
 {
-    STB, ON, ALL_STB
+    STB, ON, ALL_STB, NONE
 }
 
 /*
@@ -35,9 +35,10 @@ class PowerStatusMsg extends EnumParameterZonedMsg<PowerStatus>
      * Play Status: "00": System Standby, "01":  System On, "ALL": All Zone(including Main Zone) Standby
      */
     static const ExtEnum<PowerStatus> ValueEnum = ExtEnum<PowerStatus>([
-        EnumItem.code(PowerStatus.STB, "00", defValue: true),
+        EnumItem.code(PowerStatus.STB, "00"),
         EnumItem.code(PowerStatus.ON, "01"),
-        EnumItem.code(PowerStatus.ALL_STB, "ALL")
+        EnumItem.code(PowerStatus.ALL_STB, "ALL"),
+        EnumItem.code(PowerStatus.NONE, "N/A", defValue: true)
     ]);
 
     PowerStatusMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw, ValueEnum);
