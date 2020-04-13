@@ -28,7 +28,7 @@ public class SubwooferLevelCommandMsg extends ISCPMessage
 
     public final static String KEY = "Subwoofer Level";
     public final static int NO_LEVEL = 0xFF;
-    private int level, levelLimit;
+    private int level, cmdLength;
 
     SubwooferLevelCommandMsg(EISCPMessage raw) throws Exception
     {
@@ -36,19 +36,20 @@ public class SubwooferLevelCommandMsg extends ISCPMessage
         try
         {
             level = Integer.parseInt(data, 16);
+            cmdLength = data.length();
         }
         catch (Exception e)
         {
             level = NO_LEVEL;
+            cmdLength = NO_LEVEL;
         }
-        levelLimit = 1;
     }
 
-    public SubwooferLevelCommandMsg(int level, int levelLimit)
+    public SubwooferLevelCommandMsg(int level, int cmdLength)
     {
         super(0, null);
         this.level = level;
-        this.levelLimit = levelLimit;
+        this.cmdLength = cmdLength;
     }
 
     public int getLevel()
@@ -56,17 +57,22 @@ public class SubwooferLevelCommandMsg extends ISCPMessage
         return level;
     }
 
+    public int getCmdLength()
+    {
+        return cmdLength;
+    }
+
     @NonNull
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "; LEVEL=" + level + "]";
+        return CODE + "[" + data + "; LEVEL=" + level + "; CMD_LENGTH=" + cmdLength + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage(CODE, Utils.intToneToString(level, levelLimit));
+        return new EISCPMessage(CODE, Utils.intLevelToString(level, cmdLength));
     }
 
     @Override

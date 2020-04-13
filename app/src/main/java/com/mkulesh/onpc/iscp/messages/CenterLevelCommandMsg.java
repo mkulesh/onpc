@@ -28,7 +28,7 @@ public class CenterLevelCommandMsg extends ISCPMessage
 
     public final static String KEY = "Center Level";
     public final static int NO_LEVEL = 0xFF;
-    private int level, levelLimit;
+    private int level, cmdLength;
 
     CenterLevelCommandMsg(EISCPMessage raw) throws Exception
     {
@@ -36,19 +36,20 @@ public class CenterLevelCommandMsg extends ISCPMessage
         try
         {
             level = Integer.parseInt(data, 16);
+            cmdLength = getData().length();
         }
         catch (Exception e)
         {
             level = NO_LEVEL;
+            cmdLength = NO_LEVEL;
         }
-        levelLimit = 1;
     }
 
-    public CenterLevelCommandMsg(int level, int levelLimit)
+    public CenterLevelCommandMsg(int level, int cmdLength)
     {
         super(0, null);
         this.level = level;
-        this.levelLimit = levelLimit;
+        this.cmdLength = cmdLength;
     }
 
     public int getLevel()
@@ -56,17 +57,22 @@ public class CenterLevelCommandMsg extends ISCPMessage
         return level;
     }
 
+    public int getCmdLength()
+    {
+        return cmdLength;
+    }
+
     @NonNull
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "; LEVEL=" + level + "]";
+        return CODE + "[" + data + "; LEVEL=" + level + "; CMD_LENGTH=" + cmdLength + "]";
     }
 
     @Override
     public EISCPMessage getCmdMsg()
     {
-        return new EISCPMessage(CODE, Utils.intToneToString(level, levelLimit));
+        return new EISCPMessage(CODE, Utils.intLevelToString(level, cmdLength));
     }
 
     @Override

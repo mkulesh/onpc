@@ -8,7 +8,7 @@
         <destination>xx</destination>
         <modeliconurl>http://192.168.1.36/icon/AVR_120.jpg</modeliconurl>
         <friendlyname>TX-RZ900</friendlyname>
-        <firmwareversion>1070-5000-1104-0000-0000</firmwareversion>
+        <firmwareversion>1070-6030-1104-0000-0000</firmwareversion>
         <netservicelist count="18">
             <netservice id="0e" value="1" name="TuneIn Radio" account="Username" password="Password" />
             <netservice id="0c" value="0" name="radiko.jp" />
@@ -16,7 +16,7 @@
             <netservice id="0a" value="1" name="Spotify" />
             <netservice id="03" value="0" name="SiriusXM Internet Radio" account="User Name" password="Password" />
             <netservice id="08" value="0" name="Slacker Personal Radio" account="Email" password="Password" />
-            <netservice id="12" value="1" name="Deezer" account="E-mailadres" password="Wachtwoord" />
+            <netservice id="12" value="1" name="Deezer" account="Email address" password="Password" />
             <netservice id="18" value="1" name="AirPlay" />
             <netservice id="00" value="1" name="DLNA" />
             <netservice id="05" value="0" name="Rhapsody" account="Username" password="Password" />
@@ -26,7 +26,7 @@
             <netservice id="0f" value="0" name="MP3tunes" account="Email" password="Password" />
             <netservice id="11" value="1" name="Home Media" account="User Name" password="Password" />
             <netservice id="f0" value="1" name="USB" />
-            <netservice id="f1" value="0" name="USB(Achterzijde)" />
+            <netservice id="f1" value="0" name="USB(Rear)" />
             <netservice id="01" value="1" name="My Favorites" />
         </netservicelist>
         <zonelist count="4">

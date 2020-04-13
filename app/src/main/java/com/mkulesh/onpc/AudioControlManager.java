@@ -411,12 +411,10 @@ class AudioControlManager
                                 new ToneCommandMsg(zone, ToneCommandMsg.NO_LEVEL, getScaledProgress()));
                         break;
                     case SubwooferLevelCommandMsg.KEY:
-                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress(), 1));
-                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress(), 2));
+                        activity.getStateManager().sendMessage(new SubwooferLevelCommandMsg(getScaledProgress(), state.subwooferCmdLength));
                         break;
                     case CenterLevelCommandMsg.KEY:
-                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(), 1));
-                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(), 2));
+                        activity.getStateManager().sendMessage(new CenterLevelCommandMsg(getScaledProgress(), state.centerCmdLength));
                         break;
                     }
                 }

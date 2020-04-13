@@ -139,7 +139,9 @@ public class State
     public int bassLevel = ToneCommandMsg.NO_LEVEL;
     public int trebleLevel = ToneCommandMsg.NO_LEVEL;
     public int subwooferLevel = SubwooferLevelCommandMsg.NO_LEVEL;
+    public int subwooferCmdLength = SubwooferLevelCommandMsg.NO_LEVEL;
     public int centerLevel = CenterLevelCommandMsg.NO_LEVEL;
+    public int centerCmdLength = CenterLevelCommandMsg.NO_LEVEL;
 
     // Google cast
     public String googleCastVersion = "N/A";
@@ -685,14 +687,24 @@ public class State
     private boolean process(SubwooferLevelCommandMsg msg)
     {
         final boolean changed = subwooferLevel != msg.getLevel();
-        subwooferLevel = msg.getLevel();
+        if (msg.getLevel() != SubwooferLevelCommandMsg.NO_LEVEL)
+        {
+            // Do not overwrite a valid value with an invalid value
+            subwooferLevel = msg.getLevel();
+            subwooferCmdLength = msg.getCmdLength();
+        }
         return changed;
     }
 
     private boolean process(CenterLevelCommandMsg msg)
     {
         final boolean changed = centerLevel != msg.getLevel();
-        centerLevel = msg.getLevel();
+        if (msg.getLevel() != CenterLevelCommandMsg.NO_LEVEL)
+        {
+            // Do not overwrite a valid value with an invalid value
+            centerLevel = msg.getLevel();
+            centerCmdLength = msg.getCmdLength();
+        }
         return changed;
     }
 

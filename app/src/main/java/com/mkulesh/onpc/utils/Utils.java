@@ -340,16 +340,16 @@ public class Utils
         return String.format("%c%c%1x", m, s, Math.abs(tone)).toUpperCase();
     }
 
-    public static String intToneToString(int tone, int length)
+    public static String intLevelToString(int tone, int cmdLength)
     {
         if (tone == 0)
         {
-            return length == 1 ? "00" : "000";
+            return cmdLength == 2 ? "00" : "000";
         }
         else
         {
             final Character s = tone < 0 ? '-' : '+';
-            final String format = length == 1 ? "%c%1x" : "%c%02x";
+            final String format = cmdLength == 2 ? "%c%1x" : "%c%02x";
             return String.format(format, s, Math.abs(tone)).toUpperCase();
         }
     }
