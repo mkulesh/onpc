@@ -15,7 +15,8 @@ import "package:flutter/material.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/state/SoundControlState.dart";
-import "DeviceVolumeView.dart";
+import "DeviceVolumeButtonsView.dart";
+import "DeviceVolumeSliderView.dart";
 import "ExtAmpVolumeView.dart";
 import "ListeningModeView.dart";
 import "PlayControlView.dart";
@@ -43,7 +44,8 @@ class TabListenView extends UpdatableView
         final SoundControlType soundControl = state.soundControlState.soundControlType(
             configuration.soundControl, state.getActiveZoneInfo);
 
-        if (soundControl == SoundControlType.DEVICE)
+        // Add listening modes if sound is controlled by the device
+        if (soundControl == SoundControlType.DEVICE_BUTTONS || soundControl == SoundControlType.DEVICE_SLIDER)
         {
             widgets.add(Center(child: UpdatableWidget(child: ListeningModeView(viewContext))));
         }
@@ -52,8 +54,11 @@ class TabListenView extends UpdatableView
         Widget soundControlView;
         switch (soundControl)
         {
-            case SoundControlType.DEVICE:
-                soundControlView = UpdatableWidget(child: DeviceVolumeView(viewContext));
+            case SoundControlType.DEVICE_BUTTONS:
+                soundControlView = UpdatableWidget(child: DeviceVolumeButtonsView(viewContext));
+                break;
+            case SoundControlType.DEVICE_SLIDER:
+                soundControlView = UpdatableWidget(child: isPortrait ? DeviceVolumeSliderView(viewContext) : DeviceVolumeButtonsView(viewContext));
                 break;
             case SoundControlType.RI_AMP:
                 soundControlView = UpdatableWidget(child: ExtAmpVolumeView(viewContext));

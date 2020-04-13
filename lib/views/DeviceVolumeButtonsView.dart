@@ -20,20 +20,22 @@ import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
-class DeviceVolumeView extends UpdatableView
+class DeviceVolumeButtonsView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
+        PowerStatusMsg.CODE,
         AudioMutingMsg.CODE,
         MasterVolumeMsg.CODE
     ];
 
-    DeviceVolumeView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    DeviceVolumeButtonsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -41,6 +43,7 @@ class DeviceVolumeView extends UpdatableView
         Logging.info(this, "rebuild widget");
 
         final SoundControlState soundControl = state.soundControlState;
+        final bool volumeValid = state.isOn && soundControl.volumeLevel != MasterVolumeMsg.NO_LEVEL;
 
         final List<ZonedMessage> cmd = [
             AudioMutingMsg.output(state.getActiveZone, AudioMuting.TOGGLE),
@@ -75,7 +78,7 @@ class DeviceVolumeView extends UpdatableView
             ));
         });
 
-        if (state.isOn && soundControl.volumeLevel != MasterVolumeMsg.NO_LEVEL)
+        // master volume label
         {
             final String volumeLevel = SoundControlState.getVolumeLevelStr(
                 soundControl.volumeLevel, state.getActiveZoneInfo);
@@ -83,10 +86,10 @@ class DeviceVolumeView extends UpdatableView
             buttons.insert(2, CustomImageButton.normal(
                 Drawables.volume_amp_slider,
                 Strings.audio_control,
-                text: volumeLevel,
+                text: volumeValid ? volumeLevel : "",
                 onPressed: ()
                 => _showAudioControlDialog(context),
-                isEnabled: state.isOn
+                isEnabled: volumeValid
             ));
         }
 

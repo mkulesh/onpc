@@ -44,6 +44,7 @@ class Strings
         "none",
         "external-amplifier",
         "device",
+        "device-slider",
         "auto"];
     static const List<String> pref_theme_codes = [
         "black-lime",
@@ -3378,22 +3379,27 @@ Enjoy!"""];
         /*en*/ ["None",
                 "External amplifier (RI)",
                 "Device",
+                "Device (Slider)",
                 "Automatic"],
         /*ru*/ ["Нет",
                 "Внешний усилитель (RI)",
-                "Само устройство",
+                "Устройство",
+                "Устройство (Слайдер)",
                 "Выбрать автоматически"],
         /*de*/ ["Keine",
                 "Externer Verstärker (RI)",
                 "Gerät",
+                "Gerät (Slider)",
                 "Automatisch"],
         /*fr*/ ["Aucun",
                 "Amplificateur Externe (RI)",
                 "Dispositif",
+                "Dispositif (Slider)",
                 "Automatique"],
         /*pl*/ ["Brak",
                 "Wzmacniacz zewnętrzny (RI)",
                 "Urządzenie",
+                "Urządzenie (Slider)",
                 "Automatyczna"]];
     static List<String> get pref_sound_control_names => l_pref_sound_control_names[_language];
 

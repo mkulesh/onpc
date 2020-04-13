@@ -551,13 +551,13 @@ class StateManager
 
         switch (soundControl)
         {
-            case SoundControlType.DEVICE:
+            case SoundControlType.DEVICE_BUTTONS:
                 sendMessage(MasterVolumeMsg.output(state.getActiveZone, isUp ? MasterVolume.UP : MasterVolume.DOWN));
                 break;
             case SoundControlType.RI_AMP:
                 sendMessage(AmpOperationCommandMsg.output(isUp ? AmpOperationCommand.MVLUP : AmpOperationCommand.MVLDOWN));
                 break;
-            case SoundControlType.NONE:
+            default:
                 // Nothing to do
                 break;
         }

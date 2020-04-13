@@ -109,6 +109,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         <item>Keine</item>
         <item>Externer Verstärker (RI)</item>
         <item>Gerät</item>
+        <item>Gerät (Slider)</item>
         <item>Automatisch</item>
     </string-array>
 

@@ -108,7 +108,8 @@ Copyright © 2019 by __Михаил Кулеш__
     <string-array name="pref_sound_control_names">
         <item>Нет</item>
         <item>Внешний усилитель (RI)</item>
-        <item>Само устройство</item>
+        <item>Устройство</item>
+        <item>Устройство (Слайдер)</item>
         <item>Выбрать автоматически</item>
     </string-array>
 

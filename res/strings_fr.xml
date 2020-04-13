@@ -108,6 +108,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
         <item>Aucun</item>
         <item>Amplificateur Externe (RI)</item>
         <item>Dispositif</item>
+        <item>Dispositif (Slider)</item>
         <item>Automatique</item>
     </string-array>
 
