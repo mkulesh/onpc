@@ -116,7 +116,7 @@ class AudioControlView extends UpdatableView
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                     CustomTextLabel.normal(Strings.tone_direct),
-                    stateManager.waitingForData ? createTimerSand() : checkBox
+                    stateManager.waitingForData ? UpdatableView.createTimerSand() : checkBox
                 ]));
 
             if (!stateManager.waitingForData)

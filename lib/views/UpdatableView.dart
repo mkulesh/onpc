@@ -143,10 +143,9 @@ abstract class UpdatableView with WidgetStreamContext
 
     Widget createView(BuildContext context, VoidCallback updateCallback);
 
-    Widget createTimerSand()
+    static Widget createTimerSand()
     => CustomImageButton.small(
         Drawables.timer_sand, "",
-        padding: EdgeInsets.symmetric(horizontal: ButtonDimens.textButtonPadding),
         isEnabled: false);
 }
 

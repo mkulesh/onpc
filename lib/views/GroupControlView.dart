@@ -128,7 +128,7 @@ class GroupControlView extends UpdatableView
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                    stateManager.waitingForData ? createTimerSand() : checkBox,
+                    stateManager.waitingForData ? UpdatableView.createTimerSand() : checkBox,
                     result
                 ]);
 

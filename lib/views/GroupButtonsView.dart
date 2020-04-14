@@ -58,7 +58,6 @@ class GroupButtonsView extends UpdatableView
                     CustomImageButton.small(
                         Drawables.cmd_multiroom_group,
                         Strings.cmd_multiroom_group,
-                        padding: EdgeInsets.only(right: ButtonDimens.textButtonPadding),
                         onPressed: ()
                         => _showGroupControlDialog(context),
                         isEnabled: true,

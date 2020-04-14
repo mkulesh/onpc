@@ -89,7 +89,7 @@ class CustomImageButton extends StatelessWidget
                     break;
                 case 1:
                     _size = ButtonDimens.smallButtonSize;
-                    _padding = padding ?? ActivityDimens.noPadding;
+                    _padding = padding ?? ButtonDimens.smallButtonPadding;
                     break;
                 case 2:
                     _size = ButtonDimens.normalButtonSize;

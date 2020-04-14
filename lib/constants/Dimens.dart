@@ -140,14 +140,13 @@ class ButtonDimens
 
     static double get textButtonPadding
     => DimensTransform.scale(8);
+
+    static EdgeInsetsGeometry get smallButtonPadding
+    => EdgeInsets.all(DimensTransform.scale(4));
 }
 
 class MediaListDimens
 {
-    // Size of the timer sand icon
-    static double get timerSandSize
-    => DimensTransform.scale(20);
-
     // Padding of header line
     static double get headerPadding
     => DimensTransform.scale(6.0);
@@ -177,7 +176,7 @@ class DialogDimens
 
     // Top and bottom padding of TextField
     static EdgeInsetsGeometry get textFieldPadding
-    => EdgeInsets.symmetric(vertical: DimensTransform.scale(4.0));
+    => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0), horizontal: DimensTransform.scale(0));
 }
 
 class DeviceInfoDimens

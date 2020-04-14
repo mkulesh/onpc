@@ -1,3 +1,31 @@
-<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <path d="m14.12 8.46 5.66 5.66-5.66 5.66-5.66-5.66-4.24 4.24v-14.14h14.14zm-7.78 4.95 2.12-2.12 5.66 5.66 2.83-2.83-5.66-5.65 2.12-2.13h-7.07z" />
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg4"
+   version="1.1"
+   width="24"
+   viewBox="0 0 24 24"
+   height="24">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <path
+     style="stroke-width:0.8997429"
+     id="path2"
+     d="M 13.907455,8.8149102 19,13.907455 13.907455,19 8.8149101,13.907455 5,17.722365 V 5 h 12.722365 z m -7,4.4537278 1.9074551,-1.907456 5.0925449,5.092546 2.546273,-2.546273 L 11.361182,8.8239075 13.268638,6.907455 H 6.907455 Z" />
 </svg>

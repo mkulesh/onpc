@@ -15,7 +15,6 @@ import "package:flutter/material.dart";
 
 import "../config/CheckableItem.dart";
 import "../config/Configuration.dart";
-import "../constants/Dimens.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
@@ -54,9 +53,6 @@ class InputSelectorView extends UpdatableView
         buttons.add(CustomImageButton.small(
             commandTopMsg.getValue.icon,
             commandTopMsg.getValue.description,
-            padding: EdgeInsets.symmetric(
-                vertical: ButtonDimens.textButtonPadding,
-                horizontal: MediaListDimens.itemPadding),
             onPressed: ()
             => stateManager.sendMessage(commandTopMsg, waitingForData: true),
             isEnabled: state.isOn && !state.mediaListState.isTopLayer()

@@ -212,12 +212,8 @@ class TrackInfoView extends UpdatableView
         {
             return Stack(
                 children: [
-                    Align(alignment: Alignment.center,
-                        child: mainView),
-                    Align(alignment: Alignment.center,
-                        child: SvgPicture.asset(
-                            Drawables.timer_sand,
-                            color: td.disabledColor))
+                    Align(alignment: Alignment.center, child: mainView),
+                    Align(alignment: Alignment.center, child: UpdatableView.createTimerSand())
                 ],
             );
         }

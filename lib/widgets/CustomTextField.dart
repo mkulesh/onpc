@@ -20,32 +20,33 @@ class CustomTextField extends StatelessWidget
 {
     final TextEditingController text;
     final bool isFocused;
+    final bool isBorder;
     final VoidCallback onPressed;
     final ValueChanged<String> onChanged;
 
-    CustomTextField(this.text, { this.isFocused = false, this.onPressed, this.onChanged });
+    CustomTextField(this.text, { this.isFocused = false, this.isBorder = true, this.onPressed, this.onChanged });
 
     @override
     Widget build(BuildContext context)
     {
         final ThemeData td = Theme.of(context);
-        return Padding(
-            padding: ActivityDimens.noPadding,
-            child: TextFormField(
-                controller: text,
-                onChanged: onChanged,
-                autofocus: isFocused,
-                style: td.textTheme.subhead,
-                autovalidate: false,
-                autocorrect: false,
-                enableSuggestions: false,
-                textInputAction: onPressed != null ? TextInputAction.done : null,
-                onEditingComplete: onPressed,
-                cursorColor: td.accentColor,
-                decoration: InputDecoration(
-                    contentPadding: DialogDimens.textFieldPadding,
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: td.accentColor)),
-                )),
+        return TextFormField(
+            controller: text,
+            onChanged: onChanged,
+            autofocus: isFocused,
+            style: td.textTheme.subhead,
+            autovalidate: false,
+            autocorrect: false,
+            enableSuggestions: false,
+            textInputAction: onPressed != null ? TextInputAction.done : null,
+            onEditingComplete: onPressed,
+            cursorColor: td.accentColor,
+            decoration: InputDecoration(
+                contentPadding: DialogDimens.textFieldPadding,
+                isDense: true,
+                border: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.disabledColor)) : InputBorder.none,
+                focusedBorder: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.accentColor)) : InputBorder.none
+            )
         );
     }
 }
