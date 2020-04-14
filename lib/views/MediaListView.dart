@@ -145,7 +145,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         // Scroll positions
         _scrollController.removeListener(_saveScrollPosition);
-        if (state.isOn && ms.isListMode && ms.layerInfo == LayerInfo.UNDER_2ND_LAYER && _numberOfItems > 0)
+        if (state.isOn && ms.isListMode && _numberOfItems > 0)
         {
             if (_currentLayer < 0 || ms.numberOfLayers != _currentLayer)
             {
