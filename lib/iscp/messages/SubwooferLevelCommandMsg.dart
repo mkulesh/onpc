@@ -25,28 +25,31 @@ class SubwooferLevelCommandMsg extends ISCPMessage
     static const int NO_LEVEL = 0xFF;
 
     int _level = NO_LEVEL;
+    int _cmdLength = NO_LEVEL;
 
     SubwooferLevelCommandMsg(EISCPMessage raw) : super(CODE, raw)
     {
         _level = ISCPMessage.nonNullInteger(getData, 16, NO_LEVEL);
+        _cmdLength = getData == null ? NO_LEVEL : getData.length;
     }
 
-    SubwooferLevelCommandMsg.output(int level, int levelLimit) :
-            super.output(CODE, _getParameterAsString(level, levelLimit))
+    SubwooferLevelCommandMsg.output(int level, int cmdLength) :
+            super.output(CODE, _getParameterAsString(level, cmdLength))
     {
-        this._level = level;
+        _level = level;
+        _cmdLength = cmdLength;
     }
 
-    static String _getParameterAsString(int level, int levelLimit)
+    static String _getParameterAsString(int level, int cmdLength)
     {
         if (level == 0)
         {
-            return levelLimit == 1 ? "00" : "000";
+            return cmdLength == 2 ? "00" : "000";
         }
         else
         {
             final String s = level < 0 ? "-" : "+";
-            final String format = levelLimit == 1 ?
+            final String format = cmdLength == 2 ?
                 level.abs().toRadixString(16) : level.abs().toRadixString(16).padLeft(2, '0');
             return s + format.toUpperCase();
         }
@@ -55,9 +58,12 @@ class SubwooferLevelCommandMsg extends ISCPMessage
     int get getLevel
     => _level;
 
+    int get getCmdLength
+    => _cmdLength;
+
     @override
     String toString()
-    => super.toString() + "[LEVEL=" + _level.toString() + "]";
+    => super.toString() + "[LEVEL=" + _level.toString() + "; CMD_LENGTH=" + _cmdLength.toString() + "]";
 
 
     @override

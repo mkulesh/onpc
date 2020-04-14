@@ -190,12 +190,10 @@ class AudioControlView extends UpdatableView
                                 ToneCommandMsg.output(zone, ToneCommandMsg.NO_LEVEL, newVal));
                             break;
                         case SubwooferLevelCommandMsg.KEY:
-                            stateManager.sendMessage(SubwooferLevelCommandMsg.output(newVal, 1));
-                            stateManager.sendMessage(SubwooferLevelCommandMsg.output(newVal, 2));
+                            stateManager.sendMessage(SubwooferLevelCommandMsg.output(newVal, state.soundControlState.subwooferCmdLength));
                             break;
                         case CenterLevelCommandMsg.KEY:
-                            stateManager.sendMessage(CenterLevelCommandMsg.output(newVal, 1));
-                            stateManager.sendMessage(CenterLevelCommandMsg.output(newVal, 2));
+                            stateManager.sendMessage(CenterLevelCommandMsg.output(newVal, state.soundControlState.centerCmdLength));
                             break;
                     }
                 }

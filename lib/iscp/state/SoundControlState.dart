@@ -71,10 +71,20 @@ class SoundControlState
     int get subwooferLevel
     => _subwooferLevel;
 
+    int _subwooferCmdLength;
+
+    int get subwooferCmdLength
+    => _subwooferCmdLength;
+
     int _centerLevel;
 
     int get centerLevel
     => _centerLevel;
+
+    int _centerCmdLength;
+
+    int get centerCmdLength
+    => _centerCmdLength;
 
     // Listening mode
     EnumItem<ListeningMode> _listeningMode;
@@ -118,7 +128,9 @@ class SoundControlState
         _trebleLevel = ToneCommandMsg.NO_LEVEL;
         _toneDirect = DirectCommandMsg.ValueEnum.defValue;
         _subwooferLevel = SubwooferLevelCommandMsg.NO_LEVEL;
+        _subwooferCmdLength = SubwooferLevelCommandMsg.NO_LEVEL;
         _centerLevel = CenterLevelCommandMsg.NO_LEVEL;
+        _centerCmdLength = CenterLevelCommandMsg.NO_LEVEL;
         _listeningMode = ListeningModeMsg.ValueEnum.defValue;
     }
 
@@ -156,14 +168,24 @@ class SoundControlState
     bool processSubwooferLevelCommand(SubwooferLevelCommandMsg msg)
     {
         final bool changed = _subwooferLevel != msg.getLevel;
-        _subwooferLevel = msg.getLevel;
+        if (msg.getLevel != SubwooferLevelCommandMsg.NO_LEVEL)
+        {
+            // Do not overwrite a valid value with an invalid value
+            _subwooferLevel = msg.getLevel;
+            _subwooferCmdLength = msg.getCmdLength;
+        }
         return changed;
     }
 
     bool processCenterLevelCommand(CenterLevelCommandMsg msg)
     {
         final bool changed = _centerLevel != msg.getLevel;
-        _centerLevel = msg.getLevel;
+        if (msg.getLevel != CenterLevelCommandMsg.NO_LEVEL)
+        {
+            // Do not overwrite a valid value with an invalid value
+            _centerLevel = msg.getLevel;
+            _centerCmdLength = msg.getCmdLength;
+        }
         return changed;
     }
 
