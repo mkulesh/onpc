@@ -283,6 +283,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="medialist_processing">Traitement…</string>
     <string name="medialist_playback_mode">Mode de lécture</string>
     <string name="medialist_no_items">Pas d\'éléments</string>
+    <string name="medialist_filter">Filter items</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>

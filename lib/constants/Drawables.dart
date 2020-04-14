@@ -94,6 +94,7 @@ class Drawables
     static const String menu_power_standby = BUTTONS_PATH + "menu_power_standby.svg";
     static const String media_item_disc_player = BUTTONS_PATH + "media_item_disc_player.svg";
     static const String media_item_toslink = BUTTONS_PATH + "media_item_toslink.svg";
+    static const String media_item_filter = BUTTONS_PATH + "media_item_filter.svg";
 
     static String drawerMultiroomDevice(int id)
     => BUTTONS_PATH + "multiroom_device_" + id.toString() + ".svg";

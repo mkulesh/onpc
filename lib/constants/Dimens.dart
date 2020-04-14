@@ -149,7 +149,7 @@ class MediaListDimens
 {
     // Padding of header line
     static double get headerPadding
-    => DimensTransform.scale(6.0);
+    => DimensTransform.scale(8.0);
 
     // Padding of media item
     static double get itemPadding

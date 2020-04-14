@@ -165,6 +165,22 @@ class State
     // Media list positions
     final HashMap mediaListPosition = HashMap<int, double>();
 
+    // Media filter
+    bool _mediaFilterVisible = false;
+
+    bool get mediaFilterVisible
+    => _mediaFilterVisible;
+
+    void closeMediaFilter()
+    {
+        _mediaFilterVisible = false;
+    }
+
+    void toggleMediaFilter()
+    {
+        _mediaFilterVisible = !_mediaFilterVisible;
+    }
+
     bool updateConnection(bool c)
     {
         final changed = _connected != c;

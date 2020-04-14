@@ -1597,6 +1597,14 @@ Enjoy!"""];
         /*pl*/ "Brak listy"];
     static String get medialist_no_items => l_medialist_no_items[_language];
 
+    static const List<String> l_medialist_filter = [
+        /*en*/ "Filter items",
+        /*ru*/ "Фильтровать список",
+        /*de*/ "Elemente filtern",
+        /*fr*/ "Filter items",
+        /*pl*/ "Filter items"];
+    static String get medialist_filter => l_medialist_filter[_language];
+
     static const List<String> l_input_selector_video1 = [
         /*en*/ "VCR/DVR",
         /*ru*/ "VCR/DVR",

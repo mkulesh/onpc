@@ -13,7 +13,6 @@
 
 import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
-import "package:flutter_svg/svg.dart";
 import "package:positioned_tap_detector/positioned_tap_detector.dart";
 
 import "../config/CheckableItem.dart";
@@ -43,6 +42,7 @@ import "../iscp/state/MediaListState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
+import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
@@ -58,6 +58,13 @@ enum MediaContextMenu
     MOVE_TO,
     TRACK_MENU,
     PLAYBACK_MODE
+}
+
+class MediaListButtons
+{
+    bool filter = false;
+    bool sort = false;
+    bool progress = false;
 }
 
 class MediaListView extends StatefulWidget
@@ -86,11 +93,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 {
     static final String _PLAYBACK_STRING = "_PLAYBACK_STRING_";
     int _moveFrom = -1;
-    int _numberOfItems = 0;
     ScrollController _scrollController;
     int _currentLayer = -1;
+    final MediaListButtons _headerButtons = MediaListButtons();
+    TextEditingController _mediaFilterController;
 
-    _MediaListViewState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
+    _MediaListViewState(final ViewContext _viewContext, final List<String> _updateTriggers) : super(_viewContext, _updateTriggers);
 
     @override
     void initState()
@@ -98,12 +106,14 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         super.initState();
         _scrollController = ScrollController();
         Logging.info(this.widget, "saved scroll positions: " + state.mediaListPosition.toString());
+        _mediaFilterController = TextEditingController();
     }
 
     @override
     void dispose()
     {
         _scrollController.dispose();
+        _mediaFilterController.dispose();
         super.dispose();
     }
 
@@ -115,11 +125,31 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final MediaListState ms = state.mediaListState;
 
         // Get items
-        final List<ISCPMessage> items =
+        List<ISCPMessage> items =
             ms.isNetworkServices ? _getSortedNetworkServices(state.playbackState.serviceIcon, ms.mediaItems) :
             ms.isMenuMode ? ms.retrieveMenu() :
             ms.mediaItems;
         final bool isPlayback = state.isOn && items.isEmpty && (ms.isPlaybackMode || ms.isSimpleInput);
+
+        // Header buttons
+        _headerButtons.filter = state.isOn && ms.isListMode && items.length > 1;
+        _headerButtons.sort = state.isOn && state.getNetworkService != null && state.getNetworkService.isSort;
+        _headerButtons.progress = state.isOn && stateManager.waitingForData;
+
+        // Apply filter
+        if (ms.numberOfLayers != _currentLayer)
+        {
+            _mediaFilterController.clear();
+        }
+        final String filter = _mediaFilterController.text;
+        final bool applyFilter = _headerButtons.filter && filter != null && filter.isNotEmpty;
+        if (applyFilter)
+        {
+            Logging.info(this.widget, "apply filter: " + filter);
+            final List<ISCPMessage> filteredItems = List.from(items.where((msg)
+            => !_ignoreItem(msg, filter)));
+            items = filteredItems;
+        }
 
         // Add "Return" button if necessary
         if (state.isOn && !state.mediaListState.isTopLayer() && !configuration.backAsReturn)
@@ -141,31 +171,13 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
 
         // Create list
-        _numberOfItems = items.length;
+        final int _numberOfItems = items.length;
 
         // Scroll positions
         _scrollController.removeListener(_saveScrollPosition);
-        if (state.isOn && ms.isListMode && _numberOfItems > 0)
+        if (!applyFilter)
         {
-            if (_currentLayer < 0 || ms.numberOfLayers != _currentLayer)
-            {
-                state.mediaListPosition.removeWhere((key, v)
-                => (key > ms.numberOfLayers));
-                WidgetsBinding.instance.addPostFrameCallback((_)
-                {
-                    _scrollToPosition(ms);
-                    _scrollController.addListener(_saveScrollPosition);
-                });
-            }
-            else
-            {
-                _scrollController.addListener(_saveScrollPosition);
-            }
-            _currentLayer = ms.numberOfLayers;
-        }
-        else
-        {
-            _currentLayer = -1;
+            _processLayerInfo(ms, _numberOfItems);
         }
 
         final Widget mediaList = DraggableScrollbar.rrect(
@@ -209,7 +221,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                _buildHeaderLine(td, state.getNetworkService),
+                _buildHeaderLine(td, _headerButtons, _numberOfItems),
                 CustomDivider(thickness: 1),
                 Expanded(child: mediaList, flex: 1)
             ],
@@ -233,6 +245,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 title: CustomTextLabel.normal(title, color: isMoved ? td.accentColor : null),
                 onTap: ()
                 {
+                    state.closeMediaFilter();
                     stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.DISPLAY_MSG);
                 }),
             onLongPress: (position)
@@ -415,7 +428,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     bool _isMoveToValid(int messageId)
     => _moveFrom >= 0 && _moveFrom != messageId;
 
-    String _buildTitle()
+    String _buildTitle(final int numberOfItems)
     {
         String title = "";
         final MediaListState ms = state.mediaListState;
@@ -437,9 +450,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             if (ms.numberOfItems > 0)
             {
                 title += " | " + Strings.medialist_items + ": ";
-                if (_numberOfItems != ms.numberOfItems)
+                if (numberOfItems != ms.numberOfItems)
                 {
-                    title += _numberOfItems.toString() + "/";
+                    title += numberOfItems.toString() + "/";
                 }
                 title += ms.numberOfItems.toString();
             }
@@ -482,6 +495,32 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return result;
     }
 
+    void _processLayerInfo(final MediaListState ms, final int numberOfItems)
+    {
+        if (state.isOn && ms.isListMode && numberOfItems > 0)
+        {
+            if (_currentLayer < 0 || ms.numberOfLayers != _currentLayer)
+            {
+                state.mediaListPosition.removeWhere((key, v)
+                => (key > ms.numberOfLayers));
+                WidgetsBinding.instance.addPostFrameCallback((_)
+                {
+                    _scrollToPosition(ms);
+                    _scrollController.addListener(_saveScrollPosition);
+                });
+            }
+            else
+            {
+                _scrollController.addListener(_saveScrollPosition);
+            }
+            _currentLayer = ms.numberOfLayers;
+        }
+        else
+        {
+            _currentLayer = -1;
+        }
+    }
+
     void _saveScrollPosition()
     {
         if (_scrollController.hasClients)
@@ -504,56 +543,112 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
     }
 
-    Widget _buildHeaderLine(final ThemeData td, final NetworkService ns)
+    Widget _buildHeaderLine(final ThemeData td, final MediaListButtons buttons, final int numberOfItems)
     {
-        Widget rightButton;
-        if (state.isOn && stateManager.waitingForData)
+        final List<Widget> elements = List();
+
+        final Widget field = !state.mediaFilterVisible ?
+        CustomTextLabel.small(
+            _buildTitle(numberOfItems),
+            padding: EdgeInsets.only(left: MediaListDimens.headerPadding)
+        ) :
+        CustomTextField(_mediaFilterController,
+            isFocused: true,
+            isBorder: false,
+            onChanged: (v)
+            {
+                setState(()
+                {
+                    // just rebuild widget
+                });
+            }
+        );
+
+        elements.add(Flexible(
+            child: Container(
+                constraints: BoxConstraints(minHeight: ButtonDimens.smallButtonSize + ButtonDimens.smallButtonPadding.vertical),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: field
+                )
+            )
+        ));
+
+        // Filter button
+        if (!buttons.progress && buttons.filter)
         {
-            // show progress indicator
-            rightButton = SvgPicture.asset(
-                Drawables.timer_sand,
-                width: MediaListDimens.timerSandSize,
-                height: MediaListDimens.timerSandSize,
-                color: td.disabledColor);
+            elements.add(CustomImageButton.small(
+                Drawables.media_item_filter,
+                Strings.medialist_filter,
+                onPressed: ()
+                {
+                    setState(()
+                    {
+                        state.toggleMediaFilter();
+                    });
+                }));
         }
-        else if (state.isOn && ns != null && ns.isSort)
+
+        // Sort button
+        if (!buttons.progress && buttons.sort)
         {
             // show sort button
             final OperationCommandMsg cmd = OperationCommandMsg.output(
                 ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.SORT);
-            rightButton = CustomImageButton.small(
+            elements.add(CustomImageButton.small(
                 cmd.getValue.icon,
                 cmd.getValue.description,
                 onPressed: ()
-                => stateManager.sendMessage(cmd));
-        }
-        else
-        {
-            // show invisible placeholder
-            rightButton = SvgPicture.asset(
-                Drawables.timer_sand,
-                width: MediaListDimens.timerSandSize,
-                height: MediaListDimens.timerSandSize,
-                color: td.backgroundColor);
+                => stateManager.sendMessage(cmd)));
         }
 
-        final Widget text = Flexible(
-            child: Container(
-                constraints: BoxConstraints(minHeight: ButtonDimens.smallButtonSize + 2.0 * MediaListDimens.headerPadding),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomTextLabel.small(
-                        _buildTitle(),
-                        padding: EdgeInsets.only(left: MediaListDimens.headerPadding))
-                )
-            )
-        );
+        // Progress indicator
+        if (buttons.progress)
+        {
+            // show progress indicator
+            elements.add(UpdatableView.createTimerSand());
+        }
 
         return Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [text, rightButton],
+            children: elements,
         );
+    }
+
+    bool _ignoreItem(final ISCPMessage msg, final String filter)
+    {
+        String title = "";
+        if (msg is NetworkServiceMsg)
+        {
+            title = msg.getValue.description;
+        }
+        else if (msg is XmlListItemMsg)
+        {
+            title = msg.getTitle;
+        }
+        else if (msg is PresetCommandMsg)
+        {
+            title = msg.getPresetConfig.displayedString;
+        }
+        else
+        {
+            return false;
+        }
+        if (filter.isEmpty || filter == "*")
+        {
+            return false;
+        }
+        if (title.toUpperCase().startsWith(filter.toUpperCase()))
+        {
+            return false;
+        }
+        if (filter.startsWith("*"))
+        {
+            final String f = filter.substring(filter.lastIndexOf('*') + 1);
+            return !title.toUpperCase().contains(f.toUpperCase());
+        }
+        return true;
     }
 }

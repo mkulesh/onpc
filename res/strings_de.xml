@@ -284,6 +284,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="medialist_processing">Bearbeite…</string>
     <string name="medialist_playback_mode">Abspielmodus</string>
     <string name="medialist_no_items">Keine Elemente</string>
+    <string name="medialist_filter">Elemente filtern</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>

@@ -229,7 +229,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     case AppTabs.MEDIA:
                         tabContent = UpdatableWidget(
                             child: TabMediaView(_viewContext),
-                            clearFocus: true);
+                            clearFocus: false);
                         break;
                     case AppTabs.DEVICE:
                         tabContent = UpdatableWidget(
@@ -402,6 +402,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this.widget, "pressed back button, tab=" + tab.toString() + ", top=" + isTop.toString());
         if (tab == AppTabs.MEDIA && !isTop && _configuration.backAsReturn)
         {
+            _stateManager.state.closeMediaFilter();
             _stateManager.sendMessage(OperationCommandMsg.output(
                 ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN),
                 waitingForData: true);
@@ -519,6 +520,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 {
                     _stateManager.sendMessage(StateManager.LIST_MSG);
                 }
+            }
+
+            if (tab != AppTabs.MEDIA)
+            {
+                _stateManager.state.closeMediaFilter();
             }
         }
     }

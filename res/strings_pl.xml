@@ -285,6 +285,7 @@ Enjoy!""</string>
     <string name="medialist_processing">Przetwarzanie…</string>
     <string name="medialist_playback_mode">Tryb odtwarzania</string>
     <string name="medialist_no_items">Brak listy</string>
+    <string name="medialist_filter">Filter items</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>
