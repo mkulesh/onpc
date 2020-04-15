@@ -129,10 +129,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             ms.isNetworkServices ? _getSortedNetworkServices(state.playbackState.serviceIcon, ms.mediaItems) :
             ms.isMenuMode ? ms.retrieveMenu() :
             ms.mediaItems;
+        final int dataItems = items.length;
+
         final bool isPlayback = state.isOn && items.isEmpty && (ms.isPlaybackMode || ms.isSimpleInput);
 
         // Header buttons
-        _headerButtons.filter = state.isOn && ms.isListMode && items.length > 1;
+        _headerButtons.filter = state.isOn && ms.isListMode && dataItems > 1;
         _headerButtons.sort = state.isOn && state.getNetworkService != null && state.getNetworkService.isSort;
         _headerButtons.progress = state.isOn && stateManager.waitingForData;
 
@@ -170,16 +172,15 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             items.add(playbackIndicationItem);
         }
 
-        // Create list
-        final int _numberOfItems = items.length;
-
         // Scroll positions
         _scrollController.removeListener(_saveScrollPosition);
         if (!applyFilter)
         {
-            _processLayerInfo(ms, _numberOfItems);
+            _processLayerInfo(ms, dataItems);
         }
 
+        // Create list
+        final int visibleItems = items.length;
         final Widget mediaList = DraggableScrollbar.rrect(
             controller: _scrollController,
             backgroundColor: td.accentColor,
@@ -188,7 +189,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 => CustomDivider(),
                 padding: ActivityDimens.noPadding,
                 scrollDirection: Axis.vertical,
-                itemCount: _numberOfItems,
+                itemCount: visibleItems,
                 physics: ClampingScrollPhysics(),
                 controller: _scrollController,
                 itemBuilder: (BuildContext itemContext, int index)
@@ -221,7 +222,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                _buildHeaderLine(td, _headerButtons, _numberOfItems),
+                _buildHeaderLine(td, _headerButtons, visibleItems),
                 CustomDivider(thickness: 1),
                 Expanded(child: mediaList, flex: 1)
             ],
@@ -246,7 +247,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 onTap: ()
                 {
                     state.closeMediaFilter();
-                    stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.DISPLAY_MSG);
+                    stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
                 }),
             onLongPress: (position)
             => _onCreateContextMenu(context, position, cmd)

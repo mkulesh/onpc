@@ -59,6 +59,7 @@ class StateManager
     static const String WAITING_FOR_DATA_EVENT = "WAITING_FOR_DATA";
     static const String BROADCAST_SEARCH_EVENT = "BROADCAST_SEARCH";
     static const String START_SEARCH_EVENT = "START_SEARCH";
+    static const String ANY_DATA = "ANY_DATA";
 
     static const Duration GUI_UPDATE_DELAY = Duration(milliseconds: 500);
 
@@ -102,10 +103,10 @@ class StateManager
     OnConnectionError _onConnectionError;
     final Set<String> _eventChanges = HashSet<String>();
 
-    bool _waitingForData = false;
+    String _waitingForData = "";
 
     bool get waitingForData
-    => _waitingForData;
+    => _waitingForData.isNotEmpty;
 
     // Helper attributes used for message processing
     Timer _updateTimer;
@@ -233,9 +234,12 @@ class StateManager
                 raw.logParameters();
             }
 
-            if (raw.getCode != TimeInfoMsg.CODE)
+            if (_waitingForData.isNotEmpty && raw.getCode != TimeInfoMsg.CODE)
             {
-                _waitingForData = false;
+                if (_waitingForData == ANY_DATA || _waitingForData == raw.getCode)
+                {
+                    _waitingForData = "";
+                }
             }
 
             try
@@ -485,13 +489,18 @@ class StateManager
             Logging.info(this, "requesting XML list state (id: " + _xmlReqId.toString() + ")...");
             _messageChannel.sendMessage(XmlListInfoMsg.output(
                 _xmlReqId, liMsg.getNumberOfLayers, 0, liMsg.getNumberOfItems).getCmdMsg());
+            if (state.receiverInformation.isReceiverInformation)
+            {
+                _waitingForData = XmlListInfoMsg.CODE;
+                state.mediaListState.clearItems();
+            }
         }
     }
 
     void sendQueries(final List<String> queries)
     => _messageChannel.sendQueries(queries);
 
-    void sendMessage(final ISCPMessage msg, {bool waitingForData = false})
+    void sendMessage(final ISCPMessage msg, {bool waitingForData = false, String waitingForMsg = ""})
     {
         Logging.info(this, "sending message: " + msg.toString());
         _circlePlayRemoveMsg = null;
@@ -500,9 +509,9 @@ class StateManager
             _requestXmlList = true;
         }
         _messageChannel.sendMessage(msg.getCmdMsg());
-        if (waitingForData)
+        if (waitingForData || waitingForMsg.isNotEmpty)
         {
-            _waitingForData = true;
+            _waitingForData = waitingForMsg.isEmpty ? ANY_DATA : waitingForMsg;
             triggerStateEvent(WAITING_FOR_DATA_EVENT);
         }
     }
