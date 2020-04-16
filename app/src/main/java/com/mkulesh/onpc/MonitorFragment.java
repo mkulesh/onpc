@@ -827,7 +827,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
         final State state = activity.getStateManager().getState();
         final int currTime = Utils.timeToSeconds(state.currentTime);
         final int maxTime = Utils.timeToSeconds(state.maxTime);
-        final boolean sendHours = newSec >= 3600 || !state.getModel().equals("NT-503");
+        final boolean sendHours = newSec >= 3600 || !state.disableHourInTimeSeek();
         if (currTime >= 0 && maxTime >= 0)
         {
             final int hour = newSec / 3600;

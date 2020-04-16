@@ -1379,4 +1379,9 @@ public class State
                 (isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                         isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
     }
+
+    public boolean disableHourInTimeSeek()
+    {
+        return getModel().equals("NT-503") || getModel().equals("CR-N765");
+    }
 }
