@@ -42,6 +42,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
         void noDevice(ConnectionState.FailureReason reason);
     }
+
     private EventListener eventListener;
 
     // Common properties
@@ -103,7 +104,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         Logging.info(this, "started, network=" + connectionState.isNetwork()
                 + ", wifi=" + connectionState.isWifi());
 
-        final Character[] models = new Character[]{'x', 'p'};
+        final Character[] models = new Character[]{ 'x', 'p' };
         int modelId = 0;
 
         try

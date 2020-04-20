@@ -52,6 +52,7 @@ class AudioControlManager
     public interface MasterVolumeInterface
     {
         void onMasterVolumeMaxUpdate(@NonNull final State state);
+
         void onMasterVolumeChange(int progressChanged);
     }
 
@@ -516,7 +517,7 @@ class AudioControlManager
             final AppCompatSeekBar b = new AppCompatSeekBar(wrappedContext, null, 0);
             final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
-            lp.gravity= Gravity.CENTER;
+            lp.gravity = Gravity.CENTER;
             b.setLayoutParams(lp);
             b.setTag(VOLUME_LEVEL);
             b.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()

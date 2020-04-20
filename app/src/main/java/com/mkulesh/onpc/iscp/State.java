@@ -1174,7 +1174,7 @@ public class State
     public boolean isSimpleInput()
     {
         return inputType == InputSelectorMsg.InputType.TAPE1 || inputType == InputSelectorMsg.InputType.TV ||
-                inputType == InputSelectorMsg.InputType.VIDEO4 || inputType == InputSelectorMsg.InputType.VIDEO5 ||isRadioInput();
+               inputType == InputSelectorMsg.InputType.VIDEO4 || inputType == InputSelectorMsg.InputType.VIDEO5 || isRadioInput();
     }
 
     public boolean isUsb()

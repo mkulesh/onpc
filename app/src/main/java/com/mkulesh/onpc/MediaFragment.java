@@ -133,7 +133,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (selector != null)
             {
                 Logging.info(this, "Context menu for selector " + selector.toString() +
-                        (networkService != null? " and service " + networkService.toString() : ""));
+                        (networkService != null ? " and service " + networkService.toString() : ""));
                 ListView lv = (ListView) v;
                 AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 final Object item = lv.getItemAtPosition(acmi.position);

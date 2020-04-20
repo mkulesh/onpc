@@ -13,12 +13,12 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 /*
  * Direct Command

@@ -58,6 +58,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             selected = false;
         }
     }
+
     private final Map<String, DeviceInfo> devices = new TreeMap<>();
 
     // Dialog properties
@@ -72,6 +73,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
 
         void noDevice(ConnectionState.FailureReason reason);
     }
+
     private DialogEventListener dialogEventListener = null;
 
     // Callback for background search
@@ -79,6 +81,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     {
         void onDeviceFound(DeviceInfo device);
     }
+
     private final BackgroundEventListener backgroundEventListener;
 
     public DeviceList(final Context context,

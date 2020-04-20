@@ -101,7 +101,7 @@ abstract public class BaseFragment extends Fragment
 
     void updateContent()
     {
-        update(visibleToUser && activity.isConnected()? activity.getStateManager().getState() : null, null);
+        update(visibleToUser && activity.isConnected() ? activity.getStateManager().getState() : null, null);
     }
 
     public void update(final State state, @Nullable HashSet<State.ChangeType> eventChanges)

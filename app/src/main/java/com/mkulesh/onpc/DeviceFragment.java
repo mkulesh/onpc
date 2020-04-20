@@ -222,7 +222,7 @@ public class DeviceFragment extends BaseFragment
             {
                 final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
                 b.setVisibility((state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION ||
-                        state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_FORCE)?
+                        state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_FORCE) ?
                         View.VISIBLE : View.GONE);
                 if (b.getVisibility() == View.VISIBLE)
                 {
@@ -299,7 +299,7 @@ public class DeviceFragment extends BaseFragment
                 break;
             case OFF:
             case B_ONLY:
-                    prepareButtonListeners(b,
+                prepareButtonListeners(b,
                         new SpeakerACommandMsg(zone, SpeakerACommandMsg.Status.ON),
                         () -> sendQueries(zone));
                 break;
@@ -308,7 +308,7 @@ public class DeviceFragment extends BaseFragment
                         new SpeakerBCommandMsg(zone, SpeakerBCommandMsg.Status.ON),
                         () -> {
                             activity.getStateManager().sendMessage(
-                                new SpeakerACommandMsg(zone, SpeakerACommandMsg.Status.OFF));
+                                    new SpeakerACommandMsg(zone, SpeakerACommandMsg.Status.OFF));
                             sendQueries(zone);
                         });
                 break;
