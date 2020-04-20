@@ -142,7 +142,7 @@ public class DeviceFragment extends BaseFragment
     }
 
     @Override
-    protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
+    protected void updateStandbyView(@Nullable final State state)
     {
         updateDeviceInformation(state);
         if (state != null)

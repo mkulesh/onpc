@@ -86,7 +86,7 @@ public class ListInfoMsg extends ISCPMessage
     private Property property = Property.NO;
 
     /*
-     * Update Type (P : Page Infomation Update ( Page Clear or Disable List Info) , C : Cursor Position Update)
+     * Update Type (P : Page Information Update ( Page Clear or Disable List Info) , C : Cursor Position Update)
      */
     private enum UpdateType implements CharParameterIf
     {

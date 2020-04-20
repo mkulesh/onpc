@@ -187,7 +187,7 @@ public class State
     public MultiroomDeviceInformationMsg.ChannelType multiroomChannel = MultiroomDeviceInformationMsg.ChannelType.NONE;
 
     // Popup
-    public AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
+    public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
 
     State(final String host, int activeZone)
     {

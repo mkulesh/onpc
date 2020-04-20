@@ -103,7 +103,7 @@ public class RemoteControlFragment extends BaseFragment
     }
 
     @Override
-    protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
+    protected void updateStandbyView(@Nullable final State state)
     {
         for (View b : buttons)
         {

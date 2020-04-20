@@ -112,7 +112,7 @@ abstract public class BaseFragment extends Fragment
         }
         if (state == null || !state.isOn())
         {
-            updateStandbyView(state, eventChanges);
+            updateStandbyView(state);
         }
         else
         {
@@ -131,7 +131,7 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    protected abstract void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges);
+    protected abstract void updateStandbyView(@Nullable final State state);
 
     protected abstract void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges);
 

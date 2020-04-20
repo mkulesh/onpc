@@ -532,7 +532,6 @@
     <string name="error_invalid_device_address">Неправильный адрес устройства или порт</string>
     <string name="error_connection_no_network">Нет соединения с сетью</string>
     <string name="error_connection_no_wifi">Нет подключения к Wi-Fi. Введите адрес и порт устройства вручную</string>
-    <string name="error_connection_no_device">Устройство не найдено</string>
     <string name="error_connection_no_response">Устойство %s не отвечает</string>
 
 </resources>

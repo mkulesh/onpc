@@ -140,12 +140,12 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             updateConfiguration(stateHolder.getState());
         }
 
-        // Pass any configuration change to the drawer toggls
+        // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
         mDrawerToggle.syncState();
     }
 
-    void initGUI()
+    private void initGUI()
     {
         setContentView(orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT ?
                 R.layout.activity_main_port : R.layout.activity_main_land);

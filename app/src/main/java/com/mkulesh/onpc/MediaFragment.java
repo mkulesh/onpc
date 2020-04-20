@@ -118,7 +118,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     public void onPause()
     {
         super.onPause();
-        updateStandbyView(null, new HashSet<>());
+        updateStandbyView(null);
     }
 
     @Override
@@ -232,7 +232,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     }
 
     @Override
-    protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
+    protected void updateStandbyView(@Nullable final State state)
     {
         mediaFilter.disable();
         moveFrom = -1;

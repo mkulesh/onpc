@@ -531,7 +531,6 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="error_invalid_device_address">Nom ou port du dispositif invalide</string>
     <string name="error_connection_no_network">Pas de connexion réseau</string>
     <string name="error_connection_no_wifi">Pas de connexion Wi-Fi. Merci d\'entrer l\'IP et port du dispositif manuellement</string>
-    <string name="error_connection_no_device">Dispositif distant non trouvé</string>
     <string name="error_connection_no_response">Dispositif distant %s ne répond pas</string>
 
 </resources>

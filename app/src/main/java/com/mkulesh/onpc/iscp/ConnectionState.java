@@ -36,8 +36,7 @@ public class ConnectionState extends AppTask
     public enum FailureReason
     {
         NO_NETWORK(R.string.error_connection_no_network),
-        NO_WIFI(R.string.error_connection_no_wifi),
-        NO_DEVICE(R.string.error_connection_no_device);
+        NO_WIFI(R.string.error_connection_no_wifi);
 
         @StringRes
         final int descriptionId;

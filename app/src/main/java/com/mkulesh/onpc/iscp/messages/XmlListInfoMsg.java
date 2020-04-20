@@ -37,7 +37,7 @@ public class XmlListInfoMsg extends ISCPMessage
 {
     public final static String CODE = "NLA";
 
-    private final Character responceType;
+    private final Character responseType;
     private final int sequenceNumber;
     private final Character status;
 
@@ -68,7 +68,7 @@ public class XmlListInfoMsg extends ISCPMessage
     {
         super(raw);
         // Format: "tzzzzsurr<.....>"
-        responceType = data.charAt(0);
+        responseType = data.charAt(0);
         sequenceNumber = Integer.parseInt(data.substring(1, 5), 16);
         status = data.charAt(5);
         uiType = (UiType) searchParameter(data.charAt(6), UiType.values(), UiType.LIST);
@@ -80,7 +80,7 @@ public class XmlListInfoMsg extends ISCPMessage
     public String toString()
     {
         return CODE + "[" + data.substring(0, 9) + "..."
-                + "; RESP=" + responceType
+                + "; RESP=" + responseType
                 + "; SEQ_NR=" + sequenceNumber
                 + "; STATUS=" + status
                 + "; UI=" + uiType.toString() + "; "

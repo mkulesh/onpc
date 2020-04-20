@@ -204,7 +204,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
     public void onPause()
     {
         super.onPause();
-        updateStandbyView(null, new HashSet<>());
+        updateStandbyView(null);
     }
 
     private void prepareFmDabButtons()
@@ -328,7 +328,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
     }
 
     @Override
-    protected void updateStandbyView(@Nullable final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
+    protected void updateStandbyView(@Nullable final State state)
     {
         ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(TimeInfoMsg.INVALID_TIME);
         ((TextView) rootView.findViewById(R.id.tv_time_end)).setText(TimeInfoMsg.INVALID_TIME);
@@ -801,7 +801,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
     }
 
     /*
-     * Timeseek control
+     * Time-seek control
      */
     private void updateProgressBar(@NonNull final State state)
     {

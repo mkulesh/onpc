@@ -531,7 +531,6 @@
     <string name="error_invalid_device_address">Ungültiger Gerätename oder Port</string>
     <string name="error_connection_no_network">Keine Verbindung zum Netzwerk</string>
     <string name="error_connection_no_wifi">Keine WLAN Verbindung, bitte IP und Port manuell eingeben</string>
-    <string name="error_connection_no_device">Onkyo Gerät nicht gefunden</string>
     <string name="error_connection_no_response">Onkyo Gerät %s antwortet nicht</string>
 
 </resources>
