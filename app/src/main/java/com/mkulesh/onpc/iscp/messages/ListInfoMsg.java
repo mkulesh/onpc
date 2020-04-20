@@ -132,7 +132,9 @@ public class ListInfoMsg extends ISCPMessage
         super(0, null);
         informationType = InformationType.UNICODE;
         this.lineInfo = lineInfo;
+        //noinspection ConstantConditions
         property = Property.NO;
+        //noinspection ConstantConditions
         updateType = UpdateType.NO;
         this.listedData = listedData;
     }

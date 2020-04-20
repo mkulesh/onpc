@@ -887,12 +887,14 @@ public class State
         return changed;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isEqual(Integer a, Integer b)
     {
         if (a == null && b == null)
         {
             return true;
         }
+        //noinspection ConstantConditions
         if ((a == null && b != null) || (a != null && b == null))
         {
             return false;

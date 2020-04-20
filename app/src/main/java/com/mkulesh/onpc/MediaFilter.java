@@ -82,6 +82,7 @@ class MediaFilter
         return enabled;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isVisible()
     {
         return visible;

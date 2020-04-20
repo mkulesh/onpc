@@ -36,6 +36,7 @@ public class MasterVolumeMsg extends ZonedMessage
     public final static int NO_LEVEL = -1;
     public static final int MAX_VOLUME_1_STEP = 0x64;
 
+    @SuppressWarnings("unused")
     public enum Command implements StringParameterIf
     {
         UP(R.string.master_volume_up, R.drawable.volume_amp_up),

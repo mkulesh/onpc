@@ -57,6 +57,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
         ST, FL, FR, NONE
     }
 
+    @SuppressWarnings("unused")
     public enum RoleType implements StringParameterIf
     {
         SRC("SRC", R.string.multiroom_master),

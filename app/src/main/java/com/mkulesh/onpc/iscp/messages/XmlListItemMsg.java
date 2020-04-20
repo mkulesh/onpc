@@ -104,6 +104,7 @@ public class XmlListItemMsg extends ISCPMessage
         return title;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isSelectable()
     {
         return selectable;

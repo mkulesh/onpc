@@ -53,6 +53,7 @@ public class SpeakerBCommandMsg extends ZonedMessage
             return code;
         }
 
+        @SuppressWarnings("unused")
         @StringRes
         public int getDescriptionId()
         {

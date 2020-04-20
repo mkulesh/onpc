@@ -223,6 +223,7 @@ public class PopupBuilder
     private String getDefaultValue(Element box)
     {
         final String text = box.getAttribute("text");
+        //noinspection PointlessNullCheck
         if (serviceType == ServiceType.DEEZER && text != null && "Search".equals(text)
                 && artist != null && !artist.isEmpty())
         {

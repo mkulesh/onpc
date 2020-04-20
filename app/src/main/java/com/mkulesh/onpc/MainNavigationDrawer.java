@@ -217,6 +217,7 @@ class MainNavigationDrawer
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     void updateNavigationContent(State state)
     {
         final int activeZone = state == null ?

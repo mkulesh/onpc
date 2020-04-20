@@ -87,6 +87,7 @@ public class InputSelectorMsg extends ZonedMessage
 
         final boolean mediaList;
 
+        @SuppressWarnings("SameParameterValue")
         InputType(String code, @StringRes final int descriptionId, @DrawableRes final int imageId, final boolean mediaList)
         {
             this.code = code;

@@ -65,6 +65,7 @@ public class MultiroomGroupSettingMsg extends ISCPMessage
                 + "]";
     }
 
+    @SuppressWarnings("StringBufferReplaceableByString")
     @Override
     public EISCPMessage getCmdMsg()
     {

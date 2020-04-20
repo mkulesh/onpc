@@ -114,6 +114,7 @@ public class ListeningModeMsg extends ISCPMessage
             this.directMode = false;
         }
 
+        @SuppressWarnings("SameParameterValue")
         Mode(final String code, @StringRes final int descriptionId, final boolean directMode)
         {
             this.code = code;

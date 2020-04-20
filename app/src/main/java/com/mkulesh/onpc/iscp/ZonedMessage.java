@@ -31,11 +31,13 @@ public abstract class ZonedMessage extends ISCPMessage
         throw new Exception("No zone defined for message " + raw.getCode());
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected ZonedMessage(final int messageId, final String data, int zoneIndex)
     {
         super(messageId, data);
         this.zoneIndex = zoneIndex;
     }
 
+    @SuppressWarnings("unused")
     abstract public String getZoneCommand();
 }

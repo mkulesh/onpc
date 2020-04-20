@@ -36,6 +36,7 @@ public class ISCPMessage
         modelCategoryId = 'X';
     }
 
+    @SuppressWarnings("RedundantThrows")
     protected ISCPMessage(EISCPMessage raw) throws Exception
     {
         messageId = raw.getMessageId();

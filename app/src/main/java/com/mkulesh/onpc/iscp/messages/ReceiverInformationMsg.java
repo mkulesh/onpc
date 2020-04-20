@@ -79,6 +79,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             return id;
         }
 
+        @SuppressWarnings("unused")
         public String getName()
         {
             return name;
@@ -134,6 +135,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             volMax = e.hasAttribute("volmax") ? Integer.parseInt(e.getAttribute("volmax")) : 0;
         }
 
+        @SuppressWarnings("SameParameterValue")
         Zone(final String id, final String name, final int volumeStep, final int volMax)
         {
             this.id = id;
@@ -247,6 +249,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             name = e.getAttribute("name").trim();
         }
 
+        @SuppressWarnings("unused")
         public Preset(final int id, final int band, final String freq, final String name)
         {
             this.id = id;

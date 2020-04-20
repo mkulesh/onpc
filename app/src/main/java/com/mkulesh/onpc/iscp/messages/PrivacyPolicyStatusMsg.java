@@ -50,6 +50,7 @@ public class PrivacyPolicyStatusMsg extends ISCPMessage
             return code;
         }
 
+        @SuppressWarnings("unused")
         @StringRes
         public int getDescriptionId()
         {
@@ -72,6 +73,7 @@ public class PrivacyPolicyStatusMsg extends ISCPMessage
         return CODE + "[" + getData() + "]";
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isPolicySet(Status s)
     {
         if (getData() == null || getData().length() < 3)

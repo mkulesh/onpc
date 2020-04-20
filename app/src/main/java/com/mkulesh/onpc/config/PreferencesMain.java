@@ -32,6 +32,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
                 android.R.id.content, new MyPreferenceFragment()).commit();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static class MyPreferenceFragment extends PreferenceFragmentCompat
     {
         @Override
@@ -45,6 +46,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static void prepareListPreference(final ListPreference listPreference, final Activity activity)
     {
         if (listPreference == null)

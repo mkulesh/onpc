@@ -103,6 +103,7 @@ class MultiroomManager
             final int myGroupId)
     {
         final ViewGroup dummyView = null;
+        //noinspection ConstantConditions
         final MultiroomDeviceItem view = (MultiroomDeviceItem) activity.getLayoutInflater().inflate(
                 R.layout.multiroom_device_item, dummyView, false);
 

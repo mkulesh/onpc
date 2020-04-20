@@ -73,6 +73,7 @@ abstract public class BaseFragment extends Fragment
         buttonMarginVertical = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_vertical);
     }
 
+    @SuppressWarnings("SameParameterValue")
     void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutPort, int layoutLand)
     {
         activity = (MainActivity) getActivity();
@@ -262,6 +263,7 @@ abstract public class BaseFragment extends Fragment
         return false;
     }
 
+    @SuppressWarnings("WeakerAccess")
     @NonNull
     protected String getStringValue(@StringRes int descriptionId)
     {

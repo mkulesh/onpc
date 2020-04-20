@@ -51,6 +51,7 @@ public class DirectCommandMsg extends ISCPMessage
             return code;
         }
 
+        @SuppressWarnings("unused")
         @StringRes
         public int getDescriptionId()
         {
