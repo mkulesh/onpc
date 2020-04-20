@@ -389,7 +389,9 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             if (Configuration.ENABLE_MOCKUP)
             {
                 stateHolder.setStateManager(new StateManager(connectionState, this, zone));
-                updateConfiguration(stateHolder.getState());
+                final State s = stateHolder.getState();
+                s.createDefaultReceiverInfo(this);
+                updateConfiguration(s);
                 return true;
             }
             else if (deviceList.isActive() && connectToAnyInErrorCase)

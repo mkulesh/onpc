@@ -102,8 +102,8 @@ public class State
     public Map<String, String> deviceProperties = new HashMap<>();
     public HashMap<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
     private final int activeZone;
-    List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
-    public final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    private List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
+    private final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
     private Set<String> controlList = new HashSet<>();
     public HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
@@ -301,15 +301,18 @@ public class State
     public void createDefaultReceiverInfo(final Context context)
     {
         // By default, add all possible device selectors
-        deviceSelectors.clear();
-        for (InputSelectorMsg.InputType it : InputSelectorMsg.InputType.values())
+        synchronized (deviceSelectors)
         {
-            if (it != InputSelectorMsg.InputType.NONE)
+            deviceSelectors.clear();
+            for (InputSelectorMsg.InputType it : InputSelectorMsg.InputType.values())
             {
-                final ReceiverInformationMsg.Selector s = new ReceiverInformationMsg.Selector(
-                        it.getCode(), context.getString(it.getDescriptionId()),
-                        ReceiverInformationMsg.ALL_ZONE, it.getCode(), false);
-                deviceSelectors.add(s);
+                if (it != InputSelectorMsg.InputType.NONE)
+                {
+                    final ReceiverInformationMsg.Selector s = new ReceiverInformationMsg.Selector(
+                            it.getCode(), context.getString(it.getDescriptionId()),
+                            ReceiverInformationMsg.ALL_ZONE, it.getCode(), false);
+                    deviceSelectors.add(s);
+                }
             }
         }
         // Add default bass and treble limits
@@ -581,12 +584,15 @@ public class State
             deviceProperties = msg.getDeviceProperties();
             networkServices = msg.getNetworkServices();
             zones = msg.getZones();
-            deviceSelectors.clear();
-            for (ReceiverInformationMsg.Selector s : msg.getDeviceSelectors())
+            synchronized (deviceSelectors)
             {
-                if (s.isActiveForZone(activeZone))
+                deviceSelectors.clear();
+                for (ReceiverInformationMsg.Selector s : msg.getDeviceSelectors())
                 {
-                    deviceSelectors.add(s);
+                    if (s.isActiveForZone(activeZone))
+                    {
+                        deviceSelectors.add(s);
+                    }
                 }
             }
             controlList = msg.getControlList();
@@ -600,6 +606,14 @@ public class State
             Logging.info(msg, "Can not parse XML: " + e.getLocalizedMessage());
         }
         return false;
+    }
+
+    public List<ReceiverInformationMsg.Selector> cloneDeviceSelectors()
+    {
+        synchronized (deviceSelectors)
+        {
+            return new ArrayList<>(deviceSelectors);
+        }
     }
 
     private boolean process(FriendlyNameMsg msg)
@@ -1130,11 +1144,14 @@ public class State
 
     public ReceiverInformationMsg.Selector getActualSelector()
     {
-        for (ReceiverInformationMsg.Selector s : deviceSelectors)
+        synchronized (deviceSelectors)
         {
-            if (s.getId().equals(inputType.getCode()))
+            for (ReceiverInformationMsg.Selector s : deviceSelectors)
             {
-                return s;
+                if (s.getId().equals(inputType.getCode()))
+                {
+                    return s;
+                }
             }
         }
         return null;

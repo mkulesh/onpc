@@ -48,10 +48,6 @@ class MockupState extends State
         networkServices.put("18", new ReceiverInformationMsg.NetworkService("18", "Airplay"   ,1, false, false));
         networkServices.put("1B", new ReceiverInformationMsg.NetworkService("1B", "Tidal"     ,1, false, false));
         networkServices.put("1D", new ReceiverInformationMsg.NetworkService("1D", "Play Queue",1, false, false));
-        zones = ReceiverInformationMsg.getDefaultZones();
-        deviceSelectors.add(new ReceiverInformationMsg.Selector("2B", "Network", 1, "2B", false));
-        deviceSelectors.add(new ReceiverInformationMsg.Selector("29", "Front USB", 1, "29", true));
-        deviceSelectors.add(new ReceiverInformationMsg.Selector("2A", "Rear USB", 1, "2A", true));
         inputType = InputSelectorMsg.InputType.NET;
         dimmerLevel = DimmerLevelMsg.Level.DIM;
         digitalFilter = DigitalFilterMsg.Filter.F01;

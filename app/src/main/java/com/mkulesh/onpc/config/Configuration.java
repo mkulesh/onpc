@@ -237,10 +237,11 @@ public class Configuration
             Logging.info(this, "Network services: " + str.toString());
             prefEditor.putString(NETWORK_SERVICES, str.toString());
         }
-        if (!state.deviceSelectors.isEmpty())
+        List<ReceiverInformationMsg.Selector> deviceSelectors = state.cloneDeviceSelectors();
+        if (!deviceSelectors.isEmpty())
         {
             final StringBuilder str = new StringBuilder();
-            for (ReceiverInformationMsg.Selector d : state.deviceSelectors)
+            for (ReceiverInformationMsg.Selector d : deviceSelectors)
             {
                 if (!str.toString().isEmpty())
                 {
@@ -423,7 +424,7 @@ public class Configuration
     }
 
     @NonNull
-    static String getMasterVolumeMaxParameter(final SharedPreferences p)
+    private static String getMasterVolumeMaxParameter(final SharedPreferences p)
     {
         return Configuration.MASTER_VOLUME_MAX + "_" + p.getString(MODEL, "NONE");
     }

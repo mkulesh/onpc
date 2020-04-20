@@ -276,7 +276,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private void updateSelectorButtons(@NonNull final State state)
     {
         selectorPaletteLayout.removeAllViews();
-        if (state.deviceSelectors.isEmpty())
+        List<ReceiverInformationMsg.Selector> deviceSelectors = state.cloneDeviceSelectors();
+        if (deviceSelectors.isEmpty())
         {
             return;
         }
@@ -294,7 +295,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         // Selectors
         AppCompatButton selectedButton = null;
         for (ReceiverInformationMsg.Selector s : activity.getConfiguration().getSortedDeviceSelectors(
-                false, state.inputType, state.deviceSelectors))
+                false, state.inputType, deviceSelectors))
         {
             final InputSelectorMsg msg = new InputSelectorMsg(state.getActiveZone(), s.getId());
             if (msg.getInputType() == InputSelectorMsg.InputType.NONE)
