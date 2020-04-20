@@ -65,12 +65,6 @@ public class PrivacyPolicyStatusMsg extends ISCPMessage
         status = (Status) searchParameter(data, Status.values(), Status.NONE);
     }
 
-    public PrivacyPolicyStatusMsg(Status level)
-    {
-        super(0, level.getCode());
-        this.status = level;
-    }
-
     @NonNull
     @Override
     public String toString()

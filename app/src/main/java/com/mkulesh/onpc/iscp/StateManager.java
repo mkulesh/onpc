@@ -486,16 +486,21 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             return true;
         }
 
+        // check privacy policy but do not accept it automatically
         if (msg instanceof PrivacyPolicyStatusMsg)
         {
-            final PrivacyPolicyStatusMsg pMsg = (PrivacyPolicyStatusMsg) msg;
-            if (!pMsg.isPolicySet(PrivacyPolicyStatusMsg.Status.GOOGLE))
+            final PrivacyPolicyStatusMsg ppMsg = (PrivacyPolicyStatusMsg) msg;
+            if (!ppMsg.isPolicySet(PrivacyPolicyStatusMsg.Status.ONKYO))
             {
-                sendMessage(new PrivacyPolicyStatusMsg(PrivacyPolicyStatusMsg.Status.GOOGLE));
+                Logging.info(this, "ONKYO policy is not accepted");
             }
-            if (!pMsg.isPolicySet(PrivacyPolicyStatusMsg.Status.SUE))
+            if (!ppMsg.isPolicySet(PrivacyPolicyStatusMsg.Status.GOOGLE))
             {
-                sendMessage(new PrivacyPolicyStatusMsg(PrivacyPolicyStatusMsg.Status.SUE));
+                Logging.info(this, "GOOGLE policy is not accepted");
+            }
+            if (!ppMsg.isPolicySet(PrivacyPolicyStatusMsg.Status.SUE))
+            {
+                Logging.info(this, "SUE policy is not accepted");
             }
         }
 
