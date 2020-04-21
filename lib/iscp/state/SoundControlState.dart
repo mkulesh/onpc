@@ -117,11 +117,6 @@ class SoundControlState
         {
             cmd.add(DirectCommandMsg.CODE);
         }
-
-        // Some old receivers need two requests for MasterVolumeMsg
-        {
-            cmd.add(MasterVolumeMsg.ZONE_COMMANDS[zone]);
-        }
         return cmd;
     }
 
