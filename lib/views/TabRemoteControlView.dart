@@ -69,8 +69,8 @@ class TabRemoteControlView extends UpdatableView
         ]));
         topRows.add(TableRow(children: [
             SizedBox.shrink(),
-            _buildBtn(_setupQuickCmd),
             _buildBtn(_setupSetupCmd),
+            _buildBtn(_setupQuickCmd),
             _buildBtn(_setupExitCmd),
             SizedBox.shrink()
         ]));
