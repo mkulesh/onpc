@@ -88,6 +88,10 @@ class ReceiverInformation
     String get googleCastVersion
     => _googleCastVersion;
 
+    // Default tone control
+    static final ToneControl DEFAULT_BASS_CONTROL = ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2);
+    static final ToneControl DEFAULT_TREBLE_CONTROL = ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
+
     ReceiverInformation()
     {
         clear();
@@ -136,10 +140,8 @@ class ReceiverInformation
 
         // Add default bass and treble limits
         _toneControls.clear();
-        _toneControls[ToneCommandMsg.BASS_KEY] =
-            ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2);
-        _toneControls[ToneCommandMsg.TREBLE_KEY] =
-            ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
+        _toneControls[ToneCommandMsg.BASS_KEY] = DEFAULT_BASS_CONTROL;
+        _toneControls[ToneCommandMsg.TREBLE_KEY] = DEFAULT_TREBLE_CONTROL;
         _toneControls[SubwooferLevelCommandMsg.KEY] =
             ToneControl(SubwooferLevelCommandMsg.KEY, -15, 12, 1);
         _toneControls[CenterLevelCommandMsg.KEY] =

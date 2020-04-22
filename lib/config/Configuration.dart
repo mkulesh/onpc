@@ -151,6 +151,15 @@ class Configuration
     bool get friendlyNames
     => _friendlyNames;
 
+    static const Pair<String, String> MODEL = Pair<String, String>("model", "NONE");
+
+    static const String NETWORK_SERVICES = "network_services";
+    static const String SELECTED_NETWORK_SERVICES = "selected_network_services";
+
+    static const String DEVICE_SELECTORS = "device_selectors";
+    static const String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
+
+    // Audio control
     static const Pair<String, String> SOUND_CONTROL = Pair<String, String>("sound_control", Strings.pref_sound_control_default);
     String _soundControl;
 
@@ -162,14 +171,6 @@ class Configuration
         _soundControl = value;
         _saveStringParameter(Configuration.SOUND_CONTROL, value);
     }
-
-    static const Pair<String, String> MODEL = Pair<String, String>("model", "NONE");
-
-    static const String NETWORK_SERVICES = "network_services";
-    static const String SELECTED_NETWORK_SERVICES = "selected_network_services";
-
-    static const String DEVICE_SELECTORS = "device_selectors";
-    static const String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
 
     static const List<ListeningMode> DEFAULT_LISTENING_MODES = [
         ListeningMode.MODE_00,
@@ -183,6 +184,12 @@ class Configuration
         ListeningMode.MODE_82
     ];
     static const String SELECTED_LISTENING_MODES = "selected_listening_modes";
+
+    static const Pair<String, bool> FORCE_AUDIO_CONTROL = Pair<String, bool>("force_audio_control", false);
+    bool _forceAudioControl;
+
+    bool get isForceAudioControl
+    => _forceAudioControl;
 
     // Remote interface
     static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", false);
@@ -264,7 +271,10 @@ class Configuration
         // Device options
         _autoPower = getBool(AUTO_POWER, doLog: true);
         _friendlyNames = getBool(FRIENDLY_NAMES, doLog: true);
+
+        // Audio control
         _soundControl = getString(SOUND_CONTROL, doLog: true);
+        _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
 
         // Remote interface
         _riAmp = getBool(RI_AMP, doLog: true);

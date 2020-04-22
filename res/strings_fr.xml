@@ -102,6 +102,8 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="pref_friendly_names_summary_on">Utilise les noms personalisés émis par le dispositif</string>
     <string name="pref_friendly_names_summary_off">Utilise les noms génériques</string>
 
+    <string name="pref_force_audio_control">Contrôle audio toujours disponible</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Contrôle du son</string>
     <string-array name="pref_sound_control_names">
@@ -537,7 +539,6 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="error_invalid_device_address">Nom ou port du dispositif invalide</string>
     <string name="error_connection_no_network">Pas de connexion réseau</string>
     <string name="error_connection_no_wifi">Pas de connexion Wi-Fi. Merci d\'entrer l\'IP et port du dispositif manuellement</string>
-    <string name="error_connection_no_device">Dispositif distant non trouvé</string>
     <string name="error_connection_no_response">Dispositif distant %s ne répond pas</string>
 
 </resources>

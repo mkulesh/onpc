@@ -17,6 +17,7 @@ import "dart:math";
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 
+import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
@@ -28,6 +29,7 @@ import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/SubwooferLevelCommandMsg.dart";
 import "../iscp/messages/ToneCommandMsg.dart";
+import "../iscp/state/ReceiverInformation.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
@@ -41,6 +43,7 @@ class AudioControlView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         MasterVolumeMaxView.VOLUME_MAX_EVENT,
         StateManager.WAITING_FOR_DATA_EVENT,
+        Configuration.CONFIGURATION_EVENT,
         MasterVolumeMsg.CODE,
         ToneCommandMsg.CODE,
         DirectCommandMsg.CODE,
@@ -159,10 +162,14 @@ class AudioControlView extends UpdatableView
         );
     }
 
-    Widget _createControl(final String key, final int toneLevel, final int noLevel, final String caption)
+    Widget _createControl(final String key, final int toneLevel, final int noLevel, final String caption, {ToneControl defToneControl})
     {
         final int zone = state.getActiveZone;
-        final ToneControl toneControl = state.receiverInformation.toneControls[key];
+        ToneControl toneControl = state.receiverInformation.toneControls[key];
+        if (toneControl == null)
+        {
+            toneControl = defToneControl;
+        }
         if (toneControl != null && toneLevel != noLevel)
         {
             final double step = toneControl.getStep == 0 ? 0.5 : toneControl.getStep.toDouble();
@@ -206,14 +213,16 @@ class AudioControlView extends UpdatableView
     {
         // Bass
         final Widget bassControl = _createControl(ToneCommandMsg.BASS_KEY,
-            soundControl.bassLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_bass);
+            soundControl.bassLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_bass,
+            defToneControl: configuration.isForceAudioControl ? ReceiverInformation.DEFAULT_BASS_CONTROL : null);
         if (bassControl != null)
         {
             controls.add(bassControl);
         }
         // Treble
         final Widget trebleControl = _createControl(ToneCommandMsg.TREBLE_KEY,
-            soundControl.trebleLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_treble);
+            soundControl.trebleLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_treble,
+            defToneControl: configuration.isForceAudioControl ? ReceiverInformation.DEFAULT_TREBLE_CONTROL : null);
         if (trebleControl != null)
         {
             controls.add(trebleControl);

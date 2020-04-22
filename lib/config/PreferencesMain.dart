@@ -109,6 +109,18 @@ class _PreferencesMainState extends State<PreferencesMain>
             Configuration.FRIENDLY_NAMES,
             icon: Drawables.pref_friendly_name,
             desc: Strings.pref_friendly_names_summary_on));
+        elements.add(_customPreferenceScreen(td,
+            Strings.pref_device_selectors,
+            icon: Drawables.pref_device_selectors,
+            activity: Activities.activity_device_selectors));
+        elements.add(_customPreferenceScreen(td,
+            Strings.pref_network_services,
+            icon: Drawables.pref_network_services,
+            activity: Activities.activity_network_services));
+
+        // Audio control
+        elements.add(CustomDivider());
+        elements.add(PreferenceTitle(Strings.audio_control));
         elements.add(_customDropdownPreference(td,
             Strings.pref_sound_control,
             Configuration.SOUND_CONTROL,
@@ -123,17 +135,13 @@ class _PreferencesMainState extends State<PreferencesMain>
                 });
             }));
         elements.add(_customPreferenceScreen(td,
-            Strings.pref_device_selectors,
-            icon: Drawables.pref_device_selectors,
-            activity: Activities.activity_device_selectors));
-        elements.add(_customPreferenceScreen(td,
             Strings.pref_listening_modes,
             icon: Drawables.pref_listening_modes,
             activity: Activities.activity_listening_modes));
-        elements.add(_customPreferenceScreen(td,
-            Strings.pref_network_services,
-            icon: Drawables.pref_network_services,
-            activity: Activities.activity_network_services));
+        elements.add(_customSwitchPreference(td,
+            Strings.pref_force_audio_control,
+            Configuration.FORCE_AUDIO_CONTROL,
+            icon: Drawables.volume_audio_control));
 
         // Remote interface
         elements.add(CustomDivider());

@@ -107,6 +107,8 @@ Enjoy!""</string>
     <string name="pref_friendly_names_summary_on">Use friendly names provided by remote device</string>
     <string name="pref_friendly_names_summary_off">Use build-in names</string>
 
+    <string name="pref_force_audio_control">Audio control always available</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Sound control</string>
     <string-array name="pref_sound_control_names">
@@ -581,7 +583,6 @@ Enjoy!""</string>
     <string name="error_invalid_device_address">Invalid device name or port</string>
     <string name="error_connection_no_network">No connection to the network</string>
     <string name="error_connection_no_wifi">No connection to Wi-Fi. Please input remote device IP and port manually</string>
-    <string name="error_connection_no_device">Remote device not found</string>
     <string name="error_connection_no_response">Remote device %s not responding</string>
 
 </resources>

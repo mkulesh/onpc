@@ -13,6 +13,7 @@
 
 import "package:flutter/material.dart";
 
+import "../config/Configuration.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/AudioControlDialog.dart";
@@ -30,6 +31,7 @@ class DeviceVolumeButtonsView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
+        Configuration.CONFIGURATION_EVENT,
         PowerStatusMsg.CODE,
         AudioMutingMsg.CODE,
         MasterVolumeMsg.CODE

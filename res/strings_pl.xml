@@ -105,6 +105,8 @@ Enjoy!""</string>
     <string name="pref_friendly_names_summary_on">Używaj nazwy dostarczonej przez zdalne urządzenie</string>
     <string name="pref_friendly_names_summary_off">Użyj wbudowanych nazw</string>
 
+    <string name="pref_force_audio_control">Kontrola audio zawsze dostępna</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Kontrola dźwięku</string>
     <string-array name="pref_sound_control_names">
@@ -539,7 +541,6 @@ Enjoy!""</string>
     <string name="error_invalid_device_address">Nieprawidłowa nazwa urządzenia lub port</string>
     <string name="error_connection_no_network">Brak połączenia z siecią</string>
     <string name="error_connection_no_wifi">Brak połączenia z Wi-Fi. Wprowadź ręcznie adres IP i port urządzenia zdalnego</string>
-    <string name="error_connection_no_device">Nie znaleziono urządzenia zdalnego</string>
     <string name="error_connection_no_response">Urządzenie zdalne %s nie odpowiada</string>
 
 </resources>

@@ -597,6 +597,14 @@ Enjoy!"""];
         /*pl*/ "Użyj wbudowanych nazw"];
     static String get pref_friendly_names_summary_off => l_pref_friendly_names_summary_off[_language];
 
+    static const List<String> l_pref_force_audio_control = [
+        /*en*/ "Audio control always available",
+        /*ru*/ "Контроль звука всегда доступен",
+        /*de*/ "Audiosteuerung immer verfügbar",
+        /*fr*/ "Contrôle audio toujours disponible",
+        /*pl*/ "Kontrola audio zawsze dostępna"];
+    static String get pref_force_audio_control => l_pref_force_audio_control[_language];
+
     static const List<String> l_pref_sound_control = [
         /*en*/ "Sound control",
         /*ru*/ "Управление звуком",
@@ -3364,14 +3372,6 @@ Enjoy!"""];
         /*fr*/ "Pas de connexion Wi-Fi. Merci d\'entrer l\'IP et port du dispositif manuellement",
         /*pl*/ "Brak połączenia z Wi-Fi. Wprowadź ręcznie adres IP i port urządzenia zdalnego"];
     static String get error_connection_no_wifi => l_error_connection_no_wifi[_language];
-
-    static const List<String> l_error_connection_no_device = [
-        /*en*/ "Remote device not found",
-        /*ru*/ "Устройство не найдено",
-        /*de*/ "Onkyo Gerät nicht gefunden",
-        /*fr*/ "Dispositif distant non trouvé",
-        /*pl*/ "Nie znaleziono urządzenia zdalnego"];
-    static String get error_connection_no_device => l_error_connection_no_device[_language];
 
     static const List<String> l_error_connection_no_response = [
         /*en*/ "Remote device %s not responding",

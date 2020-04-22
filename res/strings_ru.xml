@@ -103,6 +103,8 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="pref_friendly_names_summary_on">Использовать удобные названия, предоставленные удалённым устройством</string>
     <string name="pref_friendly_names_summary_off">Использовать встроенные названия</string>
 
+    <string name="pref_force_audio_control">Контроль звука всегда доступен</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Управление звуком</string>
     <string-array name="pref_sound_control_names">
@@ -536,7 +538,6 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="error_invalid_device_address">Неправильный адрес устройства или порт</string>
     <string name="error_connection_no_network">Нет соединения с сетью</string>
     <string name="error_connection_no_wifi">Нет подключения к Wi-Fi. Введите адрес и порт устройства вручную</string>
-    <string name="error_connection_no_device">Устройство не найдено</string>
     <string name="error_connection_no_response">Устойство %s не отвечает</string>
 
 </resources>

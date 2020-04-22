@@ -103,6 +103,8 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="pref_friendly_names_summary_on">Lesbare Namen vom Onkyo-Gerät nutzen</string>
     <string name="pref_friendly_names_summary_off">Namen des Protokolls nutzen</string>
 
+    <string name="pref_force_audio_control">Audiosteuerung immer verfügbar</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Lautstärkekontrolle</string>
     <string-array name="pref_sound_control_names">
@@ -538,7 +540,6 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="error_invalid_device_address">Ungültiger Gerätename oder Port</string>
     <string name="error_connection_no_network">Keine Verbindung zum Netzwerk</string>
     <string name="error_connection_no_wifi">Keine WLAN Verbindung, bitte IP und Port manuell eingeben</string>
-    <string name="error_connection_no_device">Onkyo Gerät nicht gefunden</string>
     <string name="error_connection_no_response">Onkyo Gerät %s antwortet nicht</string>
 
 </resources>

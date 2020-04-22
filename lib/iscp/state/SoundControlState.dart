@@ -92,6 +92,20 @@ class SoundControlState
     EnumItem<ListeningMode> get listeningMode
     => _listeningMode;
 
+    // Force audio control
+    bool _forceAudioControl = false;
+
+    set forceAudioControl(bool value)
+    {
+        _forceAudioControl = value;
+        if (value)
+        {
+            _volumeLevel = _volumeLevel == MasterVolumeMsg.NO_LEVEL ? 0 : _volumeLevel;
+            _bassLevel = _bassLevel == ToneCommandMsg.NO_LEVEL ? 0 : _bassLevel;
+            _trebleLevel = _trebleLevel == ToneCommandMsg.NO_LEVEL ? 0 : _trebleLevel;
+        }
+    }
+
     SoundControlState()
     {
         clear();
@@ -123,9 +137,9 @@ class SoundControlState
     clear()
     {
         _audioMuting = AudioMutingMsg.ValueEnum.defValue;
-        _volumeLevel = MasterVolumeMsg.NO_LEVEL;
-        _bassLevel = ToneCommandMsg.NO_LEVEL;
-        _trebleLevel = ToneCommandMsg.NO_LEVEL;
+        _volumeLevel = _forceAudioControl ? 0 : MasterVolumeMsg.NO_LEVEL;
+        _bassLevel = _forceAudioControl ? 0 : ToneCommandMsg.NO_LEVEL;
+        _trebleLevel = _forceAudioControl ? 0 : ToneCommandMsg.NO_LEVEL;
         _toneDirect = DirectCommandMsg.ValueEnum.defValue;
         _subwooferLevel = SubwooferLevelCommandMsg.NO_LEVEL;
         _subwooferCmdLength = SubwooferLevelCommandMsg.NO_LEVEL;
