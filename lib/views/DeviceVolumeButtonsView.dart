@@ -84,7 +84,7 @@ class DeviceVolumeButtonsView extends UpdatableView
                 soundControl.volumeLevel, state.getActiveZoneInfo);
 
             buttons.insert(2, CustomImageButton.normal(
-                Drawables.volume_amp_slider,
+                Drawables.volume_audio_control,
                 Strings.audio_control,
                 text: volumeValid ? volumeLevel : "",
                 onPressed: ()
