@@ -102,7 +102,7 @@
         <item>Brak</item>
         <item>Wzmacniacz zewnętrzny (RI)</item>
         <item>Urządzenie</item>
-        <item>Urządzenie (Slider)</item>
+        <item>Urządzenie (Suwak)</item>
         <item>Automatyczna</item>
     </string-array>
 
@@ -209,16 +209,16 @@
     <string name="master_volume_up1">Głośniej o 1dB</string>
     <string name="master_volume_down1">Ciszej o 1dB</string>
     <string name="tone_direct">Tone Direct</string>
-    <string name="master_volume_restrict">Restrict volume level</string>
-    <string name="master_volume_max">Maximum</string>
+    <string name="master_volume_restrict">Ogranicz poziom głośności</string>
+    <string name="master_volume_max">Maksymalny</string>
 
     <!-- Preset Command  -->
-    <string name="preset_command_up">Zapamiętane "+"</string>
-    <string name="preset_command_down">Zapamiętane "-"</string>
+    <string name="preset_command_up">Zapamiętane \"+\"</string>
+    <string name="preset_command_down">Zapamiętane \"-\"</string>
 
     <!-- Tuning Command  -->
-    <string name="tuning_command_up">Strojenie "+"</string>
-    <string name="tuning_command_down">Strojenie "-"</string>
+    <string name="tuning_command_up">Strojenie \"+\"</string>
+    <string name="tuning_command_down">Strojenie \"-\"</string>
 
         <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Play</string>
@@ -268,7 +268,7 @@
     <string name="cmd_description_memory">Pamięć(Dodaj ulubione)</string>
     <string name="cmd_description_f1">Positive Feed Lub Zaznacz/Odznacz</string>
     <string name="cmd_description_f2">Negative Feed</string>
-    <string name="cmd_description_sort">Sort</string>
+    <string name="cmd_description_sort">Sortować</string>
     <string name="cmd_track_menu">Menu utworów</string>
 
     <!-- Media list tab -->
@@ -276,7 +276,7 @@
     <string name="medialist_processing">Przetwarzanie…</string>
     <string name="medialist_playback_mode">Tryb odtwarzania</string>
     <string name="medialist_no_items">Brak listy</string>
-    <string name="medialist_filter">Filter items</string>
+    <string name="medialist_filter">Filtruj elementy</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>
