@@ -1129,8 +1129,8 @@ Enjoy!"""];
         /*en*/ "Restrict volume level",
         /*ru*/ "Ограничить максимальную громкость",
         /*de*/ "Lautstärke einschränken",
-        /*fr*/ "Restrict volume level",
-        /*pl*/ "Restrict volume level"];
+        /*fr*/ "Restreindre le volume",
+        /*pl*/ "Ogranicz poziom głośności"];
     static String get master_volume_restrict => l_master_volume_restrict[_language];
 
     static const List<String> l_master_volume_max = [
@@ -1138,7 +1138,7 @@ Enjoy!"""];
         /*ru*/ "Максимум",
         /*de*/ "Maximum",
         /*fr*/ "Maximum",
-        /*pl*/ "Maximum"];
+        /*pl*/ "Maksymalny"];
     static String get master_volume_max => l_master_volume_max[_language];
 
     static const List<String> l_preset_command_up = [
@@ -1554,7 +1554,7 @@ Enjoy!"""];
         /*ru*/ "Сортировать",
         /*de*/ "Sortierung",
         /*fr*/ "Ordre de sélection",
-        /*pl*/ "Sort"];
+        /*pl*/ "Sortować"];
     static String get cmd_description_sort => l_cmd_description_sort[_language];
 
     static const List<String> l_cmd_track_menu = [
@@ -1601,8 +1601,8 @@ Enjoy!"""];
         /*en*/ "Filter items",
         /*ru*/ "Фильтровать список",
         /*de*/ "Elemente filtern",
-        /*fr*/ "Filter items",
-        /*pl*/ "Filter items"];
+        /*fr*/ "Filtrer les éléments",
+        /*pl*/ "Filtruj elementy"];
     static String get medialist_filter => l_medialist_filter[_language];
 
     static const List<String> l_input_selector_video1 = [
@@ -3402,12 +3402,12 @@ Enjoy!"""];
         /*fr*/ ["Aucun",
                 "Amplificateur Externe (RI)",
                 "Dispositif",
-                "Dispositif (Slider)",
+                "Dispositif (Glissière)",
                 "Automatique"],
         /*pl*/ ["Brak",
                 "Wzmacniacz zewnętrzny (RI)",
                 "Urządzenie",
-                "Urządzenie (Slider)",
+                "Urządzenie (Suwak)",
                 "Automatyczna"]];
     static List<String> get pref_sound_control_names => l_pref_sound_control_names[_language];
 

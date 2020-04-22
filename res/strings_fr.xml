@@ -108,7 +108,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
         <item>Aucun</item>
         <item>Amplificateur Externe (RI)</item>
         <item>Dispositif</item>
-        <item>Dispositif (Slider)</item>
+        <item>Dispositif (Glissière)</item>
         <item>Automatique</item>
     </string-array>
 
@@ -216,7 +216,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="master_volume_up1">Augmentation volume d\'1dB</string>
     <string name="master_volume_down1">Diminution volume d\'1dB</string>
     <string name="tone_direct">DIRECT</string>
-    <string name="master_volume_restrict">Restrict volume level</string>
+    <string name="master_volume_restrict">Restreindre le volume</string>
     <string name="master_volume_max">Maximum</string>
 
     <!-- Preset Command  -->
@@ -283,7 +283,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="medialist_processing">Traitement…</string>
     <string name="medialist_playback_mode">Mode de lécture</string>
     <string name="medialist_no_items">Pas d\'éléments</string>
-    <string name="medialist_filter">Filter items</string>
+    <string name="medialist_filter">Filtrer les éléments</string>
 
     <!-- Input selectors -->
     <string name="input_selector_video1">VCR/DVR</string>
