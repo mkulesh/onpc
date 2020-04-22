@@ -159,7 +159,7 @@ class AudioControlManager
         prepareToneControl(
                 state, CenterLevelCommandMsg.KEY, centerLevelGroup, R.string.center_level);
 
-        audioControlDialog = createDialog(frameView, R.drawable.volume_amp_slider, R.string.audio_control);
+        audioControlDialog = createDialog(frameView, R.drawable.volume_audio_control, R.string.audio_control);
         audioControlDialog.setOnDismissListener((d) ->
         {
             Logging.info(this, "closing audio control dialog");
