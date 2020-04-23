@@ -105,7 +105,7 @@ public class State
     private List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     private final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
     private Set<String> controlList = new HashSet<>();
-    public HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
+    private HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
     //Common
     PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
@@ -188,6 +188,13 @@ public class State
 
     // Popup
     public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
+
+    // Default tone control
+    private static final ReceiverInformationMsg.ToneControl DEFAULT_BASS_CONTROL =
+            new ReceiverInformationMsg.ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2);
+
+    private static final ReceiverInformationMsg.ToneControl DEFAULT_TREBLE_CONTROL =
+            new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
 
     State(final String host, int activeZone)
     {
@@ -298,7 +305,7 @@ public class State
         return "";
     }
 
-    public void createDefaultReceiverInfo(final Context context)
+    public void createDefaultReceiverInfo(final Context context, final boolean forceAudioControl)
     {
         // By default, add all possible device selectors
         synchronized (deviceSelectors)
@@ -317,16 +324,39 @@ public class State
         }
         // Add default bass and treble limits
         toneControls.clear();
-        toneControls.put(ToneCommandMsg.BASS_KEY,
-                new ReceiverInformationMsg.ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2));
-        toneControls.put(ToneCommandMsg.TREBLE_KEY,
-                new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2));
+        toneControls.put(ToneCommandMsg.BASS_KEY, DEFAULT_BASS_CONTROL);
+        toneControls.put(ToneCommandMsg.TREBLE_KEY, DEFAULT_TREBLE_CONTROL);
         toneControls.put(SubwooferLevelCommandMsg.KEY,
                 new ReceiverInformationMsg.ToneControl(SubwooferLevelCommandMsg.KEY, -15, 12, 1));
         toneControls.put(CenterLevelCommandMsg.KEY,
                 new ReceiverInformationMsg.ToneControl(CenterLevelCommandMsg.KEY, -12, 12, 1));
         // Default zones:
         zones = ReceiverInformationMsg.getDefaultZones();
+        // Audio control
+        if (forceAudioControl)
+        {
+            volumeLevel = volumeLevel == MasterVolumeMsg.NO_LEVEL ? 0 : volumeLevel;
+            bassLevel = bassLevel == ToneCommandMsg.NO_LEVEL ? 0 : bassLevel;
+            trebleLevel = trebleLevel == ToneCommandMsg.NO_LEVEL ? 0 : trebleLevel;
+        }
+    }
+
+    public ReceiverInformationMsg.ToneControl getToneControl(final String toneKey, final boolean forceAudioControl)
+    {
+        final ReceiverInformationMsg.ToneControl cfg = toneControls.get(toneKey);
+        if (cfg != null)
+        {
+            return cfg;
+        }
+        if (forceAudioControl && toneKey.equals(ToneCommandMsg.BASS_KEY))
+        {
+            return DEFAULT_BASS_CONTROL;
+        }
+        if (forceAudioControl && toneKey.equals(ToneCommandMsg.TREBLE_KEY))
+        {
+            return DEFAULT_TREBLE_CONTROL;
+        }
+        return null;
     }
 
     boolean isControlExists(@NonNull final String control)

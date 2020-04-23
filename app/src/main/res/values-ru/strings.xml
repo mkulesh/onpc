@@ -99,6 +99,8 @@
     <string name="pref_friendly_names_summary_on">Использовать удобные названия, предоставленные удалённым устройством</string>
     <string name="pref_friendly_names_summary_off">Использовать встроенные названия</string>
 
+    <string name="pref_force_audio_control">Контроль звука всегда доступен</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Управление звуком</string>
     <string-array name="pref_sound_control_names">

@@ -96,6 +96,8 @@
     <string name="pref_friendly_names_summary_on">Lesbare Namen vom Onkyo-Gerät nutzen</string>
     <string name="pref_friendly_names_summary_off">Namen des Protokolls nutzen</string>
 
+    <string name="pref_force_audio_control">Audiosteuerung immer verfügbar</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Lautstärkekontrolle</string>
     <string-array name="pref_sound_control_names">

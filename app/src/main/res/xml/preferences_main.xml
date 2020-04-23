@@ -30,7 +30,7 @@
         android:entryValues="@array/pref_language_codes"
         android:key="app_language"
         android:summary="%s"
-        android:title="@string/pref_language"/>
+        android:title="@string/pref_language" />
 
     <PreferenceCategory android:title="@string/pref_category_device_options">
 
@@ -50,15 +50,6 @@
             android:summaryOn="@string/pref_friendly_names_summary_on"
             android:summaryOff="@string/pref_friendly_names_summary_off" />
 
-        <ListPreference
-            app:icon="@drawable/pref_sound_control"
-            android:defaultValue="@string/pref_sound_control_default"
-            android:entries="@array/pref_sound_control_names"
-            android:entryValues="@array/pref_sound_control_codes"
-            android:key="sound_control"
-            android:summary="%s"
-            android:title="@string/pref_sound_control" />
-
         <PreferenceScreen
             app:icon="@drawable/pref_device_selectors"
             android:icon="@null"
@@ -71,6 +62,29 @@
         </PreferenceScreen>
 
         <PreferenceScreen
+            app:icon="@drawable/pref_network_services"
+            android:key="network_services"
+            android:title="@string/pref_network_services">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.mkulesh.onpc"
+                android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices" />
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/audio_control">
+
+        <ListPreference
+            app:icon="@drawable/pref_sound_control"
+            android:defaultValue="@string/pref_sound_control_default"
+            android:entries="@array/pref_sound_control_names"
+            android:entryValues="@array/pref_sound_control_codes"
+            android:key="sound_control"
+            android:summary="%s"
+            android:title="@string/pref_sound_control" />
+
+        <PreferenceScreen
             app:icon="@drawable/pref_listening_modes"
             android:key="listening_modes"
             android:title="@string/pref_listening_modes">
@@ -80,15 +94,12 @@
                 android:targetClass="com.mkulesh.onpc.config.PreferencesListeningModes" />
         </PreferenceScreen>
 
-        <PreferenceScreen
-            app:icon="@drawable/pref_network_services"
-            android:key="network_services"
-            android:title="@string/pref_network_services">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="com.mkulesh.onpc"
-                android:targetClass="com.mkulesh.onpc.config.PreferencesNetworkServices" />
-        </PreferenceScreen>
+        <SwitchPreferenceCompat
+            app:icon="@drawable/volume_audio_control"
+            app:singleLineTitle="false"
+            android:defaultValue="false"
+            android:key="force_audio_control"
+            android:title="@string/pref_force_audio_control" />
 
     </PreferenceCategory>
 

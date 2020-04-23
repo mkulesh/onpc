@@ -58,6 +58,7 @@ class AudioControlManager
 
     private MainActivity activity = null;
     private MasterVolumeInterface masterVolumeInterface = null;
+    private boolean forceAudioControl = false;
     private AlertDialog audioControlDialog = null;
     private LinearLayout volumeGroup = null;
     private LinearLayout toneBassGroup = null;
@@ -70,6 +71,10 @@ class AudioControlManager
     {
         this.activity = activity;
         this.masterVolumeInterface = masterVolumeInterface;
+        if (activity != null)
+        {
+            this.forceAudioControl = activity.getConfiguration().isForceAudioControl();
+        }
     }
 
     boolean isAudioControlEnabled()
@@ -372,7 +377,7 @@ class AudioControlManager
         final AppCompatSeekBar progressBar = group.findViewWithTag("tone_progress_bar");
         progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
-            final ReceiverInformationMsg.ToneControl toneControl = state.toneControls.get(toneKey);
+            final ReceiverInformationMsg.ToneControl toneControl = state.getToneControl(toneKey, forceAudioControl);
             int progressChanged = 0;
 
             private int getScaledProgress()
@@ -431,7 +436,7 @@ class AudioControlManager
                                  int toneLevel, final int noLevel, final int maxZone)
     {
         final AppCompatSeekBar progressBar = group.findViewWithTag("tone_progress_bar");
-        final ReceiverInformationMsg.ToneControl toneControl = state.toneControls.get(toneKey);
+        final ReceiverInformationMsg.ToneControl toneControl = state.getToneControl(toneKey, forceAudioControl);
         final boolean isTone = toneControl != null && toneLevel != noLevel && state.getActiveZone() < maxZone;
         group.setVisibility(isTone ? View.VISIBLE : View.GONE);
         if (isTone)

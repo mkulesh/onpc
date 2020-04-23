@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             // Default receiver information used if ReceiverInformationMsg is missing
             {
                 final State s = stateHolder.getState();
-                s.createDefaultReceiverInfo(this);
+                s.createDefaultReceiverInfo(this, configuration.isForceAudioControl());
                 configuration.setReceiverInformation(s);
             }
             if (!deviceList.isActive())
@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             {
                 stateHolder.setStateManager(new StateManager(connectionState, this, zone));
                 final State s = stateHolder.getState();
-                s.createDefaultReceiverInfo(this);
+                s.createDefaultReceiverInfo(this, configuration.isForceAudioControl());
                 updateConfiguration(s);
                 return true;
             }

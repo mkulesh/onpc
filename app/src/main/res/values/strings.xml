@@ -98,6 +98,8 @@
     <string name="pref_friendly_names_summary_on">Use friendly names provided by remote device</string>
     <string name="pref_friendly_names_summary_off">Use build-in names</string>
 
+    <string name="pref_force_audio_control">Audio control always available</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Sound control</string>
     <string-array name="pref_sound_control_names">

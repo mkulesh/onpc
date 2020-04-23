@@ -86,6 +86,8 @@ public class Configuration
         ListeningModeMsg.Mode.MODE_82
     };
 
+    private static final String FORCE_AUDIO_CONTROL = "force_audio_control";
+
     /*********************************************************
      * Handling of themes
      *********************************************************/
@@ -440,5 +442,10 @@ public class Configuration
         SharedPreferences.Editor prefEditor = preferences.edit();
         prefEditor.putInt(getMasterVolumeMaxParameter(preferences), limit);
         prefEditor.apply();
+    }
+
+    public boolean isForceAudioControl()
+    {
+        return preferences.getBoolean(FORCE_AUDIO_CONTROL, false);
     }
 }

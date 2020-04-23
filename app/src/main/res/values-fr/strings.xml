@@ -96,6 +96,8 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="pref_friendly_names_summary_on">Utilise les noms personalisés émis par le dispositif</string>
     <string name="pref_friendly_names_summary_off">Utilise les noms génériques</string>
 
+    <string name="pref_force_audio_control">Contrôle audio toujours disponible</string>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Contrôle du son</string>
     <string-array name="pref_sound_control_names">
