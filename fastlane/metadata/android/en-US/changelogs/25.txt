@@ -1,0 +1,8 @@
+• Search function and sorting for DLNA server
+• Added master volume slider on LISTEN tab
+• Possibility to restrict the maximum value of the master volume
+• Fixed layout bugs for huge system font size
+• CR-N765: fixed track time seeking problem
+• TX-8390: fixed loosing of login credentials for Deezer and TuneIn
+• TX-RZ900: fixed a bug when center volume and subwoofer sliders disappear if value is changed
+• TX-NR414: added new setting that allows audio control at startup

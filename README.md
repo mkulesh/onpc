@@ -40,6 +40,7 @@ Currently, this app is only tested with following devices:
 - [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
 - [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html)
 - [ONKYO TX-NR686](https://www.eu.onkyo.com/en/products/tx-nr686-148905.html)
+- [ONKYO TX-8390](https://www.eu.onkyo.com/en/products/tx-8390-157594.html)
 - [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
 - [ONKYO RN-855](https://www.de.onkyo.com/de/produkte/r-n855-133057.html)
 - [ONKYO CR-N765](https://www.eu.onkyo.com/en/products/cr-n765-120317.html)
@@ -75,8 +76,9 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 ## Publications:
 
-* [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985/)
+* [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985)
 * [Logo design for Enhanced Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
+* [Первое универсальное приложение «Enhanced Controller for Onkyo and Pioneer»(in Russian)](https://stereo.ru/to/b0erb-pervoe-universalnoe-prilozhenie-enhanced-controller-for-onkyo-and-pioneer)
 
 ## Used Open Source Libraries
 * Material Design Icons: http://materialdesignicons.com
