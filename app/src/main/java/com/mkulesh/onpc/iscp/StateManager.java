@@ -405,8 +405,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             // Send this request first
             final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
                     ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
-            final String toneDirect = state.isControlExists(DirectCommandMsg.CONTROL) ?
-                    DirectCommandMsg.CODE : null;
             final String[] playStateQueries = new String[]{
                     // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
@@ -417,7 +415,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     MusicOptimizerMsg.CODE,
                     AutoPowerMsg.CODE,
                     HdmiCecMsg.CODE,
-                    toneDirect,
                     PhaseMatchingBassMsg.CODE,
                     SleepSetCommandMsg.CODE,
                     GoogleCastAnalyticsMsg.CODE,
@@ -430,6 +427,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     SubwooferLevelCommandMsg.CODE,
                     CenterLevelCommandMsg.CODE,
                     ListeningModeMsg.CODE,
+                    DirectCommandMsg.CODE,
                     // RadioState
                     PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()]

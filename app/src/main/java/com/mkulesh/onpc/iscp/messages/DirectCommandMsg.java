@@ -26,7 +26,6 @@ import androidx.annotation.StringRes;
 public class DirectCommandMsg extends ISCPMessage
 {
     public final static String CODE = "DIR";
-    public final static String CONTROL = "Tone Direct";
 
     public enum Status implements StringParameterIf
     {

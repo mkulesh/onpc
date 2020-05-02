@@ -9,18 +9,18 @@
         <productid>streamsdk</productid>
         <deviceserial></deviceserial>
         <macaddress></macaddress>
-        <modeliconurl>http://192.168.0.11/icon/OAVR_120.jpg</modeliconurl>
+        <modeliconurl>http://192.168.0.20/icon/OAVR_120.jpg</modeliconurl>
         <friendlyname></friendlyname>
-        <firmwareversion>2120-2000-0000-0010-0000</firmwareversion>
+        <firmwareversion>2150-6000-0000-0011-0000</firmwareversion>
         <ecosystemversion>200</ecosystemversion>
         <netservicelist count="11">
             <netservice id="0e" value="1" name="TuneIn Radio" account="Username" password="Password" zone="01" enable="01" />
             <netservice id="0a" value="1" name="Spotify" zone="01" enable="01" />
             <netservice id="12" value="1" name="Deezer" account="Email address" password="Password" zone="01" enable="01" />
-            <netservice id="18" value="1" name="AirPlay" zone="01" enable="01" />
+            <netservice id="44" value="1" name="AirPlay" zone="01" enable="01" />
             <netservice id="1b" value="1" name="TIDAL" account="Username" password="Password" zone="01" enable="01" />
             <netservice id="00" value="1" name="Music Server" zone="01" enable="01" addqueue="1" sort="1" />
-            <netservice id="43" value="1" name="FlareConnect" zone="07" enable="0e" />
+            <netservice id="43" value="1" name="FlareConnect" zone="01" enable="01" />
             <netservice id="40" value="1" name="Chromecast built-in" zone="01" enable="01" />
             <netservice id="1d" value="1" name="Play Queue" zone="01" enable="01" />
             <netservice id="42" value="1" name="DTS Play-Fi" zone="01" enable="01" />
@@ -46,12 +46,12 @@
             <selector id="2a" value="1" name="USB(R)" zone="01" iconid="2a" addqueue="1" />
         </selectorlist>
         <presetlist count="40">
-            <preset id="01" band="1" freq="105.50" name="  INFO   " />
-            <preset id="02" band="1" freq="105.10" name="  F I P  " />
-            <preset id="03" band="0" freq="0" name="" />
-            <preset id="04" band="0" freq="0" name="" />
-            <preset id="05" band="0" freq="0" name="" />
-            <preset id="06" band="0" freq="0" name="" />
+            <preset id="01" band="1" freq="95.10" name="" />
+            <preset id="02" band="1" freq="95.50" name="95.5 FM  " />
+            <preset id="03" band="1" freq="96.30" name="         " />
+            <preset id="04" band="1" freq="97.70" name="SIL*RAIN " />
+            <preset id="05" band="1" freq="98.50" name=" Radio   " />
+            <preset id="06" band="1" freq="101.80" name="" />
             <preset id="07" band="0" freq="0" name="" />
             <preset id="08" band="0" freq="0" name="" />
             <preset id="09" band="0" freq="0" name="" />
