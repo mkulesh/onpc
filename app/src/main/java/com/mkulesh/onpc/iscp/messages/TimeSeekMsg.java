@@ -27,13 +27,31 @@ public class TimeSeekMsg extends ISCPMessage
 {
     private final static String CODE = "NTS";
 
-    private final boolean sendHours;
+    private enum TimeFormat
+    {
+        MM60_SS, /* MM60 here minutes between 0 and 59 */
+        MM99_SS, /* MM99 here minutes between 0 and 99, like for CR-N765 */
+        HH_MM_SS
+    }
+
+    private final TimeFormat timeFormat;
     private final int hours, minutes, seconds;
 
-    public TimeSeekMsg(final boolean sendHours, final int hours, final int minutes, final int seconds)
+    public TimeSeekMsg(final String model, final int hours, final int minutes, final int seconds)
     {
         super(0, null);
-        this.sendHours = sendHours;
+        switch (model)
+        {
+            case "CR-N765":
+                timeFormat = TimeFormat.MM99_SS;
+                break;
+            case "NT-503":
+                timeFormat = hours > 0? TimeFormat.HH_MM_SS : TimeFormat.MM60_SS;
+                break;
+            default:
+                timeFormat = TimeFormat.HH_MM_SS;
+                break;
+        }
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
@@ -43,21 +61,25 @@ public class TimeSeekMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + hours + ":" + minutes + ":" + seconds + "]";
+        return CODE + "[" + getTimeAsString() + ", FORMAT=" + timeFormat.toString() + "]";
     }
 
     @SuppressLint("DefaultLocale")
     public String getTimeAsString()
     {
-        if (sendHours)
+        int MM99_MAX_MIN = 99;
+        switch (timeFormat)
         {
+        case MM60_SS:
+            return String.format("%02d", minutes)
+                    + ":" + String.format("%02d", seconds);
+        case MM99_SS:
+            return String.format("%02d", Math.min(MM99_MAX_MIN, 60 * hours + minutes))
+                    + ":" + String.format("%02d", seconds);
+        case HH_MM_SS: /* it is also default case*/
+        default:
             return String.format("%02d", hours)
                     + ":" + String.format("%02d", minutes)
-                    + ":" + String.format("%02d", seconds);
-        }
-        else
-        {
-            return String.format("%02d", minutes)
                     + ":" + String.format("%02d", seconds);
         }
     }

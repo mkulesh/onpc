@@ -827,14 +827,13 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
         final State state = activity.getStateManager().getState();
         final int currTime = Utils.timeToSeconds(state.currentTime);
         final int maxTime = Utils.timeToSeconds(state.maxTime);
-        final boolean sendHours = newSec >= 3600 || !state.disableHourInTimeSeek();
         if (currTime >= 0 && maxTime >= 0)
         {
             final int hour = newSec / 3600;
             final int min = (newSec - hour * 3600) / 60;
             final int sec = newSec - hour * 3600 - min * 60;
             activity.getStateManager().requestSkipNextTimeMsg(2);
-            final TimeSeekMsg msg = new TimeSeekMsg(sendHours, hour, min, sec);
+            final TimeSeekMsg msg = new TimeSeekMsg(state.getModel(), hour, min, sec);
             state.currentTime = msg.getTimeAsString();
             ((TextView) rootView.findViewById(R.id.tv_time_start)).setText(state.currentTime);
             activity.getStateManager().sendMessage(msg);
