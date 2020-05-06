@@ -58,6 +58,12 @@
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse</string>
     <string name="connect_dialog_port">Port (optional)</string>
+    <string name="connect_dialog_save">Verbindung speichern</string>
+
+    <!-- Favorite connections -->
+    <string name="favorite_connection_edit">Verbindung bearbeiten</string>
+    <string name="favorite_connection_rename">Umbenennen</string>
+    <string name="favorite_connection_delete">Löschen</string>
 
     <!-- Main menu -->
     <string name="menu_power_power">An/Standby</string>

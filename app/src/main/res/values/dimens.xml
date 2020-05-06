@@ -26,6 +26,7 @@
     <dimen name="secondary_text_size">15sp</dimen>
 
     <!-- Buttons and images -->
+    <dimen name="drawer_icon_size">24dp</dimen>
     <dimen name="button_size">36dp</dimen>
     <dimen name="big_button_size">56dp</dimen>
     <dimen name="button_padding">6dp</dimen>

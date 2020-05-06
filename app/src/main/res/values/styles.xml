@@ -43,11 +43,12 @@
 
     <!-- Custom styles -->
 
-    <style name="NavigationViewHeaderText" parent="@android:style/TextAppearance">
-        <item name="android:textSize">14sp</item>
+    <style name="NavigationViewHeaderText" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">normal</item>
+    </style>
+
+    <style name="NavigationViewItemText" parent="@style/TextAppearance.AppCompat.Body2">
+        <item name="android:textColor">?android:attr/textColor</item>
     </style>
 
     <style name="PrimaryTextViewStyle" parent="@android:style/TextAppearance">

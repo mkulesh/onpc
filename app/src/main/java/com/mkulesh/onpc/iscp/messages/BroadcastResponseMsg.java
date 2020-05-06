@@ -19,6 +19,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import java.net.InetAddress;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Broadcast Response Message
@@ -39,6 +40,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     private Integer port = null;
     private String destinationArea = null;
     private String identifier = null;
+    private String alias = null;
 
     public BroadcastResponseMsg(InetAddress hostAddress, EISCPMessage raw) throws Exception
     {
@@ -70,6 +72,16 @@ public class BroadcastResponseMsg extends ISCPMessage
         this.port = other.port;
         this.destinationArea = other.destinationArea;
         this.identifier = other.identifier;
+        this.alias = other.alias;
+    }
+
+    public BroadcastResponseMsg(@NonNull final String host, final int port, @NonNull final String alias)
+    {
+        super(0, null);
+        this.sourceHost = host;
+        this.port = port;
+        this.alias = alias;
+        // all other fields still be null
     }
 
     @NonNull
@@ -78,10 +90,11 @@ public class BroadcastResponseMsg extends ISCPMessage
     {
         return CODE + "[" + data
                 + "; HOST=" + sourceHost
-                + "; MODEL=" + model
                 + "; PORT=" + port
-                + "; DST=" + destinationArea
-                + "; ID=" + identifier + "]";
+                + (model != null? "; MODEL=" + model : "")
+                + (destinationArea != null? "; DST=" + destinationArea : "")
+                + (identifier != null? "; ID=" + identifier : "")
+                + (alias != null? "; ALIAS=" + alias : "") + "]";
     }
 
     public String getHost()
@@ -108,5 +121,11 @@ public class BroadcastResponseMsg extends ISCPMessage
     public String getDevice()
     {
         return getHost() + "/" + (model != null ? model : "unknown");
+    }
+
+    @Nullable
+    public String getAlias()
+    {
+        return alias;
     }
 }

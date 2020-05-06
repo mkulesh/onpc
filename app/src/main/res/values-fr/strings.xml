@@ -58,6 +58,12 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse IP</string>
     <string name="connect_dialog_port">Port (optionel)</string>
+    <string name="connect_dialog_save">Enregistrer la connexion</string>
+
+    <!-- Favorite connections -->
+    <string name="favorite_connection_edit">Modifier la connexion</string>
+    <string name="favorite_connection_rename">Renommer</string>
+    <string name="favorite_connection_delete">Supprimer</string>
 
     <!-- Main menu -->
     <string name="menu_power_power">marche/arrêt</string>

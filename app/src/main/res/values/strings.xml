@@ -60,6 +60,12 @@
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Address</string>
     <string name="connect_dialog_port">Port (optional)</string>
+    <string name="connect_dialog_save">Save connection</string>
+
+    <!-- Favorite connections -->
+    <string name="favorite_connection_edit">Edit connection</string>
+    <string name="favorite_connection_rename">Rename</string>
+    <string name="favorite_connection_delete">Delete</string>
 
     <!-- Main menu -->
     <string name="menu_power_power">On/Standby</string>

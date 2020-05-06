@@ -11,23 +11,23 @@
   ~ Public License along with this program.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/drawer_device_id"
         android:title="@string/drawer_device"
         android:orderInCategory="1">
         <menu>
             <item
                 android:id="@+id/drawer_device_search"
-                android:icon="@drawable/drawer_search"
+                app:actionLayout="@layout/activity_drawer_item"
                 android:orderInCategory="0"
-                android:title="@string/drawer_device_search" />
+                android:title="@null" />
             <item
                 android:id="@+id/drawer_device_connect"
-                android:icon="@drawable/drawer_connect"
+                app:actionLayout="@layout/activity_drawer_item"
                 android:orderInCategory="1"
-                android:title="@string/drawer_device_connect" />
+                android:title="@null" />
         </menu>
     </item>
 
@@ -39,24 +39,24 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/drawer_zone_1"
-                    android:icon="@drawable/drawer_zone_1"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="0"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_zone_2"
-                    android:icon="@drawable/drawer_zone_2"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="1"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_zone_3"
-                    android:icon="@drawable/drawer_zone_3"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="2"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_zone_4"
-                    android:icon="@drawable/drawer_zone_4"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="3"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
             </group>
         </menu>
     </item>
@@ -69,34 +69,34 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/drawer_multiroom_1"
-                    android:icon="@drawable/multiroom_device_0"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="0"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_multiroom_2"
-                    android:icon="@drawable/multiroom_device_1"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="1"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_multiroom_3"
-                    android:icon="@drawable/multiroom_device_2"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="2"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_multiroom_4"
-                    android:icon="@drawable/multiroom_device_3"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="3"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_multiroom_5"
-                    android:icon="@drawable/multiroom_device_4"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="4"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
                 <item
                     android:id="@+id/drawer_multiroom_6"
-                    android:icon="@drawable/multiroom_device_5"
+                    app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="5"
-                    android:title="@string/dashed_string" />
+                    android:title="@null" />
             </group>
         </menu>
     </item>
@@ -107,12 +107,12 @@
         <menu>
             <item
                 android:id="@+id/drawer_app_settings"
-                android:icon="@drawable/drawer_app_settings"
-                android:title="@string/drawer_app_settings" />
+                app:actionLayout="@layout/activity_drawer_item"
+                android:title="@null" />
             <item
                 android:id="@+id/drawer_about"
-                android:icon="@drawable/drawer_about"
-                android:title="@string/drawer_about" />
+                app:actionLayout="@layout/activity_drawer_item"
+                android:title="@null" />
         </menu>
     </item>
 

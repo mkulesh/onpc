@@ -359,7 +359,7 @@ public class State
         return null;
     }
 
-    boolean isControlExists(@NonNull final String control)
+    private boolean isControlExists(@NonNull final String control)
     {
         return controlList != null && controlList.contains(control);
     }
@@ -377,7 +377,7 @@ public class State
         maxTrack = null;
     }
 
-    private boolean isAnotherHost(final ISCPMessage msg)
+    public boolean isAnotherHost(final ISCPMessage msg)
     {
         return msg.sourceHost != null && !msg.sourceHost.equals(host);
     }
