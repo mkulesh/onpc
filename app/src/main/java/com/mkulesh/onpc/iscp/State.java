@@ -364,6 +364,21 @@ public class State
         return controlList != null && controlList.contains(control);
     }
 
+    public boolean isListeningModeControl()
+    {
+        if (controlList != null)
+        {
+            for (final String c : controlList)
+            {
+                if (c.startsWith(ListeningModeMsg.CODE))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void clearTrackInfo()
     {
         cover = null;

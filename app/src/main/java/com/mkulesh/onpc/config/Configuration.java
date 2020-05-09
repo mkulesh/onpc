@@ -76,15 +76,15 @@ public class Configuration
     private static final String MASTER_VOLUME_MAX = "master_volume_max";
 
     static final ListeningModeMsg.Mode[] DEFAULT_LISTENING_MODES = new ListeningModeMsg.Mode[]{
-        ListeningModeMsg.Mode.MODE_00,
-        ListeningModeMsg.Mode.MODE_01,
-        ListeningModeMsg.Mode.MODE_09,
-        ListeningModeMsg.Mode.MODE_08,
-        ListeningModeMsg.Mode.MODE_0A,
-        ListeningModeMsg.Mode.MODE_11,
-        ListeningModeMsg.Mode.MODE_0C,
-        ListeningModeMsg.Mode.MODE_80,
-        ListeningModeMsg.Mode.MODE_82
+        ListeningModeMsg.Mode.MODE_00, // STEREO
+        ListeningModeMsg.Mode.MODE_01, // DIRECT
+        ListeningModeMsg.Mode.MODE_09, // UNPLUGGED
+        ListeningModeMsg.Mode.MODE_08, // ORCHESTRA
+        ListeningModeMsg.Mode.MODE_0A, // STUDIO-MIX
+        ListeningModeMsg.Mode.MODE_11, // PURE AUDIO
+        ListeningModeMsg.Mode.MODE_0C, // ALL CH STEREO
+        ListeningModeMsg.Mode.MODE_80, // DOLBY SURROUND
+        ListeningModeMsg.Mode.MODE_82  // DTS NEURAL:X
     };
 
     private static final String FORCE_AUDIO_CONTROL = "force_audio_control";

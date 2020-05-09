@@ -546,7 +546,7 @@
     <string name="listening_mode_mode_84">PLII/PLIIx THX Cinema  </string>
     <string name="listening_mode_mode_85">Neo:6/Neo:X THX Cinema</string>
     <string name="listening_mode_mode_86">PLII/PLIIx Game</string>
-    <string name="listening_mode_mode_87">Neural Surr*3</string>
+    <string name="listening_mode_mode_87">Neural Surr</string>
     <string name="listening_mode_mode_88">Neural THX/Neural Surround</string>
     <string name="listening_mode_mode_89">PLII/PLIIx THX Games</string>
     <string name="listening_mode_mode_8a">Neo:6/Neo:X THX Games</string>
@@ -576,6 +576,7 @@
     <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff">Auto Surround</string>
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
+    <string name="listening_mode_down">Sets listening mode wrap-around down</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface">Use devices connected via Remote Interface (RI)</string>

@@ -515,7 +515,8 @@
     <string name="listening_mode_mode_a6">Neural Digital Music + Audyssey DSX</string>
     <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff">Auto Surround</string>
-    <string name="listening_mode_up">Изменить звуковой профиль</string>
+    <string name="listening_mode_up">Следующий звуковой профиль</string>
+    <string name="listening_mode_down">Предыдущий звуковой профиль</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface">Использовать устройства, подключенные через удаленный интерфейс (RI)</string>

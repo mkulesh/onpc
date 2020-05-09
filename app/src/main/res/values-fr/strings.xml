@@ -515,6 +515,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff">Auto Surround</string>
     <string name="listening_mode_up">Changer mode d\'écoute</string>
+    <string name="listening_mode_down">Changer mode d\'écoute</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface">Utilise des dispositifs connectés par Remote Interface (RI)</string>

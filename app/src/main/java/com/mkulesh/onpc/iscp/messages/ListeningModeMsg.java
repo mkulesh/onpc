@@ -17,6 +17,7 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
@@ -97,7 +98,8 @@ public class ListeningModeMsg extends ISCPMessage
         MODE_A6("A6", R.string.listening_mode_mode_a6),
         MODE_A7("A7", R.string.listening_mode_mode_a7),
         MODE_FF("FF", R.string.listening_mode_mode_ff),
-        UP("UP", R.string.listening_mode_up);
+        UP("UP", R.string.listening_mode_up, R.drawable.cmd_right),
+        DOWN("DOWN", R.string.listening_mode_down, R.drawable.cmd_left);
 
         final String code;
 
@@ -107,11 +109,15 @@ public class ListeningModeMsg extends ISCPMessage
         // For direct mode, the tone control is disabled
         final boolean directMode;
 
+        @DrawableRes
+        final int imageId;
+
         Mode(final String code, @StringRes final int descriptionId)
         {
             this.code = code;
             this.descriptionId = descriptionId;
             this.directMode = false;
+            this.imageId = -1;
         }
 
         @SuppressWarnings("SameParameterValue")
@@ -120,6 +126,15 @@ public class ListeningModeMsg extends ISCPMessage
             this.code = code;
             this.descriptionId = descriptionId;
             this.directMode = directMode;
+            this.imageId = -1;
+        }
+
+        Mode(final String code, @StringRes final int descriptionId, @DrawableRes final int imageId)
+        {
+            this.code = code;
+            this.descriptionId = descriptionId;
+            this.directMode = false;
+            this.imageId = imageId;
         }
 
         public String getCode()
@@ -136,6 +151,12 @@ public class ListeningModeMsg extends ISCPMessage
         public boolean isDirectMode()
         {
             return directMode;
+        }
+
+        @DrawableRes
+        public int getImageId()
+        {
+            return imageId;
         }
     }
 

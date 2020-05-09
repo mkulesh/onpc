@@ -53,19 +53,19 @@
 
                 <!-- Menu -->
                 <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
-                            style="@style/ClickableLabelStyle"
-                            android:text="@string/cmd_description_quick_menu"
-                            android:tag="OSD:QUICK" />
+                        style="@style/ClickableLabelStyle"
+                        android:text="@string/cmd_description_quick_menu"
+                        android:tag="OSD:QUICK" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                            style="@style/BigImageButtonStyle"
-                            android:tag="OSD:QUICK" />
+                        style="@style/BigImageButtonStyle"
+                        android:tag="OSD:QUICK" />
                 </LinearLayout>
 
                 <!-- Return -->
@@ -86,7 +86,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Cursor block -->
             <View style="@style/HorizontalDividerStyle" />
 
             <!-- Up -->
@@ -118,6 +117,48 @@
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/BigImageButtonStyle"
                 android:tag="OSD:DOWN" />
+
+            <!-- Listening modes -->
+            <LinearLayout
+                android:id="@+id/listening_mode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View style="@style/HorizontalDividerStyle" />
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pref_listening_modes" />
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:id="@+id/listening_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashed_string"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        style="@style/BigImageButtonStyle"
+                        android:tag="LMD:DOWN" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        style="@style/BigImageButtonStyle"
+                        android:tag="LMD:UP" />
+
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

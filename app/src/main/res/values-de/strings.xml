@@ -515,6 +515,7 @@
     <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff">Auto Surround</string>
     <string name="listening_mode_up">Klangprofile durchwechseln</string>
+    <string name="listening_mode_down">Klangprofile durchwechseln</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface">Über RI Verbundene Geräte nutzen</string>

@@ -18,8 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.State;
+import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.SetupOperationCommandMsg;
@@ -34,6 +36,8 @@ import androidx.appcompat.widget.AppCompatImageButton;
 public class RemoteControlFragment extends BaseFragment
 {
     private final ArrayList<View> buttons = new ArrayList<>();
+    private LinearLayout listeningModeLayout = null;
+    private TextView listeningMode = null;
 
     public RemoteControlFragment()
     {
@@ -50,6 +54,8 @@ public class RemoteControlFragment extends BaseFragment
         {
             prepareRiButton(b);
         }
+        listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
+        listeningMode = rootView.findViewById(R.id.listening_mode);
         updateContent();
         return rootView;
     }
@@ -97,6 +103,18 @@ public class RemoteControlFragment extends BaseFragment
             }
             break;
         }
+        case ListeningModeMsg.CODE:
+            final ListeningModeMsg cmd = new ListeningModeMsg(ListeningModeMsg.Mode.valueOf(tokens[1]));
+            if (b instanceof AppCompatImageButton)
+            {
+                prepareButton((AppCompatImageButton) b, cmd, cmd.getMode().getImageId(), cmd.getMode().getDescriptionId());
+
+            }
+            else
+            {
+                prepareButtonListeners(b, cmd, null);
+            }
+            break;
         default:
             break;
         }
@@ -109,6 +127,9 @@ public class RemoteControlFragment extends BaseFragment
         {
             setButtonEnabled(b, state != null && state.isOn());
         }
+        listeningModeLayout.setVisibility(
+                state != null && state.isListeningModeControl() ? View.VISIBLE : View.GONE);
+        listeningMode.setVisibility(View.GONE);
     }
 
     @Override
@@ -117,6 +138,12 @@ public class RemoteControlFragment extends BaseFragment
         for (View b : buttons)
         {
             setButtonEnabled(b, true);
+        }
+        listeningModeLayout.setVisibility(state.isListeningModeControl() ? View.VISIBLE : View.GONE);
+        listeningMode.setVisibility(listeningModeLayout.getVisibility());
+        if (eventChanges.contains(State.ChangeType.AUDIO_CONTROL))
+        {
+            listeningMode.setText(state.listeningMode.getDescriptionId());
         }
     }
 }
