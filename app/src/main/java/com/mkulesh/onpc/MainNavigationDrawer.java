@@ -183,10 +183,13 @@ class MainNavigationDrawer
                         if (activity.connectToDevice(device, port, false))
                         {
                             configuration.saveDevice(device, port);
-                            if (checkBox.isChecked() && deviceFriendlyName.getText().length() > 0)
+                            if (checkBox.isChecked())
                             {
+                                final String friendlyName = deviceFriendlyName.getText().length() > 0 ?
+                                        deviceFriendlyName.getText().toString() :
+                                        device + ":" + devicePort.getText().toString();
                                 configuration.updateFavoriteConnection(
-                                        device, port, deviceFriendlyName.getText().toString());
+                                        device, port, friendlyName);
                             }
                         }
                     }
