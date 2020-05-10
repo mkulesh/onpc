@@ -34,25 +34,28 @@ import androidx.annotation.StringRes;
  */
 public enum ServiceType implements ISCPMessage.StringParameterIf
 {
+    // Note: some names are device-specific, see comments
+    // We use the names when ListInfoMsg is processed as a fallback is no ReceiverInformationMsg
+    // exists for given device
     UNKNOWN("XX", "", R.string.dashed_string),
-    MUSIC_SERVER("00", "DLNA", R.string.service_music_server, R.drawable.media_item_media_server),
-    FAVORITE("01", "My Favorites", R.string.service_favorite, R.drawable.media_item_favorite),
-    VTUNER("02", "vTuner Internet Radio", R.string.service_vtuner),
-    SIRIUSXM("03", "SiriusXM", R.string.service_siriusxm),
-    PANDORA("04", "Pandora", R.string.service_pandora, R.drawable.media_item_pandora),
-    RHAPSODY("05", "Rhapsody", R.string.service_rhapsody),
-    LAST_FM("06", "Last.fm Internet Radio", R.string.service_last),
+    MUSIC_SERVER("00", "DLNA", R.string.service_music_server, R.drawable.media_item_media_server), // TX-8050
+    FAVORITE("01", "My Favorites", R.string.service_favorite, R.drawable.media_item_favorite), // TX-8050
+    VTUNER("02", "vTuner Internet Radio", R.string.service_vtuner), // TX-8050
+    SIRIUSXM("03", "SiriusXM Internet Radio", R.string.service_siriusxm), // TX-8050
+    PANDORA("04", "Pandora Internet Radio", R.string.service_pandora, R.drawable.media_item_pandora), // TX-NR616
+    RHAPSODY("05", "Rhapsody", R.string.service_rhapsody), // TX-NR616
+    LAST_FM("06", "Last.fm Internet Radio", R.string.service_last, R.drawable.media_item_lastfm), // TX-8050, TX-NR616
     NAPSTER("07", "Napster", R.string.service_napster),
-    SLACKER("08", "Slacker", R.string.service_slacker),
+    SLACKER("08", "Slacker Personal Radio", R.string.service_slacker), // TX-NR616
     MEDIAFLY("09", "Mediafly", R.string.service_mediafly),
-    SPOTIFY("0A", "Spotify", R.string.service_spotify, R.drawable.media_item_spotify),
-    AUPEO("0B", "AUPEO! PERSONAL RADIO", R.string.service_aupeo),
+    SPOTIFY("0A", "Spotify", R.string.service_spotify, R.drawable.media_item_spotify), // TX-NR616
+    AUPEO("0B", "AUPEO! PERSONAL RADIO", R.string.service_aupeo), // TX-8050, TX-NR616
     RADIKO("0C", "Radiko", R.string.service_radiko),
     E_ONKYO("0D", "e-onkyo", R.string.service_e_onkyo),
     TUNEIN_RADIO("0E", "TuneIn", R.string.service_tunein_radio, R.drawable.media_item_tunein),
-    MP3TUNES("0F", "mp3tunes", R.string.service_mp3tunes),
+    MP3TUNES("0F", "mp3tunes", R.string.service_mp3tunes), // TX-NR616
     SIMFY("10", "Simfy", R.string.service_simfy),
-    HOME_MEDIA("11", "Home Media", R.string.service_home_media),
+    HOME_MEDIA("11", "Home Media", R.string.service_home_media, R.drawable.media_item_media_server), // TX-NR616
     DEEZER("12", "Deezer", R.string.service_deezer, R.drawable.media_item_deezer),
     IHEARTRADIO("13", "iHeartRadio", R.string.service_iheartradio),
     AIRPLAY("18", "Airplay", R.string.service_airplay, R.drawable.media_item_airplay),
