@@ -95,6 +95,7 @@ public class State
 
     // main host
     private final String host;
+    private final int port;
 
     // Receiver Information
     public String receiverInformation = "";
@@ -196,11 +197,18 @@ public class State
     private static final ReceiverInformationMsg.ToneControl DEFAULT_TREBLE_CONTROL =
             new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
 
-    State(final String host, int activeZone)
+    State(final String host, int port, int activeZone)
     {
         this.host = host;
+        this.port = port;
         this.activeZone = activeZone;
         clearTrackInfo();
+    }
+
+    @NonNull
+    public String getAddressAndPort()
+    {
+        return Utils.ipToString(host, port);
     }
 
     @NonNull

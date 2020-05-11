@@ -15,6 +15,7 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.net.InetAddress;
 
@@ -89,8 +90,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     public String toString()
     {
         return CODE + "[" + data
-                + "; HOST=" + sourceHost
-                + "; PORT=" + port
+                + "; HOST=" + Utils.ipToString(sourceHost, port)
                 + (model != null? "; MODEL=" + model : "")
                 + (destinationArea != null? "; DST=" + destinationArea : "")
                 + (identifier != null? "; ID=" + identifier : "")

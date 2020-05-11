@@ -187,7 +187,7 @@ class MainNavigationDrawer
                             {
                                 final String friendlyName = deviceFriendlyName.getText().length() > 0 ?
                                         deviceFriendlyName.getText().toString() :
-                                        device + ":" + devicePort.getText().toString();
+                                        Utils.ipToString(device, devicePort.getText().toString());
                                 configuration.updateFavoriteConnection(
                                         device, port, friendlyName);
                             }
@@ -377,8 +377,9 @@ class MainNavigationDrawer
         activity.getLayoutInflater().inflate(R.layout.dialog_favorite_connect_layout, frameView);
 
         final TextView deviceAddress = frameView.findViewById(R.id.device_address);
-        deviceAddress.setText(String.format("%s %s:%d",
-                activity.getString(R.string.connect_dialog_address), msg.getHost(), msg.getPort()));
+        deviceAddress.setText(String.format("%s %s",
+                activity.getString(R.string.connect_dialog_address),
+                Utils.ipToString(msg.getHost(), msg.getPort())));
 
         final EditText deviceName = frameView.findViewById(R.id.device_name);
         deviceName.setText(msg.getAlias());

@@ -167,15 +167,15 @@ class MessageChannel extends AppTask implements Runnable
         inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
     }
 
-    boolean connectToServer(String server, int port)
+    boolean connectToServer(String host, int port)
     {
-        final String addr = server + ":" + port;
+        final String addr = Utils.ipToString(host, port);
 
         try
         {
             socket = SocketChannel.open();
             socket.configureBlocking(false);
-            socket.connect(new InetSocketAddress(server, port));
+            socket.connect(new InetSocketAddress(host, port));
             final long startTime = Calendar.getInstance().getTimeInMillis();
             while (!socket.finishConnect())
             {
@@ -192,7 +192,7 @@ class MessageChannel extends AppTask implements Runnable
             }
             else
             {
-                sourceHost = server;
+                sourceHost = host;
             }
             Logging.info(this, "connected to " + addr + ", host=" + sourceHost);
             return true;

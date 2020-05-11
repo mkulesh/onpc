@@ -185,6 +185,10 @@ public class DeviceFragment extends BaseFragment
 
     private void updateDeviceInformation(@Nullable final State state)
     {
+        // Host
+        ((TextView) rootView.findViewById(R.id.device_info_address)).setText(
+                (state != null) ? state.getAddressAndPort() : "");
+
         // Friendly name
         final boolean isFnValid = state != null
                 && state.isFriendlyName();
@@ -234,7 +238,7 @@ public class DeviceFragment extends BaseFragment
         }
 
         final int[] deviceInfoLayout = new int[]{
-                R.id.device_info_title,
+                R.id.device_info_layout,
                 R.id.device_info_divider
         };
         for (int layoutId : deviceInfoLayout)

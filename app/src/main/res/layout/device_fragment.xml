@@ -29,13 +29,30 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:id="@+id/device_info_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/device_info_layout"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="@string/device_info" />
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_weight="1"
+                    android:text="@string/device_info" />
+
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:id="@+id/device_info_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:text="" />
+
+            </LinearLayout>
 
             <View style="@style/HorizontalDividerStyle"
                 android:id="@+id/device_info_divider" />

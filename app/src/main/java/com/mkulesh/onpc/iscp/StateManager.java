@@ -127,7 +127,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public StateManager(final DeviceList deviceList,
                         final ConnectionState connectionState,
                         final StateListener stateListener,
-                        final String device, final int port,
+                        final String host, final int port,
                         final int zone,
                         final boolean autoPower,
                         final boolean keepPlaybackMode,
@@ -138,12 +138,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         this.stateListener = stateListener;
 
         messageChannel = new MessageChannel(connectionState, inputQueue);
-        if (!messageChannel.connectToServer(device, port))
+        if (!messageChannel.connectToServer(host, port))
         {
             throw new Exception("Cannot connect to server");
         }
 
-        state = new State(messageChannel.getSourceHost(), zone);
+        state = new State(messageChannel.getSourceHost(), port, zone);
 
         // In LTE mode, always use BMP images instead of links since direct links
         // can be not available

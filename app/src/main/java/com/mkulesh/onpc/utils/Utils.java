@@ -353,4 +353,16 @@ public class Utils
             return String.format(format, s, Math.abs(tone)).toUpperCase();
         }
     }
+
+    @NonNull
+    public static String ipToString(String host, String port)
+    {
+        return host + ":" + port;
+    }
+
+    @NonNull
+    public static String ipToString(String host, int port)
+    {
+        return host + ":" + port;
+    }
 }
