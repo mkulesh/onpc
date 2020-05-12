@@ -83,6 +83,7 @@ public class Configuration
         ListeningModeMsg.Mode.MODE_0A, // STUDIO-MIX
         ListeningModeMsg.Mode.MODE_11, // PURE AUDIO
         ListeningModeMsg.Mode.MODE_0C, // ALL CH STEREO
+        ListeningModeMsg.Mode.MODE_40, // DOLBY DIGITAL
         ListeningModeMsg.Mode.MODE_80, // DOLBY SURROUND
         ListeningModeMsg.Mode.MODE_82  // DTS NEURAL:X
     };
