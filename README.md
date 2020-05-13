@@ -35,20 +35,49 @@ The two most popular features of the app are music playback and sound profile ma
 - Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
+## Known Limitations
+- Please note that the app does not support the music streaming from your phone to the network player or the receiver
+- Track time seek is missing in Tidal
+- Some delay when switching between files from USB play queue
+- In order to use Spotify, you need the official Spotify app additionally to this app
+
 ## Supported devices
-Currently, this app is only tested with following devices:
-- [ONKYO NS-6130](https://www.eu.onkyo.com/en/products/ns-6130-132943.html) 
-- [ONKYO TX-NR676E](https://www.eu.onkyo.com/en/products/tx-nr676e-138719.html)
-- [ONKYO TX-NR686](https://www.eu.onkyo.com/en/products/tx-nr686-148905.html)
-- [ONKYO TX-8390](https://www.eu.onkyo.com/en/products/tx-8390-157594.html)
-- [ONKYO TX-8150](https://www.eu.onkyo.com/en/products/tx-8150-126088.html)
-- [ONKYO RN-855](https://www.de.onkyo.com/de/produkte/r-n855-133057.html)
-- [ONKYO CR-N765](https://www.eu.onkyo.com/en/products/cr-n765-120317.html)
-- [Wireless Audio System NCP-302](https://www.eu.onkyo.com/en/products/ncp-302-137564.html)
-- [Integra DRX-5.2](https://integraworldwide.com/Products/receivers/drx-5.2/)
+This list is based on the user feedback from Google Play and github. Not all from these devices are tested by developer:
+### Onkyo
+- [ONKYO NS-6130](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6130/index.html)
+- [ONKYO NS-6170](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6170/index.html)
+- [ONKYO TX-L50](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-l50/index.html)
+- [ONKYO TX-NR509](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr509/index.html)
+- [ONKYO TX-NR616](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr616/index.html)
+- [ONKYO TX-NR636](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr636/index.html)
+- [ONKYO TX-NR646](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr646/index.html)
+- [ONKYO TX-NR656](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr656/index.html)
+- [ONKYO TX-NR676E](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr676e/index.html)
+- [ONKYO TX-NR686](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr686/index.html)
+- [ONKYO TX-RZ810](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz810/index.html)
+- [ONKYO TX-RZ830](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz830/index.html)
+- [ONKYO TX-RZ900](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz900/index.html)
+- [ONKYO HT-S7805](https://www.intl.onkyo.com/products/system_components/home_theater/ht-s7805/index.html)
+- [ONKYO TX-8130](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8130/index.html)
+- [ONKYO TX-8150](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8150/index.html)
+- [ONKYO TX-8250](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8250/index.html)
+- [ONKYO TX-8270](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8270/index.html)
+- [ONKYO TX-8390](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8390/index.html)
+- [ONKYO TX-L20D](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-l20d/index.html )
+- [ONKYO R-N855](https://www.intl.onkyo.com/products/hi-fi_components/compact_hi-fi/r-n855/index.html)
+- [ONKYO CS-N575D](https://www.intl.onkyo.com/products/system_components/mini_systems/cs-n575d/index.html)
+- [ONKYO CR-N765](https://www.intl.onkyo.com/products/system_components/mini_systems/cr-n765/index.html)
+- [ONKYO CR-N775D](https://www.intl.onkyo.com/products/system_components/mini_systems/cr-n775d/index.html)
+- [Wireless Audio System NCP-302](https://www.intl.onkyo.com/products/speakers/wireless_audio_systems/ncp-302/index.html)
+### Integra
+- [Integra DRX-5.2](http://www.integrahometheater.com/Products/model.php?m=DRX-5.2&class=Receiver&source=prodClass)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
-- [Pioneer VSX-LX303](https://www.pioneerelectronics.com/PUSA/Home/AV-Receivers/Elite+Receivers/VSX-LX303)
+### Pioneer
+- [Pioneer VSX-LX303](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx303)
+- [Pioneer VSX-LX503](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx503)
+- [Pioneer SC-LX701](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx701)
+### Teac
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
 - [Teac AG-D500](https://www.teac-audio.eu/en/products/ag-d500-87821.html)
 
@@ -66,10 +95,6 @@ Currently, this app is only tested with following devices:
 <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_media_top_vert.png" align="center" height="800">
 
 For more screenshots, see directory images/screenshots.
-
-## Limitations
-Please note that the app does not support the music streaming from your phone to the network player or the receiver.
-Some network services like Spotify, Tidal, AirPlay are currently not yet tested and may not work.
 
 ## Documentation
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in this repository on in 'doc' directory.
