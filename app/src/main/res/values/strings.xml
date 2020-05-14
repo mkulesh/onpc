@@ -64,7 +64,9 @@
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Edit connection</string>
-    <string name="favorite_connection_rename">Rename</string>
+    <string name="favorite_connection_update">Edit</string>
+    <string name="favorite_connection_alias">Name</string>
+    <string name="favorite_connection_identifier">MAC Address (optional)</string>
     <string name="favorite_connection_delete">Delete</string>
 
     <!-- Main menu -->

@@ -65,7 +65,9 @@
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Изменить соединение</string>
-    <string name="favorite_connection_rename">Переименовать</string>
+    <string name="favorite_connection_update">Изменить</string>
+    <string name="favorite_connection_alias">Имя</string>
+    <string name="favorite_connection_identifier">MAC адрес (необязательно)</string>
     <string name="favorite_connection_delete">Удалить</string>
 
     <!-- Main menu -->

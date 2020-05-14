@@ -73,6 +73,13 @@
         <item name="android:saveEnabled">false</item>
     </style>
 
+    <style name="EditFieldCaptionStyle" parent="@style/SecondaryTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingLeft">4dp</item>
+    </style>
+
     <style name="ClickableLabelStyle" parent="@style/SecondaryTextViewStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

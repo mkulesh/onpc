@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="@string/favorite_connection_rename"
+                    android:text="@string/favorite_connection_update"
                     android:checked="true" />
 
                 <LinearLayout
@@ -59,15 +59,32 @@
                     android:orientation="vertical"
                     android:paddingLeft="30dp">
 
+                    <TextView
+                        style="@style/EditFieldCaptionStyle"
+                        android:text="@string/favorite_connection_alias" />
+
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/PrimaryTextViewStyle"
-                        android:id="@+id/device_name"
+                        android:id="@+id/device_alias"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="300dp"
                         android:inputType="text"
-                        android:focusable="true"
-                        android:visibility="visible" />
+                        android:focusable="true" />
+
+                    <TextView
+                        style="@style/EditFieldCaptionStyle"
+                        android:text="@string/favorite_connection_identifier" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        style="@style/PrimaryTextViewStyle"
+                        android:id="@+id/device_identifier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="300dp"
+                        android:inputType="text"
+                        android:focusable="true" />
+
                 </LinearLayout>
             </LinearLayout>
 

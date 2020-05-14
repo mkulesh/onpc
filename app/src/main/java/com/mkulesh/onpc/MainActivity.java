@@ -40,8 +40,11 @@ import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
@@ -612,9 +615,41 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     @NonNull
     public String getMultiroomDeviceName(final @NonNull BroadcastResponseMsg msg)
     {
+        if (msg.getAlias() != null)
+        {
+            return msg.getAlias();
+        }
         final State state = stateHolder.getState();
         final String name = (configuration.isFriendlyNames() && state != null) ?
                 state.multiroomNames.get(msg.getHost()) : null;
         return (name != null) ? name : msg.getDevice();
+    }
+
+    @NonNull
+    public List<BroadcastResponseMsg> getMultiroomDevices(boolean ignoreEmptyIdentifier)
+    {
+        final List<BroadcastResponseMsg> retValue = new ArrayList<>();
+        final Set<String> identifiers = new HashSet<>();
+        for (BroadcastResponseMsg msg : configuration.favoriteConnections.getDevices())
+        {
+            if (ignoreEmptyIdentifier && msg.getIdentifier().isEmpty())
+            {
+                continue;
+            }
+            retValue.add(msg);
+            if (!msg.getIdentifier().isEmpty())
+            {
+                identifiers.add(msg.getIdentifier());
+            }
+        }
+        for (BroadcastResponseMsg msg : deviceList.getDevices())
+        {
+            if (identifiers.contains(msg.getIdentifier()))
+            {
+                continue;
+            }
+            retValue.add(msg);
+        }
+        return retValue;
     }
 }

@@ -26,6 +26,7 @@ import com.mkulesh.onpc.iscp.messages.MultiroomGroupSettingMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,25 @@ class MultiroomManager
 {
     static AlertDialog createDeviceSelectionDialog(
             @NonNull final MainActivity activity,
-            @NonNull CharSequence title,
-            @NonNull final List<BroadcastResponseMsg> devices)
+            @NonNull CharSequence title)
     {
         final State state = activity.getStateManager().getState();
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_multiroom_layout, frameView);
+
+        // Collect available devices
+        final List<BroadcastResponseMsg> devices = new ArrayList<>();
+        for (BroadcastResponseMsg message : activity.getMultiroomDevices(true))
+        {
+            if (message.getIdentifier().equals(activity.myDeviceId()))
+            {
+                devices.add(0, message);
+            }
+            else
+            {
+                devices.add(message);
+            }
+        }
 
         // Define this group ID
         final int myZone = state.getActiveZone() + 1;
@@ -142,7 +156,7 @@ class MultiroomManager
             cv.toggle();
         });
 
-        Logging.info(activity, "    ID: " + msg.getIdentifier() + "; " + description + "; attached=" + attached);
+        Logging.info(activity, "    " + msg.toString() + "; " + description + "; attached=" + attached);
         return view;
     }
 

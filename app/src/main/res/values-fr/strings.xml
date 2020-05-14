@@ -62,7 +62,9 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Modifier la connexion</string>
-    <string name="favorite_connection_rename">Renommer</string>
+    <string name="favorite_connection_update">Modifier</string>
+    <string name="favorite_connection_alias">Nom</string>
+    <string name="favorite_connection_identifier">Adresse MAC (optionel)</string>
     <string name="favorite_connection_delete">Supprimer</string>
 
     <!-- Main menu -->

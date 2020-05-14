@@ -22,7 +22,6 @@ import android.preference.PreferenceManager;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.State;
-import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
@@ -90,10 +89,6 @@ public class Configuration
 
     private static final String FORCE_AUDIO_CONTROL = "force_audio_control";
 
-    private static final String FAVORITE_CONNECTION_SEP = "<;>";
-    private static final String FAVORITE_CONNECTION_NUMBER = "favorite_connection_number";
-    private static final String FAVORITE_CONNECTION_ITEM = "favorite_connection_item";
-
     public enum ThemeType
     {
         MAIN_THEME,
@@ -109,7 +104,7 @@ public class Configuration
 
     private final boolean remoteInterface, remoteInterfaceAmp, remoteInterfaceCd;
 
-    private final ArrayList<BroadcastResponseMsg> favoriteConnections = new ArrayList<>();
+    public final CfgFavoriteConnections favoriteConnections = new CfgFavoriteConnections();
 
     public Configuration(Context context)
     {
@@ -126,7 +121,8 @@ public class Configuration
         remoteInterfaceAmp = preferences.getBoolean(Configuration.REMOTE_INTERFACE_AMP, false);
         remoteInterfaceCd = preferences.getBoolean(Configuration.REMOTE_INTERFACE_CD, false);
 
-        readFavoriteConnections();
+        favoriteConnections.setPreferences(preferences);
+        favoriteConnections.read();
     }
 
     @StyleRes
@@ -264,6 +260,8 @@ public class Configuration
         }
 
         prefEditor.apply();
+
+        favoriteConnections.updateIdentifier(state);
     }
 
     @NonNull
@@ -454,89 +452,5 @@ public class Configuration
     public boolean isForceAudioControl()
     {
         return preferences.getBoolean(FORCE_AUDIO_CONTROL, false);
-    }
-
-    private void readFavoriteConnections()
-    {
-        favoriteConnections.clear();
-        final int fcNumber = preferences.getInt(FAVORITE_CONNECTION_NUMBER, 0);
-        for (int i = 0; i < fcNumber; i++)
-        {
-            final String key = FAVORITE_CONNECTION_ITEM + "_" + i;
-            final String val = preferences.getString(key, "");
-            final String[] tokens = val.split(FAVORITE_CONNECTION_SEP);
-            if (tokens.length == 3)
-            {
-                try
-                {
-                    favoriteConnections.add(new BroadcastResponseMsg(
-                            tokens[0], /* host */
-                            Integer.parseInt(tokens[1], 10), /* port */
-                            tokens[2])); /* alias*/
-                }
-                catch (Exception ex)
-                {
-                    // nothing to do
-                }
-            }
-        }
-    }
-
-    private void writeFavoriteConnections()
-    {
-        final int fcNumber = favoriteConnections.size();
-        SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putInt(FAVORITE_CONNECTION_NUMBER, fcNumber);
-        for (int i = 0; i < fcNumber; i++)
-        {
-            final BroadcastResponseMsg msg = favoriteConnections.get(i);
-            if (msg.getAlias() != null)
-            {
-                final String key = FAVORITE_CONNECTION_ITEM + "_" + i;
-                final String val = msg.getHost() + FAVORITE_CONNECTION_SEP
-                        + msg.getPort() + FAVORITE_CONNECTION_SEP + msg.getAlias();
-                prefEditor.putString(key, val);
-            }
-        }
-        prefEditor.apply();
-    }
-
-    public BroadcastResponseMsg updateFavoriteConnection(@NonNull final String host, final int port, @NonNull final String alias)
-    {
-        final BroadcastResponseMsg newMsg = new BroadcastResponseMsg(host, port, alias);
-        for (int i = 0; i < favoriteConnections.size(); i++)
-        {
-            final BroadcastResponseMsg msg = favoriteConnections.get(i);
-            if (msg.getHost().equals(host) && msg.getPort() == port)
-            {
-                Logging.info(this, "Update favorite connection: " + msg.toString() + " -> " + alias);
-                favoriteConnections.set(i, newMsg);
-                writeFavoriteConnections();
-                return newMsg;
-            }
-        }
-        Logging.info(this, "Add favorite connection: " + newMsg.toString());
-        favoriteConnections.add(newMsg);
-        writeFavoriteConnections();
-        return newMsg;
-    }
-
-    public void deleteFavoriteConnection(String host, int port)
-    {
-        for (final BroadcastResponseMsg msg : favoriteConnections)
-        {
-            if (msg.getHost().equals(host) && msg.getPort() == port)
-            {
-                Logging.info(this, "Delete favorite connection: " + msg.toString());
-                favoriteConnections.remove(msg);
-                writeFavoriteConnections();
-                return;
-            }
-        }
-    }
-
-    public final List<BroadcastResponseMsg> getFavoriteConnections()
-    {
-        return new ArrayList<>(favoriteConnections);
     }
 }

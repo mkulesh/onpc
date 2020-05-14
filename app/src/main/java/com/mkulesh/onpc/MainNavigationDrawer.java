@@ -188,8 +188,8 @@ class MainNavigationDrawer
                                 final String friendlyName = deviceFriendlyName.getText().length() > 0 ?
                                         deviceFriendlyName.getText().toString() :
                                         Utils.ipToString(device, devicePort.getText().toString());
-                                configuration.updateFavoriteConnection(
-                                        device, port, friendlyName);
+                                configuration.favoriteConnections.updateDevice(
+                                        device, port, friendlyName, null);
                             }
                         }
                     }
@@ -254,12 +254,9 @@ class MainNavigationDrawer
                 R.drawable.drawer_zone_4,
         };
 
-        final List<BroadcastResponseMsg> favoriteConnections = configuration.getFavoriteConnections();
-
         // store devices
         devices.clear();
-        devices.addAll(favoriteConnections);
-        devices.addAll(activity.getDeviceList().getDevices());
+        devices.addAll(activity.getMultiroomDevices(false));
 
         final Menu menu = navigationView.getMenu();
         for (int k = 0; k < menu.size(); k++)
@@ -281,7 +278,7 @@ class MainNavigationDrawer
                 }
                 break;
             case R.id.drawer_multiroom:
-                g.setVisible(devices.size() > 1 || !favoriteConnections.isEmpty());
+                g.setVisible(devices.size() > 1 || configuration.favoriteConnections.getDevicesNumber() > 0);
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
                     final MenuItem m = g.getSubMenu().getItem(i);
@@ -359,13 +356,14 @@ class MainNavigationDrawer
 
     private void setDeviceVisible(@NonNull final MenuItem m, final BroadcastResponseMsg msg, @Nullable final State state)
     {
+        final String name = activity.getMultiroomDeviceName(msg);
         if (msg.getAlias() != null)
         {
-            updateItem(m, R.drawable.drawer_favorite_device, msg.getAlias(), () -> editFavoriteConnection(m, msg));
+            updateItem(m, R.drawable.drawer_favorite_device, name, () -> editFavoriteConnection(m, msg));
         }
         else
         {
-            updateItem(m, R.drawable.drawer_found_device, activity.getMultiroomDeviceName(msg), null);
+            updateItem(m, R.drawable.drawer_found_device, name, null);
         }
         m.setChecked(state != null && !state.isAnotherHost(msg));
     }
@@ -381,8 +379,13 @@ class MainNavigationDrawer
                 activity.getString(R.string.connect_dialog_address),
                 Utils.ipToString(msg.getHost(), msg.getPort())));
 
-        final EditText deviceName = frameView.findViewById(R.id.device_name);
-        deviceName.setText(msg.getAlias());
+        // Connection alias
+        final EditText deviceAlias = frameView.findViewById(R.id.device_alias);
+        deviceAlias.setText(msg.getAlias());
+
+        // Optional identifier
+        final EditText deviceIdentifier = frameView.findViewById(R.id.device_identifier);
+        deviceIdentifier.setText(msg.getIdentifier());
 
         final AppCompatRadioButton renameBtn = frameView.findViewById(R.id.device_rename_connection);
         final AppCompatRadioButton deleteBtn = frameView.findViewById(R.id.device_delete_connection);
@@ -394,11 +397,18 @@ class MainNavigationDrawer
                 onRadioBtnChange(radioGroup, (AppCompatRadioButton)v);
                 if (v != renameBtn)
                 {
-                    deviceName.clearFocus();
+                    deviceAlias.clearFocus();
+                    deviceIdentifier.clearFocus();
                 }
             });
         }
-        deviceName.setOnFocusChangeListener((v, hasFocus) -> {
+        deviceAlias.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus)
+            {
+                onRadioBtnChange(radioGroup, renameBtn);
+            }
+        });
+        deviceIdentifier.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus)
             {
                 onRadioBtnChange(radioGroup, renameBtn);
@@ -414,23 +424,25 @@ class MainNavigationDrawer
                 .setView(frameView)
                 .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
                 {
-                    Utils.showSoftKeyboard(activity, deviceName, false);
+                    Utils.showSoftKeyboard(activity, deviceAlias, false);
                     dialog1.dismiss();
                 })
                 .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
                 {
-                    Utils.showSoftKeyboard(activity, deviceName, false);
+                    Utils.showSoftKeyboard(activity, deviceAlias, false);
                     // rename or delete favorite connection
-                    if (renameBtn.isChecked() && deviceName.getText().length() > 0)
+                    if (renameBtn.isChecked() && deviceAlias.getText().length() > 0)
                     {
-                        final String newName = deviceName.getText().toString();
-                        final BroadcastResponseMsg newMsg = configuration.updateFavoriteConnection(
-                                msg.getHost(), msg.getPort(), newName);
+                        final String alias = deviceAlias.getText().toString();
+                        final String identifier = deviceIdentifier.getText().length() > 0 ?
+                                deviceIdentifier.getText().toString() : null;
+                        final BroadcastResponseMsg newMsg = configuration.favoriteConnections.updateDevice(
+                                msg.getHost(), msg.getPort(), alias, identifier);
                         updateItem(m, R.drawable.drawer_favorite_device, newMsg.getAlias(), () -> editFavoriteConnection(m, newMsg));
                     }
                     if (deleteBtn.isChecked())
                     {
-                        configuration.deleteFavoriteConnection(msg.getHost(), msg.getPort());
+                        configuration.favoriteConnections.deleteDevice(msg.getHost(), msg.getPort());
                         m.setVisible(false);
                         m.setChecked(false);
                     }

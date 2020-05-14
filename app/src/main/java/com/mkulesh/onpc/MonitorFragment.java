@@ -656,11 +656,16 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
     /*
      * Multiroom control
      */
+    private boolean isGroupMenu()
+    {
+        final int found = activity.getDeviceList().getDevicesNumber();
+        final int favorite = activity.getConfiguration().favoriteConnections.getDevicesNumber();
+        return found + favorite > 1;
+    }
+
     private void updateMultiroomGroupBtn(AppCompatImageButton b, @Nullable final State state)
     {
-        final boolean isGroupMenu = activity.getDeviceList().getDevicesNumber() > 1;
-
-        if (state != null && isGroupMenu)
+        if (state != null && isGroupMenu())
         {
             final boolean isMaster = state.getMultiroomRole() == MultiroomDeviceInformationMsg.RoleType.SRC;
             b.setVisibility(View.VISIBLE);
@@ -668,25 +673,12 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
             setButtonSelected(b, isMaster);
             b.setContentDescription(activity.getString(R.string.cmd_multiroom_group));
 
-            final List<BroadcastResponseMsg> devices = new ArrayList<>();
-            for (BroadcastResponseMsg message : activity.getDeviceList().getDevices())
-            {
-                if (message.getIdentifier().equals(activity.myDeviceId()))
-                {
-                    devices.add(0, message);
-                }
-                else
-                {
-                    devices.add(message);
-                }
-            }
-
             prepareButtonListeners(b, null, () ->
             {
                 if (activity.isConnected())
                 {
                     final AlertDialog alertDialog = MultiroomManager.createDeviceSelectionDialog(
-                            activity, b.getContentDescription(), devices);
+                            activity, b.getContentDescription());
                     alertDialog.show();
                     Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
                 }
@@ -701,12 +693,10 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
 
     private void updateMultiroomChannelBtn(AppCompatButton b, @Nullable final State state)
     {
-        final boolean isGroupMenu = activity.getDeviceList().getDevicesNumber() > 1;
-
         MultiroomDeviceInformationMsg.ChannelType ch = state != null ?
                 state.multiroomChannel : MultiroomDeviceInformationMsg.ChannelType.NONE;
 
-        if (ch != MultiroomDeviceInformationMsg.ChannelType.NONE && isGroupMenu)
+        if (ch != MultiroomDeviceInformationMsg.ChannelType.NONE && isGroupMenu())
         {
             final MultiroomChannelSettingMsg cmd = new MultiroomChannelSettingMsg(
                     state.getActiveZone() + 1, MultiroomChannelSettingMsg.getUpType(ch));

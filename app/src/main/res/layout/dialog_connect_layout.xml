@@ -33,9 +33,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/EditFieldCaptionStyle"
                 android:text="@string/connect_dialog_address" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -48,9 +46,7 @@
                 android:focusable="true" />
 
             <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/EditFieldCaptionStyle"
                 android:text="@string/connect_dialog_port" />
 
             <androidx.appcompat.widget.AppCompatEditText

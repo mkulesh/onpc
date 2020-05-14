@@ -206,7 +206,18 @@ public class State
     }
 
     @NonNull
-    public String getAddressAndPort()
+    public String getHost()
+    {
+        return host;
+    }
+
+    public int getPort()
+    {
+        return port;
+    }
+
+    @NonNull
+    public String getHostAndPort()
     {
         return Utils.ipToString(host, port);
     }

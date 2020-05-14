@@ -76,12 +76,14 @@ public class BroadcastResponseMsg extends ISCPMessage
         this.alias = other.alias;
     }
 
-    public BroadcastResponseMsg(@NonNull final String host, final int port, @NonNull final String alias)
+    public BroadcastResponseMsg(@NonNull final String host, final int port,
+                                @NonNull final String alias, @Nullable final String identifier)
     {
         super(0, null);
         this.sourceHost = host;
         this.port = port;
         this.alias = alias;
+        this.identifier = identifier;
         // all other fields still be null
     }
 

@@ -62,7 +62,9 @@
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Verbindung bearbeiten</string>
-    <string name="favorite_connection_rename">Umbenennen</string>
+    <string name="favorite_connection_update">Bearbeiten</string>
+    <string name="favorite_connection_alias">Name</string>
+    <string name="favorite_connection_identifier">MAC Adresse (optional)</string>
     <string name="favorite_connection_delete">Löschen</string>
 
     <!-- Main menu -->

@@ -187,7 +187,7 @@ public class DeviceFragment extends BaseFragment
     {
         // Host
         ((TextView) rootView.findViewById(R.id.device_info_address)).setText(
-                (state != null) ? state.getAddressAndPort() : "");
+                (state != null) ? state.getHostAndPort() : "");
 
         // Friendly name
         final boolean isFnValid = state != null
