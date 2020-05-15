@@ -31,7 +31,6 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
-import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -299,7 +298,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
         {
             final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
             l.removeAllViews();
-            for (ListeningModeMsg.Mode m : activity.getConfiguration().getSortedListeningModes(true, null))
+            for (ListeningModeMsg.Mode m : activity.getConfiguration().audioControl.getSortedListeningModes(true, null))
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
                 final AppCompatButton b = createButton(
@@ -388,7 +387,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
 
         // Auto volume control
         final State.SoundControlType soundControl = state.soundControlType(
-                activity.getConfiguration().getSoundControl(), state.getActiveZoneInfo());
+                activity.getConfiguration().audioControl.getSoundControl(), state.getActiveZoneInfo());
         switch (soundControl)
         {
             case RI_AMP:
@@ -448,7 +447,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
 
         // buttons
         final ArrayList<String> selectedListeningModes = new ArrayList<>();
-        for (ListeningModeMsg.Mode m : activity.getConfiguration().getSortedListeningModes(false, state.listeningMode))
+        for (ListeningModeMsg.Mode m : activity.getConfiguration().audioControl.getSortedListeningModes(false, state.listeningMode))
         {
             selectedListeningModes.add(m.getCode());
         }
@@ -741,7 +740,8 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
             if (volumeValid)
             {
                 final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-                final int maxVolume = Math.min(audioControlManager.getVolumeMax(state, zone), activity.getConfiguration().getMasterVolumeMax());
+                final int maxVolume = Math.min(audioControlManager.getVolumeMax(state, zone),
+                        activity.getConfiguration().audioControl.getMasterVolumeMax());
                 b.setMax(maxVolume);
                 b.setProgress(Math.max(0, state.volumeLevel));
 

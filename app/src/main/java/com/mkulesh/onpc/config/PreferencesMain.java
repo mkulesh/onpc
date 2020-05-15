@@ -32,7 +32,6 @@ public class PreferencesMain extends AppCompatPreferenceActivity
                 android.R.id.content, new MyPreferenceFragment()).commit();
     }
 
-    @SuppressWarnings("WeakerAccess")
     public static class MyPreferenceFragment extends PreferenceFragmentCompat
     {
         @Override
@@ -41,7 +40,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
             addPreferencesFromResource(R.xml.preferences_main);
             prepareListPreference(findPreference(Configuration.APP_THEME), getActivity());
             prepareListPreference(findPreference(Configuration.APP_LANGUAGE), getActivity());
-            prepareListPreference(findPreference(Configuration.SOUND_CONTROL), null);
+            prepareListPreference(findPreference(CfgAudioControl.SOUND_CONTROL), null);
             tintIcons(getPreferenceScreen().getContext(), getPreferenceScreen());
         }
     }

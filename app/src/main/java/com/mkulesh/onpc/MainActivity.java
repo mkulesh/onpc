@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             // Default receiver information used if ReceiverInformationMsg is missing
             {
                 final State s = stateHolder.getState();
-                s.createDefaultReceiverInfo(this, configuration.isForceAudioControl());
+                s.createDefaultReceiverInfo(this, configuration.audioControl.isForceAudioControl());
                 configuration.setReceiverInformation(s);
             }
             if (!deviceList.isActive())
@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             {
                 stateHolder.setStateManager(new StateManager(connectionState, this, zone));
                 final State s = stateHolder.getState();
-                s.createDefaultReceiverInfo(this, configuration.isForceAudioControl());
+                s.createDefaultReceiverInfo(this, configuration.audioControl.isForceAudioControl());
                 updateConfiguration(s);
                 return true;
             }
@@ -586,7 +586,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 if (event.getAction() == KeyEvent.ACTION_DOWN)
                 {
                     Logging.info(this, "Key event: " + event);
-                    getStateManager().changeMasterVolume(configuration.getSoundControl(),
+                    getStateManager().changeMasterVolume(configuration.audioControl.getSoundControl(),
                             event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP);
                     return true;
                 }

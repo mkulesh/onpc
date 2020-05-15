@@ -28,14 +28,14 @@ public class PreferencesListeningModes extends DraggableListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        prepareList(Configuration.SELECTED_LISTENING_MODES);
+        prepareList(CfgAudioControl.SELECTED_LISTENING_MODES);
         prepareSelectors();
     }
 
     private void prepareSelectors()
     {
         final ArrayList<String> defItems = new ArrayList<>();
-        for (ListeningModeMsg.Mode i : Configuration.DEFAULT_LISTENING_MODES)
+        for (ListeningModeMsg.Mode i : CfgAudioControl.DEFAULT_LISTENING_MODES)
         {
             defItems.add(i.getCode());
         }

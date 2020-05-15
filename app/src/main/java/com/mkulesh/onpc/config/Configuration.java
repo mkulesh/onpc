@@ -23,7 +23,6 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
-import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
@@ -33,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
 public class Configuration
@@ -45,9 +43,8 @@ public class Configuration
 
     private static final String SERVER_NAME = "server_name";
     private static final String SERVER_PORT = "server_port";
-    static final String SOUND_CONTROL = "sound_control";
 
-    private static final String MODEL = "model";
+    static final String MODEL = "model";
     private static final String ACTIVE_ZONE = "active_zone";
 
     static final String DEVICE_SELECTORS = "device_selectors";
@@ -57,7 +54,6 @@ public class Configuration
     static final String FRIENDLY_NAMES = "pref_friendly_names";
     static final String NETWORK_SERVICES = "network_services";
     private static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
-    static final String SELECTED_LISTENING_MODES = "selected_listening_modes";
 
     private static final String REMOTE_INTERFACE = "remote_interface";
     private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
@@ -72,22 +68,6 @@ public class Configuration
     private static final String DEVELOPER_MODE = "developer_mode";
 
     private static final String OPENED_TAB = "opened_tab";
-    private static final String MASTER_VOLUME_MAX = "master_volume_max";
-
-    static final ListeningModeMsg.Mode[] DEFAULT_LISTENING_MODES = new ListeningModeMsg.Mode[]{
-        ListeningModeMsg.Mode.MODE_00, // STEREO
-        ListeningModeMsg.Mode.MODE_01, // DIRECT
-        ListeningModeMsg.Mode.MODE_09, // UNPLUGGED
-        ListeningModeMsg.Mode.MODE_08, // ORCHESTRA
-        ListeningModeMsg.Mode.MODE_0A, // STUDIO-MIX
-        ListeningModeMsg.Mode.MODE_11, // PURE AUDIO
-        ListeningModeMsg.Mode.MODE_0C, // ALL CH STEREO
-        ListeningModeMsg.Mode.MODE_40, // DOLBY DIGITAL
-        ListeningModeMsg.Mode.MODE_80, // DOLBY SURROUND
-        ListeningModeMsg.Mode.MODE_82  // DTS NEURAL:X
-    };
-
-    private static final String FORCE_AUDIO_CONTROL = "force_audio_control";
 
     public enum ThemeType
     {
@@ -100,10 +80,10 @@ public class Configuration
 
     private String deviceName;
     private int devicePort;
-    private final String soundControl;
 
     private final boolean remoteInterface, remoteInterfaceAmp, remoteInterfaceCd;
 
+    public final CfgAudioControl audioControl = new CfgAudioControl();
     public final CfgFavoriteConnections favoriteConnections = new CfgFavoriteConnections();
 
     public Configuration(Context context)
@@ -114,8 +94,8 @@ public class Configuration
         deviceName = preferences.getString(Configuration.SERVER_NAME, "");
         devicePort = preferences.getInt(Configuration.SERVER_PORT, BroadcastSearch.ISCP_PORT);
 
-        soundControl = preferences.getString(Configuration.SOUND_CONTROL,
-                context.getResources().getString(R.string.pref_sound_control_default));
+        audioControl.setPreferences(preferences);
+        audioControl.read(context);
 
         remoteInterface = preferences.getBoolean(Configuration.REMOTE_INTERFACE, false);
         remoteInterfaceAmp = preferences.getBoolean(Configuration.REMOTE_INTERFACE_AMP, false);
@@ -182,11 +162,6 @@ public class Configuration
         prefEditor.putString(SERVER_NAME, device);
         prefEditor.putInt(SERVER_PORT, port);
         prefEditor.apply();
-    }
-
-    public String getSoundControl()
-    {
-        return soundControl;
     }
 
     public void initActiveZone(int defaultActiveZone)
@@ -341,32 +316,6 @@ public class Configuration
         return result;
     }
 
-    @NonNull
-    public ArrayList<ListeningModeMsg.Mode> getSortedListeningModes(
-            boolean allItems,
-            @Nullable ListeningModeMsg.Mode activeItem)
-    {
-        final ArrayList<ListeningModeMsg.Mode> result = new ArrayList<>();
-        final ArrayList<String> defItems = new ArrayList<>();
-        for (ListeningModeMsg.Mode i : DEFAULT_LISTENING_MODES)
-        {
-            defItems.add(i.getCode());
-        }
-        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, SELECTED_LISTENING_MODES, defItems))
-        {
-            final boolean visible = allItems || sp.checked ||
-                    (activeItem != null && activeItem.getCode().equals(sp.code));
-            for (ListeningModeMsg.Mode i : DEFAULT_LISTENING_MODES)
-            {
-                if (visible && i.getCode().equals(sp.code))
-                {
-                    result.add(i);
-                }
-            }
-        }
-        return result;
-    }
-
     public boolean isRemoteInterface()
     {
         return isRemoteInterfaceAmp() || isRemoteInterfaceCd();
@@ -428,29 +377,5 @@ public class Configuration
         SharedPreferences.Editor prefEditor = preferences.edit();
         prefEditor.putInt(OPENED_TAB, tab);
         prefEditor.apply();
-    }
-
-    @NonNull
-    private static String getMasterVolumeMaxParameter(final SharedPreferences p)
-    {
-        return Configuration.MASTER_VOLUME_MAX + "_" + p.getString(MODEL, "NONE");
-    }
-
-    public int getMasterVolumeMax()
-    {
-        return preferences.getInt(getMasterVolumeMaxParameter(preferences), Integer.MAX_VALUE);
-    }
-
-    public void setMasterVolumeMax(int limit)
-    {
-        Logging.info(this, "Save volume max limit: " + limit);
-        SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putInt(getMasterVolumeMaxParameter(preferences), limit);
-        prefEditor.apply();
-    }
-
-    public boolean isForceAudioControl()
-    {
-        return preferences.getBoolean(FORCE_AUDIO_CONTROL, false);
     }
 }

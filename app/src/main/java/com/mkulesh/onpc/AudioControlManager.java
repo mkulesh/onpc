@@ -73,7 +73,7 @@ class AudioControlManager
         this.masterVolumeInterface = masterVolumeInterface;
         if (activity != null)
         {
-            this.forceAudioControl = activity.getConfiguration().isForceAudioControl();
+            this.forceAudioControl = activity.getConfiguration().audioControl.isForceAudioControl();
         }
     }
 
@@ -299,7 +299,8 @@ class AudioControlManager
     {
         final AppCompatSeekBar progressBar = group.findViewWithTag("tone_progress_bar");
         final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
-        final int maxVolume = Math.min(getVolumeMax(state, zone), activity.getConfiguration().getMasterVolumeMax());
+        final int maxVolume = Math.min(getVolumeMax(state, zone),
+                activity.getConfiguration().audioControl.getMasterVolumeMax());
 
         updateProgressLabel(group, R.string.master_volume, State.getVolumeLevelStr(state.volumeLevel, zone));
 
@@ -346,11 +347,12 @@ class AudioControlManager
 
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                activity.getConfiguration().setMasterVolumeMax(progressChanged);
+                activity.getConfiguration().audioControl.setMasterVolumeMax(progressChanged);
             }
         });
         progressBar.setMax(maxVolume);
-        progressBar.setProgress(Math.min(maxVolume, activity.getConfiguration().getMasterVolumeMax()));
+        progressBar.setProgress(Math.min(maxVolume,
+                activity.getConfiguration().audioControl.getMasterVolumeMax()));
 
         final AlertDialog masterVolumeMaxDialog = createDialog(frameView, R.drawable.volume_max_limit, R.string.master_volume_restrict);
         masterVolumeMaxDialog.setOnDismissListener((d) ->
