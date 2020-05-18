@@ -119,7 +119,8 @@ class SoundControlState
             MasterVolumeMsg.ZONE_COMMANDS[zone],
             SubwooferLevelCommandMsg.CODE,
             CenterLevelCommandMsg.CODE,
-            ListeningModeMsg.CODE
+            ListeningModeMsg.CODE,
+            DirectCommandMsg.CODE
         ];
 
         if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
@@ -127,10 +128,6 @@ class SoundControlState
             cmd.add(ToneCommandMsg.ZONE_COMMANDS[zone]);
         }
 
-        if (ri.isControlExists(DirectCommandMsg.CONTROL))
-        {
-            cmd.add(DirectCommandMsg.CODE);
-        }
         return cmd;
     }
 

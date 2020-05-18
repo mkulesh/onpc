@@ -29,7 +29,6 @@ enum DirectCommand
 class DirectCommandMsg extends EnumParameterMsg<DirectCommand>
 {
     static const String CODE = "DIR";
-    static const String CONTROL = "Tone Direct";
 
     static const ExtEnum<DirectCommand> ValueEnum = ExtEnum<DirectCommand>([
         EnumItem.code(DirectCommand.NONE, "N/A",
