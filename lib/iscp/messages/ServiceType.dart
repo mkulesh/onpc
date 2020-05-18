@@ -69,46 +69,49 @@ enum ServiceType
 
 class Services
 {
+    // Note: some names are device-specific, see comments
+    // We use the names when ListInfoMsg is processed as a fallback is no ReceiverInformationMsg
+    // exists for given device
     static const ExtEnum<ServiceType> ServiceTypeEnum = ExtEnum<ServiceType>([
         EnumItem.code(ServiceType.UNKNOWN, "XX",
             name: "",
             descr: Strings.dashed_string, defValue: true),
         EnumItem.code(ServiceType.MUSIC_SERVER, "00",
             name: "DLNA",
-            descrList: Strings.l_service_music_server, icon: Drawables.media_item_media_server),
+            descrList: Strings.l_service_music_server, icon: Drawables.media_item_media_server), // TX-8050
         EnumItem.code(ServiceType.FAVORITE, "01",
             name: "My Favorites",
-            descrList: Strings.l_service_favorite, icon: Drawables.media_item_favorite),
+            descrList: Strings.l_service_favorite, icon: Drawables.media_item_favorite), // TX-8050
         EnumItem.code(ServiceType.VTUNER, "02",
             name: "vTuner Internet Radio",
-            descrList: Strings.l_service_vtuner),
+            descrList: Strings.l_service_vtuner), // TX-8050
         EnumItem.code(ServiceType.SIRIUSXM, "03",
-            name: "SiriusXM",
-            descrList: Strings.l_service_siriusxm),
+            name: "SiriusXM Internet Radio",
+            descrList: Strings.l_service_siriusxm), // TX-8050
         EnumItem.code(ServiceType.PANDORA, "04",
-            name: "Pandora",
-            descrList: Strings.l_service_pandora, icon: Drawables.media_item_pandora),
+            name: "Pandora Internet Radio",
+            descrList: Strings.l_service_pandora, icon: Drawables.media_item_pandora), // TX-NR616
         EnumItem.code(ServiceType.RHAPSODY, "05",
             name: "Rhapsody",
-            descrList: Strings.l_service_rhapsody),
+            descrList: Strings.l_service_rhapsody), // TX-NR616
         EnumItem.code(ServiceType.LAST_FM, "06",
             name: "Last.fm Internet Radio",
-            descrList: Strings.l_service_last),
+            descrList: Strings.l_service_last, icon: Drawables.media_item_lastfm), // TX-8050, TX-NR616
         EnumItem.code(ServiceType.NAPSTER, "07",
             name: "Napster",
             descrList: Strings.l_service_napster),
         EnumItem.code(ServiceType.SLACKER, "08",
-            name: "Slacker",
-            descrList: Strings.l_service_slacker),
+            name: "Slacker Personal Radio",
+            descrList: Strings.l_service_slacker), // TX-NR616
         EnumItem.code(ServiceType.MEDIAFLY, "09",
             name: "Mediafly",
             descrList: Strings.l_service_mediafly),
         EnumItem.code(ServiceType.SPOTIFY, "0A",
             name: "Spotify",
-            descrList: Strings.l_service_spotify, icon: Drawables.media_item_spotify),
+            descrList: Strings.l_service_spotify, icon: Drawables.media_item_spotify), // TX-NR616
         EnumItem.code(ServiceType.AUPEO, "0B",
             name: "AUPEO! PERSONAL RADIO",
-            descrList: Strings.l_service_aupeo),
+            descrList: Strings.l_service_aupeo), // TX-8050, TX-NR616
         EnumItem.code(ServiceType.RADIKO, "0C",
             name: "Radiko",
             descrList: Strings.l_service_radiko),
@@ -120,13 +123,13 @@ class Services
             descrList: Strings.l_service_tunein_radio, icon: Drawables.media_item_tunein),
         EnumItem.code(ServiceType.MP3TUNES, "0F",
             name: "mp3tunes",
-            descrList: Strings.l_service_mp3tunes),
+            descrList: Strings.l_service_mp3tunes), // TX-NR616
         EnumItem.code(ServiceType.SIMFY, "10",
             name: "Simfy",
             descrList: Strings.l_service_simfy),
         EnumItem.code(ServiceType.HOME_MEDIA, "11",
             name: "Home Media",
-            descrList: Strings.l_service_home_media),
+            descrList: Strings.l_service_home_media, icon: Drawables.media_item_media_server), // TX-NR616
         EnumItem.code(ServiceType.DEEZER, "12",
             name: "Deezer",
             descrList: Strings.l_service_deezer, icon: Drawables.media_item_deezer),
