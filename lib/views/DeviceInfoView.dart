@@ -203,10 +203,22 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             children: rows,
         );
 
+        final Widget title = Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+                Expanded(
+                    child: CustomTextLabel.small(Strings.device_info, textAlign:TextAlign.left),
+                    flex: 1),
+                Expanded(
+                    child: CustomTextLabel.small(stateManager.getAddressAndPort(), textAlign:TextAlign.right),
+                    flex: 1),
+            ]);
+
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                CustomTextLabel.small(Strings.device_info),
+                title,
                 CustomDivider(),
                 table
             ]);

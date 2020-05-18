@@ -13,6 +13,7 @@
 
 import 'dart:io';
 
+import "../../utils/Logging.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -77,9 +78,8 @@ class BroadcastResponseMsg extends ISCPMessage
 
     @override
     String toString()
-    => super.toString() + "[HOST=" + sourceHost
+    => super.toString() + "[HOST=" + Logging.ipToString(sourceHost, _port.toString())
             + "; MODEL=" + _model
-            + "; PORT=" + _port.toString()
             + "; DST=" + _destinationArea
             + "; ID=" + _identifier + "]";
 

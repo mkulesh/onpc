@@ -180,6 +180,9 @@ class StateManager
     int get sourcePort
     => _messageChannel.sourcePort;
 
+    String getAddressAndPort()
+    => Logging.ipToString(sourceHost, sourcePort.toString());
+
     DeviceInfo get sourceDevice
     => state.multiroomState.deviceList.values.firstWhere((d) => isSourceHost(d.responseMsg), orElse: () => null);
 
@@ -196,9 +199,9 @@ class StateManager
         return _state.getActiveZone;
     }
 
-    void _onConnected(MessageChannel channel, String server, int port)
+    void _onConnected(MessageChannel channel, String host, int port)
     {
-        Logging.info(this, "Connected to " + server + "/" + port.toString() + " via " + _networkState.toString());
+        Logging.info(this, "Connected to " + Logging.ipToString(host, port.toString()) + " via " + _networkState.toString());
 
         _state.updateConnection(true);
         if (_onStateChanged != null)
@@ -651,7 +654,7 @@ class StateManager
 
     void _onMultiroomDeviceConnected(MessageChannel channel, String server, int port)
     {
-        Logging.info(this, "connected to " + server + "/" + port.toString());
+        Logging.info(this, "connected to " + Logging.ipToString(server, port.toString()));
         channel.sendQueries(state.multiroomState.getQueries());
     }
 

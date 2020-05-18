@@ -363,7 +363,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (!_stateManager.isConnected && _configuration.isDeviceValid)
         {
             Logging.info(this.widget, "Use stored connection data: "
-                + _configuration.getDeviceName + "/" + _configuration.getDevicePort.toString());
+                + Logging.ipToString(_configuration.getDeviceName, _configuration.getDevicePort.toString()));
             _connectionState = ConnectionState.CONNECTING_TO_SAVED;
             _stateManager.connect(
                 _configuration.getDeviceName, _configuration.getDevicePort, saveRequestedHost: true);

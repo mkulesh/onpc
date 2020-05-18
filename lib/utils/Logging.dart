@@ -95,4 +95,7 @@ class Logging
         }
         return str.toString();
     }
+
+    static String ipToString(String host, String port)
+    => host + ":" + port;
 }

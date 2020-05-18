@@ -76,9 +76,9 @@ class MessageChannel
         _allowedMessages.add(code);
     }
 
-    start(String server, int port)
+    start(String host, int port)
     {
-        final String _serverDescription = server + "/" + port.toString();
+        final String _serverDescription = Logging.ipToString(host, port.toString());
 
         if (_state != MessageChannelState.IDLE)
         {
@@ -86,7 +86,7 @@ class MessageChannel
         }
         Logging.info(this, "Connecting to " + _serverDescription + "...");
         _state = MessageChannelState.CONNECTING;
-        Socket.connect(server, port, timeout: Duration(seconds: 10)).then((Socket sock)
+        Socket.connect(host, port, timeout: Duration(seconds: 10)).then((Socket sock)
         {
             _socket = sock;
             _socket.listen(_onData,
@@ -100,7 +100,7 @@ class MessageChannel
             }
             else
             {
-                _sourceHost = server;
+                _sourceHost = host;
             }
             _sourcePort = port;
             _onConnected(this, _sourceHost, port);
