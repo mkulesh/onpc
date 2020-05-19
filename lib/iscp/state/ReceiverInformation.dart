@@ -22,6 +22,7 @@ import "../messages/FirmwareUpdateMsg.dart";
 import "../messages/FriendlyNameMsg.dart";
 import "../messages/GoogleCastVersionMsg.dart";
 import "../messages/InputSelectorMsg.dart";
+import "../messages/ListeningModeMsg.dart";
 import "../messages/PowerStatusMsg.dart";
 import "../messages/ReceiverInformationMsg.dart";
 import "../messages/SubwooferLevelCommandMsg.dart";
@@ -266,9 +267,10 @@ class ReceiverInformation
     => _presetList.firstWhere((p) => p.getId == preset, orElse: () => null);
 
     bool isControlExists(final String control)
-    {
-        return _controlList.isNotEmpty && _controlList.contains(control);
-    }
+    => _controlList.isNotEmpty && _controlList.contains(control);
+
+    bool isListeningModeControl()
+    => _controlList.firstWhere((s) => s.startsWith(ListeningModeMsg.CODE), orElse: () => null) != null;
 
     bool get isReceiverInformation
     => _xml != null && _xml.isNotEmpty;

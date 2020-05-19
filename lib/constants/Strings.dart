@@ -37,6 +37,74 @@ class Strings
     static const String pref_theme_default = "indigo-orange";
     static const String pref_language_default = "system";
     static const String pref_text_size_default = "normal";
+    static const String listening_mode_mode_00 = "Stereo";
+    static const String listening_mode_mode_01 = "Direct";
+    static const String listening_mode_mode_02 = "Surround";
+    static const String listening_mode_mode_03 = "Game-RPG";
+    static const String listening_mode_mode_04 = "THX";
+    static const String listening_mode_mode_05 = "Game-Action";
+    static const String listening_mode_mode_06 = "Game-Rock";
+    static const String listening_mode_mode_07 = "Mono Movie";
+    static const String listening_mode_mode_08 = "Orchestra";
+    static const String listening_mode_mode_09 = "Unplugged";
+    static const String listening_mode_mode_0a = "Studio-Mix";
+    static const String listening_mode_mode_0b = "TV Logic";
+    static const String listening_mode_mode_0c = "All Ch Stereo";
+    static const String listening_mode_mode_0d = "Theater-Dimensional";
+    static const String listening_mode_mode_0e = "Game-Sports";
+    static const String listening_mode_mode_0f = "Mono";
+    static const String listening_mode_mode_11 = "Pure Audio";
+    static const String listening_mode_mode_12 = "Multiplex";
+    static const String listening_mode_mode_13 = "Full Mono";
+    static const String listening_mode_mode_14 = "Surround Enhancer";
+    static const String listening_mode_mode_15 = "DTS Surround Sensation";
+    static const String listening_mode_mode_16 = "Audyssey DSX";
+    static const String listening_mode_mode_1f = "Whole House Mode";
+    static const String listening_mode_mode_40 = "Dolby Digital";
+    static const String listening_mode_mode_41 = "Dolby EX/DTS ES";
+    static const String listening_mode_mode_42 = "THX Cinema";
+    static const String listening_mode_mode_43 = "THX Surround EX";
+    static const String listening_mode_mode_44 = "THX Music";
+    static const String listening_mode_mode_45 = "THX Games";
+    static const String listening_mode_mode_50 = "THX U(2)/S(2)/I/S Cinema";
+    static const String listening_mode_mode_51 = "THX MusicMode";
+    static const String listening_mode_mode_52 = "THX Games Mode";
+    static const String listening_mode_mode_80 = "Dolby Surround";
+    static const String listening_mode_mode_81 = "Dolby Music";
+    static const String listening_mode_mode_82 = "DTS Neural:X";
+    static const String listening_mode_mode_83 = "DTS Music";
+    static const String listening_mode_mode_84 = "Dolby THX Cinema";
+    static const String listening_mode_mode_85 = "DTS THX Cinema";
+    static const String listening_mode_mode_86 = "Dolby Game";
+    static const String listening_mode_mode_87 = "Neural Surround";
+    static const String listening_mode_mode_88 = "Neural THX";
+    static const String listening_mode_mode_89 = "Dolby THX Games";
+    static const String listening_mode_mode_8a = "DTS THX Games";
+    static const String listening_mode_mode_8b = "Dolby THX Music";
+    static const String listening_mode_mode_8c = "DTS THX Music";
+    static const String listening_mode_mode_8d = "Neural THX Cinema";
+    static const String listening_mode_mode_8e = "Neural THX Music";
+    static const String listening_mode_mode_8f = "Neural THX Games";
+    static const String listening_mode_mode_90 = "PLIIz Height";
+    static const String listening_mode_mode_91 = "Neo:6 Cinema DTS Surround Sensation";
+    static const String listening_mode_mode_92 = "Neo:6 Music DTS Surround Sensation";
+    static const String listening_mode_mode_93 = "Neural Digital Music";
+    static const String listening_mode_mode_94 = "PLIIz Height + THX Cinema";
+    static const String listening_mode_mode_95 = "PLIIz Height + THX Music";
+    static const String listening_mode_mode_96 = "PLIIz Height + THX Games";
+    static const String listening_mode_mode_97 = "PLIIz Height + THX U2/S2 Cinema";
+    static const String listening_mode_mode_98 = "PLIIz Height + THX U2/S2 Music";
+    static const String listening_mode_mode_99 = "PLIIz Height + THX U2/S2 Games";
+    static const String listening_mode_mode_9a = "Neo:X Game";
+    static const String listening_mode_mode_a0 = "Dolby Movie + Audyssey DSX";
+    static const String listening_mode_mode_a1 = "Dolby Music + Audyssey DSX";
+    static const String listening_mode_mode_a2 = "Dolby Game + Audyssey DSX";
+    static const String listening_mode_mode_a3 = "Neo:6 Cinema + Audyssey DSX";
+    static const String listening_mode_mode_a4 = "Neo:6 Music + Audyssey DSX";
+    static const String listening_mode_mode_a5 = "Neural Surround + Audyssey DSX";
+    static const String listening_mode_mode_a6 = "Neural Digital Music + Audyssey DSX";
+    static const String listening_mode_mode_a7 = "Dolby EX + Audyssey DSX";
+    static const String listening_mode_mode_ff = "Auto Surround";
 
     /* Non-translatable arrays */
 
@@ -2677,557 +2745,21 @@ Enjoy!"""];
         /*pl*/ "Agree SUE - Privacy Policy"];
     static String get privacy_policy_sue => l_privacy_policy_sue[_language];
 
-    static const List<String> l_listening_mode_mode_00 = [
-        /*en*/ "STEREO",
-        /*ru*/ "STEREO",
-        /*de*/ "STEREO",
-        /*fr*/ "STEREO",
-        /*pl*/ "STEREO"];
-    static String get listening_mode_mode_00 => l_listening_mode_mode_00[_language];
-
-    static const List<String> l_listening_mode_mode_01 = [
-        /*en*/ "DIRECT",
-        /*ru*/ "DIRECT",
-        /*de*/ "DIREKT",
-        /*fr*/ "DIRECT",
-        /*pl*/ "DIRECT"];
-    static String get listening_mode_mode_01 => l_listening_mode_mode_01[_language];
-
-    static const List<String> l_listening_mode_mode_02 = [
-        /*en*/ "SURROUND",
-        /*ru*/ "SURROUND",
-        /*de*/ "SURROUND",
-        /*fr*/ "SURROUND",
-        /*pl*/ "SURROUND"];
-    static String get listening_mode_mode_02 => l_listening_mode_mode_02[_language];
-
-    static const List<String> l_listening_mode_mode_03 = [
-        /*en*/ "FILM",
-        /*ru*/ "FILM",
-        /*de*/ "FILM",
-        /*fr*/ "FILM",
-        /*pl*/ "FILM"];
-    static String get listening_mode_mode_03 => l_listening_mode_mode_03[_language];
-
-    static const List<String> l_listening_mode_mode_04 = [
-        /*en*/ "THX",
-        /*ru*/ "THX",
-        /*de*/ "THX",
-        /*fr*/ "THX",
-        /*pl*/ "THX"];
-    static String get listening_mode_mode_04 => l_listening_mode_mode_04[_language];
-
-    static const List<String> l_listening_mode_mode_05 = [
-        /*en*/ "ACTION",
-        /*ru*/ "ACTION",
-        /*de*/ "ACTION",
-        /*fr*/ "ACTION",
-        /*pl*/ "ACTION"];
-    static String get listening_mode_mode_05 => l_listening_mode_mode_05[_language];
-
-    static const List<String> l_listening_mode_mode_06 = [
-        /*en*/ "MUSICAL",
-        /*ru*/ "MUSICAL",
-        /*de*/ "MUSICAL",
-        /*fr*/ "MUSICAL",
-        /*pl*/ "MUSICAL"];
-    static String get listening_mode_mode_06 => l_listening_mode_mode_06[_language];
-
-    static const List<String> l_listening_mode_mode_07 = [
-        /*en*/ "MONO MOVIE",
-        /*ru*/ "MONO MOVIE",
-        /*de*/ "MONO FILM",
-        /*fr*/ "MONO MOVIE",
-        /*pl*/ "MONO MOVIE"];
-    static String get listening_mode_mode_07 => l_listening_mode_mode_07[_language];
-
-    static const List<String> l_listening_mode_mode_08 = [
-        /*en*/ "ORCHESTRA",
-        /*ru*/ "ORCHESTRA",
-        /*de*/ "ORCHESTER",
-        /*fr*/ "ORCHESTRA",
-        /*pl*/ "ORCHESTRA"];
-    static String get listening_mode_mode_08 => l_listening_mode_mode_08[_language];
-
-    static const List<String> l_listening_mode_mode_09 = [
-        /*en*/ "UNPLUGGED",
-        /*ru*/ "UNPLUGGED",
-        /*de*/ "UNPLUGGED",
-        /*fr*/ "UNPLUGGED",
-        /*pl*/ "UNPLUGGED"];
-    static String get listening_mode_mode_09 => l_listening_mode_mode_09[_language];
-
-    static const List<String> l_listening_mode_mode_0a = [
-        /*en*/ "STUDIO-MIX",
-        /*ru*/ "STUDIO-MIX",
-        /*de*/ "STUDIO-MIX",
-        /*fr*/ "STUDIO-MIX",
-        /*pl*/ "STUDIO-MIX"];
-    static String get listening_mode_mode_0a => l_listening_mode_mode_0a[_language];
-
-    static const List<String> l_listening_mode_mode_0b = [
-        /*en*/ "TV LOGIC",
-        /*ru*/ "TV LOGIC",
-        /*de*/ "TV LOGIC",
-        /*fr*/ "TV LOGIC",
-        /*pl*/ "TV LOGIC"];
-    static String get listening_mode_mode_0b => l_listening_mode_mode_0b[_language];
-
-    static const List<String> l_listening_mode_mode_0c = [
-        /*en*/ "ALL CH STEREO",
-        /*ru*/ "ALL CH STEREO",
-        /*de*/ "ALL CH STEREO",
-        /*fr*/ "ALL CH STEREO",
-        /*pl*/ "ALL CH STEREO"];
-    static String get listening_mode_mode_0c => l_listening_mode_mode_0c[_language];
-
-    static const List<String> l_listening_mode_mode_0d = [
-        /*en*/ "THEATER-DIMENSIONAL",
-        /*ru*/ "THEATER-DIMENSIONAL",
-        /*de*/ "THEATER-DIMENSIONAL",
-        /*fr*/ "THEATER-DIMENSIONAL",
-        /*pl*/ "THEATER-DIMENSIONAL"];
-    static String get listening_mode_mode_0d => l_listening_mode_mode_0d[_language];
-
-    static const List<String> l_listening_mode_mode_0e = [
-        /*en*/ "ENHANCED 7/ENHANCE",
-        /*ru*/ "ENHANCED 7/ENHANCE",
-        /*de*/ "SPIELE-SPORT",
-        /*fr*/ "ENHANCED 7/ENHANCE",
-        /*pl*/ "ENHANCED 7/ENHANCE"];
-    static String get listening_mode_mode_0e => l_listening_mode_mode_0e[_language];
-
-    static const List<String> l_listening_mode_mode_0f = [
-        /*en*/ "MONO",
-        /*ru*/ "MONO",
-        /*de*/ "MONO",
-        /*fr*/ "MONO",
-        /*pl*/ "MONO"];
-    static String get listening_mode_mode_0f => l_listening_mode_mode_0f[_language];
-
-    static const List<String> l_listening_mode_mode_11 = [
-        /*en*/ "PURE AUDIO",
-        /*ru*/ "PURE AUDIO",
-        /*de*/ "PURE AUDIO",
-        /*fr*/ "PURE AUDIO",
-        /*pl*/ "PURE AUDIO"];
-    static String get listening_mode_mode_11 => l_listening_mode_mode_11[_language];
-
-    static const List<String> l_listening_mode_mode_12 = [
-        /*en*/ "MULTIPLEX",
-        /*ru*/ "MULTIPLEX",
-        /*de*/ "MULTIPLEX",
-        /*fr*/ "MULTIPLEX",
-        /*pl*/ "MULTIPLEX"];
-    static String get listening_mode_mode_12 => l_listening_mode_mode_12[_language];
-
-    static const List<String> l_listening_mode_mode_13 = [
-        /*en*/ "FULL MONO",
-        /*ru*/ "FULL MONO",
-        /*de*/ "FULL MONO",
-        /*fr*/ "FULL MONO",
-        /*pl*/ "FULL MONO"];
-    static String get listening_mode_mode_13 => l_listening_mode_mode_13[_language];
-
-    static const List<String> l_listening_mode_mode_14 = [
-        /*en*/ "DOLBY VIRTUAL",
-        /*ru*/ "DOLBY VIRTUAL",
-        /*de*/ "DOLBY VIRTUAL",
-        /*fr*/ "DOLBY VIRTUAL",
-        /*pl*/ "DOLBY VIRTUAL"];
-    static String get listening_mode_mode_14 => l_listening_mode_mode_14[_language];
-
-    static const List<String> l_listening_mode_mode_15 = [
-        /*en*/ "DTS Surround Sensation",
-        /*ru*/ "DTS Surround Sensation",
-        /*de*/ "DTS Surround Sensation",
-        /*fr*/ "DTS Surround Sensation",
-        /*pl*/ "DTS Surround Sensation"];
-    static String get listening_mode_mode_15 => l_listening_mode_mode_15[_language];
-
-    static const List<String> l_listening_mode_mode_16 = [
-        /*en*/ "Audyssey DSX",
-        /*ru*/ "Audyssey DSX",
-        /*de*/ "Audyssey DSX",
-        /*fr*/ "Audyssey DSX",
-        /*pl*/ "Audyssey DSX"];
-    static String get listening_mode_mode_16 => l_listening_mode_mode_16[_language];
-
-    static const List<String> l_listening_mode_mode_1f = [
-        /*en*/ "Whole House Mode",
-        /*ru*/ "Whole House Mode",
-        /*de*/ "Whole House Mode",
-        /*fr*/ "Whole House Mode",
-        /*pl*/ "Whole House Mode"];
-    static String get listening_mode_mode_1f => l_listening_mode_mode_1f[_language];
-
-    static const List<String> l_listening_mode_mode_40 = [
-        /*en*/ "5.1ch Surround",
-        /*ru*/ "5.1ch Surround",
-        /*de*/ "5.1ch Surround",
-        /*fr*/ "5.1ch Surround",
-        /*pl*/ "5.1ch Surround"];
-    static String get listening_mode_mode_40 => l_listening_mode_mode_40[_language];
-
-    static const List<String> l_listening_mode_mode_41 = [
-        /*en*/ "Dolby EX/DTS ES",
-        /*ru*/ "Dolby EX/DTS ES",
-        /*de*/ "Dolby EX/DTS ES",
-        /*fr*/ "Dolby EX/DTS ES",
-        /*pl*/ "Dolby EX/DTS ES"];
-    static String get listening_mode_mode_41 => l_listening_mode_mode_41[_language];
-
-    static const List<String> l_listening_mode_mode_42 = [
-        /*en*/ "THX Cinema",
-        /*ru*/ "THX Cinema",
-        /*de*/ "THX Kino",
-        /*fr*/ "THX Cinema",
-        /*pl*/ "THX Cinema"];
-    static String get listening_mode_mode_42 => l_listening_mode_mode_42[_language];
-
-    static const List<String> l_listening_mode_mode_43 = [
-        /*en*/ "THX Surround EX",
-        /*ru*/ "THX Surround EX",
-        /*de*/ "THX Surround EX",
-        /*fr*/ "THX Surround EX",
-        /*pl*/ "THX Surround EX"];
-    static String get listening_mode_mode_43 => l_listening_mode_mode_43[_language];
-
-    static const List<String> l_listening_mode_mode_44 = [
-        /*en*/ "THX Music",
-        /*ru*/ "THX Music",
-        /*de*/ "THX Musik",
-        /*fr*/ "THX Music",
-        /*pl*/ "THX Music"];
-    static String get listening_mode_mode_44 => l_listening_mode_mode_44[_language];
-
-    static const List<String> l_listening_mode_mode_45 = [
-        /*en*/ "THX Games",
-        /*ru*/ "THX Games",
-        /*de*/ "THX Spiele",
-        /*fr*/ "THX Games",
-        /*pl*/ "THX Games"];
-    static String get listening_mode_mode_45 => l_listening_mode_mode_45[_language];
-
-    static const List<String> l_listening_mode_mode_50 = [
-        /*en*/ "THX U(2)/S(2)/I/S Cinema/Cinema2",
-        /*ru*/ "THX U(2)/S(2)/I/S Cinema/Cinema2",
-        /*de*/ "THX U(2)/S(2)/I/S Kino/Kino2",
-        /*fr*/ "THX U(2)/S(2)/I/S Cinema/Cinema2",
-        /*pl*/ "THX U(2)/S(2)/I/S Cinema/Cinema2"];
-    static String get listening_mode_mode_50 => l_listening_mode_mode_50[_language];
-
-    static const List<String> l_listening_mode_mode_51 = [
-        /*en*/ "THX MusicMode",
-        /*ru*/ "THX MusicMode",
-        /*de*/ "THX MusikModus",
-        /*fr*/ "THX MusicMode",
-        /*pl*/ "THX MusicMode"];
-    static String get listening_mode_mode_51 => l_listening_mode_mode_51[_language];
-
-    static const List<String> l_listening_mode_mode_52 = [
-        /*en*/ "THX Games Mode",
-        /*ru*/ "THX Games Mode",
-        /*de*/ "THX Spiele Modus",
-        /*fr*/ "THX Games Mode",
-        /*pl*/ "THX Games Mode"];
-    static String get listening_mode_mode_52 => l_listening_mode_mode_52[_language];
-
-    static const List<String> l_listening_mode_mode_80 = [
-        /*en*/ "DOLBY SURROUND",
-        /*ru*/ "PLII/PLIIx Movie ",
-        /*de*/ "PLII/PLIIx Film ",
-        /*fr*/ "DOLBY SURROUND",
-        /*pl*/ "DOLBY SURROUND"];
-    static String get listening_mode_mode_80 => l_listening_mode_mode_80[_language];
-
-    static const List<String> l_listening_mode_mode_81 = [
-        /*en*/ "PLII/PLIIx Music",
-        /*ru*/ "PLII/PLIIx Music",
-        /*de*/ "PLII/PLIIx Musik",
-        /*fr*/ "PLII/PLIIx Music",
-        /*pl*/ "PLII/PLIIx Music"];
-    static String get listening_mode_mode_81 => l_listening_mode_mode_81[_language];
-
-    static const List<String> l_listening_mode_mode_82 = [
-        /*en*/ "DTS NEURAL:X",
-        /*ru*/ "Neo:6 Cinema/Neo:X Cinema",
-        /*de*/ "Neo:6 Kino/Neo:X Kino",
-        /*fr*/ "DTS NEURAL:X",
-        /*pl*/ "DTS NEURAL:X"];
-    static String get listening_mode_mode_82 => l_listening_mode_mode_82[_language];
-
-    static const List<String> l_listening_mode_mode_83 = [
-        /*en*/ "Neo:6 Music/Neo:X Music",
-        /*ru*/ "Neo:6 Music/Neo:X Music",
-        /*de*/ "Neo:6 Musik/Neo:X Musik",
-        /*fr*/ "Neo:6 Music/Neo:X Music",
-        /*pl*/ "Neo:6 Music/Neo:X Music"];
-    static String get listening_mode_mode_83 => l_listening_mode_mode_83[_language];
-
-    static const List<String> l_listening_mode_mode_84 = [
-        /*en*/ "PLII/PLIIx THX Cinema  ",
-        /*ru*/ "PLII/PLIIx THX Cinema  ",
-        /*de*/ "PLII/PLIIx THX Kino  ",
-        /*fr*/ "PLII/PLIIx THX Cinema  ",
-        /*pl*/ "PLII/PLIIx THX Cinema  "];
-    static String get listening_mode_mode_84 => l_listening_mode_mode_84[_language];
-
-    static const List<String> l_listening_mode_mode_85 = [
-        /*en*/ "Neo:6/Neo:X THX Cinema",
-        /*ru*/ "Neo:6/Neo:X THX Cinema",
-        /*de*/ "Neo:6/Neo:X THX Kino",
-        /*fr*/ "Neo:6/Neo:X THX Cinema",
-        /*pl*/ "Neo:6/Neo:X THX Cinema"];
-    static String get listening_mode_mode_85 => l_listening_mode_mode_85[_language];
-
-    static const List<String> l_listening_mode_mode_86 = [
-        /*en*/ "PLII/PLIIx Game",
-        /*ru*/ "PLII/PLIIx Game",
-        /*de*/ "PLII/PLIIx Spiele",
-        /*fr*/ "PLII/PLIIx Game",
-        /*pl*/ "PLII/PLIIx Game"];
-    static String get listening_mode_mode_86 => l_listening_mode_mode_86[_language];
-
-    static const List<String> l_listening_mode_mode_87 = [
-        /*en*/ "Neural Surr*3",
-        /*ru*/ "Neural Surr*3",
-        /*de*/ "Neural Surr*3",
-        /*fr*/ "Neural Surr*3",
-        /*pl*/ "Neural Surr*3"];
-    static String get listening_mode_mode_87 => l_listening_mode_mode_87[_language];
-
-    static const List<String> l_listening_mode_mode_88 = [
-        /*en*/ "Neural THX/Neural Surround",
-        /*ru*/ "Neural THX/Neural Surround",
-        /*de*/ "Neural THX/Neural Surround",
-        /*fr*/ "Neural THX/Neural Surround",
-        /*pl*/ "Neural THX/Neural Surround"];
-    static String get listening_mode_mode_88 => l_listening_mode_mode_88[_language];
-
-    static const List<String> l_listening_mode_mode_89 = [
-        /*en*/ "PLII/PLIIx THX Games",
-        /*ru*/ "PLII/PLIIx THX Games",
-        /*de*/ "PLII/PLIIx THX Spiele",
-        /*fr*/ "PLII/PLIIx THX Games",
-        /*pl*/ "PLII/PLIIx THX Games"];
-    static String get listening_mode_mode_89 => l_listening_mode_mode_89[_language];
-
-    static const List<String> l_listening_mode_mode_8a = [
-        /*en*/ "Neo:6/Neo:X THX Games",
-        /*ru*/ "Neo:6/Neo:X THX Games",
-        /*de*/ "Neo:6/Neo:X THX Spiele",
-        /*fr*/ "Neo:6/Neo:X THX Games",
-        /*pl*/ "Neo:6/Neo:X THX Games"];
-    static String get listening_mode_mode_8a => l_listening_mode_mode_8a[_language];
-
-    static const List<String> l_listening_mode_mode_8b = [
-        /*en*/ "PLII/PLIIx THX Music ",
-        /*ru*/ "PLII/PLIIx THX Music ",
-        /*de*/ "PLII/PLIIx THX Musik ",
-        /*fr*/ "PLII/PLIIx THX Music ",
-        /*pl*/ "PLII/PLIIx THX Music "];
-    static String get listening_mode_mode_8b => l_listening_mode_mode_8b[_language];
-
-    static const List<String> l_listening_mode_mode_8c = [
-        /*en*/ "Neo:6/Neo:X THX Music",
-        /*ru*/ "Neo:6/Neo:X THX Music",
-        /*de*/ "Neo:6/Neo:X THX Musik",
-        /*fr*/ "Neo:6/Neo:X THX Music",
-        /*pl*/ "Neo:6/Neo:X THX Music"];
-    static String get listening_mode_mode_8c => l_listening_mode_mode_8c[_language];
-
-    static const List<String> l_listening_mode_mode_8d = [
-        /*en*/ "Neural THX Cinema",
-        /*ru*/ "Neural THX Cinema",
-        /*de*/ "Neural THX Kino",
-        /*fr*/ "Neural THX Cinema",
-        /*pl*/ "Neural THX Cinema"];
-    static String get listening_mode_mode_8d => l_listening_mode_mode_8d[_language];
-
-    static const List<String> l_listening_mode_mode_8e = [
-        /*en*/ "Neural THX Music",
-        /*ru*/ "Neural THX Music",
-        /*de*/ "Neural THX Musik",
-        /*fr*/ "Neural THX Music",
-        /*pl*/ "Neural THX Music"];
-    static String get listening_mode_mode_8e => l_listening_mode_mode_8e[_language];
-
-    static const List<String> l_listening_mode_mode_8f = [
-        /*en*/ "Neural THX Games",
-        /*ru*/ "Neural THX Games",
-        /*de*/ "Neural THX Spiele",
-        /*fr*/ "Neural THX Games",
-        /*pl*/ "Neural THX Games"];
-    static String get listening_mode_mode_8f => l_listening_mode_mode_8f[_language];
-
-    static const List<String> l_listening_mode_mode_90 = [
-        /*en*/ "PLIIz Height",
-        /*ru*/ "PLIIz Height",
-        /*de*/ "PLIIz Height",
-        /*fr*/ "PLIIz Height",
-        /*pl*/ "PLIIz Height"];
-    static String get listening_mode_mode_90 => l_listening_mode_mode_90[_language];
-
-    static const List<String> l_listening_mode_mode_91 = [
-        /*en*/ "Neo:6 Cinema DTS Surround Sensation",
-        /*ru*/ "Neo:6 Cinema DTS Surround Sensation",
-        /*de*/ "Neo:6 Kino DTS Surround Sensation",
-        /*fr*/ "Neo:6 Cinema DTS Surround Sensation",
-        /*pl*/ "Neo:6 Cinema DTS Surround Sensation"];
-    static String get listening_mode_mode_91 => l_listening_mode_mode_91[_language];
-
-    static const List<String> l_listening_mode_mode_92 = [
-        /*en*/ "Neo:6 Music DTS Surround Sensation",
-        /*ru*/ "Neo:6 Music DTS Surround Sensation",
-        /*de*/ "Neo:6 Musik DTS Surround Sensation",
-        /*fr*/ "Neo:6 Music DTS Surround Sensation",
-        /*pl*/ "Neo:6 Music DTS Surround Sensation"];
-    static String get listening_mode_mode_92 => l_listening_mode_mode_92[_language];
-
-    static const List<String> l_listening_mode_mode_93 = [
-        /*en*/ "Neural Digital Music",
-        /*ru*/ "Neural Digital Music",
-        /*de*/ "Neural Digital Musik",
-        /*fr*/ "Neural Digital Music",
-        /*pl*/ "Neural Digital Music"];
-    static String get listening_mode_mode_93 => l_listening_mode_mode_93[_language];
-
-    static const List<String> l_listening_mode_mode_94 = [
-        /*en*/ "PLIIz Height + THX Cinema",
-        /*ru*/ "PLIIz Height + THX Cinema",
-        /*de*/ "PLIIz Height + THX Kino",
-        /*fr*/ "PLIIz Height + THX Cinema",
-        /*pl*/ "PLIIz Height + THX Cinema"];
-    static String get listening_mode_mode_94 => l_listening_mode_mode_94[_language];
-
-    static const List<String> l_listening_mode_mode_95 = [
-        /*en*/ "PLIIz Height + THX Music",
-        /*ru*/ "PLIIz Height + THX Music",
-        /*de*/ "PLIIz Height + THX Musik",
-        /*fr*/ "PLIIz Height + THX Music",
-        /*pl*/ "PLIIz Height + THX Music"];
-    static String get listening_mode_mode_95 => l_listening_mode_mode_95[_language];
-
-    static const List<String> l_listening_mode_mode_96 = [
-        /*en*/ "PLIIz Height + THX Games",
-        /*ru*/ "PLIIz Height + THX Games",
-        /*de*/ "PLIIz Height + THX Spiele",
-        /*fr*/ "PLIIz Height + THX Games",
-        /*pl*/ "PLIIz Height + THX Games"];
-    static String get listening_mode_mode_96 => l_listening_mode_mode_96[_language];
-
-    static const List<String> l_listening_mode_mode_97 = [
-        /*en*/ "PLIIz Height + THX U2/S2 Cinema",
-        /*ru*/ "PLIIz Height + THX U2/S2 Cinema",
-        /*de*/ "PLIIz Height + THX U2/S2 Kino",
-        /*fr*/ "PLIIz Height + THX U2/S2 Cinema",
-        /*pl*/ "PLIIz Height + THX U2/S2 Cinema"];
-    static String get listening_mode_mode_97 => l_listening_mode_mode_97[_language];
-
-    static const List<String> l_listening_mode_mode_98 = [
-        /*en*/ "PLIIz Height + THX U2/S2 Music",
-        /*ru*/ "PLIIz Height + THX U2/S2 Music",
-        /*de*/ "PLIIz Height + THX U2/S2 Musik",
-        /*fr*/ "PLIIz Height + THX U2/S2 Music",
-        /*pl*/ "PLIIz Height + THX U2/S2 Music"];
-    static String get listening_mode_mode_98 => l_listening_mode_mode_98[_language];
-
-    static const List<String> l_listening_mode_mode_99 = [
-        /*en*/ "PLIIz Height + THX U2/S2 Games",
-        /*ru*/ "PLIIz Height + THX U2/S2 Games",
-        /*de*/ "PLIIz Height + THX U2/S2 Spiele",
-        /*fr*/ "PLIIz Height + THX U2/S2 Games",
-        /*pl*/ "PLIIz Height + THX U2/S2 Games"];
-    static String get listening_mode_mode_99 => l_listening_mode_mode_99[_language];
-
-    static const List<String> l_listening_mode_mode_9a = [
-        /*en*/ "Neo:X Game",
-        /*ru*/ "Neo:X Game",
-        /*de*/ "Neo:X Spiele",
-        /*fr*/ "Neo:X Game",
-        /*pl*/ "Neo:X Game"];
-    static String get listening_mode_mode_9a => l_listening_mode_mode_9a[_language];
-
-    static const List<String> l_listening_mode_mode_a0 = [
-        /*en*/ "PLIIx/PLII Movie + Audyssey DSX",
-        /*ru*/ "PLIIx/PLII Movie + Audyssey DSX",
-        /*de*/ "PLIIx/PLII Movie + Audyssey DSX",
-        /*fr*/ "PLIIx/PLII Movie + Audyssey DSX",
-        /*pl*/ "PLIIx/PLII Movie + Audyssey DSX"];
-    static String get listening_mode_mode_a0 => l_listening_mode_mode_a0[_language];
-
-    static const List<String> l_listening_mode_mode_a1 = [
-        /*en*/ "PLIIx/PLII Music + Audyssey DSX",
-        /*ru*/ "PLIIx/PLII Music + Audyssey DSX",
-        /*de*/ "PLIIx/PLII Musik + Audyssey DSX",
-        /*fr*/ "PLIIx/PLII Music + Audyssey DSX",
-        /*pl*/ "PLIIx/PLII Music + Audyssey DSX"];
-    static String get listening_mode_mode_a1 => l_listening_mode_mode_a1[_language];
-
-    static const List<String> l_listening_mode_mode_a2 = [
-        /*en*/ "PLIIx/PLII Game + Audyssey DSX",
-        /*ru*/ "PLIIx/PLII Game + Audyssey DSX",
-        /*de*/ "PLIIx/PLII Spiele + Audyssey DSX",
-        /*fr*/ "PLIIx/PLII Game + Audyssey DSX",
-        /*pl*/ "PLIIx/PLII Game + Audyssey DSX"];
-    static String get listening_mode_mode_a2 => l_listening_mode_mode_a2[_language];
-
-    static const List<String> l_listening_mode_mode_a3 = [
-        /*en*/ "Neo:6 Cinema + Audyssey DSX",
-        /*ru*/ "Neo:6 Cinema + Audyssey DSX",
-        /*de*/ "Neo:6 Kino + Audyssey DSX",
-        /*fr*/ "Neo:6 Cinema + Audyssey DSX",
-        /*pl*/ "Neo:6 Cinema + Audyssey DSX"];
-    static String get listening_mode_mode_a3 => l_listening_mode_mode_a3[_language];
-
-    static const List<String> l_listening_mode_mode_a4 = [
-        /*en*/ "Neo:6 Music + Audyssey DSX",
-        /*ru*/ "Neo:6 Music + Audyssey DSX",
-        /*de*/ "Neo:6 Musik + Audyssey DSX",
-        /*fr*/ "Neo:6 Music + Audyssey DSX",
-        /*pl*/ "Neo:6 Music + Audyssey DSX"];
-    static String get listening_mode_mode_a4 => l_listening_mode_mode_a4[_language];
-
-    static const List<String> l_listening_mode_mode_a5 = [
-        /*en*/ "Neural Surround + Audyssey DSX",
-        /*ru*/ "Neural Surround + Audyssey DSX",
-        /*de*/ "Neural Surround + Audyssey DSX",
-        /*fr*/ "Neural Surround + Audyssey DSX",
-        /*pl*/ "Neural Surround + Audyssey DSX"];
-    static String get listening_mode_mode_a5 => l_listening_mode_mode_a5[_language];
-
-    static const List<String> l_listening_mode_mode_a6 = [
-        /*en*/ "Neural Digital Music + Audyssey DSX",
-        /*ru*/ "Neural Digital Music + Audyssey DSX",
-        /*de*/ "Neural Digital Musik + Audyssey DSX",
-        /*fr*/ "Neural Digital Music + Audyssey DSX",
-        /*pl*/ "Neural Digital Music + Audyssey DSX"];
-    static String get listening_mode_mode_a6 => l_listening_mode_mode_a6[_language];
-
-    static const List<String> l_listening_mode_mode_a7 = [
-        /*en*/ "Dolby EX + Audyssey DSX",
-        /*ru*/ "Dolby EX + Audyssey DSX",
-        /*de*/ "Dolby EX + Audyssey DSX",
-        /*fr*/ "Dolby EX + Audyssey DSX",
-        /*pl*/ "Dolby EX + Audyssey DSX"];
-    static String get listening_mode_mode_a7 => l_listening_mode_mode_a7[_language];
-
-    static const List<String> l_listening_mode_mode_ff = [
-        /*en*/ "Auto Surround",
-        /*ru*/ "Auto Surround",
-        /*de*/ "Auto Surround",
-        /*fr*/ "Auto Surround",
-        /*pl*/ "Auto Surround"];
-    static String get listening_mode_mode_ff => l_listening_mode_mode_ff[_language];
-
     static const List<String> l_listening_mode_up = [
         /*en*/ "Sets listening mode wrap-around up",
-        /*ru*/ "Изменить звуковой профиль",
+        /*ru*/ "Следующий звуковой профиль",
         /*de*/ "Klangprofile durchwechseln",
         /*fr*/ "Changer mode d\'écoute",
         /*pl*/ "Zmień tryb na następny"];
     static String get listening_mode_up => l_listening_mode_up[_language];
+
+    static const List<String> l_listening_mode_down = [
+        /*en*/ "Sets listening mode wrap-around down",
+        /*ru*/ "Предыдущий звуковой профиль",
+        /*de*/ "Klangprofile durchwechseln",
+        /*fr*/ "Changer mode d\'écoute",
+        /*pl*/ "Zmień tryb na poprzedni"];
+    static String get listening_mode_down => l_listening_mode_down[_language];
 
     static const List<String> l_remote_interface = [
         /*en*/ "Use devices connected via Remote Interface (RI)",

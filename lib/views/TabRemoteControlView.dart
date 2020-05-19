@@ -16,6 +16,8 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
+import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/SetupOperationCommandMsg.dart";
 import "../utils/Logging.dart";
@@ -55,15 +57,18 @@ class TabRemoteControlView extends UpdatableView
             SizedBox.shrink(),
             InkWell(
                 child: CustomTextLabel.small(Strings.cmd_description_setup, textAlign: TextAlign.center),
-                onTap: () => stateManager.sendMessage(_setupSetupCmd)
+                onTap: ()
+                => stateManager.sendMessage(_setupSetupCmd)
             ),
             InkWell(
                 child: CustomTextLabel.small(Strings.cmd_description_quick_menu, textAlign: TextAlign.center),
-                onTap: () => stateManager.sendMessage(_setupQuickCmd)
+                onTap: ()
+                => stateManager.sendMessage(_setupQuickCmd)
             ),
             InkWell(
                 child: CustomTextLabel.small(Strings.cmd_description_return, textAlign: TextAlign.center),
-                onTap: () => stateManager.sendMessage(_setupExitCmd)
+                onTap: ()
+                => stateManager.sendMessage(_setupExitCmd)
             ),
             SizedBox.shrink()
         ]));
@@ -101,24 +106,55 @@ class TabRemoteControlView extends UpdatableView
 
         final EdgeInsetsGeometry activityMargins = ActivityDimens.activityMargins(context);
 
+        final List<Widget> entries = [
+            Table(
+                columnWidths: columnWidths,
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: topRows,
+            ),
+            CustomDivider(height: activityMargins.vertical),
+            Table(
+                columnWidths: columnWidths,
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: bottomRows,
+            )
+        ];
+
+        if (state.receiverInformation.isListeningModeControl())
+        {
+            final Widget currentMode = stateManager.isConnected && stateManager.state.isOn ?
+                CustomTextLabel.small(state.soundControlState.listeningMode.description) : SizedBox.shrink();
+
+            entries.add(Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                    CustomDivider(height: activityMargins.vertical),
+                    Row(mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [CustomTextLabel.small(Strings.pref_listening_modes)]
+                    ),
+                    Row(mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [currentMode]
+                    ),
+                    Row(mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            _buildBtn(ListeningModeMsg.output(ListeningMode.DOWN)),
+                            _buildBtn(ListeningModeMsg.output(ListeningMode.UP))
+                        ]
+                    )
+                ])
+            );
+        }
+
         return SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: ListBody(children: [
-                Table(
-                    columnWidths: columnWidths,
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: topRows,
-                ),
-                CustomDivider(height: activityMargins.vertical),
-                Table(
-                    columnWidths: columnWidths,
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: bottomRows,
-                ),
-            ]));
+            child: ListBody(children: entries));
     }
 
-    Widget _buildBtn(final SetupOperationCommandMsg cmd)
+    Widget _buildBtn<T>(final EnumParameterMsg<T> cmd)
     {
         return CustomImageButton.big(
             cmd.getValue.icon,

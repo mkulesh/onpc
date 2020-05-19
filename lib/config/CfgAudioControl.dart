@@ -61,15 +61,16 @@ class CfgAudioControl extends CfgModule
 
     // Default modes
     static const List<ListeningMode> DEFAULT_LISTENING_MODES = [
-        ListeningMode.MODE_00,
-        ListeningMode.MODE_01,
-        ListeningMode.MODE_09,
-        ListeningMode.MODE_08,
-        ListeningMode.MODE_0A,
-        ListeningMode.MODE_11,
-        ListeningMode.MODE_0C,
-        ListeningMode.MODE_80,
-        ListeningMode.MODE_82
+        ListeningMode.MODE_00, // STEREO
+        ListeningMode.MODE_01, // DIRECT
+        ListeningMode.MODE_09, // UNPLUGGED
+        ListeningMode.MODE_08, // ORCHESTRA
+        ListeningMode.MODE_0A, // STUDIO-MIX
+        ListeningMode.MODE_11, // PURE AUDIO
+        ListeningMode.MODE_0C, // ALL CH STEREO
+        ListeningMode.MODE_40, // DOLBY DIGITAL
+        ListeningMode.MODE_80, // DOLBY SURROUND
+        ListeningMode.MODE_82  // DTS NEURAL:X
     ];
 
     // methods

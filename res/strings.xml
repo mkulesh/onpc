@@ -490,75 +490,76 @@ Enjoy!""</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
 
     <!-- Listening Mode Command -->
-    <string name="listening_mode_mode_00">STEREO</string>
-    <string name="listening_mode_mode_01">DIRECT</string>
-    <string name="listening_mode_mode_02">SURROUND</string>
-    <string name="listening_mode_mode_03">FILM</string>
-    <string name="listening_mode_mode_04">THX</string>
-    <string name="listening_mode_mode_05">ACTION</string>
-    <string name="listening_mode_mode_06">MUSICAL</string>
-    <string name="listening_mode_mode_07">MONO MOVIE</string>
-    <string name="listening_mode_mode_08">ORCHESTRA</string>
-    <string name="listening_mode_mode_09">UNPLUGGED</string>
-    <string name="listening_mode_mode_0a">STUDIO-MIX</string>
-    <string name="listening_mode_mode_0b">TV LOGIC</string>
-    <string name="listening_mode_mode_0c">ALL CH STEREO</string>
-    <string name="listening_mode_mode_0d">THEATER-DIMENSIONAL</string>
-    <string name="listening_mode_mode_0e">ENHANCED 7/ENHANCE</string>
-    <string name="listening_mode_mode_0f">MONO</string>
-    <string name="listening_mode_mode_11">PURE AUDIO</string>
-    <string name="listening_mode_mode_12">MULTIPLEX</string>
-    <string name="listening_mode_mode_13">FULL MONO</string>
-    <string name="listening_mode_mode_14">DOLBY VIRTUAL</string>
-    <string name="listening_mode_mode_15">DTS Surround Sensation</string>
-    <string name="listening_mode_mode_16">Audyssey DSX</string>
-    <string name="listening_mode_mode_1f">Whole House Mode</string>
-    <string name="listening_mode_mode_40">5.1ch Surround</string>
-    <string name="listening_mode_mode_41">Dolby EX/DTS ES</string>
-    <string name="listening_mode_mode_42">THX Cinema</string>
-    <string name="listening_mode_mode_43">THX Surround EX</string>
-    <string name="listening_mode_mode_44">THX Music</string>
-    <string name="listening_mode_mode_45">THX Games</string>
-    <string name="listening_mode_mode_50">THX U(2)/S(2)/I/S Cinema/Cinema2</string>
-    <string name="listening_mode_mode_51">THX MusicMode</string>
-    <string name="listening_mode_mode_52">THX Games Mode</string>
-    <string name="listening_mode_mode_80">DOLBY SURROUND</string>
-    <string name="listening_mode_mode_81">PLII/PLIIx Music</string>
-    <string name="listening_mode_mode_82">DTS NEURAL:X</string>
-    <string name="listening_mode_mode_83">Neo:6 Music/Neo:X Music</string>
-    <string name="listening_mode_mode_84">PLII/PLIIx THX Cinema  </string>
-    <string name="listening_mode_mode_85">Neo:6/Neo:X THX Cinema</string>
-    <string name="listening_mode_mode_86">PLII/PLIIx Game</string>
-    <string name="listening_mode_mode_87">Neural Surr*3</string>
-    <string name="listening_mode_mode_88">Neural THX/Neural Surround</string>
-    <string name="listening_mode_mode_89">PLII/PLIIx THX Games</string>
-    <string name="listening_mode_mode_8a">Neo:6/Neo:X THX Games</string>
-    <string name="listening_mode_mode_8b">PLII/PLIIx THX Music </string>
-    <string name="listening_mode_mode_8c">Neo:6/Neo:X THX Music</string>
-    <string name="listening_mode_mode_8d">Neural THX Cinema</string>
-    <string name="listening_mode_mode_8e">Neural THX Music</string>
-    <string name="listening_mode_mode_8f">Neural THX Games</string>
-    <string name="listening_mode_mode_90">PLIIz Height</string>
-    <string name="listening_mode_mode_91">Neo:6 Cinema DTS Surround Sensation</string>
-    <string name="listening_mode_mode_92">Neo:6 Music DTS Surround Sensation</string>
-    <string name="listening_mode_mode_93">Neural Digital Music</string>
-    <string name="listening_mode_mode_94">PLIIz Height + THX Cinema</string>
-    <string name="listening_mode_mode_95">PLIIz Height + THX Music</string>
-    <string name="listening_mode_mode_96">PLIIz Height + THX Games</string>
-    <string name="listening_mode_mode_97">PLIIz Height + THX U2/S2 Cinema</string>
-    <string name="listening_mode_mode_98">PLIIz Height + THX U2/S2 Music</string>
-    <string name="listening_mode_mode_99">PLIIz Height + THX U2/S2 Games</string>
-    <string name="listening_mode_mode_9a">Neo:X Game</string>
-    <string name="listening_mode_mode_a0">PLIIx/PLII Movie + Audyssey DSX</string>
-    <string name="listening_mode_mode_a1">PLIIx/PLII Music + Audyssey DSX</string>
-    <string name="listening_mode_mode_a2">PLIIx/PLII Game + Audyssey DSX</string>
-    <string name="listening_mode_mode_a3">Neo:6 Cinema + Audyssey DSX</string>
-    <string name="listening_mode_mode_a4">Neo:6 Music + Audyssey DSX</string>
-    <string name="listening_mode_mode_a5">Neural Surround + Audyssey DSX</string>
-    <string name="listening_mode_mode_a6">Neural Digital Music + Audyssey DSX</string>
-    <string name="listening_mode_mode_a7">Dolby EX + Audyssey DSX</string>
-    <string name="listening_mode_mode_ff">Auto Surround</string>
+    <string name="listening_mode_mode_00" translatable="false">Stereo</string>
+    <string name="listening_mode_mode_01" translatable="false">Direct</string>
+    <string name="listening_mode_mode_02" translatable="false">Surround</string>
+    <string name="listening_mode_mode_03" translatable="false">Game-RPG</string>
+    <string name="listening_mode_mode_04" translatable="false">THX</string>
+    <string name="listening_mode_mode_05" translatable="false">Game-Action</string>
+    <string name="listening_mode_mode_06" translatable="false">Game-Rock</string>
+    <string name="listening_mode_mode_07" translatable="false">Mono Movie</string>
+    <string name="listening_mode_mode_08" translatable="false">Orchestra</string>
+    <string name="listening_mode_mode_09" translatable="false">Unplugged</string>
+    <string name="listening_mode_mode_0a" translatable="false">Studio-Mix</string>
+    <string name="listening_mode_mode_0b" translatable="false">TV Logic</string>
+    <string name="listening_mode_mode_0c" translatable="false">All Ch Stereo</string>
+    <string name="listening_mode_mode_0d" translatable="false">Theater-Dimensional</string>
+    <string name="listening_mode_mode_0e" translatable="false">Game-Sports</string>
+    <string name="listening_mode_mode_0f" translatable="false">Mono</string>
+    <string name="listening_mode_mode_11" translatable="false">Pure Audio</string>
+    <string name="listening_mode_mode_12" translatable="false">Multiplex</string>
+    <string name="listening_mode_mode_13" translatable="false">Full Mono</string>
+    <string name="listening_mode_mode_14" translatable="false">Surround Enhancer</string>
+    <string name="listening_mode_mode_15" translatable="false">DTS Surround Sensation</string>
+    <string name="listening_mode_mode_16" translatable="false">Audyssey DSX</string>
+    <string name="listening_mode_mode_1f" translatable="false">Whole House Mode</string>
+    <string name="listening_mode_mode_40" translatable="false">Dolby Digital</string>
+    <string name="listening_mode_mode_41" translatable="false">Dolby EX/DTS ES</string>
+    <string name="listening_mode_mode_42" translatable="false">THX Cinema</string>
+    <string name="listening_mode_mode_43" translatable="false">THX Surround EX</string>
+    <string name="listening_mode_mode_44" translatable="false">THX Music</string>
+    <string name="listening_mode_mode_45" translatable="false">THX Games</string>
+    <string name="listening_mode_mode_50" translatable="false">THX U(2)/S(2)/I/S Cinema</string>
+    <string name="listening_mode_mode_51" translatable="false">THX MusicMode</string>
+    <string name="listening_mode_mode_52" translatable="false">THX Games Mode</string>
+    <string name="listening_mode_mode_80" translatable="false">Dolby Surround</string>
+    <string name="listening_mode_mode_81" translatable="false">Dolby Music</string>
+    <string name="listening_mode_mode_82" translatable="false">DTS Neural:X</string>
+    <string name="listening_mode_mode_83" translatable="false">DTS Music</string>
+    <string name="listening_mode_mode_84" translatable="false">Dolby THX Cinema</string>
+    <string name="listening_mode_mode_85" translatable="false">DTS THX Cinema</string>
+    <string name="listening_mode_mode_86" translatable="false">Dolby Game</string>
+    <string name="listening_mode_mode_87" translatable="false">Neural Surround</string>
+    <string name="listening_mode_mode_88" translatable="false">Neural THX</string>
+    <string name="listening_mode_mode_89" translatable="false">Dolby THX Games</string>
+    <string name="listening_mode_mode_8a" translatable="false">DTS THX Games</string>
+    <string name="listening_mode_mode_8b" translatable="false">Dolby THX Music</string>
+    <string name="listening_mode_mode_8c" translatable="false">DTS THX Music</string>
+    <string name="listening_mode_mode_8d" translatable="false">Neural THX Cinema</string>
+    <string name="listening_mode_mode_8e" translatable="false">Neural THX Music</string>
+    <string name="listening_mode_mode_8f" translatable="false">Neural THX Games</string>
+    <string name="listening_mode_mode_90" translatable="false">PLIIz Height</string>
+    <string name="listening_mode_mode_91" translatable="false">Neo:6 Cinema DTS Surround Sensation</string>
+    <string name="listening_mode_mode_92" translatable="false">Neo:6 Music DTS Surround Sensation</string>
+    <string name="listening_mode_mode_93" translatable="false">Neural Digital Music</string>
+    <string name="listening_mode_mode_94" translatable="false">PLIIz Height + THX Cinema</string>
+    <string name="listening_mode_mode_95" translatable="false">PLIIz Height + THX Music</string>
+    <string name="listening_mode_mode_96" translatable="false">PLIIz Height + THX Games</string>
+    <string name="listening_mode_mode_97" translatable="false">PLIIz Height + THX U2/S2 Cinema</string>
+    <string name="listening_mode_mode_98" translatable="false">PLIIz Height + THX U2/S2 Music</string>
+    <string name="listening_mode_mode_99" translatable="false">PLIIz Height + THX U2/S2 Games</string>
+    <string name="listening_mode_mode_9a" translatable="false">Neo:X Game</string>
+    <string name="listening_mode_mode_a0" translatable="false">Dolby Movie + Audyssey DSX</string>
+    <string name="listening_mode_mode_a1" translatable="false">Dolby Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a2" translatable="false">Dolby Game + Audyssey DSX</string>
+    <string name="listening_mode_mode_a3" translatable="false">Neo:6 Cinema + Audyssey DSX</string>
+    <string name="listening_mode_mode_a4" translatable="false">Neo:6 Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a5" translatable="false">Neural Surround + Audyssey DSX</string>
+    <string name="listening_mode_mode_a6" translatable="false">Neural Digital Music + Audyssey DSX</string>
+    <string name="listening_mode_mode_a7" translatable="false">Dolby EX + Audyssey DSX</string>
+    <string name="listening_mode_mode_ff" translatable="false">Auto Surround</string>
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
+    <string name="listening_mode_down">Sets listening mode wrap-around down</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface">Use devices connected via Remote Interface (RI)</string>
