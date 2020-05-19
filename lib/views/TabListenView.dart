@@ -42,7 +42,7 @@ class TabListenView extends UpdatableView
         final List<Widget> widgets = List<Widget>();
 
         final SoundControlType soundControl = state.soundControlState.soundControlType(
-            configuration.soundControl, state.getActiveZoneInfo);
+            configuration.audioControl.soundControl, state.getActiveZoneInfo);
 
         // Add listening modes if sound is controlled by the device
         if (soundControl == SoundControlType.DEVICE_BUTTONS || soundControl == SoundControlType.DEVICE_SLIDER)

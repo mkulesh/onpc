@@ -17,15 +17,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import "../Platform.dart";
 import "../constants/Strings.dart";
-import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
+import "CfgAudioControl.dart";
+import "CfgModule.dart";
 
-class Configuration
+class Configuration extends CfgModule
 {
     static const String CONFIGURATION_EVENT = "CONFIG";
-    final SharedPreferences preferences;
     String appVersion;
 
     // Theme
@@ -38,7 +38,7 @@ class Configuration
     set theme(String value)
     {
         _theme = value;
-        _saveStringParameter(Configuration.THEME, value);
+        saveStringParameter(Configuration.THEME, value);
     }
 
     // System language
@@ -68,7 +68,7 @@ class Configuration
     set language(String value)
     {
         _language = value;
-        _saveStringParameter(Configuration.LANGUAGE, value);
+        saveStringParameter(Configuration.LANGUAGE, value);
     }
 
     // Text size
@@ -81,20 +81,7 @@ class Configuration
     set textSize(String value)
     {
         _textSize = value;
-        _saveStringParameter(Configuration.TEXT_SIZE, value);
-    }
-
-    // Master volume maximum
-    static const Pair<String, int> MASTER_VOLUME_MAX = Pair<String, int>("master_volume_max", 9999);
-    int _masterVolumeMax;
-
-    int get masterVolumeMax
-    => _masterVolumeMax;
-
-    set masterVolumeMax(int value)
-    {
-        _masterVolumeMax = value;
-        _saveIntegerParameter(getModelDependentInt(MASTER_VOLUME_MAX), value);
+        saveStringParameter(Configuration.TEXT_SIZE, value);
     }
 
     // The latest opened tab
@@ -107,7 +94,7 @@ class Configuration
     set openedTab(int value)
     {
         _openedTab = value;
-        _saveIntegerParameter(OPENED_TAB, value);
+        saveIntegerParameter(OPENED_TAB, value);
     }
 
     // Connection options
@@ -135,7 +122,7 @@ class Configuration
     set activeZone(int value)
     {
         _activeZone = value;
-        _saveIntegerParameter(ACTIVE_ZONE, value);
+        saveIntegerParameter(ACTIVE_ZONE, value);
     }
 
     // Device options
@@ -158,38 +145,6 @@ class Configuration
 
     static const String DEVICE_SELECTORS = "device_selectors";
     static const String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
-
-    // Audio control
-    static const Pair<String, String> SOUND_CONTROL = Pair<String, String>("sound_control", Strings.pref_sound_control_default);
-    String _soundControl;
-
-    String get soundControl
-    => _soundControl;
-
-    set soundControl(String value)
-    {
-        _soundControl = value;
-        _saveStringParameter(Configuration.SOUND_CONTROL, value);
-    }
-
-    static const List<ListeningMode> DEFAULT_LISTENING_MODES = [
-        ListeningMode.MODE_00,
-        ListeningMode.MODE_01,
-        ListeningMode.MODE_09,
-        ListeningMode.MODE_08,
-        ListeningMode.MODE_0A,
-        ListeningMode.MODE_11,
-        ListeningMode.MODE_0C,
-        ListeningMode.MODE_80,
-        ListeningMode.MODE_82
-    ];
-    static const String SELECTED_LISTENING_MODES = "selected_listening_modes";
-
-    static const Pair<String, bool> FORCE_AUDIO_CONTROL = Pair<String, bool>("force_audio_control", false);
-    bool _forceAudioControl;
-
-    bool get isForceAudioControl
-    => _forceAudioControl;
 
     // Remote interface
     static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", false);
@@ -247,9 +202,13 @@ class Configuration
     bool get developerMode
     => _developerMode;
 
-    Configuration(this.preferences, packageInfo)
+    // configuration modules
+    CfgAudioControl audioControl;
+
+    Configuration(final SharedPreferences preferences, packageInfo) : super(preferences)
     {
         this.appVersion = "v." + packageInfo.version;
+        this.audioControl = CfgAudioControl(preferences);
         Logging.info(this, "Application started: " + appVersion + ", OS: " + Platform.operatingSystem);
     }
 
@@ -273,8 +232,7 @@ class Configuration
         _friendlyNames = getBool(FRIENDLY_NAMES, doLog: true);
 
         // Audio control
-        _soundControl = getString(SOUND_CONTROL, doLog: true);
-        _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
+        audioControl.read();
 
         // Remote interface
         _riAmp = getBool(RI_AMP, doLog: true);
@@ -288,78 +246,6 @@ class Configuration
         _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
-    }
-
-    String getString(Pair<String, String> par, {doLog = false})
-    {
-        String val = par.item2;
-        try
-        {
-            final String v = preferences.getString(par.item1);
-            val = v != null ? v : par.item2;
-        }
-        on Exception
-        {
-            // nothing to do
-        }
-        if (doLog)
-        {
-            Logging.info(this, "  " + par.item1 + ": " + val);
-        }
-        return val;
-    }
-
-    String getStringDef(String name, String def)
-    => getString(Pair<String, String>(name, def));
-
-    int getInt(Pair<String, int> par, {doLog = false})
-    {
-        int val = par.item2;
-        try
-        {
-            final int v = preferences.getInt(par.item1);
-            val = v != null ? v : par.item2;
-        }
-        on Exception
-        {
-            // nothing to do
-        }
-        if (doLog)
-        {
-            Logging.info(this, "  " + par.item1 + ": " + val.toString());
-        }
-        return val;
-    }
-
-    bool getBool(final Pair<String, bool> par, {doLog = false})
-    {
-        bool val = par.item2;
-        try
-        {
-            final bool v = preferences.getBool(par.item1);
-            val = v != null ? v : par.item2;
-        }
-        on Exception
-        {
-            // nothing to do
-        }
-        if (doLog)
-        {
-            Logging.info(this, "  " + par.item1 + ": " + val.toString());
-        }
-        return val;
-    }
-
-    void _saveStringParameter(final Pair<String, String> par, final String value, {String prefix = ""}) async
-    {
-        Logging.info(this, prefix + "saving " + par.item1 + ": " + value);
-        await preferences.setString(par.item1, value);
-    }
-
-    void _saveIntegerParameter(final Pair<String, int> par, final int value, {String prefix = ""}) async
-    {
-        Logging.info(this, prefix + "saving " + par.item1 + ": " + value.toString());
-        await preferences.setInt(par.item1, value);
     }
 
     void saveDevice(final String device, final int port) async
@@ -390,7 +276,7 @@ class Configuration
                 }
                 str += p.getId;
             });
-            _saveStringParameter(Pair<String, String>(NETWORK_SERVICES,""), str, prefix: "  ");
+            saveStringParameter(Pair<String, String>(NETWORK_SERVICES,""), str, prefix: "  ");
         }
         if (state.deviceSelectors.isNotEmpty)
         {
@@ -404,26 +290,8 @@ class Configuration
                 str += d.getId;
                 preferences.setString(DEVICE_SELECTORS + "_" + d.getId, d.getName);
             });
-            _saveStringParameter(Pair<String, String>(DEVICE_SELECTORS,""), str, prefix: "  ");
+            saveStringParameter(Pair<String, String>(DEVICE_SELECTORS,""), str, prefix: "  ");
         }
-        _masterVolumeMax = getInt(getModelDependentInt(MASTER_VOLUME_MAX), doLog: true);
+        audioControl.setReceiverInformation(state);
     }
-
-    List<String> getTokens(final String par)
-    {
-        final String cfg = preferences.getString(par);
-        return (cfg == null || cfg.isEmpty) ? null : cfg.split(",");
-    }
-
-    void saveTokens(final String par, final String val)
-    {
-        Logging.info(this, "saving " + par + ": " + val);
-        preferences.setString(par, val);
-    }
-
-    String getModelDependentParameter(final String par)
-    => par + "_" + getString(MODEL);
-
-    Pair<String, int> getModelDependentInt(final Pair<String, int> par)
-    => Pair<String, int>(getModelDependentParameter(par.item1), par.item2);
 }

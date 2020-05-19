@@ -71,7 +71,7 @@ class DeviceVolumeSliderView extends UpdatableView
         {
             final int zone = state.getActiveZone;
             final Zone zoneInfo = state.getActiveZoneInfo;
-            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), configuration.masterVolumeMax);
+            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), configuration.audioControl.masterVolumeMax);
             final Widget slider = CustomProgressBar(
                 minValueStr: "",
                 maxValueStr: "",

@@ -152,11 +152,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
             {
                 if (cmd == PlatformCmd.VOLUME_UP)
                 {
-                    _stateManager.changeMasterVolume(_configuration.soundControl, true);
+                    _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
                 }
                 if (cmd == PlatformCmd.VOLUME_DOWN)
                 {
-                    _stateManager.changeMasterVolume(_configuration.soundControl, false);
+                    _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
                 }
             }
             return null;
@@ -478,7 +478,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         // Inform state manager about configuration change
         _stateManager.keepPlaybackMode = _index == 0;
-        _stateManager.state.soundControlState.forceAudioControl = _configuration.isForceAudioControl;
+        _stateManager.state.soundControlState.forceAudioControl = _configuration.audioControl.isForceAudioControl;
 
         // Inform platform code about configuration change.
         // Depending on new setting, app may be restarted by platform code here

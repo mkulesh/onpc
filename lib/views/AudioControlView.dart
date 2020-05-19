@@ -66,7 +66,7 @@ class AudioControlView extends UpdatableView
 
         // Master volume
         {
-            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), configuration.masterVolumeMax);
+            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), configuration.audioControl.masterVolumeMax);
 
             final Widget maxVolumeBtn = CustomImageButton.small(
                 Drawables.volume_max_limit,
@@ -214,7 +214,7 @@ class AudioControlView extends UpdatableView
         // Bass
         final Widget bassControl = _createControl(ToneCommandMsg.BASS_KEY,
             soundControl.bassLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_bass,
-            defToneControl: configuration.isForceAudioControl ? ReceiverInformation.DEFAULT_BASS_CONTROL : null);
+            defToneControl: configuration.audioControl.isForceAudioControl ? ReceiverInformation.DEFAULT_BASS_CONTROL : null);
         if (bassControl != null)
         {
             controls.add(bassControl);
@@ -222,7 +222,7 @@ class AudioControlView extends UpdatableView
         // Treble
         final Widget trebleControl = _createControl(ToneCommandMsg.TREBLE_KEY,
             soundControl.trebleLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_treble,
-            defToneControl: configuration.isForceAudioControl ? ReceiverInformation.DEFAULT_TREBLE_CONTROL : null);
+            defToneControl: configuration.audioControl.isForceAudioControl ? ReceiverInformation.DEFAULT_TREBLE_CONTROL : null);
         if (trebleControl != null)
         {
             controls.add(trebleControl);

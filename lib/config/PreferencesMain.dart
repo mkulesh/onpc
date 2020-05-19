@@ -25,6 +25,7 @@ import "../dialogs/DropdownPreferenceDialog.dart";
 import "../utils/Pair.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
+import "CfgAudioControl.dart";
 import "Configuration.dart";
 
 class PreferencesMain extends StatefulWidget
@@ -123,7 +124,7 @@ class _PreferencesMainState extends State<PreferencesMain>
         elements.add(PreferenceTitle(Strings.audio_control));
         elements.add(_customDropdownPreference(td,
             Strings.pref_sound_control,
-            Configuration.SOUND_CONTROL,
+            CfgAudioControl.SOUND_CONTROL,
             icon: Drawables.pref_sound_control,
             values: Strings.pref_sound_control_codes,
             displayValues: Strings.pref_sound_control_names,
@@ -131,7 +132,7 @@ class _PreferencesMainState extends State<PreferencesMain>
             {
                 setState(()
                 {
-                    _configuration.soundControl = val;
+                    _configuration.audioControl.soundControl = val;
                 });
             }));
         elements.add(_customPreferenceScreen(td,
@@ -140,7 +141,7 @@ class _PreferencesMainState extends State<PreferencesMain>
             activity: Activities.activity_listening_modes));
         elements.add(_customSwitchPreference(td,
             Strings.pref_force_audio_control,
-            Configuration.FORCE_AUDIO_CONTROL,
+            CfgAudioControl.FORCE_AUDIO_CONTROL,
             icon: Drawables.volume_audio_control));
 
         // Remote interface

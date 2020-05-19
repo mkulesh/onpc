@@ -17,6 +17,7 @@ import "../constants/Strings.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../utils/Logging.dart";
+import "CfgAudioControl.dart";
 import "CheckableItem.dart";
 import "Configuration.dart";
 
@@ -39,14 +40,14 @@ class _ListeningModesState extends State<ListeningModes>
 
     _ListeningModesState(this._configuration)
     {
-        _parameter = _configuration.getModelDependentParameter(Configuration.SELECTED_LISTENING_MODES);
+        _parameter = _configuration.getModelDependentParameter(CfgAudioControl.SELECTED_LISTENING_MODES);
         _createItems();
     }
 
     void _createItems()
     {
         final List<String> defItems = List();
-        Configuration.DEFAULT_LISTENING_MODES.forEach((m)
+        CfgAudioControl.DEFAULT_LISTENING_MODES.forEach((m)
             => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
 
         for (CheckableItem sp in CheckableItem.readFromPreference(_configuration, _parameter, defItems))

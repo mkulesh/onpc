@@ -13,9 +13,6 @@
 
 import "package:flutter/material.dart";
 
-import "../config/CheckableItem.dart";
-import "../config/Configuration.dart";
-import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../utils/Logging.dart";
@@ -39,7 +36,7 @@ class ListeningModeView extends UpdatableView
 
         final List<Widget> buttons = List<Widget>();
 
-        _getSortedListeningModes(false, state.soundControlState.listeningMode).forEach((m)
+        configuration.audioControl.getSortedListeningModes(false, state.soundControlState.listeningMode).forEach((m)
         {
             final ListeningModeMsg cmd = ListeningModeMsg.output(m.key);
 
@@ -57,29 +54,5 @@ class ListeningModeView extends UpdatableView
             return SizedBox.shrink();
         }
         return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons));
-    }
-
-    List<EnumItem<ListeningMode>> _getSortedListeningModes(bool allItems, EnumItem<ListeningMode> activeItem)
-    {
-        final List<EnumItem<ListeningMode>> result = List();
-
-        final List<String> defItems = List();
-        Configuration.DEFAULT_LISTENING_MODES.forEach((m)
-            => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
-
-        final String par = configuration.getModelDependentParameter(Configuration.SELECTED_LISTENING_MODES);
-        for (CheckableItem sp in CheckableItem.readFromPreference(configuration, par, defItems))
-        {
-            final bool visible = allItems || sp.checked ||
-                (activeItem.key != ListeningMode.NONE && activeItem.getCode == sp.code);
-            ListeningModeMsg.ValueEnum.values.forEach((m)
-            {
-                if (visible && m.key != ListeningMode.NONE && m.getCode == sp.code)
-                {
-                    result.add(m);
-                }
-            });
-        }
-        return result;
     }
 }

@@ -16,6 +16,7 @@ import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../widgets/CustomActivityTitle.dart";
+import "CfgModule.dart";
 import "Configuration.dart";
 
 class CheckableItem
@@ -28,7 +29,7 @@ class CheckableItem
 
     CheckableItem.fromCode(this.code, this.checked, { this.text = "" });
 
-    static void writeToPreference(final Configuration configuration,
+    static void writeToPreference(final CfgModule configuration,
         final String parameter,
         final List<CheckableItem> items)
     {
@@ -47,7 +48,7 @@ class CheckableItem
         configuration.saveTokens(parameter, selectedItems);
     }
 
-    static List<CheckableItem> readFromPreference(final Configuration configuration,
+    static List<CheckableItem> readFromPreference(final CfgModule configuration,
         final String parameter,
         final List<String> defItems)
     {

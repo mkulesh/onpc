@@ -46,12 +46,12 @@ class MasterVolumeMaxView extends UpdatableView
             minValueStr: "0",
             maxValueStr: SoundControlState.getVolumeLevelStr(maxVolume, zoneInfo),
             maxValueNum: maxVolume,
-            currValue: min(maxVolume, configuration.masterVolumeMax),
+            currValue: min(maxVolume, configuration.audioControl.masterVolumeMax),
             onCaption: (v)
             => SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo),
             onChanged: (v)
             {
-                configuration.masterVolumeMax = v;
+                configuration.audioControl.masterVolumeMax = v;
                 stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
             }
         );
