@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import "../Platform.dart";
 import "../constants/Strings.dart";
+import "../iscp/StateManager.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
@@ -256,8 +257,9 @@ class Configuration extends CfgModule
         await preferences.setInt(SERVER_PORT.item1, port);
     }
 
-    void setReceiverInformation(ReceiverInformation state)
+    void setReceiverInformation(StateManager stateManager)
     {
+        final ReceiverInformation state = stateManager.state.receiverInformation;
         String m = state.model;
         if (m.isEmpty)
         {
@@ -292,6 +294,6 @@ class Configuration extends CfgModule
             });
             saveStringParameter(Pair<String, String>(DEVICE_SELECTORS,""), str, prefix: "  ");
         }
-        audioControl.setReceiverInformation(state);
+        audioControl.setReceiverInformation(stateManager);
     }
 }

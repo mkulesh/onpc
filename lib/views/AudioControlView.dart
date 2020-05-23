@@ -32,9 +32,9 @@ import "../iscp/messages/ToneCommandMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomCheckbox.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomProgressBar.dart";
-import "../widgets/CustomTextLabel.dart";
 import "MasterVolumeMaxView.dart";
 import "UpdatableView.dart";
 
@@ -99,9 +99,11 @@ class AudioControlView extends UpdatableView
                 _addToneControls(controls, soundControl);
             }
 
-            final Widget checkBox = Checkbox(
+            controls.add(CustomCheckbox(Strings.tone_direct,
                 value: isDirectMode,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: DialogDimens.rowPadding,
+                icon: stateManager.waitingForData ? UpdatableView.createTimerSand() : null,
+                enabled: !stateManager.waitingForData,
                 onChanged: (bool newValue)
                 {
                     stateManager.sendMessage(DirectCommandMsg.output(DirectCommand.TOGGLE), waitingForData: true);
@@ -111,27 +113,7 @@ class AudioControlView extends UpdatableView
                         cmd.add(ToneCommandMsg.ZONE_COMMANDS[zone]);
                         stateManager.sendQueries(cmd);
                     }
-                });
-
-            Widget checkBoxRow = Padding(padding: EdgeInsets.only(bottom: DialogDimens.rowPadding.vertical), child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                    CustomTextLabel.normal(Strings.tone_direct),
-                    stateManager.waitingForData ? UpdatableView.createTimerSand() : checkBox
-                ]));
-
-            if (!stateManager.waitingForData)
-            {
-                checkBoxRow = InkWell(
-                    child: checkBoxRow,
-                    onTap: ()
-                    => stateManager.sendMessage(DirectCommandMsg.output(DirectCommand.TOGGLE), waitingForData: true)
-                );
-            }
-
-            controls.add(checkBoxRow);
+                }));
         }
         else if (!soundControl.isDirectListeningMode && zone < ToneCommandMsg.ZONE_COMMANDS.length)
         {

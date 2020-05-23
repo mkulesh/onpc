@@ -237,6 +237,16 @@ class ReceiverInformation
     String get firmaware
     => _getProperty("firmwareversion");
 
+    String getIdentifier()
+    {
+        String identifier = _getProperty("macaddress");
+        if (identifier.isEmpty)
+        {
+            identifier = _getProperty("deviceserial");
+        }
+        return identifier;
+    }
+
     String getDeviceName(bool useFriendlyName)
     {
         if (useFriendlyName)

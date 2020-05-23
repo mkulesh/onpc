@@ -79,9 +79,9 @@ class BroadcastResponseMsg extends ISCPMessage
     @override
     String toString()
     => super.toString() + "[HOST=" + Logging.ipToString(sourceHost, _port.toString())
-            + "; MODEL=" + _model
-            + "; DST=" + _destinationArea
-            + "; ID=" + _identifier + "]";
+            + (_model != null ? "; MODEL=" + _model : "")
+            + (_destinationArea != null ? "; DST=" + _destinationArea : "")
+            + (_identifier != null ? "; ID=" + _identifier : "") + "]";
 
     int get getPort
     => _port;

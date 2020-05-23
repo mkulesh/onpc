@@ -13,7 +13,7 @@
 
 import "package:shared_preferences/shared_preferences.dart";
 
-import "../iscp/state/ReceiverInformation.dart";
+import "../iscp/StateManager.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "Configuration.dart";
@@ -26,7 +26,7 @@ abstract class CfgModule
 
     void read();
 
-    void setReceiverInformation(ReceiverInformation state);
+    void setReceiverInformation(StateManager stateManager);
 
     String getString(Pair<String, String> par, {doLog = false})
     {

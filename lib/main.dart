@@ -293,17 +293,17 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 case StateManager.CONNECTION_EVENT:
                     if (_stateManager.isConnected)
                     {
-                        final String host = _stateManager.requestedHost ?? _stateManager.sourceHost;
+                        final String host = _stateManager.manualHost ?? _stateManager.sourceHost;
                         _connectionState = ConnectionState.CONNECTED;
                         _configuration.saveDevice(host, _stateManager.sourcePort);
-                        _configuration.setReceiverInformation(_viewContext.state.receiverInformation);
+                        _configuration.setReceiverInformation(_viewContext.stateManager);
                         _stateManager.startSearch(limited: true);
                     }
                     break;
                 case ReceiverInformationMsg.CODE:
                     if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
                     {
-                        _configuration.setReceiverInformation(_viewContext.state.receiverInformation);
+                        _configuration.setReceiverInformation(_viewContext.stateManager);
                     }
                     break;
             }
@@ -365,8 +365,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
             Logging.info(this.widget, "Use stored connection data: "
                 + Logging.ipToString(_configuration.getDeviceName, _configuration.getDevicePort.toString()));
             _connectionState = ConnectionState.CONNECTING_TO_SAVED;
-            _stateManager.connect(
-                _configuration.getDeviceName, _configuration.getDevicePort, saveRequestedHost: true);
+            _stateManager.connect(_configuration.getDeviceName, _configuration.getDevicePort,
+                manualHost: _configuration.getDeviceName);
         }
     }
 

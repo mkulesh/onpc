@@ -19,9 +19,8 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../views/UpdatableView.dart";
+import "../widgets/CustomDialogEditField.dart";
 import "../widgets/CustomDialogTitle.dart";
-import "../widgets/CustomTextField.dart";
-import "../widgets/CustomTextLabel.dart";
 
 class DeviceConnectDialog extends StatefulWidget
 {
@@ -54,36 +53,28 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
     {
         final ThemeData td = viewContext.getThemeData();
 
-        final Widget row1 = Padding(
-            padding: DialogDimens.rowPadding,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                    CustomTextLabel.small(Strings.connect_dialog_address),
-                    CustomTextField(_address, isFocused: true)
-                ]
-            )
+        final List<Widget> controls = List();
+
+        controls.add(CustomDialogEditField(_address,
+            textLabel: Strings.connect_dialog_address,
+            isFocused: true,
+            onChanged: (val)
+            {
+                setState(()
+                {
+                    // empty, just to redraw OK button
+                });
+            })
         );
 
-        final Widget row2 = Padding(
-            padding: DialogDimens.rowPadding,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                    CustomTextLabel.small(Strings.connect_dialog_port),
-                    CustomTextField(_port),
-                ]
-            )
-        );
+        controls.add(CustomDialogEditField(_port, textLabel: Strings.connect_dialog_port));
 
         final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.drawer_device_connect, Drawables.drawer_connect),
             contentPadding: DialogDimens.contentPadding,
-            content: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [row1, row2]),
+            content: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: ListBody(children: controls)),
             actions: <Widget>[
                 FlatButton(
                     child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
@@ -92,13 +83,16 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                         Navigator.of(context).pop();
                     }),
                 FlatButton(
-                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
-                    onPressed: ()
+                    child: Text(Strings.action_ok.toUpperCase(),
+                        style: _address.text.isEmpty ? td.textTheme.button.copyWith(color: td.disabledColor) : td.textTheme.button
+                    ),
+                    onPressed: _address.text.isEmpty ? null : ()
                     {
                         Navigator.of(context).pop();
+                        final String host = _address.text;
                         final int port1 = int.tryParse(_port.text);
                         final int port2 = port1 == null ? Configuration.SERVER_PORT.item2 : port1;
-                        viewContext.stateManager.connect(_address.text, port2, saveRequestedHost: true);
+                        viewContext.stateManager.connect(host, port2, manualHost: host);
                     }),
             ]
         );

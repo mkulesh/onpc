@@ -16,7 +16,7 @@ import "package:shared_preferences/shared_preferences.dart";
 
 import "../constants/Strings.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
-import "../iscp/state/ReceiverInformation.dart";
+import "../iscp/StateManager.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";
 import "CheckableItem.dart";
@@ -82,7 +82,7 @@ class CfgAudioControl extends CfgModule
         _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
     }
 
-    void setReceiverInformation(ReceiverInformation state)
+    void setReceiverInformation(StateManager stateManager)
     {
         _masterVolumeMax = getInt(getModelDependentInt(MASTER_VOLUME_MAX), doLog: true);
     }

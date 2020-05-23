@@ -81,6 +81,7 @@ class DrawerView extends UpdatableView
 
             // Multiroom
             final List<DeviceInfo> devices = state.multiroomState.getSortedDevices();
+            final String identifier = stateManager.state.receiverInformation.getIdentifier();
             if (devices.length > 1)
             {
                 drawerItems.add(CustomDivider());
@@ -89,9 +90,10 @@ class DrawerView extends UpdatableView
                 {
                     final DeviceInfo di = devices[i];
                     final BroadcastResponseMsg msg = di.responseMsg;
+                    final String icon = Drawables.drawerMultiroomDevice(i);
                     drawerItems.add(_buildDrawerItem(
-                        context, Drawables.drawerMultiroomDevice(i), di.getDeviceName(configuration.friendlyNames),
-                        isSelected: stateManager.isSourceHost(msg),
+                        context, icon, di.getDeviceName(configuration.friendlyNames),
+                        isSelected: stateManager.isSourceHost(msg) || (identifier != null && identifier == msg.getIdentifier),
                         onTabListener: (context)
                         {
                             stateManager.connect(msg.sourceHost, msg.getPort);
