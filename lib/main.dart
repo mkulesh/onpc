@@ -296,6 +296,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
                         final String host = _stateManager.manualHost ?? _stateManager.sourceHost;
                         _connectionState = ConnectionState.CONNECTED;
                         _configuration.saveDevice(host, _stateManager.sourcePort);
+                        if (_stateManager.manualAlias != null)
+                        {
+                            _configuration.favoriteConnections.updateDevice(
+                                _stateManager.sourceHost, _stateManager.sourcePort, _stateManager.manualAlias, null);
+                        }
                         _configuration.setReceiverInformation(_viewContext.stateManager);
                         _stateManager.startSearch(limited: true);
                     }

@@ -22,6 +22,7 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/DeviceConnectDialog.dart";
+import "../dialogs/FavoriteConnectionEditDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
@@ -39,7 +40,8 @@ class DrawerView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         BroadcastResponseMsg.CODE,
-        FriendlyNameMsg.CODE
+        FriendlyNameMsg.CODE,
+        FavoriteConnectionEditDialog.FAVORITE_CHANGE_EVENT,
     ];
 
     final BuildContext _appContext;
@@ -80,9 +82,10 @@ class DrawerView extends UpdatableView
             });
 
             // Multiroom
-            final List<DeviceInfo> devices = state.multiroomState.getSortedDevices();
+            final List<DeviceInfo> devices = state.multiroomState.getMultiroomDevices(
+                configuration.favoriteConnections.getDevices, false);
             final String identifier = stateManager.state.receiverInformation.getIdentifier();
-            if (devices.length > 1)
+            if (devices.length > 1 || configuration.favoriteConnections.getDevices.isNotEmpty)
             {
                 drawerItems.add(CustomDivider());
                 drawerItems.add(CustomTextLabel.small(Strings.drawer_multiroom, padding: DrawerDimens.labelPadding));
@@ -90,10 +93,15 @@ class DrawerView extends UpdatableView
                 {
                     final DeviceInfo di = devices[i];
                     final BroadcastResponseMsg msg = di.responseMsg;
-                    final String icon = Drawables.drawerMultiroomDevice(i);
+                    final String icon = di.isFavorite ? Drawables.drawer_favorite_device : Drawables.drawer_found_device;
                     drawerItems.add(_buildDrawerItem(
                         context, icon, di.getDeviceName(configuration.friendlyNames),
                         isSelected: stateManager.isSourceHost(msg) || (identifier != null && identifier == msg.getIdentifier),
+                        editButton: di.isFavorite ? CustomImageButton.small(
+                            Drawables.drawer_edit_item,
+                            Strings.favorite_connection_edit,
+                            onPressed: () => _showFavoriteConnectionEditDialog(context, msg, updateCallback),
+                        ) : null,
                         onTabListener: (context)
                         {
                             stateManager.connect(msg.sourceHost, msg.getPort);
@@ -155,37 +163,52 @@ class DrawerView extends UpdatableView
     }
 
     Widget _buildDrawerItem(final BuildContext context, final String iconName, final String title,
-        {bool isSelected = false, OnTabListener onTabListener})
+        {bool isSelected = false, OnTabListener onTabListener, Widget editButton})
     {
         final ThemeData td = Theme.of(context);
-
-        return Padding(
-            padding: DrawerDimens.itemPadding,
-            child: InkWell(child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                    CustomImageButton.small(
-                        iconName, title,
-                        padding: DrawerDimens.iconPadding,
-                        isEnabled: false,
-                    ),
-                    Expanded(child: CustomTextLabel.small(title,
-                        color: isSelected ? td.accentColor :
-                        (td.brightness == Brightness.dark ? td.bottomAppBarColor : td.textTheme.subhead.color))
-                    )
-                ]),
-                onTap: ()
+        final Widget item = InkWell(child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+                CustomImageButton.small(
+                    iconName, title,
+                    padding: DrawerDimens.iconPadding,
+                    isEnabled: false,
+                ),
+                Expanded(child: CustomTextLabel.small(title,
+                    color: isSelected ? td.accentColor :
+                    (td.brightness == Brightness.dark ? td.bottomAppBarColor : td.textTheme.subhead.color))
+                )
+            ]),
+            onTap: ()
+            {
+                Logging.info(this, "Drawer menu: " + title);
+                Navigator.pop(context);
+                if (onTabListener != null)
                 {
-                    Logging.info(this, "Drawer menu: " + title);
-                    Navigator.pop(context);
-                    if (onTabListener != null)
-                    {
-                        onTabListener(_appContext);
-                    }
+                    onTabListener(_appContext);
                 }
-            )
+            }
         );
+
+        if (editButton == null)
+        {
+            return Padding(
+                padding: DrawerDimens.itemPadding,
+                child: item
+            );
+        }
+        else
+        {
+            return Padding(
+                padding: DrawerDimens.itemPadding,
+                child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [Expanded(child: item), editButton]
+                )
+            );
+        }
     }
 
     void _showDeviceSearchDialog(final BuildContext context)
@@ -200,6 +223,17 @@ class DrawerView extends UpdatableView
             barrierDismissible: true,
             builder: (BuildContext c)
             => DeviceConnectDialog(viewContext)
+        );
+    }
+
+    void _showFavoriteConnectionEditDialog(final BuildContext context,
+        final BroadcastResponseMsg msg, VoidCallback updateCallback)
+    {
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => FavoriteConnectionEditDialog(viewContext, msg)
         );
     }
 

@@ -433,6 +433,54 @@ Enjoy!"""];
         /*pl*/ "Port (opcjonalnie)"];
     static String get connect_dialog_port => l_connect_dialog_port[_language];
 
+    static const List<String> l_connect_dialog_save = [
+        /*en*/ "Save connection",
+        /*ru*/ "Сохранить соединение",
+        /*de*/ "Verbindung speichern",
+        /*fr*/ "Enregistrer la connexion",
+        /*pl*/ "Zapisz połączenie"];
+    static String get connect_dialog_save => l_connect_dialog_save[_language];
+
+    static const List<String> l_favorite_connection_edit = [
+        /*en*/ "Edit connection",
+        /*ru*/ "Изменить соединение",
+        /*de*/ "Verbindung bearbeiten",
+        /*fr*/ "Modifier la connexion",
+        /*pl*/ "Edytuj połączenie"];
+    static String get favorite_connection_edit => l_favorite_connection_edit[_language];
+
+    static const List<String> l_favorite_connection_update = [
+        /*en*/ "Edit",
+        /*ru*/ "Изменить",
+        /*de*/ "Bearbeiten",
+        /*fr*/ "Modifier",
+        /*pl*/ "Edytuj"];
+    static String get favorite_connection_update => l_favorite_connection_update[_language];
+
+    static const List<String> l_favorite_connection_alias = [
+        /*en*/ "Name",
+        /*ru*/ "Имя",
+        /*de*/ "Name",
+        /*fr*/ "Nom",
+        /*pl*/ "Nazwa"];
+    static String get favorite_connection_alias => l_favorite_connection_alias[_language];
+
+    static const List<String> l_favorite_connection_identifier = [
+        /*en*/ "MAC Address (optional)",
+        /*ru*/ "MAC адрес (необязательно)",
+        /*de*/ "MAC Adresse (optional)",
+        /*fr*/ "Adresse MAC (optionel)",
+        /*pl*/ "Adres MAC (opcjonalnie)"];
+    static String get favorite_connection_identifier => l_favorite_connection_identifier[_language];
+
+    static const List<String> l_favorite_connection_delete = [
+        /*en*/ "Delete",
+        /*ru*/ "Удалить",
+        /*de*/ "Löschen",
+        /*fr*/ "Supprimer",
+        /*pl*/ "Usuń"];
+    static String get favorite_connection_delete => l_favorite_connection_delete[_language];
+
     static const List<String> l_menu_power_power = [
         /*en*/ "On/Standby",
         /*ru*/ "Вкл/выкл",

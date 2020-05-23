@@ -52,6 +52,9 @@ class Drawables
     static const String drawer_app_settings = BUTTONS_PATH + "drawer_app_settings.svg";
     static const String drawer_connect = BUTTONS_PATH + "drawer_connect.svg";
     static const String drawer_search = BUTTONS_PATH + "drawer_search.svg";
+    static const String drawer_favorite_device = BUTTONS_PATH + "drawer_favorite_device.svg";
+    static const String drawer_found_device = BUTTONS_PATH + "drawer_found_device.svg"; // audio-video
+    static const String drawer_edit_item = BUTTONS_PATH + "drawer_edit_item.svg"; // pencil-outline
 
     static String drawerZone(String id)
     => BUTTONS_PATH + "drawer_zone_" + id + ".svg";
@@ -96,9 +99,6 @@ class Drawables
     static const String media_item_disc_player = BUTTONS_PATH + "media_item_disc_player.svg";
     static const String media_item_toslink = BUTTONS_PATH + "media_item_toslink.svg";
     static const String media_item_filter = BUTTONS_PATH + "media_item_filter.svg";
-
-    static String drawerMultiroomDevice(int id)
-    => BUTTONS_PATH + "multiroom_device_" + id.toString() + ".svg";
 
     static const String pref_app_theme = BUTTONS_PATH + "pref_app_theme.svg";
     static const String pref_auto_power = BUTTONS_PATH + "pref_auto_power.svg";

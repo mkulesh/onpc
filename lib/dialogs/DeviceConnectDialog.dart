@@ -18,7 +18,9 @@ import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../utils/Logging.dart";
 import "../views/UpdatableView.dart";
+import "../widgets/CustomCheckbox.dart";
 import "../widgets/CustomDialogEditField.dart";
 import "../widgets/CustomDialogTitle.dart";
 
@@ -36,6 +38,8 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
 {
     final _address = TextEditingController();
     final _port = TextEditingController();
+    bool _saveEnabled;
+    final _alias = TextEditingController();
 
     ViewContext get viewContext
     => widget._viewContext;
@@ -46,6 +50,8 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
         super.initState();
         _address.text = viewContext.configuration.getDeviceName;
         _port.text = viewContext.configuration.getDevicePort.toString();
+        _saveEnabled = false;
+        _alias.text = "";
     }
 
     @override
@@ -68,6 +74,20 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
         );
 
         controls.add(CustomDialogEditField(_port, textLabel: Strings.connect_dialog_port));
+
+        final Widget saveCheckBox = CustomCheckbox(Strings.connect_dialog_save,
+            value: _saveEnabled,
+            padding: ActivityDimens.noPadding,
+            onChanged: (bool newValue)
+            {
+                setState(()
+                {
+                    _saveEnabled = newValue;
+                });
+            }
+        );
+
+        controls.add(CustomDialogEditField(_alias, widgetLabel: saveCheckBox));
 
         final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.drawer_device_connect, Drawables.drawer_connect),
@@ -92,7 +112,9 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                         final String host = _address.text;
                         final int port1 = int.tryParse(_port.text);
                         final int port2 = port1 == null ? Configuration.SERVER_PORT.item2 : port1;
-                        viewContext.stateManager.connect(host, port2, manualHost: host);
+                        final String alias = _saveEnabled ?
+                            (_alias.text.isEmpty ? Logging.ipToString(host, port2.toString()) : _alias.text) : null;
+                        viewContext.stateManager.connect(host, port2, manualHost: host, manualAlias: alias);
                     }),
             ]
         );
@@ -105,6 +127,7 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
     {
         _address.dispose();
         _port.dispose();
+        _alias.dispose();
         super.dispose();
     }
 }

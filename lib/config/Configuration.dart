@@ -22,6 +22,7 @@ import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "CfgAudioControl.dart";
+import "CfgFavoriteConnections.dart";
 import "CfgModule.dart";
 
 class Configuration extends CfgModule
@@ -205,11 +206,13 @@ class Configuration extends CfgModule
 
     // configuration modules
     CfgAudioControl audioControl;
+    CfgFavoriteConnections favoriteConnections;
 
     Configuration(final SharedPreferences preferences, packageInfo) : super(preferences)
     {
         this.appVersion = "v." + packageInfo.version;
         this.audioControl = CfgAudioControl(preferences);
+        this.favoriteConnections = CfgFavoriteConnections(preferences);
         Logging.info(this, "Application started: " + appVersion + ", OS: " + Platform.operatingSystem);
     }
 
@@ -247,6 +250,9 @@ class Configuration extends CfgModule
         _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
+
+        // Favorite connections
+        favoriteConnections.read();
     }
 
     void saveDevice(final String device, final int port) async
@@ -295,5 +301,6 @@ class Configuration extends CfgModule
             saveStringParameter(Pair<String, String>(DEVICE_SELECTORS,""), str, prefix: "  ");
         }
         audioControl.setReceiverInformation(stateManager);
+        favoriteConnections.setReceiverInformation(stateManager);
     }
 }

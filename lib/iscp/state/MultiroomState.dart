@@ -11,6 +11,8 @@
  * Public License along with this program.
  */
 
+import 'dart:collection';
+
 import "../../utils/Logging.dart";
 import "../ISCPMessage.dart";
 import "../messages/BroadcastResponseMsg.dart";
@@ -21,25 +23,25 @@ import "../messages/MultiroomDeviceInformationMsg.dart";
 
 class DeviceInfo
 {
-    int responses;
-
     final BroadcastResponseMsg responseMsg;
-    String friendlyName;
+    final bool _favorite;
+    int _responses;
+    String _friendlyName;
     MultiroomDeviceInformationMsg groupMsg;
     EnumItem<ChannelType> _channelType;
 
-    DeviceInfo(this.responseMsg)
+    DeviceInfo(this.responseMsg, this._favorite)
     {
-        responses = 1;
-        friendlyName = null;
+        _responses = 1;
+        _friendlyName = null;
         groupMsg = null;
         _channelType = MultiroomZone.ChannelTypeEnum.defValue;
     }
 
     bool processFriendlyName(FriendlyNameMsg msg)
     {
-        final bool changed = friendlyName != msg.getFriendlyName;
-        friendlyName = msg.getFriendlyName;
+        final bool changed = _friendlyName != msg.getFriendlyName;
+        _friendlyName = msg.getFriendlyName;
         return changed;
     }
 
@@ -56,12 +58,19 @@ class DeviceInfo
         return changed;
     }
 
+    bool get isFavorite
+    => _favorite;
+
     String getId()
     => responseMsg.getDevice;
 
     String getDeviceName(bool useFriendlyName)
     {
-        final String name = (useFriendlyName) ? friendlyName : null;
+        if (isFavorite && responseMsg.alias != null)
+        {
+            return responseMsg.alias;
+        }
+        final String name = (useFriendlyName) ? _friendlyName : null;
         return (name != null) ? name : getId();
     }
 
@@ -136,13 +145,13 @@ class MultiroomState
         DeviceInfo deviceInfo = _deviceList[id];
         if (deviceInfo == null)
         {
-            deviceInfo = DeviceInfo(msg);
+            deviceInfo = DeviceInfo(msg, false);
             _deviceList[id] = deviceInfo;
             return true;
         }
         else
         {
-            deviceInfo.responses++;
+            deviceInfo._responses++;
         }
         return false;
     }
@@ -161,7 +170,7 @@ class MultiroomState
         }
         for (DeviceInfo di in _deviceList.values)
         {
-            if (di.responses < MAX_DEVICE_RESPONSE_NUMBER)
+            if (di._responses < MAX_DEVICE_RESPONSE_NUMBER)
             {
                 return false;
             }
@@ -174,6 +183,33 @@ class MultiroomState
         final List<DeviceInfo> retValue = List();
         deviceList.values.forEach((f) => retValue.add(f));
         retValue.sort((a, b) => a.getId().compareTo(b.getId()));
+        return retValue;
+    }
+
+    List<DeviceInfo> getMultiroomDevices(final List<BroadcastResponseMsg> favoriteConnections, bool ignoreEmptyIdentifier)
+    {
+        final List<DeviceInfo> retValue = List();
+        final Set<String> identifiers = HashSet();
+        for (BroadcastResponseMsg msg in favoriteConnections)
+        {
+            if (ignoreEmptyIdentifier && msg.getIdentifier.isEmpty)
+            {
+                continue;
+            }
+            retValue.add(DeviceInfo(msg, true));
+            if (msg.getIdentifier.isNotEmpty)
+            {
+                identifiers.add(msg.getIdentifier);
+            }
+        }
+        for (DeviceInfo di in _deviceList.values)
+        {
+            if (identifiers.contains(di.responseMsg.getIdentifier))
+            {
+                continue;
+            }
+            retValue.add(di);
+        }
         return retValue;
     }
 }

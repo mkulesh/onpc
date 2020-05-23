@@ -116,11 +116,14 @@ class StateManager
     ISCPMessage _circlePlayRemoveMsg;
     int _xmlReqId = 0;
 
-    // Device names as manually given by the user
-    String _manualHost;
+    // Device name and alias as manually given by the user
+    String _manualHost, _manualAlias;
 
     String get manualHost
     => _manualHost;
+
+    String get manualAlias
+    => _manualAlias;
 
     // Common List commands
     static final OperationCommandMsg LIST_MSG = OperationCommandMsg.output(
@@ -148,19 +151,21 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
-    void connect(String server, int port, {String manualHost})
+    void connect(String server, int port, {String manualHost, String manualAlias})
     {
         if (isConnected)
         {
             disconnect(true);
         }
         _manualHost = manualHost;
+        _manualAlias = manualAlias;
         _messageChannel.start(server, port);
     }
 
     void disconnect(bool waitForDisconnect)
     {
         _manualHost = null;
+        _manualAlias = null;
         disconnectMultiroom(waitForDisconnect);
         _messageChannel.stop();
         if (waitForDisconnect)

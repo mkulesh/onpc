@@ -39,6 +39,7 @@ class BroadcastResponseMsg extends ISCPMessage
     int _port;
     String _destinationArea;
     String _identifier;
+    String _alias;
 
     BroadcastResponseMsg(InternetAddress hostAddress, EISCPMessage raw) : super(CODE, raw)
     {
@@ -60,6 +61,16 @@ class BroadcastResponseMsg extends ISCPMessage
         {
             _identifier = _trim(tokens[3]);
         }
+        // _alias still be null
+    }
+
+    BroadcastResponseMsg.alias(final String host, final String port, final String alias, final String identifier) : super.output(CODE, "")
+    {
+        this.sourceHost = host;
+        this._port = ISCPMessage.nonNullInteger(port, 10, 0);
+        this._identifier = identifier;
+        this._alias = alias;
+        // all other fields still be null
     }
 
     String _trim(String token)
@@ -81,7 +92,8 @@ class BroadcastResponseMsg extends ISCPMessage
     => super.toString() + "[HOST=" + Logging.ipToString(sourceHost, _port.toString())
             + (_model != null ? "; MODEL=" + _model : "")
             + (_destinationArea != null ? "; DST=" + _destinationArea : "")
-            + (_identifier != null ? "; ID=" + _identifier : "") + "]";
+            + (_identifier != null ? "; ID=" + _identifier : "")
+            + (_alias != null ? "; ALIAS=" + _alias : "") + "]";
 
     int get getPort
     => _port;
@@ -94,4 +106,12 @@ class BroadcastResponseMsg extends ISCPMessage
 
     String get getDevice
     => sourceHost + "/" + (_model != null ? _model : "unknown");
+
+    String get alias
+    => _alias;
+
+    set alias(String value)
+    {
+        _alias = value;
+    }
 }
