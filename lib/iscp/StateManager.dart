@@ -672,6 +672,13 @@ class StateManager
     bool isMultiroomAvailable()
     {
         final DeviceInfo di = sourceDevice;
-        return state.multiroomState.deviceNumber > 1 && di != null && di.groupMsg != null;
+        final int deviceNumber = state.multiroomState.deviceList.length;
+        return deviceNumber > 1 && di != null && di.groupMsg != null;
+    }
+
+    bool isMasterDevice(final DeviceInfo di)
+    {
+        final String identifier = state.receiverInformation.getIdentifier();
+        return isSourceHost(di.responseMsg) || (identifier != null && identifier == di.responseMsg.getIdentifier);
     }
 }

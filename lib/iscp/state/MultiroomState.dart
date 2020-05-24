@@ -91,9 +91,6 @@ class MultiroomState
     Map<String, DeviceInfo> get deviceList
     => _deviceList;
 
-    int get deviceNumber
-    => deviceList.length;
-
     List<String> getQueries()
     {
         return [
@@ -176,14 +173,6 @@ class MultiroomState
             }
         }
         return true;
-    }
-
-    List<DeviceInfo> getSortedDevices()
-    {
-        final List<DeviceInfo> retValue = List();
-        deviceList.values.forEach((f) => retValue.add(f));
-        retValue.sort((a, b) => a.getId().compareTo(b.getId()));
-        return retValue;
     }
 
     List<DeviceInfo> getMultiroomDevices(final List<BroadcastResponseMsg> favoriteConnections, bool ignoreEmptyIdentifier)

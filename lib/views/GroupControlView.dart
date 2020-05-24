@@ -57,7 +57,7 @@ class GroupControlView extends UpdatableView
         int maxGroupId = 0;
         state.multiroomState.deviceList.values.forEach((di)
         {
-            if (di.getId() == myDevice.getId())
+            if (stateManager.isMasterDevice(di))
             {
                 devices.insert(0, di);
             }
@@ -65,7 +65,11 @@ class GroupControlView extends UpdatableView
             {
                 devices.add(di);
             }
-            di.groupMsg.zones.forEach((z) => maxGroupId = max(maxGroupId, z.groupid));
+            if (di.groupMsg != null)
+            {
+                di.groupMsg.zones.forEach((z)
+                => maxGroupId = max(maxGroupId, z.groupid));
+            }
         });
 
         // Define this group ID
@@ -77,7 +81,7 @@ class GroupControlView extends UpdatableView
         Logging.info(this, "Devices for group: " + myGroupId.toString() + ",  maximum group ID=" + maxGroupId.toString());
         devices.forEach((di)
         {
-            controls.add(_buildDeviceItem(di, di.getId() == myDevice.getId(), myZone, myGroupId, targetGroupId));
+            controls.add(_buildDeviceItem(di, stateManager.isMasterDevice(di), myZone, myGroupId, targetGroupId));
         });
 
         return SingleChildScrollView(

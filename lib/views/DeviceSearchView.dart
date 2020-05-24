@@ -42,7 +42,7 @@ class DeviceSearchView extends UpdatableView
         Logging.info(this, "rebuild widget");
 
         final List<Widget> controls = List<Widget>();
-        final List<DeviceInfo> devices = state.multiroomState.getSortedDevices();
+        final List<DeviceInfo> devices = _getSortedDevices(state.multiroomState.deviceList);
 
         devices.forEach((d)
         {
@@ -71,5 +71,13 @@ class DeviceSearchView extends UpdatableView
         return SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: ListBody(children: controls));
+    }
+
+    List<DeviceInfo> _getSortedDevices(final Map<String, DeviceInfo> deviceList)
+    {
+        final List<DeviceInfo> retValue = List();
+        deviceList.values.forEach((f) => retValue.add(f));
+        retValue.sort((a, b) => a.getId().compareTo(b.getId()));
+        return retValue;
     }
 }

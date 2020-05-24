@@ -84,7 +84,6 @@ class DrawerView extends UpdatableView
             // Multiroom
             final List<DeviceInfo> devices = state.multiroomState.getMultiroomDevices(
                 configuration.favoriteConnections.getDevices, false);
-            final String identifier = stateManager.state.receiverInformation.getIdentifier();
             if (devices.length > 1 || configuration.favoriteConnections.getDevices.isNotEmpty)
             {
                 drawerItems.add(CustomDivider());
@@ -96,7 +95,7 @@ class DrawerView extends UpdatableView
                     final String icon = di.isFavorite ? Drawables.drawer_favorite_device : Drawables.drawer_found_device;
                     drawerItems.add(_buildDrawerItem(
                         context, icon, di.getDeviceName(configuration.friendlyNames),
-                        isSelected: stateManager.isSourceHost(msg) || (identifier != null && identifier == msg.getIdentifier),
+                        isSelected: stateManager.isMasterDevice(di),
                         editButton: di.isFavorite ? CustomImageButton.small(
                             Drawables.drawer_edit_item,
                             Strings.favorite_connection_edit,
