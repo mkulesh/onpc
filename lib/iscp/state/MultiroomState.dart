@@ -11,8 +11,6 @@
  * Public License along with this program.
  */
 
-import 'dart:collection';
-
 import "../../utils/Logging.dart";
 import "../ISCPMessage.dart";
 import "../messages/BroadcastResponseMsg.dart";
@@ -77,6 +75,13 @@ class DeviceInfo
     EnumItem<ChannelType> getChannelType(int zone)
     => _channelType.key != MultiroomZone.ChannelTypeEnum.defValue.key ? _channelType :
         (groupMsg != null ? groupMsg.getChannelType(zone) : MultiroomZone.ChannelTypeEnum.defValue);
+
+    void updateGroupInfo(DeviceInfo di)
+    {
+        _friendlyName = di._friendlyName;
+        groupMsg = di.groupMsg;
+        _channelType = di._channelType;
+    }
 }
 
 class MultiroomState
@@ -178,7 +183,6 @@ class MultiroomState
     List<DeviceInfo> getMultiroomDevices(final List<BroadcastResponseMsg> favoriteConnections, bool ignoreEmptyIdentifier)
     {
         final List<DeviceInfo> retValue = List();
-        final Set<String> identifiers = HashSet();
         for (BroadcastResponseMsg msg in favoriteConnections)
         {
             if (ignoreEmptyIdentifier && msg.getIdentifier.isEmpty)
@@ -186,16 +190,17 @@ class MultiroomState
                 continue;
             }
             retValue.add(DeviceInfo(msg, true));
-            if (msg.getIdentifier.isNotEmpty)
-            {
-                identifiers.add(msg.getIdentifier);
-            }
         }
         for (DeviceInfo di in _deviceList.values)
         {
-            if (identifiers.contains(di.responseMsg.getIdentifier))
+            if (di.responseMsg.getIdentifier.isNotEmpty)
             {
-                continue;
+                final oldDi = retValue.firstWhere((o) => o.responseMsg.getIdentifier == di.responseMsg.getIdentifier, orElse: () => null);
+                if (oldDi != null)
+                {
+                    oldDi.updateGroupInfo(di);
+                    continue;
+                }
             }
             retValue.add(di);
         }

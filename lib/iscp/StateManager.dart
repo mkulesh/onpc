@@ -669,10 +669,10 @@ class StateManager
         Logging.info(this, result);
     }
 
-    bool isMultiroomAvailable()
+    bool isMultiroomAvailable(final List<BroadcastResponseMsg> favorites)
     {
         final DeviceInfo di = sourceDevice;
-        final int deviceNumber = state.multiroomState.deviceList.length;
+        final int deviceNumber = state.multiroomState.deviceList.length + favorites.length;
         return deviceNumber > 1 && di != null && di.groupMsg != null;
     }
 

@@ -38,7 +38,7 @@ class GroupButtonsView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        if (!stateManager.isMultiroomAvailable())
+        if (!stateManager.isMultiroomAvailable(configuration.favoriteConnections.getDevices))
         {
             return SizedBox.shrink();
         }

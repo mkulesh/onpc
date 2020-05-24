@@ -100,7 +100,7 @@ class TrackInfoView extends UpdatableView
 
             columnContent.add(textFileFormat);
             columnWidths.add(FlexColumnWidth());
-            if (stateManager.isMultiroomAvailable())
+            if (stateManager.isMultiroomAvailable(configuration.favoriteConnections.getDevices))
             {
                 columnContent.add(UpdatableWidget(child: GroupButtonsView(viewContext)));
                 columnWidths.add(IntrinsicColumnWidth());
