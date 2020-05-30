@@ -131,7 +131,15 @@ class MessageChannel extends AppTask implements Runnable
                 }
                 else if (readedSize > 0)
                 {
-                    processInputData(buffer);
+                    try
+                    {
+                        processInputData(buffer);
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.info(this, "error: process input data: " + e.getLocalizedMessage());
+                        break;
+                    }
                 }
 
                 // process output messages
@@ -149,7 +157,7 @@ class MessageChannel extends AppTask implements Runnable
             }
             catch (Exception e)
             {
-                Logging.info(this, "interrupted " + sourceHost);
+                Logging.info(this, "interrupted " + sourceHost + ": " + e.getLocalizedMessage());
                 break;
             }
         }

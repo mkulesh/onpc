@@ -130,6 +130,10 @@ public class EISCPMessage
 
     static int getMsgStartIndex(byte[] bytes)
     {
+        if (bytes.length < MSG_START.length())
+        {
+            return -1;
+        }
         for (int i = 0; i < bytes.length; i++)
         {
             if (bytes[i] == MSG_START.charAt(0) &&
