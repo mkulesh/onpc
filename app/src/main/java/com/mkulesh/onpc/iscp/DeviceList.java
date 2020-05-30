@@ -180,7 +180,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
 
         synchronized (devices)
         {
-            final String d = msg.getDevice();
+            final String d = msg.getHostAndPort();
             DeviceInfo deviceInfo = devices.get(d);
             if (deviceInfo == null)
             {
@@ -277,7 +277,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             b.setLayoutParams(lp);
-            b.setText(deviceInfo.message.getDevice());
+            b.setText(deviceInfo.message.getDescription());
             b.setTextColor(Utils.getThemeColorAttr(context, android.R.attr.textColor));
             b.setOnClickListener(v ->
             {

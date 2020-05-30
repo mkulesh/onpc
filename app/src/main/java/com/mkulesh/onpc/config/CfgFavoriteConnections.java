@@ -91,9 +91,10 @@ public class CfgFavoriteConnections
         prefEditor.apply();
     }
 
+    @NonNull
     public final List<BroadcastResponseMsg> getDevices()
     {
-        return new ArrayList<>(devices);
+        return devices;
     }
 
     public int getDevicesNumber()

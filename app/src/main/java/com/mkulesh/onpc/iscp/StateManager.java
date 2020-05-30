@@ -639,7 +639,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             {
                 continue;
             }
-            Logging.info(this, "connecting to multiroom device: " + msg.getDevice());
+            Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort());
             final MessageChannel m = new MessageChannel(connectionState, inputQueue);
             for (String code : multiroomQueries)
             {

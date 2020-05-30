@@ -92,7 +92,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     public String toString()
     {
         return CODE + "[" + data
-                + "; HOST=" + Utils.ipToString(sourceHost, port)
+                + "; HOST=" + getHostAndPort()
                 + (model != null? "; MODEL=" + model : "")
                 + (destinationArea != null? "; DST=" + destinationArea : "")
                 + (identifier != null? "; ID=" + identifier : "")
@@ -110,6 +110,19 @@ public class BroadcastResponseMsg extends ISCPMessage
     }
 
     @NonNull
+    public String getHostAndPort()
+    {
+        return Utils.ipToString(sourceHost, port);
+    }
+
+    @NonNull
+    public String getDescription()
+    {
+        final String d = alias != null ? alias : (model != null ? model : "unknown");
+        return getHost() + "/" + d;
+    }
+
+    @NonNull
     public String getIdentifier()
     {
         return identifier == null ? "" : identifier;
@@ -118,11 +131,6 @@ public class BroadcastResponseMsg extends ISCPMessage
     public boolean isValid()
     {
         return sourceHost != null && port != null;
-    }
-
-    public String getDevice()
-    {
-        return getHost() + "/" + (model != null ? model : "unknown");
     }
 
     @Nullable

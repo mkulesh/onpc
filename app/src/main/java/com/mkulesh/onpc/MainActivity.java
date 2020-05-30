@@ -622,7 +622,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         final State state = stateHolder.getState();
         final String name = (configuration.isFriendlyNames() && state != null) ?
                 state.multiroomNames.get(msg.getHost()) : null;
-        return (name != null) ? name : msg.getDevice();
+        return (name != null) ? name : msg.getDescription();
     }
 
     @NonNull
