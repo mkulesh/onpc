@@ -76,6 +76,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 ### Pioneer
 - [Pioneer VSX-LX303](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx303)
 - [Pioneer VSX-LX503](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx503)
+- [Pioneer VSX-932](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-932)
 - [Pioneer SC-LX701](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx701)
 ### Teac
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
