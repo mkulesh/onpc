@@ -230,16 +230,16 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             {
                 newInfo = new DeviceInfo(msg, false, 1);
                 devices.put(d, newInfo);
-                if (dialogMode)
-                {
-                    addToRadioGroup(newInfo);
-                }
             }
             else
             {
                 final BroadcastResponseMsg newMsg = oldInfo.isFavorite ? oldInfo.message : msg;
                 newInfo = new DeviceInfo(newMsg, oldInfo.isFavorite,oldInfo.responses + 1);
                 devices.put(d, newInfo);
+            }
+            if (dialogMode)
+            {
+                updateRadioGroup(devices);
             }
 
             if (backgroundEventListener != null)
@@ -249,12 +249,17 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
 
             if (!dialogMode)
             {
+                int okDevice = 0;
                 for (DeviceInfo di : devices.values())
                 {
-                    if (!di.isFavorite && di.responses < RESPONSE_NUMBER)
+                    if ((di.isFavorite && di.responses == 0) || di.responses >= RESPONSE_NUMBER)
                     {
-                        return;
+                        okDevice++;
                     }
+                }
+                if (okDevice < devices.size())
+                {
+                    return;
                 }
                 Logging.info(this, "  -> no more devices");
                 stop();
@@ -300,41 +305,45 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         dialog.getLayoutInflater().inflate(R.layout.dialog_broadcast_layout, frameView);
         dialogList = frameView.findViewById(R.id.broadcast_radio_group);
 
+        synchronized (devices)
+        {
+            updateRadioGroup(devices);
+        }
         if (!isActive())
         {
             start();
-        }
-        else for (DeviceInfo deviceInfo : devices.values())
-        {
-            addToRadioGroup(deviceInfo);
         }
 
         dialog.show();
         Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 
-    private void addToRadioGroup(final DeviceInfo deviceInfo)
+    private void updateRadioGroup(final Map<String, DeviceInfo> devices)
     {
-        if (deviceInfo.responses == 0)
-        {
-            return;
-        }
-        deviceInfo.selected = false;
         if (dialogList != null)
         {
-            final ContextThemeWrapper wrappedContext = new ContextThemeWrapper(context, R.style.RadioButtonStyle);
-            final AppCompatRadioButton b = new AppCompatRadioButton(wrappedContext, null, 0);
-            final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            b.setLayoutParams(lp);
-            b.setText(deviceInfo.message.getDescription());
-            b.setTextColor(Utils.getThemeColorAttr(context, android.R.attr.textColor));
-            b.setOnClickListener(v ->
+            dialogList.removeAllViews();
+            for (DeviceInfo deviceInfo : devices.values())
             {
-                deviceInfo.selected = true;
-                stop();
-            });
-            dialogList.addView(b);
+                deviceInfo.selected = false;
+                if (deviceInfo.responses > 0)
+                {
+                    final ContextThemeWrapper wrappedContext = new ContextThemeWrapper(context, R.style.RadioButtonStyle);
+                    final AppCompatRadioButton b = new AppCompatRadioButton(wrappedContext, null, 0);
+                    final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    b.setLayoutParams(lp);
+                    b.setText(deviceInfo.message.getDescription());
+                    b.setTextColor(Utils.getThemeColorAttr(context, android.R.attr.textColor));
+                    b.setOnClickListener(v ->
+                    {
+                        deviceInfo.selected = true;
+                        stop();
+                    });
+                    dialogList.addView(b);
+                }
+            }
+            dialogList.invalidate();
         }
     }
 }
