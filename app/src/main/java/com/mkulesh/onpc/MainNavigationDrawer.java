@@ -189,7 +189,8 @@ class MainNavigationDrawer
                                         deviceFriendlyName.getText().toString() :
                                         Utils.ipToString(device, devicePort.getText().toString());
                                 configuration.favoriteConnections.updateDevice(
-                                        device, port, friendlyName, null);
+                                        activity.getStateManager().getState().getHost(), port, friendlyName, null);
+                                activity.getDeviceList().updateFavorites(true);
                             }
                         }
                     }
@@ -256,7 +257,15 @@ class MainNavigationDrawer
 
         // store devices
         devices.clear();
-        devices.addAll(activity.getMultiroomDevices(false));
+        devices.addAll(activity.getDeviceList().getDevices());
+        int favorites = 0;
+        for (BroadcastResponseMsg msg : devices)
+        {
+            if (msg.getAlias() != null)
+            {
+                favorites++;
+            }
+        }
 
         final Menu menu = navigationView.getMenu();
         for (int k = 0; k < menu.size(); k++)
@@ -278,7 +287,7 @@ class MainNavigationDrawer
                 }
                 break;
             case R.id.drawer_multiroom:
-                g.setVisible(devices.size() > 1 || configuration.favoriteConnections.getDevicesNumber() > 0);
+                g.setVisible(devices.size() > 1 || favorites > 0);
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
                     final MenuItem m = g.getSubMenu().getItem(i);
@@ -446,6 +455,7 @@ class MainNavigationDrawer
                         m.setVisible(false);
                         m.setChecked(false);
                     }
+                    activity.getDeviceList().updateFavorites(false);
                     dialog12.dismiss();
                 }).create();
 

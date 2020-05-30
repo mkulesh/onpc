@@ -657,9 +657,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
      */
     private boolean isGroupMenu()
     {
-        final int found = activity.getDeviceList().getDevicesNumber();
-        final int favorite = activity.getConfiguration().favoriteConnections.getDevicesNumber();
-        return found + favorite > 1;
+        return activity.getDeviceList().getDevicesNumber() > 1;
     }
 
     private void updateMultiroomGroupBtn(AppCompatImageButton b, @Nullable final State state)

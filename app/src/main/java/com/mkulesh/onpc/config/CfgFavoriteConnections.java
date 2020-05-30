@@ -97,11 +97,6 @@ public class CfgFavoriteConnections
         return devices;
     }
 
-    public int getDevicesNumber()
-    {
-        return devices.size();
-    }
-
     private int find(@NonNull final String host, final int port)
     {
         for (int i = 0; i < devices.size(); i++)

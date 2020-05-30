@@ -47,7 +47,7 @@ class MultiroomManager
 
         // Collect available devices
         final List<BroadcastResponseMsg> devices = new ArrayList<>();
-        for (BroadcastResponseMsg message : activity.getMultiroomDevices(true))
+        for (BroadcastResponseMsg message : activity.getDeviceList().getDevices())
         {
             if (message.getIdentifier().equals(activity.myDeviceId()))
             {

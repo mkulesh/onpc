@@ -40,11 +40,8 @@ import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
@@ -109,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
 
         connectionState = new ConnectionState(this);
-        deviceList = new DeviceList(this, connectionState, this);
+        deviceList = new DeviceList(this, connectionState, this,
+                configuration.favoriteConnections.getDevices());
 
         // Initially reset zone state
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
@@ -499,6 +497,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private void updateConfiguration(@NonNull State state)
     {
         configuration.setReceiverInformation(state);
+        deviceList.updateFavorites(true);
         navigationDrawer.updateNavigationContent(state);
         updateToolbar(state);
     }
@@ -623,33 +622,5 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         final String name = (configuration.isFriendlyNames() && state != null) ?
                 state.multiroomNames.get(msg.getHost()) : null;
         return (name != null) ? name : msg.getDescription();
-    }
-
-    @NonNull
-    public List<BroadcastResponseMsg> getMultiroomDevices(boolean ignoreEmptyIdentifier)
-    {
-        final List<BroadcastResponseMsg> retValue = new ArrayList<>();
-        final Set<String> identifiers = new HashSet<>();
-        for (BroadcastResponseMsg msg : configuration.favoriteConnections.getDevices())
-        {
-            if (ignoreEmptyIdentifier && msg.getIdentifier().isEmpty())
-            {
-                continue;
-            }
-            retValue.add(msg);
-            if (!msg.getIdentifier().isEmpty())
-            {
-                identifiers.add(msg.getIdentifier());
-            }
-        }
-        for (BroadcastResponseMsg msg : deviceList.getDevices())
-        {
-            if (identifiers.contains(msg.getIdentifier()))
-            {
-                continue;
-            }
-            retValue.add(msg);
-        }
-        return retValue;
     }
 }

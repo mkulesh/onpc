@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatRadioButton;
@@ -48,14 +49,16 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     public class DeviceInfo
     {
         public final BroadcastResponseMsg message;
+        private final boolean isFavorite;
         int responses;
         boolean selected;
 
-        DeviceInfo(BroadcastResponseMsg msg)
+        DeviceInfo(@NonNull final BroadcastResponseMsg msg, final boolean isFavorite, int responses)
         {
-            message = msg;
-            responses = 1;
-            selected = false;
+            this.message = msg;
+            this.isFavorite = isFavorite;
+            this.responses = responses;
+            this.selected = false;
         }
     }
 
@@ -83,15 +86,18 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     }
 
     private final BackgroundEventListener backgroundEventListener;
+    private final List<BroadcastResponseMsg> favorites;
 
     public DeviceList(final Context context,
                       final ConnectionState connectionState,
-                      final BackgroundEventListener backgroundEventListener)
+                      final BackgroundEventListener backgroundEventListener,
+                      final List<BroadcastResponseMsg> favorites)
     {
         super(false);
         this.context = context;
         this.connectionState = connectionState;
         this.backgroundEventListener = backgroundEventListener;
+        this.favorites = favorites;
     }
 
     public int getDevicesNumber()
@@ -117,14 +123,22 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
 
     public void start()
     {
-        super.start();
-        Logging.info(this, "started");
         synchronized (devices)
         {
             devices.clear();
         }
-        searchEngine = new BroadcastSearch(connectionState, this);
-        searchEngine.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        updateFavorites(false);
+        if (connectionState.isWifi())
+        {
+            super.start();
+            Logging.info(this, "started");
+            searchEngine = new BroadcastSearch(connectionState, this);
+            searchEngine.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        }
+        else
+        {
+            Logging.info(this, "device search skipped: no WiFi");
+        }
     }
 
     public void stop()
@@ -168,6 +182,35 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         }
     }
 
+    public void updateFavorites(boolean callHandler)
+    {
+        synchronized (devices)
+        {
+            final List<String> toBeDeleted = new ArrayList<>();
+            for (Map.Entry<String, DeviceInfo> d : devices.entrySet())
+            {
+                if (d.getValue().isFavorite)
+                {
+                    toBeDeleted.add(d.getKey());
+                }
+            }
+            for (String key :  toBeDeleted)
+            {
+                devices.remove(key);
+            }
+            for (BroadcastResponseMsg msg : favorites)
+            {
+                Logging.info(this, "Added favorite connection " + msg);
+                final DeviceInfo newInfo = new DeviceInfo(msg, true,0);
+                devices.put(msg.getHostAndPort(), newInfo);
+                if (callHandler && backgroundEventListener != null)
+                {
+                    backgroundEventListener.onDeviceFound(newInfo);
+                }
+            }
+        }
+    }
+
     @Override
     public void onDeviceFound(BroadcastResponseMsg msg)
     {
@@ -181,31 +224,34 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         synchronized (devices)
         {
             final String d = msg.getHostAndPort();
-            DeviceInfo deviceInfo = devices.get(d);
-            if (deviceInfo == null)
+            final DeviceInfo oldInfo = devices.get(d);
+            DeviceInfo newInfo;
+            if (oldInfo == null)
             {
-                deviceInfo = new DeviceInfo(msg);
-                devices.put(d, deviceInfo);
+                newInfo = new DeviceInfo(msg, false, 1);
+                devices.put(d, newInfo);
                 if (dialogMode)
                 {
-                    addToRadioGroup(deviceInfo);
+                    addToRadioGroup(newInfo);
                 }
             }
             else
             {
-                deviceInfo.responses++;
+                final BroadcastResponseMsg newMsg = oldInfo.isFavorite ? oldInfo.message : msg;
+                newInfo = new DeviceInfo(newMsg, oldInfo.isFavorite,oldInfo.responses + 1);
+                devices.put(d, newInfo);
             }
 
             if (backgroundEventListener != null)
             {
-                backgroundEventListener.onDeviceFound(deviceInfo);
+                backgroundEventListener.onDeviceFound(newInfo);
             }
 
             if (!dialogMode)
             {
                 for (DeviceInfo di : devices.values())
                 {
-                    if (di.responses < RESPONSE_NUMBER)
+                    if (!di.isFavorite && di.responses < RESPONSE_NUMBER)
                     {
                         return;
                     }
@@ -269,6 +315,10 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
 
     private void addToRadioGroup(final DeviceInfo deviceInfo)
     {
+        if (deviceInfo.responses == 0)
+        {
+            return;
+        }
         deviceInfo.selected = false;
         if (dialogList != null)
         {
