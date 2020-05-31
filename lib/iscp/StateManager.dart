@@ -650,7 +650,7 @@ class StateManager
         }
         if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.sourceHost))
         {
-            Logging.info(this, "connecting to multiroom device: " + msg.getDevice);
+            Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort());
             final MessageChannel m = MessageChannel(_onMultiroomDeviceConnected, _onNewEISCPMessage, _onMultiroomDeviceDisconnected);
             _multiroomChannels[msg.sourceHost] = m;
             state.multiroomState.getQueries().forEach((code) => m.addAllowedMessage(code));

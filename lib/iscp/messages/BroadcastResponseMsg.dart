@@ -89,7 +89,7 @@ class BroadcastResponseMsg extends ISCPMessage
 
     @override
     String toString()
-    => super.toString() + "[HOST=" + Logging.ipToString(sourceHost, _port.toString())
+    => super.toString() + "[HOST=" + getHostAndPort()
             + (_model != null ? "; MODEL=" + _model : "")
             + (_destinationArea != null ? "; DST=" + _destinationArea : "")
             + (_identifier != null ? "; ID=" + _identifier : "")
@@ -98,14 +98,17 @@ class BroadcastResponseMsg extends ISCPMessage
     int get getPort
     => _port;
 
+    String getHostAndPort()
+    => Logging.ipToString(sourceHost, _port.toString());
+
+    String getDescription()
+    => sourceHost + "/" + (alias != null ? alias : (_model != null ? _model : "unknown"));
+
     String get getIdentifier
     => _identifier == null ? "" : _identifier;
 
     bool get isValid
     => sourceHost != null && _port != null;
-
-    String get getDevice
-    => sourceHost + "/" + (_model != null ? _model : "unknown");
 
     String get alias
     => _alias;

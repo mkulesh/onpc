@@ -59,8 +59,8 @@ class DeviceInfo
     bool get isFavorite
     => _favorite;
 
-    String getId()
-    => responseMsg.getDevice;
+    String getHostAndPort()
+    => responseMsg.getHostAndPort();
 
     String getDeviceName(bool useFriendlyName)
     {
@@ -69,7 +69,7 @@ class DeviceInfo
             return responseMsg.alias;
         }
         final String name = (useFriendlyName) ? _friendlyName : null;
-        return (name != null) ? name : getId();
+        return (name != null) ? name : responseMsg.getDescription();
     }
 
     EnumItem<ChannelType> getChannelType(int zone)
@@ -143,7 +143,7 @@ class MultiroomState
 
     bool processBroadcastResponse(BroadcastResponseMsg msg)
     {
-        final String id = msg.getDevice;
+        final String id = msg.getHostAndPort();
         DeviceInfo deviceInfo = _deviceList[id];
         if (deviceInfo == null)
         {

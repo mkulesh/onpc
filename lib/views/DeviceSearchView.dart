@@ -48,7 +48,7 @@ class DeviceSearchView extends UpdatableView
         {
             final String titleStr = d.getDeviceName(configuration.friendlyNames);
             final Widget title = CustomTextLabel.normal(titleStr);
-            final Widget subTitle = d.getId() != titleStr ? CustomTextLabel.small(d.getId()) : null;
+            final Widget subTitle = d.getHostAndPort() != titleStr ? CustomTextLabel.small(d.getHostAndPort()) : null;
 
             final Widget item = ListTile(
                 contentPadding: ActivityDimens.noPadding,
@@ -77,7 +77,7 @@ class DeviceSearchView extends UpdatableView
     {
         final List<DeviceInfo> retValue = List();
         deviceList.values.forEach((f) => retValue.add(f));
-        retValue.sort((a, b) => a.getId().compareTo(b.getId()));
+        retValue.sort((a, b) => a.getHostAndPort().compareTo(b.getHostAndPort()));
         return retValue;
     }
 }

@@ -148,7 +148,7 @@ class GroupControlView extends UpdatableView
             }
         }
 
-        Logging.info(this, "    ID: " + device.getId() + "; " + description + "; attached=" + attached.toString());
+        Logging.info(this, "    ID: " + device.getHostAndPort() + "; " + description + "; attached=" + attached.toString());
 
         return Padding(padding: DialogDimens.rowPadding, child: result);
     }
@@ -157,14 +157,14 @@ class GroupControlView extends UpdatableView
     {
         if (attached)
         {
-            Logging.info(this, "remove device " + device.getId());
+            Logging.info(this, "remove device " + device.getHostAndPort());
             final MultiroomGroupSettingMsg removeCmd = MultiroomGroupSettingMsg.output(
                 MultiroomGroupCommand.REMOVE_SLAVE, myZone, 0, MAX_DELAY);
             stateManager.sendMessage(removeCmd, waitingForData: true);
         }
         else
         {
-            Logging.info(this, "add device " + device.getId() + " to group " + targetGroupId.toString());
+            Logging.info(this, "add device " + device.getHostAndPort() + " to group " + targetGroupId.toString());
             final MultiroomGroupSettingMsg addCmd = MultiroomGroupSettingMsg.output(
                 MultiroomGroupCommand.ADD_SLAVE, myZone, targetGroupId, MAX_DELAY);
             addCmd.devices.add(device.responseMsg.getIdentifier);
