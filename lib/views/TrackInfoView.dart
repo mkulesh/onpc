@@ -20,6 +20,7 @@ import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AlbumNameMsg.dart";
 import "../iscp/messages/ArtistNameMsg.dart";
+import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FileFormatMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/JacketArtMsg.dart";
@@ -54,7 +55,8 @@ class TrackInfoView extends UpdatableView
         PresetCommandMsg.CODE,
         ListTitleInfoMsg.CODE,
         InputSelectorMsg.CODE,
-        MultiroomDeviceInformationMsg.CODE
+        MultiroomDeviceInformationMsg.CODE,
+        BroadcastResponseMsg.CODE
     ];
 
     TrackInfoView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -100,7 +102,7 @@ class TrackInfoView extends UpdatableView
 
             columnContent.add(textFileFormat);
             columnWidths.add(FlexColumnWidth());
-            if (stateManager.isMultiroomAvailable(configuration.favoriteConnections.getDevices))
+            if (stateManager.isMultiroomAvailable())
             {
                 columnContent.add(UpdatableWidget(child: GroupButtonsView(viewContext)));
                 columnWidths.add(IntrinsicColumnWidth());

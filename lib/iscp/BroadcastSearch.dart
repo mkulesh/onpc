@@ -136,6 +136,7 @@ class BroadcastSearch
         final BroadcastResponseMsg responseMessage = BroadcastResponseMsg(d.address, raw);
         if (onDeviceFound != null && responseMessage.isValid)
         {
+            Logging.info(this, "<< device response " + responseMessage.toString());
             onDeviceFound(responseMessage);
         }
     }

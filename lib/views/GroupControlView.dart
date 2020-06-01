@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
-import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/MultiroomChannelSettingMsg.dart";
 import "../iscp/messages/MultiroomDeviceInformationMsg.dart";
@@ -45,8 +44,7 @@ class GroupControlView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        final List<BroadcastResponseMsg> favorites = configuration.favoriteConnections.getDevices;
-        if (!stateManager.isMultiroomAvailable(favorites))
+        if (!stateManager.isMultiroomAvailable())
         {
             return SizedBox.shrink();
         }
@@ -57,7 +55,7 @@ class GroupControlView extends UpdatableView
         // Available devices and maximum groupId
         final List<DeviceInfo> devices = List();
         int maxGroupId = 0;
-        state.multiroomState.getMultiroomDevices(favorites, true).forEach((di)
+        state.multiroomState.deviceList.forEach((key, di)
         {
             if (stateManager.isMasterDevice(di))
             {
@@ -135,7 +133,7 @@ class GroupControlView extends UpdatableView
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                     stateManager.waitingForData ? UpdatableView.createTimerSand() : checkBox,
-                    result
+                    Expanded(child: result)
                 ]);
 
             if (!stateManager.waitingForData)

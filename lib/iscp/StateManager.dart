@@ -138,11 +138,12 @@ class StateManager
     State get state
     => _state;
 
-    StateManager(final int zoneId)
+    StateManager(final int zoneId, List<BroadcastResponseMsg> _favorites)
     {
         _messageChannel = MessageChannel(_onConnected, _onNewEISCPMessage, _onDisconnected);
         _state.activeZone = zoneId;
         _state.trackState.coverDownloadFinished = _onProcessFinished;
+        _state.multiroomState.favorites = _favorites;
     }
 
     void addListeners(OnStateChanged onStateChanged, OnConnectionError onConnectionError)
@@ -603,7 +604,7 @@ class StateManager
             Logging.info(this, "all multiroom devices disconnected");
         }
         _multiroomChannels.clear();
-        state.multiroomState.deviceList.clear();
+        _state.multiroomState.clear();
     }
 
     void startSearch({bool limited = true})
@@ -611,10 +612,13 @@ class StateManager
         disconnectMultiroom(true);
         if (_networkState != NetworkState.WIFI)
         {
+            _state.multiroomState.updateFavorites();
+            _state.multiroomState.deviceList.forEach((key,d) => _processDeviceResponse(d.responseMsg));
             return;
         }
         Logging.info(this, "Starting device search: limited=" + limited.toString());
-        state.multiroomState.startSearch(limited: limited);
+        _state.multiroomState.startSearch(limited: limited);
+        _state.multiroomState.updateFavorites();
         if (_searchEngine == null)
         {
             _searchEngine = BroadcastSearch(_processDeviceResponse);
@@ -635,16 +639,15 @@ class StateManager
 
     void _processDeviceResponse(final BroadcastResponseMsg msg)
     {
-        Logging.info(this, "<< device response " + msg.toString());
         if (state.multiroomState.processBroadcastResponse(msg))
         {
             triggerStateEvent(BroadcastResponseMsg.CODE);
             if (_messageChannel.isConnected && isSourceHost(msg))
             {
-                _messageChannel.sendQueries(state.multiroomState.getQueries());
+                _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel.sourceHost));
             }
         }
-        if (state.multiroomState.isSearchFinished())
+        if (_searchEngine != null && state.multiroomState.isSearchFinished())
         {
             stopSearch();
         }
@@ -653,7 +656,7 @@ class StateManager
             Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort());
             final MessageChannel m = MessageChannel(_onMultiroomDeviceConnected, _onNewEISCPMessage, _onMultiroomDeviceDisconnected);
             _multiroomChannels[msg.sourceHost] = m;
-            state.multiroomState.getQueries().forEach((code) => m.addAllowedMessage(code));
+            MultiroomState.MESSAGE_SCOPE.forEach((code) => m.addAllowedMessage(code));
             m.start(msg.sourceHost, msg.getPort);
         }
     }
@@ -661,7 +664,7 @@ class StateManager
     void _onMultiroomDeviceConnected(MessageChannel channel, String server, int port)
     {
         Logging.info(this, "connected to " + Logging.ipToString(server, port.toString()));
-        channel.sendQueries(state.multiroomState.getQueries());
+        channel.sendQueries(state.multiroomState.getQueries(channel.sourceHost));
     }
 
     void _onMultiroomDeviceDisconnected(ConnectionErrorType errorType, String result)
@@ -669,11 +672,10 @@ class StateManager
         Logging.info(this, result);
     }
 
-    bool isMultiroomAvailable(final List<BroadcastResponseMsg> favorites)
+    bool isMultiroomAvailable()
     {
         final DeviceInfo di = sourceDevice;
-        final int deviceNumber = state.multiroomState.deviceList.length + favorites.length;
-        return deviceNumber > 1 && di != null && di.groupMsg != null;
+        return _state.multiroomState.deviceList.length > 1 && di != null && di.groupMsg != null;
     }
 
     bool isMasterDevice(final DeviceInfo di)

@@ -59,7 +59,11 @@ class CfgFavoriteConnections extends CfgModule
 
     void setReceiverInformation(StateManager stateManager)
     {
-        _updateIdentifier(stateManager);
+        final String identifier = stateManager.state.receiverInformation.getIdentifier();
+        if (identifier.isNotEmpty)
+        {
+            _updateIdentifier(stateManager, identifier);
+        }
     }
 
     void write()
@@ -133,9 +137,8 @@ class CfgFavoriteConnections extends CfgModule
         }
     }
 
-    void _updateIdentifier(StateManager stateManager)
+    void _updateIdentifier(StateManager stateManager, final String identifier)
     {
-        final String identifier = stateManager.state.receiverInformation.getIdentifier();
         final int idx = _find(stateManager.sourceHost, stateManager.sourcePort);
         if (idx >= 0)
         {

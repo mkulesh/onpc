@@ -11,8 +11,6 @@
  * Public License along with this program.
  */
 
-import 'dart:math';
-
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
@@ -40,8 +38,7 @@ class DrawerView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         BroadcastResponseMsg.CODE,
-        FriendlyNameMsg.CODE,
-        FavoriteConnectionEditDialog.FAVORITE_CHANGE_EVENT,
+        FriendlyNameMsg.CODE
     ];
 
     final BuildContext _appContext;
@@ -82,13 +79,13 @@ class DrawerView extends UpdatableView
             });
 
             // Multiroom
-            final List<DeviceInfo> devices = state.multiroomState.getMultiroomDevices(
-                configuration.favoriteConnections.getDevices, false);
-            if (devices.length > 1 || configuration.favoriteConnections.getDevices.isNotEmpty)
+            final List<DeviceInfo> devices = state.multiroomState.getSortedDevices();
+            final int favorites = devices.where((d) => d.isFavorite).length;
+            if (devices.length > 1 || favorites > 0)
             {
                 drawerItems.add(CustomDivider());
                 drawerItems.add(CustomTextLabel.small(Strings.drawer_multiroom, padding: DrawerDimens.labelPadding));
-                for (int i = 0; i < min(devices.length, 6); i++)
+                for (int i = 0; i < devices.length; i++)
                 {
                     final DeviceInfo di = devices[i];
                     final BroadcastResponseMsg msg = di.responseMsg;

@@ -28,12 +28,18 @@ class DeviceInfo
     MultiroomDeviceInformationMsg groupMsg;
     EnumItem<ChannelType> _channelType;
 
-    DeviceInfo(this.responseMsg, this._favorite)
+    DeviceInfo(this.responseMsg, this._favorite, this._responses)
     {
-        _responses = 1;
         _friendlyName = null;
         groupMsg = null;
         _channelType = MultiroomZone.ChannelTypeEnum.defValue;
+    }
+
+    DeviceInfo.fromDevice(this.responseMsg, this._favorite, this._responses, DeviceInfo di)
+    {
+        _friendlyName = di._friendlyName;
+        groupMsg = di.groupMsg;
+        _channelType = di._channelType;
     }
 
     bool processFriendlyName(FriendlyNameMsg msg)
@@ -56,6 +62,9 @@ class DeviceInfo
         return changed;
     }
 
+    int get responses
+    => _responses;
+
     bool get isFavorite
     => _favorite;
 
@@ -75,13 +84,6 @@ class DeviceInfo
     EnumItem<ChannelType> getChannelType(int zone)
     => _channelType.key != MultiroomZone.ChannelTypeEnum.defValue.key ? _channelType :
         (groupMsg != null ? groupMsg.getChannelType(zone) : MultiroomZone.ChannelTypeEnum.defValue);
-
-    void updateGroupInfo(DeviceInfo di)
-    {
-        _friendlyName = di._friendlyName;
-        groupMsg = di.groupMsg;
-        _channelType = di._channelType;
-    }
 }
 
 class MultiroomState
@@ -96,13 +98,29 @@ class MultiroomState
     Map<String, DeviceInfo> get deviceList
     => _deviceList;
 
-    List<String> getQueries()
+    void clear()
     {
-        return [
-            FriendlyNameMsg.CODE,
-            MultiroomDeviceInformationMsg.CODE,
-            MultiroomChannelSettingMsg.CODE
-        ];
+        _deviceList.removeWhere((key,d) => !d.isFavorite);
+    }
+
+    List<BroadcastResponseMsg> _favorites;
+
+    set favorites(List<BroadcastResponseMsg> value)
+    {
+        _favorites = value;
+        updateFavorites();
+    }
+
+    static const List<String> MESSAGE_SCOPE = [
+        FriendlyNameMsg.CODE,
+        MultiroomDeviceInformationMsg.CODE,
+        MultiroomChannelSettingMsg.CODE
+    ];
+
+    List<String> getQueries(String connection)
+    {
+        Logging.info(this, "Requesting data for connection " + connection + "...");
+        return MESSAGE_SCOPE;
     }
 
     // Update logic
@@ -111,7 +129,7 @@ class MultiroomState
 
     String process(ISCPMessage msg)
     {
-        if (!getQueries().contains(msg.getCode))
+        if (!MESSAGE_SCOPE.contains(msg.getCode))
         {
             return null;
         }
@@ -147,15 +165,15 @@ class MultiroomState
         DeviceInfo deviceInfo = _deviceList[id];
         if (deviceInfo == null)
         {
-            deviceInfo = DeviceInfo(msg, false);
+            deviceInfo = DeviceInfo(msg, false, 1);
             _deviceList[id] = deviceInfo;
-            return true;
         }
         else
         {
             deviceInfo._responses++;
         }
-        return false;
+        // process message change upon the first response on discovered or favorite device
+        return deviceInfo._responses == 1;
     }
 
     void startSearch({bool limited = true})
@@ -170,40 +188,43 @@ class MultiroomState
         {
             return false;
         }
+        int okDevice = 0;
         for (DeviceInfo di in _deviceList.values)
         {
-            if (di._responses < MAX_DEVICE_RESPONSE_NUMBER)
+            if ((di.isFavorite && di._responses == 0) || di._responses >= MAX_DEVICE_RESPONSE_NUMBER)
             {
-                return false;
+                okDevice++;
             }
         }
-        return true;
+        return (okDevice == _deviceList.length);
     }
 
-    List<DeviceInfo> getMultiroomDevices(final List<BroadcastResponseMsg> favoriteConnections, bool ignoreEmptyIdentifier)
+    List<DeviceInfo> getSortedDevices()
     {
         final List<DeviceInfo> retValue = List();
-        for (BroadcastResponseMsg msg in favoriteConnections)
-        {
-            if (ignoreEmptyIdentifier && msg.getIdentifier.isEmpty)
-            {
-                continue;
-            }
-            retValue.add(DeviceInfo(msg, true));
-        }
-        for (DeviceInfo di in _deviceList.values)
-        {
-            if (di.responseMsg.getIdentifier.isNotEmpty)
-            {
-                final oldDi = retValue.firstWhere((o) => o.responseMsg.getIdentifier == di.responseMsg.getIdentifier, orElse: () => null);
-                if (oldDi != null)
-                {
-                    oldDi.updateGroupInfo(di);
-                    continue;
-                }
-            }
-            retValue.add(di);
-        }
+        _deviceList.forEach((key, di) => retValue.add(di));
+        retValue.sort((a, b) => a.getHostAndPort().compareTo(b.getHostAndPort()));
         return retValue;
+    }
+
+    void updateFavorites()
+    {
+        final Map<String, DeviceInfo> tmpDevices = Map.from(_deviceList);
+        _deviceList.removeWhere((key, d) => d.isFavorite);
+        _favorites.forEach((msg)
+        {
+            final String key = msg.getHostAndPort();
+            final DeviceInfo oldInfo = tmpDevices[key];
+            if (oldInfo == null)
+            {
+                Logging.info(this, "Add favorite connection " + msg.toString());
+                _deviceList[key] = DeviceInfo(msg, true, 0);
+            }
+            else
+            {
+                Logging.info(this, "Update favorite connection " + msg.toString());
+                _deviceList[key] = DeviceInfo.fromDevice(msg, true, 0, oldInfo);
+            }
+        });
     }
 }

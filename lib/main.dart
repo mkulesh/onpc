@@ -64,7 +64,9 @@ void main() async
     final Configuration configuration = Configuration(prefs, packageInfo);
     configuration.read();
 
-    final ViewContext viewContext = ViewContext(configuration, StateManager(configuration.activeZone), StreamController.broadcast());
+    final ViewContext viewContext = ViewContext(configuration,
+        StateManager(configuration.activeZone, configuration.favoriteConnections.getDevices),
+        StreamController.broadcast());
 
     runApp(MaterialApp(
         debugShowCheckedModeBanner: Logging.isDebugBanner,
@@ -302,6 +304,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                                 _stateManager.sourceHost, _stateManager.sourcePort, _stateManager.manualAlias, null);
                         }
                         _configuration.setReceiverInformation(_viewContext.stateManager);
+                        // startSearch calls multiroomState.updateFavorites
                         _stateManager.startSearch(limited: true);
                     }
                     break;
@@ -309,6 +312,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
                     {
                         _configuration.setReceiverInformation(_viewContext.stateManager);
+                        _viewContext.state.multiroomState.updateFavorites();
                     }
                     break;
             }

@@ -13,6 +13,7 @@
 
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
+import "../iscp/StateManager.dart";
 
 import "../config/CfgFavoriteConnections.dart";
 import "../constants/Dimens.dart";
@@ -28,8 +29,6 @@ import "../widgets/CustomTextLabel.dart";
 
 class FavoriteConnectionEditDialog extends StatefulWidget
 {
-    static const String FAVORITE_CHANGE_EVENT = "favorite_change_event";
-
     final ViewContext _viewContext;
     final BroadcastResponseMsg _msg;
 
@@ -154,7 +153,9 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
                 cfg.deleteDevice(widget._msg.sourceHost,  widget._msg.getPort);
                 break;
         }
-        widget._viewContext.stateManager.triggerStateEvent(FavoriteConnectionEditDialog.FAVORITE_CHANGE_EVENT);
+        final StateManager sm = widget._viewContext.stateManager;
+        sm.state.multiroomState.updateFavorites();
+        sm.triggerStateEvent(BroadcastResponseMsg.CODE);
     }
 
     @override
