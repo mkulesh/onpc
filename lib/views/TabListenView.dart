@@ -29,6 +29,7 @@ class TabListenView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
+        StateManager.CONNECTION_EVENT,
         InputSelectorMsg.CODE
     ];
 

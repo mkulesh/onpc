@@ -135,6 +135,10 @@ class EISCPMessage
     {
         for (int i = 0; i < bytes.length; i++)
         {
+            if (bytes.length < MSG_START.length)
+            {
+                return -1;
+            }
             if (bytes[i] == MSG_START.codeUnitAt(0) &&
                 bytes[i + 1] == MSG_START.codeUnitAt(1) &&
                 bytes[i + 2] == MSG_START.codeUnitAt(2) &&
