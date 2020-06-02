@@ -403,12 +403,12 @@ class MainNavigationDrawer
         {
             r.setOnClickListener((View v) ->
             {
-                onRadioBtnChange(radioGroup, (AppCompatRadioButton)v);
                 if (v != renameBtn)
                 {
                     deviceAlias.clearFocus();
                     deviceIdentifier.clearFocus();
                 }
+                onRadioBtnChange(radioGroup, (AppCompatRadioButton)v);
             });
         }
         deviceAlias.setOnFocusChangeListener((v, hasFocus) -> {
