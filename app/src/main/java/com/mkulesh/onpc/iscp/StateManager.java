@@ -124,6 +124,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public final static OperationCommandMsg RETURN_MSG =
             new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
 
+    // The handling of delayed listening mode requests
+    private static final long LISTENING_MODE_DELAY = 1000;
+    private static final int MAX_LISTENING_MODE_REQUESTS = 5;
+    private AtomicInteger listeningModeRequests = new AtomicInteger();
+    private final BlockingQueue<Timer> listeningModeQueue = new ArrayBlockingQueue<>(1, true);
+
     public StateManager(final DeviceList deviceList,
                         final ConnectionState connectionState,
                         final StateListener stateListener,
@@ -225,8 +231,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 FriendlyNameMsg.CODE,
                 FirmwareUpdateMsg.CODE,
                 GoogleCastVersionMsg.CODE,
-                PrivacyPolicyStatusMsg.CODE,
-                ListeningModeMsg.CODE
+                PrivacyPolicyStatusMsg.CODE
         };
 
         sendQueries(powerStateQueries, "requesting power state...");
@@ -235,6 +240,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         skipNextTimeMsg.set(0);
         requestXmlList.set(false);
         playbackMode.set(false);
+        listeningModeRequests.set(0);
 
         while (true)
         {
@@ -378,10 +384,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             playbackMode.set(state.isPlaybackMode());
         }
         if (!keepPlaybackMode.get() &&
-            msg instanceof PlayStatusMsg &&
-            playbackMode.get() &&
-            state.isPlaying() &&
-            state.serviceType != ServiceType.TUNEIN_RADIO)
+                msg instanceof PlayStatusMsg &&
+                playbackMode.get() &&
+                state.isPlaying() &&
+                state.serviceType != ServiceType.TUNEIN_RADIO)
         {
             // Notes for not requesting list mode for some service Types:
             // #51: List mode stops playing TUNEIN_RADIO for some models
@@ -437,11 +443,35 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             return true;
         }
 
+        // For some models, it does seem that the listening mode is enabled some
+        // seconds after power on - as though it's got things to initialize before
+        // turning on the audio circuits. The initialization time is unknown.
+        // The solution is to periodically send a constant number of requests
+        // (for example 5 requests) with time interval 1 second until listening
+        // mode still be unknown.
+        if (msg instanceof ListeningModeMsg &&
+                ((ListeningModeMsg) msg).getMode() == ListeningModeMsg.Mode.MODE_FF &&
+                listeningModeRequests.get() < MAX_LISTENING_MODE_REQUESTS &&
+                listeningModeQueue.isEmpty())
+        {
+            final Timer t = new Timer();
+            listeningModeQueue.add(t);
+            t.schedule(new java.util.TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    listeningModeQueue.poll();
+                    final String[] lmQueries = new String[]{ ListeningModeMsg.CODE };
+                    sendQueries(lmQueries, "re-requesting LM state ["
+                            + listeningModeRequests.addAndGet(1) + "]...");
+                }
+            }, LISTENING_MODE_DELAY);
+        }
+
         if (msg instanceof InputSelectorMsg && state.isCdInput())
         {
-            final String[] cdStateQueries = new String[]{
-                    PlayStatusMsg.CD_CODE
-            };
+            final String[] cdStateQueries = new String[]{ PlayStatusMsg.CD_CODE };
             sendQueries(cdStateQueries, "requesting CD state...");
         }
 
@@ -662,19 +692,19 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         switch (soundControl)
         {
-            case DEVICE_BUTTONS:
-                sendMessage(new MasterVolumeMsg(getState().getActiveZone(), isUp ?
-                        MasterVolumeMsg.Command.UP :
-                        MasterVolumeMsg.Command.DOWN));
-                break;
-            case RI_AMP:
-                sendMessage(new AmpOperationCommandMsg(isUp ?
-                        AmpOperationCommandMsg.Command.MVLUP.getCode() :
-                        AmpOperationCommandMsg.Command.MVLDOWN.getCode()));
-                break;
-            default:
-                // Nothing to do
-                break;
+        case DEVICE_BUTTONS:
+            sendMessage(new MasterVolumeMsg(getState().getActiveZone(), isUp ?
+                    MasterVolumeMsg.Command.UP :
+                    MasterVolumeMsg.Command.DOWN));
+            break;
+        case RI_AMP:
+            sendMessage(new AmpOperationCommandMsg(isUp ?
+                    AmpOperationCommandMsg.Command.MVLUP.getCode() :
+                    AmpOperationCommandMsg.Command.MVLDOWN.getCode()));
+            break;
+        default:
+            // Nothing to do
+            break;
         }
     }
 }
