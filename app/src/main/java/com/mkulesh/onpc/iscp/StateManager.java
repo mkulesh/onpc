@@ -231,7 +231,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 FriendlyNameMsg.CODE,
                 FirmwareUpdateMsg.CODE,
                 GoogleCastVersionMsg.CODE,
-                PrivacyPolicyStatusMsg.CODE
+                PrivacyPolicyStatusMsg.CODE,
+                ListeningModeMsg.CODE
         };
 
         sendQueries(powerStateQueries, "requesting power state...");
