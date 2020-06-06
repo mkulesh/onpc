@@ -1,0 +1,7 @@
+• IP address of the receiver in now shown in the DEVICE tab
+• Listening mode control is now available on the RC tab
+• Added possibility to memorize multiple devices
+• Added possibility to control FlareConnect without WiFi
+• R-N855: fixed tone direct availability on the app startup
+• TX-NR616: fixed availability of the network services
+• CR-N765: fixed invalid format of track time

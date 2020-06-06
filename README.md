@@ -25,12 +25,13 @@ The two most popular features of the app are music playback and sound profile ma
 - The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Full tone control (bass, center, treble and subwoofer levels)
+- Full tone control (listening modes, bass, center, treble and subwoofer levels)
 - Enhanced Play Queue support (add, replace, remove, clear, change playback order)
-- Tuneln Radio and Deezer streaming (if supported by receiver)
+- Tuneln Radio, Deezer, and Tidal streaming (if supported by receiver)
 - DAB / FM / AM (if supported by receiver)
 - Multi-zone support (if supported by receiver)
 - Multi-room support: Allows control of groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
+- Possibility to control FlareConnect without WiFi
 - Control of devices attached via RI
 - Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
@@ -122,7 +123,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright © 2018-2019 by Mikhail Kulesh, Alexander Gomanyuk
+Copyright © 2018-2020 by Mikhail Kulesh, Alexander Gomanyuk
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
