@@ -124,12 +124,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public final static OperationCommandMsg RETURN_MSG =
             new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
 
-    // The handling of delayed listening mode requests
-    private static final long LISTENING_MODE_DELAY = 1000;
-    private static final int MAX_LISTENING_MODE_REQUESTS = 5;
-    private AtomicInteger listeningModeRequests = new AtomicInteger();
-    private final BlockingQueue<Timer> listeningModeQueue = new ArrayBlockingQueue<>(1, true);
-
     public StateManager(final DeviceList deviceList,
                         final ConnectionState connectionState,
                         final StateListener stateListener,
@@ -241,7 +235,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         skipNextTimeMsg.set(0);
         requestXmlList.set(false);
         playbackMode.set(false);
-        listeningModeRequests.set(0);
 
         while (true)
         {
@@ -442,32 +435,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             sendQueries(playStateQueries, "requesting play state...");
             requestListState();
             return true;
-        }
-
-        // For some models, it does seem that the listening mode is enabled some
-        // seconds after power on - as though it's got things to initialize before
-        // turning on the audio circuits. The initialization time is unknown.
-        // The solution is to periodically send a constant number of requests
-        // (for example 5 requests) with time interval 1 second until listening
-        // mode still be unknown.
-        if (msg instanceof ListeningModeMsg &&
-                ((ListeningModeMsg) msg).getMode() == ListeningModeMsg.Mode.MODE_FF &&
-                listeningModeRequests.get() < MAX_LISTENING_MODE_REQUESTS &&
-                listeningModeQueue.isEmpty())
-        {
-            final Timer t = new Timer();
-            listeningModeQueue.add(t);
-            t.schedule(new java.util.TimerTask()
-            {
-                @Override
-                public void run()
-                {
-                    listeningModeQueue.poll();
-                    final String[] lmQueries = new String[]{ ListeningModeMsg.CODE };
-                    sendQueries(lmQueries, "re-requesting LM state ["
-                            + listeningModeRequests.addAndGet(1) + "]...");
-                }
-            }, LISTENING_MODE_DELAY);
         }
 
         if (msg instanceof InputSelectorMsg && state.isCdInput())
