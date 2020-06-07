@@ -13,7 +13,9 @@
 import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
+import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
+import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "DeviceVolumeButtonsView.dart";
 import "DeviceVolumeSliderView.dart";
@@ -30,7 +32,11 @@ class TabListenView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
         StateManager.CONNECTION_EVENT,
-        InputSelectorMsg.CODE
+        InputSelectorMsg.CODE,
+        // Some strange bug: DeviceVolumeButtonsView is sometime not updated in landscape mode upon reception of "AMT"/"MVL" messages
+        // As a workaround, we update whole TabListenView when these messages received
+        AudioMutingMsg.CODE,
+        MasterVolumeMsg.CODE
     ];
 
     TabListenView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
