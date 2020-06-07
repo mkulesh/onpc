@@ -85,7 +85,7 @@ class DeviceVolumeSliderView extends UpdatableView
                 } : null,
                 onChanged: volumeValid ? (v)
                 {
-                    stateManager.sendMessage(MasterVolumeMsg.value(zone, v));
+                    stateManager.sendMessage(MasterVolumeMsg.value(zone, max(v, 0)));
                     tmpVolumeLevel = -1;
                 } : null
             );

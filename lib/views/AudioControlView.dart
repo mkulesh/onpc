@@ -84,7 +84,7 @@ class AudioControlView extends UpdatableView
                 onCaption: (v)
                 => SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo),
                 onChanged: (v)
-                => stateManager.sendMessage(MasterVolumeMsg.value(zone, v)),
+                => stateManager.sendMessage(MasterVolumeMsg.value(zone, max(v, 0))),
                 extendedCmd: maxVolumeBtn
             ));
         }

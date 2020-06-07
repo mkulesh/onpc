@@ -155,7 +155,11 @@ class SoundControlState
     bool processMasterVolume(MasterVolumeMsg msg)
     {
         final bool changed = _volumeLevel != msg.getVolumeLevel;
-        _volumeLevel = msg.getVolumeLevel;
+        if (msg.getVolumeLevel != MasterVolumeMsg.NO_LEVEL)
+        {
+            // Do not overwrite a valid value with an invalid value
+            _volumeLevel = msg.getVolumeLevel;
+        }
         return changed;
     }
 
