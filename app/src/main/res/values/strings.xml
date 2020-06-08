@@ -70,9 +70,12 @@
     <string name="favorite_connection_delete">Delete</string>
 
     <!-- Main menu -->
-    <string name="menu_power_power">On/Standby</string>
+    <string name="menu_power_standby">On/Standby</string>
     <string name="menu_receiver_information">Receiver information</string>
     <string name="menu_latest_logging">Latest logging</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_power_on">Power On</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Listen</string>

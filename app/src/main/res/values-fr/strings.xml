@@ -68,9 +68,12 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="favorite_connection_delete">Supprimer</string>
 
     <!-- Main menu -->
-    <string name="menu_power_power">marche/arrêt</string>
+    <string name="menu_power_standby">marche/arrêt</string>
     <string name="menu_receiver_information">Information du récépteur</string>
     <string name="menu_latest_logging">Dernière entrée</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_power_on">Allumer</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Ecoute</string>

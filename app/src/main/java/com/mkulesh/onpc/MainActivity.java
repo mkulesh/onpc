@@ -55,6 +55,7 @@ import androidx.viewpager.widget.ViewPager;
 public class MainActivity extends AppCompatActivity implements StateManager.StateListener, DeviceList.BackgroundEventListener
 {
     public static final int SETTINGS_ACTIVITY_REQID = 256;
+    private static final String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.AUTO_POWER";
 
     private Configuration configuration;
     private Toolbar toolbar;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private int startRequestCode;
     private final AtomicBoolean connectToAnyDevice = new AtomicBoolean(false);
     int orientation;
+    Intent intent = null;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -103,6 +105,13 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             Logging.info(this, "Starting application");
             versionName = null;
+        }
+
+        // Analyse input intent
+        intent = getIntent();
+        if (intent != null)
+        {
+            Logging.info(this, "Called with indent: " + intent.toString());
         }
 
         connectionState = new ConnectionState(this);
@@ -345,7 +354,12 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
 
     public void restartActivity()
     {
-        Intent intent = getIntent();
+        PackageManager pm = getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage(getPackageName());
+        if (intent == null)
+        {
+            intent = getIntent();
+        }
         finish();
         startActivity(intent);
     }
@@ -360,6 +374,10 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
 
     public boolean connectToDevice(final String device, final int port, final boolean connectToAnyInErrorCase)
     {
+        // Parse and use input intent
+        boolean autoPower = intent != null && intent.getAction() != null && SHORTCUT_AUTO_POWER.equals(intent.getAction());
+        intent = null;
+
         stateHolder.release(false, "reconnect");
         stateHolder.waitForRelease();
         onStateChanged(stateHolder.getState(), null);
@@ -369,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             stateHolder.setStateManager(new StateManager(
                     deviceList, connectionState, this,
                     device, port, zone,
-                    configuration.isAutoPower(),
+                    configuration.isAutoPower() || autoPower,
                     true,
                     savedReceiverInformation));
             savedReceiverInformation = null;
