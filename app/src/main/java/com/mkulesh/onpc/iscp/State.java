@@ -388,7 +388,11 @@ public class State implements ConnectionIf
 
     public boolean isListeningModeControl()
     {
-        if (controlList != null)
+        if (controlList == null)
+        {
+            return true;
+        }
+        else
         {
             for (final String c : controlList)
             {
