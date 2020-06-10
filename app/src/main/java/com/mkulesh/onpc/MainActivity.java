@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         if (!configuration.getDeviceName().isEmpty() && configuration.getDevicePort() > 0)
         {
             Logging.info(this, "use stored connection data: "
-                    + configuration.getDeviceName() + "/" + configuration.getDevicePort());
+                    + Utils.ipToString(configuration.getDeviceName(), configuration.getDevicePort()));
             connectToDevice(configuration.getDeviceName(), configuration.getDevicePort(), true);
         }
         else
@@ -638,7 +638,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
         final State state = stateHolder.getState();
         final String name = (configuration.isFriendlyNames() && state != null) ?
-                state.multiroomNames.get(msg.getHost()) : null;
+                state.multiroomNames.get(msg.getHostAndPort()) : null;
         return (name != null) ? name : msg.getDescription();
     }
 }

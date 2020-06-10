@@ -149,7 +149,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             throw new Exception("Cannot connect to server");
         }
 
-        state = new State(messageChannel.getSourceHost(), port, zone);
+        state = new State(messageChannel.getHost(), messageChannel.getPort(), zone);
 
         // In LTE mode, always use BMP images instead of links since direct links
         // can be not available
@@ -659,15 +659,15 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     {
         for (BroadcastResponseMsg msg : deviceList.getDevices())
         {
-            if (msg.getHost() == null)
+            if (!msg.isValidConnection())
             {
                 continue;
             }
-            if (msg.getHost().equals(messageChannel.getSourceHost()))
+            if (msg.fromHost(messageChannel))
             {
                 continue;
             }
-            if (multiroomChannels.containsKey(msg.getHost()))
+            if (multiroomChannels.containsKey(msg.getHostAndPort()))
             {
                 continue;
             }
@@ -681,7 +681,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
             if (m.connectToServer(msg.getHost(), msg.getPort()))
             {
-                multiroomChannels.put(msg.getHost(), m);
+                multiroomChannels.put(msg.getHostAndPort(), m);
                 m.start();
             }
         }

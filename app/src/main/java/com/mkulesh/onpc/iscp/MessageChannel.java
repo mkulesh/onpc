@@ -16,6 +16,8 @@ package com.mkulesh.onpc.iscp;
 import android.os.StrictMode;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -34,7 +36,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class MessageChannel extends AppTask implements Runnable
+class MessageChannel extends AppTask implements Runnable, ConnectionIf
 {
     private final static long CONNECTION_TIMEOUT = 5000;
     final static int QUEUE_SIZE = 4 * 1024;
@@ -46,7 +48,10 @@ class MessageChannel extends AppTask implements Runnable
     // connection state
     private final ConnectionState connectionState;
     private SocketChannel socket = null;
-    private String sourceHost = null;
+
+    // connected host (ConnectionIf)
+    private String host = ConnectionIf.EMPTY_HOST;
+    private int port = ConnectionIf.EMPTY_PORT;
 
     // input-output queues
     private final BlockingQueue<EISCPMessage> outputQueue = new ArrayBlockingQueue<>(QUEUE_SIZE, true);
@@ -86,9 +91,24 @@ class MessageChannel extends AppTask implements Runnable
         }
     }
 
-    String getSourceHost()
+    @NonNull
+    @Override
+    public String getHost()
     {
-        return sourceHost;
+        return host;
+    }
+
+    @Override
+    public int getPort()
+    {
+        return port;
+    }
+
+    @NonNull
+    @Override
+    public String getHostAndPort()
+    {
+        return Utils.ipToString(host, port);
     }
 
     void addAllowedMessage(final String code)
@@ -99,7 +119,7 @@ class MessageChannel extends AppTask implements Runnable
     @Override
     public void run()
     {
-        Logging.info(this, "started " + sourceHost + ":" + toString());
+        Logging.info(this, "started " + getHostAndPort() + ":" + toString());
 
         ByteBuffer buffer = ByteBuffer.allocate(SOCKET_BUFFER);
         while (true)
@@ -110,7 +130,7 @@ class MessageChannel extends AppTask implements Runnable
                 {
                     if (threadCancelled.get())
                     {
-                        Logging.info(this, "cancelled " + sourceHost);
+                        Logging.info(this, "cancelled " + getHostAndPort());
                         break;
                     }
                 }
@@ -126,7 +146,7 @@ class MessageChannel extends AppTask implements Runnable
                 int readedSize = socket.read(buffer);
                 if (readedSize < 0)
                 {
-                    Logging.info(this, "host " + sourceHost + " disconnected");
+                    Logging.info(this, "host " + getHostAndPort() + " disconnected");
                     break;
                 }
                 else if (readedSize > 0)
@@ -150,14 +170,14 @@ class MessageChannel extends AppTask implements Runnable
                     if (bytes != null)
                     {
                         final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
-                        Logging.info(this, ">> sending: " + m.toString() + " to " + sourceHost);
+                        Logging.info(this, ">> sending: " + m.toString() + " to " + getHostAndPort());
                         socket.write(messageBuffer);
                     }
                 }
             }
             catch (Exception e)
             {
-                Logging.info(this, "interrupted " + sourceHost + ": " + e.getLocalizedMessage());
+                Logging.info(this, "interrupted " + getHostAndPort() + ": " + e.getLocalizedMessage());
                 break;
             }
         }
@@ -171,14 +191,14 @@ class MessageChannel extends AppTask implements Runnable
             // nothing to do
         }
         super.stop();
-        Logging.info(this, "stopped " + sourceHost + ":" + toString());
+        Logging.info(this, "stopped " + getHostAndPort() + ":" + toString());
         inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
     }
 
-    boolean connectToServer(String host, int port)
+    boolean connectToServer(@NonNull String host, int port)
     {
-        final String addr = Utils.ipToString(host, port);
-
+        this.host = host;
+        this.port = port;
         try
         {
             socket = SocketChannel.open();
@@ -196,19 +216,15 @@ class MessageChannel extends AppTask implements Runnable
             if (socket.socket().getInetAddress() != null
                     && socket.socket().getInetAddress().getHostAddress() != null)
             {
-                sourceHost = socket.socket().getInetAddress().getHostAddress();
+                this.host = socket.socket().getInetAddress().getHostAddress();
             }
-            else
-            {
-                sourceHost = host;
-            }
-            Logging.info(this, "connected to " + addr + ", host=" + sourceHost);
+            Logging.info(this, "connected to " + getHostAndPort());
             return true;
         }
         catch (Exception e)
         {
             String message = String.format(connectionState.getContext().getResources().getString(
-                    R.string.error_connection_no_response), addr);
+                    R.string.error_connection_no_response), getHostAndPort());
             Logging.info(this, message + ": " + e.getLocalizedMessage());
             Toast.makeText(connectionState.getContext(), message, Toast.LENGTH_LONG).show();
             for (StackTraceElement t : e.getStackTrace())
@@ -301,12 +317,12 @@ class MessageChannel extends AppTask implements Runnable
                         if (!"NTM".equals(raw.getCode()))
                         {
                             Logging.info(this, "<< new message " + raw.getCode()
-                                    + " from " + sourceHost
+                                    + " from " + getHostAndPort()
                                     + ", size=" + raw.getMsgSize()
                                     + "B, remaining=" + remaining + "B");
                         }
                         ISCPMessage msg = MessageFactory.create(raw);
-                        msg.sourceHost = sourceHost;
+                        msg.setHostAndPort(this);
                         inputQueue.add(msg);
                     }
                 }

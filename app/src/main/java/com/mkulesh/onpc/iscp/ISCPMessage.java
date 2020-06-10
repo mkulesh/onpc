@@ -14,12 +14,13 @@
 package com.mkulesh.onpc.iscp;
 
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.nio.charset.Charset;
 
 import androidx.annotation.NonNull;
 
-public class ISCPMessage
+public class ISCPMessage implements ConnectionIf
 {
     protected static final Charset UTF_8 = Charset.forName("UTF-8");
     protected final static String PAR_SEP = "/";
@@ -27,7 +28,10 @@ public class ISCPMessage
     protected final int messageId;
     protected final String data;
     private final Character modelCategoryId;
-    protected String sourceHost = null;
+
+    // connected host (ConnectionIf)
+    protected String host = ConnectionIf.EMPTY_HOST;
+    protected int port = ConnectionIf.EMPTY_PORT;
 
     protected ISCPMessage(final int messageId, final String data)
     {
@@ -49,7 +53,43 @@ public class ISCPMessage
         messageId = other.messageId;
         data = other.data;
         modelCategoryId = other.modelCategoryId;
-        sourceHost = other.sourceHost;
+        host = other.host;
+    }
+
+    @NonNull
+    @Override
+    public String getHost()
+    {
+        return host;
+    }
+
+    @Override
+    public int getPort()
+    {
+        return port;
+    }
+
+    @NonNull
+    @Override
+    public String getHostAndPort()
+    {
+        return Utils.ipToString(host, port);
+    }
+
+    public void setHostAndPort(@NonNull final ConnectionIf connection)
+    {
+        host = connection.getHost();
+        port = connection.getPort();
+    }
+
+    public boolean fromHost(@NonNull final ConnectionIf connection)
+    {
+        return host.equals(connection.getHost()) && port == connection.getPort();
+    }
+
+    public boolean isValidConnection()
+    {
+        return !host.equals(ConnectionIf.EMPTY_HOST) && port != ConnectionIf.EMPTY_PORT;
     }
 
     public int getMessageId()

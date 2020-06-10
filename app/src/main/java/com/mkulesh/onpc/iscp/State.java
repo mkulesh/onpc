@@ -79,7 +79,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
-public class State
+public class State implements ConnectionIf
 {
     // Changes
     public enum ChangeType
@@ -93,7 +93,7 @@ public class State
         MULTIROOM_INFO
     }
 
-    // main host
+    // connected host (ConnectionIf)
     private final String host;
     private final int port;
 
@@ -206,17 +206,20 @@ public class State
     }
 
     @NonNull
+    @Override
     public String getHost()
     {
         return host;
     }
 
+    @Override
     public int getPort()
     {
         return port;
     }
 
     @NonNull
+    @Override
     public String getHostAndPort()
     {
         return Utils.ipToString(host, port);
@@ -409,11 +412,6 @@ public class State
         maxTime = TimeInfoMsg.INVALID_TIME;
         currentTrack = null;
         maxTrack = null;
-    }
-
-    public boolean isAnotherHost(final ISCPMessage msg)
-    {
-        return msg.sourceHost != null && !msg.sourceHost.equals(host);
     }
 
     public ChangeType update(ISCPMessage msg)
@@ -682,8 +680,8 @@ public class State
 
     private boolean process(FriendlyNameMsg msg)
     {
-        multiroomNames.put(msg.sourceHost, msg.getFriendlyName());
-        if (!isAnotherHost(msg))
+        multiroomNames.put(msg.getHostAndPort(), msg.getFriendlyName());
+        if (msg.fromHost(this))
         {
             if (friendlyName == null)
             {
@@ -1384,7 +1382,7 @@ public class State
             {
                 multiroomLayout.put(id, msg);
             }
-            if (isAnotherHost(msg))
+            if (!msg.fromHost(this))
             {
                 Logging.info(msg, "Multiroom device information for another host");
             }

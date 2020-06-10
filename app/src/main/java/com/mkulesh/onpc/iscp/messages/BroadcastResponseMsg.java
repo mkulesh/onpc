@@ -15,7 +15,6 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.net.InetAddress;
 
@@ -38,7 +37,6 @@ public class BroadcastResponseMsg extends ISCPMessage
     private final static String CODE = "ECN";
 
     private String model = null;
-    private Integer port = null;
     private String destinationArea = null;
     private String identifier = null;
     private String alias = null;
@@ -46,7 +44,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     public BroadcastResponseMsg(InetAddress hostAddress, EISCPMessage raw) throws Exception
     {
         super(raw);
-        sourceHost = hostAddress.getHostAddress();
+        host = hostAddress.getHostAddress();
         String[] tokens = data.split("/");
         if (tokens.length > 0)
         {
@@ -80,7 +78,7 @@ public class BroadcastResponseMsg extends ISCPMessage
                                 @NonNull final String alias, @Nullable final String identifier)
     {
         super(0, null);
-        this.sourceHost = host;
+        this.host = host;
         this.port = port;
         this.alias = alias;
         this.identifier = identifier;
@@ -99,22 +97,6 @@ public class BroadcastResponseMsg extends ISCPMessage
                 + (alias != null? "; ALIAS=" + alias : "") + "]";
     }
 
-    public String getHost()
-    {
-        return sourceHost;
-    }
-
-    public Integer getPort()
-    {
-        return port;
-    }
-
-    @NonNull
-    public String getHostAndPort()
-    {
-        return Utils.ipToString(sourceHost, port);
-    }
-
     @NonNull
     public String getDescription()
     {
@@ -126,11 +108,6 @@ public class BroadcastResponseMsg extends ISCPMessage
     public String getIdentifier()
     {
         return identifier == null ? "" : identifier;
-    }
-
-    public boolean isValid()
-    {
-        return sourceHost != null && port != null;
     }
 
     @Nullable

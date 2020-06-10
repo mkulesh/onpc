@@ -15,6 +15,7 @@ package com.mkulesh.onpc.config;
 
 import android.content.SharedPreferences;
 
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -97,12 +98,12 @@ public class CfgFavoriteConnections
         return devices;
     }
 
-    private int find(@NonNull final String host, final int port)
+    private int find(@NonNull final ConnectionIf connection)
     {
         for (int i = 0; i < devices.size(); i++)
         {
             final BroadcastResponseMsg msg = devices.get(i);
-            if (msg.getHost().equals(host) && msg.getPort() == port)
+            if (msg.fromHost(connection))
             {
                 return i;
             }
@@ -110,21 +111,21 @@ public class CfgFavoriteConnections
         return -1;
     }
 
-    public BroadcastResponseMsg updateDevice(@NonNull final String host, final int port,
+    public BroadcastResponseMsg updateDevice(@NonNull final ConnectionIf connection,
                                              @NonNull final String alias, @Nullable final String identifier)
     {
         BroadcastResponseMsg newMsg;
-        int idx = find(host, port);
+        int idx = find(connection);
         if (idx >= 0)
         {
             final BroadcastResponseMsg oldMsg = devices.get(idx);
-            newMsg = new BroadcastResponseMsg(host, port, alias, identifier);
+            newMsg = new BroadcastResponseMsg(connection.getHost(), connection.getPort(), alias, identifier);
             Logging.info(this, "Update favorite connection: " + oldMsg.toString() + " -> " + newMsg.toString());
             devices.set(idx, newMsg);
         }
         else
         {
-            newMsg = new BroadcastResponseMsg(host, port, alias, null);
+            newMsg = new BroadcastResponseMsg(connection.getHost(), connection.getPort(), alias, null);
             Logging.info(this, "Add favorite connection: " + newMsg.toString());
             devices.add(newMsg);
         }
@@ -132,9 +133,9 @@ public class CfgFavoriteConnections
         return newMsg;
     }
 
-    public void deleteDevice(@NonNull final String host, int port)
+    public void deleteDevice(@NonNull final ConnectionIf connection)
     {
-        int idx = find(host, port);
+        int idx = find(connection);
         if (idx >= 0)
         {
             final BroadcastResponseMsg oldMsg = devices.get(idx);
@@ -155,7 +156,7 @@ public class CfgFavoriteConnections
         {
             return;
         }
-        int idx = find(state.getHost(), state.getPort());
+        int idx = find(state);
         if (idx >= 0)
         {
             final BroadcastResponseMsg oldMsg = devices.get(idx);

@@ -205,7 +205,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 }
 
                 final BroadcastResponseMsg responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
-                if (responseMessage.isValid())
+                if (responseMessage.isValidConnection())
                 {
                     publishProgress(responseMessage);
                 }

@@ -200,7 +200,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             }
             for (BroadcastResponseMsg msg : favorites)
             {
-                Logging.info(this, "Added favorite connection " + msg);
+                Logging.info(this, "Added favorite connection " + msg + ", handle=" + callHandler);
                 final DeviceInfo newInfo = new DeviceInfo(msg, true,0);
                 devices.put(msg.getHostAndPort(), newInfo);
                 if (callHandler && backgroundEventListener != null)
@@ -214,7 +214,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     @Override
     public void onDeviceFound(BroadcastResponseMsg msg)
     {
-        if (!msg.isValid())
+        if (!msg.isValidConnection())
         {
             Logging.info(this, "  invalid response " + msg + ", ignored");
             return;

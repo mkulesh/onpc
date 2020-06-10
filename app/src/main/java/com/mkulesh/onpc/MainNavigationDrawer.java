@@ -121,7 +121,7 @@ class MainNavigationDrawer
             @Override
             public void onDeviceFound(BroadcastResponseMsg response)
             {
-                if (response == null || !response.isValid())
+                if (response == null || !response.isValidConnection())
                 {
                     return;
                 }
@@ -189,7 +189,7 @@ class MainNavigationDrawer
                                         deviceFriendlyName.getText().toString() :
                                         Utils.ipToString(device, devicePort.getText().toString());
                                 configuration.favoriteConnections.updateDevice(
-                                        activity.getStateManager().getState().getHost(), port, friendlyName, null);
+                                        activity.getStateManager().getState(), friendlyName, null);
                                 activity.getDeviceList().updateFavorites(true);
                             }
                         }
@@ -374,7 +374,7 @@ class MainNavigationDrawer
         {
             updateItem(m, R.drawable.drawer_found_device, name, null);
         }
-        m.setChecked(state != null && !state.isAnotherHost(msg));
+        m.setChecked(state != null && msg.fromHost(state));
     }
 
     @SuppressLint("DefaultLocale")
@@ -386,7 +386,7 @@ class MainNavigationDrawer
         final TextView deviceAddress = frameView.findViewById(R.id.device_address);
         deviceAddress.setText(String.format("%s %s",
                 activity.getString(R.string.connect_dialog_address),
-                Utils.ipToString(msg.getHost(), msg.getPort())));
+                msg.getHostAndPort()));
 
         // Connection alias
         final EditText deviceAlias = frameView.findViewById(R.id.device_alias);
@@ -446,12 +446,12 @@ class MainNavigationDrawer
                         final String identifier = deviceIdentifier.getText().length() > 0 ?
                                 deviceIdentifier.getText().toString() : null;
                         final BroadcastResponseMsg newMsg = configuration.favoriteConnections.updateDevice(
-                                msg.getHost(), msg.getPort(), alias, identifier);
+                                msg, alias, identifier);
                         updateItem(m, R.drawable.drawer_favorite_device, newMsg.getAlias(), () -> editFavoriteConnection(m, newMsg));
                     }
                     if (deleteBtn.isChecked())
                     {
-                        configuration.favoriteConnections.deleteDevice(msg.getHost(), msg.getPort());
+                        configuration.favoriteConnections.deleteDevice(msg);
                         m.setVisible(false);
                         m.setChecked(false);
                     }
