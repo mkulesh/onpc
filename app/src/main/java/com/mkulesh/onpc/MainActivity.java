@@ -30,6 +30,7 @@ import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
+import com.mkulesh.onpc.iscp.MessageScript;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
@@ -72,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private int startRequestCode;
     private final AtomicBoolean connectToAnyDevice = new AtomicBoolean(false);
     int orientation;
-    Intent intent = null;
+    private Intent intent = null;
+    private final MessageScript messageScript = new MessageScript();
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -112,6 +114,10 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         if (intent != null)
         {
             Logging.info(this, "Called with indent: " + intent.toString());
+            if (intent.getDataString() != null)
+            {
+                messageScript.initialize(intent);
+            }
         }
 
         connectionState = new ConnectionState(this);
