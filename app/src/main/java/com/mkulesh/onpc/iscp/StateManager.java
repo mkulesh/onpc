@@ -60,8 +60,10 @@ import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
+import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
 import com.mkulesh.onpc.utils.Logging;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -113,7 +115,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             FriendlyNameMsg.CODE
     };
 
-    private boolean autoPower = false;
     private final AtomicBoolean keepPlaybackMode = new AtomicBoolean();
     private final boolean useBmpImages;
 
@@ -130,14 +131,17 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private AtomicInteger listeningModeRequests = new AtomicInteger();
     private final BlockingQueue<Timer> listeningModeQueue = new ArrayBlockingQueue<>(1, true);
 
+    // MessageScript processor
+    private final ArrayList<MessageScriptIf> messageScripts;
+
     public StateManager(final DeviceList deviceList,
                         final ConnectionState connectionState,
                         final StateListener stateListener,
                         final String host, final int port,
                         final int zone,
-                        final boolean autoPower,
                         final boolean keepPlaybackMode,
-                        String savedReceiverInformation) throws Exception
+                        final String savedReceiverInformation,
+                        final @NonNull ArrayList<MessageScriptIf> messageScripts) throws Exception
     {
         this.deviceList = deviceList;
         this.connectionState = connectionState;
@@ -155,7 +159,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         // can be not available
         useBmpImages = !connectionState.isWifi();
 
-        this.autoPower = autoPower;
         setPlaybackMode(keepPlaybackMode);
 
         if (savedReceiverInformation != null)
@@ -172,10 +175,21 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
+        this.messageScripts = messageScripts;
+
         messageChannel.start();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+
+        // initial call os the message scripts
+        for (MessageScriptIf script : messageScripts)
+        {
+            if (script.isValid())
+            {
+                script.start();
+            }
+        }
     }
 
     public StateManager(final ConnectionState connectionState, final StateListener stateListener, final int zone)
@@ -188,8 +202,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         state = new MockupState(zone);
         useBmpImages = false;
         setPlaybackMode(false);
-        messageChannel.start();
+        messageScripts = new ArrayList<>();
 
+        messageChannel.start();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
@@ -331,13 +346,25 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         stateListener.onDeviceDisconnected();
     }
 
+    private boolean finalizeMessageHandling(@NonNull ISCPMessage msg, boolean res)
+    {
+        for (MessageScriptIf script : messageScripts)
+        {
+            if (script.isValid())
+            {
+                script.processMessage(msg, state, messageChannel);
+            }
+        }
+        return res;
+    }
+
     private boolean processMessage(@NonNull ISCPMessage msg)
     {
         // skip time message, is necessary
         if (msg instanceof TimeInfoMsg && skipNextTimeMsg.get() > 0)
         {
             skipNextTimeMsg.set(Math.max(0, skipNextTimeMsg.get() - 1));
-            return false;
+            return finalizeMessageHandling(msg, false);
         }
 
         final PlayStatusMsg.PlayStatus playStatus = state.playStatus;
@@ -351,20 +378,14 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         // no further message handling, if power off
         if (!state.isOn())
         {
-            if (msg instanceof PowerStatusMsg && autoPower)
-            {
-                // Auto power-on once at first PowerStatusMsg
-                sendMessage(new PowerStatusMsg(state.getActiveZone(), PowerStatusMsg.PowerStatus.ON));
-                autoPower = false;
-            }
-            return changed != State.ChangeType.NONE;
+            return finalizeMessageHandling(msg, changed != State.ChangeType.NONE);
         }
 
         // on TrackInfoMsg, always do XML state request upon the next ListTitleInfoMsg
         if (msg instanceof TrackInfoMsg)
         {
             requestXmlList.set(true);
-            return true;
+            return finalizeMessageHandling(msg, true);
         }
 
         // corner case: delayed USB initialization at power on
@@ -430,7 +451,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             {
                 requestXmlListState((ListTitleInfoMsg) msg);
             }
-            return false;
+            return finalizeMessageHandling(msg, false);
         }
 
         if (msg instanceof PowerStatusMsg)
@@ -468,7 +489,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             };
             sendQueries(playStateQueries, "requesting play state...");
             requestListState();
-            return true;
         }
 
         if (msg instanceof InputSelectorMsg && state.isCdInput())
@@ -498,7 +518,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             {
                 requestListState();
             }
-            return true;
         }
 
         if (msg instanceof ListTitleInfoMsg)
@@ -513,7 +532,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 circlePlayQueueMsg = null;
                 requestXmlListState(liMsg);
             }
-            return true;
         }
 
         // check privacy policy but do not accept it automatically
@@ -534,7 +552,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
-        return true;
+        return finalizeMessageHandling(msg, true);
     }
 
     @Override

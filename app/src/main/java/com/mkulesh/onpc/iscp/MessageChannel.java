@@ -36,7 +36,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class MessageChannel extends AppTask implements Runnable, ConnectionIf
+public class MessageChannel extends AppTask implements Runnable, ConnectionIf
 {
     private final static long CONNECTION_TIMEOUT = 5000;
     final static int QUEUE_SIZE = 4 * 1024;
@@ -339,7 +339,7 @@ class MessageChannel extends AppTask implements Runnable, ConnectionIf
         }
     }
 
-    void sendMessage(EISCPMessage eiscpMessage)
+    public void sendMessage(EISCPMessage eiscpMessage)
     {
         outputQueue.add(eiscpMessage);
     }

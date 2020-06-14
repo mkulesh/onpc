@@ -129,6 +129,23 @@ public class Utils
         return retValue;
     }
 
+    public static int parseIntAttribute(@NonNull final Element e, @NonNull final String name, int defValue)
+    {
+        final String val = e.getAttribute(name);
+        if (val != null)
+        {
+            try
+            {
+                return Integer.parseInt(e.getAttribute(name));
+            }
+            catch (NumberFormatException ex)
+            {
+                return defValue;
+            }
+        }
+        return defValue;
+    }
+
     /**
      * Procedure returns theme color
      */

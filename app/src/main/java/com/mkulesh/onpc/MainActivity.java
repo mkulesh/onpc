@@ -30,17 +30,20 @@ import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
-import com.mkulesh.onpc.iscp.MessageScript;
+import com.mkulesh.onpc.iscp.scripts.AutoPower;
+import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -390,12 +393,22 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         final int zone = configuration.getZone();
         try
         {
+            final ArrayList<MessageScriptIf> messageScripts = new ArrayList<>();
+            if (configuration.isAutoPower() || autoPower)
+            {
+                messageScripts.add(new AutoPower());
+            }
+            if (messageScript.isValid())
+            {
+                messageScripts.add(messageScript);
+            }
+
             stateHolder.setStateManager(new StateManager(
                     deviceList, connectionState, this,
                     device, port, zone,
-                    configuration.isAutoPower() || autoPower,
                     true,
-                    savedReceiverInformation));
+                    savedReceiverInformation,
+                    messageScripts));
             savedReceiverInformation = null;
             // Default receiver information used if ReceiverInformationMsg is missing
             {
