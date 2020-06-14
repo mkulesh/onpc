@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         intent = getIntent();
         if (intent != null)
         {
-            Logging.info(this, "Called with indent: " + intent.toString());
+            Logging.info(this, "Called with intent: " + intent.toString());
             if (intent.getDataString() != null)
             {
                 messageScript.initialize(intent);
