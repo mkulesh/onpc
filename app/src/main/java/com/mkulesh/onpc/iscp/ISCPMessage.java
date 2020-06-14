@@ -54,6 +54,7 @@ public class ISCPMessage implements ConnectionIf
         data = other.data;
         modelCategoryId = other.modelCategoryId;
         host = other.host;
+        port = other.port;
     }
 
     @NonNull
@@ -76,7 +77,7 @@ public class ISCPMessage implements ConnectionIf
         return Utils.ipToString(host, port);
     }
 
-    public void setHostAndPort(@NonNull final ConnectionIf connection)
+    void setHostAndPort(@NonNull final ConnectionIf connection)
     {
         host = connection.getHost();
         port = connection.getPort();
