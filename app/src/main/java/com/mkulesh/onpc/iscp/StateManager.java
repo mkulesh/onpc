@@ -187,7 +187,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             if (script.isValid())
             {
-                script.start();
+                script.start(state, messageChannel);
             }
         }
     }

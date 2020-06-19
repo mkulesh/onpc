@@ -15,6 +15,7 @@ package com.mkulesh.onpc.iscp.scripts;
 import android.content.Intent;
 
 import com.mkulesh.onpc.iscp.ConnectionIf;
+import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
@@ -31,6 +32,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Timer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,57 +42,54 @@ import androidx.annotation.NonNull;
 
 public class MessageScript implements ConnectionIf, MessageScriptIf
 {
-    enum ActionType
-    {
-        CMD,
-        WAIT
-    }
-
     enum ActionState
     {
-        PENDING, // the action is not started
-        PERFORMING, // the action is started, dow example WAIT action waits given time
-        DONE // the action is performed
+        UNSENT, // the command is not yet sent
+        WAITING, // the command has been sent and is waiting for an ack message or time-based wait
+        DONE // the command has completed
     }
+
+    public final static String[] ACTION_STATES = new String[]{"UNSENT", "WAITING", "DONE"};
 
     class Action
     {
-        // action type
-        final ActionType actionType;
-
-        // command used for actions CMD and WAIT
+        // command to be sent
         final String cmd;
 
-        // parameter used for actions CMD and WAIT. Empty string means no parameter is used.
+        // parameter used for actions command. Empty string means no parameter is used.
         final String par;
 
         // Delay in milliseconds used for action WAIT. Zero means no delay.
         final int milliseconds;
 
-        // The attribute that holds the actual state of this action
-        ActionState state = ActionState.PENDING;
+        // the command to wait for. Null if time based (or no) wait is used
+        final String wait;
 
-        Action(ActionType actionType, String cmd, String par, final int milliseconds)
+        // regex that must match the acknowledgement message
+        final String resp;
+
+        // The attribute that holds the actual state of this action
+        ActionState state = ActionState.UNSENT;
+
+        Action(String cmd, String par, final int milliseconds, String wait, String resp)
         {
-            this.actionType = actionType;
             this.cmd = cmd;
             this.par = par;
             this.milliseconds = milliseconds;
+            this.wait = wait;
+            this.resp = resp;
         }
 
         @NonNull
         public String toString()
         {
-            String s = "Action:";
-            if (actionType == ActionType.CMD)
-            {
-                s += "CMD";
-            }
-            else if (actionType == ActionType.WAIT)
-            {
-                s += "WAIT";
-            }
-            s += "," + cmd + "," + par + "," + milliseconds;
+            String s = "Action"
+                    + ":" + cmd
+                    + "," + par
+                    + "," + milliseconds
+                    + "," + wait
+                    + "," + resp
+                    + "," + ACTION_STATES[state.ordinal()];
             return s;
         }
 
@@ -120,8 +120,6 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             Logging.info(this, "intent data parameter empty: no script to parse");
             return;
         }
-
-        // In good case, the intent data already logged by caller, no need to log it twice
 
         try
         {
@@ -163,19 +161,15 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                             {
                                 throw new Exception("missing command parameter in 'send' command");
                             }
-                            actions.add(new Action(ActionType.CMD, cmd, par, 0));
-                        }
-                        else if (action.getTagName().equals("wait"))
-                        {
-                            final int milliseconds = Utils.parseIntAttribute(action, "milliseconds", -1);
-                            final String response = action.getAttribute("response");
-                            if (milliseconds < 0 && (response == null || response.isEmpty()))
+                            final int milliseconds = Utils.parseIntAttribute(action, "wait", -1);
+                            final String wait = action.getAttribute("wait");
+                            final String resp = action.getAttribute("resp");
+                            if (milliseconds < 0 && (wait == null || wait.isEmpty()))
                             {
-                                Logging.info(this, "missing time or response  in 'wait' command");
+                                Logging.info(this, "missing time or wait CMD in 'send' command");
                                 return;
                             }
-                            actions.add(new Action(ActionType.WAIT, response,
-                                    action.getAttribute("par"), milliseconds));
+                            actions.add(new Action(cmd, par, milliseconds, wait, resp));
                         }
                     }
                 }
@@ -194,9 +188,10 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     }
 
     @Override
-    public void start()
+    public void start(@NonNull final State state, @NonNull MessageChannel channel)
     {
-        // If necessary, implement startup handling. Currently, nothing to do.
+        // Startup handling.
+        processAction(actions.listIterator(), state, channel);
     }
 
     @Override
@@ -218,6 +213,73 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         // - How to work with timer, see method StateManager.doInBackground. Here, I use
         //   thread-safety variable timerQueue that ensures that every time not more than
         //   one instance of the timer is active. I suggest to implement the same logic here.
+        ListIterator<Action> actionIterator = actions.listIterator();
+        while (actionIterator.hasNext())
+        {
+            Action a = actionIterator.next();
+            if (a.state == ActionState.DONE)
+            {
+                continue;
+            }
+            Logging.info(this, "Testing match between action " + a.toString() + " and msg " + msg.toString());
+            if (a.state == ActionState.WAITING && a.wait != null)
+            {
+                if (a.wait.equals(msg.getCmdMsg().getCode()))
+                {
+                    Logging.info(this, "Message code matched");
+                    if (a.resp == null || a.resp.equals(msg.getCmdMsg().getParameters()))
+                    {
+                        Logging.info(this, "Message parameters matched");
+                        a.state = ActionState.DONE;
+                        // Process the next action
+                        processAction(actionIterator, state, channel);
+                        return;
+                    }
+                }
+                Logging.info(this, "Continue waiting for " + a.toString());
+                return;
+            }
+        }
+    }
+
+    public void processAction(ListIterator<Action> actionIterator, @NonNull final State state, @NonNull MessageChannel channel)
+    {
+        if (!actionIterator.hasNext())
+        {
+            Logging.info(this, "all commands sent");
+            return;
+        }
+        if (!channel.isActive())
+        {
+            Logging.info(this, "message channel stopped");
+            return;
+        }
+        if (!state.isOn())
+        {
+            Logging.info(this, "receiver off ?");
+            // return;
+        }
+
+        Action a = actionIterator.next();
+        EISCPMessage msg = new EISCPMessage(a.cmd, a.par);
+        channel.sendMessage(msg);
+        Logging.info(this, "sent message " + msg.toString() + " for action " + a.toString());
+        a.state = ActionState.WAITING;
+
+        if (a.milliseconds >= 0)
+        {
+            Logging.info(this, "scheduling timer for " + a.milliseconds + " milliseconds");
+            final Timer t = new Timer();
+            t.schedule(new java.util.TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    Logging.info(this, "timer expired");
+                    processAction(actionIterator, state, channel);
+                }
+            }, a.milliseconds);
+        }
     }
 
     @NonNull
