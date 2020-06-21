@@ -42,7 +42,7 @@ public interface MessageScriptIf
      * Before the method is called, the state manager checks whether this class contains
      * valid actions; i.e method is not called for invalid script
      **/
-    void start();
+    void start(@NonNull final State state, @NonNull MessageChannel channel);
 
     /**
      * This method is called from the state manager after the input message is processed.

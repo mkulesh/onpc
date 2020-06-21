@@ -42,7 +42,7 @@ public class AutoPower implements MessageScriptIf
     }
 
     @Override
-    public void start()
+    public void start(@NonNull final State state, @NonNull MessageChannel channel)
     {
         // nothing to do
     }
