@@ -49,7 +49,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         DONE // the command has completed
     }
 
-    public final static String[] ACTION_STATES = new String[]{"UNSENT", "WAITING", "DONE"};
+    private final static String[] ACTION_STATES = new String[]{ "UNSENT", "WAITING", "DONE" };
 
     class Action
     {
@@ -83,14 +83,13 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         @NonNull
         public String toString()
         {
-            String s = "Action"
+            return "Action"
                     + ":" + cmd
                     + "," + par
                     + "," + milliseconds
                     + "," + wait
                     + "," + resp
                     + "," + ACTION_STATES[state.ordinal()];
-            return s;
         }
 
     }
@@ -194,25 +193,21 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         processAction(actions.listIterator(), state, channel);
     }
 
+    /**
+     * The method implements message handling with respect to the "command"-"wait" logic:
+     * - in "actions" list, search the first non-performed action
+     * - if this action as a "wait" command that waits on a specific message (and
+     *   optional parameter), check whether this condition is fulfilled. If yes, set the
+     *   action as done and perform the next action
+     * - if the action to be performed is a "cmd" command, send the message (for example
+     *   see method AutoPower.processMessage)
+     * - if the action to be performed is a "wait" command with given time (in milliseconds),
+     *   set the state to "processing" and start the timer, where the timer body is the
+     *   code that shall perform the next message
+     **/
     @Override
     public void processMessage(@NonNull ISCPMessage msg, @NonNull final State state, @NonNull MessageChannel channel)
     {
-        // Implement message handling with respect to the "command"-"wait" logic:
-        // - in "actions" list, search the first non-performed action
-        // - if this action as a "wait" command that waits on a specific message (and
-        //   optional parameter), check whether this condition is fulfilled. If yes, set the
-        //   action as done and perform the next action
-        // - if the action to be performed is a "cmd" command, send the message (for example
-        //   see method AutoPower.processMessage)
-        // - if the action to be performed is a "wait" command with given time (in milliseconds),
-        //   set the state to "processing" and start the timer, where the timer body is the
-        //   code that shall perform the next message
-        //   - I suggest to collect the code that performs the action in a separate method
-        //   "processAction" since we can have a sequence of "wait" commands that will result in
-        //   a sequence of timer calls
-        // - How to work with timer, see method StateManager.doInBackground. Here, I use
-        //   thread-safety variable timerQueue that ensures that every time not more than
-        //   one instance of the timer is active. I suggest to implement the same logic here.
         ListIterator<Action> actionIterator = actions.listIterator();
         while (actionIterator.hasNext())
         {
@@ -300,5 +295,10 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     public String getHostAndPort()
     {
         return Utils.ipToString(host, port);
+    }
+
+    public int getZone()
+    {
+        return zone;
     }
 }

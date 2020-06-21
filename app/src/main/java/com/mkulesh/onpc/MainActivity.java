@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         stateHolder.release(false, "reconnect");
         stateHolder.waitForRelease();
         onStateChanged(stateHolder.getState(), null);
-        final int zone = configuration.getZone();
+        int zone = configuration.getZone();
         try
         {
             final ArrayList<MessageScriptIf> messageScripts = new ArrayList<>();
@@ -401,6 +401,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             if (messageScript.isValid())
             {
                 messageScripts.add(messageScript);
+                zone = messageScript.getZone();
             }
 
             stateHolder.setStateManager(new StateManager(
