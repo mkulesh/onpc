@@ -1,22 +1,29 @@
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models are also supported.
+This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
-The two most popular features of the app are music playback and sound profile management. Other benefits include:
+The two most popular features of the app are music playback and sound profile management.
+
+Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - One-click access to music playback actions
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Full tone control (bass, center, treble and subwoofer levels)
+- Full tone control (listening modes, bass, center, treble and subwoofer levels)
 - Enhanced Play Queue support (add, replace, remove, clear, change playback order)
-- Tuneln Radio and Deezer streaming (if supported by receiver)
+- Tuneln Radio, Deezer, and Tidal streaming (if supported by receiver)
 - DAB / FM / AM (if supported by receiver)
 - Multi-zone support (if supported by receiver)
 - Multi-room support: Allows control of groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
+- Possibility to control FlareConnect without WiFi
 - Control of devices attached via RI
 - Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
 Please note that the app does not support the music streaming from your phone to the network player or the receiver.
 
-At the moment, the app is tested with following devices: ONKYO NS-6130, TX-NR676E, TX-NR686, TX-8150, RN-855; Wireless Audio System NCP-302; Integra DRX-5.2, DTR 30.7, DTR 40.7; Pioneer VSX-LX303; Teac NT-503, AG-D500
+At the moment, the app is tested with following devices:
+- Onkyo: NS-6130, NS-6170, TX-L50, TX-NR509, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-RZ810, TX-RZ830, TX-RZ900, HT-S7805, TX-8130, TX-8150, TX-8250, TX-8270, TX-8390, TX-L20D, R-N855, CS-N575D, CR-N765, CR-N775D, NCP-302
+- Integra: DRX-5.2, DTR 30.7, DTR 40.7
+- Pioneer: VSX-LX303,VSX-LX503, VSX-932, SC-LX701
+- Teac: NT-503, AG-D500
 
 The app is 100% open source. Please feel free to download, explore, fork or contribute to it on https://github.com/mkulesh/onpc
