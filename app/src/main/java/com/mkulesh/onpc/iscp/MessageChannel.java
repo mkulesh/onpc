@@ -226,10 +226,20 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
             String message = String.format(connectionState.getContext().getResources().getString(
                     R.string.error_connection_no_response), getHostAndPort());
             Logging.info(this, message + ": " + e.getLocalizedMessage());
-            Toast.makeText(connectionState.getContext(), message, Toast.LENGTH_LONG).show();
             for (StackTraceElement t : e.getStackTrace())
             {
                 Logging.info(this, t.toString());
+            }
+
+            try
+            {
+                // An exception is possible here:
+                // Can't toast on a thread that has not called Looper.prepare()
+                Toast.makeText(connectionState.getContext(), message, Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e1)
+            {
+                // nothing to do
             }
         }
         return false;
