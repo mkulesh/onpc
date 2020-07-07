@@ -31,6 +31,7 @@ public class CfgAudioControl
     private static final String FORCE_AUDIO_CONTROL = "force_audio_control";
     static final String SELECTED_LISTENING_MODES = "selected_listening_modes";
     private static final String MASTER_VOLUME_MAX = "master_volume_max";
+    private static final String VOLUME_KEYS = "volume_keys";
 
     static final ListeningModeMsg.Mode[] DEFAULT_LISTENING_MODES = new ListeningModeMsg.Mode[]{
             ListeningModeMsg.Mode.MODE_00, // STEREO
@@ -112,5 +113,10 @@ public class CfgAudioControl
             }
         }
         return result;
+    }
+
+    public boolean isVolumeKeys()
+    {
+        return preferences.getBoolean(VOLUME_KEYS, false);
     }
 }

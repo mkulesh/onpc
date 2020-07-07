@@ -674,6 +674,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         switch (soundControl)
         {
         case DEVICE_BUTTONS:
+        case DEVICE_SLIDER:
             sendMessage(new MasterVolumeMsg(getState().getActiveZone(), isUp ?
                     MasterVolumeMsg.Command.UP :
                     MasterVolumeMsg.Command.DOWN));

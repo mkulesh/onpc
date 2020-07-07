@@ -59,7 +59,6 @@ public class Configuration
     private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
     private static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
 
-    private static final String VOLUME_KEYS = "volume_keys";
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String BACK_AS_RETURN = "back_as_return";
     private static final String ADVANCED_QUEUE = "advanced_queue";
@@ -329,11 +328,6 @@ public class Configuration
     public boolean isRemoteInterfaceCd()
     {
         return remoteInterface && remoteInterfaceCd;
-    }
-
-    public boolean isVolumeKeys()
-    {
-        return preferences.getBoolean(Configuration.VOLUME_KEYS, false);
     }
 
     public boolean isKeepScreenOn()

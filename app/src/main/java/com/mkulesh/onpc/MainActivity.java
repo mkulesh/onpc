@@ -619,7 +619,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
     {
-        if (isConnected() && configuration.isVolumeKeys())
+        if (isConnected() && configuration.audioControl.isVolumeKeys())
         {
             if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)
             {
