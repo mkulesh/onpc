@@ -74,14 +74,6 @@ class StateManager
     MessageChannel _messageChannel;
     final Map<String, MessageChannel> _multiroomChannels = Map();
 
-    // auto power on startup
-    bool _autoPower = false;
-
-    set autoPower(bool value)
-    {
-        _autoPower = value;
-    }
-
     // keep playback mode
     bool _keepPlaybackMode = false;
 
@@ -141,6 +133,11 @@ class StateManager
 
     // MessageScript processor
     final List<MessageScriptIf> _messageScripts = List<MessageScriptIf>();
+
+    void clearScripts()
+    {
+        _messageScripts.clear();
+    }
 
     void addScript(MessageScriptIf script)
     {
@@ -326,12 +323,6 @@ class StateManager
         // no further message handling, if power off
         if (!state.isOn)
         {
-            if (msg is PowerStatusMsg && _autoPower)
-            {
-                // Auto power-on once at first PowerStatusMsg
-                sendMessage(PowerStatusMsg.output(state.getActiveZone, PowerStatus.ON));
-                _autoPower = false;
-            }
             return changed;
         }
 

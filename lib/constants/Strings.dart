@@ -481,13 +481,13 @@ Enjoy!"""];
         /*pl*/ "Usuń"];
     static String get favorite_connection_delete => l_favorite_connection_delete[_language];
 
-    static const List<String> l_menu_power_power = [
+    static const List<String> l_menu_power_standby = [
         /*en*/ "On/Standby",
         /*ru*/ "Вкл/выкл",
         /*de*/ "An/Standby",
         /*fr*/ "marche/arrêt",
         /*pl*/ "On/Standby"];
-    static String get menu_power_power => l_menu_power_power[_language];
+    static String get menu_power_standby => l_menu_power_standby[_language];
 
     static const List<String> l_menu_receiver_information = [
         /*en*/ "Receiver information",
@@ -504,6 +504,14 @@ Enjoy!"""];
         /*fr*/ "Dernière entrée",
         /*pl*/ "Ostatnie logowanie"];
     static String get menu_latest_logging => l_menu_latest_logging[_language];
+
+    static const List<String> l_shortcut_power_on = [
+        /*en*/ "Power On",
+        /*ru*/ "Включить",
+        /*de*/ "Einschalten",
+        /*fr*/ "Allumer",
+        /*pl*/ "Zasilanie włączone"];
+    static String get shortcut_power_on => l_shortcut_power_on[_language];
 
     static const List<String> l_title_monitor = [
         /*en*/ "Listen",

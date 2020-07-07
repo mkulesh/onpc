@@ -40,6 +40,7 @@ import "iscp/messages/CustomPopupMsg.dart";
 import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
+import "iscp/scripts/AutoPower.dart";
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
@@ -64,9 +65,13 @@ void main() async
     final Configuration configuration = Configuration(prefs, packageInfo);
     configuration.read();
 
-    final ViewContext viewContext = ViewContext(configuration,
-        StateManager(configuration.activeZone, configuration.favoriteConnections.getDevices),
-        StreamController.broadcast());
+    final StateManager stateManager = StateManager(configuration.activeZone, configuration.favoriteConnections.getDevices);
+
+    final ByteData autoPowerData = await Platform.requestAutoPower();
+    final bool autoPower = configuration.autoPower || Platform.parseAutoPower(autoPowerData);
+    MusicControllerAppState.updateScripts(stateManager, autoPower);
+
+    final ViewContext viewContext = ViewContext(configuration, stateManager, StreamController.broadcast());
 
     runApp(MaterialApp(
         debugShowCheckedModeBanner: Logging.isDebugBanner,
@@ -135,9 +140,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
         super.initState();
         BackButtonInterceptor.add(_onBackPressed);
 
-        _applyConfiguration(informPlatform: false);
+        _applyConfiguration(informPlatform: false, updScripts: false);
 
-        _stateManager.autoPower = _configuration.autoPower;
         _stateManager.addListeners(_onStateChanged, _onConnectionError);
 
         _connectionState = ConnectionState.NONE;
@@ -286,7 +290,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     setState(()
                     {
                         _configuration.read();
-                        _applyConfiguration(informPlatform: true);
+                        _applyConfiguration(informPlatform: true, updScripts: true);
                     });
                     break;
                 case StateManager.START_SEARCH_EVENT:
@@ -437,8 +441,6 @@ class MusicControllerAppState extends State<MusicControllerApp>
         return false;
     }
 
-
-
     void _processNetworkStateChange(final ByteData state)
     {
         final NetworkState n = Platform.parseNetworkState(state);
@@ -462,7 +464,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
     }
 
-    void _applyConfiguration({bool informPlatform = false})
+    void _applyConfiguration({bool informPlatform = false, bool updScripts = false})
     {
         // Update logging
         Logging.logSize = _configuration.developerMode ? Logging.DEFAULT_LOG_SIZE : 0;
@@ -497,6 +499,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 PlatformCmd.VOLUME_KEYS_ENABLED : PlatformCmd.VOLUME_KEYS_DISABLED);
             Platform.sendPlatformCommand(_configuration.keepScreenOn ?
                 PlatformCmd.KEEP_SCREEN_ON_ENABLED : PlatformCmd.KEEP_SCREEN_ON_DISABLED);
+        }
+
+        if (updScripts)
+        {
+            updateScripts(_stateManager, _configuration.autoPower);
         }
     }
 
@@ -536,6 +543,15 @@ class MusicControllerAppState extends State<MusicControllerApp>
             {
                 _stateManager.state.closeMediaFilter();
             }
+        }
+    }
+
+    static void updateScripts(final StateManager stateManager, bool autoPower)
+    {
+        stateManager.clearScripts();
+        if (autoPower)
+        {
+            stateManager.addScript(AutoPower());
         }
     }
 }

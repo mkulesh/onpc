@@ -28,6 +28,7 @@ enum PlatformCmd
     VOLUME_KEYS_DISABLED,
     KEEP_SCREEN_ON_ENABLED,
     KEEP_SCREEN_ON_DISABLED,
+    AUTO_POWER,
     INVALID
 }
 
@@ -40,7 +41,7 @@ class Platform
         final WriteBuffer buffer = WriteBuffer();
         buffer.putInt32(cmd.index);
         final ByteData message = buffer.done();
-        return defaultBinaryMessenger.send(PLATFORM_CHANNEL, message);
+        return ServicesBinding.instance.defaultBinaryMessenger.send(PLATFORM_CHANNEL, message);
     }
 
     static PlatformCmd readPlatformCommand(ByteData message)
@@ -52,6 +53,25 @@ class Platform
             return PlatformCmd.values.singleWhere((p) => p.index == code, orElse: () => PlatformCmd.INVALID);
         }
         return PlatformCmd.INVALID;
+    }
+
+    static String get operatingSystem => io.Platform.operatingSystem;
+    static bool get isAndroid => io.Platform.isAndroid;
+
+    // Network state from host platforms
+    static Future<ByteData> requestNetworkState()
+    {
+        if (isAndroid)
+        {
+            return sendPlatformCommand(PlatformCmd.NETWORK_STATE);
+        }
+        else
+        {
+            final WriteBuffer buffer = WriteBuffer();
+            buffer.putUint8(PlatformCmd.NETWORK_STATE.index);
+            buffer.putUint8(NetworkState.WIFI.index);
+            return Future.value(buffer.done());
+        }
     }
 
     static NetworkState parseNetworkState(ByteData message)
@@ -69,21 +89,29 @@ class Platform
         return NetworkState.NONE;
     }
 
-    static String get operatingSystem => io.Platform.operatingSystem;
-    static bool get isAndroid => io.Platform.isAndroid;
-
-    static Future<ByteData> requestNetworkState()
+    // Auto power state from host platforms
+    static Future<ByteData> requestAutoPower()
     {
         if (isAndroid)
         {
-            return sendPlatformCommand(PlatformCmd.NETWORK_STATE);
+            return sendPlatformCommand(PlatformCmd.AUTO_POWER);
         }
         else
         {
             final WriteBuffer buffer = WriteBuffer();
-            buffer.putUint8(PlatformCmd.NETWORK_STATE.index);
-            buffer.putUint8(NetworkState.WIFI.index);
+            buffer.putUint8(0);
             return Future.value(buffer.done());
         }
+    }
+
+    static bool parseAutoPower(ByteData message)
+    {
+        final ReadBuffer readBuffer = ReadBuffer(message);
+        if (readBuffer.data.lengthInBytes > 0)
+        {
+            final int code = readBuffer.data.getUint8(0);
+            return code == 1;
+        }
+        return false;
     }
 }

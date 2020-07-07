@@ -55,6 +55,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     private static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
     private static final String VERSION_NAME = "version_name";
     private static final String MODEL = "model";
+    private static final String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.AUTO_POWER";
 
     private enum PlatformCmd
     {
@@ -65,7 +66,8 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         VOLUME_KEYS_DISABLED    (4),
         KEEP_SCREEN_ON_ENABLED  (5),
         KEEP_SCREEN_ON_DISABLED (6),
-        INVALID                 (7);
+        AUTO_POWER              (7),
+        INVALID                 (8);
 
         final int code;
 
@@ -161,12 +163,17 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     private ConnectivityChangeReceiver receiver;
     private boolean volumeKeys = false;
     private boolean keepScreenOn = false;
+    private boolean autoPower = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
+
+        // parse intent
+        final Intent intent = getIntent();
+        autoPower = intent != null && intent.getAction() != null && SHORTCUT_AUTO_POWER.equals(intent.getAction());
 
         // If necessary, export preferences from previous versions
         try
@@ -211,6 +218,14 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         final int state = !isConnected ? 0 : (!isWiFi ? 1 : 2);
         message.put(PlatformCmd.NETWORK_STATE.getByteCode());
         message.put((byte)state);
+        return message;
+    }
+
+    private ByteBuffer getAutoPowerMsg()
+    {
+        final ByteBuffer message = ByteBuffer.allocateDirect(1);
+        message.put(autoPower ? (byte)1 : (byte)0);
+        autoPower = false;
         return message;
     }
 
@@ -285,6 +300,9 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
                 break;
             case NETWORK_STATE:
                 r = getNetworkStateMsg(receiver.isConnected(), receiver.isWifi());
+                break;
+            case AUTO_POWER:
+                r = getAutoPowerMsg();
                 break;
         }
 

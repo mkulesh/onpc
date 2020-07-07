@@ -77,9 +77,12 @@ Enjoy!""</string>
     <string name="favorite_connection_delete">Usuń</string>
 
     <!-- Main menu -->
-    <string name="menu_power_power">On/Standby</string>
+    <string name="menu_power_standby">On/Standby</string>
     <string name="menu_receiver_information">Informacje o urządzeniu</string>
     <string name="menu_latest_logging">Ostatnie logowanie</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_power_on">Zasilanie włączone</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Słuchaj</string>
