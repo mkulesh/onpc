@@ -152,7 +152,7 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
-    void connect(String server, int port, {String manualHost, String manualAlias})
+    void connect(String host, int port, {String manualHost, String manualAlias})
     {
         if (isConnected)
         {
@@ -160,7 +160,7 @@ class StateManager
         }
         _manualHost = manualHost;
         _manualAlias = manualAlias;
-        _messageChannel.start(server, port);
+        _messageChannel.start(host, port);
     }
 
     void disconnect(bool waitForDisconnect)
@@ -178,23 +178,17 @@ class StateManager
         }
     }
 
+    MessageChannel getConnection()
+    => _messageChannel;
+
     bool get isConnected
     => _messageChannel.isConnected;
-
-    String get sourceHost
-    => _messageChannel.sourceHost;
-
-    int get sourcePort
-    => _messageChannel.sourcePort;
-
-    String getAddressAndPort()
-    => Logging.ipToString(sourceHost, sourcePort.toString());
 
     DeviceInfo get sourceDevice
     => state.multiroomState.deviceList.values.firstWhere((d) => isSourceHost(d.responseMsg), orElse: () => null);
 
     bool isSourceHost(final ISCPMessage msg)
-    => msg.sourceHost == sourceHost;
+    => msg.fromHost(_messageChannel);
 
     int changeZone(String getId)
     {
@@ -206,9 +200,9 @@ class StateManager
         return _state.getActiveZone;
     }
 
-    void _onConnected(MessageChannel channel, String host, int port)
+    void _onConnected(MessageChannel channel)
     {
-        Logging.info(this, "Connected to " + Logging.ipToString(host, port.toString()) + " via " + _networkState.toString());
+        Logging.info(this, "Connected to " + channel.getHostAndPort + " via " + _networkState.toString());
 
         _state.updateConnection(true);
         if (_onStateChanged != null)
@@ -230,7 +224,7 @@ class StateManager
         return raw;
     }
 
-    void _onNewEISCPMessage(EISCPMessage rawMsg, String host)
+    void _onNewEISCPMessage(EISCPMessage rawMsg, MessageChannel channel)
     {
         // call processing asynchronous after message is registered
         _registerMessage(rawMsg).then((EISCPMessage raw)
@@ -255,7 +249,7 @@ class StateManager
             try
             {
                 final ISCPMessage msg = MessageFactory.create(raw);
-                msg.sourceHost = host;
+                msg.setHostAndPort(channel);
                 final String changeCode = _processMessage(msg);
                 _onProcessFinished(changeCode != null, changeCode);
             }
@@ -644,27 +638,27 @@ class StateManager
             triggerStateEvent(BroadcastResponseMsg.CODE);
             if (_messageChannel.isConnected && isSourceHost(msg))
             {
-                _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel.sourceHost));
+                _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel));
             }
         }
         if (_searchEngine != null && state.multiroomState.isSearchFinished())
         {
             stopSearch();
         }
-        if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.sourceHost))
+        if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
         {
-            Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort());
+            Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort);
             final MessageChannel m = MessageChannel(_onMultiroomDeviceConnected, _onNewEISCPMessage, _onMultiroomDeviceDisconnected);
-            _multiroomChannels[msg.sourceHost] = m;
+            _multiroomChannels[msg.getHostAndPort] = m;
             MultiroomState.MESSAGE_SCOPE.forEach((code) => m.addAllowedMessage(code));
-            m.start(msg.sourceHost, msg.getPort);
+            m.start(msg.getHost, msg.getPort);
         }
     }
 
-    void _onMultiroomDeviceConnected(MessageChannel channel, String server, int port)
+    void _onMultiroomDeviceConnected(MessageChannel channel)
     {
-        Logging.info(this, "connected to " + Logging.ipToString(server, port.toString()));
-        channel.sendQueries(state.multiroomState.getQueries(channel.sourceHost));
+        Logging.info(this, "connected to " + channel.getHostAndPort);
+        channel.sendQueries(state.multiroomState.getQueries(channel));
     }
 
     void _onMultiroomDeviceDisconnected(ConnectionErrorType errorType, String result)

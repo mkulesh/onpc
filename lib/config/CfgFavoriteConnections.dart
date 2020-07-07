@@ -13,6 +13,7 @@
 
 import "package:shared_preferences/shared_preferences.dart";
 
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../utils/Logging.dart";
@@ -30,6 +31,7 @@ class CfgFavoriteConnections extends CfgModule
     // methods
     CfgFavoriteConnections(SharedPreferences preferences) : super(preferences);
 
+    @override
     void read()
     {
         _devices.clear();
@@ -57,12 +59,13 @@ class CfgFavoriteConnections extends CfgModule
         }
     }
 
+    @override
     void setReceiverInformation(StateManager stateManager)
     {
         final String identifier = stateManager.state.receiverInformation.getIdentifier();
         if (identifier.isNotEmpty)
         {
-            _updateIdentifier(stateManager, identifier);
+            _updateIdentifier(stateManager.getConnection(), identifier);
         }
     }
 
@@ -76,7 +79,7 @@ class CfgFavoriteConnections extends CfgModule
             if (msg.alias != null)
             {
                 final String key = FAVORITE_CONNECTION_ITEM + "_" + i.toString();
-                String val = msg.sourceHost + FAVORITE_CONNECTION_SEP
+                String val = msg.getHost + FAVORITE_CONNECTION_SEP
                     + msg.getPort.toString() + FAVORITE_CONNECTION_SEP + msg.alias;
                 // identifier is optional
                 if (msg.getIdentifier.isNotEmpty)
@@ -91,12 +94,12 @@ class CfgFavoriteConnections extends CfgModule
     List<BroadcastResponseMsg> get getDevices
     => _devices;
 
-    int _find(String host, int port)
+    int _find(final ConnectionIf connection)
     {
         for (int i = 0; i < _devices.length; i++)
         {
             final BroadcastResponseMsg msg = _devices[i];
-            if (msg.sourceHost == host && msg.getPort == port)
+            if (msg.fromHost(connection))
             {
                 return i;
             }
@@ -104,20 +107,20 @@ class CfgFavoriteConnections extends CfgModule
         return -1;
     }
 
-    BroadcastResponseMsg updateDevice(String host, int port, String alias, String identifier)
+    BroadcastResponseMsg updateDevice(final ConnectionIf connection, String alias, String identifier)
     {
         BroadcastResponseMsg newMsg;
-        final int idx = _find(host, port);
+        final int idx = _find(connection);
         if (idx >= 0)
         {
             final BroadcastResponseMsg oldMsg = _devices[idx];
-            newMsg = BroadcastResponseMsg.alias(host, port.toString(), alias, identifier);
+            newMsg = BroadcastResponseMsg.connection(connection, alias, identifier);
             Logging.info(this, "Update favorite connection: " + oldMsg.toString() + " -> " + newMsg.toString());
             _devices[idx] = newMsg;
         }
         else
         {
-            newMsg = BroadcastResponseMsg.alias(host, port.toString(), alias, null);
+            newMsg = BroadcastResponseMsg.connection(connection, alias, null);
             Logging.info(this, "Add favorite connection: " + newMsg.toString());
             _devices.add(newMsg);
         }
@@ -125,9 +128,9 @@ class CfgFavoriteConnections extends CfgModule
         return newMsg;
     }
 
-    void deleteDevice(String host, int port)
+    void deleteDevice(final ConnectionIf connection)
     {
-        final int idx = _find(host, port);
+        final int idx = _find(connection);
         if (idx >= 0)
         {
             final BroadcastResponseMsg oldMsg = _devices[idx];
@@ -137,16 +140,16 @@ class CfgFavoriteConnections extends CfgModule
         }
     }
 
-    void _updateIdentifier(StateManager stateManager, final String identifier)
+    void _updateIdentifier(final ConnectionIf connection, final String identifier)
     {
-        final int idx = _find(stateManager.sourceHost, stateManager.sourcePort);
+        final int idx = _find(connection);
         if (idx >= 0)
         {
             final BroadcastResponseMsg oldMsg = _devices[idx];
             if (oldMsg.alias != null)
             {
-                final BroadcastResponseMsg newMsg = BroadcastResponseMsg.alias(
-                    oldMsg.sourceHost, oldMsg.getPort.toString(), oldMsg.alias, identifier);
+                final BroadcastResponseMsg newMsg = BroadcastResponseMsg.connection(
+                    oldMsg, oldMsg.alias, identifier);
                 Logging.info(this, "Update favorite connection: " + oldMsg.toString() + " -> " + newMsg.toString());
                 _devices[idx] = newMsg;
                 write();

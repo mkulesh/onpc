@@ -295,13 +295,13 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 case StateManager.CONNECTION_EVENT:
                     if (_stateManager.isConnected)
                     {
-                        final String host = _stateManager.manualHost ?? _stateManager.sourceHost;
                         _connectionState = ConnectionState.CONNECTED;
-                        _configuration.saveDevice(host, _stateManager.sourcePort);
+                        final String host = _stateManager.manualHost ?? _stateManager.getConnection().getHost;
+                        _configuration.saveDevice(host, _stateManager.getConnection().getPort);
                         if (_stateManager.manualAlias != null)
                         {
                             _configuration.favoriteConnections.updateDevice(
-                                _stateManager.sourceHost, _stateManager.sourcePort, _stateManager.manualAlias, null);
+                                _stateManager.getConnection(), _stateManager.manualAlias, null);
                         }
                         _configuration.setReceiverInformation(_viewContext.stateManager);
                         // startSearch calls multiroomState.updateFavorites

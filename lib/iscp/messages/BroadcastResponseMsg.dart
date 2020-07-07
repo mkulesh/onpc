@@ -13,7 +13,7 @@
 
 import 'dart:io';
 
-import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -36,14 +36,13 @@ class BroadcastResponseMsg extends ISCPMessage
     static const String CODE = "ECN";
 
     String _model;
-    int _port;
     String _destinationArea;
     String _identifier;
     String _alias;
 
     BroadcastResponseMsg(InternetAddress hostAddress, EISCPMessage raw) : super(CODE, raw)
     {
-        sourceHost = hostAddress.address;
+        setHost(hostAddress.address);
         final List<String> tokens = getData.split("/");
         if (tokens.isNotEmpty)
         {
@@ -51,7 +50,7 @@ class BroadcastResponseMsg extends ISCPMessage
         }
         if (tokens.length > 1)
         {
-            _port = ISCPMessage.nonNullInteger(tokens[1], 10, 0);
+            setPort(ISCPMessage.nonNullInteger(tokens[1], 10, 0));
         }
         if (tokens.length > 2)
         {
@@ -66,8 +65,16 @@ class BroadcastResponseMsg extends ISCPMessage
 
     BroadcastResponseMsg.alias(final String host, final String port, final String alias, final String identifier) : super.output(CODE, "")
     {
-        this.sourceHost = host;
-        this._port = ISCPMessage.nonNullInteger(port, 10, 0);
+        setHost(host);
+        setPort(ISCPMessage.nonNullInteger(port, 10, 0));
+        this._identifier = identifier;
+        this._alias = alias;
+        // all other fields still be null
+    }
+
+    BroadcastResponseMsg.connection(ConnectionIf connection, final String alias, final String identifier) : super.output(CODE, "")
+    {
+        setHostAndPort(connection);
         this._identifier = identifier;
         this._alias = alias;
         // all other fields still be null
@@ -89,26 +96,17 @@ class BroadcastResponseMsg extends ISCPMessage
 
     @override
     String toString()
-    => super.toString() + "[HOST=" + getHostAndPort()
+    => super.toString() + "[HOST=" + getHostAndPort
             + (_model != null ? "; MODEL=" + _model : "")
             + (_destinationArea != null ? "; DST=" + _destinationArea : "")
             + (_identifier != null ? "; ID=" + _identifier : "")
             + (_alias != null ? "; ALIAS=" + _alias : "") + "]";
 
-    int get getPort
-    => _port;
-
-    String getHostAndPort()
-    => Logging.ipToString(sourceHost, _port.toString());
-
     String getDescription()
-    => sourceHost + "/" + (alias != null ? alias : (_model != null ? _model : "unknown"));
+    => getHost + "/" + (alias != null ? alias : (_model != null ? _model : "unknown"));
 
     String get getIdentifier
     => _identifier == null ? "" : _identifier;
-
-    bool get isValid
-    => sourceHost != null && _port != null;
 
     String get alias
     => _alias;
