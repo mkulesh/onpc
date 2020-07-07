@@ -41,6 +41,7 @@ import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
 import "iscp/scripts/AutoPower.dart";
+import "iscp/scripts/RequestListeningMode.dart";
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
@@ -553,5 +554,6 @@ class MusicControllerAppState extends State<MusicControllerApp>
         {
             stateManager.addScript(AutoPower());
         }
+        stateManager.addScript(RequestListeningMode());
     }
 }
