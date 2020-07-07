@@ -16,6 +16,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import "../iscp/BroadcastSearch.dart";
+import "../iscp/scripts/MessageScriptIf.dart";
 import "../utils/Logging.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
@@ -138,6 +139,14 @@ class StateManager
     State get state
     => _state;
 
+    // MessageScript processor
+    final List<MessageScriptIf> _messageScripts = List<MessageScriptIf>();
+
+    void addScript(MessageScriptIf script)
+    {
+        _messageScripts.add(script);
+    }
+
     StateManager(final int zoneId, List<BroadcastResponseMsg> _favorites)
     {
         _messageChannel = MessageChannel(_onConnected, _onNewEISCPMessage, _onDisconnected);
@@ -215,6 +224,15 @@ class StateManager
         _messageChannel.sendMessage(EISCPMessage.output(JacketArtMsg.CODE,
             _networkState == NetworkState.CELLULAR? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
         sendQueries(_state.receiverInformation.getQueries(_state.getActiveZone));
+
+        // initial call os the message scripts
+        for (MessageScriptIf script in _messageScripts)
+        {
+            if (script.isValid())
+            {
+                script.start(state, _messageChannel);
+            }
+        }
     }
 
     Future<EISCPMessage> _registerMessage(EISCPMessage raw) async
@@ -251,6 +269,13 @@ class StateManager
                 final ISCPMessage msg = MessageFactory.create(raw);
                 msg.setHostAndPort(channel);
                 final String changeCode = _processMessage(msg);
+                for (MessageScriptIf script in _messageScripts)
+                {
+                    if (script.isValid())
+                    {
+                        script.processMessage(msg, state, channel);
+                    }
+                }
                 _onProcessFinished(changeCode != null, changeCode);
             }
             on Exception catch (e)
