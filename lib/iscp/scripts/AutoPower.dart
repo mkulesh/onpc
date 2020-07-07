@@ -25,22 +25,26 @@ class AutoPower implements MessageScriptIf
 {
     bool _done = false;
 
+    @override
     bool isValid()
     {
         return true;
     }
 
+    @override
     void initialize(final String data)
     {
         // nothing to do
     }
 
+    @override
     void start(final State state, MessageChannel channel)
     {
         Logging.info(this, "started script");
         _done = false;
     }
 
+    @override
     void processMessage(ISCPMessage msg, final State state, MessageChannel channel)
     {
         if (!state.isOn && msg is PowerStatusMsg && !_done)
