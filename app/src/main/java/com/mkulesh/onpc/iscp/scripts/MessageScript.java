@@ -12,8 +12,6 @@
  */
 package com.mkulesh.onpc.iscp.scripts;
 
-import android.content.Intent;
-
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -111,15 +109,8 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     }
 
     @Override
-    public void initialize(@NonNull final Intent intent)
+    public void initialize(@NonNull final String data)
     {
-        final String data = intent.getDataString();
-        if (data == null || data.isEmpty())
-        {
-            Logging.info(this, "intent data parameter empty: no script to parse");
-            return;
-        }
-
         try
         {
             InputStream stream = new ByteArrayInputStream(data.getBytes(Charset.forName("UTF-8")));
@@ -190,6 +181,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     public void start(@NonNull final State state, @NonNull MessageChannel channel)
     {
         // Startup handling.
+        Logging.info(this, "started script");
         processAction(actions.listIterator(), state, channel);
     }
 
@@ -237,7 +229,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         }
     }
 
-    public void processAction(ListIterator<Action> actionIterator, @NonNull final State state, @NonNull MessageChannel channel)
+    private void processAction(ListIterator<Action> actionIterator, @NonNull final State state, @NonNull MessageChannel channel)
     {
         if (!actionIterator.hasNext())
         {

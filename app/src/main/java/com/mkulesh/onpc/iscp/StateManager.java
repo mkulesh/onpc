@@ -125,12 +125,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public final static OperationCommandMsg RETURN_MSG =
             new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
 
-    // The handling of delayed listening mode requests
-    private static final long LISTENING_MODE_DELAY = 1000;
-    private static final int MAX_LISTENING_MODE_REQUESTS = 5;
-    private AtomicInteger listeningModeRequests = new AtomicInteger();
-    private final BlockingQueue<Timer> listeningModeQueue = new ArrayBlockingQueue<>(1, true);
-
     // MessageScript processor
     private final ArrayList<MessageScriptIf> messageScripts;
 
@@ -256,7 +250,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         skipNextTimeMsg.set(0);
         requestXmlList.set(false);
         playbackMode.set(false);
-        listeningModeRequests.set(0);
 
         while (true)
         {
@@ -285,6 +278,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 try
                 {
                     changed = processMessage(msg);
+                    for (MessageScriptIf script : messageScripts)
+                    {
+                        if (script.isValid())
+                        {
+                            script.processMessage(msg, state, messageChannel);
+                        }
+                    }                    
                 }
                 catch (Exception e)
                 {
@@ -346,25 +346,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         stateListener.onDeviceDisconnected();
     }
 
-    private boolean finalizeMessageHandling(@NonNull ISCPMessage msg, boolean res)
-    {
-        for (MessageScriptIf script : messageScripts)
-        {
-            if (script.isValid())
-            {
-                script.processMessage(msg, state, messageChannel);
-            }
-        }
-        return res;
-    }
-
     private boolean processMessage(@NonNull ISCPMessage msg)
     {
         // skip time message, is necessary
         if (msg instanceof TimeInfoMsg && skipNextTimeMsg.get() > 0)
         {
             skipNextTimeMsg.set(Math.max(0, skipNextTimeMsg.get() - 1));
-            return finalizeMessageHandling(msg, false);
+            return false;
         }
 
         final PlayStatusMsg.PlayStatus playStatus = state.playStatus;
@@ -378,14 +366,14 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         // no further message handling, if power off
         if (!state.isOn())
         {
-            return finalizeMessageHandling(msg, changed != State.ChangeType.NONE);
+            return changed != State.ChangeType.NONE;
         }
 
         // on TrackInfoMsg, always do XML state request upon the next ListTitleInfoMsg
         if (msg instanceof TrackInfoMsg)
         {
             requestXmlList.set(true);
-            return finalizeMessageHandling(msg, true);
+            return true;
         }
 
         // corner case: delayed USB initialization at power on
@@ -418,40 +406,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             playbackMode.set(false);
         }
 
-        // For some models, it does seem that the listening mode is enabled some
-        // seconds after power on - as though it's got things to initialize before
-        // turning on the audio circuits. The initialization time is unknown.
-        // The solution is to periodically send a constant number of requests
-        // (for example 5 requests) with time interval 1 second until listening
-        // mode still be unknown.
-        if (msg instanceof ListeningModeMsg &&
-                ((ListeningModeMsg) msg).getMode() == ListeningModeMsg.Mode.MODE_FF &&
-                listeningModeRequests.get() < MAX_LISTENING_MODE_REQUESTS &&
-                listeningModeQueue.isEmpty())
-        {
-            Logging.info(this, "scheduling listening mode request in " + LISTENING_MODE_DELAY + "ms");
-            final Timer t = new Timer();
-            listeningModeQueue.add(t);
-            t.schedule(new java.util.TimerTask()
-            {
-                @Override
-                public void run()
-                {
-                    listeningModeQueue.poll();
-                    final String[] lmQueries = new String[]{ ListeningModeMsg.CODE };
-                    sendQueries(lmQueries, "re-requesting LM state ["
-                            + listeningModeRequests.addAndGet(1) + "]...");
-                }
-            }, LISTENING_MODE_DELAY);
-        }
-
         if (changed == State.ChangeType.NONE)
         {
             if (msg instanceof ListTitleInfoMsg && requestXmlList.get())
             {
                 requestXmlListState((ListTitleInfoMsg) msg);
             }
-            return finalizeMessageHandling(msg, false);
+            return false;
         }
 
         if (msg instanceof PowerStatusMsg)
@@ -552,7 +513,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
-        return finalizeMessageHandling(msg, true);
+        return true;
     }
 
     @Override

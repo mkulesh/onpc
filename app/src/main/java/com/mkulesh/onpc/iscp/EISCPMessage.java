@@ -32,7 +32,7 @@ public class EISCPMessage
     private final static int EOF = 0x1A;
     private final static Character START_CHAR = '!';
     private final static int MIN_MSG_LENGTH = 22;
-    final static String QUERY = "QSTN";
+    public final static String QUERY = "QSTN";
     final static int LOG_LINE_LENGTH = 160;
 
     private final int messageId;

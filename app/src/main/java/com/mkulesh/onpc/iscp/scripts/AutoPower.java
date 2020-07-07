@@ -12,8 +12,6 @@
  */
 package com.mkulesh.onpc.iscp.scripts;
 
-import android.content.Intent;
-
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
@@ -36,7 +34,7 @@ public class AutoPower implements MessageScriptIf
     }
 
     @Override
-    public void initialize(@NonNull Intent intent)
+    public void initialize(@NonNull final String data)
     {
         // nothing to do
     }
@@ -44,7 +42,7 @@ public class AutoPower implements MessageScriptIf
     @Override
     public void start(@NonNull final State state, @NonNull MessageChannel channel)
     {
-        // nothing to do
+        Logging.info(this, "started script");
     }
 
     @Override

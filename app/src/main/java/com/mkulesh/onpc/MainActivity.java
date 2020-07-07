@@ -39,6 +39,7 @@ import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
+import com.mkulesh.onpc.iscp.scripts.RequestListeningMode;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -117,9 +118,10 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         if (intent != null)
         {
             Logging.info(this, "Called with intent: " + intent.toString());
-            if (intent.getDataString() != null)
+            final String data = intent.getDataString();
+            if (data != null && !data.isEmpty())
             {
-                messageScript.initialize(intent);
+                messageScript.initialize(data);
             }
         }
 
@@ -398,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             {
                 messageScripts.add(new AutoPower());
             }
+            messageScripts.add(new RequestListeningMode());
             if (messageScript.isValid())
             {
                 messageScripts.add(messageScript);

@@ -12,8 +12,6 @@
  */
 package com.mkulesh.onpc.iscp.scripts;
 
-import android.content.Intent;
-
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
@@ -35,7 +33,7 @@ public interface MessageScriptIf
      * not empty, the MessageScript is valid and these actions will be performed after the
      * connection is established.
      **/
-    void initialize(@NonNull final Intent intent);
+    void initialize(@NonNull final String data);
 
     /**
      * This method is called from the state manager after the connection is established
