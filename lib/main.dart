@@ -155,7 +155,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             {
                 _processNetworkStateChange(message);
             }
-            else if (_configuration.volumeKeys && _stateManager.isConnected)
+            else if (_configuration.audioControl.volumeKeys && _stateManager.isConnected)
             {
                 if (cmd == PlatformCmd.VOLUME_UP)
                 {
@@ -496,7 +496,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         // Depending on new setting, app may be restarted by platform code here
         if (informPlatform)
         {
-            Platform.sendPlatformCommand(_configuration.volumeKeys ?
+            Platform.sendPlatformCommand(_configuration.audioControl.volumeKeys ?
                 PlatformCmd.VOLUME_KEYS_ENABLED : PlatformCmd.VOLUME_KEYS_DISABLED);
             Platform.sendPlatformCommand(_configuration.keepScreenOn ?
                 PlatformCmd.KEEP_SCREEN_ON_ENABLED : PlatformCmd.KEEP_SCREEN_ON_DISABLED);

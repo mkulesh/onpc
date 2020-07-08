@@ -14,9 +14,10 @@
 import "package:onpc/iscp/messages/EnumParameterMsg.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
+import "../Platform.dart";
 import "../constants/Strings.dart";
-import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/ListeningModeMsg.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";
 import "CheckableItem.dart";
@@ -73,15 +74,25 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_82  // DTS NEURAL:X
     ];
 
+    // Master volume hardware keys
+    static const Pair<String, bool> VOLUME_KEYS = Pair<String, bool>("volume_keys", true); // For Android only
+    bool _volumeKeys;
+
+    bool get volumeKeys
+    => _volumeKeys;
+
     // methods
     CfgAudioControl(final SharedPreferences preferences) : super(preferences);
 
+    @override
     void read()
     {
         _soundControl = getString(SOUND_CONTROL, doLog: true);
         _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
+        _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
     }
 
+    @override
     void setReceiverInformation(StateManager stateManager)
     {
         _masterVolumeMax = getInt(getModelDependentInt(MASTER_VOLUME_MAX), doLog: true);
