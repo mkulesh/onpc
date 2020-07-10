@@ -508,7 +508,8 @@ class AudioControlManager
 
     void createSliderSoundControl(
             @NonNull final BaseFragment fragment,
-            @NonNull final LinearLayout layout)
+            @NonNull final LinearLayout layout,
+            boolean addUpDownButtons)
     {
         // master volume label
         {
@@ -517,6 +518,12 @@ class AudioControlManager
             b.setContentDescription(activity.getResources().getString(R.string.audio_control));
             fragment.prepareButtonListeners(b, null, this::showAudioControlDialog);
             layout.addView(b);
+        }
+        if (addUpDownButtons) // volume down
+        {
+            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.DOWN;
+            layout.addView(fragment.createButton(
+                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
         }
         // slider
         {
@@ -555,6 +562,12 @@ class AudioControlManager
                 }
             });
             layout.addView(b);
+        }
+        if (addUpDownButtons) // volume up
+        {
+            final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.UP;
+            layout.addView(fragment.createButton(
+                    cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
         }
         // audio muting
         {

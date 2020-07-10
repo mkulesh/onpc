@@ -114,8 +114,9 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string-array name="pref_sound_control_names">
         <item>Aucun</item>
         <item>Amplificateur Externe (RI)</item>
-        <item>Dispositif</item>
+        <item>Dispositif (Boutons)</item>
         <item>Dispositif (Glissière)</item>
+        <item>Dispositif (Boutons et Glissière)</item>
         <item>Automatique</item>
     </string-array>
 

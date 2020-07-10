@@ -114,8 +114,9 @@
     <string-array name="pref_sound_control_names">
         <item>Keine</item>
         <item>Externer Verstärker (RI)</item>
-        <item>Gerät</item>
+        <item>Gerät (Tasten)</item>
         <item>Gerät (Slider)</item>
+        <item>Gerät (Tasten und Slider)</item>
         <item>Automatisch</item>
     </string-array>
 

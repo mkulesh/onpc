@@ -276,11 +276,12 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
 
         // Here, we create zone-dependent buttons without command message.
         // The message for active zone will be assigned in updateActiveView
-
-        if (soundControl == State.SoundControlType.DEVICE_SLIDER &&
-                soundControlLayout.getTag() != null && soundControlLayout.getTag().equals("portrait"))
+        final boolean isSlider = soundControl == State.SoundControlType.DEVICE_SLIDER ||
+                soundControl == State.SoundControlType.DEVICE_BTN_SLIDER;
+        if (isSlider && soundControlLayout.getTag() != null && soundControlLayout.getTag().equals("portrait"))
         {
-            audioControlManager.createSliderSoundControl(this, soundControlLayout);
+            audioControlManager.createSliderSoundControl(this, soundControlLayout,
+                    soundControl == State.SoundControlType.DEVICE_BTN_SLIDER);
         }
         else
         {
@@ -395,6 +396,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
                 break;
             case DEVICE_BUTTONS:
             case DEVICE_SLIDER:
+            case DEVICE_BTN_SLIDER:
                 prepareDeviceSoundButtons(soundControl);
                 break;
             default:

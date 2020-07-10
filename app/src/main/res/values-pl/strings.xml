@@ -114,8 +114,9 @@
     <string-array name="pref_sound_control_names">
         <item>Brak</item>
         <item>Wzmacniacz zewnętrzny (RI)</item>
-        <item>Urządzenie</item>
+        <item>Urządzenie (Przyciski)</item>
         <item>Urządzenie (Suwak)</item>
+        <item>Urządzenie (Przyciski i suwak)</item>
         <item>Automatyczna</item>
     </string-array>
 

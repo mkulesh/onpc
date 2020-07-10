@@ -117,8 +117,9 @@
     <string-array name="pref_sound_control_names">
         <item>Нет</item>
         <item>Внешний усилитель (RI)</item>
-        <item>Устройство</item>
+        <item>Устройство (Кнопки)</item>
         <item>Устройство (Слайдер)</item>
+        <item>Устройство (Кнопки и слайдер)</item>
         <item>Выбрать автоматически</item>
     </string-array>
 
