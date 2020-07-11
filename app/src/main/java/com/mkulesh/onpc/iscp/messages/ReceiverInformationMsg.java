@@ -273,6 +273,11 @@ public class ReceiverInformationMsg extends ISCPMessage
             return name;
         }
 
+        public boolean isEmpty()
+        {
+            return band == 0 && !isFreqValid() && name.isEmpty();
+        }
+
         boolean isFreqValid()
         {
             return freq != null && !freq.equals("0");

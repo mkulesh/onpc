@@ -1233,6 +1233,18 @@ public class State implements ConnectionIf
                 || inputType == InputSelectorMsg.InputType.DAB;
     }
 
+    public int nextEmptyPreset()
+    {
+        for (ReceiverInformationMsg.Preset p : presetList)
+        {
+            if (p.isEmpty())
+            {
+                return p.getId();
+            }
+        }
+        return 0xFF;
+    }
+
     /**
      * Simple inputs do not have time or cover
      *

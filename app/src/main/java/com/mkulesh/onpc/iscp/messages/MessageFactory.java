@@ -99,6 +99,8 @@ public class MessageFactory
         case PresetCommandMsg.ZONE3_CODE:
         case PresetCommandMsg.ZONE4_CODE:
             return new PresetCommandMsg(raw);
+        case PresetMemoryMsg.CODE:
+            return new PresetMemoryMsg(raw);
         case TuningCommandMsg.CODE:
         case TuningCommandMsg.ZONE2_CODE:
         case TuningCommandMsg.ZONE3_CODE:

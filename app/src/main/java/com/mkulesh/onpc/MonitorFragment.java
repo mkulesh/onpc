@@ -41,6 +41,7 @@ import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
+import com.mkulesh.onpc.iscp.messages.PresetMemoryMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
@@ -163,8 +164,6 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
         // Track menu
         {
             btnTrackMenu = rootView.findViewById(R.id.btn_track_menu);
-            prepareButtonListeners(btnTrackMenu, null, () ->
-                    activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false));
             setButtonEnabled(btnTrackMenu, false);
         }
 
@@ -501,22 +500,28 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
 
         updateListeningModeLayout();
 
+        // Track and playback menu
         if (state.isRadioInput())
         {
             updatePresetButtons();
+            prepareButtonListeners(btnTrackMenu, null, () ->
+                    activity.getStateManager().sendMessage(new PresetMemoryMsg(state.nextEmptyPreset())));
         }
         else
         {
             updatePlaybackButtons(state);
+            prepareButtonListeners(btnTrackMenu, null, () ->
+                    activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false));
         }
 
-        // Track menu
         {
-            final boolean isTrackMenu = state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE &&
+            final boolean isTrackMenu =
+                    (state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE || state.isRadioInput()) &&
                     state.playStatus != PlayStatusMsg.PlayStatus.STOP;
             btnTrackMenu.setVisibility(View.VISIBLE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
         }
+
         if (state.isMenuMode() && !state.isMediaEmpty())
         {
             popupManager.showTrackMenuDialog(activity, state);
