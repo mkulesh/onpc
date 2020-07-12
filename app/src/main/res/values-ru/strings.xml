@@ -231,6 +231,10 @@
     <!-- Preset Command  -->
     <string name="preset_command_up">Следующий канал</string>
     <string name="preset_command_down">Предыдущий канал</string>
+    <string name="cmd_preset_memory">Сохранить канал</string>
+    <string name="cmd_preset_memory_number">Номер канала</string>
+    <string name="number_picker_decrease">Уменьшить значение</string>
+    <string name="number_picker_increase">Увеличить значение</string>
 
     <!-- Tuning Command  -->
     <string name="tuning_command_up">Повысить частоту приема</string>

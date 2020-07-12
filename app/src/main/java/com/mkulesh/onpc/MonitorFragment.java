@@ -48,6 +48,7 @@ import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
+import com.mkulesh.onpc.widgets.HorizontalNumberPicker;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -504,8 +505,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
         if (state.isRadioInput())
         {
             updatePresetButtons();
-            prepareButtonListeners(btnTrackMenu, null, () ->
-                    activity.getStateManager().sendMessage(new PresetMemoryMsg(state.nextEmptyPreset())));
+            prepareButtonListeners(btnTrackMenu, null, () -> showPresetMemoryDialog(state));
         }
         else
         {
@@ -843,5 +843,39 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
             setButtonEnabled(btn, true);
             setButtonSelected(btn, feed == MenuStatusMsg.Feed.LOVE);
         }
+    }
+
+    private void showPresetMemoryDialog(@NonNull final State state)
+    {
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_preset_memory, frameView);
+
+        final HorizontalNumberPicker numberPicker = frameView.findViewById(R.id.preset_memory_number);
+        numberPicker.minValue = 1;
+        numberPicker.maxValue = PresetMemoryMsg.MAX_NUMBER;
+        numberPicker.setValue(state.nextEmptyPreset());
+        numberPicker.setEnabled(true);
+
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_track_menu);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+            .setTitle(R.string.cmd_preset_memory)
+            .setIcon(icon)
+            .setCancelable(true)
+            .setView(frameView)
+            .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
+            {
+                Utils.showSoftKeyboard(activity, numberPicker, false);
+                dialog1.dismiss();
+            })
+            .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
+            {
+                Utils.showSoftKeyboard(activity, numberPicker, false);
+                activity.getStateManager().sendMessage(new PresetMemoryMsg(numberPicker.getValue()));
+            })
+            .create();
+
+        dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 }

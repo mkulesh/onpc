@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 public class PresetMemoryMsg extends ISCPMessage
 {
     public final static String CODE = "PRM";
+    public final static int MAX_NUMBER = 40;
 
     private int preset;
 

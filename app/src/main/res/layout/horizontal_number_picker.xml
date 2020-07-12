@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2020. Mikhail Kulesh
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+  ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+  ~ even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details. You should have received a copy of the GNU General
+  ~ Public License along with this program.
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        style="@style/EditFieldCaptionStyle"
+        android:id="@+id/label_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:maxLines="9999" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        style="@style/ImageButtonPrimaryStyle"
+        android:id="@+id/button_decrease"
+        android:contentDescription="@string/number_picker_decrease"
+        android:src="@drawable/number_picker_decrease" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            style="@style/PrimaryTextViewStyle"
+            android:id="@+id/edit_text_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:focusable="true"
+            android:digits="0123456789"
+            android:gravity="center"
+            android:inputType="number"
+            android:minWidth="48dp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        style="@style/ImageButtonPrimaryStyle"
+        android:id="@+id/button_increase"
+        android:contentDescription="@string/number_picker_increase"
+        android:src="@drawable/number_picker_increase" />
+
+</merge>

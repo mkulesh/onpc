@@ -18,4 +18,9 @@
     <attr name="colorButtonEnabled" format="color" />
     <attr name="colorButtonDisabled" format="color" />
 
+    <declare-styleable name="HorizontalNumberPicker">
+        <attr name="label" format="string" />
+        <attr name="minWidth" format="dimension" />
+    </declare-styleable>
+
 </resources>

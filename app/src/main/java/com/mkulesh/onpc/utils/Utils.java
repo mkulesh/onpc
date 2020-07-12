@@ -169,7 +169,7 @@ public class Utils
     /**
      * Procedure sets AppCompatImageButton color given by attribute ID
      */
-    private static void setImageButtonColorAttr(Context context, AppCompatImageButton b, @AttrRes int resId)
+    public static void setImageButtonColorAttr(Context context, AppCompatImageButton b, @AttrRes int resId)
     {
         final int c = getThemeColorAttr(context, resId);
         b.clearColorFilter();

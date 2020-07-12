@@ -229,6 +229,10 @@
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>
     <string name="preset_command_down">Zapamiętane \"-\"</string>
+    <string name="cmd_preset_memory">Zapisz stację</string>
+    <string name="cmd_preset_memory_number">Zapamiętane</string>
+    <string name="number_picker_decrease">Zmniejsz wartość</string>
+    <string name="number_picker_increase">Zwiększ wartość</string>
 
     <!-- Tuning Command  -->
     <string name="tuning_command_up">Strojenie \"+\"</string>
