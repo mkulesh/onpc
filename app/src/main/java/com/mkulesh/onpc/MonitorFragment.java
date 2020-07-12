@@ -515,9 +515,8 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
         }
 
         {
-            final boolean isTrackMenu =
-                    (state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE || state.isRadioInput()) &&
-                    state.playStatus != PlayStatusMsg.PlayStatus.STOP;
+            final boolean isTrackMenu = state.isRadioInput() ||
+                    (state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE && state.isPlaying());
             btnTrackMenu.setVisibility(View.VISIBLE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
         }
