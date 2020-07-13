@@ -47,6 +47,7 @@ import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
+import com.mkulesh.onpc.iscp.messages.PresetMemoryMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
@@ -100,6 +101,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private final AtomicBoolean requestXmlList = new AtomicBoolean();
     private final AtomicBoolean playbackMode = new AtomicBoolean();
     private final AtomicInteger skipNextTimeMsg = new AtomicInteger();
+    private final AtomicBoolean requestRIonPreset = new AtomicBoolean();
     private final HashSet<State.ChangeType> eventChanges = new HashSet<>();
     private int xmlReqId = 0;
     private ISCPMessage circlePlayQueueMsg = null;
@@ -250,6 +252,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         skipNextTimeMsg.set(0);
         requestXmlList.set(false);
         playbackMode.set(false);
+        requestRIonPreset.set(false);
 
         while (true)
         {
@@ -406,6 +409,15 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             playbackMode.set(false);
         }
 
+        // request receiver information after radio preset is memorized
+        if ((msg instanceof PresetCommandMsg || msg instanceof PresetMemoryMsg) && requestRIonPreset.get())
+        {
+            requestRIonPreset.set(false);
+            final String[] queries = new String[]{ ReceiverInformationMsg.CODE };
+            sendQueries(queries, "requesting receiver information...");
+        }
+
+        // no further message handling, if no changes are detected
         if (changed == State.ChangeType.NONE)
         {
             if (msg instanceof ListTitleInfoMsg && requestXmlList.get())
@@ -592,6 +604,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public void requestSkipNextTimeMsg(final int number)
     {
         skipNextTimeMsg.set(number);
+    }
+
+    public void requestRIonPreset(final boolean flag)
+    {
+        requestRIonPreset.set(flag);
     }
 
     public void sendQueries(final String[] queries, final String purpose)

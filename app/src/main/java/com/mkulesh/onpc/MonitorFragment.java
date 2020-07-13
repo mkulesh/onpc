@@ -871,6 +871,8 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
             .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
             {
                 Utils.showSoftKeyboard(activity, numberPicker, false);
+                // in order to get updated preset list, we need to request Receiver Information
+                activity.getStateManager().requestRIonPreset(true);
                 activity.getStateManager().sendMessage(new PresetMemoryMsg(numberPicker.getValue()));
             })
             .create();
