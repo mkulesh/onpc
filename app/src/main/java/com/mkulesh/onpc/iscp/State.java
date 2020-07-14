@@ -25,6 +25,7 @@ import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
+import com.mkulesh.onpc.iscp.messages.DabStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -160,6 +161,7 @@ public class State implements ConnectionIf
     public List<ReceiverInformationMsg.Preset> presetList = new ArrayList<>();
     public int preset = PresetCommandMsg.NO_PRESET;
     private String frequency = "";
+    public String dabName = "";
 
     // Playback
     public PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
@@ -573,6 +575,10 @@ public class State implements ConnectionIf
         {
             return isCommonChange(process((TuningCommandMsg) msg));
         }
+        if (msg instanceof DabStationNameMsg)
+        {
+            return isCommonChange(process((DabStationNameMsg) msg));
+        }
 
         // Playback
         if (msg instanceof PlayStatusMsg)
@@ -800,6 +806,13 @@ public class State implements ConnectionIf
     {
         final boolean changed = !msg.getFrequency().equals(frequency);
         frequency = msg.getFrequency();
+        return changed;
+    }
+
+    private boolean process(DabStationNameMsg msg)
+    {
+        final boolean changed = !msg.getData().equals(dabName);
+        dabName = msg.getData();
         return changed;
     }
 

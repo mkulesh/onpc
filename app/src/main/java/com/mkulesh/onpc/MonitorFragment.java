@@ -414,7 +414,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
             if (state.isRadioInput())
             {
                 final ReceiverInformationMsg.Preset preset = state.searchPreset();
-                title.setText(preset != null ? preset.displayedString() : "");
+                title.setText(preset != null ? preset.displayedString() : state.dabName);
                 format.setText(state.getFrequencyInfo(activity));
             }
             else

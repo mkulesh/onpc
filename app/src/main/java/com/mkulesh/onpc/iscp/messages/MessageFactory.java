@@ -101,6 +101,8 @@ public class MessageFactory
             return new PresetCommandMsg(raw);
         case PresetMemoryMsg.CODE:
             return new PresetMemoryMsg(raw);
+        case DabStationNameMsg.CODE:
+            return new DabStationNameMsg(raw);
         case TuningCommandMsg.CODE:
         case TuningCommandMsg.ZONE2_CODE:
         case TuningCommandMsg.ZONE3_CODE:
