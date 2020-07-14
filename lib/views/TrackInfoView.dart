@@ -17,10 +17,12 @@ import "package:flutter_svg/svg.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/PresetMemoryDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AlbumNameMsg.dart";
 import "../iscp/messages/ArtistNameMsg.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
+import "../iscp/messages/DabStationNameMsg.dart";
 import "../iscp/messages/FileFormatMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/JacketArtMsg.dart";
@@ -53,6 +55,7 @@ class TrackInfoView extends UpdatableView
         MenuStatusMsg.CODE,
         ReceiverInformationMsg.CODE,
         PresetCommandMsg.CODE,
+        DabStationNameMsg.CODE,
         ListTitleInfoMsg.CODE,
         InputSelectorMsg.CODE,
         MultiroomDeviceInformationMsg.CODE,
@@ -60,6 +63,9 @@ class TrackInfoView extends UpdatableView
     ];
 
     TrackInfoView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+
+    bool get _isRadioInput
+    => state.mediaListState.isRadioInput;
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -79,19 +85,31 @@ class TrackInfoView extends UpdatableView
             ]);
 
         // Track info
-        final bool isTrackMenu = state.playbackState.isTrackMenuActive;
+        final Widget trackInfoBtn = _isRadioInput ?
+            CustomImageButton.small(
+                Drawables.cmd_track_menu,
+                Strings.cmd_preset_memory,
+                onPressed: ()
+                => showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext c)
+                    => PresetMemoryDialog(viewContext, state.receiverInformation.nextEmptyPreset())),
+                isEnabled: true)
+            :
+            CustomImageButton.small(
+                Drawables.cmd_track_menu,
+                Strings.cmd_track_menu,
+                onPressed: ()
+                => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false),
+                isEnabled: state.playbackState.isTrackMenuActive);
+
         final Widget textTrackInfo = Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
                 Expanded(child: CustomTextLabel.small(_buildTrackInfo(), textAlign: TextAlign.right)),
-                CustomImageButton.small(
-                    Drawables.cmd_track_menu,
-                    Strings.cmd_track_menu,
-                    onPressed: ()
-                    => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false),
-                    isEnabled: isTrackMenu
-                ),
+                trackInfoBtn
             ]);
 
         // Header row contains file format info, multiroom buttons and track info
@@ -227,7 +245,7 @@ class TrackInfoView extends UpdatableView
 
     String _buildFileFormat()
     {
-        if (state.mediaListState.isRadioInput)
+        if (_isRadioInput)
         {
             return state.radioState.getFrequencyInfo(state.mediaListState.inputType.key);
         }
@@ -241,7 +259,7 @@ class TrackInfoView extends UpdatableView
     {
         String str = "";
         final String dashedString = Strings.dashed_string;
-        if (state.mediaListState.isRadioInput)
+        if (_isRadioInput)
         {
             final List<Preset> presets = state.receiverInformation.presetList;
             str += state.radioState.preset != PresetCommandMsg.NO_PRESET ?
@@ -262,21 +280,20 @@ class TrackInfoView extends UpdatableView
 
     String _buildTrackTitle()
     {
-        return state.mediaListState.isRadioInput ? "" : state.trackState.title;
+        return _isRadioInput ? "" : state.trackState.title;
     }
 
     String _buildTrackArtist()
     {
-        return state.mediaListState.isRadioInput ? "" : state.trackState.artist;
+        return _isRadioInput ? "" : state.trackState.artist;
     }
 
     String _buildTrackAlbum()
     {
-        if (state.mediaListState.isRadioInput)
+        if (_isRadioInput)
         {
             final Preset preset = state.receiverInformation.getPreset(state.radioState.preset);
-            Logging.info(this, "preset=" + preset.toString());
-            return preset != null ? preset.displayedString : "N/A";
+            return preset != null ? preset.displayedString : state.radioState.dabName;
         }
         else
         {

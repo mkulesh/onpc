@@ -1290,6 +1290,38 @@ Enjoy!"""];
         /*pl*/ "Zapamiętane \"-\""];
     static String get preset_command_down => l_preset_command_down[_language];
 
+    static const List<String> l_cmd_preset_memory = [
+        /*en*/ "Preset memory",
+        /*ru*/ "Сохранить канал",
+        /*de*/ "Sender speichern",
+        /*fr*/ "Enregistrer la station",
+        /*pl*/ "Zapisz stację"];
+    static String get cmd_preset_memory => l_cmd_preset_memory[_language];
+
+    static const List<String> l_cmd_preset_memory_number = [
+        /*en*/ "Preset",
+        /*ru*/ "Номер канала",
+        /*de*/ "Speichernummer",
+        /*fr*/ "Préselection",
+        /*pl*/ "Zapamiętane"];
+    static String get cmd_preset_memory_number => l_cmd_preset_memory_number[_language];
+
+    static const List<String> l_number_picker_decrease = [
+        /*en*/ "Decrease value",
+        /*ru*/ "Уменьшить значение",
+        /*de*/ "Wert verringern",
+        /*fr*/ "Diminuer la valeur",
+        /*pl*/ "Zmniejsz wartość"];
+    static String get number_picker_decrease => l_number_picker_decrease[_language];
+
+    static const List<String> l_number_picker_increase = [
+        /*en*/ "Increase value",
+        /*ru*/ "Увеличить значение",
+        /*de*/ "Wert erhöhen",
+        /*fr*/ "Augmenter la valeur",
+        /*pl*/ "Zwiększ wartość"];
+    static String get number_picker_increase => l_number_picker_increase[_language];
+
     static const List<String> l_tuning_command_up = [
         /*en*/ "Sets tuning frequency wrap-around up",
         /*ru*/ "Повысить частоту приема",

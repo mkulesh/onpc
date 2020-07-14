@@ -35,7 +35,10 @@ import "messages/MessageFactory.dart";
 import "messages/OperationCommandMsg.dart";
 import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
+import "messages/PresetCommandMsg.dart";
+import "messages/PresetMemoryMsg.dart";
 import "messages/PrivacyPolicyStatusMsg.dart";
+import "messages/ReceiverInformationMsg.dart";
 import "messages/TimeInfoMsg.dart";
 import "messages/TimeSeekMsg.dart";
 import "messages/TrackInfoMsg.dart";
@@ -105,6 +108,7 @@ class StateManager
     Timer _updateTimer;
     int _skipNextTimeMsg = 0;
     bool _requestXmlList = false;
+    bool _requestRIonPreset = false;
     bool _playbackMode = false;
     ISCPMessage _circlePlayRemoveMsg;
     int _xmlReqId = 0;
@@ -378,6 +382,15 @@ class StateManager
             _playbackMode = false;
         }
 
+        // request receiver information after radio preset is memorized
+        if ((msg is PresetCommandMsg || msg is PresetMemoryMsg) && _requestRIonPreset)
+        {
+            _requestRIonPreset  = false;
+            Logging.info(this, "requesting receiver information...");
+            sendQueries([ ReceiverInformationMsg.CODE ]);
+        }
+
+        // no further message handling, if no changes are detected
         if (changed == null)
         {
             if (msg is ListTitleInfoMsg && _requestXmlList)
@@ -556,6 +569,12 @@ class StateManager
         _skipNextTimeMsg = number;
         sendMessage(msg);
         state.trackState.currentTime = msg.getData;
+    }
+
+    void sendPresetMemoryMsg(final PresetMemoryMsg msg)
+    {
+        _requestRIonPreset = true;
+        sendMessage(msg);
     }
 
     void sendTrackCmd(int zone, OperationCommand menu, bool doReturn)
