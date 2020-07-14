@@ -123,8 +123,9 @@ Enjoy!""</string>
     <string-array name="pref_sound_control_names">
         <item>Brak</item>
         <item>Wzmacniacz zewnętrzny (RI)</item>
-        <item>Urządzenie</item>
+        <item>Urządzenie (Przyciski)</item>
         <item>Urządzenie (Suwak)</item>
+        <item>Urządzenie (Przyciski i suwak)</item>
         <item>Automatyczna</item>
     </string-array>
 
@@ -237,6 +238,10 @@ Enjoy!""</string>
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>
     <string name="preset_command_down">Zapamiętane \"-\"</string>
+    <string name="cmd_preset_memory">Zapisz stację</string>
+    <string name="cmd_preset_memory_number">Zapamiętane</string>
+    <string name="number_picker_decrease">Zmniejsz wartość</string>
+    <string name="number_picker_increase">Zwiększ wartość</string>
 
     <!-- Tuning Command  -->
     <string name="tuning_command_up">Strojenie \"+\"</string>

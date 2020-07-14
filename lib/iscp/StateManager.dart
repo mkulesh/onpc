@@ -582,6 +582,7 @@ class StateManager
         {
             case SoundControlType.DEVICE_BUTTONS:
             case SoundControlType.DEVICE_SLIDER:
+            case SoundControlType.DEVICE_BTN_SLIDER:
                 sendMessage(MasterVolumeMsg.output(state.getActiveZone, isUp ? MasterVolume.UP : MasterVolume.DOWN));
                 break;
             case SoundControlType.RI_AMP:

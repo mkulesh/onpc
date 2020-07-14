@@ -52,7 +52,7 @@ class TabListenView extends UpdatableView
             configuration.audioControl.soundControl, state.getActiveZoneInfo);
 
         // Add listening modes if sound is controlled by the device
-        if (soundControl == SoundControlType.DEVICE_BUTTONS || soundControl == SoundControlType.DEVICE_SLIDER)
+        if ([SoundControlType.DEVICE_BUTTONS, SoundControlType.DEVICE_SLIDER, SoundControlType.DEVICE_BTN_SLIDER].contains(soundControl))
         {
             widgets.add(Center(child: UpdatableWidget(child: ListeningModeView(viewContext))));
         }
@@ -65,7 +65,9 @@ class TabListenView extends UpdatableView
                 soundControlView = UpdatableWidget(child: DeviceVolumeButtonsView(viewContext));
                 break;
             case SoundControlType.DEVICE_SLIDER:
-                soundControlView = UpdatableWidget(child: isPortrait ? DeviceVolumeSliderView(viewContext) : DeviceVolumeButtonsView(viewContext));
+            case SoundControlType.DEVICE_BTN_SLIDER:
+                soundControlView = UpdatableWidget(child: isPortrait ?
+                    DeviceVolumeSliderView(viewContext, soundControl == SoundControlType.DEVICE_BTN_SLIDER) : DeviceVolumeButtonsView(viewContext));
                 break;
             case SoundControlType.RI_AMP:
                 soundControlView = UpdatableWidget(child: ExtAmpVolumeView(viewContext));

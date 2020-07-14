@@ -121,8 +121,9 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string-array name="pref_sound_control_names">
         <item>Keine</item>
         <item>Externer Verstärker (RI)</item>
-        <item>Gerät</item>
+        <item>Gerät (Tasten)</item>
         <item>Gerät (Slider)</item>
+        <item>Gerät (Tasten und Slider)</item>
         <item>Automatisch</item>
     </string-array>
 
@@ -236,6 +237,10 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <!-- Preset Command  -->
     <string name="preset_command_up">Nächster gespeicherter Sender</string>
     <string name="preset_command_down">Voriger gespeicherter Sender</string>
+    <string name="cmd_preset_memory">Sender speichern</string>
+    <string name="cmd_preset_memory_number">Speichernummer</string>
+    <string name="number_picker_decrease">Wert verringern</string>
+    <string name="number_picker_increase">Wert erhöhen</string>
 
     <!-- Tuning Command  -->
     <string name="tuning_command_up">Nächsten Sender suchen</string>

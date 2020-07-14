@@ -31,6 +31,7 @@ enum SoundControlType
 {
     DEVICE_BUTTONS,
     DEVICE_SLIDER,
+    DEVICE_BTN_SLIDER,
     RI_AMP,
     NONE
 }
@@ -131,7 +132,7 @@ class SoundControlState
         return cmd;
     }
 
-    clear()
+    void clear()
     {
         _audioMuting = AudioMutingMsg.ValueEnum.defValue;
         _volumeLevel = _forceAudioControl ? 0 : MasterVolumeMsg.NO_LEVEL;
@@ -236,6 +237,8 @@ class SoundControlState
                 return SoundControlType.DEVICE_BUTTONS;
             case "device-slider":
                 return SoundControlType.DEVICE_SLIDER;
+            case "device-btn-slider":
+                return SoundControlType.DEVICE_BTN_SLIDER;
             case "external-amplifier":
                 return SoundControlType.RI_AMP;
             default:

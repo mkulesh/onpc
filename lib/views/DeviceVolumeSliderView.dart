@@ -14,7 +14,6 @@
 import "dart:math";
 
 import "package:flutter/material.dart";
-import 'package:onpc/iscp/messages/PowerStatusMsg.dart';
 
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
@@ -22,6 +21,7 @@ import "../dialogs/AudioControlDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
@@ -40,9 +40,10 @@ class DeviceVolumeSliderView extends UpdatableView
         MasterVolumeMsg.CODE
     ];
 
+    final bool addUpDownButtons;
     int tmpVolumeLevel = -1;
 
-    DeviceVolumeSliderView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    DeviceVolumeSliderView(final ViewContext viewContext, this.addUpDownButtons) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -64,6 +65,18 @@ class DeviceVolumeSliderView extends UpdatableView
                 onPressed: ()
                 => _showAudioControlDialog(context),
                 isEnabled: volumeValid
+            ));
+        }
+
+        if (addUpDownButtons) // volume down
+        {
+            final MasterVolumeMsg cmd = MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN);
+            controls.add(CustomImageButton.normal(
+                cmd.getCommand.icon,
+                cmd.getCommand.description,
+                onPressed: ()
+                => stateManager.sendMessage(cmd),
+                isEnabled: state.isOn
             ));
         }
 
@@ -90,6 +103,18 @@ class DeviceVolumeSliderView extends UpdatableView
                 } : null
             );
             controls.add(Expanded(child: slider));
+        }
+
+        if (addUpDownButtons) // volume up
+        {
+            final MasterVolumeMsg cmd = MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP);
+            controls.add(CustomImageButton.normal(
+                cmd.getCommand.icon,
+                cmd.getCommand.description,
+                onPressed: ()
+                => stateManager.sendMessage(cmd),
+                isEnabled: state.isOn
+            ));
         }
 
         // audio muting
