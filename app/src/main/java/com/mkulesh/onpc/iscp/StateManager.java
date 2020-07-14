@@ -23,6 +23,7 @@ import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
+import com.mkulesh.onpc.iscp.messages.DabStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -458,7 +459,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     DirectCommandMsg.CODE,
                     // RadioState
                     PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
-                    TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()]
+                    TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    DabStationNameMsg.CODE
             };
             sendQueries(playStateQueries, "requesting play state...");
             requestListState();
