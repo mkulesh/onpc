@@ -33,6 +33,7 @@ import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
+import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -414,7 +415,9 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
             if (state.isRadioInput())
             {
                 final ReceiverInformationMsg.Preset preset = state.searchPreset();
-                title.setText(preset != null ? preset.displayedString() : state.dabName);
+                final String text = preset != null ? preset.displayedString()
+                        : (state.inputType == InputSelectorMsg.InputType.DAB ? state.dabName : "");
+                title.setText(text);
                 format.setText(state.getFrequencyInfo(activity));
             }
             else
