@@ -402,6 +402,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                             state.getActiveZone(), p, isPlaying ? state.preset : PresetCommandMsg.NO_PRESET));
                 }
             }
+            filteredItems = newItems.size();
         }
         listViewAdapter = new MediaListAdapter(this, activity, newItems);
         listView.setAdapter(listViewAdapter);
@@ -449,7 +450,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (state.isRadioInput())
         {
-            title.append(activity.getResources().getString(state.inputType.getDescriptionId()));
+            title.append(activity.getResources().getString(state.inputType.getDescriptionId()))
+                .append(" | ")
+                .append(activity.getResources().getString(R.string.medialist_items))
+                .append(": ").append(filteredItems);
         }
         else if (state.inputType.isMediaList())
         {
