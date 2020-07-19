@@ -1,0 +1,6 @@
+• CR-N765: fixed invalid behavior of track seeking
+• TX-NR686: current listening mode is now available on app startup
+• Added "Power on" shortcut to the launcher icon
+• Fixed FlareConnect for devices with the same IP but different ports
+• Added possible to have volume slider AND +/- concurrently
+• Add possibility to memorize radio preset
