@@ -25,7 +25,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</p>
-    <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2020 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
        "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.</p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>

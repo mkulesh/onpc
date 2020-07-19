@@ -25,7 +25,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</p>
-    <p>Copyright © 2018-2019 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2020 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das
        "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.</p>
     <p><a href="https://github.com/mkulesh/onpc">Öffentliches repository</a></p>
