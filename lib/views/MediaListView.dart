@@ -436,7 +436,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         if (ms.isSimpleInput)
         {
             title += ms.inputType.description;
-            if (state.trackState.title.isNotEmpty)
+            if (ms.isRadioInput)
+            {
+                title += " | " + Strings.medialist_items + ": " + numberOfItems.toString();
+            }
+            else if (state.trackState.title.isNotEmpty)
             {
                 title += ": " + ms.inputType.description;
             }

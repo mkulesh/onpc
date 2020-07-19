@@ -293,7 +293,7 @@ class TrackInfoView extends UpdatableView
         if (_isRadioInput)
         {
             final Preset preset = state.receiverInformation.getPreset(state.radioState.preset);
-            return preset != null ? preset.displayedString : state.radioState.dabName;
+            return preset != null ? preset.displayedString : (state.mediaListState.isDAB ? state.radioState.dabName : "");
         }
         else
         {
