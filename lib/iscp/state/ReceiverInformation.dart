@@ -276,6 +276,9 @@ class ReceiverInformation
     Preset getPreset(int preset)
     => _presetList.firstWhere((p) => p.getId == preset, orElse: () => null);
 
+    int nextEmptyPreset()
+    => _presetList.firstWhere((p) => p.isEmpty, orElse: () => Preset(0xFF, 0, "0", "")).getId;
+
     bool isControlExists(final String control)
     => _controlList.isNotEmpty && _controlList.contains(control);
 

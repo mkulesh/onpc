@@ -139,6 +139,14 @@ class _PreferencesMainState extends State<PreferencesMain>
             Strings.pref_listening_modes,
             icon: Drawables.pref_listening_modes,
             activity: Activities.activity_listening_modes));
+        if (Platform.isAndroid)
+        {
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_volume_title,
+                CfgAudioControl.VOLUME_KEYS,
+                icon: Drawables.pref_volume_keys,
+                desc: Strings.pref_volume_summary));
+        }
         elements.add(_customSwitchPreference(td,
             Strings.pref_force_audio_control,
             CfgAudioControl.FORCE_AUDIO_CONTROL,
@@ -162,11 +170,6 @@ class _PreferencesMainState extends State<PreferencesMain>
 
         if (Platform.isAndroid)
         {
-            elements.add(_customSwitchPreference(td,
-                Strings.pref_volume_title,
-                Configuration.VOLUME_KEYS,
-                icon: Drawables.pref_volume_keys,
-                desc: Strings.pref_volume_summary));
             elements.add(_customSwitchPreference(td,
                 Strings.pref_keep_screen_on,
                 Configuration.KEEP_SCREEN_ON,

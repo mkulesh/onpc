@@ -113,6 +113,7 @@ class Strings
         "external-amplifier",
         "device",
         "device-slider",
+        "device-btn-slider",
         "auto"];
     static const List<String> pref_theme_codes = [
         "black-lime",
@@ -481,13 +482,13 @@ Enjoy!"""];
         /*pl*/ "Usuń"];
     static String get favorite_connection_delete => l_favorite_connection_delete[_language];
 
-    static const List<String> l_menu_power_power = [
+    static const List<String> l_menu_power_standby = [
         /*en*/ "On/Standby",
         /*ru*/ "Вкл/выкл",
         /*de*/ "An/Standby",
         /*fr*/ "marche/arrêt",
         /*pl*/ "On/Standby"];
-    static String get menu_power_power => l_menu_power_power[_language];
+    static String get menu_power_standby => l_menu_power_standby[_language];
 
     static const List<String> l_menu_receiver_information = [
         /*en*/ "Receiver information",
@@ -504,6 +505,14 @@ Enjoy!"""];
         /*fr*/ "Dernière entrée",
         /*pl*/ "Ostatnie logowanie"];
     static String get menu_latest_logging => l_menu_latest_logging[_language];
+
+    static const List<String> l_shortcut_power_on = [
+        /*en*/ "Power On",
+        /*ru*/ "Включить",
+        /*de*/ "Einschalten",
+        /*fr*/ "Allumer",
+        /*pl*/ "Zasilanie włączone"];
+    static String get shortcut_power_on => l_shortcut_power_on[_language];
 
     static const List<String> l_title_monitor = [
         /*en*/ "Listen",
@@ -1280,6 +1289,38 @@ Enjoy!"""];
         /*fr*/ "Préselection bas",
         /*pl*/ "Zapamiętane \"-\""];
     static String get preset_command_down => l_preset_command_down[_language];
+
+    static const List<String> l_cmd_preset_memory = [
+        /*en*/ "Preset memory",
+        /*ru*/ "Сохранить канал",
+        /*de*/ "Sender speichern",
+        /*fr*/ "Enregistrer la station",
+        /*pl*/ "Zapisz stację"];
+    static String get cmd_preset_memory => l_cmd_preset_memory[_language];
+
+    static const List<String> l_cmd_preset_memory_number = [
+        /*en*/ "Preset",
+        /*ru*/ "Номер канала",
+        /*de*/ "Speichernummer",
+        /*fr*/ "Préselection",
+        /*pl*/ "Zapamiętane"];
+    static String get cmd_preset_memory_number => l_cmd_preset_memory_number[_language];
+
+    static const List<String> l_number_picker_decrease = [
+        /*en*/ "Decrease value",
+        /*ru*/ "Уменьшить значение",
+        /*de*/ "Wert verringern",
+        /*fr*/ "Diminuer la valeur",
+        /*pl*/ "Zmniejsz wartość"];
+    static String get number_picker_decrease => l_number_picker_decrease[_language];
+
+    static const List<String> l_number_picker_increase = [
+        /*en*/ "Increase value",
+        /*ru*/ "Увеличить значение",
+        /*de*/ "Wert erhöhen",
+        /*fr*/ "Augmenter la valeur",
+        /*pl*/ "Zwiększ wartość"];
+    static String get number_picker_increase => l_number_picker_increase[_language];
 
     static const List<String> l_tuning_command_up = [
         /*en*/ "Sets tuning frequency wrap-around up",
@@ -2966,28 +3007,33 @@ Enjoy!"""];
     static const List<List<String>> l_pref_sound_control_names = [
         /*en*/ ["None",
                 "External amplifier (RI)",
-                "Device",
+                "Device (Buttons)",
                 "Device (Slider)",
+                "Device (Buttons and Slider)",
                 "Automatic"],
         /*ru*/ ["Нет",
                 "Внешний усилитель (RI)",
-                "Устройство",
+                "Устройство (Кнопки)",
                 "Устройство (Слайдер)",
+                "Устройство (Кнопки и слайдер)",
                 "Выбрать автоматически"],
         /*de*/ ["Keine",
                 "Externer Verstärker (RI)",
-                "Gerät",
+                "Gerät (Tasten)",
                 "Gerät (Slider)",
+                "Gerät (Tasten und Slider)",
                 "Automatisch"],
         /*fr*/ ["Aucun",
                 "Amplificateur Externe (RI)",
-                "Dispositif",
+                "Dispositif (Boutons)",
                 "Dispositif (Glissière)",
+                "Dispositif (Boutons et Glissière)",
                 "Automatique"],
         /*pl*/ ["Brak",
                 "Wzmacniacz zewnętrzny (RI)",
-                "Urządzenie",
+                "Urządzenie (Przyciski)",
                 "Urządzenie (Suwak)",
+                "Urządzenie (Przyciski i suwak)",
                 "Automatyczna"]];
     static List<String> get pref_sound_control_names => l_pref_sound_control_names[_language];
 

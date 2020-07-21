@@ -80,12 +80,12 @@ class AppBarView extends UpdatableView
         return AppBar(
             title: CustomActivityTitle(Strings.app_short_name, subTitle),
             actions: <Widget>[
-                CustomImageButton.menu(Drawables.menu_power_standby, Strings.menu_power_power,
+                CustomImageButton.menu(Drawables.menu_power_standby, Strings.menu_power_standby,
                     isEnabled: state.isConnected,
                     isSelected: !state.isOn,
                     onPressed: ()
                     {
-                        Logging.info(this, "App bar menu: " + Strings.menu_power_power);
+                        Logging.info(this, "App bar menu: " + Strings.menu_power_standby);
                         final PowerStatus p = state.isOn ? PowerStatus.STB : PowerStatus.ON;
                         stateManager.sendMessage(PowerStatusMsg.output(state.getActiveZone, p));
                     }),

@@ -20,7 +20,6 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
-import "../utils/Logging.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomCheckbox.dart";
 import "../widgets/CustomDialogEditField.dart";
@@ -69,8 +68,7 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
 
         final List<Widget> controls = List();
 
-        controls.add(CustomTextLabel.small(Strings.connect_dialog_address + " " +
-            Logging.ipToString(widget._msg.sourceHost, widget._msg.getPort.toString())));
+        controls.add(CustomTextLabel.small(Strings.connect_dialog_address + " " + widget._msg.getHostAndPort));
 
         controls.add(CustomCheckbox(Strings.favorite_connection_update,
             icon: Radio(
@@ -143,14 +141,12 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
         switch (_connectionAction)
         {
             case _ConnectionAction.UPDATE:
-                cfg.updateDevice(widget._msg.sourceHost,
-                    widget._msg.getPort,
-                    _alias.text,
+                cfg.updateDevice(widget._msg, _alias.text,
                     _identifier.text.isEmpty ? null : _identifier.text);
 
                 break;
             case _ConnectionAction.DELETE:
-                cfg.deleteDevice(widget._msg.sourceHost,  widget._msg.getPort);
+                cfg.deleteDevice(widget._msg);
                 break;
         }
         final StateManager sm = widget._viewContext.stateManager;

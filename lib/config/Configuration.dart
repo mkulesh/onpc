@@ -162,12 +162,6 @@ class Configuration extends CfgModule
     => _riCd;
 
     // Advanced options
-    static const Pair<String, bool> VOLUME_KEYS = Pair<String, bool>("volume_keys", true); // For Android only
-    bool _volumeKeys;
-
-    bool get volumeKeys
-    => _volumeKeys;
-
     static const Pair<String, bool> KEEP_SCREEN_ON = Pair<String, bool>("keep_screen_on", false); // For Android only
     bool _keepScreenOn;
 
@@ -216,6 +210,7 @@ class Configuration extends CfgModule
         Logging.info(this, "Application started: " + appVersion + ", OS: " + Platform.operatingSystem);
     }
 
+    @override
     void read()
     {
         Logging.info(this, "Reading configuration...");
@@ -243,7 +238,6 @@ class Configuration extends CfgModule
         _riCd = getBool(RI_CD, doLog: true);
 
         // Advanced options
-        _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
         _keepScreenOn = Platform.isAndroid ? getBool(KEEP_SCREEN_ON, doLog: true) : false;
         _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
         _advancedQueue = getBool(ADVANCED_QUEUE, doLog: true);
@@ -263,6 +257,7 @@ class Configuration extends CfgModule
         await preferences.setInt(SERVER_PORT.item1, port);
     }
 
+    @override
     void setReceiverInformation(StateManager stateManager)
     {
         final ReceiverInformation state = stateManager.state.receiverInformation;

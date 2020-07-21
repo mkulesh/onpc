@@ -276,6 +276,9 @@ class MediaListState
     => _inputType != null &&
         [InputSelector.FM, InputSelector.AM, InputSelector.DAB].contains(_inputType.key);
 
+    bool get isDAB
+    => _inputType != null && _inputType.key == InputSelector.DAB;
+
     bool get isSimpleInput
     => _inputType != null &&
         (isRadioInput || [InputSelector.TAPE1, InputSelector.TV, InputSelector.VIDEO4, InputSelector.VIDEO5].contains(_inputType.key));

@@ -211,7 +211,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                     child: CustomTextLabel.small(Strings.device_info, textAlign:TextAlign.left),
                     flex: 1),
                 Expanded(
-                    child: CustomTextLabel.small(stateManager.getAddressAndPort(), textAlign:TextAlign.right),
+                    child: CustomTextLabel.small(stateManager.getConnection().getHostAndPort, textAlign:TextAlign.right),
                     flex: 1),
             ]);
 

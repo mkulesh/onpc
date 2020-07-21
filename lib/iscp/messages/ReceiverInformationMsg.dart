@@ -179,6 +179,9 @@ class Preset
     int get getBand
     => _band;
 
+    bool get isEmpty
+    => _band == 0 && !isFreqValid && _name.isEmpty;
+
     bool get isFreqValid
     => _freq != "0";
 

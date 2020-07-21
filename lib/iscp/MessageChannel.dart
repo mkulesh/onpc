@@ -17,6 +17,7 @@ import 'package:sprintf/sprintf.dart';
 
 import "../constants/Strings.dart";
 import "../utils/Logging.dart";
+import "ConnectionIf.dart";
 import "EISCPMessage.dart";
 import "messages/TimeInfoMsg.dart";
 
@@ -26,8 +27,8 @@ enum ConnectionErrorType
     CONNECTION_CLOSED
 }
 
-typedef OnConnected = void Function(MessageChannel channel, String server, int port);
-typedef OnNewEISCPMessage = void Function(EISCPMessage message, String host);
+typedef OnConnected = void Function(MessageChannel channel);
+typedef OnNewEISCPMessage = void Function(EISCPMessage message, MessageChannel channel);
 typedef OnDisconnected = void Function(ConnectionErrorType errorType, String result);
 
 
@@ -39,7 +40,7 @@ enum MessageChannelState
 
 
 // A manager for the spawned isolate message channel.
-class MessageChannel
+class MessageChannel with ConnectionIf
 {
     MessageChannelState _state = MessageChannelState.IDLE;
 
@@ -54,16 +55,6 @@ class MessageChannel
     // connection state
     Socket _socket;
 
-    String _sourceHost = "";
-
-    String get sourceHost
-    => _sourceHost;
-
-    int _sourcePort = 0;
-
-    int get sourcePort
-    => _sourcePort;
-
     // message handling
     final Set<String> _allowedMessages = Set();
     final List<int> _buffer = List<int>();
@@ -76,15 +67,15 @@ class MessageChannel
         _allowedMessages.add(code);
     }
 
-    start(String host, int port)
+    void start(String host, int port)
     {
-        final String _serverDescription = Logging.ipToString(host, port.toString());
-
+        setHost(host);
+        setPort(port);
         if (_state != MessageChannelState.IDLE)
         {
             return;
         }
-        Logging.info(this, "Connecting to " + _serverDescription + "...");
+        Logging.info(this, "Connecting to " + getHostAndPort + "...");
         _state = MessageChannelState.CONNECTING;
         Socket.connect(host, port, timeout: Duration(seconds: 10)).then((Socket sock)
         {
@@ -96,20 +87,14 @@ class MessageChannel
             _state = MessageChannelState.RUNNING;
             if (sock.address != null && sock.address.host != null && sock.address.host.isNotEmpty)
             {
-                _sourceHost = sock.address.address;
+                setHost(sock.address.address);
             }
-            else
-            {
-                _sourceHost = host;
-            }
-            _sourcePort = port;
-            _onConnected(this, _sourceHost, port);
+            _onConnected(this);
         }).catchError((dynamic e)
         {
             _state = MessageChannelState.IDLE;
-            _sourceHost = "";
-            _sourcePort = 0;
-            _onDisconnected(ConnectionErrorType.HOST_NOT_AVAILABLE, sprintf(Strings.error_connection_no_response, [_serverDescription]));
+            clearConnection();
+            _onDisconnected(ConnectionErrorType.HOST_NOT_AVAILABLE, sprintf(Strings.error_connection_no_response, [getHostAndPort]));
         });
     }
 
@@ -118,7 +103,7 @@ class MessageChannel
         final List<int> bytes = m.getBytes();
         if (_socket != null && bytes != null)
         {
-            Logging.info(this, ">> sending: " + m.toString() + " to " + sourceHost);
+            Logging.info(this, ">> sending: " + m.toString() + " to " + getHostAndPort);
             _socket.add(bytes);
         }
     }
@@ -141,9 +126,8 @@ class MessageChannel
     {
         _state = MessageChannelState.IDLE;
         _socket = null;
-        _onDisconnected(ConnectionErrorType.CONNECTION_CLOSED, "Disconnected from " + sourceHost);
-        _sourceHost = "";
-        _sourcePort = 0;
+        _onDisconnected(ConnectionErrorType.CONNECTION_CLOSED, "Disconnected from " + getHostAndPort);
+        clearConnection();
     }
 
     void _onError(Object error)
@@ -226,11 +210,11 @@ class MessageChannel
                 if (TimeInfoMsg.CODE != raw.getCode)
                 {
                     Logging.info(this, "<< new message " + raw.getCode
-                        + " from " + sourceHost
+                        + " from " + getHostAndPort
                         + ", size=" + raw.getMsgSize.toString()
                         + "B, remaining=" + remaining.toString() + "B");
                 }
-                _onNewEISCPMessage(raw, sourceHost);
+                _onNewEISCPMessage(raw, this);
             }
         }
     }

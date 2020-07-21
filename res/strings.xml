@@ -79,9 +79,12 @@ Enjoy!""</string>
     <string name="favorite_connection_delete">Delete</string>
 
     <!-- Main menu -->
-    <string name="menu_power_power">On/Standby</string>
+    <string name="menu_power_standby">On/Standby</string>
     <string name="menu_receiver_information">Receiver information</string>
     <string name="menu_latest_logging">Latest logging</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_power_on">Power On</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Listen</string>
@@ -122,8 +125,9 @@ Enjoy!""</string>
     <string-array name="pref_sound_control_names">
         <item>None</item>
         <item>External amplifier (RI)</item>
-        <item>Device</item>
+        <item>Device (Buttons)</item>
         <item>Device (Slider)</item>
+        <item>Device (Buttons and Slider)</item>
         <item>Automatic</item>
     </string-array>
 
@@ -133,6 +137,7 @@ Enjoy!""</string>
         <item>external-amplifier</item>
         <item>device</item>
         <item>device-slider</item>
+        <item>device-btn-slider</item>
         <item>auto</item>
     </string-array>
 
@@ -276,12 +281,16 @@ Enjoy!""</string>
     <!-- Preset Command  -->
     <string name="preset_command_up">Sets preset wrap-around up</string>
     <string name="preset_command_down">Sets preset wrap-around down</string>
+    <string name="cmd_preset_memory">Preset memory</string>
+    <string name="cmd_preset_memory_number">Preset</string>
+    <string name="number_picker_decrease">Decrease value</string>
+    <string name="number_picker_increase">Increase value</string>
 
     <!-- Tuning Command  -->
     <string name="tuning_command_up">Sets tuning frequency wrap-around up</string>
     <string name="tuning_command_down">Sets tuning frequency wrap-around down</string>
 
-        <!-- Network/USB Operation Command  -->
+    <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Play</string>
     <string name="cmd_description_stop">Stop</string>
     <string name="cmd_description_pause">Pause</string>

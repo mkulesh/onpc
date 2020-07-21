@@ -15,7 +15,8 @@ import 'package:sprintf/sprintf.dart';
 
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
-import '../ISCPMessage.dart';
+import "../ISCPMessage.dart";
+import "../messages/DabStationNameMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/PresetCommandMsg.dart";
 import "../messages/TuningCommandMsg.dart";
@@ -34,6 +35,12 @@ class RadioState
     String get frequency
     => _frequency;
 
+    // From DabStationNameMsg
+    String _dabName;
+
+    String get dabName
+    => _dabName;
+
     RadioState()
     {
         clear();
@@ -45,6 +52,7 @@ class RadioState
         return [
             PresetCommandMsg.ZONE_COMMANDS[zone],
             TuningCommandMsg.ZONE_COMMANDS[zone],
+            DabStationNameMsg.CODE
         ];
     }
 
@@ -52,6 +60,7 @@ class RadioState
     {
         _preset = PresetCommandMsg.NO_PRESET;
         _frequency = "";
+        _dabName = "";
     }
 
     bool processPresetCommand(PresetCommandMsg msg)
@@ -65,6 +74,13 @@ class RadioState
     {
         final bool changed = _frequency != msg.getFrequency;
         _frequency = msg.getFrequency;
+        return changed;
+    }
+
+    bool processDabStationName(DabStationNameMsg msg)
+    {
+        final bool changed = msg.getData != _dabName;
+        _dabName = msg.getData;
         return changed;
     }
 

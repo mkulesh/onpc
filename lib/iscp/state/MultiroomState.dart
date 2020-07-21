@@ -12,6 +12,7 @@
  */
 
 import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
 import "../messages/BroadcastResponseMsg.dart";
 import "../messages/EnumParameterMsg.dart";
@@ -69,7 +70,7 @@ class DeviceInfo
     => _favorite;
 
     String getHostAndPort()
-    => responseMsg.getHostAndPort();
+    => responseMsg.getHostAndPort;
 
     String getDeviceName(bool useFriendlyName)
     {
@@ -117,9 +118,9 @@ class MultiroomState
         MultiroomChannelSettingMsg.CODE
     ];
 
-    List<String> getQueries(String connection)
+    List<String> getQueries(ConnectionIf connection)
     {
-        Logging.info(this, "Requesting data for connection " + connection + "...");
+        Logging.info(this, "Requesting data for connection " + connection.getHostAndPort + "...");
         return MESSAGE_SCOPE;
     }
 
@@ -135,11 +136,11 @@ class MultiroomState
         }
 
         final DeviceInfo di = _deviceList.values.firstWhere((t)
-            => t.responseMsg.sourceHost == msg.sourceHost, orElse: () => null);
+            => t.getHostAndPort() == msg.getHostAndPort, orElse: () => null);
         if (di == null)
         {
             Logging.info(this, "<< warning: received " + msg.getCode + " from "
-                + msg.sourceHost + " for unknown device. Ignored.");
+                + msg.getHostAndPort + " for unknown device. Ignored.");
             return null;
         }
 
@@ -161,7 +162,7 @@ class MultiroomState
 
     bool processBroadcastResponse(BroadcastResponseMsg msg)
     {
-        final String id = msg.getHostAndPort();
+        final String id = msg.getHostAndPort;
         DeviceInfo deviceInfo = _deviceList[id];
         if (deviceInfo == null)
         {
@@ -213,7 +214,7 @@ class MultiroomState
         _deviceList.removeWhere((key, d) => d.isFavorite);
         _favorites.forEach((msg)
         {
-            final String key = msg.getHostAndPort();
+            final String key = msg.getHostAndPort;
             final DeviceInfo oldInfo = tmpDevices[key];
             if (oldInfo == null)
             {

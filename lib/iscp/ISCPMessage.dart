@@ -13,11 +13,12 @@
 
 import "package:xml/xml.dart" as xml;
 
+import "ConnectionIf.dart";
 import "EISCPMessage.dart";
 
 typedef OnProcessFinished = void Function(bool changed, String changeCode);
 
-class ISCPMessage
+class ISCPMessage with ConnectionIf
 {
     static const String PAR_SEP = "/";
 
@@ -25,7 +26,6 @@ class ISCPMessage
     final String _code;
     final String _data;
     final String _modelCategoryId;
-    String sourceHost;
 
     ISCPMessage(this._code, EISCPMessage raw) :
         _messageId = raw.getMessageId,

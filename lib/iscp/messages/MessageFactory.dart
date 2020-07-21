@@ -19,6 +19,7 @@ import "AudioMutingMsg.dart";
 import "AutoPowerMsg.dart";
 import "CenterLevelCommandMsg.dart";
 import "CustomPopupMsg.dart";
+import "DabStationNameMsg.dart";
 import "DeviceNameMsg.dart";
 import "DigitalFilterMsg.dart";
 import "DimmerLevelMsg.dart";
@@ -45,6 +46,7 @@ import "PhaseMatchingBassMsg.dart";
 import "PlayStatusMsg.dart";
 import "PowerStatusMsg.dart";
 import "PresetCommandMsg.dart";
+import "PresetMemoryMsg.dart";
 import "PrivacyPolicyStatusMsg.dart";
 import "ReceiverInformationMsg.dart";
 import "SleepSetCommandMsg.dart";
@@ -178,6 +180,10 @@ class MessageFactory
             case TuningCommandMsg.ZONE3_CODE:
             case TuningCommandMsg.ZONE4_CODE:
                 return TuningCommandMsg(raw);
+            case PresetMemoryMsg.CODE:
+                return PresetMemoryMsg(raw);
+            case DabStationNameMsg.CODE:
+                return DabStationNameMsg(raw);
 
         // Popups
             case CustomPopupMsg.CODE:

@@ -86,13 +86,12 @@ class TrackTimeView extends UpdatableView
     {
         final int currTime = _timeToSeconds(state.trackState.currentTime);
         final int maxTime = _timeToSeconds(state.trackState.maxTime);
-        final bool sendHours = newSec >= 3600 || state.receiverInformation.model != "NT-503";
         if (currTime >= 0 && maxTime >= 0)
         {
             final int hour = (newSec / 3600).floor();
             final int min = ((newSec - hour * 3600) / 60).floor();
             final int sec = newSec - hour * 3600 - min * 60;
-            stateManager.sendTimeMsg(TimeSeekMsg.output(sendHours, hour, min, sec), 3);
+            stateManager.sendTimeMsg(TimeSeekMsg.output(state.receiverInformation.model, hour, min, sec), 3);
         }
     }
 }

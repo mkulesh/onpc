@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2018. Mikhail Kulesh
+  ~ Copyright (C) 2020. Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -10,10 +10,16 @@
   ~ GNU General Public License for more details. You should have received a copy of the GNU General
   ~ Public License along with this program.
   -->
-
-<resources>
-    <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
-    <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</string>
-    <string name="shortcut_power_on">Power On</string>
-</resources>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android" >
+    <shortcut
+        android:shortcutId="auto_power"
+        android:icon="@drawable/menu_power_standby"
+        android:shortcutShortLabel="@string/shortcut_power_on"
+        android:shortcutLongLabel="@string/shortcut_power_on">
+        <intent
+            android:action="com.mkulesh.onpc.AUTO_POWER"
+            android:targetPackage="com.mkulesh.onpc"
+            android:targetClass="com.mkulesh.onpc.MainActivity"
+            />
+    </shortcut>
+</shortcuts>

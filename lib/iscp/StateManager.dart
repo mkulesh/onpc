@@ -16,6 +16,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import "../iscp/BroadcastSearch.dart";
+import "../iscp/scripts/MessageScriptIf.dart";
 import "../utils/Logging.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
@@ -34,7 +35,10 @@ import "messages/MessageFactory.dart";
 import "messages/OperationCommandMsg.dart";
 import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
+import "messages/PresetCommandMsg.dart";
+import "messages/PresetMemoryMsg.dart";
 import "messages/PrivacyPolicyStatusMsg.dart";
+import "messages/ReceiverInformationMsg.dart";
 import "messages/TimeInfoMsg.dart";
 import "messages/TimeSeekMsg.dart";
 import "messages/TrackInfoMsg.dart";
@@ -73,14 +77,6 @@ class StateManager
     MessageChannel _messageChannel;
     final Map<String, MessageChannel> _multiroomChannels = Map();
 
-    // auto power on startup
-    bool _autoPower = false;
-
-    set autoPower(bool value)
-    {
-        _autoPower = value;
-    }
-
     // keep playback mode
     bool _keepPlaybackMode = false;
 
@@ -112,6 +108,7 @@ class StateManager
     Timer _updateTimer;
     int _skipNextTimeMsg = 0;
     bool _requestXmlList = false;
+    bool _requestRIonPreset = false;
     bool _playbackMode = false;
     ISCPMessage _circlePlayRemoveMsg;
     int _xmlReqId = 0;
@@ -138,6 +135,19 @@ class StateManager
     State get state
     => _state;
 
+    // MessageScript processor
+    final List<MessageScriptIf> _messageScripts = List<MessageScriptIf>();
+
+    void clearScripts()
+    {
+        _messageScripts.clear();
+    }
+
+    void addScript(MessageScriptIf script)
+    {
+        _messageScripts.add(script);
+    }
+
     StateManager(final int zoneId, List<BroadcastResponseMsg> _favorites)
     {
         _messageChannel = MessageChannel(_onConnected, _onNewEISCPMessage, _onDisconnected);
@@ -152,7 +162,7 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
-    void connect(String server, int port, {String manualHost, String manualAlias})
+    void connect(String host, int port, {String manualHost, String manualAlias})
     {
         if (isConnected)
         {
@@ -160,7 +170,7 @@ class StateManager
         }
         _manualHost = manualHost;
         _manualAlias = manualAlias;
-        _messageChannel.start(server, port);
+        _messageChannel.start(host, port);
     }
 
     void disconnect(bool waitForDisconnect)
@@ -178,23 +188,17 @@ class StateManager
         }
     }
 
+    MessageChannel getConnection()
+    => _messageChannel;
+
     bool get isConnected
     => _messageChannel.isConnected;
-
-    String get sourceHost
-    => _messageChannel.sourceHost;
-
-    int get sourcePort
-    => _messageChannel.sourcePort;
-
-    String getAddressAndPort()
-    => Logging.ipToString(sourceHost, sourcePort.toString());
 
     DeviceInfo get sourceDevice
     => state.multiroomState.deviceList.values.firstWhere((d) => isSourceHost(d.responseMsg), orElse: () => null);
 
     bool isSourceHost(final ISCPMessage msg)
-    => msg.sourceHost == sourceHost;
+    => msg.fromHost(_messageChannel);
 
     int changeZone(String getId)
     {
@@ -206,9 +210,9 @@ class StateManager
         return _state.getActiveZone;
     }
 
-    void _onConnected(MessageChannel channel, String host, int port)
+    void _onConnected(MessageChannel channel)
     {
-        Logging.info(this, "Connected to " + Logging.ipToString(host, port.toString()) + " via " + _networkState.toString());
+        Logging.info(this, "Connected to " + channel.getHostAndPort + " via " + _networkState.toString());
 
         _state.updateConnection(true);
         if (_onStateChanged != null)
@@ -221,6 +225,15 @@ class StateManager
         _messageChannel.sendMessage(EISCPMessage.output(JacketArtMsg.CODE,
             _networkState == NetworkState.CELLULAR? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
         sendQueries(_state.receiverInformation.getQueries(_state.getActiveZone));
+
+        // initial call os the message scripts
+        for (MessageScriptIf script in _messageScripts)
+        {
+            if (script.isValid())
+            {
+                script.start(state, _messageChannel);
+            }
+        }
     }
 
     Future<EISCPMessage> _registerMessage(EISCPMessage raw) async
@@ -230,7 +243,7 @@ class StateManager
         return raw;
     }
 
-    void _onNewEISCPMessage(EISCPMessage rawMsg, String host)
+    void _onNewEISCPMessage(EISCPMessage rawMsg, MessageChannel channel)
     {
         // call processing asynchronous after message is registered
         _registerMessage(rawMsg).then((EISCPMessage raw)
@@ -255,8 +268,15 @@ class StateManager
             try
             {
                 final ISCPMessage msg = MessageFactory.create(raw);
-                msg.sourceHost = host;
+                msg.setHostAndPort(channel);
                 final String changeCode = _processMessage(msg);
+                for (MessageScriptIf script in _messageScripts)
+                {
+                    if (script.isValid())
+                    {
+                        script.processMessage(msg, state, channel);
+                    }
+                }
                 _onProcessFinished(changeCode != null, changeCode);
             }
             on Exception catch (e)
@@ -307,12 +327,6 @@ class StateManager
         // no further message handling, if power off
         if (!state.isOn)
         {
-            if (msg is PowerStatusMsg && _autoPower)
-            {
-                // Auto power-on once at first PowerStatusMsg
-                sendMessage(PowerStatusMsg.output(state.getActiveZone, PowerStatus.ON));
-                _autoPower = false;
-            }
             return changed;
         }
 
@@ -368,6 +382,15 @@ class StateManager
             _playbackMode = false;
         }
 
+        // request receiver information after radio preset is memorized
+        if ((msg is PresetCommandMsg || msg is PresetMemoryMsg) && _requestRIonPreset)
+        {
+            _requestRIonPreset  = false;
+            Logging.info(this, "requesting receiver information...");
+            sendQueries([ ReceiverInformationMsg.CODE ]);
+        }
+
+        // no further message handling, if no changes are detected
         if (changed == null)
         {
             if (msg is ListTitleInfoMsg && _requestXmlList)
@@ -548,6 +571,12 @@ class StateManager
         state.trackState.currentTime = msg.getData;
     }
 
+    void sendPresetMemoryMsg(final PresetMemoryMsg msg)
+    {
+        _requestRIonPreset = true;
+        sendMessage(msg);
+    }
+
     void sendTrackCmd(int zone, OperationCommand menu, bool doReturn)
     {
         Logging.info(this, "sending track cmd: " + menu.toString() + " for zone " + zone.toString());
@@ -571,6 +600,8 @@ class StateManager
         switch (soundControl)
         {
             case SoundControlType.DEVICE_BUTTONS:
+            case SoundControlType.DEVICE_SLIDER:
+            case SoundControlType.DEVICE_BTN_SLIDER:
                 sendMessage(MasterVolumeMsg.output(state.getActiveZone, isUp ? MasterVolume.UP : MasterVolume.DOWN));
                 break;
             case SoundControlType.RI_AMP:
@@ -644,27 +675,27 @@ class StateManager
             triggerStateEvent(BroadcastResponseMsg.CODE);
             if (_messageChannel.isConnected && isSourceHost(msg))
             {
-                _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel.sourceHost));
+                _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel));
             }
         }
         if (_searchEngine != null && state.multiroomState.isSearchFinished())
         {
             stopSearch();
         }
-        if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.sourceHost))
+        if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
         {
-            Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort());
+            Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort);
             final MessageChannel m = MessageChannel(_onMultiroomDeviceConnected, _onNewEISCPMessage, _onMultiroomDeviceDisconnected);
-            _multiroomChannels[msg.sourceHost] = m;
+            _multiroomChannels[msg.getHostAndPort] = m;
             MultiroomState.MESSAGE_SCOPE.forEach((code) => m.addAllowedMessage(code));
-            m.start(msg.sourceHost, msg.getPort);
+            m.start(msg.getHost, msg.getPort);
         }
     }
 
-    void _onMultiroomDeviceConnected(MessageChannel channel, String server, int port)
+    void _onMultiroomDeviceConnected(MessageChannel channel)
     {
-        Logging.info(this, "connected to " + Logging.ipToString(server, port.toString()));
-        channel.sendQueries(state.multiroomState.getQueries(channel.sourceHost));
+        Logging.info(this, "connected to " + channel.getHostAndPort);
+        channel.sendQueries(state.multiroomState.getQueries(channel));
     }
 
     void _onMultiroomDeviceDisconnected(ConnectionErrorType errorType, String result)

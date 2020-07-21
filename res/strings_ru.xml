@@ -75,9 +75,12 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="favorite_connection_delete">Удалить</string>
 
     <!-- Main menu -->
-    <string name="menu_power_power">Вкл/выкл</string>
+    <string name="menu_power_standby">Вкл/выкл</string>
     <string name="menu_receiver_information">Информация об устройстве</string>
     <string name="menu_latest_logging">Лог приложения</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_power_on">Включить</string>
 
     <!-- Tabs -->
     <string name="title_monitor">Музыка</string>
@@ -118,8 +121,9 @@ Copyright © 2019 by __Михаил Кулеш__
     <string-array name="pref_sound_control_names">
         <item>Нет</item>
         <item>Внешний усилитель (RI)</item>
-        <item>Устройство</item>
+        <item>Устройство (Кнопки)</item>
         <item>Устройство (Слайдер)</item>
+        <item>Устройство (Кнопки и слайдер)</item>
         <item>Выбрать автоматически</item>
     </string-array>
 
@@ -231,6 +235,10 @@ Copyright © 2019 by __Михаил Кулеш__
     <!-- Preset Command  -->
     <string name="preset_command_up">Следующий канал</string>
     <string name="preset_command_down">Предыдущий канал</string>
+    <string name="cmd_preset_memory">Сохранить канал</string>
+    <string name="cmd_preset_memory_number">Номер канала</string>
+    <string name="number_picker_decrease">Уменьшить значение</string>
+    <string name="number_picker_increase">Увеличить значение</string>
 
     <!-- Tuning Command  -->
     <string name="tuning_command_up">Повысить частоту приема</string>
