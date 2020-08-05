@@ -76,6 +76,18 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
         selectorPaletteLayout = rootView.findViewById(R.id.selector_palette);
         titleBar = rootView.findViewById(R.id.items_list_title_bar);
+        titleBar.setClickable(true);
+        titleBar.setOnClickListener(v ->
+        {
+            if (activity.isConnected())
+            {
+                if (!activity.getStateManager().getState().isTopLayer())
+                {
+                    activity.getStateManager().sendMessage(StateManager.RETURN_MSG);
+                }
+            }
+        });
+
         listView = rootView.findViewById(R.id.items_list_view);
         listView.setItemsCanFocus(false);
         listView.setFocusableInTouchMode(true);
@@ -476,6 +488,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         setTitleLayout(true);
         titleBar.setTag("VISIBLE");
         titleBar.setText(title.toString());
+        titleBar.setEnabled(!state.isTopLayer());
         setProgressIndicator(state, state.inputType.isMediaList() && processing);
     }
 

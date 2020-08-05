@@ -61,6 +61,8 @@
                 android:minHeight="@dimen/button_size"
                 android:padding="2dp"
                 android:maxLines="9999"
+                android:background="?attr/selectableItemBackground"
+                android:enabled="false"
                 android:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatImageView
