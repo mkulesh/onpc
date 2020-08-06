@@ -53,7 +53,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="drawer_device_searching">Recherche d\'équipements compatibles…</string>
     <string name="drawer_device_application">Application</string>
     <string name="drawer_app_settings">Paramètres</string>
-    <string name="drawer_about">A propos</string>
+    <string name="drawer_about">À propos</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse IP</string>
@@ -121,13 +121,13 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     </string-array>
 
     <!-- App themes -->
-    <string name="pref_theme">Theme</string>
+    <string name="pref_theme">Thème</string>
     <string-array name="pref_theme_names">
         <item>Très sombre (Noir et jaune)</item>
         <item>Sombre (Gris et bleu)</item>
         <item>Sombre (Gris et orange)</item>
         <item>Clair (Gris et violet)</item>
-        <item>Clair (Bleu and Orange)</item>
+        <item>Clair (Bleu et orange)</item>
         <item>Clair (Emeraude et magenta)</item>
         <item>Clair (Violet et vert)</item>
     </string-array>
@@ -213,7 +213,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="audio_muting_toggle">Interrupteur silence audio</string>
 
     <!-- Audio Control Command  -->
-    <string name="audio_control">Règlages Audio</string>
+    <string name="audio_control">Réglages Audio</string>
     <string name="tone_bass">Basses</string>
     <string name="tone_treble">Aigües</string>
     <string name="subwoofer_level">Niveau Subwoofer</string>
@@ -228,10 +228,10 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="master_volume_max">Maximum</string>
 
     <!-- Preset Command  -->
-    <string name="preset_command_up">Préselection haut</string>
-    <string name="preset_command_down">Préselection bas</string>
+    <string name="preset_command_up">Présélection haut</string>
+    <string name="preset_command_down">Présélection bas</string>
     <string name="cmd_preset_memory">Enregistrer la station</string>
-    <string name="cmd_preset_memory_number">Préselection</string>
+    <string name="cmd_preset_memory_number">Présélection</string>
     <string name="number_picker_decrease">Diminuer la valeur</string>
     <string name="number_picker_increase">Augmenter la valeur</string>
 
@@ -260,7 +260,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="cmd_description_left">Gauche</string>
     <string name="cmd_description_up">Haut</string>
     <string name="cmd_description_down">Bas</string>
-    <string name="cmd_description_select">Selection</string>
+    <string name="cmd_description_select">Sélection</string>
     <string name="cmd_description_key_0">0</string>
     <string name="cmd_description_key_1">1</string>
     <string name="cmd_description_key_2">2</string>
@@ -285,13 +285,13 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="cmd_description_mode">Mode(Pour Ipod)</string>
     <string name="cmd_description_list">Liste/Lecture</string>
     <string name="cmd_description_memory">Mémoire (Ajout favoris)</string>
-    <string name="cmd_description_f1">Positive Feed Or Mark/Unmark</string>
+    <string name="cmd_description_f1">Positive Feed ou cocher/décocher</string>
     <string name="cmd_description_f2">Negative Feed</string>
     <string name="cmd_description_sort">Ordre de sélection</string>
     <string name="cmd_track_menu">Menu des pistes</string>
 
     <!-- Media list tab -->
-    <string name="medialist_items">Élements</string>
+    <string name="medialist_items">Éléments</string>
     <string name="medialist_processing">Traitement…</string>
     <string name="medialist_playback_mode">Mode de lecture</string>
     <string name="medialist_no_items">Pas d\'éléments</string>
