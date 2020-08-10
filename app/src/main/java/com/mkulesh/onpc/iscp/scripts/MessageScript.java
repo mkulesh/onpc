@@ -211,10 +211,10 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             Logging.info(this, "Testing match between action " + a.toString() + " and msg " + msg.toString());
             if (a.state == ActionState.WAITING && a.wait != null)
             {
-                if (a.wait.equals(msg.getCmdMsg().getCode()))
+                if (a.wait.equals(msg.getCode()))
                 {
                     Logging.info(this, "Message code matched");
-                    if (a.resp == null || a.resp.equals(msg.getCmdMsg().getParameters()))
+                    if (a.resp == null || a.resp.equals(msg.getData()))
                     {
                         Logging.info(this, "Message parameters matched");
                         a.state = ActionState.DONE;

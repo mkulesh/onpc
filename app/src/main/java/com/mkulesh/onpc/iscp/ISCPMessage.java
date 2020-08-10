@@ -25,6 +25,7 @@ public class ISCPMessage implements ConnectionIf
     protected static final Charset UTF_8 = Charset.forName("UTF-8");
     protected final static String PAR_SEP = "/";
 
+    protected final String code;
     protected final int messageId;
     protected final String data;
     private final Character modelCategoryId;
@@ -35,6 +36,7 @@ public class ISCPMessage implements ConnectionIf
 
     protected ISCPMessage(final int messageId, final String data)
     {
+        this.code = null;
         this.messageId = messageId;
         this.data = data;
         modelCategoryId = 'X';
@@ -43,6 +45,7 @@ public class ISCPMessage implements ConnectionIf
     @SuppressWarnings("RedundantThrows")
     protected ISCPMessage(EISCPMessage raw) throws Exception
     {
+        code = raw.getCode();
         messageId = raw.getMessageId();
         data = raw.getParameters().trim();
         modelCategoryId = raw.getModelCategoryId();
@@ -50,6 +53,7 @@ public class ISCPMessage implements ConnectionIf
 
     protected ISCPMessage(ISCPMessage other)
     {
+        code = other.code;
         messageId = other.messageId;
         data = other.data;
         modelCategoryId = other.modelCategoryId;
@@ -91,6 +95,11 @@ public class ISCPMessage implements ConnectionIf
     public boolean isValidConnection()
     {
         return !host.equals(ConnectionIf.EMPTY_HOST) && port != ConnectionIf.EMPTY_PORT;
+    }
+
+    public final String getCode()
+    {
+        return code;
     }
 
     public int getMessageId()
