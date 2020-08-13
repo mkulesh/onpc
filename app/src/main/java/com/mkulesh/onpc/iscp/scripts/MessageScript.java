@@ -18,6 +18,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -37,6 +38,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import androidx.annotation.NonNull;
+
+import static com.mkulesh.onpc.utils.Logging.*;
 
 public class MessageScript implements ConnectionIf, MessageScriptIf
 {
@@ -63,19 +66,23 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         // the command to wait for. Null if time based (or no) wait is used
         final String wait;
 
-        // regex that must match the acknowledgement message
+        // string that must match the acknowledgement message
         final String resp;
+
+        // string that must appear as a media list item in an NLA message
+        final String listitem;
 
         // The attribute that holds the actual state of this action
         ActionState state = ActionState.UNSENT;
 
-        Action(String cmd, String par, final int milliseconds, String wait, String resp)
+        Action(String cmd, String par, final int milliseconds, String wait, String resp, String listitem)
         {
             this.cmd = cmd;
             this.par = par;
             this.milliseconds = milliseconds;
             this.wait = wait;
             this.resp = resp;
+            this.listitem = listitem;
         }
 
         @NonNull
@@ -87,6 +94,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                     + "," + milliseconds
                     + "," + wait
                     + "," + resp
+                    + "," + listitem
                     + "," + ACTION_STATES[state.ordinal()];
         }
 
@@ -106,6 +114,15 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     public boolean isValid()
     {
         return !actions.isEmpty();
+    }
+
+    @NonNull
+    private String unEscape(String str)
+    {
+        str = str.replace("~lt~", "<");
+        str = str.replace("~gt~", ">");
+        str = str.replace("~dq~", "\"");
+        return str;
     }
 
     @Override
@@ -146,20 +163,21 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                             {
                                 throw new Exception("missing command code in 'send' command");
                             }
-                            final String par = action.getAttribute("par");
+                            final String par = unEscape(action.getAttribute("par"));
                             if (par == null)
                             {
                                 throw new Exception("missing command parameter in 'send' command");
                             }
                             final int milliseconds = Utils.parseIntAttribute(action, "wait", -1);
                             final String wait = action.getAttribute("wait");
-                            final String resp = action.getAttribute("resp");
+                            final String resp = unEscape(action.getAttribute("resp"));
+                            final String listitem = unEscape(action.getAttribute("listitem"));
                             if (milliseconds < 0 && (wait == null || wait.isEmpty()))
                             {
-                                Logging.info(this, "missing time or wait CMD in 'send' command");
+                                info(this, "missing time or wait CMD in 'send' command");
                                 return;
                             }
-                            actions.add(new Action(cmd, par, milliseconds, wait, resp));
+                            actions.add(new Action(cmd, par, milliseconds, wait, resp, listitem));
                         }
                     }
                 }
@@ -168,12 +186,12 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         catch (Exception e)
         {
             // TODO - raise this to the user's attention - they stuffed up and they'd probably like to know
-            Logging.info(this, "Failed to parse onpcScript pass in intent: " + e.getLocalizedMessage());
+            info(this, "Failed to parse onpcScript pass in intent: " + e.getLocalizedMessage());
             actions.clear();
         }
         for (Action a : actions)
         {
-            Logging.info(this, a.toString());
+            info(this, a.toString());
         }
     }
 
@@ -181,10 +199,34 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     public void start(@NonNull final State state, @NonNull MessageChannel channel)
     {
         // Startup handling.
-        Logging.info(this, "started script");
+        info(this, "started script");
         processAction(actions.listIterator(), state, channel);
     }
 
+    private boolean nlaListContainsItem(@NonNull final State state, @NonNull ISCPMessage msg, @NonNull Action a)
+    {
+        //info(this, "enter: msg = "+msg.toString());
+        //info(this, "enter: a = "+a.toString());
+
+        if (!msg.getCode().equals("NLA") ||
+            a.listitem == null || a.listitem.isEmpty())
+        {
+            //info(this, "false: a.listitem = "+a.listitem);
+            //info(this, "false: msg.getCode = "+msg.getCode());
+            return false;
+        }
+        final List<XmlListItemMsg> cloneMediaItems = state.cloneMediaItems();
+        for (XmlListItemMsg item : cloneMediaItems)
+        {
+            // info(this, "does "+item.getTitle()+" equal "+a.listitem);
+            if (item.getTitle().equals(a.listitem))
+            {
+                //info(this, "yes!");
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * The method implements message handling with respect to the "command"-"wait" logic:
      * - in "actions" list, search the first non-performed action
@@ -208,23 +250,27 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             {
                 continue;
             }
-            Logging.info(this, "Testing match between action " + a.toString() + " and msg " + msg.toString());
+            info(this, "Testing match between action " + a.toString() + " and msg " + msg.toString());
             if (a.state == ActionState.WAITING && a.wait != null)
             {
+                info(this, "a.wait='"+a.wait+"', msg.getCode()='"+msg.getCode()+"'");
                 if (a.wait.equals(msg.getCode()))
                 {
-                    Logging.info(this, "Message code matched");
-                    if (a.resp == null || a.resp.equals(msg.getData()))
+                    info(this, "Message code matched");
+                    if ((a.resp == null || a.resp.isEmpty() || a.resp.equals(msg.getData())) &&
+                        (a.listitem == null || a.listitem.isEmpty() || nlaListContainsItem(state, msg, a)))
                     {
-                        Logging.info(this, "Message parameters matched");
+                        info(this, "Message parameters matched");
                         a.state = ActionState.DONE;
                         // Process the next action
                         processAction(actionIterator, state, channel);
                         return;
                     }
                 }
-                Logging.info(this, "Continue waiting for " + a.toString());
+                info(this, "Continue waiting for " + a.toString());
                 return;
+            } else {
+                info(this, "Something's wrong, didn't expect to be here");
             }
         }
     }
@@ -233,36 +279,31 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     {
         if (!actionIterator.hasNext())
         {
-            Logging.info(this, "all commands sent");
+            info(this, "all commands sent");
             return;
         }
         if (!channel.isActive())
         {
-            Logging.info(this, "message channel stopped");
+            info(this, "message channel stopped");
             return;
-        }
-        if (!state.isOn())
-        {
-            Logging.info(this, "receiver off ?");
-            // return;
         }
 
         Action a = actionIterator.next();
         EISCPMessage msg = new EISCPMessage(a.cmd, a.par);
         channel.sendMessage(msg);
-        Logging.info(this, "sent message " + msg.toString() + " for action " + a.toString());
+        info(this, "sent message " + msg.toString() + " for action " + a.toString());
         a.state = ActionState.WAITING;
 
         if (a.milliseconds >= 0)
         {
-            Logging.info(this, "scheduling timer for " + a.milliseconds + " milliseconds");
+            info(this, "scheduling timer for " + a.milliseconds + " milliseconds");
             final Timer t = new Timer();
             t.schedule(new java.util.TimerTask()
             {
                 @Override
                 public void run()
                 {
-                    Logging.info(this, "timer expired");
+                    info(this, "timer expired");
                     processAction(actionIterator, state, channel);
                 }
             }, a.milliseconds);
