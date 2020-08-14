@@ -19,7 +19,6 @@ import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
-import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import org.w3c.dom.Document;
@@ -39,7 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import androidx.annotation.NonNull;
 
-import static com.mkulesh.onpc.utils.Logging.*;
+import static com.mkulesh.onpc.utils.Logging.info;
 
 public class MessageScript implements ConnectionIf, MessageScriptIf
 {
@@ -117,7 +116,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     }
 
     @NonNull
-    private String unEscape(String str)
+    private String unEscape(@NonNull String str)
     {
         str = str.replace("~lt~", "<");
         str = str.replace("~gt~", ">");
@@ -163,11 +162,12 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                             {
                                 throw new Exception("missing command code in 'send' command");
                             }
-                            final String par = unEscape(action.getAttribute("par"));
+                            String par = action.getAttribute("par");
                             if (par == null)
                             {
                                 throw new Exception("missing command parameter in 'send' command");
                             }
+                            par = unEscape(par);
                             final int milliseconds = Utils.parseIntAttribute(action, "wait", -1);
                             final String wait = action.getAttribute("wait");
                             final String resp = unEscape(action.getAttribute("resp"));
@@ -209,7 +209,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         //info(this, "enter: a = "+a.toString());
 
         if (!msg.getCode().equals("NLA") ||
-            a.listitem == null || a.listitem.isEmpty())
+                a.listitem == null || a.listitem.isEmpty())
         {
             //info(this, "false: a.listitem = "+a.listitem);
             //info(this, "false: msg.getCode = "+msg.getCode());
@@ -227,6 +227,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         }
         return false;
     }
+
     /**
      * The method implements message handling with respect to the "command"-"wait" logic:
      * - in "actions" list, search the first non-performed action
@@ -253,12 +254,12 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             info(this, "Testing match between action " + a.toString() + " and msg " + msg.toString());
             if (a.state == ActionState.WAITING && a.wait != null)
             {
-                info(this, "a.wait='"+a.wait+"', msg.getCode()='"+msg.getCode()+"'");
+                info(this, "a.wait='" + a.wait + "', msg.getCode()='" + msg.getCode() + "'");
                 if (a.wait.equals(msg.getCode()))
                 {
                     info(this, "Message code matched");
                     if ((a.resp == null || a.resp.isEmpty() || a.resp.equals(msg.getData())) &&
-                        (a.listitem == null || a.listitem.isEmpty() || nlaListContainsItem(state, msg, a)))
+                            (a.listitem == null || a.listitem.isEmpty() || nlaListContainsItem(state, msg, a)))
                     {
                         info(this, "Message parameters matched");
                         a.state = ActionState.DONE;
@@ -269,7 +270,9 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                 }
                 info(this, "Continue waiting for " + a.toString());
                 return;
-            } else {
+            }
+            else
+            {
                 info(this, "Something's wrong, didn't expect to be here");
             }
         }
