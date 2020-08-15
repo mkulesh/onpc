@@ -37,6 +37,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.mkulesh.onpc.utils.Logging.info;
 
@@ -200,28 +201,21 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     {
         // Startup handling.
         info(this, "started script");
-        processAction(actions.listIterator(), state, channel);
+        processAction(actions.listIterator(), state, channel, null);
     }
 
     private boolean nlaListContainsItem(@NonNull final State state, @NonNull ISCPMessage msg, @NonNull Action a)
     {
-        //info(this, "enter: msg = "+msg.toString());
-        //info(this, "enter: a = "+a.toString());
-
         if (!msg.getCode().equals("NLA") ||
                 a.listitem == null || a.listitem.isEmpty())
         {
-            //info(this, "false: a.listitem = "+a.listitem);
-            //info(this, "false: msg.getCode = "+msg.getCode());
             return false;
         }
         final List<XmlListItemMsg> cloneMediaItems = state.cloneMediaItems();
         for (XmlListItemMsg item : cloneMediaItems)
         {
-            // info(this, "does "+item.getTitle()+" equal "+a.listitem);
             if (item.getTitle().equals(a.listitem))
             {
-                //info(this, "yes!");
                 return true;
             }
         }
@@ -264,7 +258,10 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                         info(this, "Message parameters matched");
                         a.state = ActionState.DONE;
                         // Process the next action
-                        processAction(actionIterator, state, channel);
+                        if (processAction(actionIterator, state, channel, msg) != null)
+                        {
+                            processMessage(msg, state, channel);
+                        }
                         return;
                     }
                 }
@@ -278,25 +275,38 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         }
     }
 
-    private void processAction(ListIterator<Action> actionIterator, @NonNull final State state, @NonNull MessageChannel channel)
+    private Action processAction(ListIterator<Action> actionIterator, @NonNull final State state, @NonNull MessageChannel channel, @Nullable final ISCPMessage triggerMsg)
     {
         if (!actionIterator.hasNext())
         {
             info(this, "all commands sent");
-            return;
+            return null;
         }
         if (!channel.isActive())
         {
             info(this, "message channel stopped");
-            return;
+            return null;
         }
 
         Action a = actionIterator.next();
-        EISCPMessage msg = new EISCPMessage(a.cmd, a.par);
-        channel.sendMessage(msg);
-        info(this, "sent message " + msg.toString() + " for action " + a.toString());
-        a.state = ActionState.WAITING;
+        if (a.cmd.equals("NA") && a.par.equals("NA"))
+        {
+            info(this, "no action message to send");
+        }
+        else if (triggerMsg != null && a.cmd.equals(triggerMsg.getCode()) && a.par.equals(triggerMsg.getData()))
+        {
+            info(this, "the required state is already set, no need to send action message");
+            a.state = ActionState.WAITING;
+            return a;
+        }
+        else
+        {
+            EISCPMessage msg = new EISCPMessage(a.cmd, a.par);
+            channel.sendMessage(msg);
+            info(this, "sent message " + msg.toString() + " for action " + a.toString());
+        }
 
+        a.state = ActionState.WAITING;
         if (a.milliseconds >= 0)
         {
             info(this, "scheduling timer for " + a.milliseconds + " milliseconds");
@@ -307,10 +317,11 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                 public void run()
                 {
                     info(this, "timer expired");
-                    processAction(actionIterator, state, channel);
+                    processAction(actionIterator, state, channel, null);
                 }
             }, a.milliseconds);
         }
+        return null;
     }
 
     @NonNull
