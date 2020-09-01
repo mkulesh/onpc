@@ -47,6 +47,7 @@
     <string name="drawer_open">Navigation drawer öffnen</string>
     <string name="drawer_group_zone">Zone</string>
     <string name="drawer_multiroom">Gruppe</string>
+    <string name="drawer_shortcuts">Verknüpfungen</string>
     <string name="drawer_device">Gerät</string>
     <string name="drawer_device_connect">Verbinden</string>
     <string name="drawer_device_search">Suchen</string>
@@ -68,6 +69,10 @@
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Verbindung bearbeiten</string>
     <string name="favorite_connection_identifier">MAC Adresse (optional)</string>
+
+    <!-- Favorite shortcuts -->
+    <string name="favorite_shortcut_edit">Verknüpfung bearbeiten</string>
+    <string name="favorite_shortcut_create">Verknüpfung erstellen</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>

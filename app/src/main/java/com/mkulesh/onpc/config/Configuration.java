@@ -84,6 +84,7 @@ public class Configuration
 
     public final CfgAudioControl audioControl = new CfgAudioControl();
     public final CfgFavoriteConnections favoriteConnections = new CfgFavoriteConnections();
+    public final CfgFavoriteShortcuts favoriteShortcuts = new CfgFavoriteShortcuts();
 
     public Configuration(Context context)
     {
@@ -102,6 +103,9 @@ public class Configuration
 
         favoriteConnections.setPreferences(preferences);
         favoriteConnections.read();
+
+        favoriteShortcuts.setPreferences(preferences);
+        favoriteShortcuts.read();
     }
 
     @StyleRes

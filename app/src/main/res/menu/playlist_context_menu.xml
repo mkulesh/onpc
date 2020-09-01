@@ -45,4 +45,7 @@
     <item
         android:id="@+id/cmd_playback_mode"
         android:title="@string/medialist_playback_mode" />
+    <item
+        android:id="@+id/cmd_shortcut_create"
+        android:title="@string/favorite_shortcut_create" />
 </menu>

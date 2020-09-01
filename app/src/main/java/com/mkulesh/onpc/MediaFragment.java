@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
@@ -178,6 +179,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     final boolean isPlaying = selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY;
                     menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu && isPlaying && !isQueue);
                     menu.findItem(R.id.cmd_playback_mode).setVisible(isPlaying && !state.isPlaybackMode());
+
+                    final boolean isShortcut = state.isShortcutPossible();
+                    menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
                 }
             }
         }
@@ -190,6 +194,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             final State state = activity.getStateManager().getState();
             final int idx = selectedItem.getMessageId();
+            final String title = selectedItem.getTitle();
             Logging.info(this, "Context menu: " + item.toString() + "; " + selectedItem.toString());
             selectedItem = null;
             switch (item.getItemId())
@@ -237,6 +242,19 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 return true;
             case R.id.cmd_playback_mode:
                 activity.getStateManager().sendMessage(StateManager.LIST_MSG);
+                return true;
+            case R.id.cmd_shortcut_create:
+                if (state.isShortcutPossible())
+                {
+                    final CfgFavoriteShortcuts shortcutCfg = activity.getConfiguration().favoriteShortcuts;
+                    final CfgFavoriteShortcuts.Shortcut shortcut = new CfgFavoriteShortcuts.Shortcut(
+                            shortcutCfg.getShortcuts().size(),
+                            state.serviceType.getCode(),
+                            state.numberOfLayers == 1 ? "" : state.titleBar,
+                            title,
+                            title);
+                    shortcutCfg.updateShortcut(shortcut, shortcut.alias);
+                }
                 return true;
             }
         }

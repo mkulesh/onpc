@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
@@ -35,6 +36,7 @@ import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -103,6 +105,14 @@ class MainNavigationDrawer
         case R.id.drawer_multiroom_5:
         case R.id.drawer_multiroom_6:
             navigationDevice(menuItem.getOrder());
+            break;
+        case R.id.drawer_shortcut_1:
+        case R.id.drawer_shortcut_2:
+        case R.id.drawer_shortcut_3:
+        case R.id.drawer_shortcut_4:
+        case R.id.drawer_shortcut_5:
+        case R.id.drawer_shortcut_6:
+            navigationShortcut(menuItem.getOrder());
             break;
         case R.id.drawer_app_settings:
             activity.startActivityForResult(new Intent(activity, PreferencesMain.class), MainActivity.SETTINGS_ACTIVITY_REQID);
@@ -293,6 +303,25 @@ class MainNavigationDrawer
                     }
                 }
                 break;
+            case R.id.drawer_shortcut:
+                g.setVisible(!configuration.favoriteShortcuts.getShortcuts().isEmpty());
+                for (int i = 0; i < g.getSubMenu().size(); i++)
+                {
+                    final MenuItem m = g.getSubMenu().getItem(i);
+                    if (g.isVisible() && i < configuration.favoriteShortcuts.getShortcuts().size())
+                    {
+                        final CfgFavoriteShortcuts.Shortcut shortcut =
+                                configuration.favoriteShortcuts.getShortcuts().get(i);
+                        updateItem(m, R.drawable.drawer_favorite_device, shortcut.alias, () -> editFavoriteShortcut(m, shortcut));
+                        m.setChecked(false);
+                    }
+                    else
+                    {
+                        m.setVisible(false);
+                        m.setChecked(false);
+                    }
+                }
+                break;
             default:
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
@@ -455,6 +484,99 @@ class MainNavigationDrawer
                     if (deleteBtn.isChecked())
                     {
                         configuration.favoriteConnections.deleteDevice(msg);
+                        m.setVisible(false);
+                        m.setChecked(false);
+                    }
+                    activity.getDeviceList().updateFavorites(false);
+                    dialog12.dismiss();
+                }).create();
+
+        dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+    }
+
+    /**
+     * Shortcuts
+     */
+    private void navigationShortcut(int idx)
+    {
+        final CfgFavoriteShortcuts.Shortcut shortcut = configuration.favoriteShortcuts.getShortcuts().get(idx);
+        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
+        final String asset = shortcut.path.isEmpty() ? "shortcut_1st_layer.xml" : "shortcut_2nd_layer.xml";
+        Utils.openAsset(activity, asset, (final String data) ->
+        {
+            final MessageScript messageScript = new MessageScript();
+            String script = data.replace("_SERVICE_", shortcut.service + "0");
+            if (!shortcut.path.isEmpty())
+            {
+                script = script.replace("_PATH_", shortcut.path);
+            }
+            script = script.replace("_ITEM_", shortcut.item);
+            messageScript.initialize(script);
+            activity.getStateManager().activateScript(messageScript);
+        });
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void editFavoriteShortcut(@NonNull final MenuItem m, @NonNull final CfgFavoriteShortcuts.Shortcut shortcut)
+    {
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_favorite_shortcut_layout, frameView);
+
+        final TextView deviceAddress = frameView.findViewById(R.id.favorite_shortcut_address);
+        deviceAddress.setText(shortcut.getLabel());
+
+        // Connection alias
+        final EditText deviceAlias = frameView.findViewById(R.id.favorite_shortcut_alias);
+        deviceAlias.setText(shortcut.alias);
+
+        final AppCompatRadioButton renameBtn = frameView.findViewById(R.id.favorite_shortcut_update);
+        final AppCompatRadioButton deleteBtn = frameView.findViewById(R.id.favorite_shortcut_delete);
+        final AppCompatRadioButton[] radioGroup = { renameBtn, deleteBtn };
+        for (AppCompatRadioButton r : radioGroup)
+        {
+            r.setOnClickListener((View v) ->
+            {
+                if (v != renameBtn)
+                {
+                    deviceAlias.clearFocus();
+                }
+                onRadioBtnChange(radioGroup, (AppCompatRadioButton) v);
+            });
+        }
+        deviceAlias.setOnFocusChangeListener((v, hasFocus) ->
+        {
+            if (hasFocus)
+            {
+                onRadioBtnChange(radioGroup, renameBtn);
+            }
+        });
+
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.drawer_edit_item);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.favorite_shortcut_edit)
+                .setIcon(icon)
+                .setCancelable(false)
+                .setView(frameView)
+                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
+                {
+                    Utils.showSoftKeyboard(activity, deviceAlias, false);
+                    dialog1.dismiss();
+                })
+                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
+                {
+                    Utils.showSoftKeyboard(activity, deviceAlias, false);
+                    // rename or delete favorite connection
+                    if (renameBtn.isChecked() && deviceAlias.getText().length() > 0)
+                    {
+                        final String alias = deviceAlias.getText().toString();
+                        final CfgFavoriteShortcuts.Shortcut newShortcut = configuration.favoriteShortcuts.updateShortcut(shortcut, alias);
+                        updateItem(m, R.drawable.drawer_favorite_device, newShortcut.alias, () -> editFavoriteShortcut(m, newShortcut));
+                    }
+                    if (deleteBtn.isChecked())
+                    {
+                        configuration.favoriteShortcuts.deleteShortcut(shortcut);
                         m.setVisible(false);
                         m.setChecked(false);
                     }

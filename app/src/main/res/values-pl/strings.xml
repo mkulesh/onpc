@@ -47,6 +47,7 @@
     <string name="drawer_open">Okno nawigacji</string>
     <string name="drawer_group_zone">Strefa</string>
     <string name="drawer_multiroom">Grupa</string>
+    <string name="drawer_shortcuts">Skróty</string>
     <string name="drawer_device">Urządzenie</string>
     <string name="drawer_device_connect">Połącz</string>
     <string name="drawer_device_search">Szukaj</string>
@@ -68,6 +69,10 @@
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Edytuj połączenie</string>
     <string name="favorite_connection_identifier">Adres MAC (opcjonalnie)</string>
+
+    <!-- Favorite shortcuts -->
+    <string name="favorite_shortcut_edit">Edytuj skrót</string>
+    <string name="favorite_shortcut_create">Utwórz skrót</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>

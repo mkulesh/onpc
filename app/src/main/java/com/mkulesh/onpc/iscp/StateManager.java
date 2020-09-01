@@ -62,6 +62,7 @@ import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
+import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
 import com.mkulesh.onpc.utils.Logging;
 
@@ -186,6 +187,22 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             {
                 script.start(state, messageChannel);
             }
+        }
+    }
+
+    public void activateScript(final MessageScript messageScript)
+    {
+        for (MessageScriptIf script : messageScripts)
+        {
+            if (script instanceof MessageScript)
+            {
+                messageScripts.remove(script);
+            }
+        }
+        if (messageScript.isValid())
+        {
+            messageScripts.add(messageScript);
+            messageScript.start(state, messageChannel);
         }
     }
 

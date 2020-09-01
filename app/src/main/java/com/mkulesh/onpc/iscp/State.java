@@ -177,7 +177,7 @@ public class State implements ConnectionIf
     public ServiceType serviceType = null; // service that is currently selected (may differs from currently playing)
     ListTitleInfoMsg.LayerInfo layerInfo = null;
     private ListTitleInfoMsg.UIType uiType = null;
-    int numberOfLayers = 0;
+    public int numberOfLayers = 0;
     public int numberOfItems = 0;
     public String titleBar = "";
     private final List<XmlListItemMsg> mediaItems = new ArrayList<>();
@@ -1491,5 +1491,10 @@ public class State implements ConnectionIf
         return (inputType == InputSelectorMsg.InputType.TV_CD) &&
                 (isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                         isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
+    }
+
+    public boolean isShortcutPossible()
+    {
+        return (numberOfLayers == 1 || numberOfLayers == 2) && titleBar != null && !titleBar.isEmpty() && serviceType != null;
     }
 }

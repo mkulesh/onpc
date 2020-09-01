@@ -47,6 +47,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="drawer_open">Ouvrir le panneau de navigation</string>
     <string name="drawer_group_zone">Zone</string>
     <string name="drawer_multiroom">Groupe</string>
+    <string name="drawer_shortcuts">Raccourcis</string>
     <string name="drawer_device">Équipement</string>
     <string name="drawer_device_connect">Connecter</string>
     <string name="drawer_device_search">Recherche</string>
@@ -68,6 +69,10 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Modifier la connexion</string>
     <string name="favorite_connection_identifier">Adresse MAC (optionelle)</string>
+
+    <!-- Favorite shortcuts -->
+    <string name="favorite_shortcut_edit">Modifier le raccourci</string>
+    <string name="favorite_shortcut_create">Créer un raccourci</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>

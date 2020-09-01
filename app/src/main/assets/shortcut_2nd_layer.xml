@@ -1,0 +1,9 @@
+<onpcScript host="" port="" zone="0">
+    <send cmd="PWR" par="QSTN" wait="PWR"/>
+    <send cmd="PWR" par="01" wait="PWR" resp="01"/>
+    <send cmd="SLI" par="QSTN" wait="SLI"/>
+    <send cmd="SLI" par="2B" wait="SLI" resp="2B"/>
+    <send cmd="NSV" par="_SERVICE_" wait="NLA" listitem="_PATH_"/>
+    <send cmd="NLA" par="_PATH_" wait="NLA" listitem="_ITEM_"/>
+    <send cmd="NLA" par="_ITEM_" wait="NTI" resp="_ITEM_"/>
+</onpcScript>
