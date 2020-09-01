@@ -34,7 +34,7 @@
 
             <TextView
                 style="@style/SecondaryTextViewStyle"
-                android:id="@+id/device_address"
+                android:id="@+id/favorite_connection_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -46,11 +46,11 @@
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/device_rename_connection"
+                    android:id="@+id/favorite_connection_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="@string/favorite_connection_update"
+                    android:text="@string/favorite_update"
                     android:checked="true" />
 
                 <LinearLayout
@@ -61,11 +61,11 @@
 
                     <TextView
                         style="@style/EditFieldCaptionStyle"
-                        android:text="@string/favorite_connection_alias" />
+                        android:text="@string/favorite_alias" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/PrimaryTextViewStyle"
-                        android:id="@+id/device_alias"
+                        android:id="@+id/favorite_connection_alias"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="300dp"
@@ -78,7 +78,7 @@
 
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/PrimaryTextViewStyle"
-                        android:id="@+id/device_identifier"
+                        android:id="@+id/favorite_connection_identifier"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="300dp"
@@ -96,11 +96,11 @@
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/device_delete_connection"
+                    android:id="@+id/favorite_connection_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="@string/favorite_connection_delete" />
+                    android:text="@string/favorite_delete" />
             </LinearLayout>
 
         </LinearLayout>

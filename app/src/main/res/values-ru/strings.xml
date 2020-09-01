@@ -63,12 +63,14 @@
     <string name="connect_dialog_port">Порт (необязательно)</string>
     <string name="connect_dialog_save">Сохранить соединение</string>
 
+    <!-- Favorites -->
+    <string name="favorite_alias">Имя</string>
+    <string name="favorite_update">Изменить</string>
+    <string name="favorite_delete">Удалить</string>
+
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Изменить соединение</string>
-    <string name="favorite_connection_update">Изменить</string>
-    <string name="favorite_connection_alias">Имя</string>
     <string name="favorite_connection_identifier">MAC адрес (необязательно)</string>
-    <string name="favorite_connection_delete">Удалить</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">Вкл/выкл</string>

@@ -33,13 +33,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
@@ -89,6 +94,38 @@ public class Utils
         os.close();
         stream.close();
         return os.toByteArray();
+    }
+
+    /**
+     * XML utils
+     */
+    public interface XmlProcessor
+    {
+        void onXmlOpened(final Element elem) throws Exception;
+    }
+
+    public static void openXml(Object owner, @NonNull final String data, XmlProcessor processor)
+    {
+        try
+        {
+            InputStream stream = new ByteArrayInputStream(data.getBytes(Charset.forName("UTF-8")));
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet
+            factory.setExpandEntityReferences(false);
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            final Document doc = builder.parse(stream);
+            final Node object = doc.getDocumentElement();
+            //noinspection ConstantConditions
+            if (object instanceof Element)
+            {
+                //noinspection CastCanBeRemovedNarrowingVariableType
+                processor.onXmlOpened((Element) object);
+            }
+        }
+        catch (Exception e)
+        {
+            Logging.info(owner, "Failed to parse XML: " + e.getLocalizedMessage());
+        }
     }
 
     public static boolean ensureAttribute(Element e, String type, String s)

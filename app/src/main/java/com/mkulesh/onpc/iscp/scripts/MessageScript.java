@@ -21,20 +21,13 @@ import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Utils;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Timer;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -128,68 +121,48 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     @Override
     public void initialize(@NonNull final String data)
     {
-        try
+        Utils.openXml(this, data, (final Element elem) ->
         {
-            InputStream stream = new ByteArrayInputStream(data.getBytes(Charset.forName("UTF-8")));
-            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet
-            factory.setExpandEntityReferences(false);
-            final DocumentBuilder builder = factory.newDocumentBuilder();
-            final Document doc = builder.parse(stream);
-            final Node object = doc.getDocumentElement();
-            //noinspection ConstantConditions
-            if (object instanceof Element)
+            if (elem.getTagName().equals("onpcScript"))
             {
-                //noinspection CastCanBeRemovedNarrowingVariableType
-                final Element elem = (Element) object;
-                if (elem.getTagName().equals("onpcScript"))
+                if (elem.getAttribute("host") != null)
                 {
-                    if (elem.getAttribute("host") != null)
-                    {
-                        host = elem.getAttribute("host");
-                    }
-                    port = Utils.parseIntAttribute(elem, "port", ConnectionIf.EMPTY_PORT);
-                    zone = Utils.parseIntAttribute(elem, "zone", ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+                    host = elem.getAttribute("host");
                 }
-                for (Node prop = elem.getFirstChild(); prop != null; prop = prop.getNextSibling())
+                port = Utils.parseIntAttribute(elem, "port", ConnectionIf.EMPTY_PORT);
+                zone = Utils.parseIntAttribute(elem, "zone", ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+            }
+            for (Node prop = elem.getFirstChild(); prop != null; prop = prop.getNextSibling())
+            {
+                if (prop instanceof Element)
                 {
-                    if (prop instanceof Element)
+                    final Element action = (Element) prop;
+                    if (action.getTagName().equals("send"))
                     {
-                        final Element action = (Element) prop;
-                        if (action.getTagName().equals("send"))
+                        final String cmd = action.getAttribute("cmd");
+                        if (cmd == null)
                         {
-                            final String cmd = action.getAttribute("cmd");
-                            if (cmd == null)
-                            {
-                                throw new Exception("missing command code in 'send' command");
-                            }
-                            String par = action.getAttribute("par");
-                            if (par == null)
-                            {
-                                throw new Exception("missing command parameter in 'send' command");
-                            }
-                            par = unEscape(par);
-                            final int milliseconds = Utils.parseIntAttribute(action, "wait", -1);
-                            final String wait = action.getAttribute("wait");
-                            final String resp = unEscape(action.getAttribute("resp"));
-                            final String listitem = unEscape(action.getAttribute("listitem"));
-                            if (milliseconds < 0 && (wait == null || wait.isEmpty()))
-                            {
-                                info(this, "missing time or wait CMD in 'send' command");
-                                return;
-                            }
-                            actions.add(new Action(cmd, par, milliseconds, wait, resp, listitem));
+                            throw new Exception("missing command code in 'send' command");
                         }
+                        String par = action.getAttribute("par");
+                        if (par == null)
+                        {
+                            throw new Exception("missing command parameter in 'send' command");
+                        }
+                        par = unEscape(par);
+                        final int milliseconds = Utils.parseIntAttribute(action, "wait", -1);
+                        final String wait = action.getAttribute("wait");
+                        final String resp = unEscape(action.getAttribute("resp"));
+                        final String listitem = unEscape(action.getAttribute("listitem"));
+                        if (milliseconds < 0 && (wait == null || wait.isEmpty()))
+                        {
+                            throw new Exception("missing time or wait CMD in 'send' command");
+                        }
+                        actions.add(new Action(cmd, par, milliseconds, wait, resp, listitem));
                     }
                 }
             }
-        }
-        catch (Exception e)
-        {
-            // TODO - raise this to the user's attention - they stuffed up and they'd probably like to know
-            info(this, "Failed to parse onpcScript pass in intent: " + e.getLocalizedMessage());
-            actions.clear();
-        }
+        });
         for (Action a : actions)
         {
             info(this, a.toString());
@@ -245,17 +218,17 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             {
                 continue;
             }
-            info(this, "Testing match between action " + a.toString() + " and msg " + msg.toString());
+            String log = "testing match between action " + a.toString() + " and msg " + msg.toString();
             if (a.state == ActionState.WAITING && a.wait != null)
             {
-                info(this, "a.wait='" + a.wait + "', msg.getCode()='" + msg.getCode() + "'");
                 if (a.wait.equals(msg.getCode()))
                 {
-                    info(this, "Message code matched");
+                    log += " -> code matched";
                     if ((a.resp == null || a.resp.isEmpty() || a.resp.equals(msg.getData())) &&
                             (a.listitem == null || a.listitem.isEmpty() || nlaListContainsItem(state, msg, a)))
                     {
-                        info(this, "Message parameters matched");
+                        log += " -> parameter matched";
+                        info(this, log);
                         a.state = ActionState.DONE;
                         // Process the next action
                         if (processAction(actionIterator, state, channel, msg) != null)
@@ -265,7 +238,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                         return;
                     }
                 }
-                info(this, "Continue waiting for " + a.toString());
+                info(this, log + " -> continue waiting");
                 return;
             }
             else
@@ -301,7 +274,22 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         }
         else
         {
-            EISCPMessage msg = new EISCPMessage(a.cmd, a.par);
+            EISCPMessage msg = null;
+            if (a.cmd.equals("NLA"))
+            {
+                final List<XmlListItemMsg> cloneMediaItems = state.cloneMediaItems();
+                for (XmlListItemMsg item : cloneMediaItems)
+                {
+                    if (item.getTitle().equals(a.par))
+                    {
+                        msg = item.getCmdMsg();
+                    }
+                }
+            }
+            if (msg == null)
+            {
+                msg = new EISCPMessage(a.cmd, a.par);
+            }
             channel.sendMessage(msg);
             info(this, "sent message " + msg.toString() + " for action " + a.toString());
         }

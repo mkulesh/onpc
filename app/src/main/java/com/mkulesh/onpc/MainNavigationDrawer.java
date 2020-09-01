@@ -102,7 +102,7 @@ class MainNavigationDrawer
         case R.id.drawer_multiroom_4:
         case R.id.drawer_multiroom_5:
         case R.id.drawer_multiroom_6:
-            navigationMultiroom(menuItem.getOrder());
+            navigationDevice(menuItem.getOrder());
             break;
         case R.id.drawer_app_settings:
             activity.startActivityForResult(new Intent(activity, PreferencesMain.class), MainActivity.SETTINGS_ACTIVITY_REQID);
@@ -212,15 +212,6 @@ class MainNavigationDrawer
         Logging.info(this, "changed zone: " + idx);
         configuration.setActiveZone(idx);
         activity.restartActivity();
-    }
-
-    private void navigationMultiroom(int idx)
-    {
-        Logging.info(this, "changed multiroom device: " + idx);
-        if (idx < devices.size())
-        {
-            activity.connectToDevice(devices.get(idx));
-        }
     }
 
     private void updateNavigationHeader(final String versionName)
@@ -345,9 +336,9 @@ class MainNavigationDrawer
     {
         if (m.getActionView() != null && m.getActionView() instanceof LinearLayout)
         {
-            final LinearLayout l = (LinearLayout)m.getActionView();
+            final LinearLayout l = (LinearLayout) m.getActionView();
             ((AppCompatImageView) l.findViewWithTag("ICON")).setImageResource(iconId);
-            ((AppCompatTextView)l.findViewWithTag("TEXT")).setText(title);
+            ((AppCompatTextView) l.findViewWithTag("TEXT")).setText(title);
             final AppCompatImageButton editBtn = l.findViewWithTag("EDIT");
             if (editListener != null)
             {
@@ -361,6 +352,18 @@ class MainNavigationDrawer
             }
         }
         m.setVisible(true);
+    }
+
+    /**
+     * Multiroom
+     */
+    private void navigationDevice(int idx)
+    {
+        Logging.info(this, "selected multiroom device: " + idx);
+        if (idx < devices.size())
+        {
+            activity.connectToDevice(devices.get(idx));
+        }
     }
 
     private void setDeviceVisible(@NonNull final MenuItem m, final BroadcastResponseMsg msg, @Nullable final State state)
@@ -383,22 +386,22 @@ class MainNavigationDrawer
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_favorite_connect_layout, frameView);
 
-        final TextView deviceAddress = frameView.findViewById(R.id.device_address);
+        final TextView deviceAddress = frameView.findViewById(R.id.favorite_connection_address);
         deviceAddress.setText(String.format("%s %s",
                 activity.getString(R.string.connect_dialog_address),
                 msg.getHostAndPort()));
 
         // Connection alias
-        final EditText deviceAlias = frameView.findViewById(R.id.device_alias);
+        final EditText deviceAlias = frameView.findViewById(R.id.favorite_connection_alias);
         deviceAlias.setText(msg.getAlias());
 
         // Optional identifier
-        final EditText deviceIdentifier = frameView.findViewById(R.id.device_identifier);
+        final EditText deviceIdentifier = frameView.findViewById(R.id.favorite_connection_identifier);
         deviceIdentifier.setText(msg.getIdentifier());
 
-        final AppCompatRadioButton renameBtn = frameView.findViewById(R.id.device_rename_connection);
-        final AppCompatRadioButton deleteBtn = frameView.findViewById(R.id.device_delete_connection);
-        final AppCompatRadioButton[] radioGroup = {renameBtn, deleteBtn};
+        final AppCompatRadioButton renameBtn = frameView.findViewById(R.id.favorite_connection_update);
+        final AppCompatRadioButton deleteBtn = frameView.findViewById(R.id.favorite_connection_delete);
+        final AppCompatRadioButton[] radioGroup = { renameBtn, deleteBtn };
         for (AppCompatRadioButton r : radioGroup)
         {
             r.setOnClickListener((View v) ->
@@ -408,7 +411,7 @@ class MainNavigationDrawer
                     deviceAlias.clearFocus();
                     deviceIdentifier.clearFocus();
                 }
-                onRadioBtnChange(radioGroup, (AppCompatRadioButton)v);
+                onRadioBtnChange(radioGroup, (AppCompatRadioButton) v);
             });
         }
         deviceAlias.setOnFocusChangeListener((v, hasFocus) -> {

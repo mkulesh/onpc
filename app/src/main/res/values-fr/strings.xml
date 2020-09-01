@@ -60,12 +60,14 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="connect_dialog_port">Port (optionel)</string>
     <string name="connect_dialog_save">Enregistrer la connexion</string>
 
+    <!-- Favorites -->
+    <string name="favorite_alias">Nom</string>
+    <string name="favorite_update">Modifier</string>
+    <string name="favorite_delete">Supprimer</string>
+
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Modifier la connexion</string>
-    <string name="favorite_connection_update">Modifier</string>
-    <string name="favorite_connection_alias">Nom</string>
     <string name="favorite_connection_identifier">Adresse MAC (optionelle)</string>
-    <string name="favorite_connection_delete">Supprimer</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>

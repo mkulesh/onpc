@@ -60,12 +60,14 @@
     <string name="connect_dialog_port">Port (optional)</string>
     <string name="connect_dialog_save">Verbindung speichern</string>
 
+    <!-- Favorites -->
+    <string name="favorite_alias">Name</string>
+    <string name="favorite_update">Bearbeiten</string>
+    <string name="favorite_delete">Löschen</string>
+
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Verbindung bearbeiten</string>
-    <string name="favorite_connection_update">Bearbeiten</string>
-    <string name="favorite_connection_alias">Name</string>
     <string name="favorite_connection_identifier">MAC Adresse (optional)</string>
-    <string name="favorite_connection_delete">Löschen</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
