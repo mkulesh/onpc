@@ -261,7 +261,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             return null;
         }
 
-        Action a = actionIterator.next();
+        final Action a = actionIterator.next();
         if (a.cmd.equals("NA") && a.par.equals("NA"))
         {
             info(this, "no action message to send");
@@ -304,7 +304,8 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                 @Override
                 public void run()
                 {
-                    info(this, "timer expired");
+                    info(MessageScript.this, "timer expired");
+                    a.state = ActionState.DONE;
                     processAction(actionIterator, state, channel, null);
                 }
             }, a.milliseconds);

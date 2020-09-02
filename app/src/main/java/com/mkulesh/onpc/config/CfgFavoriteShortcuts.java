@@ -13,10 +13,14 @@
 
 package com.mkulesh.onpc.config;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -27,6 +31,7 @@ import java.util.List;
 
 public class CfgFavoriteShortcuts
 {
+    public static final int FAVORITE_SHORTCUT_MAX = 6;
     private static final String FAVORITE_SHORTCUT_TAG = "favoriteShortcut";
     private static final String FAVORITE_SHORTCUT_NUMBER = "favorite_shortcut_number";
     private static final String FAVORITE_SHORTCUT_ITEM = "favorite_shortcut_item";
@@ -34,6 +39,7 @@ public class CfgFavoriteShortcuts
     public static class Shortcut
     {
         public final int id;
+        public final String input;
         public final String service;
         public final String path;
         public final String item;
@@ -42,6 +48,7 @@ public class CfgFavoriteShortcuts
         Shortcut(final Element e)
         {
             this.id = Utils.parseIntAttribute(e, "id", 0);
+            this.input = e.getAttribute("input");
             this.service = e.getAttribute("service");
             this.path = e.getAttribute("path");
             this.item = e.getAttribute("item");
@@ -51,15 +58,17 @@ public class CfgFavoriteShortcuts
         Shortcut(final Shortcut old, final String alias)
         {
             this.id = old.id;
+            this.input = old.input;
             this.service = old.service;
             this.path = old.path;
             this.item = old.item;
             this.alias = alias;
         }
 
-        public Shortcut(final int id, final String service, final String path, final String item, final String alias)
+        public Shortcut(final int id, final String input, final String service, final String path, final String item, final String alias)
         {
             this.id = id;
+            this.input = input;
             this.service = service;
             this.path = path;
             this.item = item;
@@ -72,21 +81,41 @@ public class CfgFavoriteShortcuts
         {
             return "<" + FAVORITE_SHORTCUT_TAG
                     + " id=\"" + id + "\""
+                    + " input=\"" + input + "\""
                     + " service=\"" + service + "\""
                     + " path=\"" + path + "\""
                     + " item=\"" + item + "\""
                     + " alias=\"" + alias + "\" />";
         }
 
-        public String getLabel()
+        public String getLabel(Context context)
         {
-            String label = "";
+            StringBuilder label = new StringBuilder();
+
+            final InputSelectorMsg.InputType inputType =
+                    (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
+                            input, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
+            if (inputType != InputSelectorMsg.InputType.NONE)
+            {
+                label.append(context.getString(inputType.getDescriptionId())).append("/");
+            }
+
+            if (inputType == InputSelectorMsg.InputType.NET)
+            {
+                final ServiceType serviceType = (ServiceType) ISCPMessage.searchParameter(
+                        service, ServiceType.values(), ServiceType.UNKNOWN);
+                if (serviceType != ServiceType.UNKNOWN)
+                {
+                    label.append(context.getString(serviceType.getDescriptionId())).append("/");
+                }
+            }
+
             if (!path.isEmpty())
             {
-                label += path + "/";
+                label.append(path).append("/");
             }
-            label += item;
-            return label;
+            label.append(item);
+            return label.toString();
         }
     }
 

@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -247,13 +248,22 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 if (state.isShortcutPossible())
                 {
                     final CfgFavoriteShortcuts shortcutCfg = activity.getConfiguration().favoriteShortcuts;
-                    final CfgFavoriteShortcuts.Shortcut shortcut = new CfgFavoriteShortcuts.Shortcut(
-                            shortcutCfg.getShortcuts().size(),
-                            state.serviceType.getCode(),
-                            state.numberOfLayers == 1 ? "" : state.titleBar,
-                            title,
-                            title);
-                    shortcutCfg.updateShortcut(shortcut, shortcut.alias);
+                    if (shortcutCfg.getShortcuts().size() < CfgFavoriteShortcuts.FAVORITE_SHORTCUT_MAX)
+                    {
+                        final CfgFavoriteShortcuts.Shortcut shortcut = new CfgFavoriteShortcuts.Shortcut(
+                                shortcutCfg.getShortcuts().size(),
+                                state.inputType.getCode(),
+                                state.serviceType.getCode(),
+                                state.numberOfLayers == 1 ? "" : state.titleBar,
+                                title,
+                                title);
+                        shortcutCfg.updateShortcut(shortcut, shortcut.alias);
+                        Toast.makeText(activity, R.string.favorite_shortcut_added, Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(activity, R.string.favorite_shortcut_failed, Toast.LENGTH_LONG).show();
+                    }
                 }
                 return true;
             }

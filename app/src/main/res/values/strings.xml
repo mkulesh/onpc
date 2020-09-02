@@ -75,6 +75,8 @@
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Edit shortcut</string>
     <string name="favorite_shortcut_create">Create shortcut</string>
+    <string name="favorite_shortcut_added">Shortcut added into app menu</string>
+    <string name="favorite_shortcut_failed">Cannot create shortcut: maximum number reached</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>

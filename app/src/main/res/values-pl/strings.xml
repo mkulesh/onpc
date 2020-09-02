@@ -73,6 +73,8 @@
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Edytuj skrót</string>
     <string name="favorite_shortcut_create">Utwórz skrót</string>
+    <string name="favorite_shortcut_added">Dodano skrót do menu aplikacji</string>
+    <string name="favorite_shortcut_failed">Nie można utworzyć skrótu: osiągnięto maksymalną liczbę</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>

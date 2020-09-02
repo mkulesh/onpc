@@ -73,6 +73,8 @@
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Verknüpfung bearbeiten</string>
     <string name="favorite_shortcut_create">Verknüpfung erstellen</string>
+    <string name="favorite_shortcut_added">Verknüpfung zum App-Menü hinzugefügt</string>
+    <string name="favorite_shortcut_failed">Verknüpfung kann nicht erstellt werden: maximale Anzahl erreicht</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>

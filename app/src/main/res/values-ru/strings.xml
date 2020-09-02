@@ -76,6 +76,8 @@
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Изменить ярлык</string>
     <string name="favorite_shortcut_create">Создать ярлык</string>
+    <string name="favorite_shortcut_added">Ярлык добавлен в меню приложения</string>
+    <string name="favorite_shortcut_failed">Невозможно создать ярлык: достигнуто максимальное количество</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">Вкл/выкл</string>

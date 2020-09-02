@@ -73,6 +73,8 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Modifier le raccourci</string>
     <string name="favorite_shortcut_create">Créer un raccourci</string>
+    <string name="favorite_shortcut_added">Raccourci ajouté dans le menu de l\'application</string>
+    <string name="favorite_shortcut_failed">Impossible de créer le raccourci: nombre maximum atteint</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>

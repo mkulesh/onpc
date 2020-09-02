@@ -506,7 +506,8 @@ class MainNavigationDrawer
         Utils.openAsset(activity, asset, (final String data) ->
         {
             final MessageScript messageScript = new MessageScript();
-            String script = data.replace("_SERVICE_", shortcut.service + "0");
+            String script = data.replace("_INPUT_", shortcut.input);
+            script = script.replace("_SERVICE_", shortcut.service + "0");
             if (!shortcut.path.isEmpty())
             {
                 script = script.replace("_PATH_", shortcut.path);
@@ -524,7 +525,7 @@ class MainNavigationDrawer
         activity.getLayoutInflater().inflate(R.layout.dialog_favorite_shortcut_layout, frameView);
 
         final TextView deviceAddress = frameView.findViewById(R.id.favorite_shortcut_address);
-        deviceAddress.setText(shortcut.getLabel());
+        deviceAddress.setText(shortcut.getLabel(activity));
 
         // Connection alias
         final EditText deviceAlias = frameView.findViewById(R.id.favorite_shortcut_alias);
