@@ -25,6 +25,7 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,18 +42,27 @@ public class CfgFavoriteShortcuts
         public final int id;
         public final String input;
         public final String service;
-        public final String path;
         public final String item;
         public final String alias;
+        public final List<String> pathItems = new ArrayList<>();
 
         Shortcut(final Element e)
         {
             this.id = Utils.parseIntAttribute(e, "id", 0);
             this.input = e.getAttribute("input");
             this.service = e.getAttribute("service");
-            this.path = e.getAttribute("path");
             this.item = e.getAttribute("item");
             this.alias = e.getAttribute("alias");
+            for (Node dir = e.getFirstChild(); dir != null; dir = dir.getNextSibling())
+            {
+                if (dir instanceof Element)
+                {
+                    if (((Element) dir).getTagName().equals("dir"))
+                    {
+                        this.pathItems.add(((Element) dir).getAttribute("name"));
+                    }
+                }
+            }
         }
 
         Shortcut(final Shortcut old, final String alias)
@@ -60,32 +70,46 @@ public class CfgFavoriteShortcuts
             this.id = old.id;
             this.input = old.input;
             this.service = old.service;
-            this.path = old.path;
             this.item = old.item;
             this.alias = alias;
+            this.pathItems.addAll(old.pathItems);
         }
 
-        public Shortcut(final int id, final String input, final String service, final String path, final String item, final String alias)
+        public Shortcut(final int id, final String input, final String service, final String item, final String alias)
         {
             this.id = id;
             this.input = input;
             this.service = service;
-            this.path = path;
             this.item = item;
             this.alias = alias;
+        }
+
+        public void setPathItems(final List<String> path)
+        {
+            pathItems.clear();
+            for (int i = 1; i < path.size(); i++)
+            {
+                pathItems.add(path.get(i));
+            }
         }
 
         @Override
         @NonNull
         public String toString()
         {
-            return "<" + FAVORITE_SHORTCUT_TAG
-                    + " id=\"" + id + "\""
-                    + " input=\"" + input + "\""
-                    + " service=\"" + service + "\""
-                    + " path=\"" + path + "\""
-                    + " item=\"" + item + "\""
-                    + " alias=\"" + alias + "\" />";
+            StringBuilder label = new StringBuilder();
+            label.append("<").append(FAVORITE_SHORTCUT_TAG);
+            label.append(" id=\"").append(id).append("\"");
+            label.append(" input=\"").append(input).append("\"");
+            label.append(" service=\"").append(service).append("\"");
+            label.append(" item=\"").append(item).append("\"");
+            label.append(" alias=\"").append(alias).append("\">");
+            for (String dir : pathItems)
+            {
+                label.append("<dir name=\"").append(dir).append("\"/>");
+            }
+            label.append("</" + FAVORITE_SHORTCUT_TAG + ">");
+            return label.toString();
         }
 
         public String getLabel(Context context)
@@ -110,9 +134,9 @@ public class CfgFavoriteShortcuts
                 }
             }
 
-            if (!path.isEmpty())
+            for (String dir : pathItems)
             {
-                label.append(path).append("/");
+                label.append(dir).append("/");
             }
             label.append(item);
             return label.toString();

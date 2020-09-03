@@ -183,6 +183,7 @@ public class State implements ConnectionIf
     private final List<XmlListItemMsg> mediaItems = new ArrayList<>();
     final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
     private final List<String> listInfoItems = new ArrayList<>();
+    public final List<String> pathItems = new ArrayList<>();
 
     // Multiroom
     public String multiroomDeviceId = "";
@@ -1054,6 +1055,26 @@ public class State implements ConnectionIf
             numberOfItems = msg.getNumberOfItems();
             changed = true;
         }
+        // Update path items
+        for (int i = pathItems.size(); i < numberOfLayers; i++)
+        {
+            pathItems.add("");
+        }
+        if (uiType != ListTitleInfoMsg.UIType.PLAYBACK)
+        {
+            if (numberOfLayers > 0)
+            {
+                pathItems.set(numberOfLayers - 1, titleBar);
+                while (pathItems.size() > numberOfLayers)
+                {
+                    pathItems.remove(pathItems.size() - 1);
+                }
+            }
+            else
+            {
+                pathItems.clear();
+            }
+        }
         return changed;
     }
 
@@ -1495,6 +1516,6 @@ public class State implements ConnectionIf
 
     public boolean isShortcutPossible()
     {
-        return (numberOfLayers == 1 || numberOfLayers == 2) && titleBar != null && !titleBar.isEmpty() && serviceType != null;
+        return numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
     }
 }

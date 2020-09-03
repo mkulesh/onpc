@@ -502,20 +502,40 @@ class MainNavigationDrawer
     {
         final CfgFavoriteShortcuts.Shortcut shortcut = configuration.favoriteShortcuts.getShortcuts().get(idx);
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        final String asset = shortcut.path.isEmpty() ? "shortcut_1st_layer.xml" : "shortcut_2nd_layer.xml";
-        Utils.openAsset(activity, asset, (final String data) ->
+        final StringBuilder data = new StringBuilder();
+        data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
+        data.append("<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>");
+        data.append("<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>");
+        data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>");
+        data.append("<send cmd=\"SLI\" par=\"").append(shortcut.input)
+                .append("\" wait=\"SLI\" resp=\"").append(shortcut.input).append("\"/>");
+        data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLT\"/>");
+        if (shortcut.pathItems.isEmpty())
         {
-            final MessageScript messageScript = new MessageScript();
-            String script = data.replace("_INPUT_", shortcut.input);
-            script = script.replace("_SERVICE_", shortcut.service + "0");
-            if (!shortcut.path.isEmpty())
+            data.append("<send cmd=\"NSV\" par=\"").append(shortcut.service)
+                    .append("0\" wait=\"NLA\" listitem=\"").append(shortcut.item).append("\"/>");
+        }
+        else
+        {
+            String firstPath = shortcut.pathItems.get(0);
+            data.append("<send cmd=\"NSV\" par=\"").append(shortcut.service)
+                    .append("0\" wait=\"NLA\" listitem=\"").append(firstPath).append("\"/>");
+            for (int i = 0; i < shortcut.pathItems.size() - 1; i++)
             {
-                script = script.replace("_PATH_", shortcut.path);
+                firstPath = shortcut.pathItems.get(i);
+                String nextPath = shortcut.pathItems.get(i + 1);
+                data.append("<send cmd=\"NLA\" par=\"").append(firstPath)
+                        .append("\" wait=\"NLA\" listitem=\"").append(nextPath).append("\"/>");
             }
-            script = script.replace("_ITEM_", shortcut.item);
-            messageScript.initialize(script);
-            activity.getStateManager().activateScript(messageScript);
-        });
+            String lastPath = shortcut.pathItems.get(shortcut.pathItems.size() - 1);
+            data.append("<send cmd=\"NLA\" par=\"").append(lastPath)
+                    .append("\" wait=\"NLA\" listitem=\"").append(shortcut.item).append("\"/>");
+        }
+        data.append("<send cmd=\"NLA\" par=\"").append(shortcut.item).append("\" wait=\"1000\"/>");
+        data.append("</onpcScript>");
+        final MessageScript messageScript = new MessageScript();
+        messageScript.initialize(data.toString());
+        activity.getStateManager().activateScript(messageScript);
     }
 
     @SuppressLint("DefaultLocale")

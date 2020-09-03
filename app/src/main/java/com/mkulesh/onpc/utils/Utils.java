@@ -99,43 +99,6 @@ public class Utils
         return os.toByteArray();
     }
 
-
-    /**
-     * Assets utils
-     */
-    public interface AssetProcessor
-    {
-        void onAssetOpened(final String data);
-    }
-
-    public static void openAsset(Context context, @NonNull final String asset, AssetProcessor processor)
-    {
-        try
-        {
-            final AssetManager am = context.getAssets();
-            InputStream fileStream = am.open(asset);
-            BufferedReader r = new BufferedReader(new InputStreamReader(fileStream));
-            String line;
-            StringBuilder script = new StringBuilder();
-            while ((line = r.readLine()) != null)
-            {
-                // ignore empty strings
-                final String trimmedString = line.trim();
-                if (trimmedString.isEmpty())
-                {
-                    continue;
-                }
-                script.append(trimmedString);
-            }
-            processor.onAssetOpened(script.toString());
-            fileStream.close();
-        }
-        catch (Exception e)
-        {
-            Logging.info(context, "Can not open asset " + asset);
-        }
-    }
-
     /**
      * XML utils
      */

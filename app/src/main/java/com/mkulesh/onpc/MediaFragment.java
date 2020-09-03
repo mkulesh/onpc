@@ -254,9 +254,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                                 shortcutCfg.getShortcuts().size(),
                                 state.inputType.getCode(),
                                 state.serviceType.getCode(),
-                                state.numberOfLayers == 1 ? "" : state.titleBar,
                                 title,
                                 title);
+                        if (state.numberOfLayers > 1)
+                        {
+                            shortcut.setPathItems(state.pathItems);
+                        }
                         shortcutCfg.updateShortcut(shortcut, shortcut.alias);
                         Toast.makeText(activity, R.string.favorite_shortcut_added, Toast.LENGTH_LONG).show();
                     }

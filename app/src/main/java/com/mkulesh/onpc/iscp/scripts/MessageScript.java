@@ -84,7 +84,6 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             return "Action"
                     + ":" + cmd
                     + "," + par
-                    + "," + milliseconds
                     + "," + wait
                     + "," + resp
                     + "," + listitem
