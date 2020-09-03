@@ -536,6 +536,7 @@ class MainNavigationDrawer
         final MessageScript messageScript = new MessageScript();
         messageScript.initialize(data.toString());
         activity.getStateManager().activateScript(messageScript);
+        activity.setOpenedTab(1);
     }
 
     @SuppressLint("DefaultLocale")

@@ -133,15 +133,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
 
         initGUI();
-        try
-        {
-            viewPager.setCurrentItem(configuration.getOpenedTab());
-        }
-        catch (Exception ex)
-        {
-            Logging.info(this, "can not restore opened tab: " + ex.getLocalizedMessage());
-        }
-
+        setOpenedTab(configuration.getOpenedTab());
         updateToolbar(null);
     }
 
@@ -663,5 +655,18 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         final String name = (configuration.isFriendlyNames() && state != null) ?
                 state.multiroomNames.get(msg.getHostAndPort()) : null;
         return (name != null) ? name : msg.getDescription();
+    }
+
+    public void setOpenedTab(int openedTab)
+    {
+        try
+        {
+            viewPager.setCurrentItem(openedTab);
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "can not change opened tab: " + ex.getLocalizedMessage());
+        }
+
     }
 }
