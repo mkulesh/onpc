@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private final AtomicBoolean connectToAnyDevice = new AtomicBoolean(false);
     int orientation;
     private Intent intent = null;
-    private final MessageScript messageScript = new MessageScript();
+    private MessageScript messageScript;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             final String data = intent.getDataString();
             if (data != null && !data.isEmpty())
             {
-                messageScript.initialize(data);
+                messageScript = new MessageScript(this, data);
             }
         }
 
@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 messageScripts.add(new AutoPower());
             }
             messageScripts.add(new RequestListeningMode());
-            if (messageScript.isValid())
+            if (messageScript != null && messageScript.isValid())
             {
                 messageScripts.add(messageScript);
                 zone = messageScript.getZone();

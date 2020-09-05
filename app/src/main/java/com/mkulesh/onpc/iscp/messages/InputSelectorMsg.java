@@ -26,7 +26,7 @@ import androidx.annotation.StringRes;
  */
 public class InputSelectorMsg extends ZonedMessage
 {
-    final static String CODE = "SLI";
+    public final static String CODE = "SLI";
     final static String ZONE2_CODE = "SLZ";
     final static String ZONE3_CODE = "SL3";
     final static String ZONE4_CODE = "SL4";

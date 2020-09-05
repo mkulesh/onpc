@@ -32,7 +32,7 @@ import java.util.List;
 
 public class CfgFavoriteShortcuts
 {
-    public static final int FAVORITE_SHORTCUT_MAX = 6;
+    public static final int FAVORITE_SHORTCUT_MAX = 10;
     private static final String FAVORITE_SHORTCUT_TAG = "favoriteShortcut";
     private static final String FAVORITE_SHORTCUT_NUMBER = "favorite_shortcut_number";
     private static final String FAVORITE_SHORTCUT_ITEM = "favorite_shortcut_item";
@@ -40,8 +40,8 @@ public class CfgFavoriteShortcuts
     public static class Shortcut
     {
         public final int id;
-        public final String input;
-        public final String service;
+        public final InputSelectorMsg.InputType input;
+        public final ServiceType service;
         public final String item;
         public final String alias;
         public final List<String> pathItems = new ArrayList<>();
@@ -49,8 +49,10 @@ public class CfgFavoriteShortcuts
         Shortcut(final Element e)
         {
             this.id = Utils.parseIntAttribute(e, "id", 0);
-            this.input = e.getAttribute("input");
-            this.service = e.getAttribute("service");
+            this.input = (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
+                    e.getAttribute("input"), InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
+            this.service = (ServiceType) ISCPMessage.searchParameter(
+                    e.getAttribute("service"), ServiceType.values(), ServiceType.UNKNOWN);
             this.item = e.getAttribute("item");
             this.alias = e.getAttribute("alias");
             for (Node dir = e.getFirstChild(); dir != null; dir = dir.getNextSibling())
@@ -75,7 +77,7 @@ public class CfgFavoriteShortcuts
             this.pathItems.addAll(old.pathItems);
         }
 
-        public Shortcut(final int id, final String input, final String service, final String item, final String alias)
+        public Shortcut(final int id, final InputSelectorMsg.InputType input, final ServiceType service, final String item, final String alias)
         {
             this.id = id;
             this.input = input;
@@ -100,8 +102,8 @@ public class CfgFavoriteShortcuts
             StringBuilder label = new StringBuilder();
             label.append("<").append(FAVORITE_SHORTCUT_TAG);
             label.append(" id=\"").append(id).append("\"");
-            label.append(" input=\"").append(input).append("\"");
-            label.append(" service=\"").append(service).append("\"");
+            label.append(" input=\"").append(input.getCode()).append("\"");
+            label.append(" service=\"").append(service.getCode()).append("\"");
             label.append(" item=\"").append(item).append("\"");
             label.append(" alias=\"").append(alias).append("\">");
             for (String dir : pathItems)
@@ -116,22 +118,14 @@ public class CfgFavoriteShortcuts
         {
             StringBuilder label = new StringBuilder();
 
-            final InputSelectorMsg.InputType inputType =
-                    (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
-                            input, InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
-            if (inputType != InputSelectorMsg.InputType.NONE)
+            if (input != InputSelectorMsg.InputType.NONE)
             {
-                label.append(context.getString(inputType.getDescriptionId())).append("/");
+                label.append(context.getString(input.getDescriptionId())).append("/");
             }
 
-            if (inputType == InputSelectorMsg.InputType.NET)
+            if (input == InputSelectorMsg.InputType.NET && service != ServiceType.UNKNOWN)
             {
-                final ServiceType serviceType = (ServiceType) ISCPMessage.searchParameter(
-                        service, ServiceType.values(), ServiceType.UNKNOWN);
-                if (serviceType != ServiceType.UNKNOWN)
-                {
-                    label.append(context.getString(serviceType.getDescriptionId())).append("/");
-                }
+                label.append(context.getString(service.getDescriptionId())).append("/");
             }
 
             for (String dir : pathItems)

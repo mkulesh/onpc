@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
  */
 public class NetworkServiceMsg extends ISCPMessage
 {
-    private final static String CODE = "NSV";
+    public final static String CODE = "NSV";
 
     private final ServiceType service;
 

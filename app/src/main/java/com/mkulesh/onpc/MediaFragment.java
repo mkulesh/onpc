@@ -252,8 +252,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     {
                         final CfgFavoriteShortcuts.Shortcut shortcut = new CfgFavoriteShortcuts.Shortcut(
                                 shortcutCfg.getShortcuts().size(),
-                                state.inputType.getCode(),
-                                state.serviceType.getCode(),
+                                state.inputType,
+                                state.serviceType,
                                 title,
                                 title);
                         if (state.numberOfLayers > 1)

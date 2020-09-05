@@ -35,7 +35,9 @@ import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
+import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
@@ -112,6 +114,10 @@ class MainNavigationDrawer
         case R.id.drawer_shortcut_4:
         case R.id.drawer_shortcut_5:
         case R.id.drawer_shortcut_6:
+        case R.id.drawer_shortcut_7:
+        case R.id.drawer_shortcut_8:
+        case R.id.drawer_shortcut_9:
+        case R.id.drawer_shortcut_10:
             navigationShortcut(menuItem.getOrder());
             break;
         case R.id.drawer_app_settings:
@@ -504,22 +510,30 @@ class MainNavigationDrawer
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
         final StringBuilder data = new StringBuilder();
         data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
-        data.append("<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>");
         data.append("<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>");
-        data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>");
-        data.append("<send cmd=\"SLI\" par=\"").append(shortcut.input)
-                .append("\" wait=\"SLI\" resp=\"").append(shortcut.input).append("\"/>");
-        data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLT\"/>");
-        if (shortcut.pathItems.isEmpty())
+        data.append("<send cmd=\"SLI\" par=\"").append(shortcut.input.getCode())
+                .append("\" wait=\"SLI\" resp=\"").append(shortcut.input.getCode()).append("\"/>");
+
+        // Go to the top level. Response depends on the input type
+        String firstPath = shortcut.pathItems.isEmpty() ? shortcut.item : shortcut.pathItems.get(0);
+        if (shortcut.input == InputSelectorMsg.InputType.NET && shortcut.service != ServiceType.UNKNOWN)
         {
-            data.append("<send cmd=\"NSV\" par=\"").append(shortcut.service)
-                    .append("0\" wait=\"NLA\" listitem=\"").append(shortcut.item).append("\"/>");
+            data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"")
+                    .append(activity.getString(shortcut.service.getDescriptionId())).append("\"/>");
         }
         else
         {
-            String firstPath = shortcut.pathItems.get(0);
-            data.append("<send cmd=\"NSV\" par=\"").append(shortcut.service)
-                    .append("0\" wait=\"NLA\" listitem=\"").append(firstPath).append("\"/>");
+            data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"")
+                    .append(firstPath).append("\"/>");
+        }
+
+        // Select target service
+        data.append("<send cmd=\"NSV\" par=\"").append(shortcut.service.getCode())
+                .append("0\" wait=\"NLA\" listitem=\"").append(firstPath).append("\"/>");
+
+        // Apply target path, if necessary
+        if (!shortcut.pathItems.isEmpty())
+        {
             for (int i = 0; i < shortcut.pathItems.size() - 1; i++)
             {
                 firstPath = shortcut.pathItems.get(i);
@@ -531,10 +545,11 @@ class MainNavigationDrawer
             data.append("<send cmd=\"NLA\" par=\"").append(lastPath)
                     .append("\" wait=\"NLA\" listitem=\"").append(shortcut.item).append("\"/>");
         }
+
+        // Select target item
         data.append("<send cmd=\"NLA\" par=\"").append(shortcut.item).append("\" wait=\"1000\"/>");
         data.append("</onpcScript>");
-        final MessageScript messageScript = new MessageScript();
-        messageScript.initialize(data.toString());
+        final MessageScript messageScript = new MessageScript(activity, data.toString());
         activity.getStateManager().activateScript(messageScript);
         activity.setOpenedTab(1);
     }

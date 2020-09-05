@@ -12,12 +12,19 @@
  */
 package com.mkulesh.onpc.iscp.scripts;
 
+import android.content.Context;
+
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
+import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
+import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -26,7 +33,6 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Timer;
 
 import androidx.annotation.NonNull;
@@ -82,12 +88,12 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         public String toString()
         {
             return "Action"
-                    + ":" + cmd
+                    + "[" + cmd
                     + "," + par
                     + "," + wait
                     + "," + resp
                     + "," + listitem
-                    + "," + ACTION_STATES[state.ordinal()];
+                    + "]/" + ACTION_STATES[state.ordinal()];
         }
 
     }
@@ -101,6 +107,14 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
 
     // Actions to be performed
     private final List<Action> actions = new ArrayList<>();
+
+    private final Context context;
+
+    public MessageScript(Context context, @NonNull final String data)
+    {
+        this.context = context;
+        initialize(data);
+    }
 
     @Override
     public boolean isValid()
@@ -173,25 +187,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     {
         // Startup handling.
         info(this, "started script");
-        processAction(actions.listIterator(), state, channel, null);
-    }
-
-    private boolean nlaListContainsItem(@NonNull final State state, @NonNull ISCPMessage msg, @NonNull Action a)
-    {
-        if (!msg.getCode().equals("NLA") ||
-                a.listitem == null || a.listitem.isEmpty())
-        {
-            return false;
-        }
-        final List<XmlListItemMsg> cloneMediaItems = state.cloneMediaItems();
-        for (XmlListItemMsg item : cloneMediaItems)
-        {
-            if (item.getTitle().equals(a.listitem))
-            {
-                return true;
-            }
-        }
-        return false;
+        processNextActions(state, channel);
     }
 
     /**
@@ -209,33 +205,21 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     @Override
     public void processMessage(@NonNull ISCPMessage msg, @NonNull final State state, @NonNull MessageChannel channel)
     {
-        ListIterator<Action> actionIterator = actions.listIterator();
-        while (actionIterator.hasNext())
+        for (Action a : actions)
         {
-            Action a = actionIterator.next();
             if (a.state == ActionState.DONE)
             {
                 continue;
             }
-            String log = "testing match between action " + a.toString() + " and msg " + msg.toString();
             if (a.state == ActionState.WAITING && a.wait != null)
             {
-                if (a.wait.equals(msg.getCode()))
+                String log = a.toString() + ": compare with message " + msg.toString();
+                if (isResponseMatched(state, a, msg.getCode(), msg.getData()))
                 {
-                    log += " -> code matched";
-                    if ((a.resp == null || a.resp.isEmpty() || a.resp.equals(msg.getData())) &&
-                            (a.listitem == null || a.listitem.isEmpty() || nlaListContainsItem(state, msg, a)))
-                    {
-                        log += " -> parameter matched";
-                        info(this, log);
-                        a.state = ActionState.DONE;
-                        // Process the next action
-                        if (processAction(actionIterator, state, channel, msg) != null)
-                        {
-                            processMessage(msg, state, channel);
-                        }
-                        return;
-                    }
+                    info(this, log + " -> response matched");
+                    a.state = ActionState.DONE;
+                    processNextActions(state, channel);
+                    return;
                 }
                 info(this, log + " -> continue waiting");
                 return;
@@ -247,34 +231,99 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         }
     }
 
-    private Action processAction(ListIterator<Action> actionIterator, @NonNull final State state, @NonNull MessageChannel channel, @Nullable final ISCPMessage triggerMsg)
+    private void processNextActions(@NonNull final State state, @NonNull MessageChannel channel)
     {
-        if (!actionIterator.hasNext())
-        {
-            info(this, "all commands sent");
-            return null;
-        }
         if (!channel.isActive())
         {
             info(this, "message channel stopped");
-            return null;
+            return;
         }
 
-        final Action a = actionIterator.next();
-        if (a.cmd.equals("NA") && a.par.equals("NA"))
+        ActionState aState = ActionState.DONE;
+        for (Action a : actions)
         {
-            info(this, "no action message to send");
+            if (a.state != ActionState.DONE)
+            {
+                aState = processAction(state, a, channel);
+                if (aState != ActionState.DONE)
+                {
+                    break;
+                }
+            }
         }
-        else if (triggerMsg != null && a.cmd.equals(triggerMsg.getCode()) && a.par.equals(triggerMsg.getData()))
+
+        if (aState == ActionState.DONE)
         {
-            info(this, "the required state is already set, no need to send action message");
-            a.state = ActionState.WAITING;
-            return a;
+            info(this, "all commands send");
+        }
+    }
+
+    private boolean isStateSet(@NonNull final State state, @NonNull final String cmd, @NonNull final String par)
+    {
+        switch (cmd)
+        {
+        case OperationCommandMsg.CODE:
+            return par.equals(OperationCommandMsg.Command.TOP.toString()) && state.isTopLayer();
+        case PowerStatusMsg.CODE:
+            return par.equals(state.powerStatus.getCode());
+        case InputSelectorMsg.CODE:
+            return par.equals(state.inputType.getCode());
+        case NetworkServiceMsg.CODE:
+            return par.equals(state.serviceType.getCode() + "0");
+        default:
+            return false;
+        }
+    }
+
+    private boolean isResponseMatched(@NonNull final State state, @NonNull Action a, @NonNull final String cmd, @Nullable final String par)
+    {
+        if (a.wait.equals(cmd))
+        {
+            if (!a.listitem.isEmpty())
+            {
+                final List<XmlListItemMsg> mediaItems = state.cloneMediaItems();
+                for (XmlListItemMsg item : mediaItems)
+                {
+                    if (item.getTitle().equals(a.listitem))
+                    {
+                        return true;
+                    }
+                }
+                final List<NetworkServiceMsg> serviceItems = state.cloneServiceItems();
+                for (NetworkServiceMsg item : serviceItems)
+                {
+                    if (context.getString(item.getService().getDescriptionId()).equals(a.listitem))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else return par != null && (a.resp.isEmpty() || a.resp.equals(par));
+        }
+        return false;
+    }
+
+    private ActionState processAction(@NonNull final State state, @NonNull final Action a, @NonNull MessageChannel channel)
+    {
+        if (isStateSet(state, a.cmd, a.par))
+        {
+            boolean isMatched = (!a.resp.isEmpty() && isStateSet(state, a.wait, a.resp)) ||
+                    isResponseMatched(state, a, a.wait, null);
+            a.state = isMatched ? ActionState.DONE : ActionState.WAITING;
+            info(this, a.toString() + ": the required state is already set, no need to send action message");
+            if (a.state == ActionState.DONE)
+            {
+                return a.state;
+            }
+        }
+        else if (a.cmd.equals("NA") && a.par.equals("NA"))
+        {
+            info(this, a.toString() + ": no action message to send");
         }
         else
         {
             EISCPMessage msg = null;
-            if (a.cmd.equals("NLA"))
+            if (a.cmd.equals(XmlListInfoMsg.CODE))
             {
                 final List<XmlListItemMsg> cloneMediaItems = state.cloneMediaItems();
                 for (XmlListItemMsg item : cloneMediaItems)
@@ -290,26 +339,26 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                 msg = new EISCPMessage(a.cmd, a.par);
             }
             channel.sendMessage(msg);
-            info(this, "sent message " + msg.toString() + " for action " + a.toString());
+            info(this, a.toString() + ": sent message " + msg.toString());
         }
 
         a.state = ActionState.WAITING;
         if (a.milliseconds >= 0)
         {
-            info(this, "scheduling timer for " + a.milliseconds + " milliseconds");
+            info(this, a.toString() + ": scheduling timer for " + a.milliseconds + " milliseconds");
             final Timer t = new Timer();
             t.schedule(new java.util.TimerTask()
             {
                 @Override
                 public void run()
                 {
-                    info(MessageScript.this, "timer expired");
+                    info(MessageScript.this, a.toString() + ": timer expired");
                     a.state = ActionState.DONE;
-                    processAction(actionIterator, state, channel, null);
+                    processNextActions(state, channel);
                 }
             }, a.milliseconds);
         }
-        return null;
+        return a.state;
     }
 
     @NonNull

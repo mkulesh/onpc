@@ -137,6 +137,26 @@
                         app:actionLayout="@layout/activity_drawer_item"
                         android:orderInCategory="5"
                         android:title="@null" />
+                <item
+                        android:id="@+id/drawer_shortcut_7"
+                        app:actionLayout="@layout/activity_drawer_item"
+                        android:orderInCategory="6"
+                        android:title="@null" />
+                <item
+                        android:id="@+id/drawer_shortcut_8"
+                        app:actionLayout="@layout/activity_drawer_item"
+                        android:orderInCategory="7"
+                        android:title="@null" />
+                <item
+                        android:id="@+id/drawer_shortcut_9"
+                        app:actionLayout="@layout/activity_drawer_item"
+                        android:orderInCategory="8"
+                        android:title="@null" />
+                <item
+                        android:id="@+id/drawer_shortcut_10"
+                        app:actionLayout="@layout/activity_drawer_item"
+                        android:orderInCategory="9"
+                        android:title="@null" />
             </group>
         </menu>
     </item>

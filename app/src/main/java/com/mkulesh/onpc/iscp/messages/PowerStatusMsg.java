@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
  */
 public class PowerStatusMsg extends ZonedMessage
 {
-    final static String CODE = "PWR";
+    public final static String CODE = "PWR";
     final static String ZONE2_CODE = "ZPW";
     final static String ZONE3_CODE = "PW3";
     final static String ZONE4_CODE = "PW4";

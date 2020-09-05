@@ -112,7 +112,7 @@ public class State implements ConnectionIf
     private HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
     //Common
-    PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
+    public PowerStatusMsg.PowerStatus powerStatus = PowerStatusMsg.PowerStatus.STB;
     public FirmwareUpdateMsg.Status firmwareStatus = FirmwareUpdateMsg.Status.NONE;
     public InputSelectorMsg.InputType inputType = InputSelectorMsg.InputType.NONE;
 
