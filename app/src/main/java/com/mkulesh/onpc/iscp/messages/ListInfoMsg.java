@@ -88,7 +88,7 @@ public class ListInfoMsg extends ISCPMessage
     /*
      * Update Type (P : Page Information Update ( Page Clear or Disable List Info) , C : Cursor Position Update)
      */
-    private enum UpdateType implements CharParameterIf
+    public enum UpdateType implements CharParameterIf
     {
         NO('-'), PAGE('P'), CURSOR('C');
         final Character code;
@@ -142,6 +142,11 @@ public class ListInfoMsg extends ISCPMessage
     public InformationType getInformationType()
     {
         return informationType;
+    }
+
+    public UpdateType getUpdateType()
+    {
+        return updateType;
     }
 
     public String getListedData()

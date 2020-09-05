@@ -14,6 +14,7 @@
 package com.mkulesh.onpc;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
@@ -78,12 +80,20 @@ final class MediaListAdapter extends ArrayAdapter<ISCPMessage>
             tvTitle.setTextColor(Utils.getThemeColorAttr(mediaFragment.activity,
                     (mediaFragment.moveFrom == msg.getMessageId() || !msg.isSelectable()) ?
                             android.R.attr.textColorSecondary : android.R.attr.textColor));
+            final State state = mediaFragment.activity.getStateManager().getState();
+            if (!state.isReceiverInformation() && state.currentCursorPosition == msg.getMessageId())
+            {
+                tvTitle.setTypeface(Typeface.DEFAULT_BOLD);
+            }
         }
         else if (item instanceof NetworkServiceMsg)
         {
             final NetworkServiceMsg msg = (NetworkServiceMsg) item;
             icon.setImageResource(msg.getService().getImageId());
-            Utils.setImageViewColorAttr(mediaFragment.activity, icon, R.attr.colorButtonDisabled);
+            final State state = mediaFragment.activity.getStateManager().getState();
+            final boolean isPlaying = state.serviceIcon == msg.getService();
+            Utils.setImageViewColorAttr(mediaFragment.activity, icon,
+                    isPlaying ? R.attr.colorAccent : R.attr.colorButtonDisabled);
             tvTitle.setText(msg.getService().getDescriptionId());
         }
         else if (item instanceof OperationCommandMsg)

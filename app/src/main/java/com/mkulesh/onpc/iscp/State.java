@@ -82,6 +82,8 @@ import androidx.annotation.NonNull;
 
 public class State implements ConnectionIf
 {
+    private static final boolean SKIP_XML_MESSAGES = false;
+
     // Changes
     public enum ChangeType
     {
@@ -179,6 +181,7 @@ public class State implements ConnectionIf
     private ListTitleInfoMsg.UIType uiType = null;
     public int numberOfLayers = 0;
     public int numberOfItems = 0;
+    public int currentCursorPosition = 0;
     public String titleBar = "";
     private final List<XmlListItemMsg> mediaItems = new ArrayList<>();
     final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
@@ -651,6 +654,10 @@ public class State implements ConnectionIf
 
     boolean process(ReceiverInformationMsg msg, boolean showInfo)
     {
+        if (SKIP_XML_MESSAGES)
+        {
+            return false;
+        }
         try
         {
             msg.parseXml(showInfo);
@@ -1045,6 +1052,11 @@ public class State implements ConnectionIf
             titleBar = msg.getTitleBar();
             changed = true;
         }
+        if (currentCursorPosition != msg.getCurrentCursorPosition())
+        {
+            currentCursorPosition = msg.getCurrentCursorPosition();
+            changed = true;
+        }
         if (numberOfLayers != msg.getNumberOfLayers())
         {
             numberOfLayers = msg.getNumberOfLayers();
@@ -1100,6 +1112,10 @@ public class State implements ConnectionIf
 
     private boolean process(XmlListInfoMsg msg)
     {
+        if (SKIP_XML_MESSAGES)
+        {
+            return false;
+        }
         synchronized (mediaItems)
         {
             if (!inputType.isMediaList())
@@ -1166,10 +1182,16 @@ public class State implements ConnectionIf
         }
         if (msg.getInformationType() == ListInfoMsg.InformationType.CURSOR)
         {
+            // #167: if receiver does not support XML, clear list items here
+            if (!isReceiverInformation() && msg.getUpdateType() == ListInfoMsg.UpdateType.PAGE)
+            {
+                // only clear if cursor is not changed
+                clearItems();
+            }
             listInfoItems.clear();
             return false;
         }
-        if (serviceType == ServiceType.NET)
+        if (serviceType == ServiceType.NET && isTopLayer())
         {
             synchronized (serviceItems)
             {
@@ -1208,16 +1230,7 @@ public class State implements ConnectionIf
             }
             return !serviceItems.isEmpty();
         }
-        else if (isUsb())
-        {
-            final String name = msg.getListedData();
-            if (!listInfoItems.contains(name))
-            {
-                listInfoItems.add(name);
-            }
-            return false;
-        }
-        else if (isMenuMode() || !isReceiverInformation())
+        else if (!isReceiverInformation())
         {
             synchronized (mediaItems)
             {
@@ -1232,9 +1245,25 @@ public class State implements ConnectionIf
                 final XmlListItemMsg nsMsg = new XmlListItemMsg(
                         msg.getLineInfo(), 0, msg.getListedData(),
                         XmlListItemMsg.Icon.UNKNOWN, true, cmdMessage.getCmdMsg());
-                mediaItems.add(nsMsg);
+                if (nsMsg.getMessageId() < mediaItems.size())
+                {
+                    mediaItems.set(nsMsg.getMessageId(), nsMsg);
+                }
+                else
+                {
+                    mediaItems.add(nsMsg);
+                }
             }
             return true;
+        }
+        else if (isUsb())
+        {
+            final String name = msg.getListedData();
+            if (!listInfoItems.contains(name))
+            {
+                listInfoItems.add(name);
+            }
+            return false;
         }
         return false;
     }
@@ -1516,6 +1545,6 @@ public class State implements ConnectionIf
 
     public boolean isShortcutPossible()
     {
-        return numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
+        return !SKIP_XML_MESSAGES && numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
     }
 }

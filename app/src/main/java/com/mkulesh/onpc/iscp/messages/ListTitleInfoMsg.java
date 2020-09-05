@@ -294,6 +294,11 @@ public class ListTitleInfoMsg extends ISCPMessage
         return numberOfItems;
     }
 
+    public int getCurrentCursorPosition()
+    {
+        return currentCursorPosition;
+    }
+
     public int getNumberOfLayers()
     {
         return numberOfLayers;

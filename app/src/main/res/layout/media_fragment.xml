@@ -104,6 +104,25 @@
             android:fastScrollEnabled="true"
             android:dividerHeight="1dp"
             android:longClickable="true" />
+
+        <LinearLayout
+            android:id="@+id/track_buttons_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:gravity="center" >
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_track_down" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_track_up" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -294,6 +294,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.invalidate();
         listView.setAdapter(new MediaListAdapter(this, activity, new ArrayList<>()));
         setProgressIndicator(state, false);
+        updateTrackButtons(state);
     }
 
     @Override
@@ -308,11 +309,39 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             updateSelectorButtons(state);
             updateListView(state);
             updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
+            updateTrackButtons(state);
         }
         else if (eventChanges.contains(State.ChangeType.COMMON))
         {
             updateSelectorButtonsState(state);
             updateTitle(state, state.numberOfItems > 0 && state.isMediaEmpty());
+        }
+    }
+
+    private void updateTrackButtons(State state)
+    {
+        if (state == null || state.isReceiverInformation()
+                || state.isSimpleInput() || state.isMediaEmpty())
+        {
+            rootView.findViewById(R.id.track_buttons_layout).setVisibility(View.GONE);
+        }
+        else
+        {
+            rootView.findViewById(R.id.track_buttons_layout).setVisibility(View.VISIBLE);
+            // Up button
+            {
+                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.UP);
+                final AppCompatImageButton buttonDown = rootView.findViewById(R.id.btn_track_down);
+                prepareButton(buttonDown, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+                setButtonEnabled(buttonDown, state.isOn());
+            }
+            // Down button
+            {
+                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.DOWN);
+                final AppCompatImageButton buttonUp = rootView.findViewById(R.id.btn_track_up);
+                prepareButton(buttonUp, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+                setButtonEnabled(buttonUp, state.isOn());
+            }
         }
     }
 
