@@ -549,7 +549,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else
         {
-            title.append(state.titleBar).append("/").append(
+            title.append(state.titleBar).append(" | ").append(
                     activity.getResources().getString(R.string.medialist_no_items));
         }
         setTitleLayout(true);
