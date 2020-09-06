@@ -516,16 +516,23 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private void updateTitle(@NonNull final State state, boolean processing)
     {
         final StringBuilder title = new StringBuilder();
-        if (state.isPlaybackMode() || state.isMenuMode())
+        if (state.isSimpleInput())
+        {
+            title.append(activity.getResources().getString(state.inputType.getDescriptionId()));
+            if (state.isRadioInput())
+            {
+                title.append(" | ")
+                     .append(activity.getResources().getString(R.string.medialist_items))
+                     .append(": ").append(filteredItems);
+            }
+            else if (!state.title.isEmpty())
+            {
+                title.append(": ").append(state.title);
+            }
+        }
+        else if (state.isPlaybackMode() || state.isMenuMode())
         {
             title.append(state.title);
-        }
-        else if (state.isRadioInput())
-        {
-            title.append(activity.getResources().getString(state.inputType.getDescriptionId()))
-                .append(" | ")
-                .append(activity.getResources().getString(R.string.medialist_items))
-                .append(": ").append(filteredItems);
         }
         else if (state.inputType.isMediaList())
         {
