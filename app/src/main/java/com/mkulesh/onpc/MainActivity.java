@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private int startRequestCode;
     private final AtomicBoolean connectToAnyDevice = new AtomicBoolean(false);
     int orientation;
-    private Intent intent = null;
-    private MessageScript messageScript;
+    private String intentAction = null;
+    private String intentData = null;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -111,18 +111,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             Logging.info(this, "Starting application");
             versionName = null;
-        }
-
-        // Analyse input intent
-        intent = getIntent();
-        if (intent != null)
-        {
-            Logging.info(this, "Called with intent: " + intent.toString());
-            final String data = intent.getDataString();
-            if (data != null && !data.isEmpty())
-            {
-                messageScript = new MessageScript(this, data);
-            }
         }
 
         connectionState = new ConnectionState(this);
@@ -378,8 +366,11 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     public boolean connectToDevice(final String device, final int port, final boolean connectToAnyInErrorCase)
     {
         // Parse and use input intent
-        boolean autoPower = intent != null && intent.getAction() != null && SHORTCUT_AUTO_POWER.equals(intent.getAction());
-        intent = null;
+        final boolean autoPower = SHORTCUT_AUTO_POWER.equals(intentAction);
+        final MessageScript messageScript = (intentData != null && !intentData.isEmpty()) ?
+                new MessageScript(this, intentData) : null;
+        intentAction = null;
+        intentData = null;
 
         stateHolder.release(false, "reconnect");
         stateHolder.waitForRelease();
@@ -474,6 +465,17 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             return;
         }
+
+        // Analyse input intent
+        final Intent intent = getIntent();
+        if (intent != null)
+        {
+            Logging.info(this, "Called with intent: " + intent.toString());
+            intentAction = intent.getAction();
+            intentData = intent.getDataString();
+            setIntent(null);
+        }
+
         connectionState.start();
         if (connectionState.isActive())
         {
