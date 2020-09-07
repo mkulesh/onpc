@@ -37,6 +37,7 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueAddMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueRemoveMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueReorderMsg;
+import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
@@ -375,7 +376,20 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 continue;
             }
             final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
-                    msg, msg.getInputType(), () -> setProgressIndicator(state, true));
+                    null, msg.getInputType(), () -> setProgressIndicator(state, true));
+            prepareButtonListeners(b, null, () ->
+            {
+                if (!state.isOn())
+                {
+                    activity.getStateManager().sendMessage(
+                            new PowerStatusMsg(state.getActiveZone(), PowerStatusMsg.PowerStatus.ON));
+                }
+                else
+                {
+                    setProgressIndicator(state, true);
+                }
+                activity.getStateManager().sendMessage(msg);
+            });
             if (activity.getConfiguration().isFriendlyNames())
             {
                 b.setText(s.getName());
@@ -398,7 +412,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         for (int i = 0; i < selectorPaletteLayout.getChildCount(); i++)
         {
             final View v = selectorPaletteLayout.getChildAt(i);
-            setButtonEnabled(v, state.isOn());
+            setButtonEnabled(v, activity.isConnected());
             if (!state.isOn())
             {
                 continue;
