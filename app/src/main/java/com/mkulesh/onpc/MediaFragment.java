@@ -330,14 +330,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             rootView.findViewById(R.id.track_buttons_layout).setVisibility(View.VISIBLE);
             // Up button
             {
-                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.UP);
+                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.LEFT);
                 final AppCompatImageButton buttonDown = rootView.findViewById(R.id.btn_track_down);
                 prepareButton(buttonDown, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
                 setButtonEnabled(buttonDown, state.isOn());
             }
             // Down button
             {
-                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.DOWN);
+                final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.RIGHT);
                 final AppCompatImageButton buttonUp = rootView.findViewById(R.id.btn_track_up);
                 prepareButton(buttonUp, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
                 setButtonEnabled(buttonUp, state.isOn());
