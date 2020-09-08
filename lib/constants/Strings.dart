@@ -158,7 +158,7 @@ class Strings
         /*en*/ "Enhanced controller for Onkyo/Pioneer devices: listen to music properly!",
         /*ru*/ "Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!",
         /*de*/ "Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!",
-        /*fr*/ "Contrôleur optimisé pour Onkyo/Pioneer: Ecoutez votre musique correctement!",
+        /*fr*/ "Contrôleur optimisé pour Onkyo/Pioneer: Écoutez votre musique correctement!",
         /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer: słuchaj muzyki poprawnie!"];
     static String get app_description => l_app_description[_language];
 
@@ -174,7 +174,7 @@ class Strings
         /*en*/ "Standby",
         /*ru*/ "Ожидание",
         /*de*/ "Schlafmodus",
-        /*fr*/ "Eteint",
+        /*fr*/ "Éteint",
         /*pl*/ "Standby"];
     static String get state_standby => l_state_standby[_language];
 
@@ -362,11 +362,19 @@ Enjoy!"""];
         /*pl*/ "Grupa"];
     static String get drawer_multiroom => l_drawer_multiroom[_language];
 
+    static const List<String> l_drawer_shortcuts = [
+        /*en*/ "Shortcuts",
+        /*ru*/ "Ярлыки",
+        /*de*/ "Verknüpfungen",
+        /*fr*/ "Raccourcis",
+        /*pl*/ "Skróty"];
+    static String get drawer_shortcuts => l_drawer_shortcuts[_language];
+
     static const List<String> l_drawer_device = [
         /*en*/ "Device",
         /*ru*/ "Устройство",
         /*de*/ "Gerät",
-        /*fr*/ "Equipement",
+        /*fr*/ "Équipement",
         /*pl*/ "Urządzenie"];
     static String get drawer_device => l_drawer_device[_language];
 
@@ -374,7 +382,7 @@ Enjoy!"""];
         /*en*/ "Connect",
         /*ru*/ "Соединение",
         /*de*/ "Verbinden",
-        /*fr*/ "Conencter",
+        /*fr*/ "Connecter",
         /*pl*/ "Połącz"];
     static String get drawer_device_connect => l_drawer_device_connect[_language];
 
@@ -414,7 +422,7 @@ Enjoy!"""];
         /*en*/ "About",
         /*ru*/ "О программе",
         /*de*/ "Über",
-        /*fr*/ "A propos",
+        /*fr*/ "À propos",
         /*pl*/ "Info"];
     static String get drawer_about => l_drawer_about[_language];
 
@@ -442,6 +450,30 @@ Enjoy!"""];
         /*pl*/ "Zapisz połączenie"];
     static String get connect_dialog_save => l_connect_dialog_save[_language];
 
+    static const List<String> l_favorite_alias = [
+        /*en*/ "Name",
+        /*ru*/ "Имя",
+        /*de*/ "Name",
+        /*fr*/ "Nom",
+        /*pl*/ "Nazwa"];
+    static String get favorite_alias => l_favorite_alias[_language];
+
+    static const List<String> l_favorite_update = [
+        /*en*/ "Edit",
+        /*ru*/ "Изменить",
+        /*de*/ "Bearbeiten",
+        /*fr*/ "Modifier",
+        /*pl*/ "Edytuj"];
+    static String get favorite_update => l_favorite_update[_language];
+
+    static const List<String> l_favorite_delete = [
+        /*en*/ "Delete",
+        /*ru*/ "Удалить",
+        /*de*/ "Löschen",
+        /*fr*/ "Supprimer",
+        /*pl*/ "Usuń"];
+    static String get favorite_delete => l_favorite_delete[_language];
+
     static const List<String> l_favorite_connection_edit = [
         /*en*/ "Edit connection",
         /*ru*/ "Изменить соединение",
@@ -450,37 +482,45 @@ Enjoy!"""];
         /*pl*/ "Edytuj połączenie"];
     static String get favorite_connection_edit => l_favorite_connection_edit[_language];
 
-    static const List<String> l_favorite_connection_update = [
-        /*en*/ "Edit",
-        /*ru*/ "Изменить",
-        /*de*/ "Bearbeiten",
-        /*fr*/ "Modifier",
-        /*pl*/ "Edytuj"];
-    static String get favorite_connection_update => l_favorite_connection_update[_language];
-
-    static const List<String> l_favorite_connection_alias = [
-        /*en*/ "Name",
-        /*ru*/ "Имя",
-        /*de*/ "Name",
-        /*fr*/ "Nom",
-        /*pl*/ "Nazwa"];
-    static String get favorite_connection_alias => l_favorite_connection_alias[_language];
-
     static const List<String> l_favorite_connection_identifier = [
         /*en*/ "MAC Address (optional)",
         /*ru*/ "MAC адрес (необязательно)",
         /*de*/ "MAC Adresse (optional)",
-        /*fr*/ "Adresse MAC (optionel)",
+        /*fr*/ "Adresse MAC (optionelle)",
         /*pl*/ "Adres MAC (opcjonalnie)"];
     static String get favorite_connection_identifier => l_favorite_connection_identifier[_language];
 
-    static const List<String> l_favorite_connection_delete = [
-        /*en*/ "Delete",
-        /*ru*/ "Удалить",
-        /*de*/ "Löschen",
-        /*fr*/ "Supprimer",
-        /*pl*/ "Usuń"];
-    static String get favorite_connection_delete => l_favorite_connection_delete[_language];
+    static const List<String> l_favorite_shortcut_edit = [
+        /*en*/ "Edit shortcut",
+        /*ru*/ "Изменить ярлык",
+        /*de*/ "Verknüpfung bearbeiten",
+        /*fr*/ "Modifier le raccourci",
+        /*pl*/ "Edytuj skrót"];
+    static String get favorite_shortcut_edit => l_favorite_shortcut_edit[_language];
+
+    static const List<String> l_favorite_shortcut_create = [
+        /*en*/ "Create shortcut",
+        /*ru*/ "Создать ярлык",
+        /*de*/ "Verknüpfung erstellen",
+        /*fr*/ "Créer un raccourci",
+        /*pl*/ "Utwórz skrót"];
+    static String get favorite_shortcut_create => l_favorite_shortcut_create[_language];
+
+    static const List<String> l_favorite_shortcut_added = [
+        /*en*/ "Shortcut added into app menu",
+        /*ru*/ "Ярлык добавлен в меню приложения",
+        /*de*/ "Verknüpfung zum App-Menü hinzugefügt",
+        /*fr*/ "Raccourci ajouté dans le menu de l\'application",
+        /*pl*/ "Dodano skrót do menu aplikacji"];
+    static String get favorite_shortcut_added => l_favorite_shortcut_added[_language];
+
+    static const List<String> l_favorite_shortcut_failed = [
+        /*en*/ "Cannot create shortcut: maximum number reached",
+        /*ru*/ "Невозможно создать ярлык: достигнуто максимальное количество",
+        /*de*/ "Verknüpfung kann nicht erstellt werden: maximale Anzahl erreicht",
+        /*fr*/ "Impossible de créer le raccourci: nombre maximum atteint",
+        /*pl*/ "Nie można utworzyć skrótu: osiągnięto maksymalną liczbę"];
+    static String get favorite_shortcut_failed => l_favorite_shortcut_failed[_language];
 
     static const List<String> l_menu_power_standby = [
         /*en*/ "On/Standby",
@@ -518,7 +558,7 @@ Enjoy!"""];
         /*en*/ "Listen",
         /*ru*/ "Музыка",
         /*de*/ "Hören",
-        /*fr*/ "Ecoute",
+        /*fr*/ "Écoute",
         /*pl*/ "Słuchaj"];
     static String get title_monitor => l_title_monitor[_language];
 
@@ -534,7 +574,7 @@ Enjoy!"""];
         /*en*/ "Device",
         /*ru*/ "Система",
         /*de*/ "Gerät",
-        /*fr*/ "Device",
+        /*fr*/ "Appareil",
         /*pl*/ "Urządzenie"];
     static String get title_device => l_title_device[_language];
 
@@ -565,8 +605,8 @@ Enjoy!"""];
     static const List<String> l_pref_category_ri_options = [
         /*en*/ "Remote interface",
         /*ru*/ "Удаленный интерфейс (RI)",
-        /*de*/ "Remote interface",
-        /*fr*/ "Contrôl interface",
+        /*de*/ "Remote Interface",
+        /*fr*/ "Contrôle interface",
         /*pl*/ "Kontrola zdalna"];
     static String get pref_category_ri_options => l_pref_category_ri_options[_language];
 
@@ -589,8 +629,8 @@ Enjoy!"""];
     static const List<String> l_pref_volume_summary = [
         /*en*/ "Use volume keys to change master volume on remote device",
         /*ru*/ "Используйте кнопки управления громкостью для изменения уровня звука на удаленном устройстве",
-        /*de*/ "Lautstärketasten verwenden um master Lautstärke zu ändern",
-        /*fr*/ "Utilise les boutons volume pour modifier le volume de l\'appareil connecté",
+        /*de*/ "Lautstärketasten verwenden um Master-Lautstärke zu ändern",
+        /*fr*/ "Utiliser les boutons volume pour modifier le volume de l\'appareil connecté",
         /*pl*/ "Użyj klawiszy głośności, aby zmienić głośność główną na urządzeniu zdalnym"];
     static String get pref_volume_summary => l_pref_volume_summary[_language];
 
@@ -605,8 +645,8 @@ Enjoy!"""];
     static const List<String> l_pref_back_as_return_summary = [
         /*en*/ "Use back button to switch to the parent level in the media list",
         /*ru*/ "Использовать кнопку возврата для перехода на предыдущий уровень в медиатеке",
-        /*de*/ "Zurück-Taste verwenden um in Medien übergeordneter Ordner zu wählen",
-        /*fr*/ "Utilise le bouton Retour pour remonter au niveau parent de la liste des médias",
+        /*de*/ "Zurück-Taste verwenden, um in Medien den übergeordneten Ordner zu wählen",
+        /*fr*/ "Utiliser le bouton Retour pour remonter au niveau parent de la liste des médias",
         /*pl*/ "Użyj przycisku Wstecz, aby przełączyć na poziom nadrzędny na liście multimediów"];
     static String get pref_back_as_return_summary => l_pref_back_as_return_summary[_language];
 
@@ -614,7 +654,7 @@ Enjoy!"""];
         /*en*/ "Advanced play queue options",
         /*ru*/ "Расширенные возможности Play Queue",
         /*de*/ "Erweiterte Optionen von Play Queue",
-        /*fr*/ "Files d\'attentes avancée",
+        /*fr*/ "Files d\'attentes avancées",
         /*pl*/ "Zaawansowane opcje kolejki odtwarzania"];
     static String get pref_advanced_queue => l_pref_advanced_queue[_language];
 
@@ -622,7 +662,7 @@ Enjoy!"""];
         /*en*/ "Experimental: use advanced play queue features",
         /*ru*/ "Использовать экспериментальные возможности очереди воспроизведения",
         /*de*/ "Experimentell: fortgeschrittene Funktionen in Play Queue verwenden",
-        /*fr*/ "Experimentale: gestion évoluée des files d\'attentes",
+        /*fr*/ "Experimental: gestion évoluée des files d\'attentes",
         /*pl*/ "Eksperymentalna: Korzystaj z zaawansowanych funkcji kolejki odtwarzania"];
     static String get pref_advanced_queue_summary => l_pref_advanced_queue_summary[_language];
 
@@ -630,7 +670,7 @@ Enjoy!"""];
         /*en*/ "Keep playback mode",
         /*ru*/ "Режим воспроизведения",
         /*de*/ "Abspielmodus behalten",
-        /*fr*/ "Maintenir le mode lécture",
+        /*fr*/ "Maintenir le mode lecture",
         /*pl*/ "Zachowaj tryb odtwarzania"];
     static String get pref_keep_playback_mode => l_pref_keep_playback_mode[_language];
 
@@ -638,7 +678,7 @@ Enjoy!"""];
         /*en*/ "Always keep playback mode in MEDIA tab while playing",
         /*ru*/ "Во вкладке КАНАЛЫ всегда оставаться в режиме воспроизведения.",
         /*de*/ "Während die Wiedergabe aktiv ist, Abspielmodus in MEDIEN behalten",
-        /*fr*/ "Toujours conserver le mode lécture dans l\'onglet SOURCE quand l\'écoute est en cours",
+        /*fr*/ "Toujours conserver le mode lecture dans l\'onglet SOURCE quand l\'écoute est en cours",
         /*pl*/ "Zawsze zachowuj tryb odtwarzania na karcie MEDIA podczas odtwarzania"];
     static String get pref_keep_playback_mode_summary => l_pref_keep_playback_mode_summary[_language];
 
@@ -654,7 +694,7 @@ Enjoy!"""];
         /*en*/ "Keep the screen turned on",
         /*ru*/ "Не гасить экран",
         /*de*/ "Bildschirm aktiv lassen",
-        /*fr*/ "Ecran toujours allumé",
+        /*fr*/ "Écran toujours allumé",
         /*pl*/ "Ekran zawsze włączony"];
     static String get pref_keep_screen_on => l_pref_keep_screen_on[_language];
 
@@ -670,7 +710,7 @@ Enjoy!"""];
         /*en*/ "Input selectors",
         /*ru*/ "Входные каналы",
         /*de*/ "Eingangskanäle",
-        /*fr*/ "Selection des sources",
+        /*fr*/ "Sélection des sources",
         /*pl*/ "Wybór wejścia"];
     static String get pref_device_selectors => l_pref_device_selectors[_language];
 
@@ -709,8 +749,8 @@ Enjoy!"""];
     static const List<String> l_pref_friendly_names_summary_on = [
         /*en*/ "Use friendly names provided by remote device",
         /*ru*/ "Использовать удобные названия, предоставленные удалённым устройством",
-        /*de*/ "Lesbare Namen vom Onkyo-Gerät nutzen",
-        /*fr*/ "Utilise les noms personalisés émis par le dispositif",
+        /*de*/ "Lesbare Namen des Onkyo-Geräts nutzen",
+        /*fr*/ "Utiliser les noms personalisés émis par le dispositif",
         /*pl*/ "Używaj nazwy dostarczonej przez zdalne urządzenie"];
     static String get pref_friendly_names_summary_on => l_pref_friendly_names_summary_on[_language];
 
@@ -718,7 +758,7 @@ Enjoy!"""];
         /*en*/ "Use build-in names",
         /*ru*/ "Использовать встроенные названия",
         /*de*/ "Namen des Protokolls nutzen",
-        /*fr*/ "Utilise les noms génériques",
+        /*fr*/ "Utiliser les noms génériques",
         /*pl*/ "Użyj wbudowanych nazw"];
     static String get pref_friendly_names_summary_off => l_pref_friendly_names_summary_off[_language];
 
@@ -742,7 +782,7 @@ Enjoy!"""];
         /*en*/ "Theme",
         /*ru*/ "Тема",
         /*de*/ "Thema",
-        /*fr*/ "Theme",
+        /*fr*/ "Thème",
         /*pl*/ "Motyw"];
     static String get pref_theme => l_pref_theme[_language];
 
@@ -790,7 +830,7 @@ Enjoy!"""];
         /*en*/ "Selector position wrap-around up",
         /*ru*/ "Выбрать следующий входной канал",
         /*de*/ "Selector position wrap-around up",
-        /*fr*/ "Molette de selection haut",
+        /*fr*/ "Molette de sélection haut",
         /*pl*/ "Głośniej"];
     static String get amp_cmd_selector_up => l_amp_cmd_selector_up[_language];
 
@@ -798,7 +838,7 @@ Enjoy!"""];
         /*en*/ "Selector position wrap-around down",
         /*ru*/ "Выбрать предыдущий входной канал",
         /*de*/ "Selector position wrap-around down",
-        /*fr*/ "Molette de selection bas",
+        /*fr*/ "Molette de sélection bas",
         /*pl*/ "Ciszej"];
     static String get amp_cmd_selector_down => l_amp_cmd_selector_down[_language];
 
@@ -910,7 +950,7 @@ Enjoy!"""];
         /*en*/ "Memory",
         /*ru*/ "Память",
         /*de*/ "Speicher",
-        /*fr*/ "Memoire",
+        /*fr*/ "Mémoire",
         /*pl*/ "Pamięć"];
     static String get cd_cmd_memory => l_cd_cmd_memory[_language];
 
@@ -926,7 +966,7 @@ Enjoy!"""];
         /*en*/ "Repeat",
         /*ru*/ "Повтор",
         /*de*/ "Wiederholen",
-        /*fr*/ "répéter",
+        /*fr*/ "Répéter",
         /*pl*/ "Powtórz"];
     static String get cd_cmd_repeat => l_cd_cmd_repeat[_language];
 
@@ -1085,8 +1125,8 @@ Enjoy!"""];
     static const List<String> l_cd_cmd_disc_r = [
         /*en*/ "Previous disk",
         /*ru*/ "Предыдущий диск",
-        /*de*/ "Vorige Disk",
-        /*fr*/ "Disque précédant",
+        /*de*/ "Vorherige Disk",
+        /*fr*/ "Disque précédent",
         /*pl*/ "Poprzedni dysk"];
     static String get cd_cmd_disc_r => l_cd_cmd_disc_r[_language];
 
@@ -1150,7 +1190,7 @@ Enjoy!"""];
         /*en*/ "Player audio muting off",
         /*ru*/ "Выключить звук устройства",
         /*de*/ "Ton Stumm aus",
-        /*fr*/ "Audio silence desactivé",
+        /*fr*/ "Audio silence désactivé",
         /*pl*/ "Wyciszenie off"];
     static String get audio_muting_off => l_audio_muting_off[_language];
 
@@ -1174,7 +1214,7 @@ Enjoy!"""];
         /*en*/ "Audio control",
         /*ru*/ "Контроль звука",
         /*de*/ "Audiosteuerung",
-        /*fr*/ "Règlages Audio",
+        /*fr*/ "Réglages Audio",
         /*pl*/ "Audio control"];
     static String get audio_control => l_audio_control[_language];
 
@@ -1190,7 +1230,7 @@ Enjoy!"""];
         /*en*/ "Treble",
         /*ru*/ "Тембр ВЧ",
         /*de*/ "Höhen",
-        /*fr*/ "Aigues",
+        /*fr*/ "Aigües",
         /*pl*/ "Treble"];
     static String get tone_treble => l_tone_treble[_language];
 
@@ -1213,7 +1253,7 @@ Enjoy!"""];
     static const List<String> l_master_volume = [
         /*en*/ "Master volume",
         /*ru*/ "Громкость",
-        /*de*/ "Haupt Lautstärke",
+        /*de*/ "Haupt-Lautstärke",
         /*fr*/ "Volume principal",
         /*pl*/ "Master volume"];
     static String get master_volume => l_master_volume[_language];
@@ -1278,15 +1318,15 @@ Enjoy!"""];
         /*en*/ "Sets preset wrap-around up",
         /*ru*/ "Следующий канал",
         /*de*/ "Nächster gespeicherter Sender",
-        /*fr*/ "Préselection haut",
+        /*fr*/ "Présélection haut",
         /*pl*/ "Zapamiętane \"+\""];
     static String get preset_command_up => l_preset_command_up[_language];
 
     static const List<String> l_preset_command_down = [
         /*en*/ "Sets preset wrap-around down",
         /*ru*/ "Предыдущий канал",
-        /*de*/ "Voriger gespeicherter Sender",
-        /*fr*/ "Préselection bas",
+        /*de*/ "Vorheriger gespeicherter Sender",
+        /*fr*/ "Présélection bas",
         /*pl*/ "Zapamiętane \"-\""];
     static String get preset_command_down => l_preset_command_down[_language];
 
@@ -1302,7 +1342,7 @@ Enjoy!"""];
         /*en*/ "Preset",
         /*ru*/ "Номер канала",
         /*de*/ "Speichernummer",
-        /*fr*/ "Préselection",
+        /*fr*/ "Présélection",
         /*pl*/ "Zapamiętane"];
     static String get cmd_preset_memory_number => l_cmd_preset_memory_number[_language];
 
@@ -1333,7 +1373,7 @@ Enjoy!"""];
     static const List<String> l_tuning_command_down = [
         /*en*/ "Sets tuning frequency wrap-around down",
         /*ru*/ "Понизить частоту приема",
-        /*de*/ "Vorigen Sender suchen",
+        /*de*/ "Vorherigen Sender suchen",
         /*fr*/ "Changement fréquence bas",
         /*pl*/ "Strojenie \"-\""];
     static String get tuning_command_down => l_tuning_command_down[_language];
@@ -1342,7 +1382,7 @@ Enjoy!"""];
         /*en*/ "Play",
         /*ru*/ "Воспроизведение",
         /*de*/ "Abspielen",
-        /*fr*/ "Lécture",
+        /*fr*/ "Lecture",
         /*pl*/ "Play"];
     static String get cmd_description_play => l_cmd_description_play[_language];
 
@@ -1381,7 +1421,7 @@ Enjoy!"""];
     static const List<String> l_cmd_description_trdn = [
         /*en*/ "Track Down",
         /*ru*/ "Предыдущий трек",
-        /*de*/ "voriger Titel",
+        /*de*/ "vorheriger Titel",
         /*fr*/ "Piste bas",
         /*pl*/ "Poprzednia"];
     static String get cmd_description_trdn => l_cmd_description_trdn[_language];
@@ -1477,7 +1517,7 @@ Enjoy!"""];
     static const List<String> l_cmd_description_left = [
         /*en*/ "Left",
         /*ru*/ "Влево",
-        /*de*/ "Voriges",
+        /*de*/ "Vorheriges",
         /*fr*/ "Gauche",
         /*pl*/ "Lewo"];
     static String get cmd_description_left => l_cmd_description_left[_language];
@@ -1502,7 +1542,7 @@ Enjoy!"""];
         /*en*/ "Select",
         /*ru*/ "Выбор",
         /*de*/ "Auswählen",
-        /*fr*/ "Selection",
+        /*fr*/ "Sélection",
         /*pl*/ "Wybór"];
     static String get cmd_description_select => l_cmd_description_select[_language];
 
@@ -1614,7 +1654,7 @@ Enjoy!"""];
         /*en*/ "Language",
         /*ru*/ "Язык",
         /*de*/ "Sprache",
-        /*fr*/ "Language",
+        /*fr*/ "Langage",
         /*pl*/ "Język"];
     static String get cmd_description_language => l_cmd_description_language[_language];
 
@@ -1622,7 +1662,7 @@ Enjoy!"""];
         /*en*/ "Setup",
         /*ru*/ "Настройки",
         /*de*/ "Einrichten",
-        /*fr*/ "Paramètre",
+        /*fr*/ "Paramètres",
         /*pl*/ "Ustawienia"];
     static String get cmd_description_setup => l_cmd_description_setup[_language];
 
@@ -1637,7 +1677,7 @@ Enjoy!"""];
     static const List<String> l_cmd_description_chup = [
         /*en*/ "Ch Up(For Iradio)",
         /*ru*/ "Следующий канал для Iradio",
-        /*de*/ "Voriger Kanal (Iradio)",
+        /*de*/ "Vorheriger Kanal (Iradio)",
         /*fr*/ "Ch haut(Iradio)",
         /*pl*/ "Zmień kanał na kolejny(Iradio)"];
     static String get cmd_description_chup => l_cmd_description_chup[_language];
@@ -1702,7 +1742,7 @@ Enjoy!"""];
         /*en*/ "Positive Feed Or Mark/Unmark",
         /*ru*/ "Нравится",
         /*de*/ "Positiv markieren/demarkieren",
-        /*fr*/ "Positive Feed Or Mark/Unmark",
+        /*fr*/ "Positive Feed ou cocher/décocher",
         /*pl*/ "Positive Feed Lub Zaznacz/Odznacz"];
     static String get cmd_description_f1 => l_cmd_description_f1[_language];
 
@@ -1734,7 +1774,7 @@ Enjoy!"""];
         /*en*/ "items",
         /*ru*/ "элементов",
         /*de*/ "Elemente",
-        /*fr*/ "Elements",
+        /*fr*/ "Éléments",
         /*pl*/ "Lista"];
     static String get medialist_items => l_medialist_items[_language];
 
@@ -1750,7 +1790,7 @@ Enjoy!"""];
         /*en*/ "Playback mode",
         /*ru*/ "Режим воспроизведения",
         /*de*/ "Abspielmodus",
-        /*fr*/ "Mode de lécture",
+        /*fr*/ "Mode de lecture",
         /*pl*/ "Tryb odtwarzania"];
     static String get medialist_playback_mode => l_medialist_playback_mode[_language];
 
@@ -2366,14 +2406,14 @@ Enjoy!"""];
         /*en*/ "Play queue",
         /*ru*/ "Очередь воспроизведения",
         /*de*/ "Abspielliste",
-        /*fr*/ "File de lécture",
+        /*fr*/ "File de lecture",
         /*pl*/ "Kolejka odtwarzania"];
     static String get playlist_options => l_playlist_options[_language];
 
     static const List<String> l_playlist_add = [
         /*en*/ "Add",
         /*ru*/ "Добавить",
-        /*de*/ "Hnzufügen",
+        /*de*/ "Hizufügen",
         /*fr*/ "Ajouter",
         /*pl*/ "Dodaj"];
     static String get playlist_add => l_playlist_add[_language];
@@ -2518,7 +2558,7 @@ Enjoy!"""];
         /*en*/ "Latest version",
         /*ru*/ "Актуальная версия",
         /*de*/ "Aktuellste Version",
-        /*fr*/ "Latest version",
+        /*fr*/ "Dernière version",
         /*pl*/ "Ostatnia wersja"];
     static String get device_firmware_actual => l_device_firmware_actual[_language];
 
@@ -2534,7 +2574,7 @@ Enjoy!"""];
         /*en*/ "Update started, please wait",
         /*ru*/ "Обновление началось, ждите",
         /*de*/ "Update gestartet, bitte warten",
-        /*fr*/ "Mise à jour en cours, patienter…",
+        /*fr*/ "Mise à jour en cours, patientez…",
         /*pl*/ "Aktualizacja rozpoczęta, proszę czekać"];
     static String get device_firmware_update_started => l_device_firmware_update_started[_language];
 
@@ -2550,7 +2590,7 @@ Enjoy!"""];
         /*en*/ "Start device update via network",
         /*ru*/ "Обновить устройство по сети",
         /*de*/ "Update über Netzwerk starten",
-        /*fr*/ "Lancer la mise à jour en réseau",
+        /*fr*/ "Lancer la mise à jour par réseau",
         /*pl*/ "Rozpocznij aktualizację urządzenia przez sieć"];
     static String get device_firmware_net => l_device_firmware_net[_language];
 
@@ -2598,7 +2638,7 @@ Enjoy!"""];
         /*en*/ "Off",
         /*ru*/ "Выключено",
         /*de*/ "Aus",
-        /*fr*/ "Eteint",
+        /*fr*/ "Éteint",
         /*pl*/ "Wyłączony"];
     static String get device_dimmer_level_off => l_device_dimmer_level_off[_language];
 
@@ -2750,7 +2790,7 @@ Enjoy!"""];
         /*en*/ "Sets speaker A switch wrap-around",
         /*ru*/ "Вкл/выкл динамик A",
         /*de*/ "Lautsprecher A umschalten",
-        /*fr*/ "Selecteur Sortie A",
+        /*fr*/ "Sélecteur Sortie A",
         /*pl*/ "Przełącz głośnik A na kolejny"];
     static String get speaker_a_command_toggle => l_speaker_a_command_toggle[_language];
 
@@ -2758,7 +2798,7 @@ Enjoy!"""];
         /*en*/ "Sets speaker B switch wrap-around",
         /*ru*/ "Вкл/выкл динамик B",
         /*de*/ "Lautsprecher B umschalten",
-        /*fr*/ "Selecteur Sortie B",
+        /*fr*/ "Sélecteur Sortie B",
         /*pl*/ "Przełącz głośnik B na kolejny"];
     static String get speaker_b_command_toggle => l_speaker_b_command_toggle[_language];
 
@@ -2790,7 +2830,7 @@ Enjoy!"""];
         /*en*/ "Both on",
         /*ru*/ "оба вкл.",
         /*de*/ "Beide an",
-        /*fr*/ "Toutes allumlées",
+        /*fr*/ "Toutes allumées",
         /*pl*/ "Oba włączone"];
     static String get speaker_ab_command_ab_on => l_speaker_ab_command_ab_on[_language];
 
@@ -2854,7 +2894,7 @@ Enjoy!"""];
         /*en*/ "Use devices connected via Remote Interface (RI)",
         /*ru*/ "Использовать устройства, подключенные через удаленный интерфейс (RI)",
         /*de*/ "Über RI Verbundene Geräte nutzen",
-        /*fr*/ "Utilise des dispositifs connectés par Remote Interface (RI)",
+        /*fr*/ "Utiliser des dispositifs connectés par Remote Interface (RI)",
         /*pl*/ "Używaj urządzeń podłączonych przez interfejs zdalny (RI)"];
     static String get remote_interface => l_remote_interface[_language];
 
@@ -3063,7 +3103,7 @@ Enjoy!"""];
                 "Sombre (Gris et bleu)",
                 "Sombre (Gris et orange)",
                 "Clair (Gris et violet)",
-                "Clair (Bleu and Orange)",
+                "Clair (Bleu et orange)",
                 "Clair (Emeraude et magenta)",
                 "Clair (Violet et vert)"],
         /*pl*/ ["Strong Dark (Czarny i limonkowy)",
@@ -3124,7 +3164,7 @@ Enjoy!"""];
         /*fr*/ ["Petit",
                 "Normal",
                 "Grand",
-                "Enorme"],
+                "Énorme"],
         /*pl*/ ["Małe",
                 "Normalne",
                 "Duże",

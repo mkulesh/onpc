@@ -54,6 +54,7 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="drawer_open">Открыть панель навигатора</string>
     <string name="drawer_group_zone">Зона</string>
     <string name="drawer_multiroom">Группа</string>
+    <string name="drawer_shortcuts">Ярлыки</string>
     <string name="drawer_device">Устройство</string>
     <string name="drawer_device_connect">Соединение</string>
     <string name="drawer_device_search">Поиск</string>
@@ -67,12 +68,20 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="connect_dialog_port">Порт (необязательно)</string>
     <string name="connect_dialog_save">Сохранить соединение</string>
 
+    <!-- Favorites -->
+    <string name="favorite_alias">Имя</string>
+    <string name="favorite_update">Изменить</string>
+    <string name="favorite_delete">Удалить</string>
+
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Изменить соединение</string>
-    <string name="favorite_connection_update">Изменить</string>
-    <string name="favorite_connection_alias">Имя</string>
     <string name="favorite_connection_identifier">MAC адрес (необязательно)</string>
-    <string name="favorite_connection_delete">Удалить</string>
+
+    <!-- Favorite shortcuts -->
+    <string name="favorite_shortcut_edit">Изменить ярлык</string>
+    <string name="favorite_shortcut_create">Создать ярлык</string>
+    <string name="favorite_shortcut_added">Ярлык добавлен в меню приложения</string>
+    <string name="favorite_shortcut_failed">Невозможно создать ярлык: достигнуто максимальное количество</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">Вкл/выкл</string>

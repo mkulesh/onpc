@@ -54,6 +54,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="drawer_open">Navigation drawer öffnen</string>
     <string name="drawer_group_zone">Zone</string>
     <string name="drawer_multiroom">Gruppe</string>
+    <string name="drawer_shortcuts">Verknüpfungen</string>
     <string name="drawer_device">Gerät</string>
     <string name="drawer_device_connect">Verbinden</string>
     <string name="drawer_device_search">Suchen</string>
@@ -67,12 +68,20 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="connect_dialog_port">Port (optional)</string>
     <string name="connect_dialog_save">Verbindung speichern</string>
 
+    <!-- Favorites -->
+    <string name="favorite_alias">Name</string>
+    <string name="favorite_update">Bearbeiten</string>
+    <string name="favorite_delete">Löschen</string>
+
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Verbindung bearbeiten</string>
-    <string name="favorite_connection_update">Bearbeiten</string>
-    <string name="favorite_connection_alias">Name</string>
     <string name="favorite_connection_identifier">MAC Adresse (optional)</string>
-    <string name="favorite_connection_delete">Löschen</string>
+
+    <!-- Favorite shortcuts -->
+    <string name="favorite_shortcut_edit">Verknüpfung bearbeiten</string>
+    <string name="favorite_shortcut_create">Verknüpfung erstellen</string>
+    <string name="favorite_shortcut_added">Verknüpfung zum App-Menü hinzugefügt</string>
+    <string name="favorite_shortcut_failed">Verknüpfung kann nicht erstellt werden: maximale Anzahl erreicht</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
@@ -91,13 +100,13 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Gerät Optionen</string>
-    <string name="pref_category_ri_options">Remote interface</string>
+    <string name="pref_category_ri_options">Remote Interface</string>
     <string name="pref_category_advanced_options">Erweitert</string>
 
     <string name="pref_volume_title">Lautstärketasten weiterleiten</string>
-    <string name="pref_volume_summary">Lautstärketasten verwenden um master Lautstärke zu ändern</string>
+    <string name="pref_volume_summary">Lautstärketasten verwenden um Master-Lautstärke zu ändern</string>
     <string name="pref_back_as_return">Zurück-Taste in Medien</string>
-    <string name="pref_back_as_return_summary">Zurück-Taste verwenden um in Medien übergeordneter Ordner zu wählen</string>
+    <string name="pref_back_as_return_summary">Zurück-Taste verwenden, um in Medien den übergeordneten Ordner zu wählen</string>
     <string name="pref_advanced_queue">Erweiterte Optionen von Play Queue</string>
     <string name="pref_advanced_queue_summary">Experimentell: fortgeschrittene Funktionen in Play Queue verwenden</string>
     <string name="pref_keep_playback_mode">Abspielmodus behalten</string>
@@ -111,7 +120,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
     <string name="pref_auto_power">Remote-Gerät beim Start der App einschalten</string>
     <string name="pref_friendly_names">Lesbare Kanal- und Gerätenamen</string>
-    <string name="pref_friendly_names_summary_on">Lesbare Namen vom Onkyo-Gerät nutzen</string>
+    <string name="pref_friendly_names_summary_on">Lesbare Namen des Onkyo-Geräts nutzen</string>
     <string name="pref_friendly_names_summary_off">Namen des Protokolls nutzen</string>
 
     <string name="pref_force_audio_control">Audiosteuerung immer verfügbar</string>
@@ -127,7 +136,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         <item>Automatisch</item>
     </string-array>
 
-    <!-- App themes -->
+    <!-- App-Themes -->
     <string name="pref_theme">Thema</string>
     <string-array name="pref_theme_names">
         <item>OLED (Schwarz und Limette)</item>
@@ -205,14 +214,14 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="cd_cmd_number_10">Nummer 10</string>
     <string name="cd_cmd_number_greater_10">Nummer größer 10</string>
     <string name="cd_cmd_disc_f">Nächste Disk</string>
-    <string name="cd_cmd_disc_r">Vorige Disk</string>
+    <string name="cd_cmd_disc_r">Vorherige Disk</string>
     <string name="cd_cmd_disc1">Disk 1</string>
     <string name="cd_cmd_disc2">Disk 2</string>
     <string name="cd_cmd_disc3">Disk 3</string>
     <string name="cd_cmd_disc4">Disk 4</string>
     <string name="cd_cmd_disc5">Disk 5</string>
     <string name="cd_cmd_disc6">Disk 6</string>
-    
+
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
     <string name="audio_muting_off">Ton Stumm aus</string>
@@ -225,7 +234,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="tone_treble">Höhen</string>
     <string name="subwoofer_level">Subwoofer-Pegel</string>
     <string name="center_level">Center-Lautstärke</string>
-    <string name="master_volume">Haupt Lautstärke</string>
+    <string name="master_volume">Haupt-Lautstärke</string>
     <string name="master_volume_up">Lauter</string>
     <string name="master_volume_down">Leiser</string>
     <string name="master_volume_up1">1dB lauter</string>
@@ -236,7 +245,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Nächster gespeicherter Sender</string>
-    <string name="preset_command_down">Voriger gespeicherter Sender</string>
+    <string name="preset_command_down">Vorheriger gespeicherter Sender</string>
     <string name="cmd_preset_memory">Sender speichern</string>
     <string name="cmd_preset_memory_number">Speichernummer</string>
     <string name="number_picker_decrease">Wert verringern</string>
@@ -244,7 +253,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
     <!-- Tuning Command  -->
     <string name="tuning_command_up">Nächsten Sender suchen</string>
-    <string name="tuning_command_down">Vorigen Sender suchen</string>
+    <string name="tuning_command_down">Vorherigen Sender suchen</string>
 
     <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Abspielen</string>
@@ -252,7 +261,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="cmd_description_pause">Pause</string>
     <string name="cmd_description_p_p">Abspielen/Pause</string>
     <string name="cmd_description_trup">nächster Titel</string>
-    <string name="cmd_description_trdn">voriger Titel</string>
+    <string name="cmd_description_trdn">vorheriger Titel</string>
     <string name="cmd_description_ff">FF Taste(fortlaufend)</string>
     <string name="cmd_description_rew">REW Taste(fortlaufend)</string>
     <string name="cmd_description_repeat">Wiederholen</string>
@@ -264,7 +273,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="cmd_description_genre">Genre</string>
     <string name="cmd_description_playlist">Abspielliste</string>
     <string name="cmd_description_right">Nächstes</string>
-    <string name="cmd_description_left">Voriges</string>
+    <string name="cmd_description_left">Vorheriges</string>
     <string name="cmd_description_up">Hoch</string>
     <string name="cmd_description_down">Runter</string>
     <string name="cmd_description_select">Auswählen</string>
@@ -284,7 +293,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="cmd_description_language">Sprache</string>
     <string name="cmd_description_setup">Einrichten</string>
     <string name="cmd_description_return">Zurück</string>
-    <string name="cmd_description_chup">Voriger Kanal (Iradio)</string>
+    <string name="cmd_description_chup">Vorheriger Kanal (Iradio)</string>
     <string name="cmd_description_chdn">Nächster Kanal (Iradio)</string>
     <string name="cmd_description_menu">Menü</string>
     <string name="cmd_description_quick_menu">Schnellmenü</string>
@@ -383,7 +392,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="service_bluetooth">Bluetooth</string>
 
     <string name="playlist_options">Abspielliste</string>
-    <string name="playlist_add">Hnzufügen</string>
+    <string name="playlist_add">Hizufügen</string>
     <string name="playlist_add_and_play">Hinzufügen und abspielen</string>
     <string name="playlist_replace">Ersetzen</string>
     <string name="playlist_replace_and_play">Ersetzen und abspielen</string>

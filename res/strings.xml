@@ -58,6 +58,7 @@ Enjoy!""</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_group_zone">Zone</string>
     <string name="drawer_multiroom">Group</string>
+    <string name="drawer_shortcuts">Shortcuts</string>
     <string name="drawer_device">Device</string>
     <string name="drawer_device_connect">Connect</string>
     <string name="drawer_device_search">Search</string>
@@ -71,12 +72,20 @@ Enjoy!""</string>
     <string name="connect_dialog_port">Port (optional)</string>
     <string name="connect_dialog_save">Save connection</string>
 
+    <!-- Favorites -->
+    <string name="favorite_alias">Name</string>
+    <string name="favorite_update">Edit</string>
+    <string name="favorite_delete">Delete</string>
+
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Edit connection</string>
-    <string name="favorite_connection_update">Edit</string>
-    <string name="favorite_connection_alias">Name</string>
     <string name="favorite_connection_identifier">MAC Address (optional)</string>
-    <string name="favorite_connection_delete">Delete</string>
+
+    <!-- Favorite shortcuts -->
+    <string name="favorite_shortcut_edit">Edit shortcut</string>
+    <string name="favorite_shortcut_create">Create shortcut</string>
+    <string name="favorite_shortcut_added">Shortcut added into app menu</string>
+    <string name="favorite_shortcut_failed">Cannot create shortcut: maximum number reached</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
