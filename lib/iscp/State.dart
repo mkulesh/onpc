@@ -345,12 +345,9 @@ class State
             {
                 _mediaListState.fillRadioPresets(getActiveZone, _receiverInformation.presetList);
             }
-            if (!_mediaListState.inputType.isMediaList)
-            {
-                _trackState.clear();
-            }
             if (_mediaListState.isSimpleInput)
             {
+                _trackState.clear();
                 _playbackState.clear();
             }
             return changed;

@@ -101,7 +101,7 @@ class MediaListState
     {
         final bool changed = _inputType.key != msg.getValue.key;
         _inputType = msg.getValue;
-        if (!_inputType.isMediaList)
+        if (isSimpleInput)
         {
             _serviceType = Services.ServiceTypeEnum.defValue;
             clearItems();
@@ -149,7 +149,7 @@ class MediaListState
 
     bool processXmlListInfo(XmlListInfoMsg msg)
     {
-        if (!_inputType.isMediaList)
+        if (isSimpleInput)
         {
             clearItems();
             Logging.info(msg, "skipped: input channel " + inputType.toString() + " is not a media list");
@@ -280,8 +280,7 @@ class MediaListState
     => _inputType != null && _inputType.key == InputSelector.DAB;
 
     bool get isSimpleInput
-    => _inputType != null &&
-        (isRadioInput || [InputSelector.TAPE1, InputSelector.TV, InputSelector.VIDEO4, InputSelector.VIDEO5].contains(_inputType.key));
+    => _inputType != null && _inputType.key != InputSelector.NONE && !_inputType.isMediaList;
 
     bool get isUsb
     => _serviceType != null &&
