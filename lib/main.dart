@@ -37,7 +37,6 @@ import "dialogs/DeviceSearchDialog.dart";
 import "dialogs/PopupManager.dart";
 import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
-import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
 import "iscp/scripts/AutoPower.dart";
@@ -417,9 +416,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (tab == AppTabs.MEDIA && !isTop && _configuration.backAsReturn)
         {
             _stateManager.state.closeMediaFilter();
-            _stateManager.sendMessage(OperationCommandMsg.output(
-                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN),
-                waitingForData: true);
+            _stateManager.sendMessage(StateManager.RETURN_MSG, waitingForData: true);
             return true;
         }
         else if (_configuration.exitConfirm)

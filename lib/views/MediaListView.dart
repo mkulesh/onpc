@@ -158,8 +158,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             if (items.isEmpty || !(items.first is OperationCommandMsg))
             {
-                items.insert(0, OperationCommandMsg.output(
-                    ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN));
+                items.insert(0, StateManager.RETURN_MSG);
             }
         }
 
@@ -552,11 +551,18 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     {
         final List<Widget> elements = List();
 
-        final Widget field = !state.mediaFilterVisible ?
-        CustomTextLabel.small(
+        Widget title = CustomTextLabel.small(
             _buildTitle(numberOfItems),
-            padding: EdgeInsets.only(left: MediaListDimens.headerPadding)
-        ) :
+            padding: EdgeInsets.only(left: MediaListDimens.headerPadding));
+        if (state.isOn && !state.mediaListState.isTopLayer())
+        {
+            title = InkWell(
+                child: title,
+                onTap: ()
+                => stateManager.sendMessage(StateManager.RETURN_MSG, waitingForData: true));
+        }
+
+        final Widget field = !state.mediaFilterVisible ? title :
         CustomTextField(_mediaFilterController,
             isFocused: true,
             isBorder: false,

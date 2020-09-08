@@ -126,6 +126,9 @@ class StateManager
     static final OperationCommandMsg LIST_MSG = OperationCommandMsg.output(
         State.DEFAULT_ACTIVE_ZONE, OperationCommand.LIST);
 
+    static final OperationCommandMsg RETURN_MSG = OperationCommandMsg.output(
+        State.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
+
     static final DisplayModeMsg DISPLAY_MSG = DisplayModeMsg.output(
         DisplayModeMsg.TOGGLE);
 

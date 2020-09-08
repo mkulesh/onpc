@@ -17,8 +17,7 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
-import "../iscp/messages/OperationCommandMsg.dart";
-import "../iscp/messages/ReceiverInformationMsg.dart";
+import "../iscp/StateManager.dart";
 import "../iscp/messages/XmlListItemMsg.dart";
 import "../views/TrackMenuView.dart";
 import "../views/UpdatableView.dart";
@@ -76,8 +75,7 @@ class _TrackMenuDialogState extends State<TrackMenuDialog>
         _viewContext.stateManager.state.mediaListState.clearMenu();
         if (_selectedItem == null && _viewContext.stateManager.state.mediaListState.isMenuMode)
         {
-            _viewContext.stateManager.sendMessage(OperationCommandMsg.output(
-                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN));
+            _viewContext.stateManager.sendMessage(StateManager.RETURN_MSG);
         }
     }
 }
