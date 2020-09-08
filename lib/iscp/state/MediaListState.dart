@@ -251,7 +251,6 @@ class MediaListState
             final ListInfoMsg cmdMessage = ListInfoMsg.output(msg.getLineInfo, msg.getListedData);
             final XmlListItemMsg nsMsg = XmlListItemMsg.details(
                 msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true, cmdMessage.getCmdMsg());
-            Logging.info(msg, "msg.getLineInfo=" + msg.getLineInfo.toString() + ", nsMsg.getMessageId=" + nsMsg.getMessageId.toString());
             if (nsMsg.getMessageId < _mediaItems.length)
             {
                 _mediaItems[nsMsg.getMessageId] = nsMsg;

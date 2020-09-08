@@ -154,7 +154,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
 
         // Add "Return" button if necessary
-        if (state.isOn && !state.mediaListState.isTopLayer() && !configuration.backAsReturn)
+        if (state.isOn && ms.layerInfo != null && !ms.isTopLayer() && !configuration.backAsReturn)
         {
             if (items.isEmpty || !(items.first is OperationCommandMsg))
             {
@@ -439,6 +439,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     String _buildTitle(final int numberOfItems)
     {
         String title = "";
+        if (!state.isOn)
+        {
+            return Strings.medialist_no_items;
+        }
         final MediaListState ms = state.mediaListState;
         if (ms.isSimpleInput)
         {
