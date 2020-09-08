@@ -442,7 +442,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
             else if (state.trackState.title.isNotEmpty)
             {
-                title += ": " + state.trackState.title;
+                title += ": " + ms.inputType.description;
             }
         }
         else if (ms.isPlaybackMode || ms.isMenuMode)
@@ -467,7 +467,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             title += ms.titleBar;
             if (ms.titleBar.isNotEmpty)
             {
-                title += " | ";
+                title += "/";
             }
             title += Strings.medialist_no_items;
         }
