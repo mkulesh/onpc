@@ -71,6 +71,8 @@ import "state/TrackState.dart";
 
 class State
 {
+    static const bool SKIP_XML_MESSAGES = false;
+
     // Connection state
     bool _connected = false;
 
@@ -218,7 +220,7 @@ class State
         // instead od zone-dependent msg.getCode
 
         // Receiver info
-        if (msg is ReceiverInformationMsg)
+        if (!SKIP_XML_MESSAGES && msg is ReceiverInformationMsg)
         {
             return _isChange(ReceiverInformationMsg.CODE,
                 _receiverInformation.processReceiverInformation(msg));
@@ -361,7 +363,7 @@ class State
             }
             return changed;
         }
-        else if (msg is XmlListInfoMsg)
+        else if (!SKIP_XML_MESSAGES && msg is XmlListInfoMsg)
         {
             final String changed = _isChange(XmlListInfoMsg.CODE, _mediaListState.processXmlListInfo(msg));
             if (changed != null && _mediaListState.serviceType.key == ServiceType.PLAYQUEUE)

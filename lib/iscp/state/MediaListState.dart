@@ -61,6 +61,11 @@ class MediaListState
     int get numberOfLayers
     => _numberOfLayers;
 
+    int _currentCursorPosition;
+
+    int get currentCursorPosition
+    => _currentCursorPosition;
+
     // Media list
     final List<ISCPMessage> _mediaItems = List<ISCPMessage>();
 
@@ -89,6 +94,7 @@ class MediaListState
         _titleBar = "";
         _numberOfLayers = 0;
         _numberOfTitles = 0;
+        _currentCursorPosition = 0;
         clearItems();
     }
 
@@ -144,6 +150,11 @@ class MediaListState
             _numberOfTitles = msg.getNumberOfItems;
             changed = true;
         }
+        if (_currentCursorPosition != msg.getCurrentCursorPosition)
+        {
+            _currentCursorPosition = msg.getCurrentCursorPosition;
+            changed = true;
+        }
         return changed;
     }
 
@@ -186,10 +197,16 @@ class MediaListState
         final List<NetworkService> networkServices = ri.networkServices;
         if (msg.getInformationType.key == InformationType.CURSOR)
         {
+            // #167: if receiver does not support XML, clear list items here
+            if (!ri.isReceiverInformation && msg.getUpdateType.key == UpdateType.PAGE)
+            {
+                // only clear if cursor is not changed (updateType is PAGE)
+                clearItems();
+            }
             listInfoItems.clear();
             return false;
         }
-        if (isNetworkServices)
+        if (isNetworkServices && isTopLayer())
         {
             // Since the names in ListInfoMsg and ReceiverInformationMsg are
             // not consistent for some services (see https://github.com/mkulesh/onpc/issues/35)
@@ -224,6 +241,27 @@ class MediaListState
             }
             return _mediaItems.isNotEmpty;
         }
+        else if (!ri.isReceiverInformation)
+        {
+            if (_mediaItems.any((i) => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase())))
+            {
+                return false;
+            }
+            // ListInfoMsg is used as an alternative command in this case, but the item is stored as XmlListItemMsg
+            final ListInfoMsg cmdMessage = ListInfoMsg.output(msg.getLineInfo, msg.getListedData);
+            final XmlListItemMsg nsMsg = XmlListItemMsg.details(
+                msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true, cmdMessage.getCmdMsg());
+            Logging.info(msg, "msg.getLineInfo=" + msg.getLineInfo.toString() + ", nsMsg.getMessageId=" + nsMsg.getMessageId.toString());
+            if (nsMsg.getMessageId < _mediaItems.length)
+            {
+                _mediaItems[nsMsg.getMessageId] = nsMsg;
+            }
+            else
+            {
+                _mediaItems.add(nsMsg);
+            }
+            return true;
+        }
         else if (isUsb)
         {
             final String name = msg.getListedData;
@@ -232,18 +270,6 @@ class MediaListState
                 listInfoItems.add(name);
             }
             return false;
-        }
-        else if (isMenuMode || !ri.isReceiverInformation)
-        {
-            if (_mediaItems.any((i) => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase())))
-            {
-                return false;
-            }
-            // ListInfoMsg is used as an alternative command in this case, but the item is stored as XmlListItemMsg
-            final ListInfoMsg cmdMessage = ListInfoMsg.output(msg.getLineInfo, msg.getListedData);
-            _mediaItems.add(XmlListItemMsg.details(
-                msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true, cmdMessage.getCmdMsg()));
-            return true;
         }
         return false;
     }

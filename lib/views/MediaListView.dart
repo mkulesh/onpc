@@ -164,7 +164,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         // Add "Playback" indication if necessary
         final XmlListItemMsg playbackIndicationItem = XmlListItemMsg.details(
-            -1, 0, Strings.medialist_playback_mode, _PLAYBACK_STRING, ListItemIcon.PLAY, false, null);
+            0xFFFF, 0, Strings.medialist_playback_mode, _PLAYBACK_STRING, ListItemIcon.PLAY, false, null);
 
         if (isPlayback)
         {
@@ -218,13 +218,21 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             )
         );
 
+        final List<Widget> elements = [
+            _buildHeaderLine(td, _headerButtons, visibleItems),
+            CustomDivider(thickness: 1),
+            Expanded(child: mediaList, flex: 1)
+        ];
+
+        if (state.isOn && !state.receiverInformation.isReceiverInformation && !state.mediaListState.isSimpleInput && !state.mediaListState.isMediaEmpty)
+        {
+            elements.add(CustomDivider(thickness: 1));
+            elements.add(_buildTrackButtons());
+        }
+
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-                _buildHeaderLine(td, _headerButtons, visibleItems),
-                CustomDivider(thickness: 1),
-                Expanded(child: mediaList, flex: 1)
-            ],
+            children: elements
         );
     }
 
@@ -661,5 +669,25 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             return !title.toUpperCase().contains(f.toUpperCase());
         }
         return true;
+    }
+
+    Widget _buildTrackButtons()
+    {
+        final List<Widget> buttons = List();
+        [
+            OperationCommandMsg.output(state.getActiveZone, OperationCommand.LEFT),
+            OperationCommandMsg.output(state.getActiveZone, OperationCommand.RIGHT),
+        ].forEach((cmd)
+        => buttons.add(CustomImageButton.normal(
+            cmd.getValue.icon,
+            cmd.getValue.description,
+            onPressed: ()
+            => stateManager.sendMessage(cmd)))
+        );
+
+        return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: buttons,
+        );
     }
 }

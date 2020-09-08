@@ -316,6 +316,9 @@ class ListTitleInfoMsg extends ISCPMessage
     int get getNumberOfItems
     => _numberOfItems;
 
+    int get getCurrentCursorPosition
+    => _currentCursorPosition;
+
     int get getNumberOfLayers
     => _numberOfLayers;
 

@@ -142,6 +142,9 @@ class ListInfoMsg extends ISCPMessage
     EnumItem<InformationType> get getInformationType
     => _informationType;
 
+    EnumItem<UpdateType> get getUpdateType
+    => _updateType;
+
     String get getListedData
     => _listedData;
 

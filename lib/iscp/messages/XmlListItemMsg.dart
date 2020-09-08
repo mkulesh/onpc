@@ -59,7 +59,7 @@ class XmlListItemMsg extends ISCPMessage
 
     XmlListItemMsg.details(final int id, final int numberOfLayers, final String title,
         final String iconType, final ListItemIcon icon, final bool selectable, final EISCPMessage cmdMessage) :
-            super.output(CODE, _getParameterAsString(id, numberOfLayers))
+            super.outputId(id, CODE, _getParameterAsString(id, numberOfLayers))
     {
         _title = title;
         _iconType = iconType;
