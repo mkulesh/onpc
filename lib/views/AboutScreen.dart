@@ -52,7 +52,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     AboutScreenState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
     @override
-    initState()
+    void initState()
     {
         super.initState();
         _tabController = TabController(vsync: this, length: _tabs.length);
@@ -156,17 +156,17 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     {
         return SingleChildScrollView(child:
             SelectableText(data,
-                style: td.textTheme.body1.copyWith(color: td.textTheme.subhead.color))
+                style: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color))
         );
     }
 
     Widget _buildMarkdownView(final ThemeData td, final String data, final EdgeInsetsGeometry padding)
     {
         final MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(td).copyWith(
-            h1: td.textTheme.subhead.copyWith(fontWeight: FontWeight.bold),
-            h2: td.textTheme.subhead.copyWith(fontWeight: FontWeight.bold),
-            p: td.textTheme.body1.copyWith(color: td.textTheme.subhead.color),
-            a: td.textTheme.body1.copyWith(color: td.accentColor),
+            h1: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
+            h2: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
+            p: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color),
+            a: td.textTheme.bodyText2.copyWith(color: td.accentColor),
         );
         return Markdown(
             data: data,

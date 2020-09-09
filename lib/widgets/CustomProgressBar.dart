@@ -76,7 +76,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         final List<Widget> controls = List<Widget>();
         if (widget.caption != null)
         {
-            String caption = widget.caption + ": " + extCaption;
+            final String caption = widget.caption + ": " + extCaption;
             if (widget.extendedCmd != null)
             {
                 controls.add(Row(
@@ -137,7 +137,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             children: controls);
     }
 
-    _onChangeStart(double v)
+    void _onChangeStart(double v)
     {
         isSeeking = true;
         setState(()
@@ -147,7 +147,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         });
     }
 
-    _onChanged(double v)
+    void _onChanged(double v)
     {
         isSeeking = true;
         final int intVal = v.round();
@@ -161,7 +161,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         });
     }
 
-    _onChangeEnd(double v)
+    void _onChangeEnd(double v)
     {
         isSeeking = false;
         setState(()
@@ -194,7 +194,7 @@ class CustomTrackShape extends RoundedRectSliderTrackShape
         bool isDiscrete = false,
     })
     {
-        final double trackHeight = sliderTheme.trackHeight;
+        final double trackHeight = 1.5;
         final double trackLeft = offset.dx;
         final double trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
         final double trackWidth = parentBox.size.width;

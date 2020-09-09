@@ -402,7 +402,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
     }
 
-    bool _onBackPressed(bool stopDefaultButtonEvent)
+    bool _onBackPressed(bool stopDefaultButtonEvent, RouteInfo routeInfo)
     {
         if (Navigator.canPop(context) || !_stateManager.isConnected || !_stateManager.state.isOn)
         {

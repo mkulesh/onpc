@@ -70,13 +70,13 @@ class BaseAppTheme
 
             textTheme: TextTheme(
                 // Title in activity and dialogs
-                title: TextStyle(color: textColor, fontSize: ActivityDimens.titleFontSize),
+                headline6: TextStyle(color: textColor, fontSize: ActivityDimens.titleFontSize),
                 // Main text in views, dialogs and drawer
                 // Parameter names in the preference screen
-                subhead: TextStyle(color: textColor, fontSize: ActivityDimens.primaryFontSize, fontWeight: FontWeight.normal),
+                subtitle1: TextStyle(color: textColor, fontSize: ActivityDimens.primaryFontSize, fontWeight: FontWeight.normal),
                 // "Disabled" text in views, dialogs and drawer
                 // Parameter descriptions in the preference screen
-                body1: TextStyle(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
+                bodyText2: TextStyle(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
                 // Buttons
                 button: TextStyle(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
             ),

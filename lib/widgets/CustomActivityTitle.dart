@@ -27,19 +27,19 @@ class CustomActivityTitle extends StatelessWidget
         final ThemeData td = Theme.of(context);
         final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
-        final double titleSize = isPortrait ? td.textTheme.title.fontSize : td.textTheme.title.fontSize - 2;
-        final double subTitleSize = isPortrait ? td.textTheme.title.fontSize - 4 : td.textTheme.title.fontSize - 6;
+        final double titleSize = isPortrait ? td.textTheme.headline6.fontSize : td.textTheme.headline6.fontSize - 2;
+        final double subTitleSize = isPortrait ? td.textTheme.headline6.fontSize - 4 : td.textTheme.headline6.fontSize - 6;
 
         final List<Widget> children = List();
         children.add(Text(title,
-            style: td.textTheme.title.copyWith(
+            style: td.textTheme.headline6.copyWith(
                 fontSize: titleSize,
                 color: td.bottomAppBarColor)));
 
         if (subTitle != null)
         {
             children.add(Text(subTitle,
-                style: td.textTheme.title.copyWith(
+                style: td.textTheme.headline6.copyWith(
                     fontSize: subTitleSize,
                     fontWeight: FontWeight.normal,
                     color: td.bottomAppBarColor.withAlpha(175))));
