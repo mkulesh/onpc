@@ -530,9 +530,17 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private void updateTitle(@NonNull final State state, boolean processing)
     {
         final StringBuilder title = new StringBuilder();
+        final ReceiverInformationMsg.Selector selector = state.getActualSelector();
         if (state.isSimpleInput())
         {
-            title.append(activity.getResources().getString(state.inputType.getDescriptionId()));
+            if (selector != null && activity.getConfiguration().isFriendlyNames())
+            {
+                title.append(selector.getName());
+            }
+            else
+            {
+                title.append(activity.getResources().getString(state.inputType.getDescriptionId()));
+            }
             if (state.isRadioInput())
             {
                 title.append(" | ")
@@ -550,7 +558,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (state.inputType.isMediaList())
         {
-            title.append(state.titleBar);
+            if (selector != null && state.isTopLayer() && activity.getConfiguration().isFriendlyNames())
+            {
+                title.append(selector.getName());
+            }
+            else
+            {
+                title.append(state.titleBar);
+            }
             if (state.numberOfItems > 0)
             {
                 title.append(" | ").append(activity.getResources().getString(R.string.medialist_items)).append(": ");
