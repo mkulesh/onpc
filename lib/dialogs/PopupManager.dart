@@ -117,7 +117,7 @@ class PopupManager
         }
     }
 
-    void showToast(final String msg)
+    static void showToast(final String msg)
     {
         Fluttertoast.showToast(
             msg: msg,

@@ -393,7 +393,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _onConnectionError(String result)
     {
-        _popupManager.showToast(result);
+        PopupManager.showToast(result);
         if (_connectionState == ConnectionState.CONNECTING_TO_SAVED)
         {
             Logging.info(this.widget, "Searching for any device to connect");
@@ -424,7 +424,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             if (!_exitConfirm)
             {
                 _exitConfirm = true;
-                _popupManager.showToast(Strings.action_exit_confirm);
+                PopupManager.showToast(Strings.action_exit_confirm);
                 Timer(Duration(seconds: 3), ()
                 {
                     _exitConfirm = false;
@@ -450,7 +450,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             {
                 _disconnect();
             });
-            _popupManager.showToast(Strings.error_connection_no_network);
+            PopupManager.showToast(Strings.error_connection_no_network);
             break;
         case NetworkState.CELLULAR:
         case NetworkState.WIFI:
