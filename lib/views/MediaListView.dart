@@ -444,9 +444,17 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             return Strings.medialist_no_items;
         }
         final MediaListState ms = state.mediaListState;
+        final Selector selector = state.getActualSelector;
         if (ms.isSimpleInput)
         {
-            title += ms.inputType.description;
+            if (selector != null && configuration.friendlyNames)
+            {
+                title += selector.getName;
+            }
+            else
+            {
+                title += ms.inputType.description;
+            }
             if (ms.isRadioInput)
             {
                 title += " | " + Strings.medialist_items + ": " + numberOfItems.toString();
@@ -462,7 +470,14 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
         else if (ms.inputType.isMediaList)
         {
-            title += ms.titleBar;
+            if (selector != null && ms.isTopLayer() && configuration.friendlyNames)
+            {
+                title += selector.getName;
+            }
+            else
+            {
+                title += ms.titleBar;
+            }
             if (ms.numberOfItems > 0)
             {
                 title += " | " + Strings.medialist_items + ": ";
