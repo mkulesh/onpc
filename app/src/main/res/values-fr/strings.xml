@@ -58,7 +58,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse IP</string>
-    <string name="connect_dialog_port">Port (optionel)</string>
+    <string name="connect_dialog_port">Port (optionnel)</string>
     <string name="connect_dialog_save">Enregistrer la connexion</string>
 
     <!-- Favorites -->
@@ -68,7 +68,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Modifier la connexion</string>
-    <string name="favorite_connection_identifier">Adresse MAC (optionelle)</string>
+    <string name="favorite_connection_identifier">Adresse MAC (optionnelle)</string>
 
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Modifier le raccourci</string>
@@ -78,7 +78,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>
-    <string name="menu_receiver_information">Information du récépteur</string>
+    <string name="menu_receiver_information">Information du récepteur</string>
     <string name="menu_latest_logging">Dernière entrée</string>
 
     <!-- Shortcuts -->
@@ -101,7 +101,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="pref_back_as_return">Bouton retour</string>
     <string name="pref_back_as_return_summary">Utiliser le bouton Retour pour remonter au niveau parent de la liste des médias</string>
     <string name="pref_advanced_queue">Files d\'attentes avancées</string>
-    <string name="pref_advanced_queue_summary">Experimental: gestion évoluée des files d\'attentes</string>
+    <string name="pref_advanced_queue_summary">Expérimental: gestion évoluée des files d\'attentes</string>
     <string name="pref_keep_playback_mode">Maintenir le mode lecture</string>
     <string name="pref_keep_playback_mode_summary">Toujours conserver le mode lecture dans l\'onglet SOURCE quand l\'écoute est en cours</string>
     <string name="pref_exit_confirm">Bouton retour deux fois pour quitter</string>
@@ -112,8 +112,8 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="pref_network_services">Sources réseau</string>
 
     <string name="pref_auto_power">Allumer le dispositif au démarrage de l\'application</string>
-    <string name="pref_friendly_names">Noms personalisés des sources et dispositifs</string>
-    <string name="pref_friendly_names_summary_on">Utiliser les noms personalisés émis par le dispositif</string>
+    <string name="pref_friendly_names">Noms personnalisés des sources et dispositifs</string>
+    <string name="pref_friendly_names_summary_on">Utiliser les noms personnalisés émis par le dispositif</string>
     <string name="pref_friendly_names_summary_off">Utiliser les noms génériques</string>
 
     <string name="pref_force_audio_control">Contrôle audio toujours disponible</string>
@@ -137,7 +137,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
         <item>Sombre (Gris et orange)</item>
         <item>Clair (Gris et violet)</item>
         <item>Clair (Bleu et orange)</item>
-        <item>Clair (Emeraude et magenta)</item>
+        <item>Clair (Émeraude et magenta)</item>
         <item>Clair (Violet et vert)</item>
     </string-array>
 
@@ -283,7 +283,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="cmd_description_delete">Effacer</string>
     <string name="cmd_description_caps">Maj</string>
     <string name="cmd_description_location">Lieu</string>
-    <string name="cmd_description_language">Langage</string>
+    <string name="cmd_description_language">Langue</string>
     <string name="cmd_description_setup">Paramètres</string>
     <string name="cmd_description_return">Retour</string>
     <string name="cmd_description_chup">Ch haut(Iradio)</string>
@@ -411,7 +411,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_firmware_new_version">Nouvelle version disponible</string>
     <string name="device_firmware_update_started">Mise à jour en cours, patientez…</string>
     <string name="device_firmware_update_complete">Mise à jour terminée, merci d\'attendre le redémarrage et connecter de nouveau</string>
-    <string name="device_firmware_net">Lancer la mise à jour par réseau</string>
+    <string name="device_firmware_net">Lancer la mise à jour par le réseau</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Niveau éclairage</string>
