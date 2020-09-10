@@ -23,6 +23,7 @@ import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "CfgAudioControl.dart";
 import "CfgFavoriteConnections.dart";
+import "CfgFavoriteShortcuts.dart";
 import "CfgModule.dart";
 
 class Configuration extends CfgModule
@@ -201,12 +202,14 @@ class Configuration extends CfgModule
     // configuration modules
     CfgAudioControl audioControl;
     CfgFavoriteConnections favoriteConnections;
+    CfgFavoriteShortcuts favoriteShortcuts;
 
     Configuration(final SharedPreferences preferences, packageInfo) : super(preferences)
     {
-        this.appVersion = "v." + packageInfo.version;
-        this.audioControl = CfgAudioControl(preferences);
-        this.favoriteConnections = CfgFavoriteConnections(preferences);
+        appVersion = "v." + packageInfo.version;
+        audioControl = CfgAudioControl(preferences);
+        favoriteConnections = CfgFavoriteConnections(preferences);
+        favoriteShortcuts = CfgFavoriteShortcuts(preferences);
         Logging.info(this, "Application started: " + appVersion + ", OS: " + Platform.operatingSystem);
     }
 
@@ -245,8 +248,9 @@ class Configuration extends CfgModule
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
 
-        // Favorite connections
+        // Favorites
         favoriteConnections.read();
+        favoriteShortcuts.read();
     }
 
     void saveDevice(final String device, final int port) async
@@ -297,5 +301,6 @@ class Configuration extends CfgModule
         }
         audioControl.setReceiverInformation(stateManager);
         favoriteConnections.setReceiverInformation(stateManager);
+        favoriteShortcuts.setReceiverInformation(stateManager);
     }
 }

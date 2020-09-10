@@ -78,6 +78,11 @@ class MediaListState
     int get numberOfItems
     => _mediaItems.length;
 
+    final List<String> _pathItems = List<String>();
+
+    List<String> get pathItems
+    => _pathItems;
+
     final List<String> listInfoItems = List<String>();
 
     MediaListState()
@@ -95,6 +100,7 @@ class MediaListState
         _numberOfLayers = 0;
         _numberOfTitles = 0;
         _currentCursorPosition = 0;
+        _pathItems.clear();
         clearItems();
     }
 
@@ -154,6 +160,26 @@ class MediaListState
         {
             _currentCursorPosition = msg.getCurrentCursorPosition;
             changed = true;
+        }
+        // Update path items
+        for (int i = _pathItems.length; i < numberOfLayers; i++)
+        {
+            _pathItems.add("");
+        }
+        if (_uiType != UIType.PLAYBACK)
+        {
+            if (_numberOfLayers > 0)
+            {
+                _pathItems[numberOfLayers - 1] = _titleBar;
+                while (_pathItems.length > _numberOfLayers)
+                {
+                    _pathItems.removeLast();
+                }
+            }
+            else
+            {
+                _pathItems.clear();
+            }
         }
         return changed;
     }

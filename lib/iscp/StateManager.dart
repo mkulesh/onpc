@@ -15,7 +15,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
+import "../config/CfgFavoriteShortcuts.dart";
 import "../iscp/BroadcastSearch.dart";
+import "../iscp/scripts/MessageScript.dart";
 import "../iscp/scripts/MessageScriptIf.dart";
 import "../utils/Logging.dart";
 import "EISCPMessage.dart";
@@ -39,6 +41,7 @@ import "messages/PresetCommandMsg.dart";
 import "messages/PresetMemoryMsg.dart";
 import "messages/PrivacyPolicyStatusMsg.dart";
 import "messages/ReceiverInformationMsg.dart";
+import 'messages/ServiceType.dart';
 import "messages/TimeInfoMsg.dart";
 import "messages/TimeSeekMsg.dart";
 import "messages/TrackInfoMsg.dart";
@@ -59,6 +62,7 @@ enum NetworkState
 class StateManager
 {
     static const String CONNECTION_EVENT = "CONNECT";
+    static const String APPLY_FAVORITE_EVENT = "APPLY_FAVORITE";
     static const String ZONE_EVENT = "ZONE";
     static const String WAITING_FOR_DATA_EVENT = "WAITING_FOR_DATA";
     static const String BROADCAST_SEARCH_EVENT = "BROADCAST_SEARCH";
@@ -226,7 +230,7 @@ class StateManager
         // In CELLULAR mode, always use BMP images instead of links since direct links
         // can be not available
         _messageChannel.sendMessage(EISCPMessage.output(JacketArtMsg.CODE,
-            _networkState == NetworkState.CELLULAR? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
+            _networkState == NetworkState.CELLULAR ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
         sendQueries(_state.receiverInformation.getQueries(_state.getActiveZone));
 
         // initial call os the message scripts
@@ -388,7 +392,7 @@ class StateManager
         // request receiver information after radio preset is memorized
         if ((msg is PresetCommandMsg || msg is PresetMemoryMsg) && _requestRIonPreset)
         {
-            _requestRIonPreset  = false;
+            _requestRIonPreset = false;
             Logging.info(this, "requesting receiver information...");
             sendQueries([ ReceiverInformationMsg.CODE ]);
         }
@@ -716,5 +720,59 @@ class StateManager
     {
         final String identifier = state.receiverInformation.getIdentifier();
         return isSourceHost(di.responseMsg) || (identifier != null && identifier == di.responseMsg.getIdentifier);
+    }
+
+    void activateScript(final MessageScript script)
+    {
+        _messageScripts.removeWhere((s) => s is MessageScript);
+        if (script.isValid())
+        {
+            _messageScripts.add(script);
+            script.start(state, _messageChannel);
+        }
+    }
+
+    void applyShortcut(final Shortcut shortcut)
+    {
+        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
+        String data = "";
+        data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
+        data += "<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>";
+        data += "<send cmd=\"SLI\" par=\"" + shortcut.input.getCode
+            + "\" wait=\"SLI\" resp=\"" + shortcut.input.getCode + "\"/>";
+
+        // Go to the top level. Response depends on the input type
+        String firstPath = shortcut.pathItems.isEmpty ? shortcut.item : shortcut.pathItems.first;
+        if (shortcut.input.key == InputSelector.NET && shortcut.service.key != ServiceType.UNKNOWN)
+        {
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"" + shortcut.service.description + "\"/>";
+        }
+        else
+        {
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
+        }
+
+        // Select target service
+        data += "<send cmd=\"NSV\" par=\"" + shortcut.service.getCode + "0\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
+
+        // Apply target path, if necessary
+        if (shortcut.pathItems.isNotEmpty)
+        {
+            for (int i = 0; i < shortcut.pathItems.length - 1; i++)
+            {
+                firstPath = shortcut.pathItems[i];
+                final String nextPath = shortcut.pathItems[i + 1];
+                data += "<send cmd=\"NLA\" par=\"" + firstPath + "\" wait=\"NLA\" listitem=\"" + nextPath + "\"/>";
+            }
+            data += "<send cmd=\"NLA\" par=\"" + shortcut.pathItems.last + "\" wait=\"NLA\" listitem=\"" + shortcut.item + "\"/>";
+        }
+
+        // Select target item
+        data += "<send cmd=\"NLA\" par=\"" + shortcut.item + "\" wait=\"1000\"/>";
+        data += "</onpcScript>";
+
+        final MessageScript messageScript = MessageScript(data);
+        triggerStateEvent(APPLY_FAVORITE_EVENT);
+        activateScript(messageScript);
     }
 }

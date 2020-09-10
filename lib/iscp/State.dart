@@ -506,4 +506,8 @@ class State
         _popupDocument = null;
         mediaListPosition.clear();
     }
+
+    bool get isShortcutPossible
+    => !SKIP_XML_MESSAGES && mediaListState.numberOfLayers > 0 && mediaListState.titleBar.isNotEmpty && mediaListState.serviceType != null;
+
 }

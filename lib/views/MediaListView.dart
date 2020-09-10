@@ -15,11 +15,13 @@ import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
 import "package:positioned_tap_detector/positioned_tap_detector.dart";
 
+import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CheckableItem.dart";
 import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/PopupManager.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
@@ -57,7 +59,8 @@ enum MediaContextMenu
     MOVE_FROM,
     MOVE_TO,
     TRACK_MENU,
-    PLAYBACK_MODE
+    PLAYBACK_MODE,
+    ADD_TO_FAVORITES
 }
 
 class MediaListButtons
@@ -364,18 +367,24 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 child: Text(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
         }
 
+        if (state.isShortcutPossible)
+        {
+            contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                child: Text(Strings.favorite_shortcut_create), value: MediaContextMenu.ADD_TO_FAVORITES));
+        }
+
         if (contextMenu.isNotEmpty)
         {
             showMenu(
                 context: context,
                 position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
                 items: contextMenu).then((m)
-            => _onContextItemSelected(m, cmd.getMessageId)
+            => _onContextItemSelected(m, cmd.getMessageId, cmd is XmlListItemMsg ? cmd.getTitle : null)
             );
         }
     }
 
-    void _onContextItemSelected(final MediaContextMenu m, final int idx)
+    void _onContextItemSelected(final MediaContextMenu m, final int idx, final String title)
     {
         if (m == null)
         {
@@ -429,6 +438,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 break;
             case MediaContextMenu.PLAYBACK_MODE:
                 stateManager.sendMessage(StateManager.LIST_MSG);
+                break;
+            case MediaContextMenu.ADD_TO_FAVORITES:
+                if (state.isShortcutPossible && title != null)
+                {
+                    _addShortcut(title);
+                }
                 break;
         }
     }
@@ -708,5 +723,19 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             mainAxisAlignment: MainAxisAlignment.center,
             children: buttons,
         );
+    }
+
+    void _addShortcut(String title)
+    {
+        final MediaListState ms = state.mediaListState;
+        final CfgFavoriteShortcuts shortcutCfg = configuration.favoriteShortcuts;
+        final Shortcut shortcut = Shortcut(
+            shortcutCfg.shortcuts.length, ms.inputType, ms.serviceType, title, title);
+        if (state.mediaListState.numberOfLayers > 1)
+        {
+            shortcut.setPathItems(ms.pathItems);
+        }
+        shortcutCfg.updateShortcut(shortcut, shortcut.alias);
+        PopupManager.showToast(Strings.favorite_shortcut_added);
     }
 }

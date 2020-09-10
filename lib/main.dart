@@ -312,6 +312,12 @@ class MusicControllerAppState extends State<MusicControllerApp>
                         _stateManager.startSearch(limited: true);
                     }
                     break;
+                case StateManager.APPLY_FAVORITE_EVENT:
+                    setState(()
+                    {
+                        _tabController.index = AppTabs.MEDIA.index;
+                    });
+                    break;
                 case ReceiverInformationMsg.CODE:
                     if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
                     {
