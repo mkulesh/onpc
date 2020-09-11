@@ -438,7 +438,7 @@ Enjoy!"""];
         /*en*/ "Port (optional)",
         /*ru*/ "Порт (необязательно)",
         /*de*/ "Port (optional)",
-        /*fr*/ "Port (optionel)",
+        /*fr*/ "Port (optionnel)",
         /*pl*/ "Port (opcjonalnie)"];
     static String get connect_dialog_port => l_connect_dialog_port[_language];
 
@@ -486,7 +486,7 @@ Enjoy!"""];
         /*en*/ "MAC Address (optional)",
         /*ru*/ "MAC адрес (необязательно)",
         /*de*/ "MAC Adresse (optional)",
-        /*fr*/ "Adresse MAC (optionelle)",
+        /*fr*/ "Adresse MAC (optionnelle)",
         /*pl*/ "Adres MAC (opcjonalnie)"];
     static String get favorite_connection_identifier => l_favorite_connection_identifier[_language];
 
@@ -534,7 +534,7 @@ Enjoy!"""];
         /*en*/ "Receiver information",
         /*ru*/ "Информация об устройстве",
         /*de*/ "Receiver Informationen",
-        /*fr*/ "Information du récépteur",
+        /*fr*/ "Information du récepteur",
         /*pl*/ "Informacje o urządzeniu"];
     static String get menu_receiver_information => l_menu_receiver_information[_language];
 
@@ -662,7 +662,7 @@ Enjoy!"""];
         /*en*/ "Experimental: use advanced play queue features",
         /*ru*/ "Использовать экспериментальные возможности очереди воспроизведения",
         /*de*/ "Experimentell: fortgeschrittene Funktionen in Play Queue verwenden",
-        /*fr*/ "Experimental: gestion évoluée des files d\'attentes",
+        /*fr*/ "Expérimental: gestion évoluée des files d\'attentes",
         /*pl*/ "Eksperymentalna: Korzystaj z zaawansowanych funkcji kolejki odtwarzania"];
     static String get pref_advanced_queue_summary => l_pref_advanced_queue_summary[_language];
 
@@ -742,7 +742,7 @@ Enjoy!"""];
         /*en*/ "Friendly selector and device names",
         /*ru*/ "Удобные названия каналов и устройства",
         /*de*/ "Lesbare Kanal- und Gerätenamen",
-        /*fr*/ "Noms personalisés des sources et dispositifs",
+        /*fr*/ "Noms personnalisés des sources et dispositifs",
         /*pl*/ "Nazwa urządzenia"];
     static String get pref_friendly_names => l_pref_friendly_names[_language];
 
@@ -750,7 +750,7 @@ Enjoy!"""];
         /*en*/ "Use friendly names provided by remote device",
         /*ru*/ "Использовать удобные названия, предоставленные удалённым устройством",
         /*de*/ "Lesbare Namen des Onkyo-Geräts nutzen",
-        /*fr*/ "Utiliser les noms personalisés émis par le dispositif",
+        /*fr*/ "Utiliser les noms personnalisés émis par le dispositif",
         /*pl*/ "Używaj nazwy dostarczonej przez zdalne urządzenie"];
     static String get pref_friendly_names_summary_on => l_pref_friendly_names_summary_on[_language];
 
@@ -1654,7 +1654,7 @@ Enjoy!"""];
         /*en*/ "Language",
         /*ru*/ "Язык",
         /*de*/ "Sprache",
-        /*fr*/ "Langage",
+        /*fr*/ "Langue",
         /*pl*/ "Język"];
     static String get cmd_description_language => l_cmd_description_language[_language];
 
@@ -2590,7 +2590,7 @@ Enjoy!"""];
         /*en*/ "Start device update via network",
         /*ru*/ "Обновить устройство по сети",
         /*de*/ "Update über Netzwerk starten",
-        /*fr*/ "Lancer la mise à jour par réseau",
+        /*fr*/ "Lancer la mise à jour par le réseau",
         /*pl*/ "Rozpocznij aktualizację urządzenia przez sieć"];
     static String get device_firmware_net => l_device_firmware_net[_language];
 
@@ -3104,7 +3104,7 @@ Enjoy!"""];
                 "Sombre (Gris et orange)",
                 "Clair (Gris et violet)",
                 "Clair (Bleu et orange)",
-                "Clair (Emeraude et magenta)",
+                "Clair (Émeraude et magenta)",
                 "Clair (Violet et vert)"],
         /*pl*/ ["Strong Dark (Czarny i limonkowy)",
                 "Dark (Ciemnoszary i cyjan)",
