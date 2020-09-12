@@ -11,6 +11,8 @@
  * License along with this program.
  */
 
+import 'dart:math';
+
 import "package:shared_preferences/shared_preferences.dart";
 import "package:xml/xml.dart" as xml;
 
@@ -225,5 +227,12 @@ class CfgFavoriteShortcuts extends CfgModule
             _shortcuts.remove(oldMsg);
             write();
         }
+    }
+
+    int getNextId()
+    {
+        int id = 0;
+        shortcuts.forEach((s) => id = max(id, s.id));
+        return id + 1;
     }
 }

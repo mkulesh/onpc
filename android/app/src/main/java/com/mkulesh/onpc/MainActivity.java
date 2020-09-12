@@ -356,6 +356,25 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             stringsParameters.add(new Pair<>("selected_listening_modes", "flutter.selected_listening_modes" + model));
             stringsParameters.add(new Pair<>("selected_network_services" + model, "flutter.selected_network_services" + model));
             stringsParameters.add(new Pair<>("selected_device_selectors" + model, "flutter.selected_device_selectors" + model));
+            int favoriteNr = oldPrefs.getInt("favorite_shortcut_number", 0);
+            if (favoriteNr > 0)
+            {
+                editor.putInt("flutter.favorite_shortcut_number", favoriteNr);
+            }
+            for (int i = 0; i < favoriteNr; i++)
+            {
+                stringsParameters.add(new Pair<>("favorite_shortcut_item_" + i, "flutter.favorite_shortcut_item_" + i));
+            }
+
+            favoriteNr = oldPrefs.getInt("favorite_connection_number", 0);
+            if (favoriteNr > 0)
+            {
+                editor.putInt("flutter.favorite_connection_number", favoriteNr);
+            }
+            for (int i = 0; i < favoriteNr; i++)
+            {
+                stringsParameters.add(new Pair<>("favorite_connection_item_" + i, "flutter.favorite_connection_item_" + i));
+            }
             for (Pair<String, String> par : stringsParameters)
             {
                 String val = oldPrefs.getString(par.first, "");
