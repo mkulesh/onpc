@@ -227,4 +227,14 @@ public class CfgFavoriteShortcuts
             write();
         }
     }
+
+    public int getNextId()
+    {
+        int id = 0;
+        for (Shortcut s : shortcuts)
+        {
+            id = Math.max(id, s.id);
+        }
+        return id + 1;
+    }
 }

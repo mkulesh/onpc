@@ -486,14 +486,14 @@ class MainNavigationDrawer
                         final BroadcastResponseMsg newMsg = configuration.favoriteConnections.updateDevice(
                                 msg, alias, identifier);
                         updateItem(m, R.drawable.drawer_favorite_device, newMsg.getAlias(), () -> editFavoriteConnection(m, newMsg));
+                        activity.getDeviceList().updateFavorites(false);
                     }
                     if (deleteBtn.isChecked())
                     {
                         configuration.favoriteConnections.deleteDevice(msg);
-                        m.setVisible(false);
-                        m.setChecked(false);
+                        activity.getDeviceList().updateFavorites(false);
+                        updateNavigationContent(activity.getStateManager().getState());
                     }
-                    activity.getDeviceList().updateFavorites(false);
                     dialog12.dismiss();
                 }).create();
 
@@ -614,8 +614,7 @@ class MainNavigationDrawer
                     if (deleteBtn.isChecked())
                     {
                         configuration.favoriteShortcuts.deleteShortcut(shortcut);
-                        m.setVisible(false);
-                        m.setChecked(false);
+                        updateNavigationContent(activity.getStateManager().getState());
                     }
                     activity.getDeviceList().updateFavorites(false);
                     dialog12.dismiss();
