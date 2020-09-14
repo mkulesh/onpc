@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
+import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
@@ -220,6 +221,16 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                     a.state = ActionState.DONE;
                     processNextActions(state, channel);
                     return;
+                }
+                if (a.wait.equals(XmlListInfoMsg.CODE) && !a.listitem.isEmpty() && msg.getCode().equals(ListTitleInfoMsg.CODE) && state.isPlaybackMode())
+                {
+                    // Upon change to some services like TuneIn, the receiver may automatically
+                    // start the latest playback and no XmlListItemMsg will be received. In this case,
+                    // we shall stop playback and resent the service selection command
+                    info(this, log + " -> waiting media item, but playing active -> change to list");
+                    final OperationCommandMsg cmd = new OperationCommandMsg(OperationCommandMsg.Command.STOP);
+                    channel.sendMessage(cmd.getCmdMsg());
+                    channel.sendMessage(new EISCPMessage(a.cmd, a.par));
                 }
                 info(this, log + " -> continue waiting");
                 return;
