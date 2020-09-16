@@ -1,0 +1,5 @@
+• Added possibility to click on the title bar in MEDIA tab to get back to previous browsed location
+• Added shortcuts for MEDIA items into navigation drawer: use context menu in MEDIA tab
+• Improved navigation in MEDIA tab for older Onkyo models
+• Allowed input channel buttons for device in standby mode
+• Fixed a bug: wrong title for some input channels in the MEDIA tab
