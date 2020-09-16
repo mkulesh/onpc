@@ -25,6 +25,7 @@ import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Utils;
@@ -222,7 +223,8 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                     processNextActions(state, channel);
                     return;
                 }
-                if (a.wait.equals(XmlListInfoMsg.CODE) && !a.listitem.isEmpty() && msg.getCode().equals(ListTitleInfoMsg.CODE) && state.isPlaybackMode())
+                if (state.serviceType == ServiceType.TUNEIN_RADIO && a.wait.equals(XmlListInfoMsg.CODE) &&
+                        !a.listitem.isEmpty() && msg.getCode().equals(ListTitleInfoMsg.CODE) && state.isPlaybackMode())
                 {
                     // Upon change to some services like TuneIn, the receiver may automatically
                     // start the latest playback and no XmlListItemMsg will be received. In this case,
