@@ -94,7 +94,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
                     }
                     return Container(
                         margin: ActivityDimens.activityMargins(context),
-                        child: tabContent
+                        child: Container(margin: EdgeInsets.only(bottom: 48), child: tabContent)
                     );
                 }).toList(),
             );
@@ -156,7 +156,9 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     {
         return SingleChildScrollView(child:
             SelectableText(data,
-                style: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color))
+                style: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color),
+                toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
+                showCursor: true)
         );
     }
 

@@ -11,8 +11,6 @@
  * Public License along with this program.
  */
 
-import 'package:sprintf/sprintf.dart';
-
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
 import "../ISCPMessage.dart";
@@ -91,6 +89,7 @@ class RadioState
             return frequency;
         }
         final int freqInt = ISCPMessage.nonNullInteger(frequency, 10, -1);
-        return (freqInt < 0) ? Strings.dashed_string : sprintf("%0.00f MHz", [freqInt / 100.0]);
+        final double freqDbl = freqInt.toDouble() / 100.0;
+        return (freqInt < 0) ? Strings.dashed_string : freqDbl.toStringAsFixed(2) + " MHz";
     }
 }

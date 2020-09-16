@@ -180,7 +180,8 @@ class MessageScript with ConnectionIf implements MessageScriptIf
                     _processNextActions(state, channel);
                     return;
                 }
-                if (a.wait == XmlListItemMsg.CODE && a.listitem.isNotEmpty && msg.getCode == ListTitleInfoMsg.CODE && state.mediaListState.isPlaybackMode)
+                if (state.mediaListState.isTuneIn && a.wait == XmlListItemMsg.CODE && a.listitem.isNotEmpty &&
+                    msg.getCode == ListTitleInfoMsg.CODE && state.mediaListState.isPlaybackMode)
                 {
                     // Upon change to some services like TuneIn, the receiver may automatically
                     // start the latest playback and no XmlListItemMsg will be received. In this case,

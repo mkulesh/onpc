@@ -35,6 +35,7 @@ import "../iscp/messages/PresetCommandMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/TitleNameMsg.dart";
 import "../iscp/messages/TrackInfoMsg.dart";
+import "../iscp/messages/TuningCommandMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -59,7 +60,8 @@ class TrackInfoView extends UpdatableView
         ListTitleInfoMsg.CODE,
         InputSelectorMsg.CODE,
         MultiroomDeviceInformationMsg.CODE,
-        BroadcastResponseMsg.CODE
+        BroadcastResponseMsg.CODE,
+        TuningCommandMsg.CODE
     ];
 
     TrackInfoView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);

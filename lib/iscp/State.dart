@@ -222,8 +222,13 @@ class State
         // Receiver info
         if (!SKIP_XML_MESSAGES && msg is ReceiverInformationMsg)
         {
-            return _isChange(ReceiverInformationMsg.CODE,
+            final String changed = _isChange(ReceiverInformationMsg.CODE,
                 _receiverInformation.processReceiverInformation(msg));
+            if (_mediaListState.isRadioInput)
+            {
+                _mediaListState.fillRadioPresets(getActiveZone, _receiverInformation.presetList);
+            }
+            return changed;
         }
         else if (msg is FriendlyNameMsg)
         {
@@ -347,7 +352,7 @@ class State
             {
                 _mediaListState.fillRadioPresets(getActiveZone, _receiverInformation.presetList);
             }
-            if (_mediaListState.isSimpleInput)
+            else if (_mediaListState.isSimpleInput)
             {
                 _trackState.clear();
                 _playbackState.clear();
