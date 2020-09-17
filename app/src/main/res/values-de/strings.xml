@@ -84,16 +84,8 @@
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Einschalten</string>
 
-    <!-- Tabs -->
-    <string name="title_monitor">Hören</string>
-    <string name="title_media">Medien</string>
-    <string name="title_device">Gerät</string>
-    <string name="title_remote_control">RC</string>
-    <string name="title_remote_interface">RI</string>
-
     <!-- Application settings -->
     <string name="pref_category_device_options">Gerät Optionen</string>
-    <string name="pref_category_ri_options">Remote Interface</string>
     <string name="pref_category_advanced_options">Erweitert</string>
 
     <string name="pref_volume_title">Lautstärketasten weiterleiten</string>
@@ -160,6 +152,16 @@
         <item>Normal</item>
         <item>Groß</item>
         <item>Riesig</item>
+    </string-array>
+
+    <!-- Application settings: Tabs -->
+    <string name="pref_visible_tabs">Sichtbare Registerkarten</string>
+    <string-array name="pref_visible_tabs_names">
+        <item>Hören</item>
+        <item>Medien</item>
+        <item>Gerät</item>
+        <item>RC</item>
+        <item>RI</item>
     </string-array>
 
     <!-- Playback tab -->
@@ -469,9 +471,8 @@
     <string name="listening_mode_down">Klangprofile durchwechseln</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface">Über RI Verbundene Geräte nutzen</string>
-    <string name="remote_interface_amp">Verstärker</string>
-    <string name="remote_interface_cd">CD Player</string>
+    <string name="remote_interface_amp">Verstärker (RI)</string>
+    <string name="remote_interface_cd">CD Player (RI)</string>
     <string name="remote_interface_power">An/Aus</string>
     <string name="remote_interface_common">Common</string>
     <string name="remote_interface_input">Eingang</string>

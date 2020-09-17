@@ -16,10 +16,8 @@ package com.mkulesh.onpc.config;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
 
-import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
@@ -32,14 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StyleRes;
 
 public class Configuration
 {
     public static final boolean ENABLE_MOCKUP = false;
-
-    static final String APP_THEME = "app_theme";
-    static final String APP_LANGUAGE = "app_language";
 
     private static final String SERVER_NAME = "server_name";
     private static final String SERVER_PORT = "server_port";
@@ -55,10 +49,6 @@ public class Configuration
     static final String NETWORK_SERVICES = "network_services";
     private static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
 
-    private static final String REMOTE_INTERFACE = "remote_interface";
-    private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
-    private static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
-
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String BACK_AS_RETURN = "back_as_return";
     private static final String ADVANCED_QUEUE = "advanced_queue";
@@ -66,79 +56,33 @@ public class Configuration
     private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
 
-    private static final String OPENED_TAB = "opened_tab";
-
-    public enum ThemeType
-    {
-        MAIN_THEME,
-        SETTINGS_THEME
-    }
-
-    private final Context context;
     private final SharedPreferences preferences;
 
     private String deviceName;
     private int devicePort;
 
-    private final boolean remoteInterface, remoteInterfaceAmp, remoteInterfaceCd;
-
+    public final CfgAppSettings appSettings = new CfgAppSettings();
     public final CfgAudioControl audioControl = new CfgAudioControl();
     public final CfgFavoriteConnections favoriteConnections = new CfgFavoriteConnections();
     public final CfgFavoriteShortcuts favoriteShortcuts = new CfgFavoriteShortcuts();
 
     public Configuration(Context context)
     {
-        this.context = context;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         deviceName = preferences.getString(Configuration.SERVER_NAME, "");
         devicePort = preferences.getInt(Configuration.SERVER_PORT, BroadcastSearch.ISCP_PORT);
 
+        appSettings.setPreferences(preferences);
+
         audioControl.setPreferences(preferences);
         audioControl.read(context);
-
-        remoteInterface = preferences.getBoolean(Configuration.REMOTE_INTERFACE, false);
-        remoteInterfaceAmp = preferences.getBoolean(Configuration.REMOTE_INTERFACE_AMP, false);
-        remoteInterfaceCd = preferences.getBoolean(Configuration.REMOTE_INTERFACE_CD, false);
 
         favoriteConnections.setPreferences(preferences);
         favoriteConnections.read();
 
         favoriteShortcuts.setPreferences(preferences);
         favoriteShortcuts.read();
-    }
-
-    @StyleRes
-    public int getTheme(ThemeType type)
-    {
-        final String themeCode = preferences.getString(Configuration.APP_THEME,
-                context.getResources().getString(R.string.pref_theme_default));
-
-        final CharSequence[] allThemes = context.getResources().getStringArray(R.array.pref_theme_codes);
-        int themeIndex = 0;
-        for (int i = 0; i < allThemes.length; i++)
-        {
-            if (allThemes[i].toString().equals(themeCode))
-            {
-                themeIndex = i;
-                break;
-            }
-        }
-
-        if (type == ThemeType.MAIN_THEME)
-        {
-            TypedArray mainThemes = context.getResources().obtainTypedArray(R.array.main_themes);
-            final int resId = mainThemes.getResourceId(themeIndex, R.style.BaseThemeIndigoOrange);
-            mainThemes.recycle();
-            return resId;
-        }
-        else
-        {
-            TypedArray settingsThemes = context.getResources().obtainTypedArray(R.array.settings_themes);
-            final int resId = settingsThemes.getResourceId(themeIndex, R.style.SettingsThemeIndigoOrange);
-            settingsThemes.recycle();
-            return resId;
-        }
     }
 
     public String getDeviceName()
@@ -319,21 +263,6 @@ public class Configuration
         return result;
     }
 
-    public boolean isRemoteInterface()
-    {
-        return isRemoteInterfaceAmp() || isRemoteInterfaceCd();
-    }
-
-    public boolean isRemoteInterfaceAmp()
-    {
-        return remoteInterface && remoteInterfaceAmp;
-    }
-
-    public boolean isRemoteInterfaceCd()
-    {
-        return remoteInterface && remoteInterfaceCd;
-    }
-
     public boolean isKeepScreenOn()
     {
         return preferences.getBoolean(Configuration.KEEP_SCREEN_ON, false);
@@ -362,18 +291,5 @@ public class Configuration
     public boolean isDeveloperMode()
     {
         return preferences.getBoolean(DEVELOPER_MODE, false);
-    }
-
-    public int getOpenedTab()
-    {
-        return preferences.getInt(OPENED_TAB, 0);
-    }
-
-    public void setOpenedTab(int tab)
-    {
-        Logging.info(this, "Save opened tab: " + tab);
-        SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putInt(OPENED_TAB, tab);
-        prefEditor.apply();
     }
 }

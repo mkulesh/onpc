@@ -14,82 +14,68 @@
 package com.mkulesh.onpc;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.Configuration;
 
-import java.util.Locale;
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import static com.mkulesh.onpc.config.CfgAppSettings.Tabs;
+
 class MainPagerAdapter extends FragmentStatePagerAdapter
 {
     private final Context context;
+    private final ArrayList<Tabs> tabs;
     private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
-    private final int items;
 
     MainPagerAdapter(final Context context, final FragmentManager fm, final Configuration configuration)
     {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.context = context;
-        this.items = configuration.isRemoteInterface() ? 5 : 4;
+        this.tabs = configuration.appSettings.getVisibleTabs();
     }
 
     @Override
     @NonNull
     public Fragment getItem(int position)
     {
-        switch (position)
+        if (position >= getCount())
         {
-        case 1:
-            return prepareFragment(new MediaFragment(), position);
-        case 2:
-            return prepareFragment(new DeviceFragment(), position);
-        case 3:
-            return prepareFragment(new RemoteControlFragment(), position);
-        case 4:
-            return prepareFragment(new RemoteInterfaceFragment(), position);
+            return new MonitorFragment();
         }
-        return prepareFragment(new MonitorFragment(), position);
-    }
-
-    private Fragment prepareFragment(Fragment fragment, int position)
-    {
-        Bundle args = new Bundle();
-        args.putInt(BaseFragment.FRAGMENT_NUMBER, position);
-        fragment.setArguments(args);
-        return fragment;
+        final Tabs item = tabs.get(position);
+        switch (item)
+        {
+        case LISTEN:
+            return new MonitorFragment();
+        case MEDIA:
+            return new MediaFragment();
+        case DEVICE:
+            return new DeviceFragment();
+        case RC:
+            return new RemoteControlFragment();
+        default:
+            return new RemoteInterfaceFragment();
+        }
     }
 
     @Override
     public int getCount()
     {
-        return items;
+        return tabs.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position)
     {
-        Locale l = Locale.getDefault();
-        switch (position)
-        {
-        case 0:
-            return context.getString(R.string.title_monitor).toUpperCase(l);
-        case 1:
-            return context.getString(R.string.title_media).toUpperCase(l);
-        case 2:
-            return context.getString(R.string.title_device).toUpperCase(l);
-        case 3:
-            return context.getString(R.string.title_remote_control).toUpperCase(l);
-        case 4:
-            return context.getString(R.string.title_remote_interface).toUpperCase(l);
-        }
-        return null;
+        return (position < getCount()) ? CfgAppSettings.getTabName(context, tabs.get(position)) : "";
     }
 
     // Register the fragment when the item is instantiated

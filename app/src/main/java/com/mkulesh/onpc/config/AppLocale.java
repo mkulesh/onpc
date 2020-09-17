@@ -40,7 +40,7 @@ public final class AppLocale
         {
             final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
             final String languageCode = pref.getString(
-                    com.mkulesh.onpc.config.Configuration.APP_LANGUAGE,
+                    com.mkulesh.onpc.config.CfgAppSettings.APP_LANGUAGE,
                     "system");
 
             if (languageCode.equals("system"))

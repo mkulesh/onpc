@@ -32,6 +32,33 @@
         android:summary="%s"
         android:title="@string/pref_language" />
 
+    <PreferenceScreen
+        app:icon="@drawable/pref_visible_tabs"
+        android:icon="@null"
+        android:key="visible_tabs"
+        android:title="@string/pref_visible_tabs">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.mkulesh.onpc"
+            android:targetClass="com.mkulesh.onpc.config.PreferencesVisibleTabs" />
+    </PreferenceScreen>
+
+    <SwitchPreferenceCompat
+            app:icon="@drawable/pref_ri_amplifier"
+            app:singleLineTitle="false"
+            app:iconSpaceReserved="true"
+            android:defaultValue="false"
+            android:key="remote_interface_amp"
+            android:title="@string/remote_interface_amp" />
+
+    <SwitchPreferenceCompat
+            app:icon="@drawable/pref_ri_disc_player"
+            app:singleLineTitle="false"
+            app:iconSpaceReserved="true"
+            android:defaultValue="false"
+            android:key="remote_interface_cd"
+            android:title="@string/remote_interface_cd" />
+
     <PreferenceCategory android:title="@string/pref_category_device_options">
 
         <SwitchPreferenceCompat
@@ -108,33 +135,6 @@
             android:defaultValue="false"
             android:key="force_audio_control"
             android:title="@string/pref_force_audio_control" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/pref_category_ri_options">
-
-        <SwitchPreferenceCompat
-            app:icon="@drawable/pref_remote_interface"
-            app:singleLineTitle="false"
-            android:defaultValue="false"
-            android:key="remote_interface"
-            android:title="@string/remote_interface" />
-
-        <SwitchPreferenceCompat
-            android:dependency="remote_interface"
-            app:singleLineTitle="false"
-            app:iconSpaceReserved="true"
-            android:defaultValue="false"
-            android:key="remote_interface_amp"
-            android:title="@string/remote_interface_amp" />
-
-        <SwitchPreferenceCompat
-            android:dependency="remote_interface"
-            app:singleLineTitle="false"
-            app:iconSpaceReserved="true"
-            android:defaultValue="false"
-            android:key="remote_interface_cd"
-            android:title="@string/remote_interface_cd" />
 
     </PreferenceCategory>
 

@@ -44,14 +44,14 @@ public class RemoteInterfaceFragment extends BaseFragment
     {
         initializeFragment(inflater, container, R.layout.remote_interface_fragment);
 
-        if (activity.getConfiguration().isRemoteInterfaceAmp())
+        if (activity.getConfiguration().appSettings.isRemoteInterfaceAmp())
         {
             final LinearLayout l = rootView.findViewById(R.id.remote_interface_amp);
             l.setVisibility(View.VISIBLE);
             collectButtons(l, buttons);
         }
 
-        if (activity.getConfiguration().isRemoteInterfaceCd())
+        if (activity.getConfiguration().appSettings.isRemoteInterfaceCd())
         {
             final LinearLayout l = rootView.findViewById(R.id.remote_interface_cd);
             l.setVisibility(View.VISIBLE);

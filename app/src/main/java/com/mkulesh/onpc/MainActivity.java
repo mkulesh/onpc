@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.mkulesh.onpc.config.AppLocale;
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     protected void onCreate(Bundle savedInstanceState)
     {
         configuration = new Configuration(this);
-        setTheme(configuration.getTheme(Configuration.ThemeType.MAIN_THEME));
+        setTheme(configuration.appSettings.getTheme(this, CfgAppSettings.ThemeType.MAIN_THEME));
         Logging.saveLogging = Logging.isEnabled() && configuration.isDeveloperMode();
 
         // Note that due to onActivityResult, the activity will be started twice
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         configuration.initActiveZone(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
 
         initGUI();
-        setOpenedTab(configuration.getOpenedTab());
+        setOpenedTab(configuration.appSettings.getOpenedTab());
         updateToolbar(null);
     }
 
@@ -497,7 +498,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     protected void onPause()
     {
         super.onPause();
-        configuration.setOpenedTab(viewPager.getCurrentItem());
+        configuration.appSettings.setOpenedTab(viewPager.getCurrentItem());
         if (getStateManager() != null)
         {
             savedReceiverInformation = getStateManager().getState().receiverInformation;

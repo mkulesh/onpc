@@ -39,11 +39,6 @@ import androidx.fragment.app.Fragment;
 
 abstract public class BaseFragment extends Fragment
 {
-    /**
-     * Constants used to save/restore the instance state.
-     */
-    static final String FRAGMENT_NUMBER = "fragment_number";
-
     private boolean visibleToUser = false;
     MainActivity activity = null;
     View rootView = null;

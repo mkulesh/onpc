@@ -80,6 +80,15 @@
                 android:value="com.mkulesh.onpc.config.PreferencesMain" />
         </activity>
 
+        <activity
+            android:name="com.mkulesh.onpc.config.PreferencesVisibleTabs"
+            android:label="@string/pref_visible_tabs"
+            android:parentActivityName="com.mkulesh.onpc.config.PreferencesMain">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mkulesh.onpc.config.PreferencesMain" />
+        </activity>
+
     </application>
 
 </manifest>

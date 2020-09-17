@@ -40,7 +40,7 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         final com.mkulesh.onpc.config.Configuration configuration = new com.mkulesh.onpc.config.Configuration(this);
-        setTheme(configuration.getTheme(com.mkulesh.onpc.config.Configuration.ThemeType.SETTINGS_THEME));
+        setTheme(configuration.appSettings.getTheme(this, com.mkulesh.onpc.config.CfgAppSettings.ThemeType.SETTINGS_THEME));
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
