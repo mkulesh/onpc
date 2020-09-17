@@ -19,6 +19,11 @@ import android.view.ViewGroup;
 
 import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.Configuration;
+import com.mkulesh.onpc.fragments.DeviceFragment;
+import com.mkulesh.onpc.fragments.ListenFragment;
+import com.mkulesh.onpc.fragments.MediaFragment;
+import com.mkulesh.onpc.fragments.RemoteControlFragment;
+import com.mkulesh.onpc.fragments.RemoteInterfaceFragment;
 
 import java.util.ArrayList;
 
@@ -48,13 +53,13 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
     {
         if (position >= getCount())
         {
-            return new MonitorFragment();
+            return new ListenFragment();
         }
         final Tabs item = tabs.get(position);
         switch (item)
         {
         case LISTEN:
-            return new MonitorFragment();
+            return new ListenFragment();
         case MEDIA:
             return new MediaFragment();
         case DEVICE:

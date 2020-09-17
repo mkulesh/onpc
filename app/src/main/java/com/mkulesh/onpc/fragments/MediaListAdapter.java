@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.fragments;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;

@@ -11,7 +11,7 @@
   ~ Public License along with this program.
   -->
 
-<com.mkulesh.onpc.MultiroomDeviceItem xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mkulesh.onpc.fragments.MultiroomDeviceItem xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -44,4 +44,4 @@
         android:gravity="center_vertical"
         android:layout_height="match_parent"
         android:layout_width="@dimen/draggable_row_height" />
-</com.mkulesh.onpc.MultiroomDeviceItem>
+</com.mkulesh.onpc.fragments.MultiroomDeviceItem>

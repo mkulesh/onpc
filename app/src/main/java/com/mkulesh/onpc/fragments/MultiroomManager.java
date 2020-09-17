@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.mkulesh.onpc.MainActivity;
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;

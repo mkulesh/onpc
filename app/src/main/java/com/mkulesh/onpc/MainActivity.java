@@ -29,6 +29,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.Configuration;
+import com.mkulesh.onpc.fragments.BaseFragment;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.scripts.AutoPower;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private String versionName = null;
     private int startRequestCode;
     private final AtomicBoolean connectToAnyDevice = new AtomicBoolean(false);
-    int orientation;
+    public int orientation;
     private String intentAction = null;
     private String intentData = null;
 

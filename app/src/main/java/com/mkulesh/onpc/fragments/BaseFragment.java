@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.fragments;
 
 import android.content.res.Configuration;
 import android.view.LayoutInflater;
@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.MainActivity;
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.utils.Utils;
@@ -252,7 +254,7 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
-    boolean onBackPressed()
+    public boolean onBackPressed()
     {
         // No default processing for Back button
         return false;

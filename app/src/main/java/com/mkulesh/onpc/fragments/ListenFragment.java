@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
@@ -63,7 +64,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
-public class MonitorFragment extends BaseFragment implements AudioControlManager.MasterVolumeInterface
+public class ListenFragment extends BaseFragment implements AudioControlManager.MasterVolumeInterface
 {
     private HorizontalScrollView listeningModeLayout;
     private LinearLayout soundControlLayout;
@@ -84,7 +85,7 @@ public class MonitorFragment extends BaseFragment implements AudioControlManager
     private AppCompatSeekBar seekBar;
     private final AudioControlManager audioControlManager = new AudioControlManager();
 
-    public MonitorFragment()
+    public ListenFragment()
     {
         // Empty constructor required for fragment subclasses
     }

@@ -11,12 +11,14 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.fragments;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import com.mkulesh.onpc.MainActivity;
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.NonNull;

@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.fragments;
 
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
@@ -480,8 +481,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             for (ReceiverInformationMsg.Preset p : state.presetList)
             {
                 if ((state.inputType == InputSelectorMsg.InputType.FM && p.isFm())
-                    || (state.inputType == InputSelectorMsg.InputType.AM && p.isAm())
-                    || (state.inputType == InputSelectorMsg.InputType.DAB && p.isDab()))
+                        || (state.inputType == InputSelectorMsg.InputType.AM && p.isAm())
+                        || (state.inputType == InputSelectorMsg.InputType.DAB && p.isDab()))
                 {
                     final boolean isPlaying = (p.getId() == state.preset);
                     newItems.add(new PresetCommandMsg(
@@ -544,8 +545,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (state.isRadioInput())
             {
                 title.append(" | ")
-                     .append(activity.getResources().getString(R.string.medialist_items))
-                     .append(": ").append(filteredItems);
+                        .append(activity.getResources().getString(R.string.medialist_items))
+                        .append(": ").append(filteredItems);
             }
             else if (!state.title.isEmpty())
             {
@@ -588,7 +589,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         setProgressIndicator(state, state.inputType.isMediaList() && processing);
     }
 
-    protected boolean onBackPressed()
+    public boolean onBackPressed()
     {
         final StateManager stateManager = activity.getStateManager();
         if (!activity.isConnected() || stateManager == null)

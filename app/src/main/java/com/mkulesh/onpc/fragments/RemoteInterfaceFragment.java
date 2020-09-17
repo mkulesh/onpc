@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019. Mikhail Kulesh
+ * Copyright (C) 2018. Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -11,20 +11,18 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.State;
-import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
-import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
-import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
-import com.mkulesh.onpc.iscp.messages.SetupOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,13 +31,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
-public class RemoteControlFragment extends BaseFragment
+public class RemoteInterfaceFragment extends BaseFragment
 {
     private final ArrayList<View> buttons = new ArrayList<>();
-    private LinearLayout listeningModeLayout = null;
-    private TextView listeningMode = null;
 
-    public RemoteControlFragment()
+    public RemoteInterfaceFragment()
     {
         // Empty constructor required for fragment subclasses
     }
@@ -47,15 +43,27 @@ public class RemoteControlFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.remote_control_fragment);
-        final LinearLayout l = rootView.findViewById(R.id.remote_control_layout);
-        collectButtons(l, buttons);
+        initializeFragment(inflater, container, R.layout.remote_interface_fragment);
+
+        if (activity.getConfiguration().appSettings.isRemoteInterfaceAmp())
+        {
+            final LinearLayout l = rootView.findViewById(R.id.remote_interface_amp);
+            l.setVisibility(View.VISIBLE);
+            collectButtons(l, buttons);
+        }
+
+        if (activity.getConfiguration().appSettings.isRemoteInterfaceCd())
+        {
+            final LinearLayout l = rootView.findViewById(R.id.remote_interface_cd);
+            l.setVisibility(View.VISIBLE);
+            collectButtons(l, buttons);
+        }
+
         for (View b : buttons)
         {
             prepareRiButton(b);
         }
-        listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
-        listeningMode = rootView.findViewById(R.id.listening_mode);
+
         updateContent();
         return rootView;
     }
@@ -75,9 +83,9 @@ public class RemoteControlFragment extends BaseFragment
 
         switch (msgName)
         {
-        case SetupOperationCommandMsg.CODE:
+        case AmpOperationCommandMsg.CODE:
         {
-            final SetupOperationCommandMsg cmd = new SetupOperationCommandMsg(tokens[1]);
+            final AmpOperationCommandMsg cmd = new AmpOperationCommandMsg(tokens[1]);
             if (b instanceof AppCompatImageButton)
             {
                 prepareButton((AppCompatImageButton) b, cmd, cmd.getCommand().getImageId(), cmd.getCommand().getDescriptionId());
@@ -89,9 +97,9 @@ public class RemoteControlFragment extends BaseFragment
             }
             break;
         }
-        case OperationCommandMsg.CODE:
+        case CdPlayerOperationCommandMsg.CODE:
         {
-            final OperationCommandMsg cmd = new OperationCommandMsg(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, tokens[1]);
+            final CdPlayerOperationCommandMsg cmd = new CdPlayerOperationCommandMsg(tokens[1]);
             if (b instanceof AppCompatImageButton)
             {
                 prepareButton((AppCompatImageButton) b, cmd, cmd.getCommand().getImageId(), cmd.getCommand().getDescriptionId());
@@ -103,18 +111,6 @@ public class RemoteControlFragment extends BaseFragment
             }
             break;
         }
-        case ListeningModeMsg.CODE:
-            final ListeningModeMsg cmd = new ListeningModeMsg(ListeningModeMsg.Mode.valueOf(tokens[1]));
-            if (b instanceof AppCompatImageButton)
-            {
-                prepareButton((AppCompatImageButton) b, cmd, cmd.getMode().getImageId(), cmd.getMode().getDescriptionId());
-
-            }
-            else
-            {
-                prepareButtonListeners(b, cmd, null);
-            }
-            break;
         default:
             break;
         }
@@ -125,11 +121,8 @@ public class RemoteControlFragment extends BaseFragment
     {
         for (View b : buttons)
         {
-            setButtonEnabled(b, state != null && state.isOn());
+            setButtonEnabled(b, state != null);
         }
-        listeningModeLayout.setVisibility(
-                state != null && state.isListeningModeControl() ? View.VISIBLE : View.GONE);
-        listeningMode.setVisibility(View.GONE);
     }
 
     @Override
@@ -138,12 +131,6 @@ public class RemoteControlFragment extends BaseFragment
         for (View b : buttons)
         {
             setButtonEnabled(b, true);
-        }
-        listeningModeLayout.setVisibility(state.isListeningModeControl() ? View.VISIBLE : View.GONE);
-        listeningMode.setVisibility(listeningModeLayout.getVisibility());
-        if (eventChanges.contains(State.ChangeType.AUDIO_CONTROL))
-        {
-            listeningMode.setText(state.listeningMode.getDescriptionId());
         }
     }
 }
