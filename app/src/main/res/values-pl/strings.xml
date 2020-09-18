@@ -47,7 +47,6 @@
     <string name="drawer_open">Okno nawigacji</string>
     <string name="drawer_group_zone">Strefa</string>
     <string name="drawer_multiroom">Grupa</string>
-    <string name="drawer_shortcuts">Skróty</string>
     <string name="drawer_device">Urządzenie</string>
     <string name="drawer_device_connect">Połącz</string>
     <string name="drawer_device_search">Szukaj</string>
@@ -73,8 +72,9 @@
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Edytuj skrót</string>
     <string name="favorite_shortcut_create">Utwórz skrót</string>
-    <string name="favorite_shortcut_added">Dodano skrót do menu aplikacji</string>
-    <string name="favorite_shortcut_failed">Nie można utworzyć skrótu: osiągnięto maksymalną liczbę</string>
+    <string name="favorite_shortcut_added">Dodano skrót</string>
+    <string name="favorite_shortcut_failed">Nie można utworzyć skrótu: przejdź do elementu multimedialnego z najwyższego poziomu</string>
+    <string name="favorite_shortcut_howto">Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe długim kliknięciem i wybierz \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
@@ -158,6 +158,7 @@
     <string-array name="pref_visible_tabs_names">
         <item>Słuchaj</item>
         <item>Media</item>
+        <item>Skróty</item>
         <item>Urządzenie</item>
         <item>RC</item>
         <item>RI</item>

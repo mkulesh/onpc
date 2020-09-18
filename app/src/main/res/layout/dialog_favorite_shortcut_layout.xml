@@ -34,7 +34,7 @@
 
             <TextView
                 style="@style/SecondaryTextViewStyle"
-                android:id="@+id/favorite_shortcut_address"
+                android:id="@+id/favorite_shortcut_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -44,50 +44,19 @@
                 android:orientation="vertical"
                 android:paddingTop="?dialogPreferredPadding">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <TextView
+                    style="@style/EditFieldCaptionStyle"
+                    android:text="@string/favorite_alias" />
+
+                <androidx.appcompat.widget.AppCompatEditText
                     style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/favorite_shortcut_update"
+                    android:id="@+id/favorite_shortcut_alias"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="@string/favorite_update"
-                    android:checked="true" />
+                    android:minWidth="300dp"
+                    android:inputType="text"
+                    android:focusable="true" />
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="30dp">
-
-                    <TextView
-                        style="@style/EditFieldCaptionStyle"
-                        android:text="@string/favorite_alias" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        style="@style/PrimaryTextViewStyle"
-                        android:id="@+id/favorite_shortcut_alias"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="300dp"
-                        android:inputType="text"
-                        android:focusable="true" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="?dialogPreferredPadding">
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    style="@style/PrimaryTextViewStyle"
-                    android:id="@+id/favorite_shortcut_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="@string/favorite_delete" />
             </LinearLayout>
 
         </LinearLayout>

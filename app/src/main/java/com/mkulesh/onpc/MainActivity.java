@@ -661,6 +661,18 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         return (name != null) ? name : msg.getDescription();
     }
 
+    public void setOpenedTab(CfgAppSettings.Tabs tab)
+    {
+        final ArrayList<CfgAppSettings.Tabs> tabs = configuration.appSettings.getVisibleTabs();
+        for (int i = 0; i < tabs.size(); i++)
+        {
+            if (tabs.get(i) == tab)
+            {
+                setOpenedTab(i);
+            }
+        }
+    }
+
     public void setOpenedTab(int openedTab)
     {
         try

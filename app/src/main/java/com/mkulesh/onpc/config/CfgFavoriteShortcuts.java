@@ -32,7 +32,6 @@ import java.util.List;
 
 public class CfgFavoriteShortcuts
 {
-    public static final int FAVORITE_SHORTCUT_MAX = 10;
     private static final String FAVORITE_SHORTCUT_TAG = "favoriteShortcut";
     private static final String FAVORITE_SHORTCUT_NUMBER = "favorite_shortcut_number";
     private static final String FAVORITE_SHORTCUT_ITEM = "favorite_shortcut_item";
@@ -44,6 +43,7 @@ public class CfgFavoriteShortcuts
         public final ServiceType service;
         public final String item;
         public final String alias;
+        public int order;
         public final List<String> pathItems = new ArrayList<>();
 
         Shortcut(final Element e)
@@ -55,6 +55,7 @@ public class CfgFavoriteShortcuts
                     e.getAttribute("service"), ServiceType.values(), ServiceType.UNKNOWN);
             this.item = e.getAttribute("item");
             this.alias = e.getAttribute("alias");
+            this.order = Utils.parseIntAttribute(e, "order", id);
             for (Node dir = e.getFirstChild(); dir != null; dir = dir.getNextSibling())
             {
                 if (dir instanceof Element)
@@ -67,13 +68,14 @@ public class CfgFavoriteShortcuts
             }
         }
 
-        Shortcut(final Shortcut old, final String alias)
+        public Shortcut(final Shortcut old, final String alias)
         {
             this.id = old.id;
             this.input = old.input;
             this.service = old.service;
             this.item = old.item;
             this.alias = alias;
+            this.order = old.order;
             this.pathItems.addAll(old.pathItems);
         }
 
@@ -84,6 +86,7 @@ public class CfgFavoriteShortcuts
             this.service = service;
             this.item = item;
             this.alias = alias;
+            this.order = id;
         }
 
         public void setPathItems(final List<String> path)
@@ -105,7 +108,8 @@ public class CfgFavoriteShortcuts
             label.append(" input=\"").append(input.getCode()).append("\"");
             label.append(" service=\"").append(service.getCode()).append("\"");
             label.append(" item=\"").append(item).append("\"");
-            label.append(" alias=\"").append(alias).append("\">");
+            label.append(" alias=\"").append(alias).append("\"");
+            label.append(" order=\"").append(order).append("\">");
             for (String dir : pathItems)
             {
                 label.append("<dir name=\"").append(dir).append("\"/>");
@@ -195,7 +199,7 @@ public class CfgFavoriteShortcuts
         return -1;
     }
 
-    public Shortcut updateShortcut(@NonNull final Shortcut shortcut, final String alias)
+    public void updateShortcut(@NonNull final Shortcut shortcut, final String alias)
     {
         Shortcut newMsg;
         int idx = find(shortcut.id);
@@ -213,7 +217,6 @@ public class CfgFavoriteShortcuts
             shortcuts.add(newMsg);
         }
         write();
-        return newMsg;
     }
 
     public void deleteShortcut(@NonNull final Shortcut shortcut)
@@ -236,5 +239,18 @@ public class CfgFavoriteShortcuts
             id = Math.max(id, s.id);
         }
         return id + 1;
+    }
+
+    public void reorder(List<Shortcut> items)
+    {
+        for (int i = 0; i < items.size(); i++)
+        {
+            int idx = find(items.get(i).id);
+            if (idx >= 0)
+            {
+                shortcuts.get(idx).order = i;
+            }
+        }
+        write();
     }
 }

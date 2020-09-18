@@ -102,66 +102,6 @@
     </item>
 
     <item
-        android:id="@+id/drawer_shortcut"
-        android:title="@string/drawer_shortcuts"
-        android:orderInCategory="3">
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                        android:id="@+id/drawer_shortcut_1"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="0"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_2"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="1"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_3"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="2"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_4"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="3"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_5"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="4"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_6"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="5"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_7"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="6"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_8"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="7"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_9"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="8"
-                        android:title="@null" />
-                <item
-                        android:id="@+id/drawer_shortcut_10"
-                        app:actionLayout="@layout/activity_drawer_item"
-                        android:orderInCategory="9"
-                        android:title="@null" />
-            </group>
-        </menu>
-    </item>
-    
-    <item
         android:title="@string/drawer_device_application"
         android:orderInCategory="4">
         <menu>

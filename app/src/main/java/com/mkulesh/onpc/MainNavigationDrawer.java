@@ -26,26 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
-import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
-import com.mkulesh.onpc.config.Configuration;
-import com.mkulesh.onpc.config.PreferencesMain;
-import com.mkulesh.onpc.iscp.BroadcastSearch;
-import com.mkulesh.onpc.iscp.ConnectionState;
-import com.mkulesh.onpc.iscp.DeviceList;
-import com.mkulesh.onpc.iscp.State;
-import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
-import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
-import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
-import com.mkulesh.onpc.iscp.messages.ServiceType;
-import com.mkulesh.onpc.iscp.scripts.MessageScript;
-import com.mkulesh.onpc.utils.HtmlDialogBuilder;
-import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +36,22 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
+import com.mkulesh.onpc.config.Configuration;
+import com.mkulesh.onpc.config.PreferencesMain;
+import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.ConnectionState;
+import com.mkulesh.onpc.iscp.DeviceList;
+import com.mkulesh.onpc.iscp.State;
+import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
+import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.utils.HtmlDialogBuilder;
+import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class MainNavigationDrawer
 {
@@ -107,18 +103,6 @@ class MainNavigationDrawer
         case R.id.drawer_multiroom_5:
         case R.id.drawer_multiroom_6:
             navigationDevice(menuItem.getOrder());
-            break;
-        case R.id.drawer_shortcut_1:
-        case R.id.drawer_shortcut_2:
-        case R.id.drawer_shortcut_3:
-        case R.id.drawer_shortcut_4:
-        case R.id.drawer_shortcut_5:
-        case R.id.drawer_shortcut_6:
-        case R.id.drawer_shortcut_7:
-        case R.id.drawer_shortcut_8:
-        case R.id.drawer_shortcut_9:
-        case R.id.drawer_shortcut_10:
-            navigationShortcut(menuItem.getOrder());
             break;
         case R.id.drawer_app_settings:
             activity.startActivityForResult(new Intent(activity, PreferencesMain.class), MainActivity.SETTINGS_ACTIVITY_REQID);
@@ -309,25 +293,6 @@ class MainNavigationDrawer
                     }
                 }
                 break;
-            case R.id.drawer_shortcut:
-                g.setVisible(!configuration.favoriteShortcuts.getShortcuts().isEmpty());
-                for (int i = 0; i < g.getSubMenu().size(); i++)
-                {
-                    final MenuItem m = g.getSubMenu().getItem(i);
-                    if (g.isVisible() && i < configuration.favoriteShortcuts.getShortcuts().size())
-                    {
-                        final CfgFavoriteShortcuts.Shortcut shortcut =
-                                configuration.favoriteShortcuts.getShortcuts().get(i);
-                        updateItem(m, R.drawable.drawer_favorite_device, shortcut.alias, () -> editFavoriteShortcut(m, shortcut));
-                        m.setChecked(false);
-                    }
-                    else
-                    {
-                        m.setVisible(false);
-                        m.setChecked(false);
-                    }
-                }
-                break;
             default:
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
@@ -494,129 +459,6 @@ class MainNavigationDrawer
                         activity.getDeviceList().updateFavorites(false);
                         updateNavigationContent(activity.getStateManager().getState());
                     }
-                    dialog12.dismiss();
-                }).create();
-
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
-    }
-
-    /**
-     * Shortcuts
-     */
-    private void navigationShortcut(int idx)
-    {
-        final CfgFavoriteShortcuts.Shortcut shortcut = configuration.favoriteShortcuts.getShortcuts().get(idx);
-        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        final StringBuilder data = new StringBuilder();
-        data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
-        data.append("<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>");
-        data.append("<send cmd=\"SLI\" par=\"").append(shortcut.input.getCode())
-                .append("\" wait=\"SLI\" resp=\"").append(shortcut.input.getCode()).append("\"/>");
-
-        // Go to the top level. Response depends on the input type
-        String firstPath = shortcut.pathItems.isEmpty() ? shortcut.item : shortcut.pathItems.get(0);
-        if (shortcut.input == InputSelectorMsg.InputType.NET && shortcut.service != ServiceType.UNKNOWN)
-        {
-            data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"")
-                    .append(activity.getString(shortcut.service.getDescriptionId())).append("\"/>");
-        }
-        else
-        {
-            data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"")
-                    .append(firstPath).append("\"/>");
-        }
-
-        // Select target service
-        data.append("<send cmd=\"NSV\" par=\"").append(shortcut.service.getCode())
-                .append("0\" wait=\"NLA\" listitem=\"").append(firstPath).append("\"/>");
-
-        // Apply target path, if necessary
-        if (!shortcut.pathItems.isEmpty())
-        {
-            for (int i = 0; i < shortcut.pathItems.size() - 1; i++)
-            {
-                firstPath = shortcut.pathItems.get(i);
-                String nextPath = shortcut.pathItems.get(i + 1);
-                data.append("<send cmd=\"NLA\" par=\"").append(firstPath)
-                        .append("\" wait=\"NLA\" listitem=\"").append(nextPath).append("\"/>");
-            }
-            String lastPath = shortcut.pathItems.get(shortcut.pathItems.size() - 1);
-            data.append("<send cmd=\"NLA\" par=\"").append(lastPath)
-                    .append("\" wait=\"NLA\" listitem=\"").append(shortcut.item).append("\"/>");
-        }
-
-        // Select target item
-        data.append("<send cmd=\"NLA\" par=\"").append(shortcut.item).append("\" wait=\"1000\"/>");
-        data.append("</onpcScript>");
-        final MessageScript messageScript = new MessageScript(activity, data.toString());
-        activity.getStateManager().activateScript(messageScript);
-        activity.setOpenedTab(1);
-    }
-
-    @SuppressLint("DefaultLocale")
-    private void editFavoriteShortcut(@NonNull final MenuItem m, @NonNull final CfgFavoriteShortcuts.Shortcut shortcut)
-    {
-        final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.dialog_favorite_shortcut_layout, frameView);
-
-        final TextView deviceAddress = frameView.findViewById(R.id.favorite_shortcut_address);
-        deviceAddress.setText(shortcut.getLabel(activity));
-
-        // Connection alias
-        final EditText deviceAlias = frameView.findViewById(R.id.favorite_shortcut_alias);
-        deviceAlias.setText(shortcut.alias);
-
-        final AppCompatRadioButton renameBtn = frameView.findViewById(R.id.favorite_shortcut_update);
-        final AppCompatRadioButton deleteBtn = frameView.findViewById(R.id.favorite_shortcut_delete);
-        final AppCompatRadioButton[] radioGroup = { renameBtn, deleteBtn };
-        for (AppCompatRadioButton r : radioGroup)
-        {
-            r.setOnClickListener((View v) ->
-            {
-                if (v != renameBtn)
-                {
-                    deviceAlias.clearFocus();
-                }
-                onRadioBtnChange(radioGroup, (AppCompatRadioButton) v);
-            });
-        }
-        deviceAlias.setOnFocusChangeListener((v, hasFocus) ->
-        {
-            if (hasFocus)
-            {
-                onRadioBtnChange(radioGroup, renameBtn);
-            }
-        });
-
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.drawer_edit_item);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.favorite_shortcut_edit)
-                .setIcon(icon)
-                .setCancelable(false)
-                .setView(frameView)
-                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
-                {
-                    Utils.showSoftKeyboard(activity, deviceAlias, false);
-                    dialog1.dismiss();
-                })
-                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
-                {
-                    Utils.showSoftKeyboard(activity, deviceAlias, false);
-                    // rename or delete favorite connection
-                    if (renameBtn.isChecked() && deviceAlias.getText().length() > 0)
-                    {
-                        final String alias = deviceAlias.getText().toString();
-                        final CfgFavoriteShortcuts.Shortcut newShortcut = configuration.favoriteShortcuts.updateShortcut(shortcut, alias);
-                        updateItem(m, R.drawable.drawer_favorite_device, newShortcut.alias, () -> editFavoriteShortcut(m, newShortcut));
-                    }
-                    if (deleteBtn.isChecked())
-                    {
-                        configuration.favoriteShortcuts.deleteShortcut(shortcut);
-                        updateNavigationContent(activity.getStateManager().getState());
-                    }
-                    activity.getDeviceList().updateFavorites(false);
                     dialog12.dismiss();
                 }).create();
 

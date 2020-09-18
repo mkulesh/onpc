@@ -1546,4 +1546,16 @@ public class State implements ConnectionIf
     {
         return !SKIP_XML_MESSAGES && numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
     }
+
+    public boolean isPathItemsConsistent()
+    {
+        for (int i = 1; i < pathItems.size(); i++)
+        {
+            if (pathItems.get(i) == null && pathItems.get(i).isEmpty())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

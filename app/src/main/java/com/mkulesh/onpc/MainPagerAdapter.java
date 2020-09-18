@@ -24,6 +24,7 @@ import com.mkulesh.onpc.fragments.ListenFragment;
 import com.mkulesh.onpc.fragments.MediaFragment;
 import com.mkulesh.onpc.fragments.RemoteControlFragment;
 import com.mkulesh.onpc.fragments.RemoteInterfaceFragment;
+import com.mkulesh.onpc.fragments.ShortcutsFragment;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,8 @@ class MainPagerAdapter extends FragmentStatePagerAdapter
             return new ListenFragment();
         case MEDIA:
             return new MediaFragment();
+        case SHORTCUTS:
+            return new ShortcutsFragment();
         case DEVICE:
             return new DeviceFragment();
         case RC:

@@ -45,6 +45,7 @@ public class CfgAppSettings
     {
         LISTEN,
         MEDIA,
+        SHORTCUTS,
         DEVICE,
         RC,
         RI,

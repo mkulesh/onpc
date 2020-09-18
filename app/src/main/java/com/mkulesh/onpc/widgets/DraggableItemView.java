@@ -73,6 +73,11 @@ public class DraggableItemView extends LinearLayout implements Checkable
         textView.setText(line);
     }
 
+    public void setCheckBoxVisibility(int visibility)
+    {
+        checkBox.setVisibility(visibility);
+    }
+
     @Override
     public boolean isChecked()
     {
