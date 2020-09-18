@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc.fragments;
+package com.mkulesh.onpc.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -23,13 +23,13 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
 
-public class MultiroomDeviceItem extends LinearLayout implements Checkable
+public class CheckableItemView extends LinearLayout implements Checkable
 {
     private TextView textView, description;
     private CheckedTextView checkBox;
     private boolean checked;
 
-    public MultiroomDeviceItem(Context context, AttributeSet attrs)
+    public CheckableItemView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }

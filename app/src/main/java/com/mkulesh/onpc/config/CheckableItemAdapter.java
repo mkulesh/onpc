@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.widgets.DraggableItemView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,14 +83,14 @@ class CheckableItemAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convert, ViewGroup parent)
     {
-        CheckableItemView view;
+        DraggableItemView view;
         if (convert == null)
         {
-            view = (CheckableItemView) inflater.inflate(R.layout.checkable_item_view, parent, false);
+            view = (DraggableItemView) inflater.inflate(R.layout.draggable_item_view, parent, false);
         }
         else
         {
-            view = (CheckableItemView) convert;
+            view = (DraggableItemView) convert;
         }
         final CheckableItem d = items.get(position);
         view.setTag(d.code);

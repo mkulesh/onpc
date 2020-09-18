@@ -27,6 +27,7 @@ import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomGroupSettingMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
+import com.mkulesh.onpc.widgets.CheckableItemView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ class MultiroomManager
         Logging.info(activity, "Devices for group: " + myGroupId);
         for (BroadcastResponseMsg msg : devices)
         {
-            final MultiroomDeviceItem view = createDeviceItem(activity, msg,
+            final CheckableItemView view = createDeviceItem(activity, msg,
                     state.multiroomLayout.get(msg.getIdentifier()),
                     myZone, myGroupId);
             attachedDevices.put(msg.getIdentifier(), view.isChecked());
@@ -111,7 +112,7 @@ class MultiroomManager
                 }).create();
     }
 
-    private static MultiroomDeviceItem createDeviceItem(
+    private static CheckableItemView createDeviceItem(
             @NonNull final MainActivity activity,
             @NonNull final BroadcastResponseMsg msg,
             @Nullable final MultiroomDeviceInformationMsg di,
@@ -120,8 +121,8 @@ class MultiroomManager
     {
         final ViewGroup dummyView = null;
         //noinspection ConstantConditions
-        final MultiroomDeviceItem view = (MultiroomDeviceItem) activity.getLayoutInflater().inflate(
-                R.layout.multiroom_device_item, dummyView, false);
+        final CheckableItemView view = (CheckableItemView) activity.getLayoutInflater().inflate(
+                R.layout.checkable_item_view, dummyView, false);
 
         final boolean myDevice = msg.getIdentifier().equals(activity.myDeviceId());
         int tz = MultiroomGroupSettingMsg.TARGET_ZONE_ID;
@@ -154,7 +155,7 @@ class MultiroomManager
         view.setChecked(attached);
         view.setTag(msg.getIdentifier());
         view.setOnClickListener(v -> {
-            MultiroomDeviceItem cv = (MultiroomDeviceItem) v;
+            CheckableItemView cv = (CheckableItemView) v;
             cv.toggle();
         });
 
@@ -179,7 +180,7 @@ class MultiroomManager
 
         for (int i = 0; i < deviceGroup.getChildCount(); i++)
         {
-            MultiroomDeviceItem cv = (MultiroomDeviceItem) deviceGroup.getChildAt(i);
+            CheckableItemView cv = (CheckableItemView) deviceGroup.getChildAt(i);
             final String id = (String) cv.getTag();
             boolean attached = false;
             {

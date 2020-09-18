@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc.config;
+package com.mkulesh.onpc.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -26,14 +26,14 @@ import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.DrawableRes;
 
-public class CheckableItemView extends LinearLayout implements Checkable
+public class DraggableItemView extends LinearLayout implements Checkable
 {
     private ImageView icon;
     private TextView textView;
     private CheckedTextView checkBox;
     private boolean checked;
 
-    public CheckableItemView(Context context, AttributeSet attrs)
+    public DraggableItemView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
     }
@@ -41,10 +41,10 @@ public class CheckableItemView extends LinearLayout implements Checkable
     @Override
     public void onFinishInflate()
     {
-        icon = this.findViewById(R.id.checkable_icon);
-        textView = this.findViewById(R.id.checkable_text);
-        checkBox = this.findViewById(R.id.checkable_checkbox);
-        ImageView checkableDragger = this.findViewById(R.id.checkable_dragger);
+        icon = this.findViewById(R.id.draggable_icon);
+        textView = this.findViewById(R.id.draggable_text);
+        checkBox = this.findViewById(R.id.draggable_checkbox);
+        ImageView checkableDragger = this.findViewById(R.id.draggable_dragger);
         Utils.setImageViewColorAttr(getContext(), checkableDragger, android.R.attr.textColor);
         super.onFinishInflate();
     }
