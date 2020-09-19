@@ -39,7 +39,7 @@
             android:layout_height="0px"
             android:layout_width="fill_parent"
             android:layout_weight="1"
-            android:choiceMode="multipleChoice"
+            android:choiceMode="none"
             app:drag_enabled="true"
             app:drag_start_mode="onMove"
             app:float_background_id="?attr/selectableItemBackground"

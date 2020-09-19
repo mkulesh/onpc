@@ -75,7 +75,12 @@ public class ShortcutsFragment extends BaseFragment
     @Override
     protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
-        updateList(state);
+        // Dismiss update if a data change due to receiver input is detected
+        // In this case, the list will be apdated and drag is cancelled
+        if (eventChanges.size() == State.ChangeType.values().length)
+        {
+            updateList(state);
+        }
     }
 
     private void updateList(@Nullable final State state)
