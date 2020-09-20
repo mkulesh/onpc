@@ -389,7 +389,7 @@
     <string name="service_bluetooth">Bluetooth</string>
 
     <string name="playlist_options">Abspielliste</string>
-    <string name="playlist_add">Hizufügen</string>
+    <string name="playlist_add">Hinzufügen</string>
     <string name="playlist_add_and_play">Hinzufügen und abspielen</string>
     <string name="playlist_replace">Ersetzen</string>
     <string name="playlist_replace_and_play">Ersetzen und abspielen</string>

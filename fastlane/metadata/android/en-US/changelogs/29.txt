@@ -1,0 +1,4 @@
+• Added new application setting that allows us to hide/show/sort the application tabs
+• Added new tab "Shortcuts" that collects user favorite media items
+• VSX-933: fixed home/settings menu in the DEVICE tab
+• Fixed possible application crash
