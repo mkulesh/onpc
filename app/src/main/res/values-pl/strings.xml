@@ -291,6 +291,7 @@
     <string name="cmd_description_chup">Zmień kanał na kolejny(Iradio)</string>
     <string name="cmd_description_chdn">Zmień kanał na poprzedni(Iradio)</string>
     <string name="cmd_description_menu">Menu</string>
+    <string name="cmd_description_home">Home</string>
     <string name="cmd_description_quick_menu">Szybkie Menu</string>
     <string name="cmd_description_top">Górne Menu</string>
     <string name="cmd_description_mode">Tryb(Dla Ipod)</string>

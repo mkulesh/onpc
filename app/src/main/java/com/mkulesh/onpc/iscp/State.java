@@ -388,7 +388,7 @@ public class State implements ConnectionIf
         return null;
     }
 
-    private boolean isControlExists(@NonNull final String control)
+    public boolean isControlExists(@NonNull final String control)
     {
         return controlList != null && controlList.contains(control);
     }

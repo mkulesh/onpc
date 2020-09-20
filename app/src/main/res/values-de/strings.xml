@@ -292,6 +292,7 @@
     <string name="cmd_description_chup">Vorheriger Kanal (Iradio)</string>
     <string name="cmd_description_chdn">Nächster Kanal (Iradio)</string>
     <string name="cmd_description_menu">Menü</string>
+    <string name="cmd_description_home">Home</string>
     <string name="cmd_description_quick_menu">Schnellmenü</string>
     <string name="cmd_description_top">Hauptmenü</string>
     <string name="cmd_description_mode">Modus (Ipod)</string>

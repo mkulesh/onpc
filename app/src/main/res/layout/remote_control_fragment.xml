@@ -30,63 +30,92 @@
 
             <!-- Common line -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/cmd_buttons_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <!-- Settings -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <TextView
-                        style="@style/ClickableLabelStyle"
-                        android:text="@string/cmd_description_setup"
-                        android:tag="OSD:MENU" />
+                    <!-- Setup (is called using OSD:MENU command) -->
+                    <LinearLayout
+                        android:id="@+id/cmd_setup_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        style="@style/BigImageButtonStyle"
-                        android:tag="OSD:MENU" />
+                        <TextView
+                            style="@style/ClickableLabelStyle"
+                            android:text="@string/cmd_description_setup"
+                            android:tag="OSD:MENU" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            style="@style/BigImageButtonStyle"
+                            android:tag="OSD:MENU" />
+                    </LinearLayout>
+
+                    <!-- Home (used instead of OSD:MENU to open setup) -->
+                    <LinearLayout
+                        android:id="@+id/cmd_home_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ClickableLabelStyle"
+                            android:text="@string/cmd_description_home"
+                            android:tag="OSD:HOME" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            style="@style/BigImageButtonStyle"
+                            android:tag="OSD:HOME" />
+                    </LinearLayout>
+
+                    <!-- Quick Menu -->
+                    <LinearLayout
+                        android:id="@+id/cmd_quick_menu_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ClickableLabelStyle"
+                            android:text="@string/cmd_description_quick_menu"
+                            android:tag="OSD:QUICK" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            style="@style/BigImageButtonStyle"
+                            android:tag="OSD:QUICK" />
+                    </LinearLayout>
+
+                    <!-- Return -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/ClickableLabelStyle"
+                            android:text="@string/cmd_description_return"
+                            android:tag="OSD:EXIT" />
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            style="@style/BigImageButtonStyle"
+                            android:tag="OSD:EXIT" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <!-- Menu -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/ClickableLabelStyle"
-                        android:text="@string/cmd_description_quick_menu"
-                        android:tag="OSD:QUICK" />
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        style="@style/BigImageButtonStyle"
-                        android:tag="OSD:QUICK" />
-                </LinearLayout>
-
-                <!-- Return -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/ClickableLabelStyle"
-                        android:text="@string/cmd_description_return"
-                        android:tag="OSD:EXIT" />
-
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        style="@style/BigImageButtonStyle"
-                        android:tag="OSD:EXIT" />
-                </LinearLayout>
+                <View style="@style/HorizontalDividerStyle" />
             </LinearLayout>
-
-            <View style="@style/HorizontalDividerStyle" />
 
             <!-- Up -->
             <androidx.appcompat.widget.AppCompatImageButton

@@ -292,6 +292,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="cmd_description_chup">Ch haut(Iradio)</string>
     <string name="cmd_description_chdn">Ch bas(Iradio)</string>
     <string name="cmd_description_menu">Menu</string>
+    <string name="cmd_description_home">Home</string>
     <string name="cmd_description_quick_menu">Menu rapide</string>
     <string name="cmd_description_top">Haut Menu</string>
     <string name="cmd_description_mode">Mode(Pour Ipod)</string>

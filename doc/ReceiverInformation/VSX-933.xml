@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response status="ok">
+    <device id="VSX-933">
+        <brand>Pioneer</brand>
+        <category>AV Receiver</category>
+        <year>2018</year>
+        <model>VSX-933</model>
+        <destination>xx</destination>
+        <productid>streamsdk</productid>
+        <deviceserial></deviceserial>
+        <macaddress></macaddress>
+        <modeliconurl>http://192.168.1.15/icon/PAVR_120.jpg</modeliconurl>
+        <friendlyname></friendlyname>
+        <firmwareversion>1051-0000-1060-0011-0000</firmwareversion>
+        <ecosystemversion>200</ecosystemversion>
+        <netservicelist count="10">
+            <netservice id="0e" value="1" name="TuneIn Radio" account="Username" password="Password" zone="03" enable="03" />
+            <netservice id="0a" value="1" name="Spotify" zone="03" enable="03" />
+            <netservice id="12" value="1" name="Deezer" account="Email address" password="Password" zone="03" enable="03" />
+            <netservice id="44" value="1" name="AirPlay" zone="03" enable="03" />
+            <netservice id="1b" value="1" name="TIDAL" account="Username" password="Password" zone="03" enable="03" />
+            <netservice id="00" value="1" name="Music Server" zone="03" enable="03" addqueue="1" sort="1" />
+            <netservice id="43" value="1" name="FlareConnect" zone="03" enable="03" />
+            <netservice id="40" value="1" name="Chromecast built-in" zone="03" enable="01" />
+            <netservice id="1d" value="1" name="Play Queue" zone="03" enable="03" />
+            <netservice id="42" value="1" name="DTS Play-Fi" zone="03" enable="01" />
+        </netservicelist>
+        <zonelist count="4">
+            <zone id="1" value="1" name="Main" volmax="82" volstep="0" src="1" dst="1" lrselect="0" />
+            <zone id="2" value="1" name="Zone2" volmax="0" volstep="0" src="0" dst="0" lrselect="0" />
+            <zone id="3" value="0" name="Zone3" volmax="0" volstep="0" src="0" dst="0" lrselect="0" />
+            <zone id="4" value="0" name="Zone4" volmax="0" volstep="0" src="0" dst="0" lrselect="0" />
+        </zonelist>
+        <selectorlist count="17">
+            <selector id="10" value="1" name="BD/DVD" zone="03" iconid="10" />
+            <selector id="01" value="1" name="CBL/SAT" zone="03" iconid="01" />
+            <selector id="02" value="1" name="GAME" zone="01" iconid="02" />
+            <selector id="11" value="1" name="STRM BOX" zone="03" iconid="11" />
+            <selector id="55" value="1" name="HDMI5" zone="01" iconid="13" />
+            <selector id="56" value="1" name="HDMI6" zone="01" iconid="13" />
+            <selector id="03" value="1" name="AUX" zone="03" iconid="03" />
+            <selector id="25" value="1" name="AM" zone="03" iconid="25" />
+            <selector id="24" value="1" name="FM" zone="03" iconid="24" />
+            <selector id="23" value="1" name="CD" zone="03" iconid="47" />
+            <selector id="12" value="1" name="TV" zone="01" iconid="12" />
+            <selector id="22" value="1" name="PHONO" zone="03" iconid="22" />
+            <selector id="2b" value="1" name="NET" zone="03" iconid="2b" />
+            <selector id="29" value="1" name="USB Front" zone="03" iconid="29" addqueue="1" />
+            <selector id="2a" value="1" name="USB Rear" zone="03" iconid="2a" addqueue="1" />
+            <selector id="2e" value="1" name="BLUETOOTH" zone="03" iconid="2e" />
+            <selector id="80" value="1" name="Source" zone="02" />
+        </selectorlist>
+        <presetlist count="40">
+            <preset id="01" band="0" freq="0" name="" />
+            <preset id="02" band="0" freq="0" name="" />
+            <preset id="03" band="0" freq="0" name="" />
+            <preset id="04" band="0" freq="0" name="" />
+            <preset id="05" band="0" freq="0" name="" />
+            <preset id="06" band="0" freq="0" name="" />
+            <preset id="07" band="0" freq="0" name="" />
+            <preset id="08" band="0" freq="0" name="" />
+            <preset id="09" band="0" freq="0" name="" />
+            <preset id="0a" band="0" freq="0" name="" />
+            <preset id="0b" band="0" freq="0" name="" />
+            <preset id="0c" band="0" freq="0" name="" />
+            <preset id="0d" band="0" freq="0" name="" />
+            <preset id="0e" band="0" freq="0" name="" />
+            <preset id="0f" band="0" freq="0" name="" />
+            <preset id="10" band="0" freq="0" name="" />
+            <preset id="11" band="0" freq="0" name="" />
+            <preset id="12" band="0" freq="0" name="" />
+            <preset id="13" band="0" freq="0" name="" />
+            <preset id="14" band="0" freq="0" name="" />
+            <preset id="15" band="0" freq="0" name="" />
+            <preset id="16" band="0" freq="0" name="" />
+            <preset id="17" band="0" freq="0" name="" />
+            <preset id="18" band="0" freq="0" name="" />
+            <preset id="19" band="0" freq="0" name="" />
+            <preset id="1a" band="0" freq="0" name="" />
+            <preset id="1b" band="0" freq="0" name="" />
+            <preset id="1c" band="0" freq="0" name="" />
+            <preset id="1d" band="0" freq="0" name="" />
+            <preset id="1e" band="0" freq="0" name="" />
+            <preset id="1f" band="0" freq="0" name="" />
+            <preset id="20" band="0" freq="0" name="" />
+            <preset id="21" band="0" freq="0" name="" />
+            <preset id="22" band="0" freq="0" name="" />
+            <preset id="23" band="0" freq="0" name="" />
+            <preset id="24" band="0" freq="0" name="" />
+            <preset id="25" band="0" freq="0" name="" />
+            <preset id="26" band="0" freq="0" name="" />
+            <preset id="27" band="0" freq="0" name="" />
+            <preset id="28" band="0" freq="0" name="" />
+        </presetlist>
+        <controllist count="61">
+            <control id="Bass" value="1" zone="1" min="-10" max="10" step="1" />
+            <control id="Treble" value="1" zone="1" min="-10" max="10" step="1" />
+            <control id="Center Level" value="1" zone="1" min="-12" max="12" step="0" />
+            <control id="Subwoofer Level" value="1" zone="1" min="-15" max="12" step="0" />
+            <control id="Subwoofer1 Level" value="0" zone="1" min="-15" max="12" step="0" />
+            <control id="Subwoofer2 Level" value="0" zone="1" min="-15" max="12" step="0" />
+            <control id="Phase Matching Bass" value="0" />
+            <control id="LMD Movie/TV" value="0" code="MOVIE" position="1" />
+            <control id="LMD Music" value="0" code="MUSIC" position="2" />
+            <control id="LMD Game" value="0" code="GAME" position="3" />
+            <control id="LMD THX" value="0" code="04" position="4" />
+            <control id="LMD Stereo" value="0" code="00" position="4" />
+            <control id="LMD Direct" value="0" code="01" position="1" />
+            <control id="LMD Pure Audio" value="0" code="11" position="2" />
+            <control id="LMD Pure Direct" value="1" code="11" position="1" />
+            <control id="LMD Auto/Direct" value="1" code="AUTO" position="2" />
+            <control id="LMD Stereo G" value="1" code="STEREO" position="3" />
+            <control id="LMD Surround" value="1" code="SURR" position="4" />
+            <control id="TUNER Control" value="1" />
+            <control id="TUNER Freq Control" value="0" />
+            <control id="Info" value="1" />
+            <control id="Cursor" value="1" />
+            <control id="Home" value="1" code="HOME" position="2" />
+            <control id="Setup" value="0" code="MENU" position="2" />
+            <control id="Quick" value="0" code="QUICK" position="1" />
+            <control id="Menu" value="0" code="MENU" position="1" />
+            <control id="AMP Control(RI)" value="0" />
+            <control id="CD Control(RI)" value="0" />
+            <control id="CD Control" value="0" />
+            <control id="BD Control(CEC)" value="1" />
+            <control id="TV Control(CEC)" value="1" />
+            <control id="NoPowerButton" value="0" />
+            <control id="DownSample" value="0" />
+            <control id="Dimmer" value="1" />
+            <control id="time_hhmmss" value="1" />
+            <control id="Zone2 Control(CEC)" value="0" />
+            <control id="Sub Control(CEC)" value="0" />
+            <control id="NoNetworkStandby" value="0" />
+            <control id="NJAREQ" value="1" />
+            <control id="Music Optimizer" value="1" />
+            <control id="NoVideoInfo" value="0" />
+            <control id="NoAudioInfo" value="0" />
+            <control id="AV Adjust" value="1" />
+            <control id="Audio Scalar" value="0" />
+            <control id="Hi-Bit" value="0" />
+            <control id="Upsampling" value="0" />
+            <control id="Digital Filter" value="0" />
+            <control id="DolbyAtmos" value="1" />
+            <control id="DTS:X" value="1" />
+            <control id="MCACC" value="1" />
+            <control id="Dialog Enhance" value="0" />
+            <control id="PQLS" value="0" />
+            <control id="CD Control(NewRemote)" value="0" />
+            <control id="NoVolume" value="0" />
+            <control id="Auto Sound Retriever" value="0" />
+            <control id="Lock Range Adjust" value="0" />
+            <control id="P.BASS" value="0" />
+            <control id="Tone Direct" value="0" />
+            <control id="DetailedFileInfo" value="1" />
+            <control id="NoDABPresetFunc" value="0" />
+            <control id="S.BASS" value="0" />
+        </controllist>
+        <functionlist count="10">
+            <function id="UsbUpdate" value="0" />
+            <function id="NetUpdate" value="1" />
+            <function id="WebSetup" value="1" />
+            <function id="WifiSetup" value="1" />
+            <function id="Nettune" value="0" />
+            <function id="Initialize" value="0" />
+            <function id="Battery" value="0" />
+            <function id="AutoStandbySetting" value="0" />
+            <function id="e-onkyo" value="0" />
+            <function id="UsbDabDongle" value="1" />
+        </functionlist>
+        <tuners count="2">
+            <tuner band="FM" min="87500" max="108000" step="50" />
+            <tuner band="AM" min="522" max="1611" step="9" />
+        </tuners>
+    </device>
+</response>

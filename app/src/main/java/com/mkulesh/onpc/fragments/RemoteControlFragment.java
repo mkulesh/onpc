@@ -37,8 +37,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 public class RemoteControlFragment extends BaseFragment
 {
     private final ArrayList<View> buttons = new ArrayList<>();
-    private LinearLayout listeningModeLayout = null;
-    private TextView listeningMode = null;
 
     public RemoteControlFragment()
     {
@@ -53,15 +51,13 @@ public class RemoteControlFragment extends BaseFragment
         collectButtons(l, buttons);
         for (View b : buttons)
         {
-            prepareRiButton(b);
+            prepareRCButton(b);
         }
-        listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
-        listeningMode = rootView.findViewById(R.id.listening_mode);
         updateContent();
         return rootView;
     }
 
-    private void prepareRiButton(View b)
+    private void prepareRCButton(View b)
     {
         if (b.getTag() == null)
         {
@@ -124,23 +120,43 @@ public class RemoteControlFragment extends BaseFragment
     @Override
     protected void updateStandbyView(@Nullable final State state)
     {
+        // Command buttons
+        rootView.findViewById(R.id.cmd_buttons_layout).setVisibility(View.GONE);
+
+        // All buttons
         for (View b : buttons)
         {
             setButtonEnabled(b, state != null && state.isOn());
         }
-        listeningModeLayout.setVisibility(
+
+        // Listening modes
+        rootView.findViewById(R.id.listening_mode_layout).setVisibility(
                 state != null && state.isListeningModeControl() ? View.VISIBLE : View.GONE);
-        listeningMode.setVisibility(View.GONE);
+        rootView.findViewById(R.id.listening_mode).setVisibility(View.GONE);
     }
 
     @Override
     protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
+        // Command buttons
+        rootView.findViewById(R.id.cmd_buttons_layout).setVisibility(View.VISIBLE);
+        rootView.findViewById(R.id.cmd_setup_layout).setVisibility(
+                state.isControlExists("Setup") ? View.VISIBLE : View.GONE);
+        rootView.findViewById(R.id.cmd_home_layout).setVisibility(
+                state.isControlExists("Home") ? View.VISIBLE : View.GONE);
+        rootView.findViewById(R.id.cmd_quick_menu_layout).setVisibility(
+                state.isControlExists("Quick") ? View.VISIBLE : View.GONE);
+
+        // All buttons
         for (View b : buttons)
         {
             setButtonEnabled(b, true);
         }
+
+        // Listening modes
+        final LinearLayout listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
         listeningModeLayout.setVisibility(state.isListeningModeControl() ? View.VISIBLE : View.GONE);
+        final TextView listeningMode = rootView.findViewById(R.id.listening_mode);
         listeningMode.setVisibility(listeningModeLayout.getVisibility());
         if (eventChanges.contains(State.ChangeType.AUDIO_CONTROL))
         {
