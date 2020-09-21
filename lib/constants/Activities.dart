@@ -14,6 +14,7 @@
 class Activities
 {
     static const String activity_preferences = "/Preferences";
+    static const String activity_visible_tabs = "/VisibleTabs";
     static const String activity_device_selectors = "/DeviceSelectors";
     static const String activity_listening_modes = "/ListeningModes";
     static const String activity_network_services = "/NetworkServices";

@@ -31,6 +31,7 @@ import "config/DeviceSelectors.dart";
 import "config/ListeningModes.dart";
 import "config/NetworkServices.dart";
 import "config/PreferencesMain.dart";
+import "config/VisibleTabs.dart";
 import "constants/Activities.dart";
 import "constants/Dimens.dart";
 import "constants/Strings.dart";
@@ -90,6 +91,7 @@ void main() async
         routes: <String, WidgetBuilder>
         {
             Activities.activity_preferences: (BuildContext context) => PreferencesMain(configuration),
+            Activities.activity_visible_tabs: (BuildContext context) => VisibleTabs(configuration),
             Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(configuration),
             Activities.activity_listening_modes: (BuildContext context) => ListeningModes(configuration),
             Activities.activity_network_services: (BuildContext context) => NetworkServices(configuration),
@@ -478,15 +480,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         final int _index = (_tabController != null) ? _tabController.index : _configuration.appSettings.openedTab;
 
         _tabs.clear();
-        _tabs.add(AppTabs.LISTEN);
-        _tabs.add(AppTabs.MEDIA);
-        _tabs.add(AppTabs.DEVICE);
-        _tabs.add(AppTabs.RC);
-        if (_configuration.appSettings.riAmp || _configuration.appSettings.riCd)
-        {
-            _tabs.add(AppTabs.RI);
-        }
-
+        _tabs.addAll(_configuration.appSettings.getVisibleTabs());
         if (_tabController == null || _tabs.length != _tabController.length)
         {
             _updateTabs(_index);

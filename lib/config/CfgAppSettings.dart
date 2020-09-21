@@ -17,9 +17,11 @@ import "package:shared_preferences/shared_preferences.dart";
 
 import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";
+import "CheckableItem.dart";
 
 // Tabs
 enum AppTabs
@@ -102,6 +104,9 @@ class CfgAppSettings extends CfgModule
         saveIntegerParameter(OPENED_TAB, value);
     }
 
+    // Visible tabs
+    static final String VISIBLE_TABS = "visible_tabs";
+
     // Remote interface
     static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", false);
     bool _riAmp;
@@ -138,5 +143,24 @@ class CfgAppSettings extends CfgModule
     static String getTabName(AppTabs item)
     {
         return item.index < Strings.pref_visible_tabs_names.length ? Strings.pref_visible_tabs_names[item.index].toUpperCase() : "";
+    }
+
+    List<AppTabs> getVisibleTabs()
+    {
+        final List<AppTabs> result = List();
+        final List<String> defItems = List();
+        AppTabs.values.forEach((i) => defItems.add(Convert.enumToString(i)));
+        for (CheckableItem sp in CheckableItem.readFromPreference(this, VISIBLE_TABS, defItems))
+        {
+            for (AppTabs i in AppTabs.values)
+            {
+                if (sp.checked && Convert.enumToString(i) == sp.code)
+                {
+                    result.add(i);
+                }
+            }
+        }
+        Logging.info(this, "  " + VISIBLE_TABS + ": " + result.toString());
+        return result;
     }
 }

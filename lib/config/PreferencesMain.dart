@@ -99,6 +99,12 @@ class _PreferencesMainState extends State<PreferencesMain>
                 });
             }));
 
+        // Visible tabs
+        elements.add(_customPreferenceScreen(td,
+            Strings.pref_visible_tabs,
+            icon: Drawables.pref_visible_tabs,
+            activity: Activities.activity_visible_tabs));
+
         elements.add(_customSwitchPreference(td,
             Strings.remote_interface_amp,
             CfgAppSettings.RI_AMP,
