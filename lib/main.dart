@@ -25,6 +25,7 @@ import "package:package_info/package_info.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "Platform.dart";
+import "config/CfgAppSettings.dart";
 import "config/Configuration.dart";
 import "config/DeviceSelectors.dart";
 import "config/ListeningModes.dart";
@@ -82,9 +83,9 @@ void main() async
         {
             if (locale != null)
             {
-                configuration.systemLocale = locale;
+                configuration.appSettings.systemLocale = locale;
             }
-            return Configuration.DEFAULT_LOCALE;
+            return CfgAppSettings.DEFAULT_LOCALE;
         },
         routes: <String, WidgetBuilder>
         {
@@ -474,14 +475,14 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.logSize = _configuration.developerMode ? Logging.DEFAULT_LOG_SIZE : 0;
 
         // Update tabs
-        final int _index = (_tabController != null) ? _tabController.index : _configuration.openedTab;
+        final int _index = (_tabController != null) ? _tabController.index : _configuration.appSettings.openedTab;
 
         _tabs.clear();
         _tabs.add(AppTabs.LISTEN);
         _tabs.add(AppTabs.MEDIA);
         _tabs.add(AppTabs.DEVICE);
         _tabs.add(AppTabs.RC);
-        if (_configuration.riAmp || _configuration.riCd)
+        if (_configuration.appSettings.riAmp || _configuration.appSettings.riCd)
         {
             _tabs.add(AppTabs.RI);
         }
@@ -530,7 +531,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (!_tabController.indexIsChanging && activeTab != null)
         {
             final AppTabs tab = activeTab;
-            _configuration.openedTab = tab.index;
+            _configuration.appSettings.openedTab = tab.index;
 
             if([AppTabs.LISTEN, AppTabs.MEDIA].contains(tab) && _stateManager.isConnected)
             {

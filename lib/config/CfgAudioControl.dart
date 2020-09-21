@@ -11,12 +11,12 @@
  * Public License along with this program.
  */
 
-import "package:onpc/iscp/messages/EnumParameterMsg.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../Platform.dart";
 import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";

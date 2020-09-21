@@ -25,6 +25,7 @@ import "../dialogs/DropdownPreferenceDialog.dart";
 import "../utils/Pair.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
+import "CfgAppSettings.dart";
 import "CfgAudioControl.dart";
 import "Configuration.dart";
 
@@ -49,14 +50,14 @@ class _PreferencesMainState extends State<PreferencesMain>
     Widget build(BuildContext context)
     {
         final ThemeData td = BaseAppTheme.getThemeData(
-            _configuration.theme, _configuration.language, _configuration.textSize);
+            _configuration.appSettings.theme, _configuration.appSettings.language, _configuration.appSettings.textSize);
 
         final List<Widget> elements = List();
 
         // Theme
         elements.add(_customDropdownPreference(td,
             Strings.pref_theme,
-            Configuration.THEME,
+            CfgAppSettings.THEME,
             icon: Drawables.pref_app_theme,
             values: Strings.pref_theme_codes,
             displayValues: Strings.pref_theme_names,
@@ -64,14 +65,14 @@ class _PreferencesMainState extends State<PreferencesMain>
             {
                 setState(()
                 {
-                    _configuration.theme = val;
+                    _configuration.appSettings.theme = val;
                 });
             }));
 
         // Language
         elements.add(_customDropdownPreference(td,
             Strings.pref_language,
-            Configuration.LANGUAGE,
+            CfgAppSettings.LANGUAGE,
             icon: Drawables.pref_language,
             values: Strings.pref_language_codes,
             displayValues: Strings.pref_language_names,
@@ -79,14 +80,14 @@ class _PreferencesMainState extends State<PreferencesMain>
             {
                 setState(()
                 {
-                    _configuration.language = val;
+                    _configuration.appSettings.language = val;
                 });
             }));
 
         // Text size
         elements.add(_customDropdownPreference(td,
             Strings.pref_text_size,
-            Configuration.TEXT_SIZE,
+            CfgAppSettings.TEXT_SIZE,
             icon: Drawables.pref_text_size,
             values: Strings.pref_text_size_codes,
             displayValues: Strings.pref_text_size_names,
@@ -94,9 +95,18 @@ class _PreferencesMainState extends State<PreferencesMain>
             {
                 setState(()
                 {
-                    _configuration.textSize = val;
+                    _configuration.appSettings.textSize = val;
                 });
             }));
+
+        elements.add(_customSwitchPreference(td,
+            Strings.remote_interface_amp,
+            CfgAppSettings.RI_AMP,
+            icon: Drawables.pref_ri_amplifier));
+        elements.add(_customSwitchPreference(td,
+            Strings.remote_interface_cd,
+            CfgAppSettings.RI_CD,
+            icon: Drawables.pref_ri_disc_player));
 
         // Device options
         elements.add(CustomDivider());
@@ -151,18 +161,6 @@ class _PreferencesMainState extends State<PreferencesMain>
             Strings.pref_force_audio_control,
             CfgAudioControl.FORCE_AUDIO_CONTROL,
             icon: Drawables.volume_audio_control));
-
-        // Remote interface
-        elements.add(CustomDivider());
-        elements.add(PreferenceTitle(Strings.pref_category_ri_options));
-        elements.add(_customSwitchPreference(td,
-            Strings.remote_interface_amp,
-            Configuration.RI_AMP,
-            icon: Drawables.pref_ri_amplifier));
-        elements.add(_customSwitchPreference(td,
-            Strings.remote_interface_cd,
-            Configuration.RI_CD,
-            icon: Drawables.pref_ri_disc_player));
 
         // Advanced options
         elements.add(CustomDivider());

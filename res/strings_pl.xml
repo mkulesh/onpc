@@ -93,16 +93,8 @@ Enjoy!""</string>
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Zasilanie włączone</string>
 
-    <!-- Tabs -->
-    <string name="title_monitor">Słuchaj</string>
-    <string name="title_media">Media</string>
-    <string name="title_device">Urządzenie</string>
-    <string name="title_remote_control">RC</string>
-    <string name="title_remote_interface">RI</string>
-
     <!-- Application settings -->
     <string name="pref_category_device_options">Opcje urządzenia</string>
-    <string name="pref_category_ri_options">Kontrola zdalna</string>
     <string name="pref_category_advanced_options">Zaawansowane</string>
 
     <string name="pref_volume_title">Przyciski głośności</string>
@@ -168,6 +160,16 @@ Enjoy!""</string>
         <item>Normalne</item>
         <item>Duże</item>
         <item>Ogromne</item>
+    </string-array>
+
+    <!-- Application settings: Tabs -->
+    <string name="pref_visible_tabs">Widoczne zakładki</string>
+    <string-array name="pref_visible_tabs_names">
+        <item>Słuchaj</item>
+        <item>Media</item>
+        <item>Urządzenie</item>
+        <item>RC</item>
+        <item>RI</item>
     </string-array>
 
     <!-- Playback tab -->
@@ -477,9 +479,8 @@ Enjoy!""</string>
     <string name="listening_mode_down">Zmień tryb na poprzedni</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface">Używaj urządzeń podłączonych przez interfejs zdalny (RI)</string>
-    <string name="remote_interface_amp">Wzmacniacz</string>
-    <string name="remote_interface_cd">CD Player</string>
+    <string name="remote_interface_amp">Wzmacniacz (RI)</string>
+    <string name="remote_interface_cd">CD Player (RI)</string>
     <string name="remote_interface_power">Zasilanie</string>
     <string name="remote_interface_common">Wspólne</string>
     <string name="remote_interface_input">Wejście</string>

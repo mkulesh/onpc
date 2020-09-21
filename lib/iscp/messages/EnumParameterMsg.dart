@@ -12,6 +12,7 @@
  */
 
 import "../../constants/Strings.dart";
+import "../../utils/Convert.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -62,7 +63,7 @@ class EnumItem<T>
     });
 
     String get getKey
-    => key.toString().split('.').last;
+    => Convert.enumToString(key);
 
     String get getCode
     => code == null ? getKey : (upperCase ? code.toUpperCase() : code);

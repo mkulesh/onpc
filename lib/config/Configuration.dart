@@ -11,16 +11,15 @@
  * Public License along with this program.
  */
 
-import 'dart:ui';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import "../Platform.dart";
-import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
+import "CfgAppSettings.dart";
 import "CfgAudioControl.dart";
 import "CfgFavoriteConnections.dart";
 import "CfgFavoriteShortcuts.dart";
@@ -30,75 +29,6 @@ class Configuration extends CfgModule
 {
     static const String CONFIGURATION_EVENT = "CONFIG";
     String appVersion;
-
-    // Theme
-    static const Pair<String, String> THEME = Pair<String, String>("theme", Strings.pref_theme_default);
-    String _theme;
-
-    String get theme
-    => _theme;
-
-    set theme(String value)
-    {
-        _theme = value;
-        saveStringParameter(Configuration.THEME, value);
-    }
-
-    // System language
-    static const Locale DEFAULT_LOCALE = Locale("en", "US");
-    Locale _systemLocale;
-
-    set systemLocale(Locale value)
-    {
-        _systemLocale = value;
-        Logging.info(this, "system locale: " + _systemLocale.toString());
-    }
-
-    // Language
-    static const Pair<String, String> LANGUAGE = Pair<String, String>("language", Strings.pref_language_default);
-    String _language;
-
-    String get language
-    {
-        if (_language == "system")
-        {
-            return _systemLocale != null && Strings.app_languages.contains(_systemLocale.languageCode) ?
-                _systemLocale.languageCode : DEFAULT_LOCALE.languageCode;
-        }
-        return _language;
-    }
-
-    set language(String value)
-    {
-        _language = value;
-        saveStringParameter(Configuration.LANGUAGE, value);
-    }
-
-    // Text size
-    static const Pair<String, String> TEXT_SIZE = Pair<String, String>("text_size", Strings.pref_text_size_default);
-    String _textSize;
-
-    String get textSize
-    => _textSize;
-
-    set textSize(String value)
-    {
-        _textSize = value;
-        saveStringParameter(Configuration.TEXT_SIZE, value);
-    }
-
-    // The latest opened tab
-    static const Pair<String, int> OPENED_TAB = Pair<String, int>("opened_tab", 0);
-    int _openedTab;
-
-    int get openedTab
-    => _openedTab;
-
-    set openedTab(int value)
-    {
-        _openedTab = value;
-        saveIntegerParameter(OPENED_TAB, value);
-    }
 
     // Connection options
     static const Pair<String, String> SERVER_NAME = Pair<String, String>("server_name", "");
@@ -149,19 +79,6 @@ class Configuration extends CfgModule
     static const String DEVICE_SELECTORS = "device_selectors";
     static const String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
 
-    // Remote interface
-    static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", false);
-    bool _riAmp;
-
-    bool get riAmp
-    => _riAmp;
-
-    static const Pair<String, bool> RI_CD = Pair<String, bool>("remote_interface_cd", false);
-    bool _riCd;
-
-    bool get riCd
-    => _riCd;
-
     // Advanced options
     static const Pair<String, bool> KEEP_SCREEN_ON = Pair<String, bool>("keep_screen_on", false); // For Android only
     bool _keepScreenOn;
@@ -200,6 +117,7 @@ class Configuration extends CfgModule
     => _developerMode;
 
     // configuration modules
+    CfgAppSettings appSettings;
     CfgAudioControl audioControl;
     CfgFavoriteConnections favoriteConnections;
     CfgFavoriteShortcuts favoriteShortcuts;
@@ -207,6 +125,7 @@ class Configuration extends CfgModule
     Configuration(final SharedPreferences preferences, packageInfo) : super(preferences)
     {
         appVersion = "v." + packageInfo.version;
+        appSettings = CfgAppSettings(preferences);
         audioControl = CfgAudioControl(preferences);
         favoriteConnections = CfgFavoriteConnections(preferences);
         favoriteShortcuts = CfgFavoriteShortcuts(preferences);
@@ -218,12 +137,6 @@ class Configuration extends CfgModule
     {
         Logging.info(this, "Reading configuration...");
 
-        // Interface options
-        _theme = getString(THEME, doLog: true);
-        _language = getString(LANGUAGE, doLog: true);
-        _textSize = getString(TEXT_SIZE, doLog: true);
-        _openedTab = getInt(OPENED_TAB, doLog: true);
-
         // Connection options
         _deviceName = getString(SERVER_NAME, doLog: true);
         _devicePort = getInt(SERVER_PORT, doLog: true);
@@ -233,13 +146,6 @@ class Configuration extends CfgModule
         _autoPower = getBool(AUTO_POWER, doLog: true);
         _friendlyNames = getBool(FRIENDLY_NAMES, doLog: true);
 
-        // Audio control
-        audioControl.read();
-
-        // Remote interface
-        _riAmp = getBool(RI_AMP, doLog: true);
-        _riCd = getBool(RI_CD, doLog: true);
-
         // Advanced options
         _keepScreenOn = Platform.isAndroid ? getBool(KEEP_SCREEN_ON, doLog: true) : false;
         _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
@@ -248,7 +154,9 @@ class Configuration extends CfgModule
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
 
-        // Favorites
+        // configuration modules
+        appSettings.read();
+        audioControl.read();
         favoriteConnections.read();
         favoriteShortcuts.read();
     }
@@ -283,7 +191,7 @@ class Configuration extends CfgModule
                 }
                 str += p.getId;
             });
-            saveStringParameter(Pair<String, String>(NETWORK_SERVICES,""), str, prefix: "  ");
+            saveStringParameter(Pair<String, String>(NETWORK_SERVICES, ""), str, prefix: "  ");
         }
         if (state.deviceSelectors.isNotEmpty)
         {
@@ -297,8 +205,9 @@ class Configuration extends CfgModule
                 str += d.getId;
                 preferences.setString(DEVICE_SELECTORS + "_" + d.getId, d.getName);
             });
-            saveStringParameter(Pair<String, String>(DEVICE_SELECTORS,""), str, prefix: "  ");
+            saveStringParameter(Pair<String, String>(DEVICE_SELECTORS, ""), str, prefix: "  ");
         }
+        appSettings.setReceiverInformation(stateManager);
         audioControl.setReceiverInformation(stateManager);
         favoriteConnections.setReceiverInformation(stateManager);
         favoriteShortcuts.setReceiverInformation(stateManager);

@@ -554,46 +554,6 @@ Enjoy!"""];
         /*pl*/ "Zasilanie włączone"];
     static String get shortcut_power_on => l_shortcut_power_on[_language];
 
-    static const List<String> l_title_monitor = [
-        /*en*/ "Listen",
-        /*ru*/ "Музыка",
-        /*de*/ "Hören",
-        /*fr*/ "Écoute",
-        /*pl*/ "Słuchaj"];
-    static String get title_monitor => l_title_monitor[_language];
-
-    static const List<String> l_title_media = [
-        /*en*/ "Media",
-        /*ru*/ "Каналы",
-        /*de*/ "Medien",
-        /*fr*/ "Source",
-        /*pl*/ "Media"];
-    static String get title_media => l_title_media[_language];
-
-    static const List<String> l_title_device = [
-        /*en*/ "Device",
-        /*ru*/ "Система",
-        /*de*/ "Gerät",
-        /*fr*/ "Appareil",
-        /*pl*/ "Urządzenie"];
-    static String get title_device => l_title_device[_language];
-
-    static const List<String> l_title_remote_control = [
-        /*en*/ "RC",
-        /*ru*/ "Пульт",
-        /*de*/ "RC",
-        /*fr*/ "RC",
-        /*pl*/ "RC"];
-    static String get title_remote_control => l_title_remote_control[_language];
-
-    static const List<String> l_title_remote_interface = [
-        /*en*/ "RI",
-        /*ru*/ "RI",
-        /*de*/ "RI",
-        /*fr*/ "RI",
-        /*pl*/ "RI"];
-    static String get title_remote_interface => l_title_remote_interface[_language];
-
     static const List<String> l_pref_category_device_options = [
         /*en*/ "Device options",
         /*ru*/ "Настройки устройства",
@@ -601,14 +561,6 @@ Enjoy!"""];
         /*fr*/ "Options dispositif",
         /*pl*/ "Opcje urządzenia"];
     static String get pref_category_device_options => l_pref_category_device_options[_language];
-
-    static const List<String> l_pref_category_ri_options = [
-        /*en*/ "Remote interface",
-        /*ru*/ "Удаленный интерфейс (RI)",
-        /*de*/ "Remote Interface",
-        /*fr*/ "Contrôle interface",
-        /*pl*/ "Kontrola zdalna"];
-    static String get pref_category_ri_options => l_pref_category_ri_options[_language];
 
     static const List<String> l_pref_category_advanced_options = [
         /*en*/ "Advanced",
@@ -801,6 +753,14 @@ Enjoy!"""];
         /*fr*/ "Taille texte et boutons",
         /*pl*/ "Rozmiar tekstu i przycisków"];
     static String get pref_text_size => l_pref_text_size[_language];
+
+    static const List<String> l_pref_visible_tabs = [
+        /*en*/ "Visible tabs",
+        /*ru*/ "Видимые вкладки",
+        /*de*/ "Sichtbare Registerkarten",
+        /*fr*/ "Onglets visibles",
+        /*pl*/ "Widoczne zakładki"];
+    static String get pref_visible_tabs => l_pref_visible_tabs[_language];
 
     static const List<String> l_tv_display_mode = [
         /*en*/ "Display mode on device",
@@ -2413,7 +2373,7 @@ Enjoy!"""];
     static const List<String> l_playlist_add = [
         /*en*/ "Add",
         /*ru*/ "Добавить",
-        /*de*/ "Hizufügen",
+        /*de*/ "Hinzufügen",
         /*fr*/ "Ajouter",
         /*pl*/ "Dodaj"];
     static String get playlist_add => l_playlist_add[_language];
@@ -2890,28 +2850,20 @@ Enjoy!"""];
         /*pl*/ "Zmień tryb na poprzedni"];
     static String get listening_mode_down => l_listening_mode_down[_language];
 
-    static const List<String> l_remote_interface = [
-        /*en*/ "Use devices connected via Remote Interface (RI)",
-        /*ru*/ "Использовать устройства, подключенные через удаленный интерфейс (RI)",
-        /*de*/ "Über RI Verbundene Geräte nutzen",
-        /*fr*/ "Utiliser des dispositifs connectés par Remote Interface (RI)",
-        /*pl*/ "Używaj urządzeń podłączonych przez interfejs zdalny (RI)"];
-    static String get remote_interface => l_remote_interface[_language];
-
     static const List<String> l_remote_interface_amp = [
-        /*en*/ "Amplifier",
-        /*ru*/ "Усилитель",
-        /*de*/ "Verstärker",
-        /*fr*/ "Amplificateur",
-        /*pl*/ "Wzmacniacz"];
+        /*en*/ "Amplifier (RI)",
+        /*ru*/ "Усилитель (RI)",
+        /*de*/ "Verstärker (RI)",
+        /*fr*/ "Amplificateur (RI)",
+        /*pl*/ "Wzmacniacz (RI)"];
     static String get remote_interface_amp => l_remote_interface_amp[_language];
 
     static const List<String> l_remote_interface_cd = [
-        /*en*/ "CD Player",
-        /*ru*/ "CD-проигрыватель",
-        /*de*/ "CD Player",
-        /*fr*/ "CD Player",
-        /*pl*/ "CD Player"];
+        /*en*/ "CD Player (RI)",
+        /*ru*/ "CD-проигрыватель (RI)",
+        /*de*/ "CD Player (RI)",
+        /*fr*/ "CD Player (RI)",
+        /*pl*/ "CD Player (RI)"];
     static String get remote_interface_cd => l_remote_interface_cd[_language];
 
     static const List<String> l_remote_interface_power = [
@@ -3170,4 +3122,32 @@ Enjoy!"""];
                 "Duże",
                 "Ogromne"]];
     static List<String> get pref_text_size_names => l_pref_text_size_names[_language];
+
+    static const List<List<String>> l_pref_visible_tabs_names = [
+        /*en*/ ["Listen",
+                "Media",
+                "Device",
+                "RC",
+                "RI"],
+        /*ru*/ ["Музыка",
+                "Каналы",
+                "Система",
+                "Пульт",
+                "RI"],
+        /*de*/ ["Hören",
+                "Medien",
+                "Gerät",
+                "RC",
+                "RI"],
+        /*fr*/ ["Écoute",
+                "Source",
+                "Appareil",
+                "RC",
+                "RI"],
+        /*pl*/ ["Słuchaj",
+                "Media",
+                "Urządzenie",
+                "RC",
+                "RI"]];
+    static List<String> get pref_visible_tabs_names => l_pref_visible_tabs_names[_language];
 }

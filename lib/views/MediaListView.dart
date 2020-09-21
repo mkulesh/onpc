@@ -246,7 +246,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return PositionedTapDetector(
             child: ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
-                dense: configuration.textSize != "huge",
+                dense: configuration.appSettings.textSize != "huge",
                 leading: CustomImageButton.normal(
                     icon, null,
                     isEnabled: iconEnabled || isPlaying,

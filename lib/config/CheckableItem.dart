@@ -29,6 +29,17 @@ class CheckableItem
 
     CheckableItem.fromCode(this.code, this.checked, { this.text = "" });
 
+    static void reorder(final CfgModule configuration, final String parameter, final List<CheckableItem> items, int oldIndex, int newIndex)
+    {
+        if (newIndex > oldIndex)
+        {
+            newIndex -= 1;
+        }
+        final CheckableItem item = items.removeAt(oldIndex);
+        items.insert(newIndex, item);
+        CheckableItem.writeToPreference(configuration, parameter, items);
+    }
+
     static void writeToPreference(final CfgModule configuration,
         final String parameter,
         final List<CheckableItem> items)
@@ -108,7 +119,7 @@ class CheckableItem
     static Widget buildList(BuildContext context, List<Widget> rows, String title, ReorderCallback _onReorder, final Configuration _configuration)
     {
         final ThemeData td = BaseAppTheme.getThemeData(
-            _configuration.theme, _configuration.language, _configuration.textSize);
+            _configuration.appSettings.theme, _configuration.appSettings.language, _configuration.appSettings.textSize);
 
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(

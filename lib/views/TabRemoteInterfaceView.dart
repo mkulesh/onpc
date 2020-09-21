@@ -29,11 +29,11 @@ class TabRemoteInterfaceView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         final List<Widget> views = List();
-        if (configuration.riAmp)
+        if (configuration.appSettings.riAmp)
         {
             views.add(UpdatableWidget(child: AmplifierControlView(viewContext)));
         }
-        if (configuration.riCd)
+        if (configuration.appSettings.riCd)
         {
             views.add(UpdatableWidget(child: CdControlView(viewContext)));
         }

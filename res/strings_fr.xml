@@ -90,16 +90,8 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Allumer</string>
 
-    <!-- Tabs -->
-    <string name="title_monitor">Écoute</string>
-    <string name="title_media">Source</string>
-    <string name="title_device">Appareil</string>
-    <string name="title_remote_control">RC</string>
-    <string name="title_remote_interface">RI</string>
-
     <!-- Application settings -->
     <string name="pref_category_device_options">Options dispositif</string>
-    <string name="pref_category_ri_options">Contrôle interface</string>
     <string name="pref_category_advanced_options">Avancé</string>
 
     <string name="pref_volume_title">Boutons volume</string>
@@ -166,6 +158,16 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
         <item>Normal</item>
         <item>Grand</item>
         <item>Énorme</item>
+    </string-array>
+
+    <!-- Application settings: Tabs -->
+    <string name="pref_visible_tabs">Onglets visibles</string>
+    <string-array name="pref_visible_tabs_names">
+        <item>Écoute</item>
+        <item>Source</item>
+        <item>Appareil</item>
+        <item>RC</item>
+        <item>RI</item>
     </string-array>
 
     <!-- Playback tab -->
@@ -475,9 +477,8 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="listening_mode_down">Changer mode d\'écoute</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface">Utiliser des dispositifs connectés par Remote Interface (RI)</string>
-    <string name="remote_interface_amp">Amplificateur</string>
-    <string name="remote_interface_cd">CD Player</string>
+    <string name="remote_interface_amp">Amplificateur (RI)</string>
+    <string name="remote_interface_cd">CD Player (RI)</string>
     <string name="remote_interface_power">Marche</string>
     <string name="remote_interface_common">Commun</string>
     <string name="remote_interface_input">Entrée</string>

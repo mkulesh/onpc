@@ -13,6 +13,7 @@
 
 import "package:flutter/material.dart";
 
+import "../config/CfgAppSettings.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
@@ -25,11 +26,6 @@ import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
-
-enum AppTabs
-{
-    LISTEN, MEDIA, DEVICE, RC, RI
-}
 
 class AppBarView extends UpdatableView
 {
@@ -100,14 +96,6 @@ class AppBarView extends UpdatableView
 
     Widget _buildTabs(final ThemeData td)
     {
-        final List<String> TAB_NAMES = [
-            Strings.title_monitor,
-            Strings.title_media,
-            Strings.title_device,
-            Strings.title_remote_control,
-            Strings.title_remote_interface
-        ];
-
         return Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -121,7 +109,7 @@ class AppBarView extends UpdatableView
                     unselectedLabelColor: td.bottomAppBarColor.withAlpha(175),
                     tabs: _tabs.map((AppTabs tab)
                     {
-                        final String tabName = TAB_NAMES[tab.index];
+                        final String tabName = CfgAppSettings.getTabName(tab);
                         return Tab(text: tabName.toUpperCase());
                     }).toList(),
                 )

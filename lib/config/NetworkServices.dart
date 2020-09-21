@@ -90,13 +90,7 @@ class _NetworkServicesState extends State<NetworkServices>
     {
         setState(()
         {
-            if (newIndex > oldIndex)
-            {
-                newIndex -= 1;
-            }
-            final CheckableItem item = _items.removeAt(oldIndex);
-            _items.insert(newIndex, item);
-            CheckableItem.writeToPreference(_configuration, _parameter, _items);
+            CheckableItem.reorder(_configuration, _parameter, _items, oldIndex, newIndex);
         });
     }
 }

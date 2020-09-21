@@ -91,16 +91,8 @@ Copyright © 2019 by __Михаил Кулеш__
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Включить</string>
 
-    <!-- Tabs -->
-    <string name="title_monitor">Музыка</string>
-    <string name="title_media">Каналы</string>
-    <string name="title_device">Система</string>
-    <string name="title_remote_control">Пульт</string>
-    <string name="title_remote_interface">RI</string>
-
     <!-- Application settings -->
     <string name="pref_category_device_options">Настройки устройства</string>
-    <string name="pref_category_ri_options">Удаленный интерфейс (RI)</string>
     <string name="pref_category_advanced_options">Дополнительно</string>
 
     <string name="pref_volume_title">Управление громкостью</string>
@@ -165,6 +157,16 @@ Copyright © 2019 by __Михаил Кулеш__
         <item>Нормальный</item>
         <item>Большой</item>
         <item>Огромный</item>
+    </string-array>
+
+    <!-- Application settings: Tabs -->
+    <string name="pref_visible_tabs">Видимые вкладки</string>
+    <string-array name="pref_visible_tabs_names">
+        <item>Музыка</item>
+        <item>Каналы</item>
+        <item>Система</item>
+        <item>Пульт</item>
+        <item>RI</item>
     </string-array>
 
     <!-- Playback tab -->
@@ -474,9 +476,8 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="listening_mode_down">Предыдущий звуковой профиль</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface">Использовать устройства, подключенные через удаленный интерфейс (RI)</string>
-    <string name="remote_interface_amp">Усилитель</string>
-    <string name="remote_interface_cd">CD-проигрыватель</string>
+    <string name="remote_interface_amp">Усилитель (RI)</string>
+    <string name="remote_interface_cd">CD-проигрыватель (RI)</string>
     <string name="remote_interface_power">Питание</string>
     <string name="remote_interface_common">Общий</string>
     <string name="remote_interface_input">Вход</string>

@@ -36,7 +36,7 @@ class ViewContext
     => stateManager.state;
 
     ThemeData getThemeData()
-    => BaseAppTheme.getThemeData(configuration.theme, configuration.language, configuration.textSize);
+    => BaseAppTheme.getThemeData(configuration.appSettings.theme, configuration.appSettings.language, configuration.appSettings.textSize);
 }
 
 mixin WidgetStreamContext
