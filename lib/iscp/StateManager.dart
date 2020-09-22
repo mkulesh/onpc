@@ -772,7 +772,6 @@ class StateManager
         data += "</onpcScript>";
 
         final MessageScript messageScript = MessageScript(data);
-        triggerStateEvent(APPLY_FAVORITE_EVENT);
         activateScript(messageScript);
     }
 }

@@ -235,4 +235,11 @@ class CfgFavoriteShortcuts extends CfgModule
         shortcuts.forEach((s) => id = max(id, s.id));
         return id + 1;
     }
+
+    void reorder(int oldIndex, int newIndex)
+    {
+        final Shortcut item = shortcuts.removeAt(oldIndex);
+        shortcuts.insert(newIndex, item);
+        write();
+    }
 }

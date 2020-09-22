@@ -54,7 +54,6 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="drawer_open">Открыть панель навигатора</string>
     <string name="drawer_group_zone">Зона</string>
     <string name="drawer_multiroom">Группа</string>
-    <string name="drawer_shortcuts">Ярлыки</string>
     <string name="drawer_device">Устройство</string>
     <string name="drawer_device_connect">Соединение</string>
     <string name="drawer_device_search">Поиск</string>
@@ -80,8 +79,9 @@ Copyright © 2019 by __Михаил Кулеш__
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Изменить ярлык</string>
     <string name="favorite_shortcut_create">Создать ярлык</string>
-    <string name="favorite_shortcut_added">Ярлык добавлен в меню приложения</string>
-    <string name="favorite_shortcut_failed">Невозможно создать ярлык: достигнуто максимальное количество</string>
+    <string name="favorite_shortcut_added">Ярлык добавлен</string>
+    <string name="favorite_shortcut_failed">Невозможно создать ярлык: перейдите к мультимедиа-элементу начиная с верхнего уровня</string>
+    <string name="favorite_shortcut_howto">Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню, используя долгое нажатие, и выберите \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">Вкл/выкл</string>
@@ -164,6 +164,7 @@ Copyright © 2019 by __Михаил Кулеш__
     <string-array name="pref_visible_tabs_names">
         <item>Музыка</item>
         <item>Каналы</item>
+        <item>Ярлыки</item>
         <item>Система</item>
         <item>Пульт</item>
         <item>RI</item>
@@ -296,6 +297,7 @@ Copyright © 2019 by __Михаил Кулеш__
     <string name="cmd_description_chup">Следующий канал для Iradio</string>
     <string name="cmd_description_chdn">Предыдущий канал для Iradio</string>
     <string name="cmd_description_menu">Меню</string>
+    <string name="cmd_description_home">Домой</string>
     <string name="cmd_description_quick_menu">Меню</string>
     <string name="cmd_description_top">Наверх</string>
     <string name="cmd_description_mode">Режим Ipod</string>

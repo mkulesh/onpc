@@ -14,7 +14,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
-import "../config/CfgFavoriteShortcuts.dart";
 import "../config/Configuration.dart";
 import "../constants/Activities.dart";
 import "../constants/Dimens.dart";
@@ -22,7 +21,6 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/DeviceConnectDialog.dart";
 import "../dialogs/FavoriteConnectionEditDialog.dart";
-import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
@@ -41,7 +39,6 @@ class DrawerView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         BroadcastResponseMsg.CODE,
         FriendlyNameMsg.CODE,
-        FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT
     ];
 
     final BuildContext _appContext;
@@ -103,28 +100,6 @@ class DrawerView extends UpdatableView
                         onTabListener: (context)
                         {
                             stateManager.connect(msg.getHost, msg.getPort);
-                        }
-                    ));
-                }
-            }
-
-            if (configuration.favoriteShortcuts.shortcuts.isNotEmpty)
-            {
-                drawerItems.add(CustomDivider());
-                drawerItems.add(CustomTextLabel.small(Strings.drawer_shortcuts, padding: DrawerDimens.labelPadding));
-                for (final Shortcut s in configuration.favoriteShortcuts.shortcuts)
-                {
-                    drawerItems.add(_buildDrawerItem(
-                        context, Drawables.drawer_favorite_shortcut, s.alias,
-                        isSelected: false,
-                        editButton: CustomImageButton.small(
-                            Drawables.drawer_edit_item,
-                            Strings.favorite_shortcut_edit,
-                            onPressed: () => _showFavoriteShortcutEditDialog(context, s),
-                        ),
-                        onTabListener: (context)
-                        {
-                            stateManager.applyShortcut(s);
                         }
                     ));
                 }
@@ -253,16 +228,6 @@ class DrawerView extends UpdatableView
             barrierDismissible: true,
             builder: (BuildContext c)
             => FavoriteConnectionEditDialog(viewContext, msg)
-        );
-    }
-
-    void _showFavoriteShortcutEditDialog(final BuildContext context, final Shortcut shortcut)
-    {
-        showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext c)
-            => FavoriteShortcutEditDialog(viewContext, shortcut)
         );
     }
 

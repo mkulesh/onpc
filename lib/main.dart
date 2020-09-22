@@ -48,6 +48,7 @@ import "tabs/TabListenView.dart";
 import "tabs/TabMediaView.dart";
 import "tabs/TabRemoteControlView.dart";
 import "tabs/TabRemoteInterfaceView.dart";
+import "tabs/TabShortcutsView.dart";
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
@@ -240,6 +241,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
                             child: TabMediaView(_viewContext),
                             clearFocus: false);
                         break;
+                    case AppTabs.SHORTCUTS:
+                        tabContent = UpdatableWidget(
+                            child: TabShortcutsView(_viewContext),
+                            clearFocus: true);
+                        break;
                     case AppTabs.DEVICE:
                         tabContent = UpdatableWidget(
                             child: TabDeviceView(_viewContext),
@@ -316,10 +322,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     }
                     break;
                 case StateManager.APPLY_FAVORITE_EVENT:
-                    setState(()
-                    {
-                        _tabController.index = AppTabs.MEDIA.index;
-                    });
+                    _setActiveTab(AppTabs.MEDIA);
                     break;
                 case ReceiverInformationMsg.CODE:
                     if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
@@ -334,7 +337,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (_stateManager.state.isConnected)
         {
             // Track menu
-            if (activeTab == AppTabs.LISTEN)
+            if (_getActiveTab() == AppTabs.LISTEN)
             {
                 final bool isTrackMenu = _stateManager.state.mediaListState.isMenuMode
                     && !_stateManager.state.mediaListState.isMediaEmpty;
@@ -419,7 +422,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             return false;
         }
         // Processing on "Back" button
-        final AppTabs tab = AppTabs.values[_tabController.index];
+        final AppTabs tab = _getActiveTab();
         final bool isTop = _viewContext.state.mediaListState.isTopLayer();
         Logging.info(this.widget, "pressed back button, tab=" + tab.toString() + ", top=" + isTop.toString());
         if (tab == AppTabs.MEDIA && !isTop && _configuration.backAsReturn)
@@ -517,15 +520,32 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _tabController.index = index < _tabs.length ? index : _tabs.length - 1;
     }
 
-    AppTabs get activeTab
-    => _tabController != null && _tabController.index < AppTabs.values.length ? AppTabs.values[_tabController.index] : null;
+    AppTabs _getActiveTab()
+    {
+        final List<AppTabs> tabs = _configuration.appSettings.getVisibleTabs();
+        return _tabController != null && _tabController.index < tabs.length ? tabs[_tabController.index] : null;
+    }
+
+    void _setActiveTab(AppTabs tab)
+    {
+        for (int i = 0; i < _configuration.appSettings.getVisibleTabs().length; i++)
+        {
+            if (tab == _configuration.appSettings.getVisibleTabs()[i])
+            {
+                setState(()
+                {
+                    _tabController.index = i;
+                });
+            }
+        }
+    }
 
     void _handleTabSelection()
     {
-        if (!_tabController.indexIsChanging && activeTab != null)
+        final AppTabs tab = _getActiveTab();
+        if (!_tabController.indexIsChanging && tab != null)
         {
-            final AppTabs tab = activeTab;
-            _configuration.appSettings.openedTab = tab.index;
+            _configuration.appSettings.openedTab = _tabController.index;
 
             if([AppTabs.LISTEN, AppTabs.MEDIA].contains(tab) && _stateManager.isConnected)
             {

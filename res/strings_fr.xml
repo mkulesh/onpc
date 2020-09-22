@@ -53,7 +53,6 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="drawer_open">Ouvrir le panneau de navigation</string>
     <string name="drawer_group_zone">Zone</string>
     <string name="drawer_multiroom">Groupe</string>
-    <string name="drawer_shortcuts">Raccourcis</string>
     <string name="drawer_device">Équipement</string>
     <string name="drawer_device_connect">Connecter</string>
     <string name="drawer_device_search">Recherche</string>
@@ -79,8 +78,9 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Modifier le raccourci</string>
     <string name="favorite_shortcut_create">Créer un raccourci</string>
-    <string name="favorite_shortcut_added">Raccourci ajouté dans le menu de l\'application</string>
-    <string name="favorite_shortcut_failed">Impossible de créer le raccourci: nombre maximum atteint</string>
+    <string name="favorite_shortcut_added">Raccourci ajouté</string>
+    <string name="favorite_shortcut_failed">Impossible de créer un raccourci: accédez à l\'élément multimédia à partir du niveau supérieur</string>
+    <string name="favorite_shortcut_howto">Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel en utilisant un clic long et sélectionnez \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>
@@ -165,6 +165,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string-array name="pref_visible_tabs_names">
         <item>Écoute</item>
         <item>Source</item>
+        <item>Raccourcis</item>
         <item>Appareil</item>
         <item>RC</item>
         <item>RI</item>
@@ -297,6 +298,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="cmd_description_chup">Ch haut(Iradio)</string>
     <string name="cmd_description_chdn">Ch bas(Iradio)</string>
     <string name="cmd_description_menu">Menu</string>
+    <string name="cmd_description_home">Home</string>
     <string name="cmd_description_quick_menu">Menu rapide</string>
     <string name="cmd_description_top">Haut Menu</string>
     <string name="cmd_description_mode">Mode(Pour Ipod)</string>

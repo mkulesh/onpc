@@ -18,9 +18,7 @@ import "../config/CfgFavoriteShortcuts.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
-import "../iscp/StateManager.dart";
 import "../views/UpdatableView.dart";
-import "../widgets/CustomCheckbox.dart";
 import "../widgets/CustomDialogEditField.dart";
 import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -38,15 +36,8 @@ class FavoriteShortcutEditDialog extends StatefulWidget
     => _FavoriteShortcutEditDialogState();
 }
 
-enum _ShortcutAction
-{
-    UPDATE,
-    DELETE
-}
-
 class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
 {
-    _ShortcutAction _shortcutAction;
     final _alias = TextEditingController();
 
     ViewContext get viewContext
@@ -56,7 +47,6 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
     void initState()
     {
         super.initState();
-        _shortcutAction = _ShortcutAction.UPDATE;
         _alias.text = widget._shortcut.alias;
     }
 
@@ -67,42 +57,14 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
 
         final List<Widget> controls = List();
 
-        controls.add(CustomTextLabel.small(widget._shortcut.getLabel()));
-
-        controls.add(CustomCheckbox(Strings.favorite_update,
-            icon: Radio(
-                value: _ShortcutAction.UPDATE,
-                groupValue: _shortcutAction,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (_ShortcutAction v)
-                {
-                    setState(()
-                    {
-                        _shortcutAction = v;
-                    });
-                })
-        )
+        controls.add(Padding(
+            padding: DialogDimens.rowPadding,
+            child: CustomTextLabel.small(widget._shortcut.getLabel()))
         );
 
         controls.add(CustomDialogEditField(_alias,
             textLabel: Strings.favorite_alias,
             isFocused: true)
-        );
-
-        controls.add(CustomCheckbox(Strings.favorite_delete,
-            icon: Radio(
-                value: _ShortcutAction.DELETE,
-                groupValue: _shortcutAction,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (_ShortcutAction v)
-                {
-                    setState(()
-                    {
-                        _shortcutAction = v;
-                        FocusScope.of(context).unfocus();
-                    });
-                })
-        )
         );
 
         final Widget dialog = AlertDialog(
@@ -122,29 +84,14 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     {
-                        _apply();
+                        widget._viewContext.configuration.favoriteShortcuts.updateShortcut(widget._shortcut, _alias.text);
+                        widget._viewContext.stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
                         Navigator.of(context).pop();
                     }),
             ]
         );
 
         return Theme(data: td, child: dialog);
-    }
-
-    void _apply()
-    {
-        final CfgFavoriteShortcuts cfg = widget._viewContext.configuration.favoriteShortcuts;
-        switch (_shortcutAction)
-        {
-            case _ShortcutAction.UPDATE:
-                cfg.updateShortcut(widget._shortcut, _alias.text);
-                break;
-            case _ShortcutAction.DELETE:
-                cfg.deleteShortcut(widget._shortcut);
-                break;
-        }
-        final StateManager sm = widget._viewContext.stateManager;
-        sm.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
     }
 
     @override

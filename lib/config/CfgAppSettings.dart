@@ -28,6 +28,7 @@ enum AppTabs
 {
     LISTEN,
     MEDIA,
+    SHORTCUTS,
     DEVICE,
     RC,
     RI,
@@ -160,7 +161,6 @@ class CfgAppSettings extends CfgModule
                 }
             }
         }
-        Logging.info(this, "  " + VISIBLE_TABS + ": " + result.toString());
         return result;
     }
 }

@@ -362,14 +362,6 @@ Enjoy!"""];
         /*pl*/ "Grupa"];
     static String get drawer_multiroom => l_drawer_multiroom[_language];
 
-    static const List<String> l_drawer_shortcuts = [
-        /*en*/ "Shortcuts",
-        /*ru*/ "Ярлыки",
-        /*de*/ "Verknüpfungen",
-        /*fr*/ "Raccourcis",
-        /*pl*/ "Skróty"];
-    static String get drawer_shortcuts => l_drawer_shortcuts[_language];
-
     static const List<String> l_drawer_device = [
         /*en*/ "Device",
         /*ru*/ "Устройство",
@@ -507,20 +499,28 @@ Enjoy!"""];
     static String get favorite_shortcut_create => l_favorite_shortcut_create[_language];
 
     static const List<String> l_favorite_shortcut_added = [
-        /*en*/ "Shortcut added into app menu",
-        /*ru*/ "Ярлык добавлен в меню приложения",
-        /*de*/ "Verknüpfung zum App-Menü hinzugefügt",
-        /*fr*/ "Raccourci ajouté dans le menu de l\'application",
-        /*pl*/ "Dodano skrót do menu aplikacji"];
+        /*en*/ "Shortcut added",
+        /*ru*/ "Ярлык добавлен",
+        /*de*/ "Verknüpfung hinzugefügt",
+        /*fr*/ "Raccourci ajouté",
+        /*pl*/ "Dodano skrót"];
     static String get favorite_shortcut_added => l_favorite_shortcut_added[_language];
 
     static const List<String> l_favorite_shortcut_failed = [
-        /*en*/ "Cannot create shortcut: maximum number reached",
-        /*ru*/ "Невозможно создать ярлык: достигнуто максимальное количество",
-        /*de*/ "Verknüpfung kann nicht erstellt werden: maximale Anzahl erreicht",
-        /*fr*/ "Impossible de créer le raccourci: nombre maximum atteint",
-        /*pl*/ "Nie można utworzyć skrótu: osiągnięto maksymalną liczbę"];
+        /*en*/ "Cannot create shortcut: navigate to the media item from the top level",
+        /*ru*/ "Невозможно создать ярлык: перейдите к мультимедиа-элементу начиная с верхнего уровня",
+        /*de*/ "Verknüpfung kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement",
+        /*fr*/ "Impossible de créer un raccourci: accédez à l\'élément multimédia à partir du niveau supérieur",
+        /*pl*/ "Nie można utworzyć skrótu: przejdź do elementu multimedialnego z najwyższego poziomu"];
     static String get favorite_shortcut_failed => l_favorite_shortcut_failed[_language];
+
+    static const List<String> l_favorite_shortcut_howto = [
+        /*en*/ "To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu using long click and select \"%s\"",
+        /*ru*/ "Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню, используя долгое нажатие, и выберите \"%s\"",
+        /*de*/ "So fügen Sie eine Verknüpfung hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü mit einem langen Klick und wählen Sie \"%s\".",
+        /*fr*/ "Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel en utilisant un clic long et sélectionnez \"%s\"",
+        /*pl*/ "Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe długim kliknięciem i wybierz \"%s\""];
+    static String get favorite_shortcut_howto => l_favorite_shortcut_howto[_language];
 
     static const List<String> l_menu_power_standby = [
         /*en*/ "On/Standby",
@@ -1657,6 +1657,14 @@ Enjoy!"""];
         /*fr*/ "Menu",
         /*pl*/ "Menu"];
     static String get cmd_description_menu => l_cmd_description_menu[_language];
+
+    static const List<String> l_cmd_description_home = [
+        /*en*/ "Home",
+        /*ru*/ "Домой",
+        /*de*/ "Home",
+        /*fr*/ "Home",
+        /*pl*/ "Home"];
+    static String get cmd_description_home => l_cmd_description_home[_language];
 
     static const List<String> l_cmd_description_quick_menu = [
         /*en*/ "Quick menu",
@@ -3126,26 +3134,31 @@ Enjoy!"""];
     static const List<List<String>> l_pref_visible_tabs_names = [
         /*en*/ ["Listen",
                 "Media",
+                "Shortcuts",
                 "Device",
                 "RC",
                 "RI"],
         /*ru*/ ["Музыка",
                 "Каналы",
+                "Ярлыки",
                 "Система",
                 "Пульт",
                 "RI"],
         /*de*/ ["Hören",
                 "Medien",
+                "Verknüpfungen",
                 "Gerät",
                 "RC",
                 "RI"],
         /*fr*/ ["Écoute",
                 "Source",
+                "Raccourcis",
                 "Appareil",
                 "RC",
                 "RI"],
         /*pl*/ ["Słuchaj",
                 "Media",
+                "Skróty",
                 "Urządzenie",
                 "RC",
                 "RI"]];

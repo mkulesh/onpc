@@ -58,7 +58,6 @@ Enjoy!""</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_group_zone">Zone</string>
     <string name="drawer_multiroom">Group</string>
-    <string name="drawer_shortcuts">Shortcuts</string>
     <string name="drawer_device">Device</string>
     <string name="drawer_device_connect">Connect</string>
     <string name="drawer_device_search">Search</string>
@@ -84,8 +83,9 @@ Enjoy!""</string>
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Edit shortcut</string>
     <string name="favorite_shortcut_create">Create shortcut</string>
-    <string name="favorite_shortcut_added">Shortcut added into app menu</string>
-    <string name="favorite_shortcut_failed">Cannot create shortcut: maximum number reached</string>
+    <string name="favorite_shortcut_added">Shortcut added</string>
+    <string name="favorite_shortcut_failed">Cannot create shortcut: navigate to the media item from the top level</string>
+    <string name="favorite_shortcut_howto">To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu using long click and select \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
@@ -210,6 +210,7 @@ Enjoy!""</string>
     <string-array name="pref_visible_tabs_names">
         <item>Listen</item>
         <item>Media</item>
+        <item>Shortcuts</item>
         <item>Device</item>
         <item>RC</item>
         <item>RI</item>
@@ -342,6 +343,7 @@ Enjoy!""</string>
     <string name="cmd_description_chup">Ch Up(For Iradio)</string>
     <string name="cmd_description_chdn">Ch Down(For Iradio)</string>
     <string name="cmd_description_menu">Menu</string>
+    <string name="cmd_description_home">Home</string>
     <string name="cmd_description_quick_menu">Quick menu</string>
     <string name="cmd_description_top">Top Menu</string>
     <string name="cmd_description_mode">Mode(For Ipod)</string>

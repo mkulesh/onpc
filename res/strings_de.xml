@@ -54,7 +54,6 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="drawer_open">Navigation drawer öffnen</string>
     <string name="drawer_group_zone">Zone</string>
     <string name="drawer_multiroom">Gruppe</string>
-    <string name="drawer_shortcuts">Verknüpfungen</string>
     <string name="drawer_device">Gerät</string>
     <string name="drawer_device_connect">Verbinden</string>
     <string name="drawer_device_search">Suchen</string>
@@ -80,8 +79,9 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <!-- Favorite shortcuts -->
     <string name="favorite_shortcut_edit">Verknüpfung bearbeiten</string>
     <string name="favorite_shortcut_create">Verknüpfung erstellen</string>
-    <string name="favorite_shortcut_added">Verknüpfung zum App-Menü hinzugefügt</string>
-    <string name="favorite_shortcut_failed">Verknüpfung kann nicht erstellt werden: maximale Anzahl erreicht</string>
+    <string name="favorite_shortcut_added">Verknüpfung hinzugefügt</string>
+    <string name="favorite_shortcut_failed">Verknüpfung kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement</string>
+    <string name="favorite_shortcut_howto">So fügen Sie eine Verknüpfung hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü mit einem langen Klick und wählen Sie \"%s\".</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
@@ -166,6 +166,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string-array name="pref_visible_tabs_names">
         <item>Hören</item>
         <item>Medien</item>
+        <item>Verknüpfungen</item>
         <item>Gerät</item>
         <item>RC</item>
         <item>RI</item>
@@ -298,6 +299,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="cmd_description_chup">Vorheriger Kanal (Iradio)</string>
     <string name="cmd_description_chdn">Nächster Kanal (Iradio)</string>
     <string name="cmd_description_menu">Menü</string>
+    <string name="cmd_description_home">Home</string>
     <string name="cmd_description_quick_menu">Schnellmenü</string>
     <string name="cmd_description_top">Hauptmenü</string>
     <string name="cmd_description_mode">Modus (Ipod)</string>
