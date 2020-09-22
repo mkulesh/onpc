@@ -43,15 +43,15 @@ import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
 import "iscp/scripts/AutoPower.dart";
 import "iscp/scripts/RequestListeningMode.dart";
+import "tabs/TabDeviceView.dart";
+import "tabs/TabListenView.dart";
+import "tabs/TabMediaView.dart";
+import "tabs/TabRemoteControlView.dart";
+import "tabs/TabRemoteInterfaceView.dart";
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
 import "views/DrawerView.dart";
-import "views/TabDeviceView.dart";
-import "views/TabListenView.dart";
-import "views/TabMediaView.dart";
-import "views/TabRemoteControlView.dart";
-import "views/TabRemoteInterfaceView.dart";
 import "views/UpdatableView.dart";
 
 void main() async

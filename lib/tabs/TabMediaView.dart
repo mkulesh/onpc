@@ -12,9 +12,9 @@
  */
 import "package:flutter/material.dart";
 
-import "InputSelectorView.dart";
-import "MediaListView.dart";
-import "UpdatableView.dart";
+import "../views/InputSelectorView.dart";
+import "../views/MediaListView.dart";
+import "../views/UpdatableView.dart";
 
 class TabMediaView extends UpdatableView
 {

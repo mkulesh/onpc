@@ -17,15 +17,15 @@ import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/state/SoundControlState.dart";
-import "DeviceVolumeButtonsView.dart";
-import "DeviceVolumeSliderView.dart";
-import "ExtAmpVolumeView.dart";
-import "ListeningModeView.dart";
-import "PlayControlView.dart";
-import "PlayCdControlView.dart";
-import "RadioControlView.dart";
-import "TrackInfoView.dart";
-import "UpdatableView.dart";
+import "../views/DeviceVolumeButtonsView.dart";
+import "../views/DeviceVolumeSliderView.dart";
+import "../views/ExtAmpVolumeView.dart";
+import "../views/ListeningModeView.dart";
+import "../views/PlayControlView.dart";
+import "../views/PlayCdControlView.dart";
+import "../views/RadioControlView.dart";
+import "../views/TrackInfoView.dart";
+import "../views/UpdatableView.dart";
 
 class TabListenView extends UpdatableView
 {

@@ -13,42 +13,33 @@
 
 import "package:flutter/material.dart";
 
-import "../iscp/messages/FriendlyNameMsg.dart";
-import "../iscp/messages/ReceiverInformationMsg.dart";
-import "DeviceInfoView.dart";
-import "DeviceSettingsView.dart";
-import "UpdatableView.dart";
+import "../views/AmplifierControlView.dart";
+import "../views/CdControlView.dart";
+import "../views/UpdatableView.dart";
 
-class TabDeviceView extends UpdatableView
+class TabRemoteInterfaceView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        ReceiverInformationMsg.CODE,
-        FriendlyNameMsg.CODE,
+        // empty
     ];
 
-    TabDeviceView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    TabRemoteInterfaceView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         final List<Widget> views = List();
-
-        if (state.receiverInformation.isFriendlyName || state.receiverInformation.isReceiverInformation)
+        if (configuration.appSettings.riAmp)
         {
-            views.add(DeviceInfoView(viewContext));
+            views.add(UpdatableWidget(child: AmplifierControlView(viewContext)));
         }
-        views.add(UpdatableWidget(child: DeviceSettingsView(viewContext)));
-
+        if (configuration.appSettings.riCd)
+        {
+            views.add(UpdatableWidget(child: CdControlView(viewContext)));
+        }
         return SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: InkWell(
-                child: ListBody(children: views),
-                enableFeedback: false,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: ()
-                => FocusScope.of(context).unfocus()
-            )
+            child: ListBody(children: views)
         );
     }
 }

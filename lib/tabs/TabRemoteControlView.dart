@@ -24,7 +24,7 @@ import "../utils/Logging.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
-import "UpdatableView.dart";
+import "../views/UpdatableView.dart";
 
 class TabRemoteControlView extends UpdatableView
 {
