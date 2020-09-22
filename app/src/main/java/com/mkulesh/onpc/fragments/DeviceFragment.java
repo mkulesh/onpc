@@ -296,7 +296,7 @@ public class DeviceFragment extends BaseFragment
             prepareSettingPanel(state, zoneAllowed && spState != SpeakerABStatus.NONE,
                     R.id.speaker_ab_layout, spState.getDescriptionId(), null);
             final AppCompatImageButton b = rootView.findViewById(R.id.speaker_ab_command_toggle);
-            // OFF -> A_ONLY -> B_ONLY -> ON -> A_ONLY -> B_ONLY -> ON -> A_ONLY -> ...
+            // OFF -> A_ONLY -> B_ONLY -> ON -> OFF (optional) -> A_ONLY -> B_ONLY -> ON -> ...
             switch (spState)
             {
             case NONE:
@@ -318,9 +318,24 @@ public class DeviceFragment extends BaseFragment
                         });
                 break;
             case ON:
-                prepareButtonListeners(b,
-                        new SpeakerBCommandMsg(zone, SpeakerBCommandMsg.Status.OFF),
-                        () -> sendQueries(zone));
+                if (state.getModel().equals("DTM-6"))
+                {
+                    // This feature allowed for DTM-6 only since some Onkyo models go to "Standby"
+                    // power mode by accident when both zones are turned off at the same time.
+                    prepareButtonListeners(b,
+                            new SpeakerBCommandMsg(zone, SpeakerBCommandMsg.Status.OFF),
+                            () -> {
+                                activity.getStateManager().sendMessage(
+                                        new SpeakerACommandMsg(zone, SpeakerACommandMsg.Status.OFF));
+                                sendQueries(zone);
+                            });
+                }
+                else
+                {
+                    prepareButtonListeners(b,
+                            new SpeakerBCommandMsg(zone, SpeakerBCommandMsg.Status.OFF),
+                            () -> sendQueries(zone));
+                }
                 break;
             }
         }
