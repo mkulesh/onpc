@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
 ![Build Status](https://img.shields.io/github/v/release/mkulesh/onpc)
-[![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.16-debug.apk)
+[![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.17-debug.apk)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo and Pioneer
 
@@ -46,12 +46,11 @@ The two most popular features of the app are music playback and sound profile ma
 ## Supported devices
 This list is based on the user feedback from Google Play and github. Not all from these devices are tested by developer:
 ### Onkyo
-- [ONKYO NS-6130](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6130/index.html)
-- [ONKYO NS-6170](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6170/index.html)
 - [ONKYO TX-L50](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-l50/index.html)
 - [ONKYO TX-NR414](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr414/index.html)
 - [ONKYO TX-NR509](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr509/index.html)
 - [ONKYO TX-NR525](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr525/index.html)
+- [ONKYO TX-NR575E](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr575e/index.html)
 - [ONKYO TX-NR616](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr616/index.html)
 - [ONKYO TX-NR636](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr636/index.html)
 - [ONKYO TX-NR646](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr646/index.html)
@@ -62,6 +61,8 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO TX-RZ830](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz830/index.html)
 - [ONKYO TX-RZ900](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz900/index.html)
 - [ONKYO HT-S7805](https://www.intl.onkyo.com/products/system_components/home_theater/ht-s7805/index.html)
+- [ONKYO NS-6130](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6130/index.html)
+- [ONKYO NS-6170](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6170/index.html)
 - [ONKYO TX-8130](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8130/index.html)
 - [ONKYO TX-8150](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8150/index.html)
 - [ONKYO TX-8250](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8250/index.html)
@@ -74,13 +75,16 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO CR-N775D](https://www.intl.onkyo.com/products/system_components/mini_systems/cr-n775d/index.html)
 - [Wireless Audio System NCP-302](https://www.intl.onkyo.com/products/speakers/wireless_audio_systems/ncp-302/index.html)
 ### Integra
+- [Integra DTM-6](http://www.integrahometheater.com/Products/model.php?m=DTM-6&class=Receiver&source=prodClass)
 - [Integra DRX-5.2](http://www.integrahometheater.com/Products/model.php?m=DRX-5.2&class=Receiver&source=prodClass)
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
 ### Pioneer
 - [Pioneer VSX-LX303](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx303)
 - [Pioneer VSX-LX503](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx503)
+- [Pioneer VSX-832](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-832)
 - [Pioneer VSX-932](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-932)
+- [Pioneer VSX-933](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-933)
 - [Pioneer SC-LX701](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx701)
 ### Teac
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
