@@ -25,6 +25,7 @@ enum SetupOperationCommand
     LEFT,
     ENTER,
     EXIT,
+    HOME,
     QUICK
 }
 
@@ -52,6 +53,8 @@ class SetupOperationCommandMsg extends EnumParameterMsg<SetupOperationCommand>
             descrList: Strings.l_cmd_description_select, icon: Drawables.cmd_select),
         EnumItem.code(SetupOperationCommand.EXIT, "EXIT",
             descrList: Strings.l_cmd_description_return, icon: Drawables.cmd_return),
+        EnumItem.code(SetupOperationCommand.HOME, "HOME",
+            descrList: Strings.l_cmd_description_home, icon: Drawables.cmd_home),
         EnumItem.code(SetupOperationCommand.QUICK, "QUICK",
             descrList: Strings.l_cmd_description_quick_menu, icon: Drawables.cmd_quick_menu)
     ]);

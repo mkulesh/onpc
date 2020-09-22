@@ -40,6 +40,7 @@ class Drawables
     static const String cmd_quick_menu = BUTTONS_PATH + "cmd_quick_menu.svg";
     static const String cmd_random = BUTTONS_PATH + "cmd_random.svg";
     static const String cmd_return = BUTTONS_PATH + "cmd_return.svg";
+    static const String cmd_home = BUTTONS_PATH + "cmd_home.svg";
     static const String cmd_right = BUTTONS_PATH + "cmd_right.svg";
     static const String cmd_select = BUTTONS_PATH + "cmd_select.svg";
     static const String cmd_setup = BUTTONS_PATH + "cmd_setup.svg";

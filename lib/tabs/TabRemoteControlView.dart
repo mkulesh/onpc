@@ -19,23 +19,22 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
-import "../iscp/messages/SetupOperationCommandMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
+import "../views/SetupNavigationCommandsView.dart";
+import "../views/SetupOperationalCommandsView.dart";
+import "../views/UpdatableView.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
-import "../views/UpdatableView.dart";
 
 class TabRemoteControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.CONNECTION_EVENT,
-        PowerStatusMsg.CODE
+        PowerStatusMsg.CODE,
+        ReceiverInformationMsg.CODE
     ];
-
-    static final SetupOperationCommandMsg _setupQuickCmd = SetupOperationCommandMsg.output(SetupOperationCommand.QUICK);
-    static final SetupOperationCommandMsg _setupSetupCmd = SetupOperationCommandMsg.output(SetupOperationCommand.MENU);
-    static final SetupOperationCommandMsg _setupExitCmd = SetupOperationCommandMsg.output(SetupOperationCommand.EXIT);
 
     TabRemoteControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
@@ -44,79 +43,18 @@ class TabRemoteControlView extends UpdatableView
     {
         Logging.info(this, "rebuild widget");
 
-        final Map<int, TableColumnWidth> columnWidths = Map();
-        columnWidths[0] = FlexColumnWidth();
-        columnWidths[1] = FixedColumnWidth(1.9 * ButtonDimens.bigButtonSize);
-        columnWidths[2] = FixedColumnWidth(1.9 * ButtonDimens.bigButtonSize);
-        columnWidths[3] = FixedColumnWidth(1.9 * ButtonDimens.bigButtonSize);
-        columnWidths[4] = FlexColumnWidth();
-
-        // Top rows: quick menu, setup, return
-        final List<TableRow> topRows = List();
-        topRows.add(TableRow(children: [
-            SizedBox.shrink(),
-            InkWell(
-                child: CustomTextLabel.small(Strings.cmd_description_setup, textAlign: TextAlign.center),
-                onTap: ()
-                => stateManager.sendMessage(_setupSetupCmd)
-            ),
-            InkWell(
-                child: CustomTextLabel.small(Strings.cmd_description_quick_menu, textAlign: TextAlign.center),
-                onTap: ()
-                => stateManager.sendMessage(_setupQuickCmd)
-            ),
-            InkWell(
-                child: CustomTextLabel.small(Strings.cmd_description_return, textAlign: TextAlign.center),
-                onTap: ()
-                => stateManager.sendMessage(_setupExitCmd)
-            ),
-            SizedBox.shrink()
-        ]));
-        topRows.add(TableRow(children: [
-            SizedBox.shrink(),
-            _buildBtn(_setupSetupCmd),
-            _buildBtn(_setupQuickCmd),
-            _buildBtn(_setupExitCmd),
-            SizedBox.shrink()
-        ]));
-
-        // Bottom rows: arrows
-        final List<TableRow> bottomRows = List();
-        bottomRows.add(TableRow(children: [
-            SizedBox.shrink(),
-            SizedBox.shrink(),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.UP)),
-            SizedBox.shrink(),
-            SizedBox.shrink()
-        ]));
-        bottomRows.add(TableRow(children: [
-            SizedBox.shrink(),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.LEFT)),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.ENTER)),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.RIGHT)),
-            SizedBox.shrink()
-        ]));
-        bottomRows.add(TableRow(children: [
-            SizedBox.shrink(),
-            SizedBox.shrink(),
-            _buildBtn(SetupOperationCommandMsg.output(SetupOperationCommand.DOWN)),
-            SizedBox.shrink(),
-            SizedBox.shrink()
-        ]));
-
         final EdgeInsetsGeometry activityMargins = ActivityDimens.activityMargins(context);
 
         final List<Widget> entries = [
-            Table(
-                columnWidths: columnWidths,
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: topRows,
+            SetupOperationalCommandsView(stateManager,
+                enabled: stateManager.isConnected && stateManager.state.isOn,
+                isSetup: state.receiverInformation.isControlExists("Setup"),
+                isHome: state.receiverInformation.isControlExists("Home"),
+                isQuick: state.receiverInformation.isControlExists("Quick"),
             ),
             CustomDivider(height: activityMargins.vertical),
-            Table(
-                columnWidths: columnWidths,
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: bottomRows,
+            SetupNavigationCommandsView(stateManager,
+                enabled: stateManager.isConnected && stateManager.state.isOn,
             )
         ];
 
