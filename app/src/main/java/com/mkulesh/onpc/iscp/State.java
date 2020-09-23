@@ -1551,7 +1551,7 @@ public class State implements ConnectionIf
     {
         for (int i = 1; i < pathItems.size(); i++)
         {
-            if (pathItems.get(i) == null && pathItems.get(i).isEmpty())
+            if (pathItems.get(i) == null || pathItems.get(i).isEmpty())
             {
                 return false;
             }
