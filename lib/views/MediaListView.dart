@@ -309,6 +309,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final Selector selector = state.getActualSelector;
         final NetworkService networkService = state.getNetworkService;
         final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
+        final String title = cmd is XmlListItemMsg ? cmd.getTitle : null;
 
         if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && selector != null)
         {
@@ -367,7 +368,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 child: Text(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
         }
 
-        if (state.isShortcutPossible)
+        if (state.isShortcutPossible && title != null)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
                 child: Text(Strings.favorite_shortcut_create), value: MediaContextMenu.ADD_TO_FAVORITES));
@@ -379,7 +380,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 context: context,
                 position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
                 items: contextMenu).then((m)
-            => _onContextItemSelected(m, cmd.getMessageId, cmd is XmlListItemMsg ? cmd.getTitle : null)
+            => _onContextItemSelected(m, cmd.getMessageId, title)
             );
         }
     }
@@ -728,14 +729,21 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     void _addShortcut(String title)
     {
         final MediaListState ms = state.mediaListState;
-        final CfgFavoriteShortcuts shortcutCfg = configuration.favoriteShortcuts;
-        final Shortcut shortcut = Shortcut(
-            shortcutCfg.getNextId(), ms.inputType, ms.serviceType, title, title);
-        if (state.mediaListState.numberOfLayers > 1)
+        if (ms.isPathItemsConsistent())
         {
-            shortcut.setPathItems(ms.pathItems);
+            final CfgFavoriteShortcuts shortcutCfg = configuration.favoriteShortcuts;
+            final Shortcut shortcut = Shortcut(
+                shortcutCfg.getNextId(), ms.inputType, ms.serviceType, title, title);
+            if (state.mediaListState.numberOfLayers > 1)
+            {
+                shortcut.setPathItems(ms.pathItems);
+            }
+            shortcutCfg.updateShortcut(shortcut, shortcut.alias);
+            PopupManager.showToast(Strings.favorite_shortcut_added);
         }
-        shortcutCfg.updateShortcut(shortcut, shortcut.alias);
-        PopupManager.showToast(Strings.favorite_shortcut_added);
+        else
+        {
+            PopupManager.showToast(Strings.favorite_shortcut_failed);
+        }
     }
 }

@@ -424,4 +424,16 @@ class MediaListState
             clearItems();
         }
     }
+
+    bool isPathItemsConsistent()
+    {
+        for (int i = 1; i < pathItems.length; i++)
+        {
+            if (pathItems[i] == null || pathItems[i].isEmpty)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
