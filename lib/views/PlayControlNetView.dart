@@ -22,7 +22,7 @@ import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
-class PlayControlView extends UpdatableView
+class PlayControlNetView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
@@ -30,12 +30,12 @@ class PlayControlView extends UpdatableView
         PlayStatusMsg.CODE
     ];
 
-    PlayControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    PlayControlNetView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget for NET control");
+        Logging.info(this, "rebuild widget");
 
         final bool isPaused = [PlayStatus.STOP, PlayStatus.PAUSE].contains(state.playbackState.playStatus);
 
@@ -93,7 +93,7 @@ class PlayControlView extends UpdatableView
         );
     }
 
-    _sendCommand(OperationCommand key)
+    void _sendCommand(OperationCommand key)
     {
         if (!state.mediaListState.isPlaybackMode
             && state.mediaListState.isUsb

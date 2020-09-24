@@ -27,7 +27,7 @@ import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
-class DeviceVolumeButtonsView extends UpdatableView
+class VolumeControlSliderView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
@@ -37,7 +37,7 @@ class DeviceVolumeButtonsView extends UpdatableView
         MasterVolumeMsg.CODE
     ];
 
-    DeviceVolumeButtonsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    VolumeControlSliderView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

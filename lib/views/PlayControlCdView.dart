@@ -22,7 +22,7 @@ import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
-class PlayCdControlView extends UpdatableView
+class PlayControlCdView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
@@ -30,12 +30,12 @@ class PlayCdControlView extends UpdatableView
         PlayStatusMsg.CODE
     ];
 
-    PlayCdControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    PlayControlCdView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget for CD control");
+        Logging.info(this, "rebuild widget");
 
         final bool isPaused = [PlayStatus.STOP, PlayStatus.PAUSE].contains(state.playbackState.playStatus);
         final List<CdPlayerOperationCommand> cmd = [
