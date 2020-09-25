@@ -734,9 +734,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
         final StringBuilder data = new StringBuilder();
         data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
+        data.append("<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>");
         data.append("<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>");
+        data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>");
         data.append("<send cmd=\"SLI\" par=\"").append(shortcut.input.getCode())
                 .append("\" wait=\"SLI\" resp=\"").append(shortcut.input.getCode()).append("\"/>");
+        data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
 
         // Go to the top level. Response depends on the input type
         String firstPath = shortcut.pathItems.isEmpty() ? shortcut.item : shortcut.pathItems.get(0);
