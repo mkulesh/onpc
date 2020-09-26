@@ -15,39 +15,39 @@ import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/SetupOperationCommandMsg.dart";
+import "../views/UpdatableView.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 
-class SetupOperationalCommandsView extends StatelessWidget
+class SetupOperationalCommandsView extends UpdatableView
 {
-    final StateManager stateManager;
-    final bool enabled;
-    final bool isSetup, isHome, isQuick;
+    static const List<String> UPDATE_TRIGGERS = [
+        StateManager.CONNECTION_EVENT,
+        ReceiverInformationMsg.CODE,
+        PowerStatusMsg.CODE,
+    ];
 
-    const SetupOperationalCommandsView(this.stateManager,
-    {
-        this.enabled = false,
-        this.isSetup = false,
-        this.isHome = false,
-        this.isQuick = false,
-        Key key
-    }) : super(key: key);
+    SetupOperationalCommandsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
-    Widget build(BuildContext context)
+    Widget createView(BuildContext context, VoidCallback updateCallback)
     {
+        final bool enabled = stateManager.isConnected && stateManager.state.isOn;
+
         // Commands to be shows
         final List<SetupOperationCommandMsg> cmd = List();
-        if (isSetup)
+        if (state.receiverInformation.isControlExists("Setup"))
         {
             cmd.add(SetupOperationCommandMsg.output(SetupOperationCommand.MENU));
         }
-        if (isHome)
+        if (state.receiverInformation.isControlExists("Home"))
         {
             cmd.add(SetupOperationCommandMsg.output(SetupOperationCommand.HOME));
         }
-        if (isQuick)
+        if (state.receiverInformation.isControlExists("Quick"))
         {
             cmd.add(SetupOperationCommandMsg.output(SetupOperationCommand.QUICK));
         }

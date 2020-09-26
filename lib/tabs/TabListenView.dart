@@ -10,97 +10,45 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
-import "../iscp/messages/AudioMutingMsg.dart";
-import "../iscp/messages/InputSelectorMsg.dart";
-import "../iscp/messages/MasterVolumeMsg.dart";
-import "../iscp/state/SoundControlState.dart";
-import "../views/VolumeControlButtonsView.dart";
-import "../views/VolumeControlSliderView.dart";
-import "../views/VolumeControlAmpView.dart";
-import "../views/ListeningModeView.dart";
-import "../views/PlayControlNetView.dart";
-import "../views/PlayControlCdView.dart";
-import "../views/PlayControlRadioView.dart";
-import "../views/TrackInfoView.dart";
 import "../views/UpdatableView.dart";
+import "AppTabView.dart";
 
-class TabListenView extends UpdatableView
+class TabListenView extends AppTabView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
         StateManager.CONNECTION_EVENT,
-        InputSelectorMsg.CODE,
-        // Some strange bug: DeviceVolumeButtonsView is sometime not updated in landscape mode upon reception of "AMT"/"MVL" messages
-        // As a workaround, we update whole TabListenView when these messages received
-        AudioMutingMsg.CODE,
-        MasterVolumeMsg.CODE
     ];
 
-    TabListenView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    static const List<AppControl> PORT_CONTROLS = [
+        AppControl.LISTENING_MODE,
+        AppControl.VOLUME_CONTROL,
+        AppControl.TRACK_FILE_INFO,
+        AppControl.TRACK_COVER,
+        AppControl.TRACK_TIME,
+        AppControl.TRACK_CAPTION,
+        AppControl.PLAY_CONTROL
+    ];
 
-    @override
-    Widget createView(BuildContext context, VoidCallback updateCallback)
-    {
-        final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    static const List<AppControl> LAND_LEFT_CONTROLS = [
+        AppControl.TRACK_COVER
+    ];
 
-        final List<Widget> widgets = List<Widget>();
+    static const List<AppControl> LAND_RIGHT_CONTROLS = [
+        AppControl.LISTENING_MODE,
+        AppControl.VOLUME_CONTROL,
+        AppControl.TRACK_FILE_INFO,
+        AppControl.TRACK_TIME,
+        AppControl.TRACK_CAPTION,
+        AppControl.PLAY_CONTROL
+    ];
 
-        final SoundControlType soundControl = state.soundControlState.soundControlType(
-            configuration.audioControl.soundControl, state.getActiveZoneInfo);
-
-        // Add listening modes if sound is controlled by the device
-        if ([SoundControlType.DEVICE_BUTTONS, SoundControlType.DEVICE_SLIDER, SoundControlType.DEVICE_BTN_SLIDER].contains(soundControl))
-        {
-            widgets.add(Center(child: UpdatableWidget(child: ListeningModeView(viewContext))));
-        }
-
-        // Sound controls depends on orientation and configuration
-        Widget soundControlView;
-        switch (soundControl)
-        {
-            case SoundControlType.DEVICE_BUTTONS:
-                soundControlView = UpdatableWidget(child: VolumeControlButtonsView(viewContext));
-                break;
-            case SoundControlType.DEVICE_SLIDER:
-            case SoundControlType.DEVICE_BTN_SLIDER:
-                soundControlView = UpdatableWidget(child: isPortrait ?
-                    VolumeControlSliderView(viewContext, soundControl == SoundControlType.DEVICE_BTN_SLIDER) : VolumeControlButtonsView(viewContext));
-                break;
-            case SoundControlType.RI_AMP:
-                soundControlView = UpdatableWidget(child: VolumeControlAmpView(viewContext));
-                break;
-            default:
-                soundControlView = null;
-                break;
-        }
-        if (isPortrait && soundControlView != null)
-        {
-            widgets.add(soundControlView);
-        }
-
-        // Track info always in the middle of screen
-        widgets.add(Expanded(child: UpdatableWidget(child: TrackInfoView(viewContext)), flex: 1));
-
-        // Play controls depends on input type
-        final UpdatableView playControlView = state.mediaListState.isRadioInput ? PlayControlRadioView(viewContext) :
-            (state.isCdInput ? PlayControlCdView(viewContext) : PlayControlNetView(viewContext));
-        final List<Widget> playControlList = List();
-        if (!isPortrait && soundControlView != null)
-        {
-            playControlList.add(soundControlView);
-        }
-        playControlList.add(UpdatableWidget(child: playControlView));
-        final Widget playControl = Center(
-            child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: playControlList))
-        );
-        widgets.add(playControl);
-
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: widgets
-        );
-    }
+    TabListenView(final ViewContext viewContext) :
+        super(viewContext, UPDATE_TRIGGERS,
+            controlsPortrait: PORT_CONTROLS,
+            controlsLandscapeLeft: LAND_LEFT_CONTROLS,
+            controlsLandscapeRight: LAND_RIGHT_CONTROLS,
+            scrollable: false, focusable: false);
 }

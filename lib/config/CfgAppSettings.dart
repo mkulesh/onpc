@@ -109,13 +109,13 @@ class CfgAppSettings extends CfgModule
     static final String VISIBLE_TABS = "visible_tabs";
 
     // Remote interface
-    static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", false);
+    static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", true);
     bool _riAmp;
 
     bool get riAmp
     => _riAmp;
 
-    static const Pair<String, bool> RI_CD = Pair<String, bool>("remote_interface_cd", false);
+    static const Pair<String, bool> RI_CD = Pair<String, bool>("remote_interface_cd", true);
     bool _riCd;
 
     bool get riCd

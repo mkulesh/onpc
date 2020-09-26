@@ -11,95 +11,24 @@
  * Public License along with this program.
  */
 
-import "package:flutter/material.dart";
 
-import "../constants/Dimens.dart";
-import "../constants/Strings.dart";
-import "../iscp/StateManager.dart";
-import "../iscp/messages/EnumParameterMsg.dart";
-import "../iscp/messages/ListeningModeMsg.dart";
-import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
-import "../utils/Logging.dart";
-import "../views/SetupNavigationCommandsView.dart";
-import "../views/SetupOperationalCommandsView.dart";
 import "../views/UpdatableView.dart";
-import "../widgets/CustomDivider.dart";
-import "../widgets/CustomImageButton.dart";
-import "../widgets/CustomTextLabel.dart";
+import "AppTabView.dart";
 
-class TabRemoteControlView extends UpdatableView
+class TabRemoteControlView extends AppTabView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT,
-        PowerStatusMsg.CODE,
         ReceiverInformationMsg.CODE
     ];
 
-    TabRemoteControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    static const List<AppControl> CONTROLS = [
+        AppControl.SETUP_OP_CMD,
+        AppControl.DIVIDER,
+        AppControl.SETUP_NAV_CMD,
+        AppControl.LISTENING_MODE_DEVICE
+    ];
 
-    @override
-    Widget createView(BuildContext context, VoidCallback updateCallback)
-    {
-        Logging.info(this, "rebuild widget");
-
-        final EdgeInsetsGeometry activityMargins = ActivityDimens.activityMargins(context);
-
-        final List<Widget> entries = [
-            SetupOperationalCommandsView(stateManager,
-                enabled: stateManager.isConnected && stateManager.state.isOn,
-                isSetup: state.receiverInformation.isControlExists("Setup"),
-                isHome: state.receiverInformation.isControlExists("Home"),
-                isQuick: state.receiverInformation.isControlExists("Quick"),
-            ),
-            CustomDivider(height: activityMargins.vertical),
-            SetupNavigationCommandsView(stateManager,
-                enabled: stateManager.isConnected && stateManager.state.isOn,
-            )
-        ];
-
-        if (state.receiverInformation.isListeningModeControl())
-        {
-            final Widget currentMode = stateManager.isConnected && stateManager.state.isOn ?
-                CustomTextLabel.small(state.soundControlState.listeningMode.description) : SizedBox.shrink();
-
-            entries.add(Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                    CustomDivider(height: activityMargins.vertical),
-                    Row(mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [CustomTextLabel.small(Strings.pref_listening_modes)]
-                    ),
-                    Row(mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [currentMode]
-                    ),
-                    Row(mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                            _buildBtn(ListeningModeMsg.output(ListeningMode.DOWN)),
-                            _buildBtn(ListeningModeMsg.output(ListeningMode.UP))
-                        ]
-                    )
-                ])
-            );
-        }
-
-        return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: ListBody(children: entries));
-    }
-
-    Widget _buildBtn<T>(final EnumParameterMsg<T> cmd)
-    {
-        return CustomImageButton.big(
-            cmd.getValue.icon,
-            cmd.getValue.description,
-            onPressed: ()
-            => stateManager.sendMessage(cmd),
-            isEnabled: stateManager.isConnected && stateManager.state.isOn
-        );
-    }
+    TabRemoteControlView(final ViewContext viewContext) :
+        super(viewContext, UPDATE_TRIGGERS, controlsPortrait: CONTROLS, scrollable: true, focusable: false);
 }

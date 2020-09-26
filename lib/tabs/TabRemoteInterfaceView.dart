@@ -11,35 +11,20 @@
  * Public License along with this program.
  */
 
-import "package:flutter/material.dart";
-
-import "../views/AmplifierControlView.dart";
-import "../views/CdControlView.dart";
 import "../views/UpdatableView.dart";
+import "AppTabView.dart";
 
-class TabRemoteInterfaceView extends UpdatableView
+class TabRemoteInterfaceView extends AppTabView
 {
     static const List<String> UPDATE_TRIGGERS = [
         // empty
     ];
 
-    TabRemoteInterfaceView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    static const List<AppControl> CONTROLS = [
+        AppControl.RI_AMPLIFIER,
+        AppControl.RI_CD_PLAYER,
+    ];
 
-    @override
-    Widget createView(BuildContext context, VoidCallback updateCallback)
-    {
-        final List<Widget> views = List();
-        if (configuration.appSettings.riAmp)
-        {
-            views.add(UpdatableWidget(child: AmplifierControlView(viewContext)));
-        }
-        if (configuration.appSettings.riCd)
-        {
-            views.add(UpdatableWidget(child: CdControlView(viewContext)));
-        }
-        return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: ListBody(children: views)
-        );
-    }
+    TabRemoteInterfaceView(final ViewContext viewContext) :
+        super(viewContext, UPDATE_TRIGGERS, controlsPortrait: CONTROLS, scrollable: true, focusable: false);
 }

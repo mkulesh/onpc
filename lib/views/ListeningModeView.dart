@@ -53,6 +53,8 @@ class ListeningModeView extends UpdatableView
         {
             return SizedBox.shrink();
         }
-        return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons));
+        return Center(
+            child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons))
+        );
     }
 }

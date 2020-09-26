@@ -10,31 +10,20 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-import "package:flutter/material.dart";
-
-import "../views/InputSelectorView.dart";
-import "../views/MediaListView.dart";
 import "../views/UpdatableView.dart";
+import "AppTabView.dart";
 
-class TabMediaView extends UpdatableView
+class TabMediaView extends AppTabView
 {
     static const List<String> UPDATE_TRIGGERS = [
         // empty
     ];
 
-    TabMediaView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    static const List<AppControl> CONTROLS = [
+        AppControl.INPUT_SELECTOR,
+        AppControl.MEDIA_LIST,
+    ];
 
-    @override
-    Widget createView(BuildContext context, VoidCallback updateCallback)
-    {
-        final UpdatableWidget inputSelectorView = UpdatableWidget(child: InputSelectorView(viewContext));
-        final Widget mediaListView = MediaListView(viewContext);
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-                inputSelectorView,
-                Expanded(child: mediaListView, flex: 1)
-            ],
-        );
-    }
+    TabMediaView(final ViewContext viewContext) :
+        super(viewContext, UPDATE_TRIGGERS, controlsPortrait: CONTROLS, scrollable: false, focusable: false);
 }

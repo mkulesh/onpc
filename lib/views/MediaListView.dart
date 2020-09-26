@@ -233,9 +233,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             elements.add(_buildTrackButtons());
         }
 
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: elements
+        return Expanded(
+            flex: 1,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: elements)
         );
     }
 

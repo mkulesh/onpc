@@ -16,22 +16,22 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/SetupOperationCommandMsg.dart";
+import "../views/UpdatableView.dart";
 import "../widgets/CustomImageButton.dart";
 
-class SetupNavigationCommandsView extends StatelessWidget
+class SetupNavigationCommandsView extends UpdatableView
 {
-    final StateManager stateManager;
-    final bool enabled;
+    static const List<String> UPDATE_TRIGGERS = [
+        StateManager.CONNECTION_EVENT,
+        PowerStatusMsg.CODE,
+    ];
 
-    const SetupNavigationCommandsView(this.stateManager,
-    {
-        this.enabled = false,
-        Key key
-    }) : super(key: key);
+    SetupNavigationCommandsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
-    Widget build(BuildContext context)
+    Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         final Map<int, TableColumnWidth> columnWidths = Map();
         columnWidths[0] = FlexColumnWidth();
@@ -77,7 +77,7 @@ class SetupNavigationCommandsView extends StatelessWidget
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendMessage(cmd),
-            isEnabled: enabled
+            isEnabled: stateManager.isConnected && stateManager.state.isOn
         );
     }
 }

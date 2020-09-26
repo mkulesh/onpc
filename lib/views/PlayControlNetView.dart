@@ -35,7 +35,7 @@ class PlayControlNetView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget for NET control");
+        Logging.info(this, "rebuild widget");
 
         final bool isPaused = [PlayStatus.STOP, PlayStatus.PAUSE].contains(state.playbackState.playStatus);
 
@@ -93,7 +93,7 @@ class PlayControlNetView extends UpdatableView
         );
     }
 
-    _sendCommand(OperationCommand key)
+    void _sendCommand(OperationCommand key)
     {
         if (!state.mediaListState.isPlaybackMode
             && state.mediaListState.isUsb

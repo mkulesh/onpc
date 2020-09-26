@@ -18,6 +18,7 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/PresetCommandMsg.dart";
 import "../iscp/messages/TuningCommandMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
@@ -26,6 +27,7 @@ class PlayControlRadioView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
+        ReceiverInformationMsg.CODE,
         PowerStatusMsg.CODE
     ];
 

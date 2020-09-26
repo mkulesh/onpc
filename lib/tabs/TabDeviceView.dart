@@ -11,44 +11,23 @@
  * Public License along with this program.
  */
 
-import "package:flutter/material.dart";
-
 import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
-import "../views/DeviceInfoView.dart";
-import "../views/DeviceSettingsView.dart";
 import "../views/UpdatableView.dart";
+import "AppTabView.dart";
 
-class TabDeviceView extends UpdatableView
+class TabDeviceView extends AppTabView
 {
     static const List<String> UPDATE_TRIGGERS = [
         ReceiverInformationMsg.CODE,
         FriendlyNameMsg.CODE,
     ];
 
-    TabDeviceView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    static const List<AppControl> CONTROLS = [
+        AppControl.DEVICE_INFO,
+        AppControl.DEVICE_SETTINGS,
+    ];
 
-    @override
-    Widget createView(BuildContext context, VoidCallback updateCallback)
-    {
-        final List<Widget> views = List();
-
-        if (state.receiverInformation.isFriendlyName || state.receiverInformation.isReceiverInformation)
-        {
-            views.add(DeviceInfoView(viewContext));
-        }
-        views.add(UpdatableWidget(child: DeviceSettingsView(viewContext)));
-
-        return SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: InkWell(
-                child: ListBody(children: views),
-                enableFeedback: false,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: ()
-                => FocusScope.of(context).unfocus()
-            )
-        );
-    }
+    TabDeviceView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS,
+        controlsPortrait: CONTROLS, scrollable: true, focusable: true);
 }
