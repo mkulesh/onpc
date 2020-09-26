@@ -22,7 +22,7 @@ import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
-class PlayControlView extends UpdatableView
+class PlayControlNetView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
@@ -30,7 +30,7 @@ class PlayControlView extends UpdatableView
         PlayStatusMsg.CODE
     ];
 
-    PlayControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    PlayControlNetView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

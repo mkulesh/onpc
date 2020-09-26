@@ -17,13 +17,13 @@ import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/state/SoundControlState.dart";
-import "../views/DeviceVolumeButtonsView.dart";
-import "../views/DeviceVolumeSliderView.dart";
-import "../views/ExtAmpVolumeView.dart";
+import "../views/VolumeControlButtonsView.dart";
+import "../views/VolumeControlSliderView.dart";
+import "../views/VolumeControlAmpView.dart";
 import "../views/ListeningModeView.dart";
-import "../views/PlayControlView.dart";
-import "../views/PlayCdControlView.dart";
-import "../views/RadioControlView.dart";
+import "../views/PlayControlNetView.dart";
+import "../views/PlayControlCdView.dart";
+import "../views/PlayControlRadioView.dart";
 import "../views/TrackInfoView.dart";
 import "../views/UpdatableView.dart";
 
@@ -62,15 +62,15 @@ class TabListenView extends UpdatableView
         switch (soundControl)
         {
             case SoundControlType.DEVICE_BUTTONS:
-                soundControlView = UpdatableWidget(child: DeviceVolumeButtonsView(viewContext));
+                soundControlView = UpdatableWidget(child: VolumeControlButtonsView(viewContext));
                 break;
             case SoundControlType.DEVICE_SLIDER:
             case SoundControlType.DEVICE_BTN_SLIDER:
                 soundControlView = UpdatableWidget(child: isPortrait ?
-                    DeviceVolumeSliderView(viewContext, soundControl == SoundControlType.DEVICE_BTN_SLIDER) : DeviceVolumeButtonsView(viewContext));
+                    VolumeControlSliderView(viewContext, soundControl == SoundControlType.DEVICE_BTN_SLIDER) : VolumeControlButtonsView(viewContext));
                 break;
             case SoundControlType.RI_AMP:
-                soundControlView = UpdatableWidget(child: ExtAmpVolumeView(viewContext));
+                soundControlView = UpdatableWidget(child: VolumeControlAmpView(viewContext));
                 break;
             default:
                 soundControlView = null;
@@ -85,8 +85,8 @@ class TabListenView extends UpdatableView
         widgets.add(Expanded(child: UpdatableWidget(child: TrackInfoView(viewContext)), flex: 1));
 
         // Play controls depends on input type
-        final UpdatableView playControlView = state.mediaListState.isRadioInput ? RadioControlView(viewContext) :
-            (state.isCdInput ? PlayCdControlView(viewContext) : PlayControlView(viewContext));
+        final UpdatableView playControlView = state.mediaListState.isRadioInput ? PlayControlRadioView(viewContext) :
+            (state.isCdInput ? PlayControlCdView(viewContext) : PlayControlNetView(viewContext));
         final List<Widget> playControlList = List();
         if (!isPortrait && soundControlView != null)
         {

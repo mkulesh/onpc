@@ -22,14 +22,14 @@ import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
-class RadioControlView extends UpdatableView
+class PlayControlRadioView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
         PowerStatusMsg.CODE
     ];
 
-    RadioControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    PlayControlRadioView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

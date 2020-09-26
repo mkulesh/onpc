@@ -30,7 +30,7 @@ import "../widgets/CustomProgressBar.dart";
 import "MasterVolumeMaxView.dart";
 import "UpdatableView.dart";
 
-class DeviceVolumeSliderView extends UpdatableView
+class VolumeControlSliderView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
@@ -43,7 +43,7 @@ class DeviceVolumeSliderView extends UpdatableView
     final bool addUpDownButtons;
     int tmpVolumeLevel = -1;
 
-    DeviceVolumeSliderView(final ViewContext viewContext, this.addUpDownButtons) : super(viewContext, UPDATE_TRIGGERS);
+    VolumeControlSliderView(final ViewContext viewContext, this.addUpDownButtons) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
