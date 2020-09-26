@@ -88,11 +88,14 @@ class ActivityDimens
     => DimensTransform.scale(6.0);
 
     // Cover image
-    static double get _coverImagePadding
+    static double get _coverImagePaddingPort
     => DimensTransform.scale(5);
 
+    static double get _coverImagePaddingLand
+    => DimensTransform.scale(1);
+
     static EdgeInsetsGeometry coverImagePadding(BuildContext context)
-    => EdgeInsets.all(DimensTransform.rotate(context, _coverImagePadding, _coverImagePadding));
+    => EdgeInsets.all(DimensTransform.rotate(context, _coverImagePaddingPort, _coverImagePaddingLand));
 
     static const EdgeInsetsGeometry noPadding
     = EdgeInsets.all(0);

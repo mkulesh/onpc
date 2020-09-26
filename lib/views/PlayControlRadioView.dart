@@ -18,20 +18,18 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/PresetCommandMsg.dart";
 import "../iscp/messages/TuningCommandMsg.dart";
-import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
-class PlayControlRadioView extends UpdatableView
+class RadioControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
-        ReceiverInformationMsg.CODE,
         PowerStatusMsg.CODE
     ];
 
-    PlayControlRadioView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    RadioControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

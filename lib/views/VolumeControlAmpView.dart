@@ -20,13 +20,13 @@ import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
 
-class VolumeControlAmpView extends UpdatableView
+class ExtAmpVolumeView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.CONNECTION_EVENT
     ];
 
-    VolumeControlAmpView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    ExtAmpVolumeView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
