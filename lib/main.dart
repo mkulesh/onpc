@@ -490,7 +490,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
 
         // Inform state manager about configuration change
-        _stateManager.keepPlaybackMode = _index == 0;
+        _stateManager.keepPlaybackMode = _index < _tabs.length && _tabs[_index] == AppTabs.LISTEN;
         _stateManager.state.soundControlState.forceAudioControl = _configuration.audioControl.isForceAudioControl;
 
         // Inform platform code about configuration change.
