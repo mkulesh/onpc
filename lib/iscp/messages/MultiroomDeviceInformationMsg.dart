@@ -123,7 +123,7 @@ class MultiroomDeviceInformationMsg extends ISCPMessage
 
     void _parseXml()
     {
-        final xml.XmlDocument document = xml.XmlDocument.parse(getData);
+        final xml.XmlDocument document = xml.parse(getData);
 
         _properties["deviceid"] = ISCPMessage.getProperty(document, "deviceid");
         _properties["currentversion"] = ISCPMessage.getProperty(document, "currentversion");

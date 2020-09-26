@@ -55,7 +55,7 @@ class CustomPopupMsg extends ISCPMessage
     CustomPopupMsg(EISCPMessage raw) : super(CODE, raw)
     {
         _uiType = PopupUiTypeEnum.valueByCode(getData.substring(0, 1)).key;
-        _popupDocument = xml.XmlDocument.parse(getData.substring(1));
+        _popupDocument = xml.parse(getData.substring(1));
     }
 
     CustomPopupMsg.output(final PopupUiType uiType, final xml.XmlDocument popupDocument) :

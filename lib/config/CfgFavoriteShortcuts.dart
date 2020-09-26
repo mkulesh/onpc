@@ -152,7 +152,7 @@ class CfgFavoriteShortcuts extends CfgModule
             final String val = getString(key, doLog: true);
             try
             {
-                final xml.XmlDocument document = xml.XmlDocument.parse(val);
+                final xml.XmlDocument document = xml.parse(val);
                 document.findAllElements(Shortcut.FAVORITE_SHORTCUT_TAG).forEach((xml.XmlElement e)
                 => _shortcuts.add(Shortcut.fromXml(e)));
             }

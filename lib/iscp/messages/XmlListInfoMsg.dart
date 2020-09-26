@@ -92,7 +92,7 @@ class XmlListInfoMsg extends ISCPMessage
 
     void parseXml(final List<ISCPMessage> items, final int numberOfLayers)
     {
-        final xml.XmlDocument document = xml.XmlDocument.parse(getData.substring(9));
+        final xml.XmlDocument document = xml.parse(getData.substring(9));
         final Iterable<xml.XmlElement> itemsElements = document.findAllElements("items");
         if (itemsElements.isEmpty)
         {
