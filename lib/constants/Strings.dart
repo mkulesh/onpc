@@ -181,7 +181,7 @@ class Strings
     static const List<String> l_action_exit_confirm = [
         /*en*/ "Press back button again to exit",
         /*ru*/ "Для выхода нажмите Назад дважды",
-        /*de*/ "Zum Beenden zurück erneut drücken",
+        /*de*/ "Zum Beenden erneut zurück drücken",
         /*fr*/ "Appuyez sur retour pour quitter",
         /*pl*/ "Naciśnij ponownie przycisk wstecz aby wyjść"];
     static String get action_exit_confirm => l_action_exit_confirm[_language];
@@ -485,7 +485,7 @@ Enjoy!"""];
     static const List<String> l_favorite_shortcut_edit = [
         /*en*/ "Edit shortcut",
         /*ru*/ "Изменить ярлык",
-        /*de*/ "Verknüpfung bearbeiten",
+        /*de*/ "Favorit bearbeiten",
         /*fr*/ "Modifier le raccourci",
         /*pl*/ "Edytuj skrót"];
     static String get favorite_shortcut_edit => l_favorite_shortcut_edit[_language];
@@ -493,7 +493,7 @@ Enjoy!"""];
     static const List<String> l_favorite_shortcut_create = [
         /*en*/ "Create shortcut",
         /*ru*/ "Создать ярлык",
-        /*de*/ "Verknüpfung erstellen",
+        /*de*/ "Favorit erstellen",
         /*fr*/ "Créer un raccourci",
         /*pl*/ "Utwórz skrót"];
     static String get favorite_shortcut_create => l_favorite_shortcut_create[_language];
@@ -501,7 +501,7 @@ Enjoy!"""];
     static const List<String> l_favorite_shortcut_added = [
         /*en*/ "Shortcut added",
         /*ru*/ "Ярлык добавлен",
-        /*de*/ "Verknüpfung hinzugefügt",
+        /*de*/ "Favorit hinzugefügt",
         /*fr*/ "Raccourci ajouté",
         /*pl*/ "Dodano skrót"];
     static String get favorite_shortcut_added => l_favorite_shortcut_added[_language];
@@ -509,7 +509,7 @@ Enjoy!"""];
     static const List<String> l_favorite_shortcut_failed = [
         /*en*/ "Cannot create shortcut: navigate to the media item from the top level",
         /*ru*/ "Невозможно создать ярлык: перейдите к мультимедиа-элементу начиная с верхнего уровня",
-        /*de*/ "Verknüpfung kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement",
+        /*de*/ "Favorit kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement",
         /*fr*/ "Impossible de créer un raccourci: accédez à l\'élément multimédia à partir du niveau supérieur",
         /*pl*/ "Nie można utworzyć skrótu: przejdź do elementu multimedialnego z najwyższego poziomu"];
     static String get favorite_shortcut_failed => l_favorite_shortcut_failed[_language];
@@ -517,7 +517,7 @@ Enjoy!"""];
     static const List<String> l_favorite_shortcut_howto = [
         /*en*/ "To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu using long click and select \"%s\"",
         /*ru*/ "Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню, используя долгое нажатие, и выберите \"%s\"",
-        /*de*/ "So fügen Sie eine Verknüpfung hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü mit einem langen Klick und wählen Sie \"%s\".",
+        /*de*/ "Bisher kein Favorit gesetzt. So fügen Sie einen Favoriten hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü mit einem langen Klick und wählen Sie \"%s\".",
         /*fr*/ "Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel en utilisant un clic long et sélectionnez \"%s\"",
         /*pl*/ "Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe długim kliknięciem i wybierz \"%s\""];
     static String get favorite_shortcut_howto => l_favorite_shortcut_howto[_language];
@@ -573,7 +573,7 @@ Enjoy!"""];
     static const List<String> l_pref_volume_title = [
         /*en*/ "Volume keys turning",
         /*ru*/ "Управление громкостью",
-        /*de*/ "Lautstärketasten weiterleiten",
+        /*de*/ "Lautstärketasten verwenden",
         /*fr*/ "Boutons volume",
         /*pl*/ "Przyciski głośności"];
     static String get pref_volume_title => l_pref_volume_title[_language];
@@ -581,7 +581,7 @@ Enjoy!"""];
     static const List<String> l_pref_volume_summary = [
         /*en*/ "Use volume keys to change master volume on remote device",
         /*ru*/ "Используйте кнопки управления громкостью для изменения уровня звука на удаленном устройстве",
-        /*de*/ "Lautstärketasten verwenden um Master-Lautstärke zu ändern",
+        /*de*/ "Lautstärketasten des Handys verwenden um Master-Lautstärke zu ändern",
         /*fr*/ "Utiliser les boutons volume pour modifier le volume de l\'appareil connecté",
         /*pl*/ "Użyj klawiszy głośności, aby zmienić głośność główną na urządzeniu zdalnym"];
     static String get pref_volume_summary => l_pref_volume_summary[_language];
@@ -789,7 +789,7 @@ Enjoy!"""];
     static const List<String> l_amp_cmd_selector_up = [
         /*en*/ "Selector position wrap-around up",
         /*ru*/ "Выбрать следующий входной канал",
-        /*de*/ "Selector position wrap-around up",
+        /*de*/ "Auswahl weiter",
         /*fr*/ "Molette de sélection haut",
         /*pl*/ "Głośniej"];
     static String get amp_cmd_selector_up => l_amp_cmd_selector_up[_language];
@@ -797,7 +797,7 @@ Enjoy!"""];
     static const List<String> l_amp_cmd_selector_down = [
         /*en*/ "Selector position wrap-around down",
         /*ru*/ "Выбрать предыдущий входной канал",
-        /*de*/ "Selector position wrap-around down",
+        /*de*/ "Auswahl zurück",
         /*fr*/ "Molette de sélection bas",
         /*pl*/ "Ciszej"];
     static String get amp_cmd_selector_down => l_amp_cmd_selector_down[_language];
@@ -805,7 +805,7 @@ Enjoy!"""];
     static const List<String> l_amp_cmd_audio_muting_off = [
         /*en*/ "Amplifier audio muting off",
         /*ru*/ "Выключить звук усилителя",
-        /*de*/ "Verstärker stumm ausschalten",
+        /*de*/ "Verstärker Ton einschalten",
         /*fr*/ "Silence désactivé",
         /*pl*/ "Wyciszenie dźwięku wzmacniacza wyłączone"];
     static String get amp_cmd_audio_muting_off => l_amp_cmd_audio_muting_off[_language];
@@ -3146,7 +3146,7 @@ Enjoy!"""];
                 "RI"],
         /*de*/ ["Hören",
                 "Medien",
-                "Verknüpfungen",
+                "Favoriten",
                 "Gerät",
                 "RC",
                 "RI"],

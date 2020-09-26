@@ -19,7 +19,7 @@
     <string name="app_description">Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</string>
     <string name="state_not_connected">Nicht verbunden</string>
     <string name="state_standby">Schlafmodus</string>
-    <string name="action_exit_confirm">Zum Beenden zurück erneut drücken</string>
+    <string name="action_exit_confirm">Zum Beenden erneut zurück drücken</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Abbrechen</string>
 
@@ -77,11 +77,11 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="favorite_connection_identifier">MAC Adresse (optional)</string>
 
     <!-- Favorite shortcuts -->
-    <string name="favorite_shortcut_edit">Verknüpfung bearbeiten</string>
-    <string name="favorite_shortcut_create">Verknüpfung erstellen</string>
-    <string name="favorite_shortcut_added">Verknüpfung hinzugefügt</string>
-    <string name="favorite_shortcut_failed">Verknüpfung kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement</string>
-    <string name="favorite_shortcut_howto">So fügen Sie eine Verknüpfung hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü mit einem langen Klick und wählen Sie \"%s\".</string>
+    <string name="favorite_shortcut_edit">Favorit bearbeiten</string>
+    <string name="favorite_shortcut_create">Favorit erstellen</string>
+    <string name="favorite_shortcut_added">Favorit hinzugefügt</string>
+    <string name="favorite_shortcut_failed">Favorit kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement</string>
+    <string name="favorite_shortcut_howto">Bisher kein Favorit gesetzt. So fügen Sie einen Favoriten hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü mit einem langen Klick und wählen Sie \"%s\".</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
@@ -95,8 +95,8 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="pref_category_device_options">Gerät Optionen</string>
     <string name="pref_category_advanced_options">Erweitert</string>
 
-    <string name="pref_volume_title">Lautstärketasten weiterleiten</string>
-    <string name="pref_volume_summary">Lautstärketasten verwenden um Master-Lautstärke zu ändern</string>
+    <string name="pref_volume_title">Lautstärketasten verwenden</string>
+    <string name="pref_volume_summary">Lautstärketasten des Handys verwenden um Master-Lautstärke zu ändern</string>
     <string name="pref_back_as_return">Zurück-Taste in Medien</string>
     <string name="pref_back_as_return_summary">Zurück-Taste verwenden, um in Medien den übergeordneten Ordner zu wählen</string>
     <string name="pref_advanced_queue">Erweiterte Optionen von Play Queue</string>
@@ -166,7 +166,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string-array name="pref_visible_tabs_names">
         <item>Hören</item>
         <item>Medien</item>
-        <item>Verknüpfungen</item>
+        <item>Favoriten</item>
         <item>Gerät</item>
         <item>RC</item>
         <item>RI</item>
@@ -178,9 +178,9 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <!-- Amplifier commands (RI interface) -->
     <string name="amp_cmd_volume_up">Lauter</string>
     <string name="amp_cmd_volume_down">Leiser</string>
-    <string name="amp_cmd_selector_up">Selector position wrap-around up</string>
-    <string name="amp_cmd_selector_down">Selector position wrap-around down</string>
-    <string name="amp_cmd_audio_muting_off">Verstärker stumm ausschalten</string>
+    <string name="amp_cmd_selector_up">Auswahl weiter</string>
+    <string name="amp_cmd_selector_down">Auswahl zurück</string>
+    <string name="amp_cmd_audio_muting_off">Verstärker Ton einschalten</string>
     <string name="amp_cmd_audio_muting_on">Verstärker stummschalten</string>
     <string name="amp_cmd_audio_muting_toggle">Verstärker Stummschaltung wechseln</string>
     <string name="amp_cmd_system_on">RI Gerät anschalten</string>
