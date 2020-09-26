@@ -737,9 +737,12 @@ class StateManager
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
         String data = "";
         data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
+        data += "<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>";
         data += "<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>";
+        data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>";
         data += "<send cmd=\"SLI\" par=\"" + shortcut.input.getCode
             + "\" wait=\"SLI\" resp=\"" + shortcut.input.getCode + "\"/>";
+        data += "<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>";
 
         // Go to the top level. Response depends on the input type
         String firstPath = shortcut.pathItems.isEmpty ? shortcut.item : shortcut.pathItems.first;
