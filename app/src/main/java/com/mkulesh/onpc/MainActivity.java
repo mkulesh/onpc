@@ -394,7 +394,14 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 // If not, the app will crash here
                 if (messageScript.tab != null)
                 {
-                    setOpenedTab(CfgAppSettings.Tabs.valueOf(messageScript.tab.toUpperCase()));
+                    try
+                    {
+                        setOpenedTab(CfgAppSettings.Tabs.valueOf(messageScript.tab.toUpperCase()));
+                    }
+                    catch (Exception ex)
+                    {
+                        // nothing to do
+                    }
                 }
             }
 
@@ -502,17 +509,17 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     }
 
     @Override
-    protected void onStart()
-    {
-        Logging.info(this, "Called onStart");
-        super.onStart();
-    }
-
-    @Override
     protected void onNewIntent(Intent intent)
     {
-        Logging.info(this, "Called onNewIntent");
+        Logging.info(this, "New intent detected");
         super.onNewIntent(intent);
+        if (intent != null)
+        {
+            Logging.info(this, "New intent: " + intent.toString());
+            intentAction = intent.getAction();
+            intentData = intent.getDataString();
+            setIntent(null);
+        }
     }
 
     @Override
@@ -693,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
     }
 
-    public void setOpenedTab(int openedTab)
+    private void setOpenedTab(int openedTab)
     {
         try
         {
