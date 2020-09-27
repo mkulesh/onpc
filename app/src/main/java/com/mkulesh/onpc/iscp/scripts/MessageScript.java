@@ -107,6 +107,9 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     // optional target zone
     private int zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
 
+    // optional target tab
+    public String tab = null;
+
     // Actions to be performed
     private final List<Action> actions = new ArrayList<>();
 
@@ -146,6 +149,10 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                 }
                 port = Utils.parseIntAttribute(elem, "port", ConnectionIf.EMPTY_PORT);
                 zone = Utils.parseIntAttribute(elem, "zone", ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+                if (elem.getAttribute("tab") != null)
+                {
+                    tab = elem.getAttribute("tab");
+                }
             }
             for (Node prop = elem.getFirstChild(); prop != null; prop = prop.getNextSibling())
             {
