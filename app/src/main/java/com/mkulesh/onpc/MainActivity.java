@@ -390,6 +390,12 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             {
                 messageScripts.add(messageScript);
                 zone = messageScript.getZone();
+                // Be sure that messageScript.tab contains a value from CfgAppSettings.Tabs enum.
+                // If not, the app will crash here
+                if (messageScript.tab != null)
+                {
+                    setOpenedTab(CfgAppSettings.Tabs.valueOf(messageScript.tab.toUpperCase()));
+                }
             }
 
             stateHolder.setStateManager(new StateManager(
@@ -496,6 +502,20 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     }
 
     @Override
+    protected void onStart()
+    {
+        Logging.info(this, "Called onStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        Logging.info(this, "Called onNewIntent");
+        super.onNewIntent(intent);
+    }
+
+    @Override
     protected void onPause()
     {
         super.onPause();
@@ -515,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         if (state != null && eventChanges != null)
         {
             if (eventChanges.contains(State.ChangeType.RECEIVER_INFO) ||
-                eventChanges.contains(State.ChangeType.MULTIROOM_INFO))
+                    eventChanges.contains(State.ChangeType.MULTIROOM_INFO))
             {
                 updateConfiguration(state);
             }
