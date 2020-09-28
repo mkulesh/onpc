@@ -72,6 +72,10 @@ class MediaListState
     List<ISCPMessage> get mediaItems
     => _mediaItems;
 
+    int _movedItem = -1;
+    int get movedItem
+    => _movedItem;
+
     bool get isMediaEmpty
     => _mediaItems.isEmpty;
 
@@ -107,6 +111,7 @@ class MediaListState
     void clearItems()
     {
         _mediaItems.clear();
+        _movedItem = -1;
     }
 
     bool processInputSelector(InputSelectorMsg msg)
@@ -435,5 +440,28 @@ class MediaListState
             }
         }
         return true;
+    }
+
+    void reorderMediaItems(int oldId, int newId)
+    {
+        int oldIndex = -1;
+        int newIndex = -1;
+        for (int i = 0; i < _mediaItems.length; i++)
+        {
+            if (_mediaItems[i].getMessageId == oldId)
+            {
+                oldIndex = i;
+            }
+            if (_mediaItems[i].getMessageId == newId)
+            {
+                newIndex = i;
+            }
+        }
+        if (oldIndex >= 0 && newIndex >=0 && oldIndex != newIndex)
+        {
+            final ISCPMessage old = _mediaItems.removeAt(oldIndex);
+            _mediaItems.insert(newIndex, old);
+            _movedItem = old.getMessageId;
+        }
     }
 }

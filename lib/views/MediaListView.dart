@@ -56,8 +56,6 @@ enum MediaContextMenu
     ADD_AND_PLAY,
     REMOVE,
     REMOVE_ALL,
-    MOVE_FROM,
-    MOVE_TO,
     TRACK_MENU,
     PLAYBACK_MODE,
     ADD_TO_FAVORITES
@@ -75,6 +73,7 @@ class MediaListView extends StatefulWidget
     final ViewContext _viewContext;
 
     static const List<String> UPDATE_TRIGGERS = [
+        Configuration.CONFIGURATION_EVENT,
         StateManager.WAITING_FOR_DATA_EVENT,
         InputSelectorMsg.CODE,
         ListInfoMsg.CODE,
@@ -95,7 +94,7 @@ class MediaListView extends StatefulWidget
 class _MediaListViewState extends WidgetStreamState<MediaListView>
 {
     static final String _PLAYBACK_STRING = "_PLAYBACK_STRING_";
-    int _moveFrom = -1;
+    final List<int> _playQueueIds = List();
     ScrollController _scrollController;
     int _currentLayer = -1;
     final MediaListButtons _headerButtons = MediaListButtons();
@@ -183,12 +182,35 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         // Create list
         final int visibleItems = items.length;
-        final Widget mediaList = DraggableScrollbar.rrect(
+        final bool isAdvancedQueue = ms.isQueue && configuration.isAdvancedQueue;
+        final Widget mediaList = isAdvancedQueue ? _buildPlayQueueList(context, items) : _buildMediaList(td, visibleItems, items);
+
+        final List<Widget> elements = [
+            _buildHeaderLine(td, _headerButtons, visibleItems),
+            CustomDivider(thickness: 1),
+            Expanded(child: mediaList, flex: 1)
+        ];
+
+        if (state.isOn && !state.receiverInformation.isReceiverInformation && !state.mediaListState.isSimpleInput && !state.mediaListState.isMediaEmpty)
+        {
+            elements.add(CustomDivider(thickness: 1));
+            elements.add(_buildTrackButtons());
+        }
+
+        return Expanded(
+            flex: 1,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: elements)
+        );
+    }
+
+    Widget _buildMediaList(final ThemeData td, final int visibleItems, List<ISCPMessage> items)
+    {
+        return DraggableScrollbar.rrect(
             controller: _scrollController,
             backgroundColor: td.accentColor,
-            child: ListView.separated(
-                separatorBuilder: (context, index)
-                => CustomDivider(),
+            child: ListView.builder(
                 padding: ActivityDimens.noPadding,
                 scrollDirection: Axis.vertical,
                 itemCount: visibleItems,
@@ -220,32 +242,59 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 }
             )
         );
+    }
 
-        final List<Widget> elements = [
-            _buildHeaderLine(td, _headerButtons, visibleItems),
-            CustomDivider(thickness: 1),
-            Expanded(child: mediaList, flex: 1)
-        ];
+    Widget _buildPlayQueueList(BuildContext context, List<ISCPMessage> items)
+    {
+        final List<Widget> _rows = List<Widget>();
+        _playQueueIds.clear();
 
-        if (state.isOn && !state.receiverInformation.isReceiverInformation && !state.mediaListState.isSimpleInput && !state.mediaListState.isMediaEmpty)
+        items.forEach((rowMsg)
         {
-            elements.add(CustomDivider(thickness: 1));
-            elements.add(_buildTrackButtons());
-        }
+            if (rowMsg is XmlListItemMsg)
+            {
+                _rows.add(_buildXmlListItemMsg(context, rowMsg, reorderId: rowMsg.getMessageId.toString()));
+                _playQueueIds.add(rowMsg.getMessageId);
+            }
+            else if (rowMsg is OperationCommandMsg)
+            {
+                _rows.add(_buildOperationCommandMsg(context, rowMsg));
+                _playQueueIds.add(rowMsg.getMessageId);
+            }
+        });
 
-        return Expanded(
-            flex: 1,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: elements)
+        return ReorderableListView(
+            onReorder: _onReorder,
+            reverse: false,
+            padding: ActivityDimens.noPadding,
+            scrollController: _scrollController,
+            scrollDirection: Axis.vertical,
+            children: _rows
         );
     }
 
-    Widget _buildRow(final BuildContext context, final String icon, final bool iconEnabled, final bool isPlaying, final String title, final ISCPMessage cmd)
+    void _onReorder(int oldIndex, int newIndex)
+    {
+        if (newIndex > oldIndex)
+        {
+            newIndex -= 1;
+        }
+        if (oldIndex < _playQueueIds.length && newIndex < _playQueueIds.length)
+        {
+            setState(()
+            {
+                state.mediaListState.reorderMediaItems(_playQueueIds[oldIndex], _playQueueIds[newIndex]);
+            });
+            stateManager.sendPlayQueueMsg(PlayQueueReorderMsg.output(_playQueueIds[oldIndex], _playQueueIds[newIndex]), false);
+        }
+    }
+
+    Widget _buildRow(final BuildContext context, final String icon, final bool iconEnabled, final bool isPlaying, final String title, final ISCPMessage cmd, {final String reorderId})
     {
         final ThemeData td = Theme.of(context);
-        final bool isMoved = _moveFrom >= 0 && cmd is XmlListItemMsg && cmd.getMessageId == _moveFrom;
-        return PositionedTapDetector(
+        final bool isMoved = cmd is XmlListItemMsg && cmd.getMessageId == state.mediaListState.movedItem;
+        final Widget w = PositionedTapDetector(
+            key: Key(reorderId),
             child: ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
                 dense: configuration.appSettings.textSize != "huge",
@@ -255,7 +304,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     isSelected: isPlaying,
                     padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
                 ),
-                title: CustomTextLabel.normal(title, color: isMoved ? td.accentColor : null),
+                title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
                 onTap: ()
                 {
                     state.closeMediaFilter();
@@ -264,6 +313,19 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             onLongPress: (position)
             => _onCreateContextMenu(context, position, cmd)
         );
+        if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && reorderId != null)
+        {
+            return Row(
+                key: Key(reorderId),
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Expanded(child: w), Icon(Icons.drag_handle)]
+            );
+        }
+        else
+        {
+            return w;
+        }
     }
 
     Widget _buildNetworkServiceRow(final BuildContext context, NetworkServiceMsg rowMsg)
@@ -277,7 +339,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getValue.description, rowMsg);
     }
 
-    Widget _buildXmlListItemMsg(final BuildContext context, XmlListItemMsg rowMsg)
+    Widget _buildXmlListItemMsg(final BuildContext context, XmlListItemMsg rowMsg, {final String reorderId})
     {
         String serviceIcon = rowMsg.getIcon.icon;
         if (serviceIcon == null)
@@ -286,7 +348,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
         final bool isPlaying = rowMsg.getIcon.key == ListItemIcon.PLAY;
         final cmd = rowMsg.iconType == _PLAYBACK_STRING ? StateManager.DISPLAY_MSG : rowMsg;
-        return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getTitle, cmd);
+        return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getTitle, cmd, reorderId: reorderId);
     }
 
     Widget _buildPresetCommandMsg(BuildContext context, PresetCommandMsg rowMsg)
@@ -352,10 +414,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     child: Text(Strings.playlist_remove), value: MediaContextMenu.REMOVE));
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
                     child: Text(Strings.playlist_remove_all), value: MediaContextMenu.REMOVE_ALL));
-                contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_move_from), value: MediaContextMenu.MOVE_FROM));
-                contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_move_to), value: MediaContextMenu.MOVE_TO));
             }
             if (state.playbackState.isTrackMenuActive && isPlaying && !isQueue)
             {
@@ -423,19 +481,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(0, 0), true);
                 }
                 break;
-            case MediaContextMenu.MOVE_FROM:
-                setState(()
-                {
-                    _moveFrom = idx;
-                });
-                break;
-            case MediaContextMenu.MOVE_TO:
-                if (_isMoveToValid(idx))
-                {
-                    stateManager.sendPlayQueueMsg(PlayQueueReorderMsg.output(_moveFrom, idx), false);
-                }
-                _moveFrom = -1;
-                break;
             case MediaContextMenu.TRACK_MENU:
                 stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false);
                 break;
@@ -450,9 +495,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 break;
         }
     }
-
-    bool _isMoveToValid(int messageId)
-    => _moveFrom >= 0 && _moveFrom != messageId;
 
     String _buildTitle(final int numberOfItems)
     {

@@ -74,23 +74,28 @@ class ShortcutsView extends UpdatableView
         {
             serviceIcon = Drawables.media_item_unknown;
         }
-        return ListTile(
-            key: Key(s.id.toString()),
-            contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
-            dense: configuration.appSettings.textSize != "huge",
-            leading: CustomImageButton.normal(
-                serviceIcon, null,
-                isEnabled: false,
-                padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
-            ),
-            title: PositionedTapDetector(
-                child: CustomTextLabel.normal(s.alias),
-                onLongPress: (position)
-                => _onCreateContextMenu(context, position, s),
-                onTap: (position)
+        final Widget w = PositionedTapDetector(
+            child: ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
+                dense: configuration.appSettings.textSize != "huge",
+                leading: CustomImageButton.normal(
+                    serviceIcon, null,
+                    isEnabled: false,
+                    padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
+                ),
+                title: CustomTextLabel.normal(s.alias),
+                onTap: ()
                 => _selectShortcut(s)
             ),
-            trailing: const Icon(Icons.drag_handle));
+            onLongPress: (position)
+            => _onCreateContextMenu(context, position, s),
+        );
+        return Row(
+            key: Key(s.id.toString()),
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [Expanded(child: w), Icon(Icons.drag_handle)]
+        );
     }
 
     void _onCreateContextMenu(final BuildContext context, final TapPosition position, final Shortcut s)
