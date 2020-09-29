@@ -78,6 +78,11 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
     {
         Logging.info(this.widget, "rebuild widget");
 
+        if (!state.receiverInformation.isFriendlyName && !state.receiverInformation.isReceiverInformation)
+        {
+            return SizedBox.shrink();
+        }
+
         final List<TableRow> rows = List();
 
         final bool isData = state.isConnected;
@@ -98,13 +103,13 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                         child: CustomTextField(_friendlyNameController,
                             isFocused: false,
                             onPressed: ()
-                            => _submitDeviceName(context, state.isConnected && state.isOn)),
+                            => _submitDeviceName(context, state.isOn)),
                         flex: 1),
                     CustomImageButton.small(
                         Drawables.cmd_friendly_name,
                         Strings.device_change_friendly_name,
                         onPressed: ()
-                        => _submitDeviceName(context, state.isConnected && state.isOn),
+                        => _submitDeviceName(context, state.isOn),
                         isEnabled: isData && stateManager.state.isOn,
                         isSelected: false,
                     )
@@ -227,7 +232,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
     Widget _buildRowTitle(final String title)
     => CustomTextLabel.small(title, padding: DeviceInfoDimens.rowPadding);
 
-    _submitDeviceName(BuildContext context, final bool isEnabled)
+    void _submitDeviceName(BuildContext context, final bool isEnabled)
     {
         if (isEnabled)
         {

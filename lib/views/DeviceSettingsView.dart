@@ -17,7 +17,6 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../iscp/ISCPMessage.dart";
-import "../iscp/StateManager.dart";
 import "../iscp/messages/AutoPowerMsg.dart";
 import "../iscp/messages/DigitalFilterMsg.dart";
 import "../iscp/messages/DimmerLevelMsg.dart";
@@ -48,7 +47,6 @@ enum _SpeakerABStatus
 class DeviceSettingsView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT,
         PowerStatusMsg.CODE,
         DimmerLevelMsg.CODE,
         DigitalFilterMsg.CODE,
@@ -239,7 +237,7 @@ class DeviceSettingsView extends UpdatableView
         final String value, final buttonDescription,
         final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
     {
-        final bool isEnabled = state.isConnected && stateManager.state.isOn;
+        final bool isEnabled = stateManager.state.isOn;
 
         final Widget rowTitle = CustomTextLabel.small(title, padding: DeviceInfoDimens.rowPadding);
 

@@ -14,7 +14,6 @@
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
-import "../iscp/StateManager.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/SetupOperationCommandMsg.dart";
@@ -25,7 +24,6 @@ import "../widgets/CustomTextLabel.dart";
 class SetupOperationalCommandsView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT,
         ReceiverInformationMsg.CODE,
         PowerStatusMsg.CODE,
     ];
@@ -35,7 +33,7 @@ class SetupOperationalCommandsView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        final bool enabled = stateManager.isConnected && stateManager.state.isOn;
+        final bool enabled = state.isOn;
 
         // Commands to be shows
         final List<SetupOperationCommandMsg> cmd = List();

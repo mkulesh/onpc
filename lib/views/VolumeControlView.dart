@@ -16,18 +16,18 @@ import "package:flutter/material.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
+import "../iscp/state/SoundControlState.dart";
+import "../views/VolumeControlAmpView.dart";
 import "../views/VolumeControlButtonsView.dart";
 import "../views/VolumeControlSliderView.dart";
-import "../views/VolumeControlAmpView.dart";
-import "../iscp/state/SoundControlState.dart";
 import "UpdatableView.dart";
 
 class VolumeControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
-        // Some strange bug: DeviceVolumeButtonsView is sometime not updated in landscape mode upon reception of "AMT"/"MVL" messages
-        // As a workaround, we update whole TabListenView when these messages received
+        // Some strange bug: VolumeControlButtonsView is sometime not updated in landscape mode upon reception of "AMT"/"MVL" messages
+        // As a workaround, we update whole VolumeControlView when these messages received
         AudioMutingMsg.CODE,
         MasterVolumeMsg.CODE,
     ];

@@ -15,9 +15,9 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 
-import "../constants/Drawables.dart";
 import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
+import "../constants/Drawables.dart";
 import "../constants/Themes.dart";
 import "../iscp/State.dart" as remote_state;
 import "../iscp/StateManager.dart";
@@ -62,13 +62,12 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
     => _viewContext;
 
     final List<String> _updateTriggers;
-    final bool clearFocus;
     StreamSubscription _updateStream;
 
-    WidgetStreamState(this._viewContext, this._updateTriggers, {this.clearFocus = false});
+    WidgetStreamState(this._viewContext, this._updateTriggers);
 
     @override
-    initState()
+    void initState()
     {
         super.initState();
         _updateStream = _viewContext.updateNotifier.stream.listen((code)
@@ -76,7 +75,7 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
     }
 
     @override
-    dispose()
+    void dispose()
     {
         _updateStream.cancel();
         super.dispose();
@@ -92,7 +91,7 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
         }
     }
 
-    _update(Set<String> changes)
+    void _update(Set<String> changes)
     {
         if (changes.where((s) => _updateTriggers.contains(s)).isNotEmpty)
         {
@@ -115,10 +114,6 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
     {
         try
         {
-            if (clearFocus)
-            {
-                FocusScope.of(context).unfocus();
-            }
             return createView(context, _updateCallback);
         }
         catch (e)
@@ -152,12 +147,11 @@ abstract class UpdatableView with WidgetStreamContext
 class UpdatableWidget extends StatefulWidget
 {
     final UpdatableView child;
-    final bool clearFocus;
 
-    UpdatableWidget({this.child, this.clearFocus = false});
+    UpdatableWidget({this.child});
 
     @override _UpdatableWidgetState createState()
-    => _UpdatableWidgetState(child._viewContext, child._updateTriggers, clearFocus);
+    => _UpdatableWidgetState(child._viewContext, child._updateTriggers);
 }
 
 class UpdatableAppBarWidget extends UpdatableWidget
@@ -168,7 +162,7 @@ class UpdatableAppBarWidget extends UpdatableWidget
     UpdatableAppBarWidget(this._context, UpdatableView child) : super(child: child);
 
     @override _UpdatableWidgetState createState()
-    => _UpdatableWidgetState(child._viewContext, child._updateTriggers, clearFocus);
+    => _UpdatableWidgetState(child._viewContext, child._updateTriggers);
 
     @override
     Size get preferredSize
@@ -177,15 +171,15 @@ class UpdatableAppBarWidget extends UpdatableWidget
 
 class _UpdatableWidgetState extends WidgetStreamState<UpdatableWidget>
 {
-    _UpdatableWidgetState(final ViewContext _viewContext, final List<String> _updateTriggers, final bool _clearFocus) :
-            super(_viewContext, _updateTriggers, clearFocus: _clearFocus);
+    _UpdatableWidgetState(final ViewContext _viewContext, final List<String> _updateTriggers) :
+            super(_viewContext, _updateTriggers);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     => widget.child.createView(context, updateCallback);
 
     @override
-    didUpdateWidget(UpdatableWidget old)
+    void didUpdateWidget(UpdatableWidget old)
     {
         super.didUpdateWidget(old);
         // in case the stream instance changed, subscribe to the new one

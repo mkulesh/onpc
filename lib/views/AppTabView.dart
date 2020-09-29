@@ -14,26 +14,25 @@
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
-import "../iscp/state/SoundControlState.dart";
-import "../views/AmplifierControlView.dart";
-import "../views/CdControlView.dart";
-import "../views/DeviceInfoView.dart";
-import "../views/DeviceSettingsView.dart";
-import "../views/InputSelectorView.dart";
-import "../views/ListeningModeDeviceView.dart";
-import "../views/ListeningModeView.dart";
-import "../views/MediaListView.dart";
-import "../views/PlayControlView.dart";
-import "../views/SetupNavigationCommandsView.dart";
-import "../views/SetupOperationalCommandsView.dart";
-import "../views/ShortcutsView.dart";
-import "../views/TrackCaptionView.dart";
-import "../views/TrackCoverView.dart";
-import "../views/TrackFileInfoView.dart";
-import "../views/TrackTimeView.dart";
-import "../views/UpdatableView.dart";
-import "../views/VolumeControlView.dart";
 import "../widgets/CustomDivider.dart";
+import "AmplifierControlView.dart";
+import "CdControlView.dart";
+import "DeviceInfoView.dart";
+import "DeviceSettingsView.dart";
+import "InputSelectorView.dart";
+import "ListeningModeDeviceView.dart";
+import "ListeningModeView.dart";
+import "MediaListView.dart";
+import "PlayControlView.dart";
+import "SetupNavigationCommandsView.dart";
+import "SetupOperationalCommandsView.dart";
+import "ShortcutsView.dart";
+import "TrackCaptionView.dart";
+import "TrackCoverView.dart";
+import "TrackFileInfoView.dart";
+import "TrackTimeView.dart";
+import "UpdatableView.dart";
+import "VolumeControlView.dart";
 
 enum AppControl
 {
@@ -57,21 +56,29 @@ enum AppControl
     RI_CD_PLAYER,
 }
 
-abstract class AppTabView extends UpdatableView
+class AppTabView extends UpdatableView
 {
+    static const List<AppControl> EXPANDABLE = [
+        AppControl.TRACK_COVER,
+        AppControl.SHORTCUTS,
+        AppControl.MEDIA_LIST
+    ];
+
+    static const List<AppControl> FOCUSABLE = [
+        AppControl.DEVICE_INFO,
+        AppControl.MEDIA_LIST
+    ];
+
     final List<AppControl> controlsPortrait;
     final List<AppControl> controlsLandscapeLeft;
     final List<AppControl> controlsLandscapeRight;
-    final bool scrollable, focusable;
 
-    AppTabView(final ViewContext viewContext, final List<String> updateTriggers,
+    AppTabView(final ViewContext viewContext,
     {
         this.controlsPortrait,
         this.controlsLandscapeLeft,
-        this.controlsLandscapeRight,
-        this.scrollable = true,
-        this.focusable = false
-    }) : super(viewContext, updateTriggers);
+        this.controlsLandscapeRight
+    }) : super(viewContext, []);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -80,28 +87,31 @@ abstract class AppTabView extends UpdatableView
             .of(context)
             .orientation == Orientation.portrait;
 
+        bool expandable = false, focusable = false;
+        final List<AppControl> firstColumn = _getFirstColumn(isPortrait);
+        final List<AppControl> secondColumn = _getSecondColumn(isPortrait);
+
         Widget tab;
-        if (isPortrait || (controlsLandscapeLeft == null && controlsLandscapeRight == null))
+        if (secondColumn == null)
         {
             final List<Widget> views = List();
-            _addWidgets(context, controlsPortrait, views);
-            tab = (scrollable) ?
-            ListBody(children: views) : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: views);
-        }
-        else if (controlsLandscapeLeft != null && controlsLandscapeRight == null)
-        {
-            final List<Widget> views = List();
-            _addWidgets(context, controlsLandscapeLeft, views);
-            tab = (scrollable) ?
-            ListBody(children: views) : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: views);
+            _addWidgets(context, firstColumn, views);
+            expandable = expandable || _isExpandable(firstColumn);
+            focusable = focusable || _isFocusable(firstColumn);
+            tab = (expandable) ?
+                Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: views) : ListBody(children: views);
         }
         else
         {
             final List<Widget> leftViews = List();
-            _addWidgets(context, controlsLandscapeLeft, leftViews);
+            _addWidgets(context, firstColumn, leftViews);
+            expandable = expandable || _isExpandable(firstColumn);
+            focusable = focusable || _isFocusable(firstColumn);
 
             final List<Widget> rightViews = List();
-            _addWidgets(context, controlsLandscapeRight, rightViews);
+            _addWidgets(context, secondColumn, rightViews);
+            expandable = expandable || _isExpandable(secondColumn);
+            focusable = focusable || _isFocusable(secondColumn);
 
             tab = Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -121,23 +131,36 @@ abstract class AppTabView extends UpdatableView
 
         if (focusable)
         {
-            tab = InkWell(
+            tab = GestureDetector(
                 child: tab,
-                enableFeedback: false,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
                 onTap: ()
                 => FocusScope.of(context).unfocus()
             );
         }
+        else
+        {
+            FocusScope.of(context).unfocus();
+        }
 
-        if (scrollable)
+        if (!expandable)
         {
             tab = SingleChildScrollView(scrollDirection: Axis.vertical, child: tab);
         }
 
         return tab;
     }
+
+    List<AppControl> _getFirstColumn(bool isPortrait)
+    => (isPortrait || (controlsLandscapeLeft == null && controlsLandscapeRight == null)) ? controlsPortrait : controlsLandscapeLeft;
+
+    List<AppControl> _getSecondColumn(bool isPortrait)
+    => (!isPortrait) ? controlsLandscapeRight : null;
+
+    bool _isExpandable(final List<AppControl> types)
+    => types.firstWhere((c) => EXPANDABLE.contains(c), orElse: () => null) != null;
+
+    bool _isFocusable(final List<AppControl> types)
+    => types.firstWhere((c) => FOCUSABLE.contains(c), orElse: () => null) != null;
 
     void _addWidgets(BuildContext context, final List<AppControl> types, final List<Widget> widgets)
     {
@@ -153,21 +176,16 @@ abstract class AppTabView extends UpdatableView
 
     Widget _buildWidget(BuildContext context, AppControl c)
     {
-        final SoundControlType soundControl = state.soundControlState.soundControlType(
-            configuration.audioControl.soundControl, state.getActiveZoneInfo);
-
         switch (c)
         {
             case AppControl.DIVIDER:
                 return CustomDivider(height: ActivityDimens.activityMargins(context).vertical);
 
             case AppControl.LISTENING_MODE:
-                return ([SoundControlType.DEVICE_BUTTONS, SoundControlType.DEVICE_SLIDER, SoundControlType.DEVICE_BTN_SLIDER].contains(soundControl)) ?
-                UpdatableWidget(child: ListeningModeView(viewContext)) : null;
+                return UpdatableWidget(child: ListeningModeView(viewContext));
 
             case AppControl.VOLUME_CONTROL:
-                return (soundControl != SoundControlType.NONE) ?
-                UpdatableWidget(child: VolumeControlView(viewContext)) : null;
+                return UpdatableWidget(child: VolumeControlView(viewContext));
 
             case AppControl.TRACK_FILE_INFO:
                 return UpdatableWidget(child: TrackFileInfoView(viewContext));
@@ -200,23 +218,19 @@ abstract class AppTabView extends UpdatableView
                 return UpdatableWidget(child: SetupNavigationCommandsView(viewContext));
 
             case AppControl.LISTENING_MODE_DEVICE:
-                return state.receiverInformation.isListeningModeControl() ?
-                UpdatableWidget(child: ListeningModeDeviceView(viewContext)) : null;
+                return UpdatableWidget(child: ListeningModeDeviceView(viewContext));
 
             case AppControl.DEVICE_INFO:
-                return (state.receiverInformation.isFriendlyName || state.receiverInformation.isReceiverInformation) ?
-                DeviceInfoView(viewContext) : null;
+                return DeviceInfoView(viewContext);
 
             case AppControl.DEVICE_SETTINGS:
                 return UpdatableWidget(child: DeviceSettingsView(viewContext));
 
             case AppControl.RI_AMPLIFIER:
-                return configuration.appSettings.riAmp ?
-                UpdatableWidget(child: AmplifierControlView(viewContext)) : null;
+                return UpdatableWidget(child: AmplifierControlView(viewContext));
 
             case AppControl.RI_CD_PLAYER:
-                return configuration.appSettings.riCd ?
-                UpdatableWidget(child: CdControlView(viewContext)) : null;
+                return UpdatableWidget(child: CdControlView(viewContext));
         }
         return null;
     }

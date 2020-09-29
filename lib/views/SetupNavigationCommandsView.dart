@@ -14,7 +14,6 @@
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
-import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/SetupOperationCommandMsg.dart";
@@ -24,7 +23,6 @@ import "../widgets/CustomImageButton.dart";
 class SetupNavigationCommandsView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT,
         PowerStatusMsg.CODE,
     ];
 
@@ -77,7 +75,7 @@ class SetupNavigationCommandsView extends UpdatableView
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendMessage(cmd),
-            isEnabled: stateManager.isConnected && stateManager.state.isOn
+            isEnabled: state.isOn
         );
     }
 }

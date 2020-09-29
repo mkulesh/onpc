@@ -15,10 +15,10 @@ import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
-import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
@@ -29,7 +29,7 @@ import "UpdatableView.dart";
 class ListeningModeDeviceView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT,
+        ReceiverInformationMsg.CODE,
         PowerStatusMsg.CODE,
         ListeningModeMsg.CODE
     ];
@@ -40,10 +40,14 @@ class ListeningModeDeviceView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         Logging.info(this, "rebuild widget");
+        if (!state.receiverInformation.isListeningModeControl())
+        {
+            return SizedBox.shrink();
+        }
 
         final EdgeInsetsGeometry activityMargins = ActivityDimens.activityMargins(context);
 
-        final Widget currentMode = stateManager.isConnected && stateManager.state.isOn ?
+        final Widget currentMode = state.isOn ?
         CustomTextLabel.small(state.soundControlState.listeningMode.description) : SizedBox.shrink();
 
         return Column(
@@ -77,7 +81,7 @@ class ListeningModeDeviceView extends UpdatableView
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendMessage(cmd),
-            isEnabled: stateManager.isConnected && stateManager.state.isOn
+            isEnabled: state.isOn
         );
     }
 }

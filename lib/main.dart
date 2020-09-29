@@ -43,12 +43,7 @@ import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
 import "iscp/scripts/AutoPower.dart";
 import "iscp/scripts/RequestListeningMode.dart";
-import "tabs/TabDeviceView.dart";
-import "tabs/TabListenView.dart";
-import "tabs/TabMediaView.dart";
-import "tabs/TabRemoteControlView.dart";
-import "tabs/TabRemoteInterfaceView.dart";
-import "tabs/TabShortcutsView.dart";
+import "views/AppTabView.dart";
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
@@ -232,34 +227,63 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 switch (tab)
                 {
                     case AppTabs.LISTEN:
-                        tabContent = UpdatableWidget(
-                            child: TabListenView(_viewContext),
-                            clearFocus: true);
+                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
+                            controlsPortrait: [
+                                AppControl.LISTENING_MODE,
+                                AppControl.VOLUME_CONTROL,
+                                AppControl.TRACK_FILE_INFO,
+                                AppControl.TRACK_COVER,
+                                AppControl.TRACK_TIME,
+                                AppControl.TRACK_CAPTION,
+                                AppControl.PLAY_CONTROL
+                            ],
+                            controlsLandscapeLeft: [
+                                AppControl.TRACK_COVER
+                            ],
+                            controlsLandscapeRight: [
+                                AppControl.LISTENING_MODE,
+                                AppControl.VOLUME_CONTROL,
+                                AppControl.TRACK_FILE_INFO,
+                                AppControl.TRACK_TIME,
+                                AppControl.TRACK_CAPTION,
+                                AppControl.PLAY_CONTROL
+                            ]));
                         break;
                     case AppTabs.MEDIA:
-                        tabContent = UpdatableWidget(
-                            child: TabMediaView(_viewContext),
-                            clearFocus: false);
+                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
+                            controlsPortrait: [
+                                AppControl.INPUT_SELECTOR,
+                                AppControl.MEDIA_LIST,
+                            ]));
                         break;
                     case AppTabs.SHORTCUTS:
-                        tabContent = UpdatableWidget(
-                            child: TabShortcutsView(_viewContext),
-                            clearFocus: true);
+                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
+                            controlsPortrait: [
+                                AppControl.SHORTCUTS,
+                            ]));
                         break;
                     case AppTabs.DEVICE:
-                        tabContent = UpdatableWidget(
-                            child: TabDeviceView(_viewContext),
-                            clearFocus: false);
+                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
+                            controlsPortrait: [
+                                AppControl.DEVICE_INFO,
+                                AppControl.DEVICE_SETTINGS,
+                            ]));
                         break;
                     case AppTabs.RC:
-                        tabContent = UpdatableWidget(
-                            child: TabRemoteControlView(_viewContext),
-                            clearFocus: true);
+                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
+                            controlsPortrait: [
+                                AppControl.SETUP_OP_CMD,
+                                AppControl.DIVIDER,
+                                AppControl.SETUP_NAV_CMD,
+                                AppControl.LISTENING_MODE_DEVICE
+                            ]));
                         break;
                     case AppTabs.RI:
-                        tabContent = UpdatableWidget(
-                            child: TabRemoteInterfaceView(_viewContext),
-                            clearFocus: true);
+                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
+                            controlsPortrait: [
+                                AppControl.RI_AMPLIFIER,
+                                AppControl.RI_CD_PLAYER,
+                            ]));
                         break;
                 }
                 return Container(

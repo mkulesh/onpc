@@ -13,8 +13,10 @@
 
 import "package:flutter/material.dart";
 
+import "../iscp/StateManager.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
+import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomTextButton.dart";
 import "UpdatableView.dart";
@@ -23,6 +25,7 @@ import "UpdatableView.dart";
 class ListeningModeView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
+        StateManager.ZONE_EVENT,
         PowerStatusMsg.CODE,
         ListeningModeMsg.CODE
     ];
@@ -33,6 +36,14 @@ class ListeningModeView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         Logging.info(this, "rebuild widget");
+
+        final SoundControlType soundControl = state.soundControlState.soundControlType(
+            configuration.audioControl.soundControl, state.getActiveZoneInfo);
+
+        if (![SoundControlType.DEVICE_BUTTONS, SoundControlType.DEVICE_SLIDER, SoundControlType.DEVICE_BTN_SLIDER].contains(soundControl))
+        {
+            return SizedBox.shrink();
+        }
 
         final List<Widget> buttons = List<Widget>();
 
@@ -49,11 +60,7 @@ class ListeningModeView extends UpdatableView
             );
         });
 
-        if (buttons.isEmpty)
-        {
-            return SizedBox.shrink();
-        }
-        return Center(
+        return buttons.isEmpty ? SizedBox.shrink() : Center(
             child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons))
         );
     }
