@@ -12,7 +12,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.mkulesh.onpc"
+        package="com.mkulesh.onpc.plus"
         android:installLocation="auto"
         xmlns:tools="http://schemas.android.com/tools"
         tools:ignore="UnusedAttribute,AllowBackup">
@@ -41,7 +41,7 @@
         android:description="@string/app_description"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.mkulesh.onpc.MainActivity"
+            android:name="com.mkulesh.onpc.plus.MainActivity"
             android:label="@string/app_short_name"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"

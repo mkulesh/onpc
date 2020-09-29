@@ -38,7 +38,9 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mkulesh.onpc"
+        minSdkVersion 23
+        targetSdkVersion 29
+        applicationId "com.mkulesh.onpc.plus"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -64,5 +66,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
 }

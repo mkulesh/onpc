@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc;
+package com.mkulesh.onpc.plus;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -53,9 +53,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
 {
     private static final String PLATFORM_CHANNEL = "platform_channel";
     private static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
-    private static final String VERSION_NAME = "version_name";
-    private static final String MODEL = "model";
-    private static final String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.AUTO_POWER";
+    private static final String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.plus.AUTO_POWER";
 
     private enum PlatformCmd
     {
@@ -174,24 +172,6 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         // parse intent
         final Intent intent = getIntent();
         autoPower = intent != null && intent.getAction() != null && SHORTCUT_AUTO_POWER.equals(intent.getAction());
-
-        // If necessary, export preferences from previous versions
-        try
-        {
-            final SharedPreferences oldPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-            final String oldVer = oldPrefs.getString(VERSION_NAME, "1.0");
-            final String oldModel = oldPrefs.getString(MODEL, "");
-            final PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
-            if (oldVer.startsWith("1.0") && !oldModel.isEmpty() && pi.versionName.startsWith("2"))
-            {
-                exportPreferences1xTo2x();
-            }
-            oldPrefs.edit().putString(VERSION_NAME, pi.versionName).apply();
-        }
-        catch (Exception e)
-        {
-            // nothing to do
-        }
 
         // read preferences stored in Flutter code
         readPreferences();
@@ -337,75 +317,5 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             }
         }
         return super.dispatchKeyEvent(event);
-    }
-
-    private void exportPreferences1xTo2x()
-    {
-        final SharedPreferences oldPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences newPrefs = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = newPrefs.edit();
-
-        final List<Pair<String, String>> stringsParameters = new ArrayList<>();
-        {
-            final String model = "_" + oldPrefs.getString("model", "");
-            stringsParameters.add(new Pair<>("app_theme", "flutter.theme"));
-            stringsParameters.add(new Pair<>("app_language", "flutter.language"));
-            stringsParameters.add(new Pair<>("server_name", "flutter.server_name"));
-            stringsParameters.add(new Pair<>("sound_control", "flutter.sound_control"));
-            stringsParameters.add(new Pair<>("selected_listening_modes", "flutter.selected_listening_modes" + model));
-            stringsParameters.add(new Pair<>("selected_network_services" + model, "flutter.selected_network_services" + model));
-            stringsParameters.add(new Pair<>("selected_device_selectors" + model, "flutter.selected_device_selectors" + model));
-            int favoriteNr = oldPrefs.getInt("favorite_shortcut_number", 0);
-            if (favoriteNr > 0)
-            {
-                editor.putInt("flutter.favorite_shortcut_number", favoriteNr);
-            }
-            for (int i = 0; i < favoriteNr; i++)
-            {
-                stringsParameters.add(new Pair<>("favorite_shortcut_item_" + i, "flutter.favorite_shortcut_item_" + i));
-            }
-
-            favoriteNr = oldPrefs.getInt("favorite_connection_number", 0);
-            if (favoriteNr > 0)
-            {
-                editor.putInt("flutter.favorite_connection_number", favoriteNr);
-            }
-            for (int i = 0; i < favoriteNr; i++)
-            {
-                stringsParameters.add(new Pair<>("favorite_connection_item_" + i, "flutter.favorite_connection_item_" + i));
-            }
-            for (Pair<String, String> par : stringsParameters)
-            {
-                String val = oldPrefs.getString(par.first, "");
-                if (val.isEmpty())
-                {
-                    continue;
-                }
-                editor.putString(par.second, val);
-            }
-        }
-
-        final List<Pair<String, String>> boolParameters = new ArrayList<>();
-        {
-            boolParameters.add(new Pair<>("auto_power", "flutter.auto_power"));
-            boolParameters.add(new Pair<>("pref_friendly_names", "flutter.friendly_names"));
-            boolParameters.add(new Pair<>("remote_interface_amp", "flutter.remote_interface_amp"));
-            boolParameters.add(new Pair<>("remote_interface_cd", "flutter.remote_interface_cd"));
-            boolParameters.add(new Pair<>("volume_keys", "flutter.volume_keys"));
-            boolParameters.add(new Pair<>("keep_screen_on", "flutter.keep_screen_on"));
-            boolParameters.add(new Pair<>("back_as_return", "flutter.back_as_return"));
-            boolParameters.add(new Pair<>("advanced_queue", "flutter.advanced_queue"));
-            boolParameters.add(new Pair<>("keep_playback_mode", "flutter.keep_playback_mode"));
-            boolParameters.add(new Pair<>("exit_confirm",  "flutter.exit_confirm"));
-            boolParameters.add(new Pair<>("developer_mode",  "flutter.developer_mode"));
-            boolParameters.add(new Pair<>("force_audio_control",  "flutter.force_audio_control"));
-            for (Pair<String, String> par : boolParameters)
-            {
-                boolean val = oldPrefs.getBoolean(par.first, par.first.equals("pref_friendly_names"));
-                editor.putBoolean(par.second, val);
-            }
-        }
-        editor.apply();
     }
 }

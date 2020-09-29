@@ -17,9 +17,9 @@
         android:shortcutShortLabel="@string/shortcut_power_on"
         android:shortcutLongLabel="@string/shortcut_power_on">
         <intent
-            android:action="com.mkulesh.onpc.AUTO_POWER"
-            android:targetPackage="com.mkulesh.onpc"
-            android:targetClass="com.mkulesh.onpc.MainActivity"
+            android:action="com.mkulesh.onpc.plus.AUTO_POWER"
+            android:targetPackage="com.mkulesh.onpc.plus"
+            android:targetClass="com.mkulesh.onpc.plus.MainActivity"
             />
     </shortcut>
 </shortcuts>
