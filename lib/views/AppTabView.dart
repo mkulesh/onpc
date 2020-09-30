@@ -13,6 +13,7 @@
 
 import "package:flutter/material.dart";
 
+import "../config/CfgTabSettings.dart";
 import "../constants/Dimens.dart";
 import "../widgets/CustomDivider.dart";
 import "AmplifierControlView.dart";
@@ -34,28 +35,6 @@ import "TrackTimeView.dart";
 import "UpdatableView.dart";
 import "VolumeControlView.dart";
 
-enum AppControl
-{
-    DIVIDER,
-    LISTENING_MODE,
-    VOLUME_CONTROL,
-    TRACK_FILE_INFO,
-    TRACK_COVER,
-    TRACK_TIME,
-    TRACK_CAPTION,
-    PLAY_CONTROL,
-    SHORTCUTS,
-    INPUT_SELECTOR,
-    MEDIA_LIST,
-    SETUP_OP_CMD,
-    SETUP_NAV_CMD,
-    LISTENING_MODE_DEVICE,
-    DEVICE_INFO,
-    DEVICE_SETTINGS,
-    RI_AMPLIFIER,
-    RI_CD_PLAYER,
-}
-
 class AppTabView extends UpdatableView
 {
     static const List<AppControl> EXPANDABLE = [
@@ -69,16 +48,16 @@ class AppTabView extends UpdatableView
         AppControl.MEDIA_LIST
     ];
 
-    final List<AppControl> controlsPortrait;
-    final List<AppControl> controlsLandscapeLeft;
-    final List<AppControl> controlsLandscapeRight;
+    List<AppControl> controlsPortrait;
+    List<AppControl> controlsLandscapeLeft;
+    List<AppControl> controlsLandscapeRight;
 
-    AppTabView(final ViewContext viewContext,
+    AppTabView(final ViewContext viewContext, final CfgTabSettings cfg) : super(viewContext, [])
     {
-        this.controlsPortrait,
-        this.controlsLandscapeLeft,
-        this.controlsLandscapeRight
-    }) : super(viewContext, []);
+        controlsPortrait = cfg.controlsPortrait;
+        controlsLandscapeLeft = cfg.controlsLandscapeLeft;
+        controlsLandscapeRight = cfg.controlsLandscapeRight;
+    }
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -181,7 +160,7 @@ class AppTabView extends UpdatableView
             case AppControl.DIVIDER:
                 return CustomDivider(height: ActivityDimens.activityMargins(context).vertical);
 
-            case AppControl.LISTENING_MODE:
+            case AppControl.LISTENING_MODE_LIST:
                 return UpdatableWidget(child: ListeningModeView(viewContext));
 
             case AppControl.VOLUME_CONTROL:
@@ -217,7 +196,7 @@ class AppTabView extends UpdatableView
             case AppControl.SETUP_NAV_CMD:
                 return UpdatableWidget(child: SetupNavigationCommandsView(viewContext));
 
-            case AppControl.LISTENING_MODE_DEVICE:
+            case AppControl.LISTENING_MODE_BTN:
                 return UpdatableWidget(child: ListeningModeDeviceView(viewContext));
 
             case AppControl.DEVICE_INFO:

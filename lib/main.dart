@@ -223,72 +223,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
             controller: _tabController,
             children: _tabs.map((AppTabs tab)
             {
-                Widget tabContent;
-                switch (tab)
-                {
-                    case AppTabs.LISTEN:
-                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
-                            controlsPortrait: [
-                                AppControl.LISTENING_MODE,
-                                AppControl.VOLUME_CONTROL,
-                                AppControl.TRACK_FILE_INFO,
-                                AppControl.TRACK_COVER,
-                                AppControl.TRACK_TIME,
-                                AppControl.TRACK_CAPTION,
-                                AppControl.PLAY_CONTROL
-                            ],
-                            controlsLandscapeLeft: [
-                                AppControl.TRACK_COVER
-                            ],
-                            controlsLandscapeRight: [
-                                AppControl.LISTENING_MODE,
-                                AppControl.VOLUME_CONTROL,
-                                AppControl.TRACK_FILE_INFO,
-                                AppControl.TRACK_TIME,
-                                AppControl.TRACK_CAPTION,
-                                AppControl.PLAY_CONTROL
-                            ]));
-                        break;
-                    case AppTabs.MEDIA:
-                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
-                            controlsPortrait: [
-                                AppControl.INPUT_SELECTOR,
-                                AppControl.MEDIA_LIST,
-                            ]));
-                        break;
-                    case AppTabs.SHORTCUTS:
-                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
-                            controlsPortrait: [
-                                AppControl.SHORTCUTS,
-                            ]));
-                        break;
-                    case AppTabs.DEVICE:
-                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
-                            controlsPortrait: [
-                                AppControl.DEVICE_INFO,
-                                AppControl.DEVICE_SETTINGS,
-                            ]));
-                        break;
-                    case AppTabs.RC:
-                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
-                            controlsPortrait: [
-                                AppControl.SETUP_OP_CMD,
-                                AppControl.DIVIDER,
-                                AppControl.SETUP_NAV_CMD,
-                                AppControl.LISTENING_MODE_DEVICE
-                            ]));
-                        break;
-                    case AppTabs.RI:
-                        tabContent = UpdatableWidget(child: AppTabView(_viewContext,
-                            controlsPortrait: [
-                                AppControl.RI_AMPLIFIER,
-                                AppControl.RI_CD_PLAYER,
-                            ]));
-                        break;
-                }
                 return Container(
                     margin: ActivityDimens.activityMargins(context),
-                    child: tabContent
+                    child: UpdatableWidget(child: AppTabView(_viewContext, _configuration.appSettings.controlElements(tab)))
                 );
             }).toList(),
         );
@@ -507,7 +444,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         final int _index = (_tabController != null) ? _tabController.index : _configuration.appSettings.openedTab;
 
         _tabs.clear();
-        _tabs.addAll(_configuration.appSettings.getVisibleTabs());
+        _tabs.addAll(_configuration.appSettings.visibleTabs);
         if (_tabController == null || _tabs.length != _tabController.length)
         {
             _updateTabs(_index);
@@ -546,15 +483,15 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     AppTabs _getActiveTab()
     {
-        final List<AppTabs> tabs = _configuration.appSettings.getVisibleTabs();
+        final List<AppTabs> tabs = _configuration.appSettings.visibleTabs;
         return _tabController != null && _tabController.index < tabs.length ? tabs[_tabController.index] : null;
     }
 
     void _setActiveTab(AppTabs tab)
     {
-        for (int i = 0; i < _configuration.appSettings.getVisibleTabs().length; i++)
+        for (int i = 0; i < _configuration.appSettings.visibleTabs.length; i++)
         {
-            if (tab == _configuration.appSettings.getVisibleTabs()[i])
+            if (tab == _configuration.appSettings.visibleTabs[i])
             {
                 setState(()
                 {

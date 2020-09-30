@@ -21,6 +21,7 @@ import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";
+import "CfgTabSettings.dart";
 import "CheckableItem.dart";
 
 // Tabs
@@ -107,6 +108,17 @@ class CfgAppSettings extends CfgModule
 
     // Visible tabs
     static final String VISIBLE_TABS = "visible_tabs";
+    final List<AppTabs> _visibleTabs = List();
+
+    List<AppTabs> get visibleTabs
+    => _visibleTabs;
+
+    // Control elements
+    static final String CONTROL_ELEMENTS = "control_elements";
+    final List<CfgTabSettings> _controlElements = List();
+
+    CfgTabSettings controlElements(AppTabs t)
+    => _controlElements[t.index];
 
     // Remote interface
     static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", true);
@@ -133,6 +145,8 @@ class CfgAppSettings extends CfgModule
         _openedTab = getInt(OPENED_TAB, doLog: true);
         _riAmp = getBool(RI_AMP, doLog: true);
         _riCd = getBool(RI_CD, doLog: true);
+        _readVisibleTabs();
+        _readControlElements();
     }
 
     @override
@@ -146,9 +160,9 @@ class CfgAppSettings extends CfgModule
         return item.index < Strings.pref_visible_tabs_names.length ? Strings.pref_visible_tabs_names[item.index].toUpperCase() : "";
     }
 
-    List<AppTabs> getVisibleTabs()
+    void _readVisibleTabs()
     {
-        final List<AppTabs> result = List();
+        _visibleTabs.clear();
         final List<String> defItems = List();
         AppTabs.values.forEach((i) => defItems.add(Convert.enumToString(i)));
         for (CheckableItem sp in CheckableItem.readFromPreference(this, VISIBLE_TABS, defItems))
@@ -157,10 +171,70 @@ class CfgAppSettings extends CfgModule
             {
                 if (sp.checked && Convert.enumToString(i) == sp.code)
                 {
-                    result.add(i);
+                    _visibleTabs.add(i);
                 }
             }
         }
-        return result;
+        Logging.info(this, "  " + VISIBLE_TABS + ": " + _visibleTabs.toString());
+    }
+
+    void _readControlElements()
+    {
+        _controlElements.clear();
+        _controlElements.add(CfgTabSettings(
+            controlsPortrait: [
+                AppControl.LISTENING_MODE_LIST,
+                AppControl.VOLUME_CONTROL,
+                AppControl.TRACK_FILE_INFO,
+                AppControl.TRACK_COVER,
+                AppControl.TRACK_TIME,
+                AppControl.TRACK_CAPTION,
+                AppControl.PLAY_CONTROL
+            ],
+            controlsLandscapeLeft: [
+                AppControl.TRACK_COVER
+            ],
+            controlsLandscapeRight: [
+                AppControl.LISTENING_MODE_LIST,
+                AppControl.VOLUME_CONTROL,
+                AppControl.TRACK_FILE_INFO,
+                AppControl.TRACK_TIME,
+                AppControl.TRACK_CAPTION,
+                AppControl.PLAY_CONTROL
+            ])
+        );
+        _controlElements.add(CfgTabSettings(
+            controlsPortrait: [
+                AppControl.INPUT_SELECTOR,
+                AppControl.MEDIA_LIST,
+            ])
+        );
+        _controlElements.add(CfgTabSettings(
+            controlsPortrait: [
+                AppControl.SHORTCUTS,
+            ])
+        );
+        _controlElements.add(CfgTabSettings(
+            controlsPortrait: [
+                AppControl.DEVICE_INFO,
+                AppControl.DEVICE_SETTINGS,
+            ])
+        );
+        _controlElements.add(CfgTabSettings(
+            controlsPortrait: [
+                AppControl.SETUP_OP_CMD,
+                AppControl.DIVIDER,
+                AppControl.SETUP_NAV_CMD,
+                AppControl.LISTENING_MODE_BTN
+            ])
+        );
+        _controlElements.add(CfgTabSettings(
+            controlsPortrait: [
+                AppControl.RI_AMPLIFIER,
+                AppControl.RI_CD_PLAYER,
+            ])
+        );
+        AppTabs.values.forEach((c)
+        => Logging.info(this, "  " + CONTROL_ELEMENTS + "[" + Convert.enumToString(c) + "]: " + controlElements(c).toString()));
     }
 }
