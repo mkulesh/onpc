@@ -11,12 +11,25 @@
  * Public License along with this program.
  */
 
+import "../constants/Strings.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
+import "../utils/Convert.dart";
+import "../utils/Logging.dart";
+import "CfgAppSettings.dart";
+import "CfgModule.dart";
+import "CheckableItem.dart";
+
 // Control elements
 enum AppControl
 {
-    DIVIDER,
+    DIVIDER1,
+    DIVIDER2,
+    DIVIDER3,
+    DIVIDER4,
+    DIVIDER5,
     LISTENING_MODE_LIST,
-    VOLUME_CONTROL,
+    LISTENING_MODE_BTN,
+    AUDIO_CONTROL,
     TRACK_FILE_INFO,
     TRACK_COVER,
     TRACK_TIME,
@@ -27,23 +40,94 @@ enum AppControl
     MEDIA_LIST,
     SETUP_OP_CMD,
     SETUP_NAV_CMD,
-    LISTENING_MODE_BTN,
     DEVICE_INFO,
     DEVICE_SETTINGS,
     RI_AMPLIFIER,
     RI_CD_PLAYER,
 }
 
+enum AppControlGroup
+{
+    PORTRAIT,
+    LAND_LEFT,
+    LAND_RIGHT
+}
+
 class CfgTabSettings
 {
-    final List<AppControl> controlsPortrait;
-    final List<AppControl> controlsLandscapeLeft;
-    final List<AppControl> controlsLandscapeRight;
+    static const ExtEnum<AppControl> ValueEnum = ExtEnum<AppControl>([
+        EnumItem.code(AppControl.DIVIDER1, "DV1", descrList: Strings.l_app_control_divider, defValue: true),
+        EnumItem.code(AppControl.DIVIDER2, "DV2", descrList: Strings.l_app_control_divider),
+        EnumItem.code(AppControl.DIVIDER3, "DV3", descrList: Strings.l_app_control_divider),
+        EnumItem.code(AppControl.DIVIDER4, "DV4", descrList: Strings.l_app_control_divider),
+        EnumItem.code(AppControl.DIVIDER5, "DV5", descrList: Strings.l_app_control_divider),
+        EnumItem.code(AppControl.LISTENING_MODE_LIST, "LML", descrList: Strings.l_app_control_listening_mode_list),
+        EnumItem.code(AppControl.LISTENING_MODE_BTN, "LMB", descrList: Strings.l_app_control_listening_mode_btn),
+        EnumItem.code(AppControl.AUDIO_CONTROL, "ACT", descrList: Strings.l_app_control_audio_control),
+        EnumItem.code(AppControl.TRACK_FILE_INFO, "TFI", descrList: Strings.l_app_control_track_file_info),
+        EnumItem.code(AppControl.TRACK_COVER, "TCO", descrList: Strings.l_app_control_track_cover),
+        EnumItem.code(AppControl.TRACK_TIME, "TTM", descrList: Strings.l_app_control_track_time),
+        EnumItem.code(AppControl.TRACK_CAPTION, "TCA", descrList: Strings.l_app_control_track_caption),
+        EnumItem.code(AppControl.PLAY_CONTROL, "PLC", descrList: Strings.l_app_control_play_control),
+        EnumItem.code(AppControl.SHORTCUTS, "SHR", descrList: Strings.l_app_control_shortcuts),
+        EnumItem.code(AppControl.INPUT_SELECTOR, "INP", descrList: Strings.l_app_control_input_selector),
+        EnumItem.code(AppControl.MEDIA_LIST, "MLI", descrList: Strings.l_app_control_media_list),
+        EnumItem.code(AppControl.SETUP_OP_CMD, "COC", descrList: Strings.l_app_control_setup_op_cmd),
+        EnumItem.code(AppControl.SETUP_NAV_CMD, "CNC", descrList: Strings.l_app_control_setup_nav_cmd),
+        EnumItem.code(AppControl.DEVICE_INFO, "DIN", descrList: Strings.l_app_control_device_info),
+        EnumItem.code(AppControl.DEVICE_SETTINGS, "DST", descrList: Strings.l_app_control_device_settings),
+        EnumItem.code(AppControl.RI_AMPLIFIER, "RIA", descrList: Strings.l_app_control_ri_amplifier),
+        EnumItem.code(AppControl.RI_CD_PLAYER, "RIC", descrList: Strings.l_app_control_ri_cd_player),
+    ]);
 
-    CfgTabSettings(
+    static final String TAB_SETTINGS = "tab_settings";
+
+    final CfgModule configuration;
+    final AppTabs tab;
+    List<AppControl> controlsPortrait;
+    List<AppControl> controlsLandscapeLeft;
+    List<AppControl> controlsLandscapeRight;
+
+    CfgTabSettings(this.configuration, this.tab,
     {
         this.controlsPortrait,
         this.controlsLandscapeLeft,
         this.controlsLandscapeRight
     });
+
+    void read()
+    {
+        controlsPortrait = _readVisibleControls(AppControlGroup.PORTRAIT, controlsPortrait);
+        controlsLandscapeLeft = _readVisibleControls(AppControlGroup.LAND_LEFT, controlsLandscapeLeft);
+        controlsLandscapeRight = _readVisibleControls(AppControlGroup.LAND_RIGHT, controlsLandscapeRight);
+    }
+
+    static String getParameterName(final AppTabs tab, final AppControlGroup type)
+    => TAB_SETTINGS + "_" + Convert.enumToString(tab).toLowerCase() + "_" + Convert.enumToString(type).toLowerCase();
+
+    List<AppControl> _readVisibleControls(final AppControlGroup type, List<AppControl> defItems)
+    {
+        final List<AppControl> res = List();
+        final String par = getParameterName(tab, type);
+        for (CheckableItem sp in CheckableItem.readFromPreference(configuration, par, List()))
+        {
+            ValueEnum.values.forEach((m)
+            {
+                if (sp.checked && m.getCode == sp.code)
+                {
+                    res.add(m.key);
+                }
+            });
+        }
+        if (res.isEmpty)
+        {
+            if (defItems == null)
+            {
+                return null;
+            }
+            res.addAll(defItems);
+        }
+        Logging.info(this, "  " + par + ": " + res.toString());
+        return res;
+    }
 }

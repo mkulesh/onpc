@@ -87,7 +87,7 @@ class VolumeControlButtonsView extends UpdatableView
 
             buttons.insert(2, CustomImageButton.normal(
                 Drawables.volume_audio_control,
-                Strings.audio_control,
+                Strings.app_control_audio_control,
                 text: volumeValid ? volumeLevel : "",
                 onPressed: ()
                 => _showAudioControlDialog(context),

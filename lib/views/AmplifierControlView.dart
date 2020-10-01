@@ -48,7 +48,7 @@ class AmplifierControlView extends UpdatableView
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                CustomTextLabel.small(Strings.remote_interface_amp),
+                CustomTextLabel.small(Strings.app_control_ri_amplifier),
                 CustomDivider(),
                 image,
                 _buildTable()

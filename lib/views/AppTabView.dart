@@ -157,13 +157,17 @@ class AppTabView extends UpdatableView
     {
         switch (c)
         {
-            case AppControl.DIVIDER:
+            case AppControl.DIVIDER1:
+            case AppControl.DIVIDER2:
+            case AppControl.DIVIDER3:
+            case AppControl.DIVIDER4:
+            case AppControl.DIVIDER5:
                 return CustomDivider(height: ActivityDimens.activityMargins(context).vertical);
 
             case AppControl.LISTENING_MODE_LIST:
                 return UpdatableWidget(child: ListeningModeView(viewContext));
 
-            case AppControl.VOLUME_CONTROL:
+            case AppControl.AUDIO_CONTROL:
                 return UpdatableWidget(child: VolumeControlView(viewContext));
 
             case AppControl.TRACK_FILE_INFO:

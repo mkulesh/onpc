@@ -62,7 +62,8 @@ Enjoy!""</string>
     <string name="drawer_device_connect">Connect</string>
     <string name="drawer_device_search">Search</string>
     <string name="drawer_device_searching">Searching for compatible devices…</string>
-    <string name="drawer_device_application">Application</string>
+    <string name="drawer_application">Application</string>
+    <string name="drawer_tab_layout">Tab layout</string>
     <string name="drawer_app_settings">Settings</string>
     <string name="drawer_about">About</string>
 
@@ -216,6 +217,26 @@ Enjoy!""</string>
         <item>RI</item>
     </string-array>
 
+    <!-- Application settings: Controls -->
+    <string name="app_control_divider">Divider</string>
+    <string name="app_control_listening_mode_list">Listening mode buttons</string>
+    <string name="app_control_listening_mode_btn">Listening mode switch</string>
+    <string name="app_control_audio_control">Audio control</string>
+    <string name="app_control_track_file_info">File information</string>
+    <string name="app_control_track_cover">Album cover</string>
+    <string name="app_control_track_time">Time control</string>
+    <string name="app_control_track_caption">Song description</string>
+    <string name="app_control_play_control">Playback controls</string>
+    <string name="app_control_shortcuts">Shortcuts list</string>
+    <string name="app_control_input_selector">Input selector</string>
+    <string name="app_control_media_list">Media list</string>
+    <string name="app_control_setup_op_cmd">Setup buttons</string>
+    <string name="app_control_setup_nav_cmd">Navigation buttons</string>
+    <string name="app_control_device_info">Device information</string>
+    <string name="app_control_device_settings">Device settings</string>
+    <string name="app_control_ri_amplifier">Amplifier (RI)</string>
+    <string name="app_control_ri_cd_player">CD Player (RI)</string>
+
     <!-- Playback tab -->
     <string name="tv_display_mode">Display mode on device</string>
 
@@ -276,7 +297,6 @@ Enjoy!""</string>
     <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
 
     <!-- Audio Control Command  -->
-    <string name="audio_control">Audio control</string>
     <string name="tone_bass">Bass</string>
     <string name="tone_treble">Treble</string>
     <string name="subwoofer_level">Subwoofer level</string>
@@ -592,8 +612,6 @@ Enjoy!""</string>
     <string name="listening_mode_down">Sets listening mode wrap-around down</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface_amp">Amplifier (RI)</string>
-    <string name="remote_interface_cd">CD Player (RI)</string>
     <string name="remote_interface_power">Power</string>
     <string name="remote_interface_common">Common</string>
     <string name="remote_interface_input">Input</string>

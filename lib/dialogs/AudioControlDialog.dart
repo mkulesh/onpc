@@ -50,7 +50,7 @@ class _AudioControlDialogState extends State<AudioControlDialog>
         final ThemeData td = Theme.of(context);
 
         final Widget dialogTitle = widget._audioControlType == AudioControlType.TONE_CONTROL ?
-        CustomDialogTitle(Strings.audio_control, Drawables.volume_audio_control) :
+        CustomDialogTitle(Strings.app_control_audio_control, Drawables.volume_audio_control) :
         CustomDialogTitle(Strings.master_volume_restrict, Drawables.volume_max_limit);
 
         final Widget dialogContent = widget._audioControlType == AudioControlType.TONE_CONTROL ?

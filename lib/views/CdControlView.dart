@@ -49,7 +49,7 @@ class CdControlView extends UpdatableView
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                CustomTextLabel.small(Strings.remote_interface_cd),
+                CustomTextLabel.small(Strings.app_control_ri_cd_player),
                 CustomDivider(),
                 image,
                 _buildTopTable(),

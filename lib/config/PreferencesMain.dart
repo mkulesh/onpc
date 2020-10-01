@@ -105,15 +105,6 @@ class _PreferencesMainState extends State<PreferencesMain>
             icon: Drawables.pref_visible_tabs,
             activity: Activities.activity_visible_tabs));
 
-        elements.add(_customSwitchPreference(td,
-            Strings.remote_interface_amp,
-            CfgAppSettings.RI_AMP,
-            icon: Drawables.pref_ri_amplifier));
-        elements.add(_customSwitchPreference(td,
-            Strings.remote_interface_cd,
-            CfgAppSettings.RI_CD,
-            icon: Drawables.pref_ri_disc_player));
-
         // Device options
         elements.add(CustomDivider());
         elements.add(PreferenceTitle(Strings.pref_category_device_options));
@@ -137,7 +128,7 @@ class _PreferencesMainState extends State<PreferencesMain>
 
         // Audio control
         elements.add(CustomDivider());
-        elements.add(PreferenceTitle(Strings.audio_control));
+        elements.add(PreferenceTitle(Strings.app_control_audio_control));
         elements.add(_customDropdownPreference(td,
             Strings.pref_sound_control,
             CfgAudioControl.SOUND_CONTROL,

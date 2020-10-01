@@ -19,11 +19,9 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ListTitleInfoMsg.dart";
-import "../iscp/messages/OperationCommandMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
-import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextButton.dart";
 import "UpdatableView.dart";
 
@@ -46,18 +44,6 @@ class InputSelectorView extends UpdatableView
         Logging.info(this, "rebuild widget");
 
         final List<Widget> buttons = List<Widget>();
-
-        final OperationCommandMsg commandTopMsg = OperationCommandMsg.output(
-            ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.TOP);
-
-        buttons.add(CustomImageButton.small(
-            commandTopMsg.getValue.icon,
-            commandTopMsg.getValue.description,
-            onPressed: ()
-            => stateManager.sendMessage(commandTopMsg, waitingForData: true),
-            isEnabled: state.isOn && !state.mediaListState.isTopLayer()
-        )
-        );
 
         final List<Selector> sortedSelectors = _getSortedDeviceSelectors(
             false, state.mediaListState.inputType, state.receiverInformation.deviceSelectors);

@@ -394,13 +394,21 @@ Enjoy!"""];
         /*pl*/ "Wyszukiwanie kompatybilnych urządzeń…"];
     static String get drawer_device_searching => l_drawer_device_searching[_language];
 
-    static const List<String> l_drawer_device_application = [
+    static const List<String> l_drawer_application = [
         /*en*/ "Application",
         /*ru*/ "Приложение",
         /*de*/ "Anwendung",
         /*fr*/ "Application",
         /*pl*/ "Aplikacja"];
-    static String get drawer_device_application => l_drawer_device_application[_language];
+    static String get drawer_application => l_drawer_application[_language];
+
+    static const List<String> l_drawer_tab_layout = [
+        /*en*/ "Tab layout",
+        /*ru*/ "Вид вкладки",
+        /*de*/ "Registerkartenlayout",
+        /*fr*/ "Disposition des onglets",
+        /*pl*/ "Układ kart"];
+    static String get drawer_tab_layout => l_drawer_tab_layout[_language];
 
     static const List<String> l_drawer_app_settings = [
         /*en*/ "Settings",
@@ -761,6 +769,150 @@ Enjoy!"""];
         /*fr*/ "Onglets visibles",
         /*pl*/ "Widoczne zakładki"];
     static String get pref_visible_tabs => l_pref_visible_tabs[_language];
+
+    static const List<String> l_app_control_divider = [
+        /*en*/ "Divider",
+        /*ru*/ "Разделитель",
+        /*de*/ "Teiler",
+        /*fr*/ "Diviseur",
+        /*pl*/ "Rozdzielacz"];
+    static String get app_control_divider => l_app_control_divider[_language];
+
+    static const List<String> l_app_control_listening_mode_list = [
+        /*en*/ "Listening mode buttons",
+        /*ru*/ "Звуковой профиль (кнопки)",
+        /*de*/ "Hörmodus-Tasten",
+        /*fr*/ "Boutons de mode d'écoute",
+        /*pl*/ "Przyciski trybu odsłuchu"];
+    static String get app_control_listening_mode_list => l_app_control_listening_mode_list[_language];
+
+    static const List<String> l_app_control_listening_mode_btn = [
+        /*en*/ "Listening mode switch",
+        /*ru*/ "Звуковой профиль (переключатель)",
+        /*de*/ "Hörmodusschalter",
+        /*fr*/ "Commutateur de mode d'écoute",
+        /*pl*/ "Przełącznik trybu słuchania"];
+    static String get app_control_listening_mode_btn => l_app_control_listening_mode_btn[_language];
+
+    static const List<String> l_app_control_audio_control = [
+        /*en*/ "Audio control",
+        /*ru*/ "Контроль звука",
+        /*de*/ "Audiosteuerung",
+        /*fr*/ "Réglages Audio",
+        /*pl*/ "Sterowanie dźwiękiem"];
+    static String get app_control_audio_control => l_app_control_audio_control[_language];
+
+    static const List<String> l_app_control_track_file_info = [
+        /*en*/ "File information",
+        /*ru*/ "Описание файла",
+        /*de*/ "Dateiinformationen",
+        /*fr*/ "Informations sur le fichier",
+        /*pl*/ "Informacje o pliku"];
+    static String get app_control_track_file_info => l_app_control_track_file_info[_language];
+
+    static const List<String> l_app_control_track_cover = [
+        /*en*/ "Album cover",
+        /*ru*/ "Картинка альбома",
+        /*de*/ "Album-Cover",
+        /*fr*/ "Couverture de l'album",
+        /*pl*/ "Okładka albumu"];
+    static String get app_control_track_cover => l_app_control_track_cover[_language];
+
+    static const List<String> l_app_control_track_time = [
+        /*en*/ "Time control",
+        /*ru*/ "Контроль времени",
+        /*de*/ "Zeitsteuerung",
+        /*fr*/ "Contrôle du temps",
+        /*pl*/ "Kontrola czasu"];
+    static String get app_control_track_time => l_app_control_track_time[_language];
+
+    static const List<String> l_app_control_track_caption = [
+        /*en*/ "Song description",
+        /*ru*/ "Описание трека",
+        /*de*/ "Songbeschreibung",
+        /*fr*/ "Description de la chanson",
+        /*pl*/ "Opis piosenki"];
+    static String get app_control_track_caption => l_app_control_track_caption[_language];
+
+    static const List<String> l_app_control_play_control = [
+        /*en*/ "Playback controls",
+        /*ru*/ "Контроль воспроизведения",
+        /*de*/ "Wiedergabesteuerung",
+        /*fr*/ "Commandes de lecture",
+        /*pl*/ "Sterowanie odtwarzaniem"];
+    static String get app_control_play_control => l_app_control_play_control[_language];
+
+    static const List<String> l_app_control_shortcuts = [
+        /*en*/ "Shortcuts list",
+        /*ru*/ "Список ярлыков",
+        /*de*/ "Favoritenliste",
+        /*fr*/ "Liste des raccourcis",
+        /*pl*/ "Lista skrótów"];
+    static String get app_control_shortcuts => l_app_control_shortcuts[_language];
+
+    static const List<String> l_app_control_input_selector = [
+        /*en*/ "Input selector",
+        /*ru*/ "Выбор канала",
+        /*de*/ "Eingangswahlschalter",
+        /*fr*/ "Sélecteur d'entrée",
+        /*pl*/ "Selektor wejść"];
+    static String get app_control_input_selector => l_app_control_input_selector[_language];
+
+    static const List<String> l_app_control_media_list = [
+        /*en*/ "Media list",
+        /*ru*/ "Список треков",
+        /*de*/ "Medienliste",
+        /*fr*/ "Liste des médias",
+        /*pl*/ "Lista mediów"];
+    static String get app_control_media_list => l_app_control_media_list[_language];
+
+    static const List<String> l_app_control_setup_op_cmd = [
+        /*en*/ "Setup buttons",
+        /*ru*/ "Кнопки настройки",
+        /*de*/ "Setup-Tasten",
+        /*fr*/ "Boutons de configuration",
+        /*pl*/ "Przyciski konfiguracji"];
+    static String get app_control_setup_op_cmd => l_app_control_setup_op_cmd[_language];
+
+    static const List<String> l_app_control_setup_nav_cmd = [
+        /*en*/ "Navigation buttons",
+        /*ru*/ "Кнопки курсора",
+        /*de*/ "Navigationstasten",
+        /*fr*/ "Boutons de navigation",
+        /*pl*/ "Przyciski nawigacyjne"];
+    static String get app_control_setup_nav_cmd => l_app_control_setup_nav_cmd[_language];
+
+    static const List<String> l_app_control_device_info = [
+        /*en*/ "Device information",
+        /*ru*/ "Информация об устройстве",
+        /*de*/ "Geräteinformation",
+        /*fr*/ "Informations sur l'appareil",
+        /*pl*/ "Informacje o urządzeniu"];
+    static String get app_control_device_info => l_app_control_device_info[_language];
+
+    static const List<String> l_app_control_device_settings = [
+        /*en*/ "Device settings",
+        /*ru*/ "Настройки устройства",
+        /*de*/ "Geräteeinstellungen",
+        /*fr*/ "Réglages de l'appareil",
+        /*pl*/ "Ustawienia urządzenia"];
+    static String get app_control_device_settings => l_app_control_device_settings[_language];
+
+    static const List<String> l_app_control_ri_amplifier = [
+        /*en*/ "Amplifier (RI)",
+        /*ru*/ "Усилитель (RI)",
+        /*de*/ "Verstärker (RI)",
+        /*fr*/ "Amplificateur (RI)",
+        /*pl*/ "Wzmacniacz (RI)"];
+    static String get app_control_ri_amplifier => l_app_control_ri_amplifier[_language];
+
+    static const List<String> l_app_control_ri_cd_player = [
+        /*en*/ "CD Player (RI)",
+        /*ru*/ "CD-проигрыватель (RI)",
+        /*de*/ "CD Player (RI)",
+        /*fr*/ "CD Player (RI)",
+        /*pl*/ "CD Player (RI)"];
+    static String get app_control_ri_cd_player => l_app_control_ri_cd_player[_language];
 
     static const List<String> l_tv_display_mode = [
         /*en*/ "Display mode on device",
@@ -1169,14 +1321,6 @@ Enjoy!"""];
         /*fr*/ "Interrupteur silence audio",
         /*pl*/ "Sets player audio muting wrap-around"];
     static String get audio_muting_toggle => l_audio_muting_toggle[_language];
-
-    static const List<String> l_audio_control = [
-        /*en*/ "Audio control",
-        /*ru*/ "Контроль звука",
-        /*de*/ "Audiosteuerung",
-        /*fr*/ "Réglages Audio",
-        /*pl*/ "Audio control"];
-    static String get audio_control => l_audio_control[_language];
 
     static const List<String> l_tone_bass = [
         /*en*/ "Bass",
@@ -2857,22 +3001,6 @@ Enjoy!"""];
         /*fr*/ "Changer mode d\'écoute",
         /*pl*/ "Zmień tryb na poprzedni"];
     static String get listening_mode_down => l_listening_mode_down[_language];
-
-    static const List<String> l_remote_interface_amp = [
-        /*en*/ "Amplifier (RI)",
-        /*ru*/ "Усилитель (RI)",
-        /*de*/ "Verstärker (RI)",
-        /*fr*/ "Amplificateur (RI)",
-        /*pl*/ "Wzmacniacz (RI)"];
-    static String get remote_interface_amp => l_remote_interface_amp[_language];
-
-    static const List<String> l_remote_interface_cd = [
-        /*en*/ "CD Player (RI)",
-        /*ru*/ "CD-проигрыватель (RI)",
-        /*de*/ "CD Player (RI)",
-        /*fr*/ "CD Player (RI)",
-        /*pl*/ "CD Player (RI)"];
-    static String get remote_interface_cd => l_remote_interface_cd[_language];
 
     static const List<String> l_remote_interface_power = [
         /*en*/ "Power",

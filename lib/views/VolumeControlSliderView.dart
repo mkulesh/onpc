@@ -60,7 +60,7 @@ class VolumeControlSliderView extends UpdatableView
                 tmpVolumeLevel < 0 ? soundControl.volumeLevel : tmpVolumeLevel, state.getActiveZoneInfo);
             controls.add(CustomImageButton.normal(
                 Drawables.volume_audio_control,
-                Strings.audio_control,
+                Strings.app_control_audio_control,
                 text: volumeValid ? volumeLevel : "",
                 onPressed: ()
                 => _showAudioControlDialog(context),

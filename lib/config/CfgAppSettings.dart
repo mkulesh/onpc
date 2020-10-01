@@ -113,25 +113,11 @@ class CfgAppSettings extends CfgModule
     List<AppTabs> get visibleTabs
     => _visibleTabs;
 
-    // Control elements
-    static final String CONTROL_ELEMENTS = "control_elements";
-    final List<CfgTabSettings> _controlElements = List();
+    // Tab settings
+    final List<CfgTabSettings> _tabSettings = List();
 
-    CfgTabSettings controlElements(AppTabs t)
-    => _controlElements[t.index];
-
-    // Remote interface
-    static const Pair<String, bool> RI_AMP = Pair<String, bool>("remote_interface_amp", true);
-    bool _riAmp;
-
-    bool get riAmp
-    => _riAmp;
-
-    static const Pair<String, bool> RI_CD = Pair<String, bool>("remote_interface_cd", true);
-    bool _riCd;
-
-    bool get riCd
-    => _riCd;
+    CfgTabSettings tabSettings(AppTabs t)
+    => t != null ? _tabSettings[t.index] : null;
 
     // methods
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);
@@ -143,8 +129,6 @@ class CfgAppSettings extends CfgModule
         _language = getString(LANGUAGE, doLog: true);
         _textSize = getString(TEXT_SIZE, doLog: true);
         _openedTab = getInt(OPENED_TAB, doLog: true);
-        _riAmp = getBool(RI_AMP, doLog: true);
-        _riCd = getBool(RI_CD, doLog: true);
         _readVisibleTabs();
         _readControlElements();
     }
@@ -180,11 +164,11 @@ class CfgAppSettings extends CfgModule
 
     void _readControlElements()
     {
-        _controlElements.clear();
-        _controlElements.add(CfgTabSettings(
+        _tabSettings.clear();
+        _tabSettings.add(CfgTabSettings(this, AppTabs.LISTEN,
             controlsPortrait: [
                 AppControl.LISTENING_MODE_LIST,
-                AppControl.VOLUME_CONTROL,
+                AppControl.AUDIO_CONTROL,
                 AppControl.TRACK_FILE_INFO,
                 AppControl.TRACK_COVER,
                 AppControl.TRACK_TIME,
@@ -196,45 +180,50 @@ class CfgAppSettings extends CfgModule
             ],
             controlsLandscapeRight: [
                 AppControl.LISTENING_MODE_LIST,
-                AppControl.VOLUME_CONTROL,
+                AppControl.AUDIO_CONTROL,
                 AppControl.TRACK_FILE_INFO,
                 AppControl.TRACK_TIME,
                 AppControl.TRACK_CAPTION,
                 AppControl.PLAY_CONTROL
             ])
         );
-        _controlElements.add(CfgTabSettings(
+        _tabSettings.add(CfgTabSettings(this, AppTabs.MEDIA,
             controlsPortrait: [
                 AppControl.INPUT_SELECTOR,
                 AppControl.MEDIA_LIST,
             ])
         );
-        _controlElements.add(CfgTabSettings(
+        _tabSettings.add(CfgTabSettings(this, AppTabs.SHORTCUTS,
             controlsPortrait: [
                 AppControl.SHORTCUTS,
             ])
         );
-        _controlElements.add(CfgTabSettings(
+        _tabSettings.add(CfgTabSettings(this, AppTabs.DEVICE,
             controlsPortrait: [
                 AppControl.DEVICE_INFO,
                 AppControl.DEVICE_SETTINGS,
             ])
         );
-        _controlElements.add(CfgTabSettings(
+        _tabSettings.add(CfgTabSettings(this, AppTabs.RC,
             controlsPortrait: [
                 AppControl.SETUP_OP_CMD,
-                AppControl.DIVIDER,
+                AppControl.DIVIDER1,
                 AppControl.SETUP_NAV_CMD,
                 AppControl.LISTENING_MODE_BTN
             ])
         );
-        _controlElements.add(CfgTabSettings(
+        _tabSettings.add(CfgTabSettings(this, AppTabs.RI,
             controlsPortrait: [
                 AppControl.RI_AMPLIFIER,
                 AppControl.RI_CD_PLAYER,
             ])
         );
-        AppTabs.values.forEach((c)
-        => Logging.info(this, "  " + CONTROL_ELEMENTS + "[" + Convert.enumToString(c) + "]: " + controlElements(c).toString()));
+        _tabSettings.forEach((c)
+        {
+            if (_visibleTabs.contains(c.tab))
+            {
+                c.read();
+            }
+        });
     }
 }

@@ -42,8 +42,9 @@ class DrawerView extends UpdatableView
     ];
 
     final BuildContext _appContext;
+    final WidgetBuilder tabLayoutBuilder;
 
-    DrawerView(this._appContext, final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    DrawerView(this._appContext, this.tabLayoutBuilder, final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -107,9 +108,14 @@ class DrawerView extends UpdatableView
 
             // Application
             drawerItems.add(CustomDivider());
-            drawerItems.add(CustomTextLabel.small(Strings.drawer_device_application, padding: DrawerDimens.labelPadding));
+            drawerItems.add(CustomTextLabel.small(Strings.drawer_application, padding: DrawerDimens.labelPadding));
+            if (tabLayoutBuilder != null)
+            {
+                drawerItems.add(_buildDrawerItem(
+                    context, Drawables.drawer_tab_layout, Strings.drawer_tab_layout, onTabListener: _openTabLayout));
+            }
             drawerItems.add(_buildDrawerItem(
-                context, Drawables.drawer_app_settings, Strings.drawer_app_settings, onTabListener: _openConfiguration));
+                context, Drawables.drawer_app_settings, Strings.drawer_app_settings, onTabListener: _openAppSettings));
             drawerItems.add(_buildDrawerItem(
                 context, Drawables.drawer_about, Strings.drawer_about, onTabListener: _openAboutScreen));
         }
@@ -231,7 +237,15 @@ class DrawerView extends UpdatableView
         );
     }
 
-    void _openConfiguration(final BuildContext context)
+    void _openTabLayout(final BuildContext context)
+    {
+        Navigator.push(context,MaterialPageRoute(builder: tabLayoutBuilder)).then((_)
+        {
+            stateManager.triggerStateEvent(Configuration.CONFIGURATION_EVENT);
+        });
+    }
+
+    void _openAppSettings(final BuildContext context)
     {
         Navigator.pushNamed(context, Activities.activity_preferences).then((_)
         {

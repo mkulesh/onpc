@@ -31,6 +31,7 @@ import "config/DeviceSelectors.dart";
 import "config/ListeningModes.dart";
 import "config/NetworkServices.dart";
 import "config/PreferencesMain.dart";
+import "config/TabLayoutPortrait.dart";
 import "config/VisibleTabs.dart";
 import "constants/Activities.dart";
 import "constants/Dimens.dart";
@@ -225,7 +226,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             {
                 return Container(
                     margin: ActivityDimens.activityMargins(context),
-                    child: UpdatableWidget(child: AppTabView(_viewContext, _configuration.appSettings.controlElements(tab)))
+                    child: UpdatableWidget(child: AppTabView(_viewContext, _configuration.appSettings.tabSettings(tab)))
                 );
             }).toList(),
         );
@@ -239,7 +240,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(appBarHeight), // desired height of appBar + tabBar
                 child: appBarView),
-            drawer: UpdatableWidget(child: DrawerView(context, _viewContext)),
+            drawer: UpdatableWidget(child:
+                DrawerView(context,
+                (context) => TabLayoutPortrait(_configuration, _configuration.appSettings.tabSettings(_getActiveTab())),
+                _viewContext)),
             body: tabBar
         );
 

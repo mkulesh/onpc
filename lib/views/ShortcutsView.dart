@@ -46,25 +46,27 @@ class ShortcutsView extends UpdatableView
     {
         Logging.info(this, "rebuild widget");
 
+        Widget tab;
         if (configuration.favoriteShortcuts.shortcuts.isEmpty)
         {
             final String message = sprintf(Strings.favorite_shortcut_howto,
                 [CfgAppSettings.getTabName(AppTabs.MEDIA), Strings.favorite_shortcut_create]);
-            return CustomTextLabel.small(message, textAlign: TextAlign.center);
+            tab = CustomTextLabel.small(message, textAlign: TextAlign.center);
         }
+        else
+        {
+            final List<Widget> rows = List<Widget>();
+            configuration.favoriteShortcuts.shortcuts.forEach((s)
+            => rows.add(_buildRow(context, s)));
 
-        final List<Widget> rows = List<Widget>();
-        configuration.favoriteShortcuts.shortcuts.forEach((s)
-        => rows.add(_buildRow(context, s)));
-
-        return Expanded(
-            flex: 1,
-            child: ReorderableListView(
-            onReorder: _onReorder,
+            tab = ReorderableListView(
+                onReorder: _onReorder,
                 reverse: false,
                 scrollDirection: Axis.vertical,
-                children: rows)
-        );
+                children: rows);
+        }
+
+        return Expanded(flex: 1, child: tab);
     }
 
     Widget _buildRow(final BuildContext context, final Shortcut s)

@@ -187,13 +187,13 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         final List<Widget> elements = [
             _buildHeaderLine(td, _headerButtons, visibleItems),
-            CustomDivider(thickness: 1),
+            CustomDivider(),
             Expanded(child: mediaList, flex: 1)
         ];
 
         if (state.isOn && !state.receiverInformation.isReceiverInformation && !state.mediaListState.isSimpleInput && !state.mediaListState.isMediaEmpty)
         {
-            elements.add(CustomDivider(thickness: 1));
+            elements.add(CustomDivider());
             elements.add(_buildTrackButtons());
         }
 
@@ -293,17 +293,20 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     {
         final ThemeData td = Theme.of(context);
         final bool isMoved = cmd is XmlListItemMsg && cmd.getMessageId == state.mediaListState.movedItem;
+        final Widget iconImg = icon == null || icon == Drawables.media_item_unknown ? null :
+            CustomImageButton.normal(
+                icon, null,
+                isEnabled: iconEnabled || isPlaying,
+                isSelected: isPlaying,
+                padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
+            );
+
         final Widget w = PositionedTapDetector(
             key: Key(reorderId),
             child: ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
                 dense: configuration.appSettings.textSize != "huge",
-                leading: CustomImageButton.normal(
-                    icon, null,
-                    isEnabled: iconEnabled || isPlaying,
-                    isSelected: isPlaying,
-                    padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
-                ),
+                leading: iconImg,
                 title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
                 onTap: ()
                 {
@@ -637,6 +640,17 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     Widget _buildHeaderLine(final ThemeData td, final MediaListButtons buttons, final int numberOfItems)
     {
         final List<Widget> elements = List();
+
+        final OperationCommandMsg commandTopMsg = OperationCommandMsg.output(
+            ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.TOP);
+
+        elements.add(CustomImageButton.small(
+            commandTopMsg.getValue.icon,
+            commandTopMsg.getValue.description,
+            onPressed: ()
+            => stateManager.sendMessage(commandTopMsg, waitingForData: true),
+            isEnabled: state.isOn && !state.mediaListState.isTopLayer()
+        ));
 
         Widget title = CustomTextLabel.small(
             _buildTitle(numberOfItems),
