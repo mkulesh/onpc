@@ -59,11 +59,11 @@ class ShortcutsView extends UpdatableView
             configuration.favoriteShortcuts.shortcuts.forEach((s)
             => rows.add(_buildRow(context, s)));
 
-            tab = ReorderableListView(
+            tab = Scrollbar(child: ReorderableListView(
                 onReorder: _onReorder,
                 reverse: false,
                 scrollDirection: Axis.vertical,
-                children: rows);
+                children: rows));
         }
 
         return Expanded(flex: 1, child: tab);

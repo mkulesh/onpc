@@ -205,7 +205,7 @@ class _PreferencesMainState extends State<PreferencesMain>
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, null))),
-            body: DropdownButtonHideUnderline(child: PreferencePage(elements))
+            body: DropdownButtonHideUnderline(child: Scrollbar(child: PreferencePage(elements)))
         );
 
         return Theme(data: td, child: scaffold);

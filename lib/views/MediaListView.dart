@@ -21,6 +21,7 @@ import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../dialogs/PopupManager.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
@@ -798,6 +799,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
             shortcutCfg.updateShortcut(shortcut, shortcut.alias);
             PopupManager.showToast(Strings.favorite_shortcut_added);
+            stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
         }
         else
         {

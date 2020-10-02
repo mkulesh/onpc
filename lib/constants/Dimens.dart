@@ -65,7 +65,7 @@ class ActivityDimens
     = EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0);
 
     static const EdgeInsetsGeometry _activityMarginsLand
-    = EdgeInsets.only(left: 64.0, right: 64.0, top: 8.0, bottom: 8.0);
+    = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     static EdgeInsetsGeometry activityMargins(BuildContext context)
     => DimensTransform.rotate(context, _activityMarginsPort, _activityMarginsLand);
