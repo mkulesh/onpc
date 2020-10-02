@@ -48,7 +48,7 @@ class VolumeControlSliderView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final SoundControlState soundControl = state.soundControlState;
         final List<Widget> controls = List<Widget>();

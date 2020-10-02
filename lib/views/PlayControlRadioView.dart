@@ -36,7 +36,7 @@ class PlayControlRadioView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final List<ZonedMessage> cmd = [
             PresetCommandMsg.outputCmd(state.getActiveZone, PresetCommand.DOWN),

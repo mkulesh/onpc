@@ -49,7 +49,7 @@ class _TabLayoutPortraitState extends State<TabLayoutPortrait>
     @override
     Widget build(BuildContext context)
     {
-        Logging.info(this, "Rebuild widget");
+        Logging.logRebuild(this);
         return CheckableItem.buildList(context,
             _items.map<Widget>(_buildListItem).toList(),
             Strings.drawer_tab_layout + " (" + CfgAppSettings.getTabName(_tabSettings.tab) + ")",

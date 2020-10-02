@@ -44,7 +44,7 @@ class ShortcutsView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         Widget tab;
         if (configuration.favoriteShortcuts.shortcuts.isEmpty)

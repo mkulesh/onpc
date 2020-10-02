@@ -70,7 +70,7 @@ class DeviceSettingsView extends UpdatableView
             return SizedBox.shrink();
         }
 
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final List<TableRow> rows = List();
 

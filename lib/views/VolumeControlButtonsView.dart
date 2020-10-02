@@ -42,7 +42,7 @@ class VolumeControlButtonsView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final SoundControlState soundControl = state.soundControlState;
         final bool volumeValid = state.isOn && soundControl.volumeLevel != MasterVolumeMsg.NO_LEVEL;

@@ -31,8 +31,8 @@ import "config/DeviceSelectors.dart";
 import "config/ListeningModes.dart";
 import "config/NetworkServices.dart";
 import "config/PreferencesMain.dart";
-import "config/TabLayoutPortrait.dart";
 import "config/TabLayoutLandscape.dart";
+import "config/TabLayoutPortrait.dart";
 import "config/VisibleTabs.dart";
 import "constants/Activities.dart";
 import "constants/Dimens.dart";
@@ -45,10 +45,11 @@ import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
 import "iscp/scripts/AutoPower.dart";
 import "iscp/scripts/RequestListeningMode.dart";
-import "views/AppTabView.dart";
+import "utils/Convert.dart";
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
+import "views/AppTabView.dart";
 import "views/DrawerView.dart";
 import "views/UpdatableView.dart";
 
@@ -213,7 +214,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     @override
     Widget build(BuildContext context)
     {
-        Logging.info(this.widget, "Rebuild widget");
+        Logging.logRebuild(this.widget);
 
         final ThemeData td = _viewContext.getThemeData();
 
@@ -359,7 +360,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (!_stateManager.isConnected && _configuration.isDeviceValid)
         {
             Logging.info(this.widget, "Use stored connection data: "
-                + Logging.ipToString(_configuration.getDeviceName, _configuration.getDevicePort.toString()));
+                + Convert.ipToString(_configuration.getDeviceName, _configuration.getDevicePort.toString()));
             _connectionState = ConnectionState.CONNECTING_TO_SAVED;
             _stateManager.connect(_configuration.getDeviceName, _configuration.getDevicePort,
                 manualHost: _configuration.getDeviceName);

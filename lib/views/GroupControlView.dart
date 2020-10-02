@@ -50,7 +50,7 @@ class GroupControlView extends UpdatableView
         }
 
         final DeviceInfo myDevice = stateManager.sourceDevice;
-        Logging.info(this, "rebuild widget for " + myDevice.getDeviceName(false));
+        Logging.logRebuild(this);
 
         // Available devices and maximum groupId
         final List<DeviceInfo> devices = List();

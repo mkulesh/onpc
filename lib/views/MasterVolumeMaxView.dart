@@ -36,7 +36,7 @@ class MasterVolumeMaxView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final Zone zoneInfo = state.getActiveZoneInfo;
         final int maxVolume = state.soundControlState.getVolumeMax(zoneInfo);

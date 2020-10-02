@@ -39,6 +39,17 @@ class Logging
     static bool get isDebugBanner
     => true;
 
+    static bool get isRebuildWidgetLog
+    => false;
+
+    static void logRebuild(Object o)
+    {
+        if (isRebuildWidgetLog)
+        {
+            info(o, "rebuild widget");
+        }
+    }
+
     static void info(Object o, String text)
     {
         if (isEnabled)
@@ -95,7 +106,4 @@ class Logging
         }
         return str.toString();
     }
-
-    static String ipToString(String host, String port)
-    => host + ":" + port;
 }

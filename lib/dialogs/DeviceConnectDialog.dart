@@ -18,7 +18,7 @@ import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
-import "../utils/Logging.dart";
+import "../utils/Convert.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomCheckbox.dart";
 import "../widgets/CustomDialogEditField.dart";
@@ -113,7 +113,7 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                         final int port1 = int.tryParse(_port.text);
                         final int port2 = port1 == null ? Configuration.SERVER_PORT.item2 : port1;
                         final String alias = _saveEnabled ?
-                            (_alias.text.isEmpty ? Logging.ipToString(host, port2.toString()) : _alias.text) : null;
+                            (_alias.text.isEmpty ? Convert.ipToString(host, port2.toString()) : _alias.text) : null;
                         viewContext.stateManager.connect(host, port2, manualHost: host, manualAlias: alias);
                     }),
             ]

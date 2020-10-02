@@ -69,7 +69,7 @@ class _TabLayoutLandscapeState extends State<TabLayoutLandscape>
     @override
     Widget build(BuildContext context)
     {
-        Logging.info(this, "Rebuild widget");
+        Logging.logRebuild(this);
 
         final Widget body = Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -41,7 +41,7 @@ class InputSelectorView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final List<Widget> buttons = List<Widget>();
 

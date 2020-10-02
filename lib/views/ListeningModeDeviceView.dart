@@ -39,7 +39,7 @@ class ListeningModeDeviceView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
         if (!state.receiverInformation.isListeningModeControl())
         {
             return SizedBox.shrink();

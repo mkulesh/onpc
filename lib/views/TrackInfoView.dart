@@ -73,7 +73,7 @@ class TrackInfoView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-        Logging.info(this, "rebuild widget, isPortrait=" + isPortrait.toString());
+        Logging.logRebuild(this);
         final ThemeData td = Theme.of(context);
 
         // File format info

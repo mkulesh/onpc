@@ -15,4 +15,7 @@ class Convert
 {
     static String enumToString<T> (T val)
     => val.toString().split('.').last;
+
+    static String ipToString(String host, String port)
+    => host + ":" + port;
 }

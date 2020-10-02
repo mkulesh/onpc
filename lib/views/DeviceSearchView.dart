@@ -39,7 +39,7 @@ class DeviceSearchView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final List<Widget> controls = List<Widget>();
         final List<DeviceInfo> devices = state.multiroomState.getSortedDevices().where((di) => di.responses > 0).toList();

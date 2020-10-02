@@ -45,7 +45,7 @@ class AppBarView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
         final ThemeData td = Theme.of(context);
 
         // Logo

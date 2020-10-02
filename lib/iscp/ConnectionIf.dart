@@ -11,7 +11,7 @@
  * Public License along with this program.
  */
 
-import "../utils/Logging.dart";
+import "../utils/Convert.dart";
 
 mixin ConnectionIf
 {
@@ -43,7 +43,7 @@ mixin ConnectionIf
 
     // Helper methods
     String get getHostAndPort
-    => Logging.ipToString(_host, _port.toString());
+    => Convert.ipToString(_host, _port.toString());
 
     void setHostAndPort(ConnectionIf connection)
     {

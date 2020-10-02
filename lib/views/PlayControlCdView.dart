@@ -35,7 +35,7 @@ class PlayControlCdView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget for CD control");
+        Logging.logRebuild(this);
 
         final bool isPaused = [PlayStatus.STOP, PlayStatus.PAUSE].contains(state.playbackState.playStatus);
         final List<CdPlayerOperationCommand> cmd = [

@@ -102,7 +102,7 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
     Widget createView(BuildContext context, VoidCallback _updateCallback)
     {
         _initData();
-        Logging.info(this.widget, "rebuild widget");
+        Logging.logRebuild(this.widget);
 
         final ThemeData td = viewContext.getThemeData();
 

@@ -76,7 +76,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this.widget, "rebuild widget");
+        Logging.logRebuild(this.widget);
 
         if (!state.receiverInformation.isFriendlyName && !state.receiverInformation.isReceiverInformation)
         {

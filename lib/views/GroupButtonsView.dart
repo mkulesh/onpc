@@ -44,7 +44,7 @@ class GroupButtonsView extends UpdatableView
         }
 
         final DeviceInfo myDevice = stateManager.sourceDevice;
-        Logging.info(this, "rebuild widget for " + myDevice.getDeviceName(false));
+        Logging.logRebuild(this);
 
         final int zone = MultiroomDeviceInformationMsg.DEFAULT_ZONE;
         final EnumItem<ChannelType> channelType = myDevice.getChannelType(zone);

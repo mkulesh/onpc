@@ -35,7 +35,7 @@ class AmplifierControlView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        Logging.info(this, "rebuild widget");
+        Logging.logRebuild(this);
 
         final Widget image = Padding(
             padding: ActivityDimens.coverImagePadding(context),
