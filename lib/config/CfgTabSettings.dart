@@ -130,4 +130,27 @@ class CfgTabSettings
         Logging.info(this, "  " + par + ": " + res.toString());
         return res;
     }
+
+    void createCheckableItems(final List<CheckableItem> _items, final AppControlGroup type, final List<AppControl> actualItems)
+    {
+        final List<String> defItems = List();
+        CfgTabSettings.ValueEnum.values.forEach((m) => defItems.add(m.code));
+        // Add currently selected controls on the top
+        actualItems.forEach((c)
+        {
+            final EnumItem<AppControl> m = CfgTabSettings.ValueEnum.valueByKey(c);
+            _items.add(CheckableItem(m.code, m.description, true));
+        });
+        // Add other non-selected controls
+        for (CheckableItem sp in CheckableItem.readFromPreference(configuration, getParameterName(tab, type), defItems))
+        {
+            CfgTabSettings.ValueEnum.values.forEach((m)
+            {
+                if (m.code == sp.code && !actualItems.contains(m.key))
+                {
+                    _items.add(CheckableItem(m.code, m.description, false));
+                }
+            });
+        }
+    }
 }

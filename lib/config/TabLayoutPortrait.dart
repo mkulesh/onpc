@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 
 import "../config/CfgTabSettings.dart";
 import "../constants/Strings.dart";
-import "../iscp/messages/EnumParameterMsg.dart";
 import "../utils/Logging.dart";
 import "CfgAppSettings.dart";
 import 'CfgTabSettings.dart';
@@ -44,30 +43,7 @@ class _TabLayoutPortraitState extends State<TabLayoutPortrait>
     _TabLayoutPortraitState(this._configuration, this._tabSettings)
     {
         _parameter = CfgTabSettings.getParameterName(_tabSettings.tab, AppControlGroup.PORTRAIT);
-        _createItems();
-    }
-
-    void _createItems()
-    {
-        final List<String> defItems = List();
-        CfgTabSettings.ValueEnum.values.forEach((m) => defItems.add(m.code));
-        // Add currently selected controls on the top
-        _tabSettings.controlsPortrait.forEach((c)
-        {
-            final EnumItem<AppControl> m = CfgTabSettings.ValueEnum.valueByKey(c);
-            _items.add(CheckableItem(m.code, m.description, true));
-        });
-        // Add other non-selected controls
-        for (CheckableItem sp in CheckableItem.readFromPreference(_configuration, _parameter, defItems))
-        {
-            CfgTabSettings.ValueEnum.values.forEach((m)
-            {
-                if (m.code == sp.code && !_tabSettings.controlsPortrait.contains(m.key))
-                {
-                    _items.add(CheckableItem(m.code, m.description, false));
-                }
-            });
-        }
+        _tabSettings.createCheckableItems(_items, AppControlGroup.PORTRAIT, _tabSettings.controlsPortrait);
     }
 
     @override

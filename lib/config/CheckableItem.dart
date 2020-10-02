@@ -116,28 +116,37 @@ class CheckableItem
         return retValue;
     }
 
-    static Widget buildList(BuildContext context, List<Widget> rows, String title, ReorderCallback _onReorder, final Configuration _configuration)
+    static Widget buildPanel(List<Widget> rows, ReorderCallback onReorder, {final ScrollController scrollController})
+    {
+        return Scrollbar(
+            child: ReorderableListView(
+                onReorder: onReorder,
+                reverse: false,
+                scrollController: scrollController,
+                scrollDirection: Axis.vertical,
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                children: rows,
+            )
+        );
+    }
+
+    static Widget buildScaffold(BuildContext context, String title, final Widget body, final Configuration configuration)
     {
         final ThemeData td = BaseAppTheme.getThemeData(
-            _configuration.appSettings.theme, _configuration.appSettings.language, _configuration.appSettings.textSize);
+            configuration.appSettings.theme, configuration.appSettings.language, configuration.appSettings.textSize);
 
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, title))),
-            body: Scrollbar(
-                child: ReorderableListView(
-                    onReorder: _onReorder,
-                    reverse: false,
-                    scrollDirection: Axis.vertical,
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    children: rows,
-                )
-            ),
+            body: body
         );
 
         return Theme(data: td, child: scaffold);
     }
+
+    static Widget buildList(BuildContext context, List<Widget> rows, String title, ReorderCallback onReorder, final Configuration configuration)
+    => buildScaffold(context, title, buildPanel(rows, onReorder), configuration);
 
     Widget buildListItem(ValueChanged<bool> _onChanged)
     {

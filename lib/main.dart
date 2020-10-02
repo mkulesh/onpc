@@ -32,6 +32,7 @@ import "config/ListeningModes.dart";
 import "config/NetworkServices.dart";
 import "config/PreferencesMain.dart";
 import "config/TabLayoutPortrait.dart";
+import "config/TabLayoutLandscape.dart";
 import "config/VisibleTabs.dart";
 import "constants/Activities.dart";
 import "constants/Dimens.dart";
@@ -241,8 +242,13 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 preferredSize: Size.fromHeight(appBarHeight), // desired height of appBar + tabBar
                 child: appBarView),
             drawer: UpdatableWidget(child:
-                DrawerView(context,
-                (context) => TabLayoutPortrait(_configuration, _configuration.appSettings.tabSettings(_getActiveTab())),
+                DrawerView(context, (context)
+                {
+                    final bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
+                    return portrait ?
+                        TabLayoutPortrait(_configuration, _configuration.appSettings.tabSettings(_getActiveTab())) :
+                        TabLayoutLandscape(_configuration, _configuration.appSettings.tabSettings(_getActiveTab()));
+                },
                 _viewContext)),
             body: tabBar
         );

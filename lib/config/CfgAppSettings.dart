@@ -190,19 +190,33 @@ class CfgAppSettings extends CfgModule
         _tabSettings.add(CfgTabSettings(this, AppTabs.MEDIA,
             controlsPortrait: [
                 AppControl.INPUT_SELECTOR,
-                AppControl.MEDIA_LIST,
-            ])
+                AppControl.MEDIA_LIST
+            ],
+            controlsLandscapeLeft: [
+                AppControl.INPUT_SELECTOR,
+                AppControl.MEDIA_LIST
+            ],
+            controlsLandscapeRight: [])
         );
         _tabSettings.add(CfgTabSettings(this, AppTabs.SHORTCUTS,
             controlsPortrait: [
-                AppControl.SHORTCUTS,
-            ])
+                AppControl.SHORTCUTS
+            ],
+            controlsLandscapeLeft: [
+                AppControl.SHORTCUTS
+            ],
+            controlsLandscapeRight: [])
         );
         _tabSettings.add(CfgTabSettings(this, AppTabs.DEVICE,
             controlsPortrait: [
                 AppControl.DEVICE_INFO,
-                AppControl.DEVICE_SETTINGS,
-            ])
+                AppControl.DEVICE_SETTINGS
+            ],
+            controlsLandscapeLeft: [
+                AppControl.DEVICE_INFO,
+                AppControl.DEVICE_SETTINGS
+            ],
+            controlsLandscapeRight: [])
         );
         _tabSettings.add(CfgTabSettings(this, AppTabs.RC,
             controlsPortrait: [
@@ -210,13 +224,25 @@ class CfgAppSettings extends CfgModule
                 AppControl.DIVIDER1,
                 AppControl.SETUP_NAV_CMD,
                 AppControl.LISTENING_MODE_BTN
-            ])
+            ],
+            controlsLandscapeLeft: [
+                AppControl.SETUP_OP_CMD,
+                AppControl.DIVIDER1,
+                AppControl.SETUP_NAV_CMD,
+                AppControl.LISTENING_MODE_BTN
+            ],
+            controlsLandscapeRight: [])
         );
         _tabSettings.add(CfgTabSettings(this, AppTabs.RI,
             controlsPortrait: [
                 AppControl.RI_AMPLIFIER,
-                AppControl.RI_CD_PLAYER,
-            ])
+                AppControl.RI_CD_PLAYER
+            ],
+            controlsLandscapeLeft: [
+                AppControl.RI_AMPLIFIER,
+                AppControl.RI_CD_PLAYER
+            ],
+            controlsLandscapeRight: [])
         );
         _tabSettings.forEach((c)
         {

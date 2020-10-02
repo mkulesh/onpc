@@ -71,7 +71,7 @@ class AppTabView extends UpdatableView
         final List<AppControl> secondColumn = _getSecondColumn(isPortrait);
 
         Widget tab;
-        if (secondColumn == null)
+        if (secondColumn.isEmpty)
         {
             final List<Widget> views = List();
             _addWidgets(context, firstColumn, views);
@@ -82,30 +82,53 @@ class AppTabView extends UpdatableView
         }
         else
         {
+            // collect all widgets
             final List<Widget> leftViews = List();
             _addWidgets(context, firstColumn, leftViews);
-            expandable = expandable || _isExpandable(firstColumn);
-            focusable = focusable || _isFocusable(firstColumn);
+            final bool leftExpandable = _isExpandable(firstColumn);
 
             final List<Widget> rightViews = List();
             _addWidgets(context, secondColumn, rightViews);
-            expandable = expandable || _isExpandable(secondColumn);
-            focusable = focusable || _isFocusable(secondColumn);
+            final bool rightExpandable = _isExpandable(secondColumn);
+
+            // build two columns:
+            // - If one column is expandable, other column will be stretched
+            Widget leftColumn = Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: leftViews);
+            Widget rightColumn = Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: rightViews);
+
+            // - If there are no expandable column, both columns are scrollable with the same width
+            final Map<int, FlexColumnWidth> columnWidths = Map();
+            columnWidths[0] = FlexColumnWidth(10);
+            columnWidths[1] = FlexColumnWidth(1);
+            if (!leftExpandable && !rightExpandable)
+            {
+                leftColumn = SingleChildScrollView(scrollDirection: Axis.vertical, child: leftColumn);
+                rightColumn = SingleChildScrollView(scrollDirection: Axis.vertical, child: rightColumn);
+                columnWidths[2] = FlexColumnWidth(10);
+            }
+            else
+            {
+                columnWidths[2] = FlexColumnWidth(20);
+            }
 
             tab = Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                    Expanded(flex: 10, child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: leftViews)),
-                    Expanded(flex: 1, child: SizedBox.shrink()),
-                    Expanded(flex: 20, child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: rightViews))
+                    Expanded(flex: columnWidths[0].value.toInt(), child: leftColumn),
+                    Expanded(flex: columnWidths[1].value.toInt(), child: VerticalDivider(
+                        color: Theme.of(context).disabledColor)),
+                    Expanded(flex: columnWidths[2].value.toInt(), child: rightColumn)
                 ]
             );
+
+            focusable = focusable || _isFocusable(firstColumn) || _isFocusable(secondColumn);
+            expandable = true;
         }
 
         if (focusable)
@@ -130,10 +153,10 @@ class AppTabView extends UpdatableView
     }
 
     List<AppControl> _getFirstColumn(bool isPortrait)
-    => (isPortrait || (controlsLandscapeLeft == null && controlsLandscapeRight == null)) ? controlsPortrait : controlsLandscapeLeft;
+    => (isPortrait) ? controlsPortrait : controlsLandscapeLeft;
 
     List<AppControl> _getSecondColumn(bool isPortrait)
-    => (!isPortrait) ? controlsLandscapeRight : null;
+    => (!isPortrait) ? controlsLandscapeRight : List();
 
     bool _isExpandable(final List<AppControl> types)
     => types.firstWhere((c) => EXPANDABLE.contains(c), orElse: () => null) != null;
@@ -174,7 +197,7 @@ class AppTabView extends UpdatableView
                 return UpdatableWidget(child: TrackFileInfoView(viewContext));
 
             case AppControl.TRACK_COVER:
-                return UpdatableWidget(child: TrackCoverView(viewContext, flex: 1));
+                return UpdatableWidget(child: TrackCoverView(viewContext));
 
             case AppControl.TRACK_TIME:
                 return UpdatableWidget(child: TrackTimeView(viewContext));
