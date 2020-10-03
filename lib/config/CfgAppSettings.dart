@@ -113,6 +113,9 @@ class CfgAppSettings extends CfgModule
     List<AppTabs> get visibleTabs
     => _visibleTabs;
 
+    bool get isSingleTab
+    => _visibleTabs.length == 1;
+
     // Tab settings
     final List<CfgTabSettings> _tabSettings = List();
 

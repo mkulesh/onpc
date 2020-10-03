@@ -73,6 +73,13 @@ class AppBarView extends UpdatableView
 
         final double tabBarHeight = ActivityDimens.tabBarHeight(context);
 
+        final Widget tabBar = configuration.appSettings.isSingleTab ? null : PreferredSize(
+            preferredSize: Size.fromHeight(tabBarHeight), // desired height of tabBar
+            child: SizedBox(
+                height: tabBarHeight,
+                child: _buildTabs(td))
+        );
+
         return AppBar(
             title: CustomActivityTitle(Strings.app_short_name, subTitle),
             actions: <Widget>[
@@ -86,11 +93,7 @@ class AppBarView extends UpdatableView
                         stateManager.sendMessage(PowerStatusMsg.output(state.getActiveZone, p));
                     }),
             ],
-            bottom: PreferredSize(
-                preferredSize: Size.fromHeight(tabBarHeight), // desired height of tabBar
-                child: SizedBox(
-                    height: tabBarHeight,
-                    child: _buildTabs(td)))
+            bottom: tabBar
         );
     }
 

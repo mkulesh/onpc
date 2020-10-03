@@ -233,7 +233,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
             }).toList(),
         );
 
-        final double appBarHeight = ActivityDimens.appBarHeight(context) + ActivityDimens.tabBarHeight(context);
+        double appBarHeight = ActivityDimens.appBarHeight(context);
+        if (!_configuration.appSettings.isSingleTab)
+        {
+            appBarHeight += ActivityDimens.tabBarHeight(context);
+        }
 
         final Widget scaffold = Scaffold(
             // Disable activity resize when a software keyboard is open:
