@@ -655,7 +655,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         Widget title = CustomTextLabel.small(
             _buildTitle(numberOfItems),
-            padding: EdgeInsets.only(left: MediaListDimens.headerPadding));
+            padding: ActivityDimens.headerPadding);
         if (state.isOn && !state.mediaListState.isTopLayer())
         {
             title = InkWell(

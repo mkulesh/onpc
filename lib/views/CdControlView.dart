@@ -19,7 +19,6 @@ import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/CdPlayerOperationCommandMsg.dart";
 import "../utils/Logging.dart";
-import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextButton.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -49,8 +48,9 @@ class CdControlView extends UpdatableView
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                CustomTextLabel.small(Strings.app_control_ri_cd_player),
-                CustomDivider(),
+                CustomTextLabel.small(Strings.app_control_ri_cd_player,
+                    padding: ActivityDimens.headerPaddingTop,
+                    textAlign: TextAlign.center),
                 image,
                 _buildTopTable(),
                 CustomTextLabel.small(Strings.remote_interface_playback, textAlign: TextAlign.center),

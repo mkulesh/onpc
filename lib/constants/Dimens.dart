@@ -94,6 +94,12 @@ class ActivityDimens
     static EdgeInsetsGeometry coverImagePadding(BuildContext context)
     => EdgeInsets.all(DimensTransform.rotate(context, _coverImagePadding, _coverImagePadding));
 
+    static EdgeInsetsGeometry get headerPadding
+    => EdgeInsets.symmetric(vertical: DimensTransform.scale(10));
+
+    static EdgeInsetsGeometry get headerPaddingTop
+    => EdgeInsets.only(top: DimensTransform.scale(10));
+
     static const EdgeInsetsGeometry noPadding
     = EdgeInsets.all(0);
 }
@@ -135,8 +141,8 @@ class ButtonDimens
     static double get textButtonFontSize
     => DimensTransform.scale(15);
 
-    static double get textButtonPadding
-    => DimensTransform.scale(8);
+    static EdgeInsetsGeometry get textButtonPadding
+    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(8), vertical: DimensTransform.scale(10));
 
     static EdgeInsetsGeometry get smallButtonPadding
     => EdgeInsets.all(DimensTransform.scale(4));
@@ -144,10 +150,6 @@ class ButtonDimens
 
 class MediaListDimens
 {
-    // Padding of header line
-    static double get headerPadding
-    => DimensTransform.scale(8.0);
-
     // Padding of media item
     static double get itemPadding
     => DimensTransform.scale(5);
@@ -174,13 +176,6 @@ class DialogDimens
     // Top and bottom padding of TextField
     static EdgeInsetsGeometry get textFieldPadding
     => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0), horizontal: DimensTransform.scale(0));
-}
-
-class DeviceInfoDimens
-{
-    // Row padding used as top and bottom padding
-    static EdgeInsetsGeometry get rowPadding
-    => EdgeInsets.symmetric(vertical: DimensTransform.scale(12));
 }
 
 class ControlViewDimens

@@ -210,39 +210,45 @@ class CfgAppSettings extends CfgModule
         _tabSettings.add(CfgTabSettings(this, AppTabs.DEVICE,
             controlsPortrait: [
                 AppControl.DEVICE_INFO,
+                AppControl.DIVIDER1,
                 AppControl.DEVICE_SETTINGS
             ],
             controlsLandscapeLeft: [
-                AppControl.DEVICE_INFO,
-                AppControl.DEVICE_SETTINGS
+                AppControl.DEVICE_INFO
             ],
-            controlsLandscapeRight: [])
+            controlsLandscapeRight: [
+                AppControl.DEVICE_SETTINGS
+            ])
         );
         _tabSettings.add(CfgTabSettings(this, AppTabs.RC,
             controlsPortrait: [
                 AppControl.SETUP_OP_CMD,
                 AppControl.DIVIDER1,
                 AppControl.SETUP_NAV_CMD,
+                AppControl.DIVIDER2,
                 AppControl.LISTENING_MODE_BTN
             ],
             controlsLandscapeLeft: [
                 AppControl.SETUP_OP_CMD,
                 AppControl.DIVIDER1,
-                AppControl.SETUP_NAV_CMD,
                 AppControl.LISTENING_MODE_BTN
             ],
-            controlsLandscapeRight: [])
+            controlsLandscapeRight: [
+                AppControl.SETUP_NAV_CMD
+            ])
         );
         _tabSettings.add(CfgTabSettings(this, AppTabs.RI,
             controlsPortrait: [
                 AppControl.RI_AMPLIFIER,
+                AppControl.DIVIDER1,
                 AppControl.RI_CD_PLAYER
             ],
             controlsLandscapeLeft: [
-                AppControl.RI_AMPLIFIER,
-                AppControl.RI_CD_PLAYER
+                AppControl.RI_AMPLIFIER
             ],
-            controlsLandscapeRight: [])
+            controlsLandscapeRight: [
+                AppControl.RI_CD_PLAYER
+            ])
         );
         _tabSettings.forEach((c)
         {

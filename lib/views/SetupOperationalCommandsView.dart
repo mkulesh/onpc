@@ -70,7 +70,9 @@ class SetupOperationalCommandsView extends UpdatableView
             =>
                 cells.add(
                     InkWell(
-                        child: CustomTextLabel.small(c.getValue.description, textAlign: TextAlign.center),
+                        child: CustomTextLabel.small(c.getValue.description,
+                            padding: ActivityDimens.headerPaddingTop,
+                            textAlign: TextAlign.center),
                         onTap: ()
                         => enabled ? stateManager.sendMessage(c) : null
                     )

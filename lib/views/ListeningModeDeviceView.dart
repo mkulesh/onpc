@@ -20,7 +20,6 @@ import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
-import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
@@ -45,8 +44,6 @@ class ListeningModeDeviceView extends UpdatableView
             return SizedBox.shrink();
         }
 
-        final EdgeInsetsGeometry activityMargins = ActivityDimens.activityMargins(context);
-
         final Widget currentMode = state.isOn ?
         CustomTextLabel.small(state.soundControlState.listeningMode.description) : SizedBox.shrink();
 
@@ -54,10 +51,9 @@ class ListeningModeDeviceView extends UpdatableView
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                CustomDivider(height: activityMargins.vertical),
                 Row(mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CustomTextLabel.small(Strings.pref_listening_modes)]
+                    children: [CustomTextLabel.small(Strings.pref_listening_modes, padding: ActivityDimens.headerPadding)]
                 ),
                 Row(mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,

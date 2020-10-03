@@ -42,7 +42,7 @@ class CustomTextButton extends StatelessWidget
 
         final Widget result = MaterialButton(
             child: Text(text, style: td.textTheme.button.copyWith(color: color)),
-            padding: padding ?? EdgeInsets.all(ButtonDimens.textButtonPadding),
+            padding: padding ?? ButtonDimens.textButtonPadding,
             color: td.backgroundColor,
             textColor: color,
             elevation: 0,

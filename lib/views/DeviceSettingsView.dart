@@ -30,7 +30,6 @@ import "../iscp/messages/SpeakerACommandMsg.dart";
 import "../iscp/messages/SpeakerBCommandMsg.dart";
 import "../iscp/state/DeviceSettingsState.dart";
 import "../utils/Logging.dart";
-import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
@@ -226,9 +225,7 @@ class DeviceSettingsView extends UpdatableView
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                CustomTextLabel.small(Strings.device_settings,
-                    padding: EdgeInsets.only(top: DeviceInfoDimens.rowPadding.vertical / 2)),
-                CustomDivider(),
+                CustomTextLabel.small(Strings.device_settings, padding: ActivityDimens.headerPadding),
                 table
             ]);
     }
@@ -239,7 +236,7 @@ class DeviceSettingsView extends UpdatableView
     {
         final bool isEnabled = stateManager.state.isOn;
 
-        final Widget rowTitle = CustomTextLabel.small(title, padding: DeviceInfoDimens.rowPadding);
+        final Widget rowTitle = CustomTextLabel.small(title, padding: ActivityDimens.headerPadding);
 
         final Widget rowValue = Row(
             mainAxisSize: MainAxisSize.max,

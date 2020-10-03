@@ -50,7 +50,7 @@ class GroupButtonsView extends UpdatableView
         final EnumItem<ChannelType> channelType = myDevice.getChannelType(zone);
         final EnumItem<RoleType> roleType = myDevice.groupMsg.getRole(zone);
         return Padding(
-            padding: EdgeInsets.all(ButtonDimens.textButtonPadding),
+            padding: ButtonDimens.smallButtonPadding,
             child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,

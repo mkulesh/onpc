@@ -19,7 +19,6 @@ import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AmpOperationCommandMsg.dart";
 import "../utils/Logging.dart";
-import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
@@ -48,8 +47,9 @@ class AmplifierControlView extends UpdatableView
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                CustomTextLabel.small(Strings.app_control_ri_amplifier),
-                CustomDivider(),
+                CustomTextLabel.small(Strings.app_control_ri_amplifier,
+                    padding: ActivityDimens.headerPaddingTop,
+                    textAlign: TextAlign.center),
                 image,
                 _buildTable()
             ]);

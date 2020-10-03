@@ -14,7 +14,6 @@
 import "package:flutter/material.dart";
 
 import "../config/CfgTabSettings.dart";
-import "../constants/Dimens.dart";
 import "../widgets/CustomDivider.dart";
 import "AmplifierControlView.dart";
 import "CdControlView.dart";
@@ -185,7 +184,7 @@ class AppTabView extends UpdatableView
             case AppControl.DIVIDER3:
             case AppControl.DIVIDER4:
             case AppControl.DIVIDER5:
-                return CustomDivider(height: ActivityDimens.activityMargins(context).vertical);
+                return CustomDivider();
 
             case AppControl.LISTENING_MODE_LIST:
                 return UpdatableWidget(child: ListeningModeView(viewContext));

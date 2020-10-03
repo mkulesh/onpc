@@ -24,7 +24,6 @@ import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
-import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -213,10 +212,14 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
                 Expanded(
-                    child: CustomTextLabel.small(Strings.device_info, textAlign:TextAlign.left),
+                    child: CustomTextLabel.small(Strings.device_info,
+                        padding: ActivityDimens.headerPadding,
+                        textAlign: TextAlign.left),
                     flex: 1),
                 Expanded(
-                    child: CustomTextLabel.small(stateManager.getConnection().getHostAndPort, textAlign:TextAlign.right),
+                    child: CustomTextLabel.small(stateManager.getConnection().getHostAndPort,
+                        padding: ActivityDimens.headerPadding,
+                        textAlign: TextAlign.right),
                     flex: 1),
             ]);
 
@@ -224,13 +227,12 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
                 title,
-                CustomDivider(),
                 table
             ]);
     }
 
     Widget _buildRowTitle(final String title)
-    => CustomTextLabel.small(title, padding: DeviceInfoDimens.rowPadding);
+    => CustomTextLabel.small(title, padding: ActivityDimens.headerPadding);
 
     void _submitDeviceName(BuildContext context, final bool isEnabled)
     {
