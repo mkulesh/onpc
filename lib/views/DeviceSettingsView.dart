@@ -146,7 +146,7 @@ class DeviceSettingsView extends UpdatableView
         if (zone < 2)
         {
             final _SpeakerABStatus spState = _getSpeakerABStatus(ds.speakerA.key, ds.speakerB.key);
-            // OFF -> A_ONLY -> B_ONLY -> ON -> A_ONLY -> B_ONLY -> ON -> A_ONLY -> ...
+            // OFF -> A_ONLY -> B_ONLY -> ON -> OFF (optional) -> A_ONLY -> B_ONLY -> ON -> ...
             switch (spState)
             {
                 case _SpeakerABStatus.OFF: // OFF -> A_ONLY
@@ -186,19 +186,38 @@ class DeviceSettingsView extends UpdatableView
                         ]
                     ));
                     break;
-                case _SpeakerABStatus.ON: // ON -> A_ONLY
-                    rows.add(_buildRow(context,
-                        Strings.speaker_ab_command,
-                        Strings.speaker_ab_command_ab_on,
-                        Strings.speaker_ab_command_toggle,
-                        SpeakerBCommandMsg.output(zone, SpeakerBCommand.OFF),
-                        postQueries: [
-                            SpeakerBCommandMsg.ZONE_COMMANDS[zone]
-                        ]
-                    ));
+                case _SpeakerABStatus.ON: // ON -> OFF (optional) -> A_ONLY
+                    if (state.receiverInformation.model == "DTM-6")
+                    {
+                        rows.add(_buildRow(context,
+                            Strings.speaker_ab_command,
+                            Strings.speaker_ab_command_ab_on,
+                            Strings.speaker_ab_command_toggle,
+                            SpeakerACommandMsg.output(zone, SpeakerACommand.OFF),
+                            postMessages: [
+                                SpeakerBCommandMsg.output(zone, SpeakerBCommand.OFF)
+                            ],
+                            postQueries: [
+                                SpeakerACommandMsg.ZONE_COMMANDS[zone],
+                                SpeakerBCommandMsg.ZONE_COMMANDS[zone]
+                            ]
+                        ));
+                    }
+                    else
+                    {
+                        rows.add(_buildRow(context,
+                            Strings.speaker_ab_command,
+                            Strings.speaker_ab_command_ab_on,
+                            Strings.speaker_ab_command_toggle,
+                            SpeakerBCommandMsg.output(zone, SpeakerBCommand.OFF),
+                            postQueries: [
+                                SpeakerBCommandMsg.ZONE_COMMANDS[zone]
+                            ]
+                        ));
+                    }
                     break;
                 case _SpeakerABStatus.NONE:
-                // nothing to do
+                    // nothing to do
                     break;
             }
         }
