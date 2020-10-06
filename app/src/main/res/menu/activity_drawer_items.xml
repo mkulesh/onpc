@@ -102,7 +102,7 @@
     </item>
 
     <item
-        android:title="@string/drawer_device_application"
+        android:title="@string/drawer_application"
         android:orderInCategory="4">
         <menu>
             <item

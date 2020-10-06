@@ -166,7 +166,7 @@ class AudioControlManager
         prepareToneControl(
                 state, CenterLevelCommandMsg.KEY, centerLevelGroup, R.string.center_level);
 
-        audioControlDialog = createDialog(frameView, R.drawable.volume_audio_control, R.string.audio_control);
+        audioControlDialog = createDialog(frameView, R.drawable.volume_audio_control, R.string.app_control_audio_control);
         audioControlDialog.setOnDismissListener((d) ->
         {
             Logging.info(this, "closing audio control dialog");
@@ -496,7 +496,7 @@ class AudioControlManager
             final AppCompatButton b = fragment.createButton(
                     R.string.dashed_string, null, VOLUME_LEVEL, null);
             ((LinearLayout.LayoutParams) b.getLayoutParams()).setMargins(0, 0, 0, 0);
-            b.setContentDescription(activity.getResources().getString(R.string.audio_control));
+            b.setContentDescription(activity.getResources().getString(R.string.app_control_audio_control));
             fragment.prepareButtonListeners(b, null, this::showAudioControlDialog);
             layout.addView(b);
         }
@@ -517,7 +517,7 @@ class AudioControlManager
         {
             final AppCompatButton b = fragment.createButton(
                     R.string.dashed_string, null, VOLUME_LEVEL, null);
-            b.setContentDescription(activity.getResources().getString(R.string.audio_control));
+            b.setContentDescription(activity.getResources().getString(R.string.app_control_audio_control));
             fragment.prepareButtonListeners(b, null, this::showAudioControlDialog);
             layout.addView(b);
         }

@@ -51,7 +51,8 @@
     <string name="drawer_device_connect">Verbinden</string>
     <string name="drawer_device_search">Suchen</string>
     <string name="drawer_device_searching">Suchen…</string>
-    <string name="drawer_device_application">Anwendung</string>
+    <string name="drawer_application">Anwendung</string>
+    <string name="drawer_tab_layout">Registerkartenlayout</string>
     <string name="drawer_app_settings">Einstellungen</string>
     <string name="drawer_about">Über</string>
 
@@ -165,6 +166,26 @@
         <item>RI</item>
     </string-array>
 
+    <!-- Application settings: Controls -->
+    <string name="app_control_divider">Teiler</string>
+    <string name="app_control_listening_mode_list">Hörmodus-Tasten</string>
+    <string name="app_control_listening_mode_btn">Hörmodusschalter</string>
+    <string name="app_control_audio_control">Audiosteuerung</string>
+    <string name="app_control_track_file_info">Dateiinformationen</string>
+    <string name="app_control_track_cover">Album-Cover</string>
+    <string name="app_control_track_time">Zeitsteuerung</string>
+    <string name="app_control_track_caption">Songbeschreibung</string>
+    <string name="app_control_play_control">Wiedergabesteuerung</string>
+    <string name="app_control_shortcuts">Favoritenliste</string>
+    <string name="app_control_input_selector">Eingangswahlschalter</string>
+    <string name="app_control_media_list">Medienliste</string>
+    <string name="app_control_setup_op_cmd">Setup-Tasten</string>
+    <string name="app_control_setup_nav_cmd">Navigationstasten</string>
+    <string name="app_control_device_info">Geräteinformation</string>
+    <string name="app_control_device_settings">Geräteeinstellungen</string>
+    <string name="app_control_ri_amplifier">Verstärker (RI)</string>
+    <string name="app_control_ri_cd_player">CD Player (RI)</string>
+
     <!-- Playback tab -->
     <string name="tv_display_mode">Anzeigemodus am Gerät</string>
 
@@ -225,7 +246,6 @@
     <string name="audio_muting_toggle">Stummschaltung wechseln</string>
 
     <!-- Audio Control Command  -->
-    <string name="audio_control">Audiosteuerung</string>
     <string name="tone_bass">Bass</string>
     <string name="tone_treble">Höhen</string>
     <string name="subwoofer_level">Subwoofer-Pegel</string>
@@ -473,8 +493,6 @@
     <string name="listening_mode_down">Klangprofile durchwechseln</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface_amp">Verstärker (RI)</string>
-    <string name="remote_interface_cd">CD Player (RI)</string>
     <string name="remote_interface_power">An/Aus</string>
     <string name="remote_interface_common">Common</string>
     <string name="remote_interface_input">Eingang</string>

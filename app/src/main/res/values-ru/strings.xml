@@ -54,7 +54,8 @@
     <string name="drawer_device_connect">Соединение</string>
     <string name="drawer_device_search">Поиск</string>
     <string name="drawer_device_searching">Поиск совестимых устройств…</string>
-    <string name="drawer_device_application">Приложение</string>
+    <string name="drawer_application">Приложение</string>
+    <string name="drawer_tab_layout">Вид вкладки</string>
     <string name="drawer_app_settings">Настройки</string>
     <string name="drawer_about">О программе</string>
 
@@ -166,6 +167,26 @@
         <item>RI</item>
     </string-array>
 
+    <!-- Application settings: Controls -->
+    <string name="app_control_divider">Разделитель</string>
+    <string name="app_control_listening_mode_list">Звуковой профиль (кнопки)</string>
+    <string name="app_control_listening_mode_btn">Звуковой профиль (переключатель)</string>
+    <string name="app_control_audio_control">Контроль звука</string>
+    <string name="app_control_track_file_info">Описание файла</string>
+    <string name="app_control_track_cover">Картинка альбома</string>
+    <string name="app_control_track_time">Контроль времени</string>
+    <string name="app_control_track_caption">Описание трека</string>
+    <string name="app_control_play_control">Контроль воспроизведения</string>
+    <string name="app_control_shortcuts">Список ярлыков</string>
+    <string name="app_control_input_selector">Выбор канала</string>
+    <string name="app_control_media_list">Список треков</string>
+    <string name="app_control_setup_op_cmd">Кнопки настройки</string>
+    <string name="app_control_setup_nav_cmd">Кнопки курсора</string>
+    <string name="app_control_device_info">Информация об устройстве</string>
+    <string name="app_control_device_settings">Настройки устройства</string>
+    <string name="app_control_ri_amplifier">Усилитель (RI)</string>
+    <string name="app_control_ri_cd_player">CD-проигрыватель (RI)</string>
+
     <!-- Playback tab -->
     <string name="tv_display_mode">Режим отображения на дисплее устройства</string>
 
@@ -226,7 +247,6 @@
     <string name="audio_muting_toggle">Вкл/выкл звука устройства</string>
 
     <!-- Audio Control Command  -->
-    <string name="audio_control">Контроль звука</string>
     <string name="tone_bass">Тембр НЧ</string>
     <string name="tone_treble">Тембр ВЧ</string>
     <string name="subwoofer_level">Уровень сабвуфера</string>
@@ -474,8 +494,6 @@
     <string name="listening_mode_down">Предыдущий звуковой профиль</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface_amp">Усилитель (RI)</string>
-    <string name="remote_interface_cd">CD-проигрыватель (RI)</string>
     <string name="remote_interface_power">Питание</string>
     <string name="remote_interface_common">Общий</string>
     <string name="remote_interface_input">Вход</string>

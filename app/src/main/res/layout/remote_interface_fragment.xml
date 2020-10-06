@@ -38,7 +38,7 @@
                     style="@style/SecondaryTextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/remote_interface_amp"
+                    android:text="@string/app_control_ri_amplifier"
                     android:layout_gravity="left" />
 
                 <View style="@style/HorizontalDividerStyle" />
@@ -150,7 +150,7 @@
                     style="@style/SecondaryTextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/remote_interface_cd"
+                    android:text="@string/app_control_ri_cd_player"
                     android:layout_gravity="left" />
 
                 <View style="@style/HorizontalDividerStyle" />

@@ -51,7 +51,8 @@
     <string name="drawer_device_connect">Połącz</string>
     <string name="drawer_device_search">Szukaj</string>
     <string name="drawer_device_searching">Wyszukiwanie kompatybilnych urządzeń…</string>
-    <string name="drawer_device_application">Aplikacja</string>
+    <string name="drawer_application">Aplikacja</string>
+    <string name="drawer_tab_layout">Układ kart</string>
     <string name="drawer_app_settings">Ustawienia</string>
     <string name="drawer_about">Info</string>
 
@@ -164,6 +165,26 @@
         <item>RI</item>
     </string-array>
 
+    <!-- Application settings: Controls -->
+    <string name="app_control_divider">Rozdzielacz</string>
+    <string name="app_control_listening_mode_list">Przyciski trybu odsłuchu</string>
+    <string name="app_control_listening_mode_btn">Przełącznik trybu słuchania</string>
+    <string name="app_control_audio_control">Sterowanie dźwiękiem</string>
+    <string name="app_control_track_file_info">Informacje o pliku</string>
+    <string name="app_control_track_cover">Okładka albumu</string>
+    <string name="app_control_track_time">Kontrola czasu</string>
+    <string name="app_control_track_caption">Opis piosenki</string>
+    <string name="app_control_play_control">Sterowanie odtwarzaniem</string>
+    <string name="app_control_shortcuts">Lista skrótów</string>
+    <string name="app_control_input_selector">Selektor wejść</string>
+    <string name="app_control_media_list">Lista mediów</string>
+    <string name="app_control_setup_op_cmd">Przyciski konfiguracji</string>
+    <string name="app_control_setup_nav_cmd">Przyciski nawigacyjne</string>
+    <string name="app_control_device_info">Informacje o urządzeniu</string>
+    <string name="app_control_device_settings">Ustawienia urządzenia</string>
+    <string name="app_control_ri_amplifier">Wzmacniacz (RI)</string>
+    <string name="app_control_ri_cd_player">CD Player (RI)</string>
+
     <!-- Playback tab -->
     <string name="tv_display_mode">Tryb wyświetlania na urządzeniu</string>
 
@@ -224,7 +245,6 @@
     <string name="audio_muting_toggle">Sets player audio muting wrap-around</string>
 
     <!-- Audio Control Command  -->
-    <string name="audio_control">Audio control</string>
     <string name="tone_bass">Bass</string>
     <string name="tone_treble">Treble</string>
     <string name="subwoofer_level">Subwoofer level</string>
@@ -472,8 +492,6 @@
     <string name="listening_mode_down">Zmień tryb na poprzedni</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface_amp">Wzmacniacz (RI)</string>
-    <string name="remote_interface_cd">CD Player (RI)</string>
     <string name="remote_interface_power">Zasilanie</string>
     <string name="remote_interface_common">Wspólne</string>
     <string name="remote_interface_input">Wejście</string>

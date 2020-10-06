@@ -49,7 +49,7 @@
             app:iconSpaceReserved="true"
             android:defaultValue="false"
             android:key="remote_interface_amp"
-            android:title="@string/remote_interface_amp" />
+            android:title="@string/app_control_ri_amplifier" />
 
     <SwitchPreferenceCompat
             app:icon="@drawable/pref_ri_disc_player"
@@ -57,7 +57,7 @@
             app:iconSpaceReserved="true"
             android:defaultValue="false"
             android:key="remote_interface_cd"
-            android:title="@string/remote_interface_cd" />
+            android:title="@string/app_control_ri_cd_player" />
 
     <PreferenceCategory android:title="@string/pref_category_device_options">
 
@@ -100,7 +100,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/audio_control">
+    <PreferenceCategory android:title="@string/app_control_audio_control">
 
         <ListPreference
             app:icon="@drawable/pref_sound_control"

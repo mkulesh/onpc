@@ -51,7 +51,8 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="drawer_device_connect">Connecter</string>
     <string name="drawer_device_search">Recherche</string>
     <string name="drawer_device_searching">Recherche d\'équipements compatibles…</string>
-    <string name="drawer_device_application">Application</string>
+    <string name="drawer_application">Application</string>
+    <string name="drawer_tab_layout">Disposition des onglets</string>
     <string name="drawer_app_settings">Paramètres</string>
     <string name="drawer_about">À propos</string>
 
@@ -165,6 +166,26 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
         <item>RI</item>
     </string-array>
 
+    <!-- Application settings: Controls -->
+    <string name="app_control_divider">Diviseur</string>
+    <string name="app_control_listening_mode_list">Boutons de mode d\'écoute</string>
+    <string name="app_control_listening_mode_btn">Commutateur de mode d\'écoute</string>
+    <string name="app_control_audio_control">Réglages Audio</string>
+    <string name="app_control_track_file_info">Informations sur le fichier</string>
+    <string name="app_control_track_cover">Couverture de l\'album</string>
+    <string name="app_control_track_time">Contrôle du temps</string>
+    <string name="app_control_track_caption">Description de la chanson</string>
+    <string name="app_control_play_control">Commandes de lecture</string>
+    <string name="app_control_shortcuts">Liste des raccourcis</string>
+    <string name="app_control_input_selector">Sélecteur d\'entrée</string>
+    <string name="app_control_media_list">Liste des médias</string>
+    <string name="app_control_setup_op_cmd">Boutons de configuration</string>
+    <string name="app_control_setup_nav_cmd">Boutons de navigation</string>
+    <string name="app_control_device_info">Informations sur l\'appareil</string>
+    <string name="app_control_device_settings">Réglages de l\'appareil</string>
+    <string name="app_control_ri_amplifier">Amplificateur (RI)</string>
+    <string name="app_control_ri_cd_player">CD Player (RI)</string>
+
     <!-- Playback tab -->
     <string name="tv_display_mode">Mode affichage sur le dispositif</string>
 
@@ -225,7 +246,6 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="audio_muting_toggle">Interrupteur silence audio</string>
 
     <!-- Audio Control Command  -->
-    <string name="audio_control">Réglages Audio</string>
     <string name="tone_bass">Basses</string>
     <string name="tone_treble">Aigües</string>
     <string name="subwoofer_level">Niveau Subwoofer</string>
@@ -473,8 +493,6 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="listening_mode_down">Changer mode d\'écoute</string>
 
     <!-- Remote interface (RI) -->
-    <string name="remote_interface_amp">Amplificateur (RI)</string>
-    <string name="remote_interface_cd">CD Player (RI)</string>
     <string name="remote_interface_power">Marche</string>
     <string name="remote_interface_common">Commun</string>
     <string name="remote_interface_input">Entrée</string>
