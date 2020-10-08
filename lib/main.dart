@@ -43,8 +43,6 @@ import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
-import "iscp/scripts/AutoPower.dart";
-import "iscp/scripts/RequestListeningMode.dart";
 import "utils/Convert.dart";
 import "utils/Logging.dart";
 import "views/AboutScreen.dart";
@@ -68,9 +66,8 @@ void main() async
 
     final StateManager stateManager = StateManager(configuration.activeZone, configuration.favoriteConnections.getDevices);
 
-    final ByteData autoPowerData = await Platform.requestAutoPower();
-    final bool autoPower = configuration.autoPower || Platform.parseAutoPower(autoPowerData);
-    MusicControllerAppState.updateScripts(stateManager, autoPower);
+    final ByteData intent = await Platform.requestIntent();
+    stateManager.updateScripts(autoPower: configuration.autoPower, intent: Platform.parseIntent(intent));
 
     final ViewContext viewContext = ViewContext(configuration, stateManager, StreamController.broadcast());
 
@@ -481,7 +478,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         if (updScripts)
         {
-            updateScripts(_stateManager, _configuration.autoPower);
+            _stateManager.updateScripts(autoPower: _configuration.autoPower);
         }
     }
 
@@ -539,15 +536,5 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 _stateManager.state.closeMediaFilter();
             }
         }
-    }
-
-    static void updateScripts(final StateManager stateManager, bool autoPower)
-    {
-        stateManager.clearScripts();
-        if (autoPower)
-        {
-            stateManager.addScript(AutoPower());
-        }
-        stateManager.addScript(RequestListeningMode());
     }
 }

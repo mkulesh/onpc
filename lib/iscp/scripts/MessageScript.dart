@@ -102,6 +102,8 @@ class Action
 
 class MessageScript with ConnectionIf implements MessageScriptIf
 {
+    static final String SCRIPT_NAME = "onpcScript";
+
     // optional target zone
     int zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
 
@@ -123,7 +125,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
         try
         {
             final xml.XmlDocument document = xml.parse(data);
-            document.findAllElements("onpcScript").forEach((xml.XmlElement e)
+            document.findAllElements(SCRIPT_NAME).forEach((xml.XmlElement e)
             {
                 setHost(ISCPMessage.nonNullString(e.getAttribute("host")));
                 setPort(ISCPMessage.nonNullInteger(e.getAttribute("port"), 10, ConnectionIf.EMPTY_PORT));

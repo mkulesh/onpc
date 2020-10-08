@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -28,16 +27,12 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
-import androidx.preference.PreferenceManager;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import io.flutter.app.FlutterActivity;
@@ -53,7 +48,6 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
 {
     private static final String PLATFORM_CHANNEL = "platform_channel";
     private static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
-    private static final String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.plus.AUTO_POWER";
 
     private enum PlatformCmd
     {
@@ -64,7 +58,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         VOLUME_KEYS_DISABLED    (4),
         KEEP_SCREEN_ON_ENABLED  (5),
         KEEP_SCREEN_ON_DISABLED (6),
-        AUTO_POWER              (7),
+        INTENT                  (7),
         INVALID                 (8);
 
         final int code;
@@ -161,17 +155,13 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     private ConnectivityChangeReceiver receiver;
     private boolean volumeKeys = false;
     private boolean keepScreenOn = false;
-    private boolean autoPower = false;
+    private String intentData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
-
-        // parse intent
-        final Intent intent = getIntent();
-        autoPower = intent != null && intent.getAction() != null && SHORTCUT_AUTO_POWER.equals(intent.getAction());
 
         // read preferences stored in Flutter code
         readPreferences();
@@ -201,11 +191,16 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         return message;
     }
 
-    private ByteBuffer getAutoPowerMsg()
+    private ByteBuffer getIntentMsg()
     {
-        final ByteBuffer message = ByteBuffer.allocateDirect(1);
-        message.put(autoPower ? (byte)1 : (byte)0);
-        autoPower = false;
+        final int msgSize = intentData == null ? 0 : intentData.length();
+        final ByteBuffer message = ByteBuffer.allocateDirect(4 + msgSize + 1);
+        message.putInt(msgSize);
+        if (intentData != null)
+        {
+            final byte[] bytes = intentData.getBytes(Charset.forName("UTF-8"));
+            message.put(bytes);
+        }
         return message;
     }
 
@@ -214,6 +209,30 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     {
         super.onResume();
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent)
+    {
+        if (intent != null)
+        {
+            if (intent.getDataString() != null)
+            {
+                intentData = intent.getDataString();
+            }
+            else
+            {
+                intentData = intent.getAction();
+            }
+            setIntent(null);
+        }
     }
 
     @Override
@@ -281,8 +300,8 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             case NETWORK_STATE:
                 r = getNetworkStateMsg(receiver.isConnected(), receiver.isWifi());
                 break;
-            case AUTO_POWER:
-                r = getAutoPowerMsg();
+            case INTENT:
+                r = getIntentMsg();
                 break;
         }
 

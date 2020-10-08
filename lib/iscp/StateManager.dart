@@ -15,6 +15,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
+import "../Platform.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../iscp/BroadcastSearch.dart";
 import "../iscp/scripts/MessageScript.dart";
@@ -46,6 +47,9 @@ import "messages/TimeInfoMsg.dart";
 import "messages/TimeSeekMsg.dart";
 import "messages/TrackInfoMsg.dart";
 import "messages/XmlListInfoMsg.dart";
+import "scripts/AutoPower.dart";
+import "scripts/MessageScript.dart";
+import "scripts/RequestListeningMode.dart";
 import "state/MediaListState.dart";
 import "state/MultiroomState.dart";
 import "state/SoundControlState.dart";
@@ -720,6 +724,33 @@ class StateManager
     {
         final String identifier = state.receiverInformation.getIdentifier();
         return isSourceHost(di.responseMsg) || (identifier != null && identifier == di.responseMsg.getIdentifier);
+    }
+
+    void updateScripts({bool autoPower = false, final String intent})
+    {
+        clearScripts();
+        MessageScript messageScript;
+        if (intent != null)
+        {
+            Logging.info(this, "received intent: " + intent);
+            if (intent == Platform.SHORTCUT_AUTO_POWER)
+            {
+                autoPower = true;
+            }
+            else if (intent.contains(MessageScript.SCRIPT_NAME))
+            {
+                messageScript = MessageScript(intent);
+            }
+        }
+        if (autoPower)
+        {
+            addScript(AutoPower());
+        }
+        addScript(RequestListeningMode());
+        if (messageScript != null && messageScript.isValid())
+        {
+            addScript(messageScript);
+        }
     }
 
     void activateScript(final MessageScript script)

@@ -11,6 +11,7 @@
  * Public License along with this program.
  */
 
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:io' as io;
 
@@ -28,13 +29,14 @@ enum PlatformCmd
     VOLUME_KEYS_DISABLED,
     KEEP_SCREEN_ON_ENABLED,
     KEEP_SCREEN_ON_DISABLED,
-    AUTO_POWER,
+    INTENT,
     INVALID
 }
 
 class Platform
 {
     static const String PLATFORM_CHANNEL = "platform_channel";
+    static const String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.plus.AUTO_POWER";
 
     static Future<ByteData> sendPlatformCommand(PlatformCmd cmd)
     {
@@ -90,11 +92,11 @@ class Platform
     }
 
     // Auto power state from host platforms
-    static Future<ByteData> requestAutoPower()
+    static Future<ByteData> requestIntent()
     {
         if (isAndroid)
         {
-            return sendPlatformCommand(PlatformCmd.AUTO_POWER);
+            return sendPlatformCommand(PlatformCmd.INTENT);
         }
         else
         {
@@ -104,14 +106,23 @@ class Platform
         }
     }
 
-    static bool parseAutoPower(ByteData message)
+    static String parseIntent(ByteData message)
     {
         final ReadBuffer readBuffer = ReadBuffer(message);
         if (readBuffer.data.lengthInBytes > 0)
         {
-            final int code = readBuffer.data.getUint8(0);
-            return code == 1;
+            final int length = readBuffer.data.getInt32(0);
+            if (length > 0)
+            {
+                final List<int> bytes = List();
+                for (int i = 0; i < length; i++)
+                {
+                    bytes.add(readBuffer.data.getUint8(4 + i));
+                }
+                final String intent = utf8.decode(bytes);
+                return intent;
+            }
         }
-        return false;
+        return null;
     }
 }
