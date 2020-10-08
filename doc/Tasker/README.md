@@ -1,4 +1,4 @@
-*Tasker integration
+#Tasker integration
 
 The app can be integrated with Tsaker using [intents] (https://tasker.joaoapps.com/userguide/en/intents.html). 
 Intents are Android's main method for allowing apps to communicate with each other and share data. 
