@@ -9,6 +9,14 @@ On the Tasker side, it is possible to write a script that contains a sequence of
 The Tasker is able to parametrize this script and sent it to the app. The app reads this script 
 and performs the commands from it.
 
+## Intents
+The intent created in Tasker shall have following parameters:
+- _Action_: android.intent.action.MAIN
+- _Type_: text/xml
+- _Category_: android.intent.category.LAUNCHER
+- _Component_: com.mkulesh.onpc/.MainActivity
+- _Data_: the script described below
+
 ## Tasker scripts 
 
 The script on the Tasker side is an XML message that looks like:
