@@ -1,0 +1,4 @@
+• Added integration with "Tasker"
+• DTM-6: added possibility to disable both speakers A and B
+• Fixed a bug in the shortcut pointed to the DLNA search
+• Improved German translation

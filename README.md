@@ -36,6 +36,7 @@ The two most popular features of the app are music playback and sound profile ma
 - Control of devices attached via RI
 - Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
+- Integration with "Tasker"
 
 ## Known Limitations
 - Please note that the app does not support the music streaming from your phone to the network player or the receiver
