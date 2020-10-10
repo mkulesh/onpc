@@ -17,6 +17,18 @@ The intent created in Tasker shall have following parameters:
 - _Component_: com.mkulesh.onpc/.MainActivity
 - _Data_: the script described below
 
+From technical point of view, the app expects following intent from Tasker:
+```
+{ 
+  act=android.intent.action.MAIN 
+  cat=[android.intent.category.LAUNCHER] 
+  dat=<script> 
+  typ=text/xml 
+  flg=0x30800004 
+  cmp=com.mkulesh.onpc/.MainActivity 
+}
+```
+
 ## Tasker scripts 
 
 The script on the Tasker side is an XML message that looks like:
