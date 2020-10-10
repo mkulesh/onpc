@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<onpcScript host="" port="" zone="0">
+    <send cmd="PWR" par="QSTN" wait="PWR" />
+    <send cmd="PWR" par="01" wait="PWR" resp="01" />
+    <send cmd="SLI" par="QSTN" wait="SLI" />
+    <send cmd="SLI" par="2B" wait="SLI" resp="2B" />
+    <send cmd="NLT" par="QSTN" wait="NLT" />
+    <send cmd="NTC" par="TOP" wait="NLS" listitem="Music Server (DLNA)" />
+    <send cmd="NSV" par="000" wait="NLA" listitem="Supermicro DLNA Server" />
+    <send cmd="NLA" par="Supermicro DLNA Server" wait="NLA" listitem="Music" />
+    <send cmd="NLA" par="Music" wait="NLA" listitem="Genre" />
+    <send cmd="NLA" par="Genre" wait="NLA" listitem="Blues" />
+    <send cmd="NLA" par="Blues" wait="NLA" listitem="- All Artists -" />
+    <send cmd="NLA" par="- All Artists -" wait="NLA" listitem="All Along The Watchtower" />
+    <send cmd="NLA" par="All Along The Watchtower" wait="1000" />
+</onpcScript>

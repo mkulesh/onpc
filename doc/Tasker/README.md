@@ -9,6 +9,8 @@ On the Tasker side, it is possible to write a script that contains a sequence of
 The Tasker is able to parametrize this script and sent it to the app. The app reads this script 
 and performs the commands from it.
 
+## Tasker scripts 
+
 The script on the Tasker side is an XML message that looks like:
 
 ```xml
@@ -48,3 +50,17 @@ given as _wait_ parameter with any response value. If _resp_ is given the app wa
 response message with exactly this response value.
 - _listitem_: a name od the media item. The command will be finalized, when the receiver provides
 a media list that contains this media item.
+
+
+## Examples
+In this directory, we collected a set of helpful examples of scripts:
+- _DeezerFlow.xml_: starts playing of Deezer Flow from network services
+- _DlnaGenre.xml_: starts playing of the first song from "Blues" genre on the DLNA server. In order 
+to use this script, you shall change the name of your DLNA server ("Supermicro DLNA Server" in this 
+example), set desired genre instead of "Blues" and the title of the song instead of 
+"All Along The Watchtower"
+- _PlayQueue.xml_: plays the first song from Play Queue. Instead of "01 - Eclipse.mp3", set your 
+actual song title.
+- _TuneInPreset.xml_: plays "Absolut relax (Easy Listening)" channel from TuneIn presets.
+- _UsbStorage.xml_: plays the song "Never Die" placed on the external USB rear storage with the path
+"onkyo_music"/"Power Metall"/"Allen-Olzon"/"Worlds Apart (2020)" 

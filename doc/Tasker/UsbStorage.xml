@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<onpcScript host="" port="" zone="0">
+    <send cmd="PWR" par="QSTN" wait="PWR" />
+    <send cmd="PWR" par="01" wait="PWR" resp="01" />
+    <send cmd="SLI" par="QSTN" wait="SLI" />
+    <send cmd="SLI" par="2A" wait="SLI" resp="2A" />
+    <send cmd="NLT" par="QSTN" wait="NLT" />
+    <send cmd="NTC" par="TOP" wait="NLA" listitem="onkyo_music" />
+    <send cmd="NSV" par="F10" wait="NLA" listitem="onkyo_music" />
+    <send cmd="NLA" par="onkyo_music" wait="NLA" listitem="Power Metall" />
+    <send cmd="NLA" par="Power Metall" wait="NLA" listitem="Allen-Olzon" />
+    <send cmd="NLA" par="Allen-Olzon" wait="NLA" listitem="Worlds Apart (2020)" />
+    <send cmd="NLA" par="Worlds Apart (2020)" wait="NLA" listitem="Never Die" />
+    <send cmd="NLA" par="Never Die" wait="1000" />
+</onpcScript>
