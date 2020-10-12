@@ -165,7 +165,7 @@ public class JacketArtMsg extends ISCPMessage
 
             URLConnection urlConnection = url.openConnection();
             urlConnection.setRequestProperty("Accept-Encoding", "gzip");
-            InputStream inputStream = null;
+            InputStream inputStream;
             if ("gzip".equals(urlConnection.getContentEncoding())) {
                 inputStream = new GZIPInputStream(urlConnection.getInputStream());
             } else {
