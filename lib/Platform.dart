@@ -37,6 +37,8 @@ class Platform
 {
     static const String PLATFORM_CHANNEL = "platform_channel";
     static const String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.plus.AUTO_POWER";
+    static const int INT8_SIZE = 1;
+    static const int INT32_SIZE = 4;
 
     static Future<ByteData> sendPlatformCommand(PlatformCmd cmd)
     {
@@ -49,7 +51,7 @@ class Platform
     static PlatformCmd readPlatformCommand(ByteData message)
     {
         final ReadBuffer readBuffer = ReadBuffer(message);
-        if (readBuffer.data.lengthInBytes > 0)
+        if (readBuffer.data.lengthInBytes >= INT8_SIZE)
         {
             final int code = readBuffer.data.getUint8(0);
             return PlatformCmd.values.singleWhere((p) => p.index == code, orElse: () => PlatformCmd.INVALID);
@@ -79,7 +81,7 @@ class Platform
     static NetworkState parseNetworkState(ByteData message)
     {
         final ReadBuffer readBuffer = ReadBuffer(message);
-        if (readBuffer.data.lengthInBytes > 0)
+        if (readBuffer.data.lengthInBytes >= INT8_SIZE)
         {
             final int code = readBuffer.data.getUint8(0);
             if (code == PlatformCmd.NETWORK_STATE.index && readBuffer.data.lengthInBytes > 1)
@@ -109,7 +111,7 @@ class Platform
     static String parseIntent(ByteData message)
     {
         final ReadBuffer readBuffer = ReadBuffer(message);
-        if (readBuffer.data.lengthInBytes > 0)
+        if (readBuffer.data.lengthInBytes >= INT32_SIZE)
         {
             final int length = readBuffer.data.getInt32(0);
             if (length > 0)

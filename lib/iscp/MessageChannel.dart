@@ -93,8 +93,9 @@ class MessageChannel with ConnectionIf
         }).catchError((dynamic e)
         {
             _state = MessageChannelState.IDLE;
+            final String error = sprintf(Strings.error_connection_no_response, [getHostAndPort]);
             clearConnection();
-            _onDisconnected(ConnectionErrorType.HOST_NOT_AVAILABLE, sprintf(Strings.error_connection_no_response, [getHostAndPort]));
+            _onDisconnected(ConnectionErrorType.HOST_NOT_AVAILABLE, error);
         });
     }
 

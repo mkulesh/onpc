@@ -119,7 +119,7 @@ class CfgTabSettings
                 }
             });
         }
-        if (res.isEmpty)
+        if (res.isEmpty && configuration.getStringDef(par, "").isEmpty)
         {
             if (defItems == null)
             {
