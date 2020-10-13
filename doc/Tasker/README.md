@@ -22,15 +22,23 @@ From technical point of view, the app expects following intent from Tasker:
 { 
   act=android.intent.action.MAIN 
   cat=[android.intent.category.LAUNCHER] 
-  dat=%iscpCmd 
+  dat=<message script> 
   typ=text/xml 
   flg=0x30800004 
   cmp=com.mkulesh.onpc/.MainActivity 
 }
 ```
-It can be configured in Tasker as follows (where ):
-<img src="https://github.com/mkulesh/onpc/blob/master/doc/Tasker/TaskerSettings.jpg" align="center">
+In order to start the app with this intent, we can, for example, configure following tasks in Tasker:
+<img src="https://github.com/mkulesh/onpc/blob/master/doc/Tasker/TaskerTasks.png" align="center">
 
+We have here two tasks:
+- The first task sends ISCP command PWR(01) in order to power on the receiver:
+<img src="https://github.com/mkulesh/onpc/blob/master/doc/Tasker/TaskerPowerOn.png" align="center">
+- The second task sends ISCP command PWR(00) in order to put the receiver in standby mode:
+<img src="https://github.com/mkulesh/onpc/blob/master/doc/Tasker/TaskerPowerOff.png" align="center">
+
+Botch tasks declare an order of ISCP commands to be send to the receiver in form of a script written in XML. 
+The script format is decribed below.
 
 ## Tasker scripts 
 
@@ -52,7 +60,6 @@ The script on the Tasker side is an XML message that looks like:
   <send cmd="NLA" par="Search by Artist" wait="NCP"/>
 </onpcScript>
 ```
-
 This script has following parameters
 - _host and port_ (optional): IP and port of the target receiver
 - _zone_ (optional): target zone if the receiver has multi-zone support
