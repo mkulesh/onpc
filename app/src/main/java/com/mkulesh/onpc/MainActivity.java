@@ -30,6 +30,7 @@ import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.fragments.BaseFragment;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.scripts.AutoPower;
@@ -79,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private int startRequestCode;
     private final AtomicBoolean connectToAnyDevice = new AtomicBoolean(false);
     public int orientation;
-    private String intentAction = null;
     private String intentData = null;
+    private MessageScript messageScript = null;
 
     // #58: observed missed receiver information message on device rotation.
     // Solution: save and restore the receiver information in
@@ -368,10 +369,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     public boolean connectToDevice(final String device, final int port, final boolean connectToAnyInErrorCase)
     {
         // Parse and use input intent
-        final boolean autoPower = SHORTCUT_AUTO_POWER.equals(intentAction);
-        final MessageScript messageScript = (intentData != null && !intentData.isEmpty()) ?
-                new MessageScript(this, intentData) : null;
-        intentAction = null;
+        final boolean autoPower = SHORTCUT_AUTO_POWER.equals(intentData);
         intentData = null;
 
         stateHolder.release(false, "reconnect");
@@ -386,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 messageScripts.add(new AutoPower());
             }
             messageScripts.add(new RequestListeningMode());
-            if (messageScript != null && messageScript.isValid())
+            if (messageScript != null)
             {
                 messageScripts.add(messageScript);
                 zone = messageScript.getZone();
@@ -482,14 +480,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
 
         // Analyse input intent
-        final Intent intent = getIntent();
-        if (intent != null)
-        {
-            Logging.info(this, "Called with intent: " + intent.toString());
-            intentAction = intent.getAction();
-            intentData = intent.getDataString();
-            setIntent(null);
-        }
+        handleIntent(getIntent());
 
         connectionState.start();
         if (connectionState.isActive())
@@ -502,6 +493,13 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                     + Utils.ipToString(configuration.getDeviceName(), configuration.getDevicePort()));
             connectToDevice(configuration.getDeviceName(), configuration.getDevicePort(), true);
         }
+        else if (messageScript != null &&
+                !messageScript.getHost().equals(ConnectionIf.EMPTY_HOST) &&
+                messageScript.getPort() != ConnectionIf.EMPTY_PORT)
+        {
+            Logging.info(this, "use intent connection data: " + messageScript.getHostAndPort());
+            connectToDevice(messageScript.getHost(), messageScript.getPort(), true);
+        }
         else
         {
             navigationDrawer.navigationSearchDevice();
@@ -511,13 +509,25 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     @Override
     protected void onNewIntent(Intent intent)
     {
-        Logging.info(this, "New intent detected");
         super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent)
+    {
         if (intent != null)
         {
-            Logging.info(this, "New intent: " + intent.toString());
-            intentAction = intent.getAction();
-            intentData = intent.getDataString();
+            Logging.info(this, "Received intent: " + intent.toString());
+            if (intent.getDataString() != null)
+            {
+                intentData = intent.getDataString();
+                final MessageScript ms = (intentData != null && !intentData.isEmpty()) ? new MessageScript(this, intentData) : null;
+                messageScript = ms != null && ms.isValid() ? ms : null;
+            }
+            else
+            {
+                intentData = intent.getAction();
+            }
             setIntent(null);
         }
     }
