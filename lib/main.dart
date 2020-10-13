@@ -64,11 +64,7 @@ void main() async
     final Configuration configuration = Configuration(prefs, packageInfo);
     configuration.read();
 
-    final StateManager stateManager = StateManager(configuration.activeZone, configuration.favoriteConnections.getDevices);
-
-    final ByteData intent = await Platform.requestIntent();
-    stateManager.updateScripts(autoPower: configuration.autoPower, intent: Platform.parseIntent(intent));
-
+    final StateManager stateManager = StateManager(configuration.favoriteConnections.getDevices);
     final ViewContext viewContext = ViewContext(configuration, stateManager, StreamController.broadcast());
 
     runApp(MaterialApp(
@@ -110,6 +106,7 @@ enum ConnectionState
 {
     NONE,
     CONNECTING_TO_SAVED,
+    CONNECTING_TO_INTENT,
     CONNECTING_TO_ANY,
     CONNECTED
 }
@@ -146,39 +143,32 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _connectionState = ConnectionState.NONE;
         _exitConfirm = false;
         WidgetsBinding.instance.addObserver(this);
-        ServicesBinding.instance.defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
-        {
-            final PlatformCmd cmd = Platform.readPlatformCommand(message);
-            if (cmd == PlatformCmd.NETWORK_STATE)
-            {
-                _processNetworkStateChange(message);
-            }
-            else if (_configuration.audioControl.volumeKeys && _stateManager.isConnected)
-            {
-                if (cmd == PlatformCmd.VOLUME_UP)
-                {
-                    _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
-                }
-                if (cmd == PlatformCmd.VOLUME_DOWN)
-                {
-                    _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
-                }
-            }
-            return null;
-        });
 
-        if (_configuration.isDeviceValid)
+        _onResume(autoPower: _configuration.autoPower).then((value)
         {
-            Platform.requestNetworkState().then((replay)
+            // Prepare platform channel after connection data are processed in order
+            // to prevent unnecessary NetworkStateChange handling
+            ServicesBinding.instance.defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
             {
-                _processNetworkStateChange(replay);
+                final PlatformCmd cmd = Platform.readPlatformCommand(message);
+                if (cmd == PlatformCmd.NETWORK_STATE)
+                {
+                    _processNetworkStateChange(message);
+                }
+                else if (_configuration.audioControl.volumeKeys && _stateManager.isConnected)
+                {
+                    if (cmd == PlatformCmd.VOLUME_UP)
+                    {
+                        _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
+                    }
+                    if (cmd == PlatformCmd.VOLUME_DOWN)
+                    {
+                        _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
+                    }
+                }
+                return null;
             });
-        }
-        else
-        {
-            WidgetsBinding.instance.addPostFrameCallback((_)
-            => _stateManager.triggerStateEvent(StateManager.START_SEARCH_EVENT));
-        }
+        });
     }
 
     @override
@@ -197,15 +187,58 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this.widget, "Application state change: " + state.toString());
         if (state == AppLifecycleState.resumed)
         {
-            Platform.requestNetworkState().then((replay)
-            {
-                _processNetworkStateChange(replay);
-            });
+            _onResume(autoPower: false);
         }
         else
         {
             _disconnect();
         }
+    }
+
+    Future<void> _onResume({bool autoPower = false}) async
+    {
+        Logging.info(this.widget, "resuming application");
+        await Platform.requestIntent().then((replay)
+        {
+            _stateManager.updateScripts(autoPower: autoPower, intent: Platform.parseIntent(replay));
+        });
+
+        bool connect = _configuration.isDeviceValid;
+        if (_stateManager.intentHost != null)
+        {
+            if (_stateManager.intentHost.isValidConnection())
+            {
+                connect = true;
+            }
+            // process optional intent data like target zone and app tab
+            _stateManager.state.activeZone = _stateManager.intentHost.zone;
+            for (AppTabs t in AppTabs.values)
+            {
+                if (_stateManager.intentHost.tab.toUpperCase() == Convert.enumToString(t).toUpperCase())
+                {
+                    _setActiveTab(t);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            _stateManager.state.activeZone = _configuration.activeZone;
+        }
+
+        if (connect)
+        {
+            await Platform.requestNetworkState().then((replay)
+            {
+                _processNetworkStateChange(replay, noChangeCheck: true);
+            });
+        }
+        else
+        {
+            WidgetsBinding.instance.addPostFrameCallback((_)
+            => _stateManager.triggerStateEvent(StateManager.START_SEARCH_EVENT));
+        }
+        return Future.value();
     }
 
     @override
@@ -345,7 +378,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Platform.requestNetworkState().then((replay)
         {
             final NetworkState n = Platform.parseNetworkState(replay);
-            _stateManager.networkState = n;
+            _stateManager.setNetworkState(n);
             _stateManager.startSearch(limited: false);
             showDialog(
                 context: context,
@@ -358,13 +391,24 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _connectToDevice(final NetworkState n)
     {
-        if (!_stateManager.isConnected && _configuration.isDeviceValid)
+        if (_stateManager.isConnected)
+        {
+            // nothing to do
+            return;
+        }
+        if (_configuration.isDeviceValid)
         {
             Logging.info(this.widget, "Use stored connection data: "
                 + Convert.ipToString(_configuration.getDeviceName, _configuration.getDevicePort.toString()));
             _connectionState = ConnectionState.CONNECTING_TO_SAVED;
             _stateManager.connect(_configuration.getDeviceName, _configuration.getDevicePort,
                 manualHost: _configuration.getDeviceName);
+        }
+        else if (_stateManager.intentHost != null && _stateManager.intentHost.isValidConnection())
+        {
+            Logging.info(this.widget, "Use intent connection data: " + _stateManager.intentHost.getHostAndPort);
+            _connectionState = ConnectionState.CONNECTING_TO_INTENT;
+            _stateManager.connect(_stateManager.intentHost.getHost, _stateManager.intentHost.getPort);
         }
     }
 
@@ -424,26 +468,28 @@ class MusicControllerAppState extends State<MusicControllerApp>
         return false;
     }
 
-    void _processNetworkStateChange(final ByteData state)
+    void _processNetworkStateChange(final ByteData state, {final bool noChangeCheck = false})
     {
         final NetworkState n = Platform.parseNetworkState(state);
-        _stateManager.networkState = n;
-        switch(n)
+        if (_stateManager.setNetworkState(n) || noChangeCheck)
         {
-        case NetworkState.NONE:
-            setState(()
+            switch(n)
             {
-                _disconnect();
-            });
-            PopupManager.showToast(Strings.error_connection_no_network);
-            break;
-        case NetworkState.CELLULAR:
-        case NetworkState.WIFI:
-            if (!_stateManager.isConnected)
-            {
-              _connectToDevice(n);
+                case NetworkState.NONE:
+                    setState(()
+                    {
+                        _disconnect();
+                    });
+                    PopupManager.showToast(Strings.error_connection_no_network);
+                    break;
+                case NetworkState.CELLULAR:
+                case NetworkState.WIFI:
+                    if (!_stateManager.isConnected)
+                    {
+                        _connectToDevice(n);
+                    }
+                    break;
             }
-            break;
         }
     }
 
