@@ -105,7 +105,16 @@ class MessageScript with ConnectionIf implements MessageScriptIf
     static final String SCRIPT_NAME = "onpcScript";
 
     // optional target zone
-    int zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
+    int _zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
+
+    int get zone
+    => _zone;
+
+    // optional target tab
+    String _tab = "";
+
+    String get tab
+    => _tab;
 
     // Actions to be performed
     final List<Action> actions = List();
@@ -129,7 +138,8 @@ class MessageScript with ConnectionIf implements MessageScriptIf
             {
                 setHost(ISCPMessage.nonNullString(e.getAttribute("host")));
                 setPort(ISCPMessage.nonNullInteger(e.getAttribute("port"), 10, ConnectionIf.EMPTY_PORT));
-                zone = ISCPMessage.nonNullInteger(e.getAttribute("zone"), 10, ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+                _zone = ISCPMessage.nonNullInteger(e.getAttribute("zone"), 10, ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+                _tab = ISCPMessage.nonNullString(e.getAttribute("tab"));
             });
             document.findAllElements("send").forEach((xml.XmlElement action)
             => actions.add(Action.fromXml(action)));
@@ -325,10 +335,5 @@ class MessageScript with ConnectionIf implements MessageScriptIf
             });
         }
         return a.state;
-    }
-
-    int getZone()
-    {
-        return zone;
     }
 }

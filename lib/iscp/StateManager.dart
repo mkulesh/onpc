@@ -96,10 +96,18 @@ class StateManager
     // Network state
     NetworkState _networkState;
 
-    set networkState(NetworkState value)
+    NetworkState get networkState
+    => _networkState;
+
+    bool setNetworkState(NetworkState value)
     {
-        Logging.info(this, "Network state: " + value.toString());
-        _networkState = value;
+        final bool retValue = _networkState != value;
+        if (retValue)
+        {
+            Logging.info(this, "Network state: " + value.toString());
+            _networkState = value;
+        }
+        return retValue;
     }
 
     // Events
@@ -159,10 +167,14 @@ class StateManager
         _messageScripts.add(script);
     }
 
-    StateManager(final int zoneId, List<BroadcastResponseMsg> _favorites)
+    MessageScript _intentHost;
+
+    MessageScript get intentHost
+    => _intentHost;
+
+    StateManager(List<BroadcastResponseMsg> _favorites)
     {
         _messageChannel = MessageChannel(_onConnected, _onNewEISCPMessage, _onDisconnected);
-        _state.activeZone = zoneId;
         _state.trackState.coverDownloadFinished = _onProcessFinished;
         _state.multiroomState.favorites = _favorites;
     }
@@ -245,6 +257,9 @@ class StateManager
                 script.start(state, _messageChannel);
             }
         }
+
+        // After scripts are started, no need to hold intent host
+        _intentHost = null;
     }
 
     Future<EISCPMessage> _registerMessage(EISCPMessage raw) async
@@ -750,6 +765,7 @@ class StateManager
         if (messageScript != null && messageScript.isValid())
         {
             addScript(messageScript);
+            _intentHost = messageScript;
         }
     }
 
