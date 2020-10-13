@@ -1,13 +1,13 @@
 # Tasker integration
 
-The app can be integrated with Tasker using [intents](https://tasker.joaoapps.com/userguide/en/intents.html). 
-Intents are Android's main method for allowing apps to communicate with each other and share data. 
-Intents are for advanced users.
+The app can be opened and instructed to control receivers by sending it XML messages in
+"onpcScript" format.  XML messages can be sent to the app via Android Intents.
+Tasker can send these [intents](https://tasker.joaoapps.com/userguide/en/intents.html), though
+Tasker can also send the XML messages via the Launch App action, which is simpler to use.
 
-On the Tasker side, it is possible to write a script that contains a sequence of 
-[ISCP commands](https://github.com/mkulesh/onpc/blob/master/doc/ISCP_AVR_140.xlsx). 
-The Tasker is able to parametrize this script and sent it to the app. The app reads this script 
-and performs the commands from it.
+The XML messages contain [ISCP commands](https://github.com/mkulesh/onpc/blob/master/doc/ISCP_AVR_140.xlsx).
+Scripts can be composed externally to Tasker, or by Taskers tasks, enabling variable user input
+(including voice control with help from AutoVoice (see [below](#sample-voice-control-in-tasker))).
 
 ## Intents
 The intent created in Tasker shall have following parameters:
@@ -17,17 +17,19 @@ The intent created in Tasker shall have following parameters:
 - _Component_: com.mkulesh.onpc/.MainActivity
 - _Data_: the script described below
 
-From technical point of view, the app expects following intent from Tasker:
+From a technical point of view, the app expects the following intent from Tasker:
 ```
-{ 
-  act=android.intent.action.MAIN 
-  cat=[android.intent.category.LAUNCHER] 
-  dat=<message script> 
-  typ=text/xml 
-  flg=0x30800004 
-  cmp=com.mkulesh.onpc/.MainActivity 
+{
+  act=android.intent.action.MAIN
+  cat=[android.intent.category.LAUNCHER]
+  dat=<message script>
+  typ=text/xml
+  flg=0x30800004
+  cmp=com.mkulesh.onpc/.MainActivity
 }
 ```
+
+Alternatively, use the Launch App action in tasker as below.
 In order to start the app with this intent, we can, for example, configure following tasks in Tasker:
 <img src="https://github.com/mkulesh/onpc/blob/master/doc/Tasker/TaskerTasks.png" align="center">
 
@@ -37,10 +39,10 @@ We have here two tasks:
 - The second task sends ISCP command PWR(00) in order to put the receiver in standby mode:
 <img src="https://github.com/mkulesh/onpc/blob/master/doc/Tasker/TaskerPowerOff.png" align="center">
 
-Botch tasks declare an order of ISCP commands to be send to the receiver in form of a script written in XML. 
+Batch tasks declare an order of ISCP commands to be sent to the receiver in the form of a script written in XML.
 The script format is decribed below.
 
-## Tasker scripts 
+## Tasker scripts
 
 The script on the Tasker side is an XML message that looks like:
 
@@ -60,40 +62,39 @@ The script on the Tasker side is an XML message that looks like:
   <send cmd="NLA" par="Search by Artist" wait="NCP"/>
 </onpcScript>
 ```
-This script has following parameters
+This script has the following parameters
 - _host and port_ (optional): IP and port of the target receiver
 - _zone_ (optional): target zone if the receiver has multi-zone support
 - _tab_ (optional): the tab in the app that will be set when script is started
 - _send_: the description of the action
 
-Action contains the description of the ISCP commands (with parameters) that shall be send to 
-the receiver and the rule that defines when command is finished and the app shall go to the 
-next command:
-- _cmd_: the mandatory code of the ISCP command. For available codes please see official Onkyo 
+The onpcScript element contains the description of the ISCP commands (with parameters) that shall be sent to
+the receiver and the rule that defines when the command is finished and the next command shall be sent:
+- _cmd_: the mandatory code of the ISCP command. For available codes please see official Onkyo
 description of the [ISCP protocol](https://github.com/mkulesh/onpc/blob/master/doc/ISCP_AVR_140.xlsx)
 - _par_: the mandatory command parameter
-- _wait_: mandatory flag that describes the waiting condition. May be a positive integer 
-(waiting duration is milliseconds), or a code of ISCP command that will be expected as a response
-from the receiver
+- _wait_: mandatory flag that describes the waiting condition.  Ideally this will be the code of an ISCP
+command that will be expected as a response from the receiver; alternatively, it may be a positive integer
+(waiting duration is milliseconds)
 - _resp_: optional response parameter. If not given, the app just waits on the response message
 given as _wait_ parameter with any response value. If _resp_ is given the app waits on the
 response message with exactly this response value.
-- _listitem_: a name od the media item. The command will be finalized, when the receiver provides
+- _listitem_: the name of a media item. The command will be finalized, when the receiver provides
 a media list that contains this media item.
 
 
 ## Examples
 In this directory, we collected a set of helpful examples of scripts:
 - [DeezerFlow.xml](DeezerFlow.xml): starts playing of Deezer Flow from network services
-- [DlnaGenre.xml](DlnaGenre.xml): starts playing of the first song from "Blues" genre on the DLNA server. In order 
-to use this script, you shall change the name of your DLNA server ("Supermicro DLNA Server" in this 
-example), set desired genre instead of "Blues" and the title of the song instead of 
+- [DlnaGenre.xml](DlnaGenre.xml): starts playing of the first song from "Blues" genre on the DLNA server. In order
+to use this script, you shall change the name of your DLNA server ("Supermicro DLNA Server" in this
+example), set desired genre instead of "Blues" and the title of the song instead of
 "All Along The Watchtower"
-- [PlayQueue.xml](PlayQueue.xml): plays the first song from Play Queue. Instead of "01 - Eclipse.mp3", set your 
+- [PlayQueue.xml](PlayQueue.xml): plays the first song from Play Queue. Instead of "01 - Eclipse.mp3", set your
 actual song title.
 - [TuneInPreset.xml](TuneInPreset.xml): plays "Absolut relax (Easy Listening)" channel from TuneIn presets.
 - [UsbStorage.xml](UsbStorage.xml): plays the song "Never Die" placed on the external USB rear storage with the path
-"onkyo_music"/"Power Metall"/"Allen-Olzon"/"Worlds Apart (2020)" 
+"onkyo_music"/"Power Metall"/"Allen-Olzon"/"Worlds Apart (2020)"
 
 # Sample Voice Control in Tasker
 
@@ -160,7 +161,7 @@ with:
 
 See [`IscpToDlna`](#iscptodlna) for example usage.
 
-### IscpCmdEscape 
+### IscpCmdEscape
 Individual ISCP command parameters sometimes contain XML, but they must go inside the overall XML message being sent, via Intent, to onpc.  Thus - we escape the inner message using the method in this command, with parameter:
 - _par1_: xml text for which the characters '<', '>' and '"' shall be escaped (via a method agreed with onpc)
 
