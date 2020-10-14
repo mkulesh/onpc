@@ -39,8 +39,8 @@ We have here two tasks:
 - The second task sends ISCP command PWR(00) in order to put the receiver in standby mode:
 <img src="https://github.com/mkulesh/onpc/blob/master/doc/Tasker/TaskerPowerOff.png" align="center">
 
-Batch tasks declare an order of ISCP commands to be sent to the receiver in the form of a script written in XML.
-The script format is decribed below.
+Both tasks declare an order of ISCP commands to be sent to the receiver in the form of a script written in XML.
+The script format is described below.
 
 ## Tasker scripts
 
