@@ -133,7 +133,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
     {
         try
         {
-            final xml.XmlDocument document = xml.parse(data);
+            final xml.XmlDocument document = xml.XmlDocument.parse(data);
             document.findAllElements(SCRIPT_NAME).forEach((xml.XmlElement e)
             {
                 setHost(ISCPMessage.nonNullString(e.getAttribute("host")));

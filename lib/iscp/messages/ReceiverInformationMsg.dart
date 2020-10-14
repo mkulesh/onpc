@@ -325,7 +325,7 @@ class ReceiverInformationMsg extends ISCPMessage
 
     void _parseXml()
     {
-        final xml.XmlDocument document = xml.parse(getData);
+        final xml.XmlDocument document = xml.XmlDocument.parse(getData);
 
         // device properties
         document.findAllElements("device").forEach((xml.XmlElement e)

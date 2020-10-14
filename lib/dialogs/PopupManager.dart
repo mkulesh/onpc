@@ -122,8 +122,7 @@ class PopupManager
         Fluttertoast.showToast(
             msg: msg,
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 3
+            gravity: ToastGravity.BOTTOM
         );
     }
 }
