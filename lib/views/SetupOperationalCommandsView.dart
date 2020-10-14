@@ -53,57 +53,51 @@ class SetupOperationalCommandsView extends UpdatableView
 
         // Columns width
         final Map<int, TableColumnWidth> columnWidths = Map();
-        columnWidths[0] = FlexColumnWidth();
-        for (int i = 1; i <= cmd.length; i++)
+        for (int i = 0; i < cmd.length; i++)
         {
             columnWidths[i] = FixedColumnWidth(1.9 * ButtonDimens.bigButtonSize);
         }
-        columnWidths[cmd.length] = FlexColumnWidth();
 
         final List<TableRow> rows = List();
 
         // Labels (first row)
         {
             final List<Widget> cells = List();
-            cells.add(SizedBox.shrink());
             cmd.forEach((c)
-            =>
-                cells.add(
-                    InkWell(
-                        child: CustomTextLabel.small(c.getValue.description,
-                            padding: ActivityDimens.headerPaddingTop,
-                            textAlign: TextAlign.center),
-                        onTap: ()
-                        => enabled ? stateManager.sendMessage(c) : null
-                    )
-                ));
-            cells.add(SizedBox.shrink());
+            => cells.add(InkWell(
+                    child: CustomTextLabel.small(c.getValue.description,
+                        padding: ActivityDimens.headerPaddingTop,
+                        textAlign: TextAlign.center),
+                    onTap: ()
+                    => enabled ? stateManager.sendMessage(c) : null
+                )
+            ));
             rows.add(TableRow(children: cells));
         }
 
         // Buttons
         {
             final List<Widget> cells = List();
-            cells.add(SizedBox.shrink());
             cmd.forEach((c)
-            =>
-                cells.add(
-                    CustomImageButton.big(
-                        c.getValue.icon,
-                        c.getValue.description,
-                        onPressed: ()
-                        => stateManager.sendMessage(c),
-                        isEnabled: enabled
-                    )
-                ));
-            cells.add(SizedBox.shrink());
+            => cells.add(CustomImageButton.big(
+                    c.getValue.icon,
+                    c.getValue.description,
+                    onPressed: ()
+                    => stateManager.sendMessage(c),
+                    isEnabled: enabled
+                )
+            ));
             rows.add(TableRow(children: cells));
         }
 
-        return Table(
+        final Widget table = Table(
             columnWidths: columnWidths,
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: rows,
         );
+
+        return Row(mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [table]);
     }
 }

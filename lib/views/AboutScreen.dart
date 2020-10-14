@@ -12,7 +12,9 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:onpc/widgets/CustomTextButton.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import "../constants/Dimens.dart";
@@ -94,7 +96,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
                     }
                     return Container(
                         margin: ActivityDimens.activityMargins(context),
-                        child: Container(margin: EdgeInsets.only(bottom: 48), child: tabContent)
+                        child: tabContent
                     );
                 }).toList(),
             );
@@ -154,11 +156,31 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
 
     Widget _buildTextView(final ThemeData td, final String data)
     {
-        return SingleChildScrollView(child:
-            SelectableText(data,
+        final Widget text = Expanded(flex: 1, child:
+            SingleChildScrollView(child: SelectableText(data,
                 style: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color),
                 toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
-                showCursor: true)
+                showCursor: true))
+        );
+
+        final Widget copyButton = CustomTextButton(
+            Strings.favorite_copy_to_clipboard,
+            isEnabled: true,
+            onPressed: ()
+            {
+                Clipboard.setData(ClipboardData(text: data));
+            }
+        );
+
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+                text,
+                CustomDivider(height: 1),
+                Row(mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [copyButton])
+            ]
         );
     }
 
@@ -181,7 +203,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
             });
     }
 
-    _launchURL(final String url) async
+    void _launchURL(final String url) async
     {
         if (await canLaunch(url))
         {
