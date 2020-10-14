@@ -25,8 +25,9 @@ import "../widgets/CustomDialogTitle.dart";
 class DeviceSearchDialog extends StatefulWidget
 {
     final ViewContext _viewContext;
+    final void Function() _onDispose;
 
-    DeviceSearchDialog(this._viewContext);
+    DeviceSearchDialog(this._viewContext, this._onDispose);
 
     @override _DeviceSearchDialogState createState()
     => _DeviceSearchDialogState();
@@ -73,5 +74,6 @@ class _DeviceSearchDialogState extends State<DeviceSearchDialog>
         {
             viewContext.stateManager.connect(_device.getHost, _device.getPort);
         }
+        widget._onDispose();
     }
 }
