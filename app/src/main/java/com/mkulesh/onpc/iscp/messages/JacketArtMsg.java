@@ -22,7 +22,10 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.zip.GZIPInputStream;
 
 import androidx.annotation.NonNull;
 
@@ -160,7 +163,15 @@ public class JacketArtMsg extends ISCPMessage
         {
             Logging.info(this, "loading image from URL: " + url.toString());
 
-            byte[] bytes = Utils.streamToByteArray(url.openConnection().getInputStream());
+            URLConnection urlConnection = url.openConnection();
+            urlConnection.setRequestProperty("Accept-Encoding", "gzip");
+            InputStream inputStream;
+            if ("gzip".equals(urlConnection.getContentEncoding())) {
+                inputStream = new GZIPInputStream(urlConnection.getInputStream());
+            } else {
+                inputStream = urlConnection.getInputStream();
+            }
+            byte[] bytes = Utils.streamToByteArray(inputStream);
             final int offset = getUrlHeaderLength(bytes);
             final int length = bytes.length - offset;
             if (length > 0)
