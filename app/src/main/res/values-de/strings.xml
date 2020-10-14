@@ -65,6 +65,7 @@
     <string name="favorite_alias">Name</string>
     <string name="favorite_update">Bearbeiten</string>
     <string name="favorite_delete">Löschen</string>
+    <string name="favorite_copy_to_clipboard">In die Zwischenablage kopieren</string>
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Verbindung bearbeiten</string>

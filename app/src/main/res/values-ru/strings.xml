@@ -68,6 +68,7 @@
     <string name="favorite_alias">Имя</string>
     <string name="favorite_update">Изменить</string>
     <string name="favorite_delete">Удалить</string>
+    <string name="favorite_copy_to_clipboard">Скопировать в буфер обмена</string>
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Изменить соединение</string>

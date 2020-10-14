@@ -65,6 +65,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="favorite_alias">Nom</string>
     <string name="favorite_update">Modifier</string>
     <string name="favorite_delete">Supprimer</string>
+    <string name="favorite_copy_to_clipboard">Copier dans le presse-papier</string>
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Modifier la connexion</string>

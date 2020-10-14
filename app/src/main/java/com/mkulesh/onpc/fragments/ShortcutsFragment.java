@@ -13,6 +13,7 @@
 
 package com.mkulesh.onpc.fragments;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -42,6 +43,8 @@ import androidx.appcompat.app.AlertDialog;
 
 public class ShortcutsFragment extends BaseFragment
 {
+    private static final String CLIPBOARD_LABEL = "com.mkulesh.onpc.clipboard";
+
     private DragSortListView listView;
     private ShortcutsListAdapter listViewAdapter;
     private CfgFavoriteShortcuts.Shortcut selectedItem = null;
@@ -148,6 +151,9 @@ public class ShortcutsFragment extends BaseFragment
                 activity.getConfiguration().favoriteShortcuts.deleteShortcut(selectedItem);
                 updateContent();
                 return true;
+            case R.id.shortcut_menu_copy_to_clipboard:
+                copyToClipboard(selectedItem);
+                return true;
             }
         }
         return super.onContextItemSelected(item);
@@ -187,5 +193,24 @@ public class ShortcutsFragment extends BaseFragment
 
         dialog.show();
         Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+    }
+
+    private void copyToClipboard(CfgFavoriteShortcuts.Shortcut shortcut)
+    {
+        final String data = shortcut.toScript(activity);
+        try
+        {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) activity
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            if (clipboard != null)
+            {
+                android.content.ClipData clip = android.content.ClipData.newPlainText(CLIPBOARD_LABEL, data);
+                clipboard.setPrimaryClip(clip);
+            }
+        }
+        catch (Exception e)
+        {
+            // nothing to do
+        }
     }
 }

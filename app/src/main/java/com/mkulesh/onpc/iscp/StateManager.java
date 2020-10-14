@@ -732,51 +732,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public void applyShortcut(Context context, @NonNull final CfgFavoriteShortcuts.Shortcut shortcut)
     {
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        final StringBuilder data = new StringBuilder();
-        data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
-        data.append("<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>");
-        data.append("<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>");
-        data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>");
-        data.append("<send cmd=\"SLI\" par=\"").append(shortcut.input.getCode())
-                .append("\" wait=\"SLI\" resp=\"").append(shortcut.input.getCode()).append("\"/>");
-        data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
-
-        // Go to the top level. Response depends on the input type
-        String firstPath = shortcut.pathItems.isEmpty() ? shortcut.item : shortcut.pathItems.get(0);
-        if (shortcut.input == InputSelectorMsg.InputType.NET && shortcut.service != ServiceType.UNKNOWN)
-        {
-            data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"")
-                    .append(context.getString(shortcut.service.getDescriptionId())).append("\"/>");
-        }
-        else
-        {
-            data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"")
-                    .append(firstPath).append("\"/>");
-        }
-
-        // Select target service
-        data.append("<send cmd=\"NSV\" par=\"").append(shortcut.service.getCode())
-                .append("0\" wait=\"NLA\" listitem=\"").append(firstPath).append("\"/>");
-
-        // Apply target path, if necessary
-        if (!shortcut.pathItems.isEmpty())
-        {
-            for (int i = 0; i < shortcut.pathItems.size() - 1; i++)
-            {
-                firstPath = shortcut.pathItems.get(i);
-                String nextPath = shortcut.pathItems.get(i + 1);
-                data.append("<send cmd=\"NLA\" par=\"").append(firstPath)
-                        .append("\" wait=\"NLA\" listitem=\"").append(nextPath).append("\"/>");
-            }
-            String lastPath = shortcut.pathItems.get(shortcut.pathItems.size() - 1);
-            data.append("<send cmd=\"NLA\" par=\"").append(lastPath)
-                    .append("\" wait=\"NLA\" listitem=\"").append(shortcut.item).append("\"/>");
-        }
-
-        // Select target item
-        data.append("<send cmd=\"NLA\" par=\"").append(shortcut.item).append("\" wait=\"1000\"/>");
-        data.append("</onpcScript>");
-        final MessageScript messageScript = new MessageScript(context, data.toString());
+        final String data = shortcut.toScript(context);
+        final MessageScript messageScript = new MessageScript(context, data);
         activateScript(messageScript);
     }
 }

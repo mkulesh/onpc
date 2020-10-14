@@ -44,7 +44,7 @@ public class CfgFavoriteShortcuts
         public final String item;
         public final String alias;
         public int order;
-        public final List<String> pathItems = new ArrayList<>();
+        final List<String> pathItems = new ArrayList<>();
 
         Shortcut(final Element e)
         {
@@ -138,6 +138,56 @@ public class CfgFavoriteShortcuts
             }
             label.append(item);
             return label.toString();
+        }
+
+        @NonNull
+        public String toScript(final Context context)
+        {
+            final StringBuilder data = new StringBuilder();
+            data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
+            data.append("<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>");
+            data.append("<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>");
+            data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>");
+            data.append("<send cmd=\"SLI\" par=\"").append(input.getCode())
+                    .append("\" wait=\"SLI\" resp=\"").append(input.getCode()).append("\"/>");
+            data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
+
+            // Go to the top level. Response depends on the input type
+            String firstPath = pathItems.isEmpty() ? item : pathItems.get(0);
+            if (input == InputSelectorMsg.InputType.NET && service != ServiceType.UNKNOWN)
+            {
+                data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"")
+                        .append(context.getString(service.getDescriptionId())).append("\"/>");
+            }
+            else
+            {
+                data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"")
+                        .append(firstPath).append("\"/>");
+            }
+
+            // Select target service
+            data.append("<send cmd=\"NSV\" par=\"").append(service.getCode())
+                    .append("0\" wait=\"NLA\" listitem=\"").append(firstPath).append("\"/>");
+
+            // Apply target path, if necessary
+            if (!pathItems.isEmpty())
+            {
+                for (int i = 0; i < pathItems.size() - 1; i++)
+                {
+                    firstPath = pathItems.get(i);
+                    String nextPath = pathItems.get(i + 1);
+                    data.append("<send cmd=\"NLA\" par=\"").append(firstPath)
+                            .append("\" wait=\"NLA\" listitem=\"").append(nextPath).append("\"/>");
+                }
+                String lastPath = pathItems.get(pathItems.size() - 1);
+                data.append("<send cmd=\"NLA\" par=\"").append(lastPath)
+                        .append("\" wait=\"NLA\" listitem=\"").append(item).append("\"/>");
+            }
+
+            // Select target item
+            data.append("<send cmd=\"NLA\" par=\"").append(item).append("\" wait=\"1000\"/>");
+            data.append("</onpcScript>");
+            return data.toString();            
         }
     }
 
