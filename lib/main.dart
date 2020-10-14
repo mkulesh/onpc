@@ -120,7 +120,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     final PopupManager _popupManager = PopupManager();
 
     ConnectionState _connectionState;
-    bool _exitConfirm;
+    bool _exitConfirm, _searchDialog;
 
     MusicControllerAppState(this._viewContext);
 
@@ -142,6 +142,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         _connectionState = ConnectionState.NONE;
         _exitConfirm = false;
+        _searchDialog = false;
         WidgetsBinding.instance.addObserver(this);
 
         _onResume(autoPower: _configuration.autoPower).then((value)
@@ -380,12 +381,19 @@ class MusicControllerAppState extends State<MusicControllerApp>
             final NetworkState n = Platform.parseNetworkState(replay);
             _stateManager.setNetworkState(n);
             _stateManager.startSearch(limited: false);
-            showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext c)
-                => DeviceSearchDialog(_viewContext)
-            );
+            if (!_searchDialog)
+            {
+                _searchDialog = true;
+                showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext c)
+                    => DeviceSearchDialog(_viewContext, ()
+                    {
+                        _searchDialog = false;
+                    })
+                );
+            }
         });
     }
 
