@@ -12,6 +12,7 @@
  */
 
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:positioned_tap_detector/positioned_tap_detector.dart";
 import "package:sprintf/sprintf.dart";
 
@@ -30,7 +31,8 @@ import "../widgets/CustomTextLabel.dart";
 enum _ShortcutContextMenu
 {
     EDIT,
-    DELETE
+    DELETE,
+    COPY_TO_CLIPBOARD
 }
 
 class ShortcutsView extends UpdatableView
@@ -109,6 +111,8 @@ class ShortcutsView extends UpdatableView
             child: Text(Strings.favorite_update), value: _ShortcutContextMenu.EDIT));
         contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(
             child: Text(Strings.favorite_delete), value: _ShortcutContextMenu.DELETE));
+        contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(
+            child: Text(Strings.favorite_copy_to_clipboard), value: _ShortcutContextMenu.COPY_TO_CLIPBOARD));
 
         showMenu(
             context: context,
@@ -138,6 +142,9 @@ class ShortcutsView extends UpdatableView
             case _ShortcutContextMenu.DELETE:
                 configuration.favoriteShortcuts.deleteShortcut(s);
                 stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
+                break;
+            case _ShortcutContextMenu.COPY_TO_CLIPBOARD:
+                Clipboard.setData(ClipboardData(text: s.toScript()));
                 break;
         }
     }

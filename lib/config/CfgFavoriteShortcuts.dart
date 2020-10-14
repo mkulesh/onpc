@@ -130,6 +130,49 @@ class Shortcut
         label += _item;
         return label.toString();
     }
+
+    String toScript()
+    {
+        String data = "";
+        data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
+        data += "<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>";
+        data += "<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>";
+        data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>";
+        data += "<send cmd=\"SLI\" par=\"" + input.getCode
+            + "\" wait=\"SLI\" resp=\"" + input.getCode + "\"/>";
+        data += "<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>";
+
+        // Go to the top level. Response depends on the input type
+        String firstPath = pathItems.isEmpty ? item : pathItems.first;
+        if (input.key == InputSelector.NET && service.key != ServiceType.UNKNOWN)
+        {
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"" + service.description + "\"/>";
+        }
+        else
+        {
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
+        }
+
+        // Select target service
+        data += "<send cmd=\"NSV\" par=\"" + service.getCode + "0\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
+
+        // Apply target path, if necessary
+        if (pathItems.isNotEmpty)
+        {
+            for (int i = 0; i < pathItems.length - 1; i++)
+            {
+                firstPath = pathItems[i];
+                final String nextPath = pathItems[i + 1];
+                data += "<send cmd=\"NLA\" par=\"" + firstPath + "\" wait=\"NLA\" listitem=\"" + nextPath + "\"/>";
+            }
+            data += "<send cmd=\"NLA\" par=\"" + pathItems.last + "\" wait=\"NLA\" listitem=\"" + item + "\"/>";
+        }
+
+        // Select target item
+        data += "<send cmd=\"NLA\" par=\"" + item + "\" wait=\"1000\"/>";
+        data += "</onpcScript>";
+        return data;
+    }
 }
 
 class CfgFavoriteShortcuts extends CfgModule
@@ -152,7 +195,7 @@ class CfgFavoriteShortcuts extends CfgModule
             final String val = getString(key, doLog: true);
             try
             {
-                final xml.XmlDocument document = xml.parse(val);
+                final xml.XmlDocument document = xml.XmlDocument.parse(val);
                 document.findAllElements(Shortcut.FAVORITE_SHORTCUT_TAG).forEach((xml.XmlElement e)
                 => _shortcuts.add(Shortcut.fromXml(e)));
             }

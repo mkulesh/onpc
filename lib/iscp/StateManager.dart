@@ -782,46 +782,6 @@ class StateManager
     void applyShortcut(final Shortcut shortcut)
     {
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        String data = "";
-        data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
-        data += "<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>";
-        data += "<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>";
-        data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>";
-        data += "<send cmd=\"SLI\" par=\"" + shortcut.input.getCode
-            + "\" wait=\"SLI\" resp=\"" + shortcut.input.getCode + "\"/>";
-        data += "<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>";
-
-        // Go to the top level. Response depends on the input type
-        String firstPath = shortcut.pathItems.isEmpty ? shortcut.item : shortcut.pathItems.first;
-        if (shortcut.input.key == InputSelector.NET && shortcut.service.key != ServiceType.UNKNOWN)
-        {
-            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"" + shortcut.service.description + "\"/>";
-        }
-        else
-        {
-            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
-        }
-
-        // Select target service
-        data += "<send cmd=\"NSV\" par=\"" + shortcut.service.getCode + "0\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
-
-        // Apply target path, if necessary
-        if (shortcut.pathItems.isNotEmpty)
-        {
-            for (int i = 0; i < shortcut.pathItems.length - 1; i++)
-            {
-                firstPath = shortcut.pathItems[i];
-                final String nextPath = shortcut.pathItems[i + 1];
-                data += "<send cmd=\"NLA\" par=\"" + firstPath + "\" wait=\"NLA\" listitem=\"" + nextPath + "\"/>";
-            }
-            data += "<send cmd=\"NLA\" par=\"" + shortcut.pathItems.last + "\" wait=\"NLA\" listitem=\"" + shortcut.item + "\"/>";
-        }
-
-        // Select target item
-        data += "<send cmd=\"NLA\" par=\"" + shortcut.item + "\" wait=\"1000\"/>";
-        data += "</onpcScript>";
-
-        final MessageScript messageScript = MessageScript(data);
-        activateScript(messageScript);
+        activateScript(MessageScript(shortcut.toScript()));
     }
 }

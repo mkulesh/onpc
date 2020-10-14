@@ -474,6 +474,14 @@ Enjoy!"""];
         /*pl*/ "Usuń"];
     static String get favorite_delete => l_favorite_delete[_language];
 
+    static const List<String> l_favorite_copy_to_clipboard = [
+        /*en*/ "Copy to clipboard",
+        /*ru*/ "Скопировать в буфер обмена",
+        /*de*/ "In die Zwischenablage kopieren",
+        /*fr*/ "Copier dans le presse-papier",
+        /*pl*/ "Skopiuj do schowka"];
+    static String get favorite_copy_to_clipboard => l_favorite_copy_to_clipboard[_language];
+
     static const List<String> l_favorite_connection_edit = [
         /*en*/ "Edit connection",
         /*ru*/ "Изменить соединение",
@@ -782,7 +790,7 @@ Enjoy!"""];
         /*en*/ "Listening mode buttons",
         /*ru*/ "Звуковой профиль (кнопки)",
         /*de*/ "Hörmodus-Tasten",
-        /*fr*/ "Boutons de mode d'écoute",
+        /*fr*/ "Boutons de mode d\'écoute",
         /*pl*/ "Przyciski trybu odsłuchu"];
     static String get app_control_listening_mode_list => l_app_control_listening_mode_list[_language];
 
@@ -790,7 +798,7 @@ Enjoy!"""];
         /*en*/ "Listening mode switch",
         /*ru*/ "Звуковой профиль (переключатель)",
         /*de*/ "Hörmodusschalter",
-        /*fr*/ "Commutateur de mode d'écoute",
+        /*fr*/ "Commutateur de mode d\'écoute",
         /*pl*/ "Przełącznik trybu słuchania"];
     static String get app_control_listening_mode_btn => l_app_control_listening_mode_btn[_language];
 
@@ -814,7 +822,7 @@ Enjoy!"""];
         /*en*/ "Album cover",
         /*ru*/ "Картинка альбома",
         /*de*/ "Album-Cover",
-        /*fr*/ "Couverture de l'album",
+        /*fr*/ "Couverture de l\'album",
         /*pl*/ "Okładka albumu"];
     static String get app_control_track_cover => l_app_control_track_cover[_language];
 
@@ -854,7 +862,7 @@ Enjoy!"""];
         /*en*/ "Input selector",
         /*ru*/ "Выбор канала",
         /*de*/ "Eingangswahlschalter",
-        /*fr*/ "Sélecteur d'entrée",
+        /*fr*/ "Sélecteur d\'entrée",
         /*pl*/ "Selektor wejść"];
     static String get app_control_input_selector => l_app_control_input_selector[_language];
 
@@ -886,7 +894,7 @@ Enjoy!"""];
         /*en*/ "Device information",
         /*ru*/ "Информация об устройстве",
         /*de*/ "Geräteinformation",
-        /*fr*/ "Informations sur l'appareil",
+        /*fr*/ "Informations sur l\'appareil",
         /*pl*/ "Informacje o urządzeniu"];
     static String get app_control_device_info => l_app_control_device_info[_language];
 
@@ -894,7 +902,7 @@ Enjoy!"""];
         /*en*/ "Device settings",
         /*ru*/ "Настройки устройства",
         /*de*/ "Geräteeinstellungen",
-        /*fr*/ "Réglages de l'appareil",
+        /*fr*/ "Réglages de l\'appareil",
         /*pl*/ "Ustawienia urządzenia"];
     static String get app_control_device_settings => l_app_control_device_settings[_language];
 

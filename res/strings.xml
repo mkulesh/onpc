@@ -76,6 +76,7 @@ Enjoy!""</string>
     <string name="favorite_alias">Name</string>
     <string name="favorite_update">Edit</string>
     <string name="favorite_delete">Delete</string>
+    <string name="favorite_copy_to_clipboard">Copy to clipboard</string>
 
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Edit connection</string>
