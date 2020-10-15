@@ -9,8 +9,6 @@ cp build/app/outputs/apk/release/app-release.apk release/onpc-v2.7-release.apk
 flutter clean
 rm -f ios/Flutter/Generated.xcconfig
 rm -f ios/Flutter/flutter_export_environment.sh
-rm -rf android/.gradle
-
 rm -rf ios/.symlinks/
 rm -rf ios/Flutter/App.framework/
 rm -rf ios/Flutter/Flutter.framework/
@@ -24,5 +22,7 @@ rm -rf ios/Pods/
 rm -rf ios/ServiceDefinitions.json
 rm -rf ios/Runner.xcworkspace/xcshareddata/
 rm -rf ios/Runner.xcworkspace/xcuserdata/
+rm -rf ios/Flutter/.last_build_id
+rm -rf android/.gradle
 find . -name .DS_Store -exec rm -f {} \;
 
