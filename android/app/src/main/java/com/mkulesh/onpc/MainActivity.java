@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -260,9 +261,14 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         return false;
     }
 
-    private void restartActivity()
+    public void restartActivity()
     {
-        Intent intent = getIntent();
+        PackageManager pm = getPackageManager();
+        Intent intent = pm.getLaunchIntentForPackage(getPackageName());
+        if (intent == null)
+        {
+            intent = getIntent();
+        }
         finish();
         startActivity(intent);
     }
