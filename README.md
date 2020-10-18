@@ -1,23 +1,23 @@
 [![Flutter Logo](https://github.com/mkulesh/onpc/blob/onpc-flutter/images/flutter_logo.png)](https://flutter.dev)
 
-# Enhanced Controller for Onkyo and Pioneer (Flutter port)
+# Enhanced Controller for Onkyo and Pioneer Pro
 
 *Enhanced controller for Onkyo/Pioneer devices: listen to music properly!*
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
+This "Premium" version implements exactly the same receiver control functionality as the free version, but has more flexible user interface.
+It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
+
 ## Screenshots
-* Playback screen in landscape orientation, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android/phone_ns_6130_playback_hor.png" align="center">
-
-* Playback screen in portrait orientation, Strong Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android/phone_ncp_302_playback_vert.png" align="center" height="800">
-
-* Playback screen and navigation drawer in landscape orientation, 12 Inch iPad, Strong Dark theme
+* Playback screen in landscape orientation, 12 Inch iPad, Strong Dark theme
 <img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/iPad-12.9-inch-3gen/listen.png" align="center">
 
-* Media screen (network services), Light theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android/phone_ncp_302_media_top_vert.png" align="center" height="800">
+* Audio control in portrait orientation, 5 Inch Android phone, Light theme
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android-phone/audio_control.png" align="center">
+
+* Media screen in portrait orientation, 7 Inch Android Tablet, Dark theme
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android-7-inch/media.png" align="center" height="800">
 
 ## Used Open Source Libraries
 * Material Design Icons: http://materialdesignicons.com
@@ -26,7 +26,7 @@ This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a N
 ## License
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright © 2018-2019 by Mikhail Kulesh, Alexander Gomanyuk
+Copyright © 2019-2020 by Mikhail Kulesh
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
