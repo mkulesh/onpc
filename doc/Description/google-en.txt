@@ -1,6 +1,7 @@
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
 The two most popular features of the app are music playback and sound profile management.
+
 This "Premium" version implements exactly the same receiver control functionality as the free version, but has more flexible user interface.
 It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
 
@@ -30,4 +31,4 @@ At the moment, the app is tested with following devices:
 - Pioneer: VSX-LX303, VSX-LX503, VSX-832, VSX-932, VSX-933, SC-LX701
 - Teac: NT-503, AG-D500
 
-The app is 100% open source. Please feel free to download, explore, fork or contribute to it on https://github.com/mkulesh/onpc
+The app is 100% open source. Please visit https://github.com/mkulesh/onpc

@@ -14,7 +14,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Erweiterte Bedienung für Onkyo und Pioneer</string>
+    <string name="app_name">Erweiterte Bedienung für Onkyo und Pioneer Pro</string>
     <string name="app_short_name">Musik Kontrolle</string>
     <string name="app_description">Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</string>
     <string name="state_not_connected">Nicht verbunden</string>

@@ -38,6 +38,7 @@ android {
     }
 
     defaultConfig {
+        // min: Android 6.0 (API level 23)
         minSdkVersion 23
         targetSdkVersion 29
         applicationId "com.mkulesh.onpc.plus"

@@ -139,11 +139,11 @@ class Strings
     /* Translatable attributes */
 
     static const List<String> l_app_name = [
-        /*en*/ "Enhanced Controller for Onkyo and Pioneer",
-        /*ru*/ "Enhanced Controller for Onkyo and Pioneer",
-        /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer",
-        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer",
-        /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer"];
+        /*en*/ "Enhanced Controller for Onkyo and Pioneer Pro",
+        /*ru*/ "Enhanced Controller for Onkyo and Pioneer Pro",
+        /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer Pro",
+        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer Pro",
+        /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer Pro"];
     static String get app_name => l_app_name[_language];
 
     static const List<String> l_app_short_name = [
