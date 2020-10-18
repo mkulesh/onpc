@@ -7,18 +7,27 @@
 
 *Enhanced controller for Onkyo/Pioneer devices: listen to music properly!*
 
+This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
+
+*Free Version*
+
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
+      
+*Premium Version*
+
+This "Premium" version implements exactly the same receiver control functionality as the free version, but has more flexible user interface.
+It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
+
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+      alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus)
 [<img src="https://github.com/mkulesh/onpc/blob/master/images/app_store_badge.png"
       alt="Download on the App Store" height="110">](https://apps.apple.com/app/id1490166845)
-      
-*iOS Version*
-- Do you want try the last version in development? Install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
-- The iOS version is developed with Flutter, see [onpc-flutter branch](https://github.com/mkulesh/onpc/tree/onpc-flutter)
 
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
+This premium version is developed with Flutter, see [onpc-flutter branch](https://github.com/mkulesh/onpc/tree/onpc-flutter)
+Do you want try the last version in development? Install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
 
 The two most popular features of the app are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
