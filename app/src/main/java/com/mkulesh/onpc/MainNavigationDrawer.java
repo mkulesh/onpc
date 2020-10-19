@@ -457,7 +457,7 @@ class MainNavigationDrawer
                     {
                         configuration.favoriteConnections.deleteDevice(msg);
                         activity.getDeviceList().updateFavorites(false);
-                        updateNavigationContent(activity.getStateManager().getState());
+                        updateNavigationContent(activity.isConnected() ? activity.getStateManager().getState() : null);
                     }
                     dialog12.dismiss();
                 }).create();

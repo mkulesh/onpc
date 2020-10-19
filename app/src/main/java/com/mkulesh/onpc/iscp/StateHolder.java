@@ -57,7 +57,12 @@ public class StateHolder
             {
                 Logging.info(this, "request to release state holder (" + reason + ")");
                 released.set(false);
-                stateManager.stop();
+                // state manager may be set to null in setStateManager during the setting
+                // "released" to false
+                if (stateManager != null)
+                {
+                    stateManager.stop();
+                }
             }
             else
             {
