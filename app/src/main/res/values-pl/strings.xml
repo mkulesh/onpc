@@ -55,6 +55,7 @@
     <string name="drawer_tab_layout">Układ kart</string>
     <string name="drawer_app_settings">Ustawienia</string>
     <string name="drawer_about">Info</string>
+    <string name="drawer_premium">Wypróbuj wersję Premium</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adres IP</string>

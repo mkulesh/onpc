@@ -110,6 +110,18 @@ class MainNavigationDrawer
         case R.id.drawer_about:
             HtmlDialogBuilder.buildHtmlDialog(activity,
                     R.mipmap.ic_launcher, R.string.app_name, R.string.about_text).show();
+        case R.id.drawer_premium:
+            try
+            {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(android.net.Uri.parse(activity.getString(R.string.drawer_premium_link)));
+                activity.startActivity(intent);
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(activity, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -310,6 +322,9 @@ class MainNavigationDrawer
                         break;
                     case R.id.drawer_about:
                         updateItem(m, R.drawable.drawer_about, R.string.drawer_about);
+                        break;
+                    case R.id.drawer_premium:
+                        updateItem(m, R.drawable.drawer_premium, R.string.drawer_premium);
                         break;
                     }
                 }

@@ -113,6 +113,10 @@
                 android:id="@+id/drawer_about"
                 app:actionLayout="@layout/activity_drawer_item"
                 android:title="@null" />
+            <item
+                android:id="@+id/drawer_premium"
+                app:actionLayout="@layout/activity_drawer_item"
+                android:title="@null" />
         </menu>
     </item>
 

@@ -55,6 +55,7 @@
     <string name="drawer_tab_layout">Registerkartenlayout</string>
     <string name="drawer_app_settings">Einstellungen</string>
     <string name="drawer_about">Über</string>
+    <string name="drawer_premium">Probieren Sie die Premium-Version aus</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse</string>

@@ -55,6 +55,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="drawer_tab_layout">Disposition des onglets</string>
     <string name="drawer_app_settings">Paramètres</string>
     <string name="drawer_about">À propos</string>
+    <string name="drawer_premium">Essayez la version Premium</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse IP</string>
