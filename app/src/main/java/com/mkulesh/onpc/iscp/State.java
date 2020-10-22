@@ -181,7 +181,7 @@ public class State implements ConnectionIf
     private ListTitleInfoMsg.UIType uiType = null;
     public int numberOfLayers = 0;
     public int numberOfItems = 0;
-    public int currentCursorPosition = 0;
+    private int currentCursorPosition = 0;
     public String titleBar = "";
     private final List<XmlListItemMsg> mediaItems = new ArrayList<>();
     final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
@@ -1230,7 +1230,7 @@ public class State implements ConnectionIf
             }
             return !serviceItems.isEmpty();
         }
-        else if (!isReceiverInformation())
+        else if (isMenuMode() || !isReceiverInformation())
         {
             synchronized (mediaItems)
             {
