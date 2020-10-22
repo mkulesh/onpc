@@ -19,6 +19,8 @@ Other benefits include:
 - Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 
+Flexible user interface: It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
+
 Please note that the app does not support the music streaming from your phone to the network player or the receiver.
 
 At the moment, the app is tested with following devices:
