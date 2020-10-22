@@ -272,7 +272,7 @@ class MediaListState
             }
             return _mediaItems.isNotEmpty;
         }
-        else if (!ri.isReceiverInformation)
+        else if (isMenuMode || !ri.isReceiverInformation)
         {
             if (_mediaItems.any((i) => (i is XmlListItemMsg && i.getTitle.toUpperCase() == msg.getListedData.toUpperCase())))
             {
