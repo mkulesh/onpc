@@ -42,11 +42,11 @@ class Logging
     static bool get isRebuildWidgetLog
     => false;
 
-    static void logRebuild(Object o)
+    static void logRebuild(Object o, {final String ext})
     {
         if (isRebuildWidgetLog)
         {
-            info(o, "rebuild widget");
+            info(o, "rebuild widget" + (ext == null ? "" : (" (" + ext + ")")));
         }
     }
 

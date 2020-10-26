@@ -14,6 +14,7 @@
 import "package:flutter/material.dart";
 
 import "../config/CfgTabSettings.dart";
+import "../utils/Logging.dart";
 import "../widgets/CustomDivider.dart";
 import "AmplifierControlView.dart";
 import "CdControlView.dart";
@@ -51,7 +52,10 @@ class AppTabView extends UpdatableView
     List<AppControl> controlsLandscapeLeft;
     List<AppControl> controlsLandscapeRight;
 
-    AppTabView(final ViewContext viewContext, final CfgTabSettings cfg) : super(viewContext, [])
+    final int _extId;
+    int _wId = 0;
+
+    AppTabView(this._extId, final ViewContext viewContext, final CfgTabSettings cfg) : super(viewContext, [])
     {
         controlsPortrait = cfg.controlsPortrait;
         controlsLandscapeLeft = cfg.controlsLandscapeLeft;
@@ -61,6 +65,8 @@ class AppTabView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
+        Logging.logRebuild(this, ext: ("id=" + _extId.toString()));
+
         final bool isPortrait = MediaQuery
             .of(context)
             .orientation == Orientation.portrait;
@@ -177,6 +183,8 @@ class AppTabView extends UpdatableView
 
     Widget _buildWidget(BuildContext context, AppControl c)
     {
+        _wId++;
+        final Key key = FOCUSABLE.contains(c) ? null : Key(_extId.toString() + "_" + _wId.toString());
         switch (c)
         {
             case AppControl.DIVIDER1:
@@ -187,55 +195,55 @@ class AppTabView extends UpdatableView
                 return CustomDivider();
 
             case AppControl.LISTENING_MODE_LIST:
-                return UpdatableWidget(child: ListeningModeView(viewContext));
+                return UpdatableWidget(key: key, child: ListeningModeView(viewContext));
 
             case AppControl.AUDIO_CONTROL:
-                return UpdatableWidget(child: VolumeControlView(viewContext));
+                return UpdatableWidget(key: key, child: VolumeControlView(viewContext));
 
             case AppControl.TRACK_FILE_INFO:
-                return UpdatableWidget(child: TrackFileInfoView(viewContext));
+                return UpdatableWidget(key: key, child: TrackFileInfoView(viewContext));
 
             case AppControl.TRACK_COVER:
-                return UpdatableWidget(child: TrackCoverView(viewContext));
+                return UpdatableWidget(key: key, child: TrackCoverView(viewContext));
 
             case AppControl.TRACK_TIME:
-                return UpdatableWidget(child: TrackTimeView(viewContext));
+                return UpdatableWidget(key: key, child: TrackTimeView(viewContext));
 
             case AppControl.TRACK_CAPTION:
-                return UpdatableWidget(child: TrackCaptionView(viewContext));
+                return UpdatableWidget(key: key, child: TrackCaptionView(viewContext));
 
             case AppControl.PLAY_CONTROL:
-                return UpdatableWidget(child: PlayControlView(viewContext));
+                return UpdatableWidget(key: key, child: PlayControlView(viewContext));
 
             case AppControl.SHORTCUTS:
-                return UpdatableWidget(child: ShortcutsView(viewContext));
+                return UpdatableWidget(key: key, child: ShortcutsView(viewContext));
 
             case AppControl.INPUT_SELECTOR:
-                return UpdatableWidget(child: InputSelectorView(viewContext));
+                return UpdatableWidget(key: key, child: InputSelectorView(viewContext));
 
             case AppControl.MEDIA_LIST:
                 return MediaListView(viewContext);
 
             case AppControl.SETUP_OP_CMD:
-                return UpdatableWidget(child: SetupOperationalCommandsView(viewContext));
+                return UpdatableWidget(key: key, child: SetupOperationalCommandsView(viewContext));
 
             case AppControl.SETUP_NAV_CMD:
-                return UpdatableWidget(child: SetupNavigationCommandsView(viewContext));
+                return UpdatableWidget(key: key, child: SetupNavigationCommandsView(viewContext));
 
             case AppControl.LISTENING_MODE_BTN:
-                return UpdatableWidget(child: ListeningModeDeviceView(viewContext));
+                return UpdatableWidget(key: key, child: ListeningModeDeviceView(viewContext));
 
             case AppControl.DEVICE_INFO:
                 return DeviceInfoView(viewContext);
 
             case AppControl.DEVICE_SETTINGS:
-                return UpdatableWidget(child: DeviceSettingsView(viewContext));
+                return UpdatableWidget(key: key, child: DeviceSettingsView(viewContext));
 
             case AppControl.RI_AMPLIFIER:
-                return UpdatableWidget(child: AmplifierControlView(viewContext));
+                return UpdatableWidget(key: key, child: AmplifierControlView(viewContext));
 
             case AppControl.RI_CD_PLAYER:
-                return UpdatableWidget(child: CdControlView(viewContext));
+                return UpdatableWidget(key: key, child: CdControlView(viewContext));
         }
         return null;
     }

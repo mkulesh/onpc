@@ -50,6 +50,7 @@ class DrawerView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         Logging.logRebuild(this);
+        FocusScope.of(context).unfocus();
         final ThemeData td = Theme.of(context);
 
         final Widget header = DrawerHeader(child: _buildDrawerHeader(context), decoration: BoxDecoration(color: td.primaryColor));

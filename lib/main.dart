@@ -121,6 +121,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     ConnectionState _connectionState;
     bool _exitConfirm, _searchDialog;
+    int _tabBarId = 0;
 
     MusicControllerAppState(this._viewContext);
 
@@ -253,13 +254,16 @@ class MusicControllerAppState extends State<MusicControllerApp>
             AppBarView(_viewContext, _tabController, _tabs)
         );
 
+        _tabBarId++;
         final Widget tabBar = TabBarView(
             controller: _tabController,
             children: _tabs.map((AppTabs tab)
             {
                 return Container(
                     margin: ActivityDimens.activityMargins(context),
-                    child: UpdatableWidget(child: AppTabView(_viewContext, _configuration.appSettings.tabSettings(tab)))
+                    child: UpdatableWidget(
+                        child: AppTabView(_tabBarId, _viewContext, _configuration.appSettings.tabSettings(tab))
+                    )
                 );
             }).toList(),
         );

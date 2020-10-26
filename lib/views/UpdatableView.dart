@@ -148,7 +148,7 @@ class UpdatableWidget extends StatefulWidget
 {
     final UpdatableView child;
 
-    UpdatableWidget({this.child});
+    UpdatableWidget({Key key, this.child}) : super(key: key);
 
     @override _UpdatableWidgetState createState()
     => _UpdatableWidgetState(child._viewContext, child._updateTriggers);
