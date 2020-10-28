@@ -16,8 +16,6 @@ package com.mkulesh.onpc.iscp;
 import android.os.StrictMode;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -35,6 +33,8 @@ import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
 
 public class MessageChannel extends AppTask implements Runnable, ConnectionIf
 {

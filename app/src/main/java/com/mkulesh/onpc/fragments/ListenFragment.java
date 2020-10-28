@@ -254,12 +254,12 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         soundControlLayout.setVisibility(View.VISIBLE);
         listeningModeLayout.setVisibility(View.GONE);
 
-        final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]
-        {
-            AmpOperationCommandMsg.Command.AMTTG,
-            AmpOperationCommandMsg.Command.MVLDOWN,
-            AmpOperationCommandMsg.Command.MVLUP
+        final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]{
+                AmpOperationCommandMsg.Command.AMTTG,
+                AmpOperationCommandMsg.Command.MVLDOWN,
+                AmpOperationCommandMsg.Command.MVLUP
         };
+
         for (AmpOperationCommandMsg.Command c : commands)
         {
             final AmpOperationCommandMsg msg = new AmpOperationCommandMsg(c.getCode());
@@ -393,17 +393,17 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 activity.getConfiguration().audioControl.getSoundControl(), state.getActiveZoneInfo());
         switch (soundControl)
         {
-            case RI_AMP:
-                prepareAmplifierButtons();
-                break;
-            case DEVICE_BUTTONS:
-            case DEVICE_SLIDER:
-            case DEVICE_BTN_SLIDER:
-                prepareDeviceSoundButtons(soundControl);
-                break;
-            default:
-                clearSoundVolumeButtons();
-                break;
+        case RI_AMP:
+            prepareAmplifierButtons();
+            break;
+        case DEVICE_BUTTONS:
+        case DEVICE_SLIDER:
+        case DEVICE_BTN_SLIDER:
+            prepareDeviceSoundButtons(soundControl);
+            break;
+        default:
+            clearSoundVolumeButtons();
+            break;
         }
 
         // Text (album and artist)
@@ -863,23 +863,23 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_track_menu);
         Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
         final AlertDialog dialog = new AlertDialog.Builder(activity)
-            .setTitle(R.string.cmd_preset_memory)
-            .setIcon(icon)
-            .setCancelable(true)
-            .setView(frameView)
-            .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
-            {
-                Utils.showSoftKeyboard(activity, numberPicker, false);
-                dialog1.dismiss();
-            })
-            .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
-            {
-                Utils.showSoftKeyboard(activity, numberPicker, false);
-                // in order to get updated preset list, we need to request Receiver Information
-                activity.getStateManager().requestRIonPreset(true);
-                activity.getStateManager().sendMessage(new PresetMemoryMsg(numberPicker.getValue()));
-            })
-            .create();
+                .setTitle(R.string.cmd_preset_memory)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView)
+                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
+                {
+                    Utils.showSoftKeyboard(activity, numberPicker, false);
+                    dialog1.dismiss();
+                })
+                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
+                {
+                    Utils.showSoftKeyboard(activity, numberPicker, false);
+                    // in order to get updated preset list, we need to request Receiver Information
+                    activity.getStateManager().requestRIonPreset(true);
+                    activity.getStateManager().sendMessage(new PresetMemoryMsg(numberPicker.getValue()));
+                })
+                .create();
 
         dialog.show();
         Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);

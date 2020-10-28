@@ -13,10 +13,10 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import androidx.annotation.NonNull;
-
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+
+import androidx.annotation.NonNull;
 
 /*
  * DAB Station Name (UTF-8)

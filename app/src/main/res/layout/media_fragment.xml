@@ -74,14 +74,14 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/timer_sand"
                 android:visibility="gone"
-                android:contentDescription="@string/medialist_processing"/>
+                android:contentDescription="@string/medialist_processing" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonSecondaryStyle"
                 android:id="@+id/cmd_filter"
                 android:src="@drawable/media_item_filter"
                 android:visibility="gone"
-                android:contentDescription="@string/medialist_filter"/>
+                android:contentDescription="@string/medialist_filter" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonSecondaryStyle"
@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone"
-            android:gravity="center" >
+            android:gravity="center">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"

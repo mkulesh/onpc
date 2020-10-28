@@ -241,7 +241,7 @@
     <string name="cd_cmd_disc4">Диск 4</string>
     <string name="cd_cmd_disc5">Диск 5</string>
     <string name="cd_cmd_disc6">Диск 6</string>
-    
+
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">Нет</string>
     <string name="audio_muting_off">Выключить звук устройства</string>

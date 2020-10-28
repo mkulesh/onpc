@@ -773,7 +773,7 @@ public class State implements ConnectionIf
     {
         final boolean changed =
                 (msg.getBassLevel() != ToneCommandMsg.NO_LEVEL && bassLevel != msg.getBassLevel()) ||
-                (msg.getTrebleLevel() != ToneCommandMsg.NO_LEVEL && trebleLevel != msg.getTrebleLevel());
+                        (msg.getTrebleLevel() != ToneCommandMsg.NO_LEVEL && trebleLevel != msg.getTrebleLevel());
         bassLevel = msg.getBassLevel();
         trebleLevel = msg.getTrebleLevel();
         return changed;
@@ -1520,18 +1520,18 @@ public class State implements ConnectionIf
     {
         switch (config)
         {
-            case "auto":
-                return (zone != null && zone.getVolMax() == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE_SLIDER;
-            case "device":
-                return SoundControlType.DEVICE_BUTTONS;
-            case "device-slider":
-                return SoundControlType.DEVICE_SLIDER;
-            case "device-btn-slider":
-                return SoundControlType.DEVICE_BTN_SLIDER;
-            case "external-amplifier":
-                return SoundControlType.RI_AMP;
-            default:
-                return SoundControlType.NONE;
+        case "auto":
+            return (zone != null && zone.getVolMax() == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE_SLIDER;
+        case "device":
+            return SoundControlType.DEVICE_BUTTONS;
+        case "device-slider":
+            return SoundControlType.DEVICE_SLIDER;
+        case "device-btn-slider":
+            return SoundControlType.DEVICE_BTN_SLIDER;
+        case "external-amplifier":
+            return SoundControlType.RI_AMP;
+        default:
+            return SoundControlType.NONE;
         }
     }
 

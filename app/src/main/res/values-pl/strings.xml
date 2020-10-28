@@ -239,7 +239,7 @@
     <string name="cd_cmd_disc4">Dysk 4</string>
     <string name="cd_cmd_disc5">Dysk 5</string>
     <string name="cd_cmd_disc6">Dysk 6</string>
-    
+
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
     <string name="audio_muting_off">Wyciszenie off</string>
@@ -272,7 +272,7 @@
     <string name="tuning_command_up">Strojenie \"+\"</string>
     <string name="tuning_command_down">Strojenie \"-\"</string>
 
-        <!-- Network/USB Operation Command  -->
+    <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Play</string>
     <string name="cmd_description_stop">Stop</string>
     <string name="cmd_description_pause">Pause</string>

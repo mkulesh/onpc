@@ -337,9 +337,9 @@ public class ListTitleInfoMsg extends ISCPMessage
     public boolean isXmlListTopService()
     {
         return (serviceType == ServiceType.USB_FRONT
-                 || serviceType == ServiceType.USB_REAR
-                 || serviceType == ServiceType.MUSIC_SERVER
-                 || serviceType == ServiceType.HOME_MEDIA
-               ) && layerInfo == LayerInfo.SERVICE_TOP;
+                || serviceType == ServiceType.USB_REAR
+                || serviceType == ServiceType.MUSIC_SERVER
+                || serviceType == ServiceType.HOME_MEDIA
+        ) && layerInfo == LayerInfo.SERVICE_TOP;
     }
 }

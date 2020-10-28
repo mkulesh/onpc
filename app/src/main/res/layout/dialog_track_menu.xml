@@ -27,16 +27,16 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-            <LinearLayout
-                android:id="@+id/track_menu_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="100dp"
-                android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/track_menu_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
+            android:orientation="vertical">
 
-                <!--Will be filled programmatically -->
+            <!--Will be filled programmatically -->
 
-            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
     <View style="@style/HorizontalDividerStyle" />

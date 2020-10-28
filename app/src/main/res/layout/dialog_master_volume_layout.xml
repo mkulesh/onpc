@@ -37,6 +37,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="?dialogPreferredPadding">
+
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -55,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="?dialogPreferredPadding">
+
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -64,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="?dialogPreferredPadding">
+
                 <CheckBox
                     android:id="@+id/tone_direct_checkbox"
                     style="@style/SecondaryTextViewStyle"
@@ -72,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:button="@null"
                     android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-                    android:text="@string/tone_direct"/>
+                    android:text="@string/tone_direct" />
             </LinearLayout>
 
             <LinearLayout
@@ -81,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="?dialogPreferredPadding">
+
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 
@@ -89,7 +94,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="?dialogPreferredPadding" >
+                android:paddingTop="?dialogPreferredPadding">
+
                 <include layout="@layout/tone_control_layout" />
             </LinearLayout>
 

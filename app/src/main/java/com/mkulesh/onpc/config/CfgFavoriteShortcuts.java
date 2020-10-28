@@ -16,8 +16,6 @@ package com.mkulesh.onpc.config;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.annotation.NonNull;
-
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
@@ -29,6 +27,8 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 public class CfgFavoriteShortcuts
 {
@@ -187,7 +187,7 @@ public class CfgFavoriteShortcuts
             // Select target item
             data.append("<send cmd=\"NLA\" par=\"").append(item).append("\" wait=\"1000\"/>");
             data.append("</onpcScript>");
-            return data.toString();            
+            return data.toString();
         }
     }
 

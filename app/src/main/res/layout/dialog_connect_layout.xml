@@ -82,7 +82,7 @@
                     android:minWidth="300dp"
                     android:inputType="text"
                     android:focusable="true"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>

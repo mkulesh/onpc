@@ -303,7 +303,7 @@
     <string name="cd_cmd_disc4">Disk 4</string>
     <string name="cd_cmd_disc5">Disk 5</string>
     <string name="cd_cmd_disc6">Disk 6</string>
-    
+
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
     <string name="audio_muting_off">Player audio muting off</string>

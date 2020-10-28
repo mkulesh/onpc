@@ -203,13 +203,13 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
      * The method implements message handling with respect to the "command"-"wait" logic:
      * - in "actions" list, search the first non-performed action
      * - if this action as a "wait" command that waits on a specific message (and
-     *   optional parameter), check whether this condition is fulfilled. If yes, set the
-     *   action as done and perform the next action
+     * optional parameter), check whether this condition is fulfilled. If yes, set the
+     * action as done and perform the next action
      * - if the action to be performed is a "cmd" command, send the message (for example
-     *   see method AutoPower.processMessage)
+     * see method AutoPower.processMessage)
      * - if the action to be performed is a "wait" command with given time (in milliseconds),
-     *   set the state to "processing" and start the timer, where the timer body is the
-     *   code that shall perform the next message
+     * set the state to "processing" and start the timer, where the timer body is the
+     * code that shall perform the next message
      **/
     @Override
     public void processMessage(@NonNull ISCPMessage msg, @NonNull final State state, @NonNull MessageChannel channel)

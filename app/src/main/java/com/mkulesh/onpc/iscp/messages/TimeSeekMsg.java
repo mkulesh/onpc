@@ -42,15 +42,15 @@ public class TimeSeekMsg extends ISCPMessage
         super(0, null);
         switch (model)
         {
-            case "CR-N765":
-                timeFormat = TimeFormat.MM99_SS;
-                break;
-            case "NT-503":
-                timeFormat = hours > 0? TimeFormat.HH_MM_SS : TimeFormat.MM60_SS;
-                break;
-            default:
-                timeFormat = TimeFormat.HH_MM_SS;
-                break;
+        case "CR-N765":
+            timeFormat = TimeFormat.MM99_SS;
+            break;
+        case "NT-503":
+            timeFormat = hours > 0 ? TimeFormat.HH_MM_SS : TimeFormat.MM60_SS;
+            break;
+        default:
+            timeFormat = TimeFormat.HH_MM_SS;
+            break;
         }
         this.hours = hours;
         this.minutes = minutes;

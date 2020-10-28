@@ -174,12 +174,12 @@ public class CdPlayerOperationCommandMsg extends ISCPMessage
     {
         switch (opCommand)
         {
-            case "TRDN":
-                return Command.SKIP_R.getCode();
-            case "TRUP":
-                return Command.SKIP_F.getCode();
-            default:
-                return opCommand;
+        case "TRDN":
+            return Command.SKIP_R.getCode();
+        case "TRUP":
+            return Command.SKIP_F.getCode();
+        default:
+            return opCommand;
         }
     }
 }

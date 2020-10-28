@@ -10,7 +10,7 @@
   ~ GNU General Public License for more details. You should have received a copy of the GNU General
   ~ Public License along with this program.
   -->
-<shortcuts xmlns:android="http://schemas.android.com/apk/res/android" >
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:shortcutId="auto_power"
         android:icon="@drawable/menu_power_standby"
@@ -19,7 +19,6 @@
         <intent
             android:action="com.mkulesh.onpc.AUTO_POWER"
             android:targetPackage="com.mkulesh.onpc"
-            android:targetClass="com.mkulesh.onpc.MainActivity"
-            />
+            android:targetClass="com.mkulesh.onpc.MainActivity" />
     </shortcut>
 </shortcuts>

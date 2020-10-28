@@ -166,7 +166,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             try
             {
                 state.process(new ReceiverInformationMsg(
-                        new EISCPMessage(ReceiverInformationMsg.CODE, savedReceiverInformation)),
+                                new EISCPMessage(ReceiverInformationMsg.CODE, savedReceiverInformation)),
                         /*showInfo=*/ false);
             }
             catch (Exception ex)
@@ -307,7 +307,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                         {
                             script.processMessage(msg, state, messageChannel);
                         }
-                    }                    
+                    }
                 }
                 catch (Exception e)
                 {

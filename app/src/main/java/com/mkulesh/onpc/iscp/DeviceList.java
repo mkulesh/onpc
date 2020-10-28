@@ -194,14 +194,14 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
                     toBeDeleted.add(d.getKey());
                 }
             }
-            for (String key :  toBeDeleted)
+            for (String key : toBeDeleted)
             {
                 devices.remove(key);
             }
             for (BroadcastResponseMsg msg : favorites)
             {
                 Logging.info(this, "Added favorite connection " + msg + ", handle=" + callHandler);
-                final DeviceInfo newInfo = new DeviceInfo(msg, true,0);
+                final DeviceInfo newInfo = new DeviceInfo(msg, true, 0);
                 devices.put(msg.getHostAndPort(), newInfo);
                 if (callHandler && backgroundEventListener != null)
                 {
@@ -234,7 +234,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             else
             {
                 final BroadcastResponseMsg newMsg = oldInfo.isFavorite ? oldInfo.message : msg;
-                newInfo = new DeviceInfo(newMsg, oldInfo.isFavorite,oldInfo.responses + 1);
+                newInfo = new DeviceInfo(newMsg, oldInfo.isFavorite, oldInfo.responses + 1);
                 devices.put(d, newInfo);
             }
             if (dialogMode)

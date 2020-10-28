@@ -54,10 +54,12 @@
 
             </LinearLayout>
 
-            <View style="@style/HorizontalDividerStyle"
+            <View
+                style="@style/HorizontalDividerStyle"
                 android:id="@+id/device_info_divider" />
 
-            <LinearLayout style="@style/DeviceRowStyle"
+            <LinearLayout
+                style="@style/DeviceRowStyle"
                 android:id="@+id/device_friendly_name">
 
                 <TextView
@@ -155,10 +157,11 @@
 
             <View
                 style="@style/HorizontalDividerStyle"
-                android:id="@+id/settings_divider"/>
+                android:id="@+id/settings_divider" />
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/device_dimmer_level_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/device_dimmer_level_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -176,8 +179,9 @@
                     android:contentDescription="@string/device_dimmer_level_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/device_digital_filter_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/device_digital_filter_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -195,8 +199,9 @@
                     android:contentDescription="@string/device_digital_filter_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/music_optimizer_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/music_optimizer_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -214,8 +219,9 @@
                     android:contentDescription="@string/device_two_way_switch_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/device_auto_power_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/device_auto_power_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -233,8 +239,9 @@
                     android:contentDescription="@string/device_two_way_switch_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/hdmi_cec_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/hdmi_cec_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -252,8 +259,9 @@
                     android:contentDescription="@string/device_two_way_switch_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/phase_matching_bass_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/phase_matching_bass_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -271,8 +279,9 @@
                     android:contentDescription="@string/device_two_way_switch_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/sleep_time_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/sleep_time_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -290,8 +299,9 @@
                     android:contentDescription="@string/device_two_way_switch_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/speaker_ab_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/speaker_ab_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"
@@ -309,8 +319,9 @@
                     android:contentDescription="@string/speaker_ab_command_toggle" />
             </LinearLayout>
 
-            <LinearLayout style="@style/DeviceRowStyle"
-                android:id="@+id/google_cast_analytics_layout" >
+            <LinearLayout
+                style="@style/DeviceRowStyle"
+                android:id="@+id/google_cast_analytics_layout">
 
                 <TextView
                     style="@style/DeviceLabelViewStyle"

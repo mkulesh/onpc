@@ -91,10 +91,10 @@ public class BroadcastResponseMsg extends ISCPMessage
     {
         return CODE + "[" + data
                 + "; HOST=" + getHostAndPort()
-                + (model != null? "; MODEL=" + model : "")
-                + (destinationArea != null? "; DST=" + destinationArea : "")
-                + (identifier != null? "; ID=" + identifier : "")
-                + (alias != null? "; ALIAS=" + alias : "") + "]";
+                + (model != null ? "; MODEL=" + model : "")
+                + (destinationArea != null ? "; DST=" + destinationArea : "")
+                + (identifier != null ? "; ID=" + identifier : "")
+                + (alias != null ? "; ALIAS=" + alias : "") + "]";
     }
 
     @NonNull

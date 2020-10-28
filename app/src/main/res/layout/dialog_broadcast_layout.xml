@@ -27,14 +27,14 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-            <RadioGroup
-                android:id="@+id/broadcast_radio_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="100dp"
-                android:gravity="center_vertical">
+        <RadioGroup
+            android:id="@+id/broadcast_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
+            android:gravity="center_vertical">
 
-            </RadioGroup>
+        </RadioGroup>
     </ScrollView>
 
     <View style="@style/HorizontalDividerStyle" />
