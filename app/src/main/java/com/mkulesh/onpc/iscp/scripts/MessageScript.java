@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2020. Mikhail Kulesh, John Orr
+ * Enhanced Controller for Onkyo and Pioneer
+ * Copyright (C) 2018-2020. Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
