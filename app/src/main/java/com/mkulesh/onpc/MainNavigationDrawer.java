@@ -110,6 +110,7 @@ class MainNavigationDrawer
         case R.id.drawer_about:
             HtmlDialogBuilder.buildHtmlDialog(activity,
                     R.mipmap.ic_launcher, R.string.app_name, R.string.about_text).show();
+            break;
         case R.id.drawer_premium:
             try
             {

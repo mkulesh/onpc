@@ -123,7 +123,7 @@ public class EISCPMessage
         return code;
     }
 
-    public String getParameters()
+    String getParameters()
     {
         return parameters;
     }

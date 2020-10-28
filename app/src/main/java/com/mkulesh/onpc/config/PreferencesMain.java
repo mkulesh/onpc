@@ -32,6 +32,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
                 android.R.id.content, new MyPreferenceFragment()).commit();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static class MyPreferenceFragment extends PreferenceFragmentCompat
     {
         @Override

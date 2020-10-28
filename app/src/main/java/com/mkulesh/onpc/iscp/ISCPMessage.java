@@ -25,7 +25,7 @@ public class ISCPMessage implements ConnectionIf
     protected static final Charset UTF_8 = Charset.forName("UTF-8");
     protected final static String PAR_SEP = "/";
 
-    protected final String code;
+    private final String code;
     protected final int messageId;
     protected final String data;
     private final Character modelCategoryId;

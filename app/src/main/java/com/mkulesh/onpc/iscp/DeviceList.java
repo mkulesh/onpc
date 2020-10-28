@@ -50,7 +50,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     {
         public final BroadcastResponseMsg message;
         private final boolean isFavorite;
-        int responses;
+        final int responses;
         boolean selected;
 
         DeviceInfo(@NonNull final BroadcastResponseMsg msg, final boolean isFavorite, int responses)

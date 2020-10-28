@@ -38,7 +38,7 @@ public class RequestListeningMode implements MessageScriptIf
 {
     private static final long LISTENING_MODE_DELAY = 1000;
     private static final int MAX_LISTENING_MODE_REQUESTS = 5;
-    private AtomicInteger listeningModeRequests = new AtomicInteger();
+    private final AtomicInteger listeningModeRequests = new AtomicInteger();
     private final BlockingQueue<Timer> listeningModeQueue = new ArrayBlockingQueue<>(1, true);
 
     @Override

@@ -48,11 +48,6 @@ public class PresetMemoryMsg extends ISCPMessage
         this.preset = preset;
     }
 
-    public int getPreset()
-    {
-        return preset;
-    }
-
     @NonNull
     @Override
     public String toString()

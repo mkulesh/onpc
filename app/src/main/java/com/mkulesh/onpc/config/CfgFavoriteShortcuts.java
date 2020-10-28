@@ -39,9 +39,9 @@ public class CfgFavoriteShortcuts
     public static class Shortcut
     {
         public final int id;
-        public final InputSelectorMsg.InputType input;
+        final InputSelectorMsg.InputType input;
         public final ServiceType service;
-        public final String item;
+        final String item;
         public final String alias;
         public int order;
         final List<String> pathItems = new ArrayList<>();
