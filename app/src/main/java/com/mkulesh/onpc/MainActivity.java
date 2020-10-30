@@ -537,7 +537,11 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     protected void onPause()
     {
         super.onPause();
-        configuration.appSettings.setOpenedTab(viewPager.getCurrentItem());
+        final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
+        if (f != null && f.getTabName() != null)
+        {
+            configuration.appSettings.setOpenedTab(f.getTabName());
+        }
         if (getStateManager() != null)
         {
             savedReceiverInformation = getStateManager().getState().receiverInformation;
@@ -706,21 +710,16 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             if (tabs.get(i) == tab)
             {
-                setOpenedTab(i);
+                try
+                {
+                    viewPager.setCurrentItem(i);
+                }
+                catch (Exception ex)
+                {
+                    Logging.info(this, "can not change opened tab: " + ex.getLocalizedMessage());
+                }
+                break;
             }
         }
-    }
-
-    private void setOpenedTab(int openedTab)
-    {
-        try
-        {
-            viewPager.setCurrentItem(openedTab);
-        }
-        catch (Exception ex)
-        {
-            Logging.info(this, "can not change opened tab: " + ex.getLocalizedMessage());
-        }
-
     }
 }

@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
@@ -90,7 +91,7 @@ public class DeviceFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.device_fragment);
+        initializeFragment(inflater, container, R.layout.device_fragment, CfgAppSettings.Tabs.DEVICE);
 
         // Friendly name
         {

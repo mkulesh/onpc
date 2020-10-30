@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.MainActivity;
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.utils.Utils;
@@ -45,6 +46,7 @@ abstract public class BaseFragment extends Fragment
     private boolean visibleToUser = false;
     MainActivity activity = null;
     View rootView = null;
+    private CfgAppSettings.Tabs tabName = null;
 
     private int buttonSize = 0;
     int buttonMarginHorizontal = 0;
@@ -61,10 +63,11 @@ abstract public class BaseFragment extends Fragment
         // Empty constructor required for fragment subclasses
     }
 
-    void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutId)
+    void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutId, CfgAppSettings.Tabs tab)
     {
         activity = (MainActivity) getActivity();
         rootView = inflater.inflate(layoutId, container, false);
+        tabName = tab;
 
         buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.button_size);
         buttonMarginHorizontal = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_horizontal);
@@ -72,11 +75,11 @@ abstract public class BaseFragment extends Fragment
     }
 
     @SuppressWarnings("SameParameterValue")
-    void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutPort, int layoutLand)
+    void initializeFragment(LayoutInflater inflater, ViewGroup container, int layoutPort, int layoutLand, CfgAppSettings.Tabs tab)
     {
         activity = (MainActivity) getActivity();
         initializeFragment(inflater, container,
-                (activity != null && activity.orientation == Configuration.ORIENTATION_LANDSCAPE) ? layoutLand : layoutPort);
+                (activity != null && activity.orientation == Configuration.ORIENTATION_LANDSCAPE) ? layoutLand : layoutPort, tab);
     }
 
     @Override
@@ -275,5 +278,10 @@ abstract public class BaseFragment extends Fragment
             // nothing to do
         }
         return value;
+    }
+
+    public CfgAppSettings.Tabs getTabName()
+    {
+        return tabName;
     }
 }

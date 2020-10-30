@@ -53,7 +53,7 @@ public class CfgAppSettings
     }
 
     static final String VISIBLE_TABS = "visible_tabs";
-    private static final String OPENED_TAB = "opened_tab";
+    private static final String OPENED_TAB_NAME = "opened_tab_name";
 
     // RI
     private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
@@ -136,16 +136,26 @@ public class CfgAppSettings
         return result;
     }
 
-    public int getOpenedTab()
+    public CfgAppSettings.Tabs getOpenedTab()
     {
-        return preferences.getInt(OPENED_TAB, 0);
+        CfgAppSettings.Tabs retValue = Tabs.LISTEN;
+        try
+        {
+            final String tab = preferences.getString(OPENED_TAB_NAME, Tabs.LISTEN.toString());
+            retValue = CfgAppSettings.Tabs.valueOf(tab.toUpperCase());
+        }
+        catch (Exception ex)
+        {
+            // nothing to do
+        }
+        return retValue;
     }
 
-    public void setOpenedTab(int tab)
+    public void setOpenedTab(CfgAppSettings.Tabs tab)
     {
-        Logging.info(this, "Save opened tab: " + tab);
+        Logging.info(this, "Save opened tab: " + tab.toString());
         SharedPreferences.Editor prefEditor = preferences.edit();
-        prefEditor.putInt(OPENED_TAB, tab);
+        prefEditor.putString(OPENED_TAB_NAME, tab.toString());
         prefEditor.apply();
     }
 

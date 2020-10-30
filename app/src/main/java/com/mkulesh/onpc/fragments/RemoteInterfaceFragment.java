@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
@@ -44,7 +45,7 @@ public class RemoteInterfaceFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.remote_interface_fragment);
+        initializeFragment(inflater, container, R.layout.remote_interface_fragment, CfgAppSettings.Tabs.RI);
 
         if (activity.getConfiguration().appSettings.isRemoteInterfaceAmp())
         {

@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
@@ -76,7 +77,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.media_fragment);
+        initializeFragment(inflater, container, R.layout.media_fragment, CfgAppSettings.Tabs.MEDIA);
         rootView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         selectorPaletteLayout = rootView.findViewById(R.id.selector_palette);

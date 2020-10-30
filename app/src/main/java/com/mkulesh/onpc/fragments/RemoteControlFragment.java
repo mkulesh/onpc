@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -47,7 +48,7 @@ public class RemoteControlFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.remote_control_fragment);
+        initializeFragment(inflater, container, R.layout.remote_control_fragment, CfgAppSettings.Tabs.RC);
         final LinearLayout l = rootView.findViewById(R.id.remote_control_layout);
         collectButtons(l, buttons);
         for (View b : buttons)

@@ -28,6 +28,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
@@ -94,7 +95,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.monitor_fragment_port, R.layout.monitor_fragment_land);
+        initializeFragment(inflater, container, R.layout.monitor_fragment_port, R.layout.monitor_fragment_land, CfgAppSettings.Tabs.LISTEN);
         rootView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);

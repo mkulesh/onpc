@@ -58,7 +58,7 @@ public class ShortcutsFragment extends BaseFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        initializeFragment(inflater, container, R.layout.shortcuts_fragment);
+        initializeFragment(inflater, container, R.layout.shortcuts_fragment, CfgAppSettings.Tabs.SHORTCUTS);
         listView = rootView.findViewById(R.id.shortcut_list);
         if (this.getContext() != null)
         {
