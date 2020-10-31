@@ -356,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             intent = getIntent();
         }
         finish();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
