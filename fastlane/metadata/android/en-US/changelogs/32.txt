@@ -1,0 +1,2 @@
+• NS-6170: Fixed a problem that track menu sometime not complete
+• Fixed minor bugs
