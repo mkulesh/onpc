@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Enhanced Controller for Onkyo and Pioneer
+  ~ Copyright (C) 2018-2020. Mikhail Kulesh
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+  ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+  ~ even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details. You should have received a copy of the GNU General
+  ~ Public License along with this program.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="?dialogPreferredPadding"
+    android:paddingRight="?dialogPreferredPadding"
+    android:paddingTop="16dp"
+    android:paddingBottom="0dp">
+
+    <View style="@style/HorizontalDividerStyle" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/PrimaryTextViewStyle"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/av_info_audio" />
+
+            <TextView
+                style="@style/EditFieldCaptionStyle"
+                android:id="@+id/av_info_audio_input" />
+
+            <TextView
+                style="@style/EditFieldCaptionStyle"
+                android:id="@+id/av_info_audio_output" />
+
+            <TextView
+                style="@style/PrimaryTextViewStyle"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/av_info_video"
+                android:paddingTop="?dialogPreferredPadding" />
+
+            <TextView
+                style="@style/EditFieldCaptionStyle"
+                android:id="@+id/av_info_video_input" />
+
+            <TextView
+                style="@style/EditFieldCaptionStyle"
+                android:id="@+id/av_info_video_output" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View style="@style/HorizontalDividerStyle" />
+</LinearLayout>

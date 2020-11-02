@@ -512,6 +512,13 @@
     <string name="multiroom_none">Не связан</string>
     <string name="multiroom_channel">Канал</string>
 
+    <!-- Audio/Video information dialog -->
+    <string name="av_info_dialog">Параметры аудио/видео</string>
+    <string name="av_info_audio">Аудио</string>
+    <string name="av_info_video">Видео</string>
+    <string name="av_info_input">Вход: %s</string>
+    <string name="av_info_output">Выход: %s</string>
+
     <!-- Errors -->
     <string name="error_invalid_device_address">Неправильный адрес устройства или порт</string>
     <string name="error_connection_no_network">Нет соединения с сетью</string>

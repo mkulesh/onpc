@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
+import com.mkulesh.onpc.iscp.messages.AudioInformationMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
@@ -63,6 +64,7 @@ import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
+import com.mkulesh.onpc.iscp.messages.VideoInformationMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -194,6 +196,12 @@ public class State implements ConnectionIf
     public final Map<String, MultiroomDeviceInformationMsg> multiroomLayout = new HashMap<>();
     public final Map<String, String> multiroomNames = new HashMap<>();
     public MultiroomDeviceInformationMsg.ChannelType multiroomChannel = MultiroomDeviceInformationMsg.ChannelType.NONE;
+
+    // Audio/Video information dialog
+    public String avInfoAudioInput = "";
+    public String avInfoAudioOutput = "";
+    public String avInfoVideoInput = "";
+    public String avInfoVideoOutput = "";
 
     // Popup
     public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
@@ -625,6 +633,16 @@ public class State implements ConnectionIf
         if (msg instanceof MultiroomChannelSettingMsg)
         {
             return isCommonChange(process((MultiroomChannelSettingMsg) msg));
+        }
+
+        // Audio/Video information dialog
+        if (msg instanceof AudioInformationMsg)
+        {
+            return isCommonChange(process((AudioInformationMsg) msg));
+        }
+        if (msg instanceof VideoInformationMsg)
+        {
+            return isCommonChange(process((VideoInformationMsg) msg));
         }
 
         return ChangeType.NONE;
@@ -1558,5 +1576,23 @@ public class State implements ConnectionIf
             }
         }
         return true;
+    }
+
+    private boolean process(AudioInformationMsg msg)
+    {
+        final boolean changed = !avInfoAudioInput.equals(msg.audioInput)
+                || !avInfoAudioOutput.equals(msg.audioOutput);
+        avInfoAudioInput = msg.audioInput;
+        avInfoAudioOutput = msg.audioOutput;
+        return changed;
+    }
+
+    private boolean process(VideoInformationMsg msg)
+    {
+        final boolean changed = !avInfoVideoInput.equals(msg.videoInput)
+                || !avInfoVideoOutput.equals(msg.videoOutput);
+        avInfoVideoInput = msg.videoInput;
+        avInfoVideoOutput = msg.videoOutput;
+        return changed;
     }
 }

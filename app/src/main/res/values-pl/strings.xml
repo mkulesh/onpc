@@ -510,6 +510,13 @@
     <string name="multiroom_none">Nie dołączone</string>
     <string name="multiroom_channel">Kanał</string>
 
+    <!-- Audio/Video information dialog -->
+    <string name="av_info_dialog">Audio/Video Informacja</string>
+    <string name="av_info_audio">Audio</string>
+    <string name="av_info_video">Video</string>
+    <string name="av_info_input">Wejście: %s</string>
+    <string name="av_info_output">Wyjście: %s</string>
+
     <!-- Errors -->
     <string name="error_invalid_device_address">Nieprawidłowa nazwa urządzenia lub port</string>
     <string name="error_connection_no_network">Brak połączenia z siecią</string>

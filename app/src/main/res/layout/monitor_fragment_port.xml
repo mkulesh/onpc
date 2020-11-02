@@ -76,7 +76,8 @@
             android:layout_height="wrap_content"
             android:textScaleX="0.85"
             android:maxLines="2"
-            android:gravity="left" />
+            android:gravity="left"
+            android:background="?attr/selectableItemBackground" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             style="@style/ImageButtonSecondaryStyle"

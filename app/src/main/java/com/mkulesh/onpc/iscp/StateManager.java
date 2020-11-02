@@ -22,6 +22,7 @@ import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
+import com.mkulesh.onpc.iscp.messages.AudioInformationMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
@@ -64,6 +65,7 @@ import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TrackInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
+import com.mkulesh.onpc.iscp.messages.VideoInformationMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
@@ -115,6 +117,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             ArtistNameMsg.CODE, AlbumNameMsg.CODE, TitleNameMsg.CODE,
             FileFormatMsg.CODE, TrackInfoMsg.CODE, TimeInfoMsg.CODE,
             MenuStatusMsg.CODE
+    };
+
+    private final static String[] avInfoQueries = new String[]{
+            AudioInformationMsg.CODE, VideoInformationMsg.CODE
     };
 
     private final static String[] multiroomQueries = new String[]{
@@ -483,13 +489,18 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     DabStationNameMsg.CODE
             };
             sendQueries(playStateQueries, "requesting play state...");
+            sendQueries(avInfoQueries, "requesting audio/video info...");
             requestListState();
         }
 
-        if (msg instanceof InputSelectorMsg && state.isCdInput())
+        if (msg instanceof InputSelectorMsg)
         {
-            final String[] cdStateQueries = new String[]{ PlayStatusMsg.CD_CODE };
-            sendQueries(cdStateQueries, "requesting CD state...");
+            if (state.isCdInput())
+            {
+                final String[] cdStateQueries = new String[]{ PlayStatusMsg.CD_CODE };
+                sendQueries(cdStateQueries, "requesting CD state...");
+            }
+            sendQueries(avInfoQueries, "requesting audio/video info...");
         }
 
         if (msg instanceof PlayStatusMsg && playStatus != state.playStatus)
@@ -497,6 +508,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             if (state.isPlaying())
             {
                 sendQueries(trackStateQueries, "requesting track state...");
+                sendQueries(avInfoQueries, "requesting audio/video info...");
                 // Some devices (like TX-8150) does not proved cover image;
                 // we shall specially request it:
                 if (state.getModel().equals("TX-8150"))

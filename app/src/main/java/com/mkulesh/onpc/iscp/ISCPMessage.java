@@ -25,6 +25,7 @@ public class ISCPMessage implements ConnectionIf
 {
     protected static final Charset UTF_8 = Charset.forName("UTF-8");
     protected final static String PAR_SEP = "/";
+    protected final static String COMMA_SEP = ",";
 
     private final String code;
     protected final int messageId;
@@ -199,5 +200,22 @@ public class ISCPMessage implements ConnectionIf
     public boolean hasImpactOnMediaList()
     {
         return true;
+    }
+
+    protected String getTags(String[] pars, int start, int end)
+    {
+        StringBuilder str = new StringBuilder();
+        for (int i = start; i < Math.min(end, pars.length); i++)
+        {
+            if (pars[i] != null && !pars[i].isEmpty())
+            {
+                if (!str.toString().isEmpty())
+                {
+                    str.append(", ");
+                }
+                str.append(pars[i]);
+            }
+        }
+        return str.toString();
     }
 }

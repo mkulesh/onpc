@@ -143,6 +143,10 @@ public class MessageFactory
             return new MultiroomDeviceInformationMsg(raw);
         case MultiroomChannelSettingMsg.CODE:
             return new MultiroomChannelSettingMsg(raw);
+        case AudioInformationMsg.CODE:
+            return new AudioInformationMsg(raw);
+        case VideoInformationMsg.CODE:
+            return new VideoInformationMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

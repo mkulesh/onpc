@@ -511,6 +511,13 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="multiroom_none">Pas connecté</string>
     <string name="multiroom_channel">Canal</string>
 
+    <!-- Audio/Video information dialog -->
+    <string name="av_info_dialog">Audio/Video information</string>
+    <string name="av_info_audio">Audio</string>
+    <string name="av_info_video">Vidéo</string>
+    <string name="av_info_input">Entrée: %s</string>
+    <string name="av_info_output">Sortie: %s</string>
+
     <!-- Errors -->
     <string name="error_invalid_device_address">Nom ou port du dispositif invalide</string>
     <string name="error_connection_no_network">Pas de connexion réseau</string>

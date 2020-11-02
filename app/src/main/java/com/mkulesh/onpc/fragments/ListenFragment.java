@@ -339,12 +339,18 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
 
         TextView track = rootView.findViewById(R.id.tv_track);
         track.setText("");
-        updateInputSource(R.drawable.media_item_unknown, false);
+        updateInputSource(null, R.drawable.media_item_unknown, false);
 
         ((TextView) rootView.findViewById(R.id.tv_album)).setText("");
         ((TextView) rootView.findViewById(R.id.tv_artist)).setText("");
         ((TextView) rootView.findViewById(R.id.tv_title)).setText("");
-        ((TextView) rootView.findViewById(R.id.tv_file_format)).setText("");
+
+        final TextView format = rootView.findViewById(R.id.tv_file_format);
+        {
+            format.setText("");
+            format.setClickable(false);
+        }
+
         cover.setEnabled(false);
         cover.setImageResource(R.drawable.empty_cover);
         Utils.setImageViewColorAttr(activity, cover, android.R.attr.textColor);
@@ -428,13 +434,15 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 title.setText(state.title);
                 format.setText(state.fileFormat);
             }
+            format.setClickable(true);
+            format.setOnClickListener((v) -> showAvInfoDialog(state));
         }
 
         // service icon and track
         {
             final TextView track = rootView.findViewById(R.id.tv_track);
             track.setText(state.getTrackInfo(activity));
-            updateInputSource(state.getServiceIcon(), true);
+            updateInputSource(state, state.getServiceIcon(), true);
         }
 
         // cover
@@ -552,12 +560,57 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         setButtonsEnabled(fmDabButtons, true);
     }
 
-    private void updateInputSource(@DrawableRes int imageId, final boolean visible)
+    private void updateInputSource(@Nullable final State state, @DrawableRes int imageId, final boolean visible)
     {
-        AppCompatImageButton btn = rootView.findViewById(R.id.btn_input_selector);
-        btn.setImageResource(imageId);
+        final AppCompatImageButton btn = rootView.findViewById(R.id.btn_input_selector);
+        prepareButton(btn, imageId, R.string.av_info_dialog);
         btn.setVisibility(visible ? View.VISIBLE : View.GONE);
-        setButtonEnabled(btn, false);
+        setButtonEnabled(btn, state != null);
+        prepareButtonListeners(btn, null, () -> showAvInfoDialog(state));
+    }
+
+    private void showAvInfoDialog(@Nullable final State state)
+    {
+        if (state == null)
+        {
+            return;
+        }
+
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_av_info, frameView);
+
+        final Drawable icon = Utils.getDrawable(activity, state.getServiceIcon());
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+
+        if (getContext() != null && getContext().getResources() != null)
+        {
+            ((TextView) frameView.findViewById(R.id.av_info_audio_input)).setText(
+                    String.format(getContext().getResources().getString(
+                            R.string.av_info_input), state.avInfoAudioInput));
+
+            ((TextView) frameView.findViewById(R.id.av_info_audio_output)).setText(
+                    String.format(getContext().getResources().getString(
+                            R.string.av_info_output), state.avInfoAudioOutput));
+
+            ((TextView) frameView.findViewById(R.id.av_info_video_input)).setText(
+                    String.format(getContext().getResources().getString(
+                            R.string.av_info_input), state.avInfoVideoInput));
+
+            ((TextView) frameView.findViewById(R.id.av_info_video_output)).setText(
+                    String.format(getContext().getResources().getString(
+                            R.string.av_info_output), state.avInfoVideoOutput));
+        }
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.av_info_dialog)
+                .setIcon(icon)
+                .setCancelable(true)
+                .setView(frameView)
+                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) -> dialog12.dismiss())
+                .create();
+
+        dialog.show();
+        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 
     /*
