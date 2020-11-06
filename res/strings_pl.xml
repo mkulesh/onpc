@@ -14,7 +14,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Ulepszony kontroler do urządzeń Onkyo i Pioneer Pro</string>
+    <string name="app_name_pro">Ulepszony kontroler do urządzeń Onkyo i Pioneer Pro</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Ulepszony kontroler do urządzeń Onkyo i Pioneer: słuchaj muzyki poprawnie!</string>
     <string name="state_not_connected">Nie połączono</string>

@@ -14,7 +14,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Enhanced Controller for Onkyo and Pioneer Pro</string>
+    <string name="app_name_pro">Enhanced Controller for Onkyo and Pioneer Pro</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!</string>
     <string name="state_not_connected">Отсутствует соединение</string>

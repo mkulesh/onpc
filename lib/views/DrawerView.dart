@@ -155,7 +155,7 @@ class DrawerView extends UpdatableView
                                 child: drawerHeaderImage)
                         )
                     ),
-                    CustomTextLabel.small(Strings.app_name,
+                    CustomTextLabel.small(Strings.app_name_pro,
                         color: td.accentColor, textAlign: TextAlign.center, bold: true),
                     CustomTextLabel.small(configuration.appVersion,
                         color: td.accentColor, textAlign: TextAlign.center),

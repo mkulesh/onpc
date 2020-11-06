@@ -138,13 +138,13 @@ class Strings
 
     /* Translatable attributes */
 
-    static const List<String> l_app_name = [
+    static const List<String> l_app_name_pro = [
         /*en*/ "Enhanced Controller for Onkyo and Pioneer Pro",
         /*ru*/ "Enhanced Controller for Onkyo and Pioneer Pro",
         /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer Pro",
         /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer Pro",
         /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer Pro"];
-    static String get app_name => l_app_name[_language];
+    static String get app_name_pro => l_app_name_pro[_language];
 
     static const List<String> l_app_short_name = [
         /*en*/ "Music Control",

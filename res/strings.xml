@@ -16,7 +16,7 @@
     <string name="dashed_string" translatable="false">---</string>
 
     <!-- Main view -->
-    <string name="app_name">Enhanced Controller for Onkyo and Pioneer Pro</string>
+    <string name="app_name_pro">Enhanced Controller for Onkyo and Pioneer Pro</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</string>
     <string name="state_not_connected">Not connected</string>
