@@ -153,4 +153,17 @@ class CfgTabSettings
             });
         }
     }
+
+    bool isControlActive(final AppControl c, bool isPortrait)
+    {
+        if (isPortrait)
+        {
+            return controlsPortrait != null && controlsPortrait.contains(c);
+        }
+        else
+        {
+            return (controlsLandscapeLeft != null && controlsLandscapeLeft.contains(c)) ||
+                   (controlsLandscapeRight != null && controlsLandscapeRight.contains(c));
+        }
+    }
 }

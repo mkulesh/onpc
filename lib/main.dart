@@ -26,6 +26,7 @@ import "package:shared_preferences/shared_preferences.dart";
 
 import "Platform.dart";
 import "config/CfgAppSettings.dart";
+import "config/CfgTabSettings.dart";
 import "config/Configuration.dart";
 import "config/DeviceSelectors.dart";
 import "config/ListeningModes.dart";
@@ -348,7 +349,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (_stateManager.state.isConnected)
         {
             // Track menu
-            if (_getActiveTab() == AppTabs.LISTEN)
+            if (_isControlActive(AppControl.TRACK_FILE_INFO))
             {
                 final bool isTrackMenu = _stateManager.state.mediaListState.isMenuMode
                     && !_stateManager.state.mediaListState.isMediaEmpty;
@@ -451,10 +452,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             return false;
         }
         // Processing on "Back" button
-        final AppTabs tab = _getActiveTab();
-        final bool isTop = _viewContext.state.mediaListState.isTopLayer();
-        Logging.info(this.widget, "pressed back button, tab=" + tab.toString() + ", top=" + isTop.toString());
-        if (tab == AppTabs.MEDIA && !isTop && _configuration.backAsReturn)
+        if (_isControlActive(AppControl.MEDIA_LIST) && !_viewContext.state.mediaListState.isTopLayer() && _configuration.backAsReturn)
         {
             _stateManager.state.closeMediaFilter();
             _stateManager.sendMessage(StateManager.RETURN_MSG, waitingForData: true);
@@ -571,6 +569,13 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
     }
 
+    bool _isControlActive(final AppControl c)
+    {
+        final bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
+        final CfgTabSettings tab = _configuration.appSettings.tabSettings(_getActiveTab());
+        return (tab != null) ? tab.isControlActive(c, portrait) : false;
+    }
+
     void _handleTabSelection()
     {
         final AppTabs tab = _getActiveTab();
@@ -589,10 +594,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 }
             }
 
-            if (tab != AppTabs.MEDIA)
-            {
-                _stateManager.state.closeMediaFilter();
-            }
+            _stateManager.state.closeMediaFilter();
         }
     }
 }
