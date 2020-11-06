@@ -94,16 +94,28 @@ class CfgAppSettings extends CfgModule
     }
 
     // The latest opened tab
-    static const Pair<String, int> OPENED_TAB = Pair<String, int>("opened_tab", 0);
-    int _openedTab;
+    static const Pair<String, String> OPENED_TAB_NAME = Pair<String, String>("opened_tab_name", "LISTEN");
+    AppTabs _openedTab;
 
-    int get openedTab
+    AppTabs get openedTab
     => _openedTab;
 
-    set openedTab(int value)
+    set openedTab(AppTabs value)
     {
         _openedTab = value;
-        saveIntegerParameter(OPENED_TAB, value);
+        saveStringParameter(OPENED_TAB_NAME, Convert.enumToString(value));
+    }
+
+    int getTabIndex(AppTabs tab)
+    {
+        for (int i = 0; i < _visibleTabs.length; i++)
+        {
+            if (tab == _visibleTabs[i])
+            {
+                return i;
+            }
+        }
+        return 0;
     }
 
     // Visible tabs
@@ -114,7 +126,7 @@ class CfgAppSettings extends CfgModule
     => _visibleTabs;
 
     bool get isSingleTab
-    => _visibleTabs.length == 1;
+    => _visibleTabs.length <= 1;
 
     // Tab settings
     final List<CfgTabSettings> _tabSettings = List();
@@ -131,7 +143,9 @@ class CfgAppSettings extends CfgModule
         _theme = getString(THEME, doLog: true);
         _language = getString(LANGUAGE, doLog: true);
         _textSize = getString(TEXT_SIZE, doLog: true);
-        _openedTab = getInt(OPENED_TAB, doLog: true);
+        final String tab = getString(OPENED_TAB_NAME, doLog: true);
+        _openedTab = AppTabs.values.isEmpty ? AppTabs.LISTEN :
+            AppTabs.values.firstWhere((t) => Convert.enumToString(t) == tab, orElse: () => AppTabs.values.first);
         _readVisibleTabs();
         _readControlElements();
     }

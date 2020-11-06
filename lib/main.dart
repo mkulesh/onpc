@@ -122,7 +122,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     ConnectionState _connectionState;
     bool _exitConfirm, _searchDialog;
-    int _tabBarId = 0;
+    int _tabBarId = 0, _tabId = 0;
 
     MusicControllerAppState(this._viewContext);
 
@@ -255,15 +255,16 @@ class MusicControllerAppState extends State<MusicControllerApp>
             AppBarView(_viewContext, _tabController, _tabs)
         );
 
-        _tabBarId++;
+        _tabId++;
         final Widget tabBar = TabBarView(
+            key: Key(_tabBarId.toString()),
             controller: _tabController,
             children: _tabs.map((AppTabs tab)
             {
                 return Container(
                     margin: ActivityDimens.activityMargins(context),
                     child: UpdatableWidget(
-                        child: AppTabView(_tabBarId, _viewContext, _configuration.appSettings.tabSettings(tab))
+                        child: AppTabView(_tabId, _viewContext, _configuration.appSettings.tabSettings(tab))
                     )
                 );
             }).toList(),
@@ -509,11 +510,12 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.logSize = _configuration.developerMode ? Logging.DEFAULT_LOG_SIZE : 0;
 
         // Update tabs
-        final int _index = (_tabController != null) ? _tabController.index : _configuration.appSettings.openedTab;
+        final bool tabChanged = !listEquals(_configuration.appSettings.visibleTabs, _tabs);
 
         _tabs.clear();
         _tabs.addAll(_configuration.appSettings.visibleTabs);
-        if (_tabController == null || _tabs.length != _tabController.length)
+        final int _index = _configuration.appSettings.getTabIndex(_configuration.appSettings.openedTab);
+        if (_tabController == null || tabChanged)
         {
             _updateTabs(_index);
         }
@@ -544,9 +546,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
         {
             _tabController.dispose();
         }
-        _tabController = TabController(vsync: this, length: _tabs.length);
+        _tabController = TabController(vsync: this, length: _tabs.length, initialIndex: index);
         _tabController.addListener(_handleTabSelection);
-        _tabController.index = index < _tabs.length ? index : _tabs.length - 1;
+        _configuration.appSettings.openedTab = _getActiveTab();
+        _tabBarId++; // force re-creation of tabBar
     }
 
     AppTabs _getActiveTab()
@@ -557,16 +560,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _setActiveTab(AppTabs tab)
     {
-        for (int i = 0; i < _configuration.appSettings.visibleTabs.length; i++)
+        setState(()
         {
-            if (tab == _configuration.appSettings.visibleTabs[i])
-            {
-                setState(()
-                {
-                    _tabController.index = i;
-                });
-            }
-        }
+            _tabController.index = _configuration.appSettings.getTabIndex(tab);
+        });
     }
 
     bool _isControlActive(final AppControl c)
@@ -581,7 +578,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         final AppTabs tab = _getActiveTab();
         if (!_tabController.indexIsChanging && tab != null)
         {
-            _configuration.appSettings.openedTab = _tabController.index;
+            _configuration.appSettings.openedTab = tab;
 
             if([AppTabs.LISTEN, AppTabs.MEDIA].contains(tab) && _stateManager.isConnected)
             {
