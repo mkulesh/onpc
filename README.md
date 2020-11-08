@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc) 
+[![Build Status](https://travis-ci.org/mkulesh/onpc.svg?branch=master)](https://travis-ci.org/mkulesh/onpc)
 ![Build Status](https://img.shields.io/github/v/release/mkulesh/onpc)
 [![Download unsigned APK](https://img.shields.io/badge/APK-autobuild-blue.svg)](https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.20-debug.apk)
 
@@ -15,11 +15,11 @@ This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a N
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
 [<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
       alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
-      
+
 *Premium Version*
 
-This "Premium" version implements exactly the same receiver control functionality as the free version, but has more flexible user interface.
-It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
+The "Premium" version implements exactly the same receiver control functionality as the free version, but has a more flexible user interface.
+It allows you to reorder the play queue using drag-and-drop, change the font and buttons size, and show/hide/reorder all control elements for all tabs.
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus)
@@ -36,12 +36,12 @@ The two most popular features of the app are music playback and sound profile ma
 - One-click access to media items using shortcuts
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 - Full tone control (listening modes, bass, center, treble and subwoofer levels)
-- Enhanced Play Queue support (add, replace, remove, clear, change playback order)
-- Tuneln Radio, Deezer, and Tidal streaming (if supported by receiver)
+- Enhanced Play Queue support (add, replace, remove, remove all, change playback order)
+- TuneIn Radio, Deezer, and Tidal streaming (if supported by receiver)
 - DAB / FM / AM (if supported by receiver)
 - Multi-zone support (if supported by receiver)
 - Multi-room support: Allows control of groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
-- Possibility to control FlareConnect without WiFi
+- Ability to control FlareConnect without WiFi
 - Control of devices attached via RI
 - Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
