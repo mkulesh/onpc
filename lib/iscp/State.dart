@@ -20,6 +20,7 @@ import "../utils/Logging.dart";
 import "ISCPMessage.dart";
 import "messages/AlbumNameMsg.dart";
 import "messages/ArtistNameMsg.dart";
+import "messages/AudioInformationMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/AutoPowerMsg.dart";
 import "messages/CdPlayerOperationCommandMsg.dart";
@@ -59,6 +60,7 @@ import "messages/TitleNameMsg.dart";
 import "messages/ToneCommandMsg.dart";
 import "messages/TrackInfoMsg.dart";
 import "messages/TuningCommandMsg.dart";
+import "messages/VideoInformationMsg.dart";
 import "messages/XmlListInfoMsg.dart";
 import "state/DeviceSettingsState.dart";
 import "state/MediaListState.dart";
@@ -332,6 +334,14 @@ class State
         else if (msg is JacketArtMsg)
         {
             return _isChange(JacketArtMsg.CODE, _trackState.processJacketArt(msg));
+        }
+        else if (msg is AudioInformationMsg)
+        {
+            return _isChange(AudioInformationMsg.CODE, _trackState.processAudioInformation(msg));
+        }
+        else if (msg is VideoInformationMsg)
+        {
+            return _isChange(VideoInformationMsg.CODE, _trackState.processVideoInformation(msg));
         }
 
         // Playback state

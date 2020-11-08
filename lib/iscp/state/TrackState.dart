@@ -23,6 +23,8 @@ import "../messages/TimeInfoMsg.dart";
 import "../messages/TitleNameMsg.dart";
 import "../messages/TrackInfoMsg.dart";
 import "../messages/XmlListItemMsg.dart";
+import "../messages/AudioInformationMsg.dart";
+import "../messages/VideoInformationMsg.dart";
 
 class TrackState
 {
@@ -91,6 +93,27 @@ class TrackState
 
     final List<int> _coverBuffer = List<int>();
 
+    // Audio/Video information
+    String _avInfoAudioInput;
+
+    String get avInfoAudioInput
+    => _avInfoAudioInput;
+
+    String _avInfoAudioOutput;
+
+    String get avInfoAudioOutput
+    => _avInfoAudioOutput;
+
+    String _avInfoVideoInput;
+
+    String get avInfoVideoInput
+    => _avInfoVideoInput;
+
+    String _avInfoVideoOutput;
+
+    String get avInfoVideoOutput
+    => _avInfoVideoOutput;
+
     TrackState()
     {
         clear();
@@ -103,6 +126,12 @@ class TrackState
             AlbumNameMsg.CODE, ArtistNameMsg.CODE, TitleNameMsg.CODE,
             FileFormatMsg.CODE, TimeInfoMsg.CODE, TrackInfoMsg.CODE
         ];
+    }
+
+    List<String> getAvInfoQueries()
+    {
+        Logging.info(this, "Requesting audio/video info...");
+        return [ AudioInformationMsg.CODE, VideoInformationMsg.CODE ];
     }
 
     void clear()
@@ -118,6 +147,10 @@ class TrackState
         _cover = null;
         _coverBuffer.clear();
         _coverPending = false;
+        _avInfoAudioInput = "";
+        _avInfoAudioOutput = "";
+        _avInfoVideoInput = "";
+        _avInfoVideoOutput = "";
     }
 
     bool processAlbumName(AlbumNameMsg msg)
@@ -208,6 +241,24 @@ class TrackState
             Logging.info(msg, "ignored");
         }
         return false;
+    }
+
+    bool processAudioInformation(AudioInformationMsg msg)
+    {
+        final bool changed = _avInfoAudioInput != msg.audioInput
+            || _avInfoAudioOutput != msg.audioOutput;
+        _avInfoAudioInput = msg.audioInput;
+        _avInfoAudioOutput = msg.audioOutput;
+        return changed;
+    }
+
+    bool processVideoInformation(VideoInformationMsg msg)
+    {
+        final bool changed = _avInfoVideoInput != msg.videoInput
+            || _avInfoVideoOutput != msg.videoOutput;
+        _avInfoVideoInput = msg.videoInput;
+        _avInfoVideoOutput = msg.videoOutput;
+        return changed;
     }
 
     void processXmlListItem(final List<ISCPMessage> list)

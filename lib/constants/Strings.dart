@@ -33,6 +33,7 @@ class Strings
     /* Non-translatable attributes */
 
     static const String dashed_string = "---";
+    static const String drawer_premium_link = "https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus";
     static const String pref_sound_control_default = "device";
     static const String pref_theme_default = "indigo-orange";
     static const String pref_language_default = "system";
@@ -137,6 +138,14 @@ class Strings
         "huge"];
 
     /* Translatable attributes */
+
+    static const List<String> l_app_name = [
+        /*en*/ "Enhanced Controller for Onkyo and Pioneer",
+        /*ru*/ "Enhanced Controller for Onkyo and Pioneer",
+        /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer",
+        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer",
+        /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer"];
+    static String get app_name => l_app_name[_language];
 
     static const List<String> l_app_name_pro = [
         /*en*/ "Enhanced Controller for Onkyo and Pioneer Pro",
@@ -425,6 +434,14 @@ Enjoy!"""];
         /*fr*/ "À propos",
         /*pl*/ "Info"];
     static String get drawer_about => l_drawer_about[_language];
+
+    static const List<String> l_drawer_premium = [
+        /*en*/ "Get Premium version",
+        /*ru*/ "Попробуйте \"Премиум\" версию",
+        /*de*/ "Probieren Sie die Premium-Version aus",
+        /*fr*/ "Essayez la version Premium",
+        /*pl*/ "Wypróbuj wersję Premium"];
+    static String get drawer_premium => l_drawer_premium[_language];
 
     static const List<String> l_connect_dialog_address = [
         /*en*/ "Address",
@@ -3105,6 +3122,46 @@ Enjoy!"""];
         /*fr*/ "Canal",
         /*pl*/ "Kanał"];
     static String get multiroom_channel => l_multiroom_channel[_language];
+
+    static const List<String> l_av_info_dialog = [
+        /*en*/ "Audio/Video info",
+        /*ru*/ "Параметры аудио/видео",
+        /*de*/ "Audio/Video Information",
+        /*fr*/ "Audio/Video information",
+        /*pl*/ "Audio/Video Informacja"];
+    static String get av_info_dialog => l_av_info_dialog[_language];
+
+    static const List<String> l_av_info_audio = [
+        /*en*/ "Audio",
+        /*ru*/ "Аудио",
+        /*de*/ "Audio",
+        /*fr*/ "Audio",
+        /*pl*/ "Audio"];
+    static String get av_info_audio => l_av_info_audio[_language];
+
+    static const List<String> l_av_info_video = [
+        /*en*/ "Video",
+        /*ru*/ "Видео",
+        /*de*/ "Video",
+        /*fr*/ "Vidéo",
+        /*pl*/ "Video"];
+    static String get av_info_video => l_av_info_video[_language];
+
+    static const List<String> l_av_info_input = [
+        /*en*/ "Input: %s",
+        /*ru*/ "Вход: %s",
+        /*de*/ "Eingang: %s",
+        /*fr*/ "Entrée: %s",
+        /*pl*/ "Wejście: %s"];
+    static String get av_info_input => l_av_info_input[_language];
+
+    static const List<String> l_av_info_output = [
+        /*en*/ "Output: %s",
+        /*ru*/ "Выход: %s",
+        /*de*/ "Ausgang: %s",
+        /*fr*/ "Sortie: %s",
+        /*pl*/ "Wyjście: %s"];
+    static String get av_info_output => l_av_info_output[_language];
 
     static const List<String> l_error_invalid_device_address = [
         /*en*/ "Invalid device name or port",

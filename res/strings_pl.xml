@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2018. Mikhail Kulesh
+  ~ Enhanced Controller for Onkyo and Pioneer
+  ~ Copyright (C) 2018-2020. Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -14,6 +15,7 @@
 <resources>
 
     <!-- Main view -->
+    <string name="app_name">Ulepszony kontroler do urządzeń Onkyo i Pioneer</string>
     <string name="app_name_pro">Ulepszony kontroler do urządzeń Onkyo i Pioneer Pro</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Ulepszony kontroler do urządzeń Onkyo i Pioneer: słuchaj muzyki poprawnie!</string>
@@ -64,6 +66,7 @@ Enjoy!""</string>
     <string name="drawer_tab_layout">Układ kart</string>
     <string name="drawer_app_settings">Ustawienia</string>
     <string name="drawer_about">Info</string>
+    <string name="drawer_premium">Wypróbuj wersję Premium</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adres IP</string>
@@ -247,7 +250,7 @@ Enjoy!""</string>
     <string name="cd_cmd_disc4">Dysk 4</string>
     <string name="cd_cmd_disc5">Dysk 5</string>
     <string name="cd_cmd_disc6">Dysk 6</string>
-    
+
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
     <string name="audio_muting_off">Wyciszenie off</string>
@@ -280,7 +283,7 @@ Enjoy!""</string>
     <string name="tuning_command_up">Strojenie \"+\"</string>
     <string name="tuning_command_down">Strojenie \"-\"</string>
 
-        <!-- Network/USB Operation Command  -->
+    <!-- Network/USB Operation Command  -->
     <string name="cmd_description_play">Play</string>
     <string name="cmd_description_stop">Stop</string>
     <string name="cmd_description_pause">Pause</string>
@@ -516,6 +519,13 @@ Enjoy!""</string>
     <string name="multiroom_slave">Slave</string>
     <string name="multiroom_none">Nie dołączone</string>
     <string name="multiroom_channel">Kanał</string>
+
+    <!-- Audio/Video information dialog -->
+    <string name="av_info_dialog">Audio/Video Informacja</string>
+    <string name="av_info_audio">Audio</string>
+    <string name="av_info_video">Video</string>
+    <string name="av_info_input">Wejście: %s</string>
+    <string name="av_info_output">Wyjście: %s</string>
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Nieprawidłowa nazwa urządzenia lub port</string>

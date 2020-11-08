@@ -15,6 +15,7 @@ import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "AlbumNameMsg.dart";
 import "ArtistNameMsg.dart";
+import "AudioInformationMsg.dart";
 import "AudioMutingMsg.dart";
 import "AutoPowerMsg.dart";
 import "CenterLevelCommandMsg.dart";
@@ -58,6 +59,7 @@ import "TitleNameMsg.dart";
 import "ToneCommandMsg.dart";
 import "TrackInfoMsg.dart";
 import "TuningCommandMsg.dart";
+import "VideoInformationMsg.dart";
 import "XmlListInfoMsg.dart";
 
 class MessageFactory
@@ -124,6 +126,10 @@ class MessageFactory
                 return DisplayModeMsg(raw);
             case JacketArtMsg.CODE:
                 return JacketArtMsg(raw);
+            case AudioInformationMsg.CODE:
+                return AudioInformationMsg(raw);
+            case VideoInformationMsg.CODE:
+                return VideoInformationMsg(raw);
 
         // Play status
             case InputSelectorMsg.CODE:

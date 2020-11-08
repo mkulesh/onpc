@@ -42,7 +42,6 @@ import "messages/PresetCommandMsg.dart";
 import "messages/PresetMemoryMsg.dart";
 import "messages/PrivacyPolicyStatusMsg.dart";
 import "messages/ReceiverInformationMsg.dart";
-import 'messages/ServiceType.dart';
 import "messages/TimeInfoMsg.dart";
 import "messages/TimeSeekMsg.dart";
 import "messages/TrackInfoMsg.dart";
@@ -434,14 +433,19 @@ class StateManager
             sendQueries(_state.deviceSettingsState.getQueries(state.getActiveZone));
             sendQueries(_state.soundControlState.getQueries(state.getActiveZone, state.receiverInformation));
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
+            sendQueries(_state.trackState.getAvInfoQueries());
             _requestListState();
             return changed;
         }
 
-        // #118: CR-N575D allow to use play control buttons to control CD player
-        if (msg is InputSelectorMsg && state.isCdInput)
+        if (msg is InputSelectorMsg)
         {
-            sendQueries(_state.playbackState.getCdQueries());
+            if (state.isCdInput)
+            {
+                // #118: CR-N575D allow to use play control buttons to control CD player
+                sendQueries(_state.playbackState.getCdQueries());
+            }
+            sendQueries(_state.trackState.getAvInfoQueries());
         }
 
         if (msg is PlayStatusMsg && playStatus != state.playbackState.playStatus)
@@ -449,7 +453,8 @@ class StateManager
             if (state.isPlaying)
             {
                 final List<String> queries = List<String>();
-                queries.addAll(state.trackState.getQueries());
+                queries.addAll(_state.trackState.getQueries());
+                queries.addAll(_state.trackState.getAvInfoQueries());
                 queries.add(MenuStatusMsg.CODE);
                 sendQueries(queries);
                 // Some devices (like TX-8150) does not proved cover image;

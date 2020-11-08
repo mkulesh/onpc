@@ -15,6 +15,7 @@ import "package:flutter/material.dart";
 
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/AvInfoDialog.dart";
 import "../dialogs/PresetMemoryDialog.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FileFormatMsg.dart";
@@ -24,6 +25,7 @@ import "../iscp/messages/MenuStatusMsg.dart";
 import "../iscp/messages/MultiroomDeviceInformationMsg.dart";
 import "../iscp/messages/OperationCommandMsg.dart";
 import "../iscp/messages/PlayStatusMsg.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/PresetCommandMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/TrackInfoMsg.dart";
@@ -37,6 +39,7 @@ class TrackFileInfoView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         ReceiverInformationMsg.CODE,
+        PowerStatusMsg.CODE,
         InputSelectorMsg.CODE,
         PlayStatusMsg.CODE,
         MenuStatusMsg.CODE,
@@ -59,13 +62,26 @@ class TrackFileInfoView extends UpdatableView
     {
         // File format info
         final String serviceIcon = state.getServiceIcon();
-        final Widget textFileFormat = Row(
+        Widget textFileFormat = Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-                CustomImageButton.small(serviceIcon, null, isEnabled: false),
+                CustomImageButton.small(serviceIcon, Strings.av_info_dialog, isEnabled: state.isOn),
                 Expanded(child: CustomTextLabel.small(_buildFileFormat(), textAlign: TextAlign.left))
             ]);
+
+        if (state.isOn)
+        {
+            textFileFormat = InkWell(
+                child: textFileFormat,
+                onTap: ()
+                => showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext c)
+                    => AvInfoDialog(viewContext))
+                );
+         }
 
         // Track info
         final Widget trackInfoBtn = _isRadioInput ?

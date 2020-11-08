@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2019. Mikhail Kulesh, Alexander Gomanyuk
+  ~ Enhanced Controller for Onkyo and Pioneer
+  ~ Copyright (C) 2018-2020. Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -14,6 +15,7 @@
 <resources>
 
     <!-- Main view -->
+    <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
     <string name="app_name_pro">Enhanced Controller for Onkyo and Pioneer Pro</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!</string>
@@ -62,6 +64,7 @@ Copyright © 2019-2020 by __Михаил Кулеш__
     <string name="drawer_tab_layout">Вид вкладки</string>
     <string name="drawer_app_settings">Настройки</string>
     <string name="drawer_about">О программе</string>
+    <string name="drawer_premium">Попробуйте \"Премиум\" версию</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Адрес</string>
@@ -244,7 +247,7 @@ Copyright © 2019-2020 by __Михаил Кулеш__
     <string name="cd_cmd_disc4">Диск 4</string>
     <string name="cd_cmd_disc5">Диск 5</string>
     <string name="cd_cmd_disc6">Диск 6</string>
-    
+
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">Нет</string>
     <string name="audio_muting_off">Выключить звук устройства</string>
@@ -513,6 +516,13 @@ Copyright © 2019-2020 by __Михаил Кулеш__
     <string name="multiroom_slave">Ведомый</string>
     <string name="multiroom_none">Не связан</string>
     <string name="multiroom_channel">Канал</string>
+
+    <!-- Audio/Video information dialog -->
+    <string name="av_info_dialog">Параметры аудио/видео</string>
+    <string name="av_info_audio">Аудио</string>
+    <string name="av_info_video">Видео</string>
+    <string name="av_info_input">Вход: %s</string>
+    <string name="av_info_output">Выход: %s</string>
 
     <!-- Errors -->
     <string name="error_invalid_device_address">Неправильный адрес устройства или порт</string>

@@ -11,6 +11,8 @@
  * Public License along with this program.
  */
 
+import 'dart:math';
+
 import "package:xml/xml.dart" as xml;
 
 import "ConnectionIf.dart";
@@ -21,6 +23,7 @@ typedef OnProcessFinished = void Function(bool changed, String changeCode);
 class ISCPMessage with ConnectionIf
 {
     static const String PAR_SEP = "/";
+    static const String COMMA_SEP = ",";
 
     final int _messageId;
     final String _code;
@@ -91,6 +94,23 @@ class ISCPMessage with ConnectionIf
             res = ISCPMessage.nonNullString(e.text);
         });
         return res;
+    }
+
+    String getTags(final List<String> pars, int start, int end)
+    {
+        String str = "";
+        for (int i = start; i < min(end, pars.length); i++)
+        {
+            if (pars[i] != null && pars[i].isNotEmpty)
+            {
+                if (str.isNotEmpty)
+                {
+                    str += ", ";
+                }
+                str += pars[i];
+            }
+        }
+        return str.toString();
     }
 }
 
