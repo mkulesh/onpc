@@ -166,11 +166,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
 
         // Add "Playback" indication if necessary
-        final XmlListItemMsg playbackIndicationItem = XmlListItemMsg.details(
-            0xFFFF, 0, Strings.medialist_playback_mode, _PLAYBACK_STRING, ListItemIcon.PLAY, false, null);
-
         if (isPlayback)
         {
+            final XmlListItemMsg playbackIndicationItem = XmlListItemMsg.details(
+                0xFFFF, 0, Strings.medialist_playback_mode, _PLAYBACK_STRING, ListItemIcon.PLAY, false, null);
             items.add(playbackIndicationItem);
         }
 
@@ -312,7 +311,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 onTap: ()
                 {
                     state.closeMediaFilter();
-                    stateManager.sendMessage(cmd, waitingForData: cmd != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
+                    final rowMsg = (cmd is XmlListItemMsg && cmd.iconType == _PLAYBACK_STRING) ? StateManager.DISPLAY_MSG : cmd;
+                    stateManager.sendMessage(rowMsg, waitingForData: rowMsg != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
                 }),
             onLongPress: (position)
             => _onCreateContextMenu(context, position, cmd)
@@ -351,8 +351,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             serviceIcon = Drawables.media_item_unknown;
         }
         final bool isPlaying = rowMsg.getIcon.key == ListItemIcon.PLAY;
-        final cmd = rowMsg.iconType == _PLAYBACK_STRING ? StateManager.DISPLAY_MSG : rowMsg;
-        return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getTitle, cmd, reorderId: reorderId);
+        return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getTitle, rowMsg, reorderId: reorderId);
     }
 
     Widget _buildPresetCommandMsg(BuildContext context, PresetCommandMsg rowMsg)
@@ -378,13 +377,14 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final NetworkService networkService = state.getNetworkService;
         final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
         final String title = cmd is XmlListItemMsg ? cmd.getTitle : null;
+        final bool isQueue = state.mediaListState.isQueue;
+        final bool isMediaItem = cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING;
 
-        if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && selector != null)
+        if (isMediaItem && selector != null)
         {
             Logging.info(this.widget, "Context menu for selector [" + selector.toString() +
                 (networkService != null ? "] and service [" + networkService.toString() + "]" : ""));
 
-            final bool isQueue = state.mediaListState.isQueue;
             final bool addToQueue = selector.isAddToQueue ||
                 (networkService != null && networkService.isAddToQueue);
             final bool isAdvQueue = configuration.isAdvancedQueue;
@@ -419,14 +419,15 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
                     child: Text(Strings.playlist_remove_all), value: MediaContextMenu.REMOVE_ALL));
             }
-            if (state.playbackState.isTrackMenuActive && isPlaying && !isQueue)
-            {
-                contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.cmd_track_menu), value: MediaContextMenu.TRACK_MENU));
-            }
         }
 
-        if (cmd is XmlListItemMsg && isPlaying)
+        if (state.playbackState.isTrackMenuActive && isPlaying && !isQueue)
+        {
+            contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                child: Text(Strings.cmd_track_menu), value: MediaContextMenu.TRACK_MENU));
+        }
+
+        if (isMediaItem && isPlaying)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
                 child: Text(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
