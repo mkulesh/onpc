@@ -96,6 +96,9 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Pioneer VSX-932](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-932)
 - [Pioneer VSX-933](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-933)
 - [Pioneer SC-LX701](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx701)
+- [Pioneer NC-50DAB](https://intl.pioneer-audiovisual.com/products/2ch_components/nc-50dab/)
+- [Pioneer MRX-3](https://intl.pioneer-audiovisual.com/products/system_components/mrx-3/)
+- [Pioneer MRX-5](https://intl.pioneer-audiovisual.com/products/system_components/mrx-5/)
 ### Teac
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
 - [Teac AG-D500](https://www.teac-audio.eu/en/products/ag-d500-87821.html)
