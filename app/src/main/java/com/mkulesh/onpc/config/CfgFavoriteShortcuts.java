@@ -23,6 +23,7 @@ import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -108,12 +109,12 @@ public class CfgFavoriteShortcuts
             label.append(" id=\"").append(id).append("\"");
             label.append(" input=\"").append(input.getCode()).append("\"");
             label.append(" service=\"").append(service.getCode()).append("\"");
-            label.append(" item=\"").append(item).append("\"");
-            label.append(" alias=\"").append(alias).append("\"");
+            label.append(" item=\"").append(escape(item)).append("\"");
+            label.append(" alias=\"").append(escape(alias)).append("\"");
             label.append(" order=\"").append(order).append("\">");
             for (String dir : pathItems)
             {
-                label.append("<dir name=\"").append(dir).append("\"/>");
+                label.append("<dir name=\"").append(escape(dir)).append("\"/>");
             }
             label.append("</" + FAVORITE_SHORTCUT_TAG + ">");
             return label.toString();
@@ -154,7 +155,7 @@ public class CfgFavoriteShortcuts
             data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
 
             // Go to the top level. Response depends on the input type
-            String firstPath = pathItems.isEmpty() ? item : pathItems.get(0);
+            String firstPath = escape(pathItems.isEmpty() ? item : pathItems.get(0));
             if (input == InputSelectorMsg.InputType.NET && service != ServiceType.UNKNOWN)
             {
                 data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"")
@@ -175,20 +176,29 @@ public class CfgFavoriteShortcuts
             {
                 for (int i = 0; i < pathItems.size() - 1; i++)
                 {
-                    firstPath = pathItems.get(i);
-                    String nextPath = pathItems.get(i + 1);
+                    firstPath = escape(pathItems.get(i));
+                    String nextPath = escape(pathItems.get(i + 1));
                     data.append("<send cmd=\"NLA\" par=\"").append(firstPath)
                             .append("\" wait=\"NLA\" listitem=\"").append(nextPath).append("\"/>");
                 }
-                String lastPath = pathItems.get(pathItems.size() - 1);
+                String lastPath = escape(pathItems.get(pathItems.size() - 1));
                 data.append("<send cmd=\"NLA\" par=\"").append(lastPath)
-                        .append("\" wait=\"NLA\" listitem=\"").append(item).append("\"/>");
+                        .append("\" wait=\"NLA\" listitem=\"")
+                        .append(escape(item))
+                        .append("\"/>");
             }
 
             // Select target item
-            data.append("<send cmd=\"NLA\" par=\"").append(item).append("\" wait=\"1000\"/>");
+            data.append("<send cmd=\"NLA\" par=\"")
+                    .append(escape(item))
+                    .append("\" wait=\"1000\"/>");
             data.append("</onpcScript>");
             return data.toString();
+        }
+        
+        private String escape(final String d)
+        {
+            return StringEscapeUtils.escapeXml10(d);
         }
     }
 
