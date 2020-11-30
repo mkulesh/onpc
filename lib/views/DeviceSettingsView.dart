@@ -307,6 +307,13 @@ class DeviceSettingsView extends UpdatableView
 
     _SpeakerABStatus _getSpeakerABStatus(SpeakerACommand speakerA, SpeakerBCommand speakerB)
     {
+        // For some devices like TX-8050, the speakerB value is often missing.
+        // If speakerA value is valid, and speakerB is missing, assume that
+        // speakerB os OFF
+        if (speakerA != SpeakerACommand.NONE && speakerB == SpeakerBCommand.NONE)
+        {
+            speakerB = SpeakerBCommand.OFF;
+        }
         if (speakerA == SpeakerACommand.OFF && speakerB == SpeakerBCommand.OFF)
         {
             return _SpeakerABStatus.OFF;
@@ -315,7 +322,7 @@ class DeviceSettingsView extends UpdatableView
         {
             return _SpeakerABStatus.ON;
         }
-        else if (speakerA == SpeakerACommand.ON && speakerB != SpeakerBCommand.ON)
+        else if (speakerA == SpeakerACommand.ON && speakerB == SpeakerBCommand.OFF)
         {
             return _SpeakerABStatus.A_ONLY;
         }
