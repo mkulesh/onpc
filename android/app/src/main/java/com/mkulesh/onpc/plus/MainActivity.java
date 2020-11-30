@@ -36,7 +36,8 @@ import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import io.flutter.app.FlutterActivity;
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
@@ -76,6 +77,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     }
 
     @SuppressLint("NewApi")
+    @SuppressWarnings("deprecation")
     class ConnectivityChangeReceiver extends BroadcastReceiver
     {
         private final NetworkStateListener listener;
@@ -157,12 +159,12 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     private boolean volumeKeys = false;
     private boolean keepScreenOn = false;
     private String intentData = null;
+    private BinaryMessenger messenger = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public void configureFlutterEngine(FlutterEngine flutterEngine)
     {
-        super.onCreate(savedInstanceState);
-        GeneratedPluginRegistrant.registerWith(this);
+        GeneratedPluginRegistrant.registerWith(flutterEngine);
 
         // read preferences stored in Flutter code
         readPreferences();
@@ -172,15 +174,47 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         }
 
         // Message channel to Flutter code
-        getFlutterView().setMessageHandler(PLATFORM_CHANNEL, this);
+        this.messenger = flutterEngine.getDartExecutor().getBinaryMessenger();
+        messenger.setMessageHandler(PLATFORM_CHANNEL, this);
 
         receiver = new ConnectivityChangeReceiver(this, this);
     }
 
     @Override
+    protected void onStart()
+    {
+        try
+        {
+            // avoid NullPointerException in io.flutter.embedding.android.FlutterActivity
+            super.onStart();
+        }
+        catch (NullPointerException ex)
+        {
+            // nothing to do
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        try
+        {
+            // avoid NullPointerException in io.flutter.embedding.android.FlutterActivity
+            super.onSaveInstanceState(outState);
+        }
+        catch (NullPointerException ex)
+        {
+            // nothing to do
+        }
+    }
+
+    @Override
     public void onNetworkStateChanged(boolean isConnected, boolean isWiFi)
     {
-        getFlutterView().send(PLATFORM_CHANNEL, getNetworkStateMsg(isConnected, isWiFi));
+        if (messenger != null)
+        {
+            messenger.send(PLATFORM_CHANNEL, getNetworkStateMsg(isConnected, isWiFi));
+        }
     }
 
     private ByteBuffer getNetworkStateMsg(boolean isConnected, boolean isWiFi)
@@ -206,6 +240,7 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onResume()
     {
         super.onResume();
@@ -331,7 +366,10 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
                     final byte code = event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP ?
                             PlatformCmd.VOLUME_UP.getByteCode() : PlatformCmd.VOLUME_DOWN.getByteCode();
                     message.put(code);
-                    getFlutterView().send(PLATFORM_CHANNEL, message);
+                    if (messenger != null)
+                    {
+                        messenger.send(PLATFORM_CHANNEL, message);
+                    }
                     return true;
                 }
                 else if (event.getAction() == KeyEvent.ACTION_UP)
