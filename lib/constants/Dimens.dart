@@ -146,7 +146,7 @@ class ButtonDimens
     => DimensTransform.scale(15);
 
     static EdgeInsetsGeometry get textButtonPadding
-    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(8), vertical: DimensTransform.scale(10));
+    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(12), vertical: DimensTransform.scale(10));
 
     static EdgeInsetsGeometry get smallButtonPadding
     => EdgeInsets.all(DimensTransform.scale(4));

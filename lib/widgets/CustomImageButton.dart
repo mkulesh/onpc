@@ -133,6 +133,10 @@ class CustomImageButton extends StatelessWidget
         }
 
         return (description == null) ?
-            result : Tooltip(message: description, child: result, preferBelow: false);
+            result : Tooltip(message: description,
+                child: result,
+            preferBelow: false,
+            waitDuration: Duration(seconds: 2)
+        );
     }
 }

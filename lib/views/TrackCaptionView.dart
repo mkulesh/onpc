@@ -48,27 +48,9 @@ class TrackCaptionView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-
-        final List<Widget> captionItems = List<Widget>();
-
         // Artist and album
         final Widget artist = CustomTextLabel.normal(_buildTrackArtist(), bold: true, textAlign: TextAlign.center);
         final Widget album = CustomTextLabel.normal(_buildTrackAlbum(), textAlign: TextAlign.center);
-
-        if (isPortrait)
-        {
-            captionItems.add(artist);
-            captionItems.add(album);
-        }
-        else
-        {
-            captionItems.add(Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [artist, album]
-            ));
-        }
 
         // Song title with feed buttons
         final List<Widget> titleItems = List<Widget>();
@@ -101,11 +83,10 @@ class TrackCaptionView extends UpdatableView
             crossAxisAlignment: CrossAxisAlignment.center,
             children: titleItems
         );
-        captionItems.add(titleLine);
 
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: captionItems
+            children: [artist, album, titleLine]
         );
     }
 
