@@ -262,7 +262,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             children: _tabs.map((AppTabs tab)
             {
                 return Container(
-                    margin: ActivityDimens.activityMargins(context),
+                    margin: ActivityDimens.activityMargins(context, Platform.isAndroid),
                     child: UpdatableWidget(
                         child: AppTabView(_tabId, _viewContext, _configuration.appSettings.tabSettings(tab))
                     )

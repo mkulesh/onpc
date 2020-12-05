@@ -1,0 +1,10 @@
+App Transport Security Settings needed by the app.
+
+The app needs "Use Local Networking" setting since it searches media players or A/V receivers
+in the local network.
+
+The app also needs "Allow Arbitrary Loads" setting from two reasons:
+- The app must connect to a media player or A/V receiver produced by Onkyo/Poineer that
+doesn’t support secure connections. All known devices only support HTTP.
+- These devices cannot be upgraded to use secure connections since Onkyo/Poineer do not support
+it in the latest firmware

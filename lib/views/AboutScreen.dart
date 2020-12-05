@@ -14,15 +14,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:onpc/widgets/CustomTextButton.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import "../Platform.dart";
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
+import "../widgets/CustomTextButton.dart";
 import "UpdatableView.dart";
 
 enum AboutScreenTabs
@@ -95,7 +96,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
                             break;
                     }
                     return Container(
-                        margin: ActivityDimens.activityMargins(context),
+                        margin: ActivityDimens.activityMargins(context, Platform.isAndroid),
                         child: tabContent
                     );
                 }).toList(),
@@ -103,7 +104,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
         }
         else
         {
-            scaffoldBody = _buildMarkdownView(td, Strings.about_text, ActivityDimens.activityMargins(context));
+            scaffoldBody = _buildMarkdownView(td, Strings.about_text, ActivityDimens.activityMargins(context, Platform.isAndroid));
         }
 
         final Widget scaffold = Scaffold(
