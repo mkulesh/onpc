@@ -1,0 +1,2 @@
+• Added audio and video details view
+• Fixed minor bugs
