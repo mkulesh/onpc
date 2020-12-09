@@ -31,6 +31,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
         super.onCreate(savedInstanceState);
         getSupportFragmentManager().beginTransaction().replace(
                 android.R.id.content, new MyPreferenceFragment()).commit();
+        setTitle(R.string.drawer_app_settings);
     }
 
     @SuppressWarnings("WeakerAccess")

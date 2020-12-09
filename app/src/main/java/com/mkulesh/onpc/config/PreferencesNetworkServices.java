@@ -16,6 +16,7 @@ package com.mkulesh.onpc.config;
 
 import android.os.Bundle;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
@@ -32,6 +33,7 @@ public class PreferencesNetworkServices extends DraggableListActivity
         super.onCreate(savedInstanceState);
         prepareList(Configuration.getSelectedNetworkServicesParameter(preferences));
         prepareSelectors();
+        setTitle(R.string.pref_network_services);
     }
 
     private void prepareSelectors()

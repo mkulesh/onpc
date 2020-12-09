@@ -16,6 +16,7 @@ package com.mkulesh.onpc.config;
 
 import android.os.Bundle;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class PreferencesVisibleTabs extends DraggableListActivity
         super.onCreate(savedInstanceState);
         prepareList(CfgAppSettings.VISIBLE_TABS);
         prepareSelectors();
+        setTitle(R.string.pref_visible_tabs);
     }
 
     private void prepareSelectors()

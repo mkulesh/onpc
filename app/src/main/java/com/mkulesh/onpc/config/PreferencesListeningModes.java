@@ -16,6 +16,7 @@ package com.mkulesh.onpc.config;
 
 import android.os.Bundle;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -31,6 +32,7 @@ public class PreferencesListeningModes extends DraggableListActivity
         super.onCreate(savedInstanceState);
         prepareList(CfgAudioControl.SELECTED_LISTENING_MODES);
         prepareSelectors();
+        setTitle(R.string.pref_listening_modes);
     }
 
     private void prepareSelectors()

@@ -16,6 +16,7 @@ package com.mkulesh.onpc.config;
 
 import android.os.Bundle;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.utils.Logging;
 
@@ -31,6 +32,7 @@ public class PreferencesDeviceSelectors extends DraggableListActivity
         super.onCreate(savedInstanceState);
         prepareList(Configuration.getSelectedDeviceSelectorsParameter(preferences));
         prepareSelectors();
+        setTitle(R.string.pref_device_selectors);
     }
 
     private void prepareSelectors()

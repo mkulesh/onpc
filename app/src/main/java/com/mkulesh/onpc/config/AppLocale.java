@@ -82,8 +82,8 @@ public final class AppLocale
             else
             {
                 configuration.locale = newLocale;
-                res.updateConfiguration(configuration, res.getDisplayMetrics());
             }
+            res.updateConfiguration(configuration, res.getDisplayMetrics());
             return new ContextWrapper(context);
         }
     }
