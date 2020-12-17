@@ -45,9 +45,9 @@ public class CfgAudioControl
             ListeningModeMsg.Mode.MODE_40, // DOLBY DIGITAL
             ListeningModeMsg.Mode.MODE_80, // DOLBY SURROUND
             ListeningModeMsg.Mode.MODE_82, // DTS NEURAL:X
-            ListeningModeMsg.Mode.MODE_42, // THX Cinema
-            ListeningModeMsg.Mode.MODE_44, // THX Music
-            ListeningModeMsg.Mode.MODE_45  // THX Games
+            ListeningModeMsg.Mode.MODE_84, // Dolby THX Cinema
+            ListeningModeMsg.Mode.MODE_8B, // Dolby THX Music
+            ListeningModeMsg.Mode.MODE_89  // Dolby THX Games
     };
 
     private SharedPreferences preferences;
