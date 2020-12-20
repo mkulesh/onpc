@@ -23,6 +23,9 @@ rm -rf ios/ServiceDefinitions.json
 rm -rf ios/Runner.xcworkspace/xcshareddata/
 rm -rf ios/Runner.xcworkspace/xcuserdata/
 rm -rf ios/Flutter/.last_build_id
+rm -rf macos/Podfile
+rm -rf macos/Podfile.lock
+rm -rf macos/Pods
 rm -rf android/.gradle
 find . -name .DS_Store -exec rm -f {} \;
 
