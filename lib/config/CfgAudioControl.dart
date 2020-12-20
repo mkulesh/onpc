@@ -71,6 +71,9 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_0C, // ALL CH STEREO
         ListeningMode.MODE_40, // DOLBY DIGITAL
         ListeningMode.MODE_80, // DOLBY SURROUND
+        ListeningMode.MODE_84, // Dolby THX Cinema
+        ListeningMode.MODE_8B, // Dolby THX Music
+        ListeningMode.MODE_89, // Dolby THX Games
         ListeningMode.MODE_82  // DTS NEURAL:X
     ];
 
