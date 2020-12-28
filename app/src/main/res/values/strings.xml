@@ -141,6 +141,7 @@
 
     <!-- App themes -->
     <string name="pref_theme">Theme</string>
+    <string name="pref_widget_theme">Widget theme</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Black and Lime)</item>
         <item>Dark (Dim Gray and Cyan)</item>
