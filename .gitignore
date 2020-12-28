@@ -8,6 +8,7 @@ release
 /android/.gradle
 /android/key.properties
 /android/local.properties
+/android/gen
 /images/svgcleaner/svgcleaner
 .dart_tool/
 .flutter-plugins-dependencies
