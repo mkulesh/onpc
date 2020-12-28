@@ -12,10 +12,11 @@
   -->
 
 <resources>
-    <string name="dashed_string" translatable="false">---</string>
-    <string name="app_name">Enhanced Controller for Onkyo and Pioneer Pro</string>
-    <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</string>
-    <string name="shortcut_power_on">Power On</string>
-    <string name="wigdet_shortcuts">Shortcuts</string>
+
+    <!-- Default widget colors as defined in CfgAppSettings.dart file -->
+    <color name="widget_h_background">#3F51B5</color>
+    <color name="widget_h_text">#FF9800</color>
+    <color name="widget_b_background">#FAFAFA</color>
+    <color name="widget_b_text">#212121</color>
+
 </resources>

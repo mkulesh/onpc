@@ -69,6 +69,24 @@ class _PreferencesMainState extends State<PreferencesMain>
                 });
             }));
 
+        // Widget Theme
+        if (Platform.isAndroid)
+        {
+            elements.add(_customDropdownPreference(td,
+                Strings.pref_widget_theme,
+                CfgAppSettings.WIDGET_THEME,
+                icon: Drawables.pref_widget_theme,
+                values: Strings.pref_theme_codes,
+                displayValues: Strings.pref_theme_names,
+                onChange: (String val)
+                {
+                    setState(()
+                    {
+                        _configuration.appSettings.widgetTheme = val;
+                    });
+                }));
+        }
+
         // Language
         elements.add(_customDropdownPreference(td,
             Strings.pref_language,

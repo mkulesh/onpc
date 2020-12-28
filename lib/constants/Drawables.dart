@@ -104,6 +104,7 @@ class Drawables
     static const String media_item_filter = BUTTONS_PATH + "media_item_filter.svg";
 
     static const String pref_app_theme = BUTTONS_PATH + "pref_app_theme.svg";
+    static const String pref_widget_theme = BUTTONS_PATH + "pref_widget_theme.svg";
     static const String pref_visible_tabs = BUTTONS_PATH + "pref_visible_tabs.svg";
     static const String pref_auto_power = BUTTONS_PATH + "pref_auto_power.svg";
     static const String pref_device_selectors = BUTTONS_PATH + "pref_device_selectors.svg";

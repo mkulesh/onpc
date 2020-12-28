@@ -746,7 +746,7 @@ class StateManager
         return isSourceHost(di.responseMsg) || (identifier != null && identifier == di.responseMsg.getIdentifier);
     }
 
-    void updateScripts({bool autoPower = false, final String intent})
+    void updateScripts({bool autoPower = false, final String intent, final List<Shortcut> shortcuts})
     {
         clearScripts();
         MessageScript messageScript;
@@ -756,6 +756,17 @@ class StateManager
             if (intent == Platform.SHORTCUT_AUTO_POWER)
             {
                 autoPower = true;
+            }
+            if (intent.contains(Platform.WIDGET_SHORTCUT) && shortcuts != null)
+            {
+                final List<String> tokens = intent.split(":");
+                if (tokens.length > 1)
+                {
+                    applyShortcut(
+                        shortcuts.firstWhere(
+                            (s) => s.id == ISCPMessage.nonNullInteger(tokens[1], 10, -1),
+                            orElse: () => null));
+                }
             }
             else if (intent.contains(MessageScript.SCRIPT_NAME))
             {
@@ -786,7 +797,10 @@ class StateManager
 
     void applyShortcut(final Shortcut shortcut)
     {
-        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        activateScript(MessageScript(shortcut.toScript()));
+        if (shortcut != null)
+        {
+            Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
+            activateScript(MessageScript(shortcut.toScript()));
+        }
     }
 }

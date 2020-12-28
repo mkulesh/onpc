@@ -203,7 +203,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this.widget, "resuming application");
         await Platform.requestIntent().then((replay)
         {
-            _stateManager.updateScripts(autoPower: autoPower, intent: Platform.parseIntent(replay));
+            _stateManager.updateScripts(
+                autoPower: autoPower,
+                intent: Platform.parseIntent(replay),
+                shortcuts: _configuration.favoriteShortcuts.shortcuts);
         });
 
         bool connect = _configuration.isDeviceValid;

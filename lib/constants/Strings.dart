@@ -771,6 +771,14 @@ Enjoy!"""];
         /*pl*/ "Motyw"];
     static String get pref_theme => l_pref_theme[_language];
 
+    static const List<String> l_pref_widget_theme = [
+        /*en*/ "Widget theme",
+        /*ru*/ "Тема виджета",
+        /*de*/ "Widget Thema",
+        /*fr*/ "Widget Thème",
+        /*pl*/ "Widget Motyw"];
+    static String get pref_widget_theme => l_pref_widget_theme[_language];
+
     static const List<String> l_pref_language = [
         /*en*/ "App language",
         /*ru*/ "Язык приложения",

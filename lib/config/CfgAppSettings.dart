@@ -13,6 +13,8 @@
 
 import 'dart:ui';
 
+import "package:flutter/material.dart";
+import "package:onpc/constants/Themes.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../constants/Strings.dart";
@@ -48,6 +50,24 @@ class CfgAppSettings extends CfgModule
     {
         _theme = value;
         saveStringParameter(THEME, value);
+    }
+
+    // Widget theme
+    static const Pair<String, String> WIDGET_THEME = Pair<String, String>("widget_theme", Strings.pref_theme_default);
+    // Note: these constants have default values from indigo-orange theme
+    static const Pair<String, int> WIDGET_H_BACKGROUND = Pair<String, int>("widget_h_background", 0xFF3F51B5);
+    static const Pair<String, int> WIDGET_H_TEXT = Pair<String, int>("widget_h_text", 0xFFFF9800);
+    static const Pair<String, int> WIDGET_B_BACKGROUND = Pair<String, int>("widget_b_background", 0xFFFAFAFA);
+    static const Pair<String, int> WIDGET_B_TEXT = Pair<String, int>("widget_b_text", 0xFF212121);
+
+    set widgetTheme(String value)
+    {
+        saveStringParameter(WIDGET_THEME, value);
+        final BaseAppTheme td = BaseAppTheme.getTheme(value);
+        saveIntegerParameter(WIDGET_H_BACKGROUND, td.primaryColor.value);
+        saveIntegerParameter(WIDGET_H_TEXT, td.accentColor.value);
+        saveIntegerParameter(WIDGET_B_BACKGROUND, td.backgroundColor.value);
+        saveIntegerParameter(WIDGET_B_TEXT, td.textColor.value);
     }
 
     // System language

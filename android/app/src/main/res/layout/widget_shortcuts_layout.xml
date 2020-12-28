@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Enhanced Controller for Onkyo and Pioneer
+  ~ Copyright (C) 2018-2020. Mikhail Kulesh
+  ~
+  ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+  ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
+  ~ or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+  ~ even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details. You should have received a copy of the GNU General
+  ~ Public License along with this program.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+
+    <LinearLayout
+        android:id="@+id/widget_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/app_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/ic_launcher"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/widget_name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/wigdet_shortcuts"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:background="@android:color/transparent" />
+
+        <ImageButton
+            android:id="@+id/widget_refresh"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:src="@drawable/widget_refresh"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/widget_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center">
+
+        <ListView
+            android:id="@+id/shortcuts_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:text="@string/dashed_string"
+            android:textSize="18sp" />
+    </FrameLayout>
+</LinearLayout>

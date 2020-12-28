@@ -135,6 +135,7 @@ Copyright © 2019-2020 by __Михаил Кулеш__
 
     <!-- App themes -->
     <string name="pref_theme">Тема</string>
+    <string name="pref_widget_theme">Тема виджета</string>
     <string-array name="pref_theme_names">
         <item>Контрастная темная (черно-желтая)</item>
         <item>Темная (серая и сине-зеленая)</item>

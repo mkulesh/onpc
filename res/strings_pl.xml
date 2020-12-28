@@ -137,6 +137,7 @@ Enjoy!""</string>
 
     <!-- App themes -->
     <string name="pref_theme">Motyw</string>
+    <string name="pref_widget_theme">Widget Motyw</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Czarny i limonkowy)</item>
         <item>Dark (Ciemnoszary i cyjan)</item>

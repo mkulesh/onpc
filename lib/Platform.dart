@@ -37,6 +37,7 @@ class Platform
 {
     static const String PLATFORM_CHANNEL = "platform_channel";
     static const String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.plus.AUTO_POWER";
+    static const String WIDGET_SHORTCUT = "com.mkulesh.onpc.plus.WIDGET_SHORTCUT";
     static const int INT8_SIZE = 1;
     static const int INT32_SIZE = 4;
 

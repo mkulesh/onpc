@@ -83,10 +83,8 @@ class BaseAppTheme
         );
     }
 
-    static ThemeData getThemeData(final String name, final String language, final String textSize)
+    static BaseAppTheme getTheme(final String name)
     {
-        Strings.setLanguage(language);
-        DimensTransform.setScale(textSize);
         BaseAppTheme theme;
         switch (name)
         {
@@ -115,8 +113,14 @@ class BaseAppTheme
                 theme = ThemeIndigoOrange();
                 break;
         }
+        return theme;
+    }
 
-        return theme._getData();
+    static ThemeData getThemeData(final String name, final String language, final String textSize)
+    {
+        Strings.setLanguage(language);
+        DimensTransform.setScale(textSize);
+        return getTheme(name)._getData();
     }
 }
 
