@@ -94,11 +94,26 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
 
                 // We disable the data changed observer temporarily since each of the updates
                 // will trigger an onChange() in our data observer.
-                r.unregisterContentObserver(sDataObserver);
+                try
+                {
+                    r.unregisterContentObserver(sDataObserver);
+                }
+                catch (Exception ex)
+                {
+                    // nothing to do
+                }
+
                 final Uri uri = ContentUris.withAppendedId(WidgetShortcutsDataProvider.CONTENT_URI, 0);
                 final ContentValues values = new ContentValues();
                 r.update(uri, values, null, null);
-                r.registerContentObserver(WidgetShortcutsDataProvider.CONTENT_URI, true, sDataObserver);
+                try
+                {
+                    r.registerContentObserver(WidgetShortcutsDataProvider.CONTENT_URI, true, sDataObserver);
+                }
+                catch (Exception ex)
+                {
+                    // nothing to do
+                }
 
                 final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
                 final ComponentName cn = new ComponentName(context, WidgetShortcutsProvider.class);

@@ -22,6 +22,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CfgFavoriteShortcuts
@@ -192,7 +193,6 @@ public class CfgFavoriteShortcuts
         final ServiceType service;
         final String item;
         public final String alias;
-        public int order;
         final List<String> pathItems = new ArrayList<>();
 
         Shortcut(final Element e)
@@ -204,7 +204,6 @@ public class CfgFavoriteShortcuts
                     e.getAttribute("service"), ServiceType.values(), ServiceType.UNKNOWN);
             this.item = e.getAttribute("item");
             this.alias = e.getAttribute("alias");
-            this.order = Utils.parseIntAttribute(e, "order", id);
             for (Node dir = e.getFirstChild(); dir != null; dir = dir.getNextSibling())
             {
                 if (dir instanceof Element)

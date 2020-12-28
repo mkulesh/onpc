@@ -26,7 +26,6 @@ import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * The AppWidgetProvider that provides the configuration of shortcuts.
@@ -53,9 +52,7 @@ public class WidgetShortcutsDataProvider extends ContentProvider
                     Utils.SHARED_PREFERENCES_NAME, getContext().MODE_PRIVATE);
             final CfgFavoriteShortcuts cfg = new CfgFavoriteShortcuts();
             cfg.read(preferences);
-
             shortcuts.addAll(cfg.getShortcuts());
-            Collections.sort(shortcuts, (o1, o2) -> Integer.compare(o1.order, o2.order));
             Log.d("onpc", "read shortcuts: " + shortcuts.size());
         }
     }
