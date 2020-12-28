@@ -52,6 +52,8 @@ The two most popular features of the app are music playback and sound profile ma
 - Track time seek is missing in Tidal
 - Some delay when switching between files from USB play queue
 - In order to use Spotify, you need the official Spotify app additionally to this app
+- Amazon Music HD subscription: broadcast in AAC 256 kbps only (that is limitation of the Onkyo firmware)
+- Following Pioneer models are not supported: VSX-1021, VSX-1121, VSX-529, VSX-924, SC-95, N-50, N-50a
 
 ## Supported devices
 This list is based on the user feedback from Google Play and github. Not all from these devices are tested by developer:
@@ -92,6 +94,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 ### Pioneer
 - [Pioneer VSX-LX303](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx303)
 - [Pioneer VSX-LX503](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx503)
+- [Pioneer VSX-LX504](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx504)
 - [Pioneer VSX-832](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-832)
 - [Pioneer VSX-932](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-932)
 - [Pioneer VSX-933](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-933)
