@@ -8,6 +8,7 @@ This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a N
 
 This "Premium" version implements exactly the same receiver control functionality as the free version, but has more flexible user interface.
 It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
+Android version allows to create home screen widgets.
 
 ## Screenshots
 * Playback screen in landscape orientation, 12 Inch iPad, Strong Dark theme
@@ -26,7 +27,7 @@ It allows to reorder the play queue using drag-and-drop, change the font and but
 ## License
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright © 2019-2020 by Mikhail Kulesh
+Copyright © 2019-2021 by Mikhail Kulesh
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
