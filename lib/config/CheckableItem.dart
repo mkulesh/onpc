@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2019. Mikhail Kulesh
+ * Enhanced Controller for Onkyo and Pioneer Pro
+ * Copyright (C) 2019-2021 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -10,6 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
+
 import 'package:flutter/material.dart';
 
 import "../constants/Dimens.dart";
