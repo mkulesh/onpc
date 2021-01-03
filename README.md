@@ -72,6 +72,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO TX-RZ810](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz810/index.html)
 - [ONKYO TX-RZ830](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz830/index.html)
 - [ONKYO TX-RZ900](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz900/index.html)
+- [ONKYO TX-RZ1100](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz1100/index.html)
 - [ONKYO HT-S7805](https://www.intl.onkyo.com/products/system_components/home_theater/ht-s7805/index.html)
 - [ONKYO NS-6130](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6130/index.html)
 - [ONKYO NS-6170](https://www.intl.onkyo.com/products/hi-fi_components/network_audio_players/ns-6170/index.html)
@@ -100,6 +101,8 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Pioneer VSX-933](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-933)
 - [Pioneer SC-LX701](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx701)
 - [Pioneer NC-50DAB](https://intl.pioneer-audiovisual.com/products/2ch_components/nc-50dab/)
+- [Pioneer N-70AE](https://intl.pioneer-audiovisual.com/products/2ch_components/n-70ae)
+- [Pioneer XC-HM86D](https://intl.pioneer-audiovisual.com/products/system_components/xc-hm86d)
 - [Pioneer MRX-3](https://intl.pioneer-audiovisual.com/products/system_components/mrx-3/)
 - [Pioneer MRX-5](https://intl.pioneer-audiovisual.com/products/system_components/mrx-5/)
 ### Teac
