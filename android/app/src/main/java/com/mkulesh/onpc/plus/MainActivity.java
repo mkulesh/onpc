@@ -209,6 +209,20 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     }
 
     @Override
+    public void onDestroy()
+    {
+        try
+        {
+            // avoid NullPointerException in io.flutter.embedding.android.FlutterActivity
+            super.onDestroy();
+        }
+        catch (NullPointerException ex)
+        {
+            // nothing to do
+        }
+    }
+
+    @Override
     public void onNetworkStateChanged(boolean isConnected, boolean isWiFi)
     {
         if (messenger != null)
