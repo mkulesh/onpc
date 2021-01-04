@@ -121,7 +121,7 @@ class PopupManager
 
     static void showToast(final String msg)
     {
-        if (Platform.isMacOs)
+        if (Platform.isDesktop)
         {
             return;
         }

@@ -14,6 +14,7 @@
 
 import "package:flutter/material.dart";
 
+import "../Platform.dart";
 import "../config/CfgAppSettings.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
@@ -81,8 +82,14 @@ class AppBarView extends UpdatableView
                 child: _buildTabs(td))
         );
 
+        final String title = Platform.isDesktop ? subTitle : Strings.app_short_name;
+        if (Platform.isDesktop)
+        {
+            subTitle = null;
+        }
+
         return AppBar(
-            title: CustomActivityTitle(Strings.app_short_name, subTitle),
+            title: CustomActivityTitle(title, subTitle),
             actions: <Widget>[
                 CustomImageButton.menu(Drawables.menu_power_standby, Strings.menu_power_standby,
                     isEnabled: state.isConnected,
