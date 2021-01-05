@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Controller for Onkyo and Pioneer
-  ~ Copyright (C) 2018-2020. Mikhail Kulesh
+  ~ Copyright (C) 2018-2021 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -27,7 +27,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Contrôleur optimisé pour Onkyo/Pioneer: Ecoutez votre musique correctement!</p>
-    <p>Copyright © 2018-2020 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2021 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol".
 Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.</p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
