@@ -9,12 +9,3 @@ developed by Onkyo and used in the modern Pioneer devices after 2016:
 https://github.com/mkulesh/onpc/blob/master/doc/Pioneer/Pioneer_AVR_104.xlsx
 The first sheet contains the list of supported models, it seems to be Pioneer started the support
 of Onkyo ISCP protocol in 2016 with models VSX-831 and VSX-LX101.
-
-The difference between the message format and commands for these two protocols is huge. 
-The app supports currently Onkyo ISCP protocol only for two reasons:
-- Actual documentation about Pioneer receivers is not available
-- I have no older Pioneer model available for testing
-
-However, the app is open source and distributed under GPLv3 license. It is completely legal 
-to fork the app and expand communication protocol by Pioneer commands.
-I can support such a development.
