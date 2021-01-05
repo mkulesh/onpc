@@ -1,0 +1,2 @@
+• Added Dolby THX listening modes
+• Fixed minor bugs

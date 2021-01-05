@@ -20,9 +20,9 @@ Benefits and features:
 * Integration with "Tasker"
 
 At the moment, the app is tested with following devices:
-* Onkyo: TX-L50, TX-NR414, TX-NR509, TX-NR525, TX-NR575E, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-RZ810, TX-RZ830, TX-RZ900, HT-S7805 NS-6130 NS-6170, TX-8130, TX-8150, TX-8250, TX-8270, TX-8390, TX-L20D, R-N855, CS-N575D, CR-N765, CR-N775D, NCP-302
+* Onkyo: TX-L50, TX-NR414, TX-NR509, TX-NR525, TX-NR575E, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-RZ810, TX-RZ830, TX-RZ900, HT-S7805, NS-6130, NS-6170, TX-8130, TX-8150, TX-8250, TX-8270, TX-8390, TX-L20D, R-N855, CS-N575D, CR-N765, CR-N775D, NCP-302
 * Integra: DTM-6, DRX-5.2, DTR 30.7, DTR 40.7
-* Pioneer: VSX-LX303, VSX-LX503, VSX-832, VSX-932, VSX-933, SC-LX701
+* Pioneer: VSX-LX303, VSX-LX503, VSX-LX504, VSX-832, VSX-932, VSX-933, SC-LX701, NC-50DAB, MRX-3, MRX-5
 * Teac: NT-503, AG-D500
 
 Please note that the app does not support the music streaming from your phone to the network player or the receiver.
