@@ -108,21 +108,18 @@ This list is based on the user feedback from Google Play and github. Not all fro
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_hor.png" align="center">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/listen.png" align="center">
 
-* Playback screen in portrait orientation, Strong Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_playback_vert.png" align="center" height="800">
+* Audio control in portrait orientation, Light theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/audio_control.png" align="center" height="800">
 
-* Playback screen and navigation drawer in landscape orientation, 10 Inch tablet, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/tablet_ns_6130_playback_hor.png" align="center">
-
-* Media screen (network services), Light theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/phone_ns_6130_media_top_vert.png" align="center" height="800">
+* Media screen, Dark theme
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/media.png" align="center" height="800">
 
 For more screenshots, see directory images/screenshots.
 
 ## Documentation
-Documents from Onkyo describing the protocol, including lists of supported commands, are stored in this repository on in 'doc' directory.
+Documents from Onkyo describing the protocol, including lists of supported commands, are stored in 'doc' directory.
 
 ## Publications:
 
