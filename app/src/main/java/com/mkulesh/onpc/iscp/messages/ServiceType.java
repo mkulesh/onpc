@@ -68,6 +68,7 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     FIRECONNECT("41", "FireConnect", R.string.service_fireconnect),
     PLAY_FI("42", "DTS Play-Fi", R.string.service_play_fi, R.drawable.media_item_play_fi),
     FLARECONNECT("43", "FlareConnect", R.string.service_flareconnect, R.drawable.media_item_flare_connect),
+    AIRPLAY1("44", "Airplay", R.string.service_airplay, R.drawable.media_item_airplay), // TX-RZ630 uses code "44" for Airplay instead of "18"
     USB_FRONT("F0", "USB(Front)", R.string.service_usb_front, R.drawable.media_item_usb),
     USB_REAR("F1", "USB(Rear)", R.string.service_usb_rear, R.drawable.media_item_usb),
     INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio, R.drawable.media_item_radio_digital),

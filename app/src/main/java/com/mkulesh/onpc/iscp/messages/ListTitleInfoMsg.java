@@ -143,59 +143,7 @@ public class ListTitleInfoMsg extends ISCPMessage
     }
 
     private LeftIcon leftIcon = LeftIcon.NONE;
-
-    /*
-     * Icon on Right of Title Bar
-     * 00 : Music Server (DLNA), 01 : Favorite, 02 : vTuner, 03 : SiriusXM, 04 : Pandora, 05 : Rhapsody, 06 : Last.fm,
-     * 07 : Napster, 08 : Slacker, 09 : Mediafly, 0A : Spotify, 0B : AUPEO!, 0C : radiko, 0D : e-onkyo,
-     * 0E : TuneIn Radio, 0F : MP3tunes, 10 : Simfy, 11:Home Media, 12:Deezer, 13:iHeartRadio,
-     * 18 : Airplay, 1A:onkyo music, 1B:TIDAL, 41:FireConnect,
-     * F0 : USB/USB(Front), F1:USB(Rear),
-     * FF : None
-     */
-    private enum RightIcon implements StringParameterIf
-    {
-        MUSIC_SERVER("00"),
-        FAVORITE("01"),
-        VTUNER("02"),
-        SIRIUSXM("03"),
-        PANDORA("04"),
-        RHAPSODY("05"),
-        LAST_FM("06"),
-        NAPSTER("07"),
-        SLACKER("08"),
-        MEDIAFLY("09"),
-        SPOTIFY("0A"),
-        AUPEO("0B"),
-        RADIKO("0C"),
-        E_ONKYO("0D"),
-        TUNEIN_RADIO("0E"),
-        MP3TUNES("0F"),
-        SIMFY("10"),
-        HOME_MEDIA("11"),
-        DEEZER("12"),
-        IHEARTRADIO("13"),
-        AIRPLAY("18"),
-        ONKYO_MUSIC("1A"),
-        TIDAL("1B"),
-        FIRECONNECT("41"),
-        USB_FRONT("F0"),
-        USB_REAR("F1"),
-        NONE("FF");
-        final String code;
-
-        RightIcon(String code)
-        {
-            this.code = code;
-        }
-
-        public String getCode()
-        {
-            return code;
-        }
-    }
-
-    private RightIcon rightIcon = RightIcon.NONE;
+    private ServiceType rightIcon = ServiceType.UNKNOWN;
 
     /*
      * ss : Status Info
@@ -269,7 +217,7 @@ public class ListTitleInfoMsg extends ISCPMessage
             numberOfLayers = Integer.parseInt(data.substring(12, 14), 16);
             startFlag = (StartFlag) searchParameter(data.charAt(14), StartFlag.values(), startFlag);
             leftIcon = (LeftIcon) searchParameter(data.substring(16, 18), LeftIcon.values(), leftIcon);
-            rightIcon = (RightIcon) searchParameter(data.substring(18, 20), RightIcon.values(), rightIcon);
+            rightIcon = (ServiceType) searchParameter(data.substring(18, 20), ServiceType.values(), rightIcon);
             statusInfo = (StatusInfo) searchParameter(data.substring(20, 22), StatusInfo.values(), statusInfo);
             titleBar = data.substring(22);
         }
