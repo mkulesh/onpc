@@ -61,6 +61,7 @@ enum ServiceType
     FIRECONNECT,
     PLAY_FI,
     FLARECONNECT,
+    AIRPLAY1,
     USB_FRONT,
     USB_REAR,
     INTERNET_RADIO,
@@ -164,6 +165,10 @@ class Services
         EnumItem.code(ServiceType.FLARECONNECT, "43",
             name: "FlareConnect",
             descrList: Strings.l_service_flareconnect, icon: Drawables.media_item_flare_connect),
+        EnumItem.code(ServiceType.AIRPLAY1, "44",
+            name: "Airplay",
+            descrList: Strings.l_service_airplay,
+            icon: Drawables.media_item_airplay), // TX-RZ630 uses code "44" for Airplay instead of "18"
         EnumItem.code(ServiceType.USB_FRONT, "F0",
             name: "USB(Front)",
             descrList: Strings.l_service_usb_front, icon: Drawables.media_item_usb),

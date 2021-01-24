@@ -63,37 +63,6 @@ enum LeftIcon
     NONE
 }
 
-enum RightIcon
-{
-    MUSIC_SERVER,
-    FAVORITE,
-    VTUNER,
-    SIRIUSXM,
-    PANDORA,
-    RHAPSODY,
-    LAST_FM,
-    NAPSTER,
-    SLACKER,
-    MEDIAFLY,
-    SPOTIFY,
-    AUPEO,
-    RADIKO,
-    E_ONKYO,
-    TUNEIN_RADIO,
-    MP3TUNES,
-    SIMFY,
-    HOME_MEDIA,
-    DEEZER,
-    IHEARTRADIO,
-    AIRPLAY,
-    ONKYO_MUSIC,
-    TIDAL,
-    FIRECONNECT,
-    USB_FRONT,
-    USB_REAR,
-    NONE
-}
-
 enum StatusInfo
 {
     NONE,
@@ -198,47 +167,7 @@ class ListTitleInfoMsg extends ISCPMessage
     ]);
 
     EnumItem<LeftIcon> _leftIcon;
-
-    /*
-     * Icon on Right of Title Bar
-     * 00 : Music Server (DLNA), 01 : Favorite, 02 : vTuner, 03 : SiriusXM, 04 : Pandora, 05 : Rhapsody, 06 : Last.fm,
-     * 07 : Napster, 08 : Slacker, 09 : Mediafly, 0A : Spotify, 0B : AUPEO!, 0C : radiko, 0D : e-onkyo,
-     * 0E : TuneIn Radio, 0F : MP3tunes, 10 : Simfy, 11:Home Media, 12:Deezer, 13:iHeartRadio,
-     * 18 : Airplay, 1A:onkyo music, 1B:TIDAL, 41:FireConnect,
-     * F0 : USB/USB(Front), F1:USB(Rear),
-     * FF : None
-     */
-    static const ExtEnum<RightIcon> RightIconEnum = ExtEnum<RightIcon>([
-        EnumItem.code(RightIcon.MUSIC_SERVER, "00"),
-        EnumItem.code(RightIcon.FAVORITE, "01"),
-        EnumItem.code(RightIcon.VTUNER, "02"),
-        EnumItem.code(RightIcon.SIRIUSXM, "03"),
-        EnumItem.code(RightIcon.PANDORA, "04"),
-        EnumItem.code(RightIcon.RHAPSODY, "05"),
-        EnumItem.code(RightIcon.LAST_FM, "06"),
-        EnumItem.code(RightIcon.NAPSTER, "07"),
-        EnumItem.code(RightIcon.SLACKER, "08"),
-        EnumItem.code(RightIcon.MEDIAFLY, "09"),
-        EnumItem.code(RightIcon.SPOTIFY, "0A"),
-        EnumItem.code(RightIcon.AUPEO, "0B"),
-        EnumItem.code(RightIcon.RADIKO, "0C"),
-        EnumItem.code(RightIcon.E_ONKYO, "0D"),
-        EnumItem.code(RightIcon.TUNEIN_RADIO, "0E"),
-        EnumItem.code(RightIcon.MP3TUNES, "0F"),
-        EnumItem.code(RightIcon.SIMFY, "10"),
-        EnumItem.code(RightIcon.HOME_MEDIA, "11"),
-        EnumItem.code(RightIcon.DEEZER, "12"),
-        EnumItem.code(RightIcon.IHEARTRADIO, "13"),
-        EnumItem.code(RightIcon.AIRPLAY, "18"),
-        EnumItem.code(RightIcon.ONKYO_MUSIC, "1A"),
-        EnumItem.code(RightIcon.TIDAL, "1B"),
-        EnumItem.code(RightIcon.FIRECONNECT, "41"),
-        EnumItem.code(RightIcon.USB_FRONT, "F0"),
-        EnumItem.code(RightIcon.USB_REAR, "F1"),
-        EnumItem.code(RightIcon.NONE, "FF", defValue: true)
-    ]);
-
-    EnumItem<RightIcon> _rightIcon;
+    EnumItem<ServiceType> _rightIcon;
 
     /*
      * ss : Status Info
@@ -299,7 +228,7 @@ class ListTitleInfoMsg extends ISCPMessage
             _numberOfLayers = ISCPMessage.nonNullInteger(getData.substring(12, 14), 16, 0);
             _startFlag = StartFlagEnum.valueByCode(getData.substring(14, 15));
             _leftIcon = LeftIconEnum.valueByCode(getData.substring(16, 18));
-            _rightIcon = RightIconEnum.valueByCode(getData.substring(18, 20));
+            _rightIcon = Services.ServiceTypeEnum.valueByCode(getData.substring(18, 20));
             _statusInfo = StatusInfoEnum.valueByCode(getData.substring(20, 22));
             _titleBar = getData.substring(22);
         }
