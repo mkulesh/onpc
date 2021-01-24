@@ -63,6 +63,7 @@ class CfgAudioControl extends CfgModule
 
     // Default modes
     static const List<ListeningMode> DEFAULT_LISTENING_MODES = [
+        ListeningMode.MODE_0F, // MONO
         ListeningMode.MODE_00, // STEREO
         ListeningMode.MODE_01, // DIRECT
         ListeningMode.MODE_09, // UNPLUGGED
@@ -70,11 +71,17 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_0A, // STUDIO-MIX
         ListeningMode.MODE_11, // PURE AUDIO
         ListeningMode.MODE_0C, // ALL CH STEREO
+        ListeningMode.MODE_0B, // TV Logic
+        ListeningMode.MODE_0D, // Theater-Dimensional
         ListeningMode.MODE_40, // DOLBY DIGITAL
         ListeningMode.MODE_80, // DOLBY SURROUND
         ListeningMode.MODE_84, // Dolby THX Cinema
         ListeningMode.MODE_8B, // Dolby THX Music
         ListeningMode.MODE_89, // Dolby THX Games
+        ListeningMode.MODE_03, // Game-RPG
+        ListeningMode.MODE_05, // Game-Action
+        ListeningMode.MODE_06, // Game-Rock
+        ListeningMode.MODE_0E, // Game-Sports
         ListeningMode.MODE_82  // DTS NEURAL:X
     ];
 

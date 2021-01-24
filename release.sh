@@ -4,7 +4,7 @@ flutter clean
 rm -rf android/.gradle
 
 flutter build apk --release
-cp build/app/outputs/apk/release/app-release.apk release/onpc-v2.9-release.apk
+cp build/app/outputs/apk/release/app-release.apk release/onpc-v2.9.3-release.apk
 
 flutter clean
 rm -f ios/Flutter/Generated.xcconfig
