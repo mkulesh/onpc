@@ -64,7 +64,7 @@ class VolumeControlSliderView extends UpdatableView
                 Strings.app_control_audio_control,
                 text: volumeValid ? volumeLevel : "",
                 onPressed: ()
-                => _showAudioControlDialog(context),
+                => _showAudioControlDialog(context, AudioControlType.TONE_CONTROL),
                 isEnabled: volumeValid
             ));
         }
@@ -131,6 +131,17 @@ class VolumeControlSliderView extends UpdatableView
             ));
         }
 
+        // equalizer
+        if (state.isOn && state.soundControlState.isEqualizerAvailable)
+        {
+            controls.add(CustomImageButton.normal(
+                Drawables.equalizer,
+                Strings.equalizer,
+                onPressed: ()
+                => _showAudioControlDialog(context, AudioControlType.EQUALIZER)
+            ));
+        }
+
         return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,13 +149,13 @@ class VolumeControlSliderView extends UpdatableView
         );
     }
 
-    void _showAudioControlDialog(final BuildContext context)
+    void _showAudioControlDialog(final BuildContext context, final AudioControlType type)
     {
         showDialog(
             context: context,
             barrierDismissible: true,
             builder: (BuildContext c)
-            => AudioControlDialog(viewContext, AudioControlType.TONE_CONTROL)
+            => AudioControlDialog(viewContext, type)
         );
     }
 }

@@ -19,6 +19,7 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../views/AudioControlView.dart";
+import "../views/EqualizerView.dart";
 import "../views/MasterVolumeMaxView.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomDialogTitle.dart";
@@ -26,7 +27,8 @@ import "../widgets/CustomDialogTitle.dart";
 enum AudioControlType
 {
     TONE_CONTROL,
-    MASTER_VOLUME_MAX
+    MASTER_VOLUME_MAX,
+    EQUALIZER
 }
 
 class AudioControlDialog extends StatefulWidget
@@ -50,13 +52,22 @@ class _AudioControlDialogState extends State<AudioControlDialog>
     {
         final ThemeData td = Theme.of(context);
 
-        final Widget dialogTitle = widget._audioControlType == AudioControlType.TONE_CONTROL ?
-        CustomDialogTitle(Strings.app_control_audio_control, Drawables.volume_audio_control) :
-        CustomDialogTitle(Strings.master_volume_restrict, Drawables.volume_max_limit);
-
-        final Widget dialogContent = widget._audioControlType == AudioControlType.TONE_CONTROL ?
-        UpdatableWidget(child: AudioControlView(viewContext)) :
-        UpdatableWidget(child: MasterVolumeMaxView(viewContext));
+        Widget dialogTitle, dialogContent;
+        switch(widget._audioControlType)
+        {
+            case AudioControlType.TONE_CONTROL:
+                dialogTitle = CustomDialogTitle(Strings.app_control_audio_control, Drawables.volume_audio_control);
+                dialogContent = UpdatableWidget(child: AudioControlView(viewContext));
+                break;
+            case AudioControlType.MASTER_VOLUME_MAX:
+                dialogTitle = CustomDialogTitle(Strings.master_volume_restrict, Drawables.volume_max_limit);
+                dialogContent = UpdatableWidget(child: MasterVolumeMaxView(viewContext));
+                break;
+            case AudioControlType.EQUALIZER:
+                dialogTitle = CustomDialogTitle(Strings.equalizer, Drawables.equalizer);
+                dialogContent = UpdatableWidget(child: EqualizerView(viewContext));
+                break;
+        }
 
         return AlertDialog(
             title: dialogTitle,

@@ -17,6 +17,7 @@ import "dart:math";
 import "package:sprintf/sprintf.dart";
 
 import "../../utils/Logging.dart";
+import "../messages/AllChannelEqMsg.dart";
 import "../messages/AudioMutingMsg.dart";
 import "../messages/CenterLevelCommandMsg.dart";
 import "../messages/DirectCommandMsg.dart";
@@ -94,6 +95,22 @@ class SoundControlState
     EnumItem<ListeningMode> get listeningMode
     => _listeningMode;
 
+    // All Channel EQ
+    final List<int> _eqValues = [
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL,
+        AllChannelEqMsg.NO_LEVEL
+    ];
+
+    List<int> get eqValues
+    => _eqValues;
+
     // Force audio control
     bool _forceAudioControl = false;
 
@@ -122,7 +139,8 @@ class SoundControlState
             SubwooferLevelCommandMsg.CODE,
             CenterLevelCommandMsg.CODE,
             ListeningModeMsg.CODE,
-            DirectCommandMsg.CODE
+            DirectCommandMsg.CODE,
+            AllChannelEqMsg.CODE
         ];
 
         if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
@@ -213,6 +231,20 @@ class SoundControlState
         return changed;
     }
 
+    bool processAllChannelEq(AllChannelEqMsg msg)
+    {
+        bool changed = false;
+        for (int i = 0; i < AllChannelEqMsg.CHANNELS; i++)
+        {
+            if (_eqValues[i] != msg.eqValues[i])
+            {
+                changed = true;
+                _eqValues[i] = msg.eqValues[i];
+            }
+        }
+        return changed;
+    }
+
     static String getVolumeLevelStr(int volumeLevel, Zone zone)
     {
         if (zone != null && zone.getVolumeStep == 0)
@@ -254,4 +286,7 @@ class SoundControlState
             scale * zoneInfo.getVolMax :
             max(volumeLevel, scale * MasterVolumeMsg.MAX_VOLUME_1_STEP);
     }
+
+    bool get isEqualizerAvailable
+    => _eqValues.every((e) => e != AllChannelEqMsg.NO_LEVEL);
 }

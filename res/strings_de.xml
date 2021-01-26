@@ -270,6 +270,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="tone_direct">Ton Direct</string>
     <string name="master_volume_restrict">Lautstärke einschränken</string>
     <string name="master_volume_max">Maximum</string>
+    <string name="equalizer">Equalizer</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Nächster gespeicherter Sender</string>

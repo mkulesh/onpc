@@ -1451,6 +1451,14 @@ Enjoy!"""];
         /*pl*/ "Maksymalny"];
     static String get master_volume_max => l_master_volume_max[_language];
 
+    static const List<String> l_equalizer = [
+        /*en*/ "Equalizer",
+        /*ru*/ "Эквалайзер",
+        /*de*/ "Equalizer",
+        /*fr*/ "Equalizer",
+        /*pl*/ "Equalizer"];
+    static String get equalizer => l_equalizer[_language];
+
     static const List<String> l_preset_command_up = [
         /*en*/ "Sets preset wrap-around up",
         /*ru*/ "Следующий канал",

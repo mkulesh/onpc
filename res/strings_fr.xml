@@ -269,6 +269,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="tone_direct">DIRECT</string>
     <string name="master_volume_restrict">Restreindre le volume</string>
     <string name="master_volume_max">Maximum</string>
+    <string name="equalizer">Equalizer</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Présélection haut</string>

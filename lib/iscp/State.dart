@@ -20,6 +20,7 @@ import "../constants/Drawables.dart";
 import "../utils/Logging.dart";
 import "ISCPMessage.dart";
 import "messages/AlbumNameMsg.dart";
+import "messages/AllChannelEqMsg.dart";
 import "messages/ArtistNameMsg.dart";
 import "messages/AudioInformationMsg.dart";
 import "messages/AudioMutingMsg.dart";
@@ -423,6 +424,10 @@ class State
         else if (msg is ListeningModeMsg)
         {
             return _isChange(ListeningModeMsg.CODE, _soundControlState.processListeningMode(msg));
+        }
+        else if (msg is AllChannelEqMsg)
+        {
+            return _isChange(AllChannelEqMsg.CODE, _soundControlState.processAllChannelEq(msg));
         }
 
         // Radio

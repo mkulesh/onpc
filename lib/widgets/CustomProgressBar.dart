@@ -32,8 +32,20 @@ class CustomProgressBar extends StatefulWidget
     final NewValueCallback onMoving;
     final NewValueCallback onChanged;
     final Widget extendedCmd;
+    final int divisions;
 
-    CustomProgressBar({this.caption, this.minValueStr, this.maxValueStr, this.maxValueNum, this.currValue, this.onCaption, this.onMoving, this.onChanged, this.extendedCmd});
+    CustomProgressBar({
+        this.caption,
+        this.minValueStr,
+        this.maxValueStr,
+        this.maxValueNum,
+        this.currValue,
+        this.onCaption,
+        this.onMoving,
+        this.onChanged,
+        this.extendedCmd,
+        this.divisions = 0
+    });
 
     @override _CustomProgressBarState createState()
     => _CustomProgressBarState();
@@ -106,10 +118,13 @@ class _CustomProgressBarState extends State<CustomProgressBar>
                 thumbShape: RoundSliderThumbShape(enabledThumbRadius: radius),
                 thumbColor: td.accentColor,
                 activeTrackColor: td.accentColor,
-                inactiveTrackColor: td.disabledColor.withAlpha(125)),
+                inactiveTrackColor: td.disabledColor.withAlpha(125),
+                activeTickMarkColor: td.disabledColor,
+                inactiveTickMarkColor: td.disabledColor),
             child: Slider(
                 min: minV,
                 max: maxV,
+                divisions: widget.divisions > 0 ? widget.divisions : null,
                 value: min(max(currValue, minV), maxV),
                 onChangeStart: widget.onChanged != null ? _onChangeStart : null,
                 onChanged: widget.onChanged != null ? _onChanged : null,
@@ -187,6 +202,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
 // See https://github.com/flutter/flutter/issues/37057 for more details
 class CustomTrackShape extends RoundedRectSliderTrackShape
 {
+    @override
     Rect getPreferredRect({
         @required RenderBox parentBox,
         Offset offset = Offset.zero,

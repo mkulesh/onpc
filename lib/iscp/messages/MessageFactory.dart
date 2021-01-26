@@ -15,6 +15,7 @@
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "AlbumNameMsg.dart";
+import "AllChannelEqMsg.dart";
 import "ArtistNameMsg.dart";
 import "AudioInformationMsg.dart";
 import "AudioMutingMsg.dart";
@@ -175,6 +176,8 @@ class MessageFactory
                 return CenterLevelCommandMsg(raw);
             case ListeningModeMsg.CODE:
                 return ListeningModeMsg(raw);
+            case AllChannelEqMsg.CODE:
+                return AllChannelEqMsg(raw);
 
         // Radio
             case PresetCommandMsg.CODE:

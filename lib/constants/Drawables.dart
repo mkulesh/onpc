@@ -132,4 +132,5 @@ class Drawables
     static const String volume_audio_control = BUTTONS_PATH + "volume_audio_control.svg";
     static const String volume_max_limit = BUTTONS_PATH + "volume_max_limit.svg";
     static const String wrap_around = BUTTONS_PATH + "wrap_around.svg";
+    static const String equalizer = BUTTONS_PATH + "equalizer.svg";
 }

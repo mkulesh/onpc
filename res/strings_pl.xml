@@ -271,6 +271,7 @@ Enjoy!""</string>
     <string name="tone_direct">Tone Direct</string>
     <string name="master_volume_restrict">Ogranicz poziom głośności</string>
     <string name="master_volume_max">Maksymalny</string>
+    <string name="equalizer">Equalizer</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>

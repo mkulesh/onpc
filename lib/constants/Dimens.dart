@@ -151,6 +151,9 @@ class ButtonDimens
 
     static EdgeInsetsGeometry get smallButtonPadding
     => EdgeInsets.all(DimensTransform.scale(4));
+
+    static double get equalizerWidth
+    => DimensTransform.scale(42.0);
 }
 
 class MediaListDimens
