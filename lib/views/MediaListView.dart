@@ -447,12 +447,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 context: context,
                 position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
                 items: contextMenu).then((m)
-            => _onContextItemSelected(m, cmd.getMessageId, title)
+            => _onContextItemSelected(context, m, cmd.getMessageId, title)
             );
         }
     }
 
-    void _onContextItemSelected(final MediaContextMenu m, final int idx, final String title)
+    void _onContextItemSelected(final BuildContext context, final MediaContextMenu m, final int idx, final String title)
     {
         if (m == null)
         {
@@ -497,7 +497,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             case MediaContextMenu.ADD_TO_FAVORITES:
                 if (state.isShortcutPossible && title != null)
                 {
-                    _addShortcut(title);
+                    _addShortcut(context, title);
                 }
                 break;
         }
@@ -788,7 +788,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         );
     }
 
-    void _addShortcut(String title)
+    void _addShortcut(final BuildContext context, String title)
     {
         final MediaListState ms = state.mediaListState;
         if (ms.isPathItemsConsistent())
@@ -801,12 +801,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 shortcut.setPathItems(ms.pathItems);
             }
             shortcutCfg.updateShortcut(shortcut, shortcut.alias);
-            PopupManager.showToast(Strings.favorite_shortcut_added);
+            PopupManager.showToast(Strings.favorite_shortcut_added, context: context);
             stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
         }
         else
         {
-            PopupManager.showToast(Strings.favorite_shortcut_failed);
+            PopupManager.showToast(Strings.favorite_shortcut_failed, context: context);
         }
     }
 }

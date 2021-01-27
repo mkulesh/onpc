@@ -12,10 +12,10 @@
  * Public License along with this program.
  */
 
-import "package:flutter/material.dart";
-import "package:fluttertoast/fluttertoast.dart";
+import 'dart:async';
 
-import "../Platform.dart";
+import "package:flutter/material.dart";
+
 import "../utils/Logging.dart";
 import "../views/UpdatableView.dart";
 import "CustomPopupDialog.dart";
@@ -29,6 +29,8 @@ enum _DialogType
 
 class PopupManager
 {
+    static const int TOAST_DURATION = 4;
+
     final List<_DialogType> _openDialogs = [];
 
     void _openDialog(final _DialogType t)
@@ -84,7 +86,7 @@ class PopupManager
         }
     }
 
-    void showPopupDialog(final BuildContext context, final ViewContext viewContext)
+    void showPopupDialog(final BuildContext context, final ViewContext viewContext, { final GlobalKey<ScaffoldState> toastKey })
     {
         if (_isDialog(_DialogType.TRACK_MENU) && Navigator.of(context).canPop())
         {
@@ -94,7 +96,7 @@ class PopupManager
         final String simplePopupMessage = viewContext.state.retrieveSimplePopupMessage();
         if (simplePopupMessage != null)
         {
-            showToast(simplePopupMessage);
+            showToast(simplePopupMessage, toastKey: toastKey);
             return;
         }
 
@@ -119,16 +121,21 @@ class PopupManager
         }
     }
 
-    static void showToast(final String msg)
+    static void showToast(final String msg, {final BuildContext context, final GlobalKey<ScaffoldState> toastKey})
     {
-        if (Platform.isDesktop)
+        try
         {
-            return;
+            final ScaffoldState sm = (toastKey != null) ? toastKey.currentState : Scaffold.of(context);
+            if (sm != null)
+            {
+                sm.showSnackBar(SnackBar(content: Text(msg)));
+                Timer(Duration(seconds: TOAST_DURATION), ()
+                => sm.removeCurrentSnackBar());
+            }
         }
-        Fluttertoast.showToast(
-            msg: msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM
-        );
+        on Exception
+        {
+            // nothing to do
+        }
     }
 }

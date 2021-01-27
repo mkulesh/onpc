@@ -21,7 +21,6 @@ import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
 import "package:flutter/scheduler.dart" show timeDilation;
 import "package:flutter/services.dart";
-import "package:fluttertoast/fluttertoast.dart";
 import "package:package_info/package_info.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
@@ -124,6 +123,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
     ConnectionState _connectionState;
     bool _exitConfirm, _searchDialog;
     int _tabBarId = 0, _tabId = 0;
+
+    final _toastKey = GlobalKey<ScaffoldState>();
 
     MusicControllerAppState(this._viewContext);
 
@@ -281,6 +282,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
 
         final Widget scaffold = Scaffold(
+            key: _toastKey,
             // Disable activity resize when a software keyboard is open:
             // The keyboard is placed above the activity view
             resizeToAvoidBottomPadding: false,
@@ -372,7 +374,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 if (changes.contains(CustomPopupMsg.CODE))
                 {
                     Timer(StateManager.GUI_UPDATE_DELAY, ()
-                    => _popupManager.showPopupDialog(context, _viewContext));
+                    => _popupManager.showPopupDialog(context, _viewContext, toastKey: _toastKey));
                 }
                 if (!_stateManager.state.mediaListState.isPopupMode)
                 {
@@ -440,7 +442,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _onConnectionError(String result)
     {
-        PopupManager.showToast(result);
+        PopupManager.showToast(result, toastKey: _toastKey);
         if (_connectionState == ConnectionState.CONNECTING_TO_SAVED)
         {
             Logging.info(this.widget, "Searching for any device to connect");
@@ -468,16 +470,12 @@ class MusicControllerAppState extends State<MusicControllerApp>
             if (!_exitConfirm)
             {
                 _exitConfirm = true;
-                PopupManager.showToast(Strings.action_exit_confirm);
-                Timer(Duration(seconds: 3), ()
+                PopupManager.showToast(Strings.action_exit_confirm, toastKey: _toastKey);
+                Timer(Duration(seconds: PopupManager.TOAST_DURATION), ()
                 {
                     _exitConfirm = false;
                 });
                 return true;
-            }
-            else
-            {
-                Fluttertoast.cancel();
             }
         }
         return false;
@@ -495,7 +493,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     {
                         _disconnect();
                     });
-                    PopupManager.showToast(Strings.error_connection_no_network);
+                    PopupManager.showToast(Strings.error_connection_no_network, toastKey: _toastKey);
                     break;
                 case NetworkState.CELLULAR:
                 case NetworkState.WIFI:
