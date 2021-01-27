@@ -29,7 +29,7 @@ enum _DialogType
 
 class PopupManager
 {
-    final List<_DialogType> _openDialogs = List();
+    final List<_DialogType> _openDialogs = [];
 
     void _openDialog(final _DialogType t)
     {

@@ -16,7 +16,7 @@ class Logging
 {
     static const int DEFAULT_LOG_SIZE = 1000;
 
-    static List<String> latestLogging = List();
+    static List<String> latestLogging = [];
     static int logLineNumber = 0;
 
     static bool get isEnabled

@@ -32,7 +32,7 @@ class MultiroomGroupSettingMsg extends ISCPMessage
 
     final MultiroomGroupCommand _command;
     final int _zone, _groupId, _maxDelay;
-    final List<String> _devices = List();
+    final List<String> _devices = [];
 
     MultiroomGroupSettingMsg.output(this._command, this._zone, this._groupId, this._maxDelay) :
             super.output(CODE, "");

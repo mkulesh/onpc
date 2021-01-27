@@ -59,7 +59,7 @@ class ShortcutsView extends UpdatableView
         }
         else
         {
-            final List<Widget> rows = List<Widget>();
+            final List<Widget> rows = [];
             configuration.favoriteShortcuts.shortcuts.forEach((s)
             => rows.add(_buildRow(context, s)));
 
@@ -106,7 +106,7 @@ class ShortcutsView extends UpdatableView
 
     void _onCreateContextMenu(final BuildContext context, final TapPosition position, final Shortcut s)
     {
-        final List<PopupMenuItem<_ShortcutContextMenu>> contextMenu = List<PopupMenuItem<_ShortcutContextMenu>>();
+        final List<PopupMenuItem<_ShortcutContextMenu>> contextMenu = [];
         contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(
             child: CustomTextLabel.small(Strings.favorite_shortcut_edit), enabled: false));
         contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(

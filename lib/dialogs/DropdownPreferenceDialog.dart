@@ -34,7 +34,7 @@ class DropdownPreferenceDialog extends StatelessWidget
     Widget build(BuildContext context)
     {
         final ThemeData td = Theme.of(context);
-        final List<Widget> controls = List();
+        final List<Widget> controls = [];
 
         int index = 0;
         _displayValues.forEach((v)

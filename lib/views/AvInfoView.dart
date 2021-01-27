@@ -40,7 +40,7 @@ class AvInfoView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<Widget> items = List<Widget>();
+        final List<Widget> items = [];
 
         items.add(CustomTextLabel.normal(Strings.av_info_audio, padding: DialogDimens.rowPadding));
         items.add(CustomTextLabel.small(sprintf(Strings.av_info_input, [state.trackState.avInfoAudioInput]), padding: DialogDimens.rowPadding));

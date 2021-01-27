@@ -72,7 +72,7 @@ class DeviceSettingsView extends UpdatableView
 
         Logging.logRebuild(this);
 
-        final List<TableRow> rows = List();
+        final List<TableRow> rows = [];
 
         final DeviceSettingsState ds = state.deviceSettingsState;
 

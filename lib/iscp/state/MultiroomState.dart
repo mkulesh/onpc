@@ -203,7 +203,7 @@ class MultiroomState
 
     List<DeviceInfo> getSortedDevices()
     {
-        final List<DeviceInfo> retValue = List();
+        final List<DeviceInfo> retValue = [];
         _deviceList.forEach((key, di) => retValue.add(di));
         retValue.sort((a, b) => a.getHostAndPort().compareTo(b.getHostAndPort()));
         return retValue;

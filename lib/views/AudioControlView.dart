@@ -59,7 +59,7 @@ class AudioControlView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<Widget> controls = List<Widget>();
+        final List<Widget> controls = [];
 
         final SoundControlState soundControl = state.soundControlState;
         final int zone = state.getActiveZone;
@@ -110,7 +110,7 @@ class AudioControlView extends UpdatableView
                     stateManager.sendMessage(DirectCommandMsg.output(DirectCommand.TOGGLE), waitingForData: true);
                     if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
                     {
-                        final List<String> cmd = List();
+                        final List<String> cmd = [];
                         cmd.add(ToneCommandMsg.ZONE_COMMANDS[zone]);
                         stateManager.sendQueries(cmd);
                     }

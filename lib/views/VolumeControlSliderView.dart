@@ -52,7 +52,7 @@ class VolumeControlSliderView extends UpdatableView
         Logging.logRebuild(this);
 
         final SoundControlState soundControl = state.soundControlState;
-        final List<Widget> controls = List<Widget>();
+        final List<Widget> controls = [];
         final bool volumeValid = state.isOn && soundControl.volumeLevel != MasterVolumeMsg.NO_LEVEL;
 
         // master volume label

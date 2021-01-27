@@ -42,7 +42,7 @@ class DeviceSearchView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<Widget> controls = List<Widget>();
+        final List<Widget> controls = [];
         final List<DeviceInfo> devices = state.multiroomState.getSortedDevices().where((di) => di.responses > 0).toList();
         devices.forEach((d)
         {

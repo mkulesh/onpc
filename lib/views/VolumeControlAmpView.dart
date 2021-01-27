@@ -40,7 +40,7 @@ class VolumeControlAmpView extends UpdatableView
             AmpOperationCommandMsg.output(AmpOperationCommand.MVLUP)
         ];
 
-        final List<Widget> buttons = List<Widget>();
+        final List<Widget> buttons = [];
         cmd.forEach((cmd)
         {
             buttons.add(CustomImageButton.normal(

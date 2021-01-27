@@ -46,7 +46,7 @@ class _VisibleTabsState extends State<VisibleTabs>
 
     void _createItems()
     {
-        final List<String> defItems = List();
+        final List<String> defItems = [];
         AppTabs.values.forEach((i) => defItems.add(Convert.enumToString(i)));
         for (CheckableItem sp in CheckableItem.readFromPreference(_configuration, _parameter, defItems))
         {

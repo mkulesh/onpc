@@ -97,7 +97,7 @@ class MediaListView extends StatefulWidget
 class _MediaListViewState extends WidgetStreamState<MediaListView>
 {
     static final String _PLAYBACK_STRING = "_PLAYBACK_STRING_";
-    final List<int> _playQueueIds = List();
+    final List<int> _playQueueIds = [];
     ScrollController _scrollController;
     int _currentLayer = -1;
     final MediaListButtons _headerButtons = MediaListButtons();
@@ -248,7 +248,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     Widget _buildPlayQueueList(BuildContext context, List<ISCPMessage> items)
     {
-        final List<Widget> _rows = List<Widget>();
+        final List<Widget> _rows = [];
         _playQueueIds.clear();
 
         items.forEach((rowMsg)
@@ -374,7 +374,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     void _onCreateContextMenu(final BuildContext context, final TapPosition position, final ISCPMessage cmd)
     {
-        final List<PopupMenuItem<MediaContextMenu>> contextMenu = List<PopupMenuItem<MediaContextMenu>>();
+        final List<PopupMenuItem<MediaContextMenu>> contextMenu = [];
         final Selector selector = state.getActualSelector;
         final NetworkService networkService = state.getNetworkService;
         final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
@@ -569,8 +569,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     List<NetworkServiceMsg> _getSortedNetworkServices(EnumItem<ServiceType> activeItem, final List<ISCPMessage> defaultItems)
     {
-        final List<NetworkServiceMsg> result = List<NetworkServiceMsg>();
-        final List<String> defItems = List<String>();
+        final List<NetworkServiceMsg> result = [];
+        final List<String> defItems = [];
         for (ISCPMessage i in defaultItems)
         {
             if (i is NetworkServiceMsg)
@@ -643,7 +643,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     Widget _buildHeaderLine(final ThemeData td, final MediaListButtons buttons, final int numberOfItems)
     {
-        final List<Widget> elements = List();
+        final List<Widget> elements = [];
 
         final OperationCommandMsg commandTopMsg = OperationCommandMsg.output(
             ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.TOP);
@@ -770,7 +770,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     Widget _buildTrackButtons()
     {
-        final List<Widget> buttons = List();
+        final List<Widget> buttons = [];
         [
             OperationCommandMsg.output(state.getActiveZone, OperationCommand.LEFT),
             OperationCommandMsg.output(state.getActiveZone, OperationCommand.RIGHT),

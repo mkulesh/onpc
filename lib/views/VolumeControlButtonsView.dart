@@ -54,7 +54,7 @@ class VolumeControlButtonsView extends UpdatableView
             MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP)
         ];
 
-        final List<Widget> buttons = List<Widget>();
+        final List<Widget> buttons = [];
         cmd.forEach((cmd)
         {
             String icon, description;

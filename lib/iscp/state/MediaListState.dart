@@ -412,7 +412,7 @@ class MediaListState
 
     List<ISCPMessage> retrieveMenu()
     {
-        final List<ISCPMessage> retValue = List();
+        final List<ISCPMessage> retValue = [];
         _mediaItems.forEach((msg)
         {
             if (msg is XmlListItemMsg && msg.getTitle != null && msg.getTitle.isNotEmpty)

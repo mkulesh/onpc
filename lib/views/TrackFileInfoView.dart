@@ -113,8 +113,8 @@ class TrackFileInfoView extends UpdatableView
             ]);
 
         // Header row contains file format info, multiroom buttons and track info
-        final List<TableColumnWidth> columnWidths = List();
-        final List<Widget> columnContent = List();
+        final List<TableColumnWidth> columnWidths = [];
+        final List<Widget> columnContent = [];
 
         columnContent.add(textFileFormat);
         columnWidths.add(FlexColumnWidth());

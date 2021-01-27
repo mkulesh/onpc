@@ -53,7 +53,7 @@ class _PreferencesMainState extends State<PreferencesMain>
         final ThemeData td = BaseAppTheme.getThemeData(
             _configuration.appSettings.theme, _configuration.appSettings.language, _configuration.appSettings.textSize);
 
-        final List<Widget> elements = List();
+        final List<Widget> elements = [];
 
         // Theme
         elements.add(_customDropdownPreference(td,

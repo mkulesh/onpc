@@ -49,7 +49,7 @@ class PlayControlNetView extends UpdatableView
             OperationCommand.RANDOM
         ];
 
-        final List<Widget> buttons = List<Widget>();
+        final List<Widget> buttons = [];
 
         cmd.forEach((cmdEnum)
         {

@@ -48,7 +48,7 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
     String _popupText = "";
     xml.XmlElement _popupElement;
     String _dialogTitle;
-    final List<Pair<xml.XmlElement, TextEditingController>> _textFields = List();
+    final List<Pair<xml.XmlElement, TextEditingController>> _textFields = [];
 
     _CustomPopupDialogState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
@@ -130,7 +130,7 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
     {
         PopupUiType uiType;
 
-        final List<Widget> elements = List();
+        final List<Widget> elements = [];
 
         // labels
         _popupElement.findElements("label").forEach((label)

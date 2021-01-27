@@ -46,7 +46,7 @@ class PlayControlRadioView extends UpdatableView
             PresetCommandMsg.outputCmd(state.getActiveZone, PresetCommand.UP)
         ];
 
-        final List<Widget> buttons = List<Widget>();
+        final List<Widget> buttons = [];
 
         cmd.forEach((cmd)
         {

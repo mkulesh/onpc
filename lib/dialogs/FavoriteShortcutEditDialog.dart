@@ -56,7 +56,7 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
     {
         final ThemeData td = viewContext.getThemeData();
 
-        final List<Widget> controls = List();
+        final List<Widget> controls = [];
 
         controls.add(Padding(
             padding: DialogDimens.rowPadding,

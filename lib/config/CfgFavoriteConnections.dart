@@ -27,7 +27,7 @@ class CfgFavoriteConnections extends CfgModule
     static const Pair<String, int> FAVORITE_CONNECTION_NUMBER = Pair<String, int>("favorite_connection_number", 0);
     static String FAVORITE_CONNECTION_ITEM = "favorite_connection_item";
 
-    final List<BroadcastResponseMsg> _devices = List();
+    final List<BroadcastResponseMsg> _devices = [];
 
     // methods
     CfgFavoriteConnections(SharedPreferences preferences) : super(preferences);

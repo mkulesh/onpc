@@ -30,7 +30,7 @@ class CustomDialogTitle extends StatelessWidget
     Widget build(BuildContext context)
     {
         final ThemeData td = Theme.of(context);
-        final List<Widget> children = List();
+        final List<Widget> children = [];
 
         if (icon != null)
         {

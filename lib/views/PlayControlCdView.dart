@@ -48,7 +48,7 @@ class PlayControlCdView extends UpdatableView
             CdPlayerOperationCommand.RANDOM
         ];
 
-        final List<Widget> buttons = List();
+        final List<Widget> buttons = [];
 
         cmd.forEach((cmdEnum)
         {

@@ -39,7 +39,7 @@ class SetupNavigationCommandsView extends UpdatableView
         columnWidths[3] = FixedColumnWidth(1.9 * ButtonDimens.bigButtonSize);
         columnWidths[4] = FlexColumnWidth();
 
-        final List<TableRow> rows = List();
+        final List<TableRow> rows = [];
         rows.add(TableRow(children: [
             SizedBox.shrink(),
             SizedBox.shrink(),

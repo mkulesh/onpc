@@ -79,7 +79,7 @@ class AppTabView extends UpdatableView
         Widget tab;
         if (secondColumn.isEmpty)
         {
-            final List<Widget> views = List();
+            final List<Widget> views = [];
             _addWidgets(context, firstColumn, views);
             expandable = expandable || _isExpandable(firstColumn);
             focusable = focusable || _isFocusable(firstColumn);
@@ -89,11 +89,11 @@ class AppTabView extends UpdatableView
         else
         {
             // collect all widgets
-            final List<Widget> leftViews = List();
+            final List<Widget> leftViews = [];
             _addWidgets(context, firstColumn, leftViews);
             final bool leftExpandable = _isExpandable(firstColumn);
 
-            final List<Widget> rightViews = List();
+            final List<Widget> rightViews = [];
             _addWidgets(context, secondColumn, rightViews);
             final bool rightExpandable = _isExpandable(secondColumn);
 

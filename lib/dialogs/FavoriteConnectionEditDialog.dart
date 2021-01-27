@@ -67,7 +67,7 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
     {
         final ThemeData td = viewContext.getThemeData();
 
-        final List<Widget> controls = List();
+        final List<Widget> controls = [];
 
         controls.add(CustomTextLabel.small(Strings.connect_dialog_address + " " + widget._msg.getHostAndPort));
 

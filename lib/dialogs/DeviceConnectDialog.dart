@@ -60,7 +60,7 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
     {
         final ThemeData td = viewContext.getThemeData();
 
-        final List<Widget> controls = List();
+        final List<Widget> controls = [];
 
         controls.add(CustomDialogEditField(_address,
             textLabel: Strings.connect_dialog_address,

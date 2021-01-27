@@ -36,7 +36,7 @@ class PlayControlView extends UpdatableView
         // Play controls depends on input type
         final UpdatableView playControlView = state.mediaListState.isRadioInput ? PlayControlRadioView(viewContext) :
             (state.isCdInput ? PlayControlCdView(viewContext) : PlayControlNetView(viewContext));
-        final List<Widget> playControlList = List();
+        final List<Widget> playControlList = [];
 
         playControlList.add(UpdatableWidget(child: playControlView));
         return Center(

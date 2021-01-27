@@ -54,7 +54,7 @@ class GroupControlView extends UpdatableView
         Logging.logRebuild(this);
 
         // Available devices and maximum groupId
-        final List<DeviceInfo> devices = List();
+        final List<DeviceInfo> devices = [];
         int maxGroupId = 0;
         state.multiroomState.deviceList.forEach((key, di)
         {
@@ -78,7 +78,7 @@ class GroupControlView extends UpdatableView
         final int myGroupId = myDevice.groupMsg.getGroupId(myZone);
         final int targetGroupId = myGroupId == MultiroomZone.NO_GROUP ? maxGroupId + 1 : myGroupId;
 
-        final List<Widget> controls = List<Widget>();
+        final List<Widget> controls = [];
         Logging.info(this, "Devices for group: " + myGroupId.toString() + ",  maximum group ID=" + maxGroupId.toString());
         devices.forEach((di)
         {

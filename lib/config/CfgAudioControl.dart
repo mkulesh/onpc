@@ -111,8 +111,8 @@ class CfgAudioControl extends CfgModule
 
     List<EnumItem<ListeningMode>> getSortedListeningModes(bool allItems, EnumItem<ListeningMode> activeItem)
     {
-        final List<EnumItem<ListeningMode>> result = List();
-        final List<String> defItems = List();
+        final List<EnumItem<ListeningMode>> result = [];
+        final List<String> defItems = [];
 
         DEFAULT_LISTENING_MODES.forEach((m)
         => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));

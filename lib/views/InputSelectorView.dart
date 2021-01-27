@@ -44,7 +44,7 @@ class InputSelectorView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<Widget> buttons = List<Widget>();
+        final List<Widget> buttons = [];
 
         final List<Selector> sortedSelectors = _getSortedDeviceSelectors(
             false, state.mediaListState.inputType, state.receiverInformation.deviceSelectors);

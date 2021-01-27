@@ -83,7 +83,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             return SizedBox.shrink();
         }
 
-        final List<TableRow> rows = List();
+        final List<TableRow> rows = [];
 
         final bool isData = state.isConnected;
         final ReceiverInformation ri = state.receiverInformation;

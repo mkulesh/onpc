@@ -141,7 +141,7 @@ class CfgAppSettings extends CfgModule
 
     // Visible tabs
     static final String VISIBLE_TABS = "visible_tabs";
-    final List<AppTabs> _visibleTabs = List();
+    final List<AppTabs> _visibleTabs = [];
 
     List<AppTabs> get visibleTabs
     => _visibleTabs;
@@ -150,7 +150,7 @@ class CfgAppSettings extends CfgModule
     => _visibleTabs.length <= 1;
 
     // Tab settings
-    final List<CfgTabSettings> _tabSettings = List();
+    final List<CfgTabSettings> _tabSettings = [];
 
     CfgTabSettings tabSettings(AppTabs t)
     => t != null ? _tabSettings[t.index] : null;
@@ -185,7 +185,7 @@ class CfgAppSettings extends CfgModule
     void _readVisibleTabs()
     {
         _visibleTabs.clear();
-        final List<String> defItems = List();
+        final List<String> defItems = [];
         AppTabs.values.forEach((i) => defItems.add(Convert.enumToString(i)));
         for (CheckableItem sp in CheckableItem.readFromPreference(this, VISIBLE_TABS, defItems))
         {

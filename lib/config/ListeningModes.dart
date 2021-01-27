@@ -47,7 +47,7 @@ class _ListeningModesState extends State<ListeningModes>
 
     void _createItems()
     {
-        final List<String> defItems = List();
+        final List<String> defItems = [];
         CfgAudioControl.DEFAULT_LISTENING_MODES.forEach((m)
             => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
 

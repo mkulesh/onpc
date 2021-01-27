@@ -54,7 +54,7 @@ class TrackCaptionView extends UpdatableView
         final Widget album = CustomTextLabel.normal(_buildTrackAlbum(), textAlign: TextAlign.center);
 
         // Song title with feed buttons
-        final List<Widget> titleItems = List<Widget>();
+        final List<Widget> titleItems = [];
         if (state.playbackState.negativeFeed.isImageValid)
         {
             titleItems.add(CustomImageButton.normal(

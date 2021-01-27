@@ -119,7 +119,7 @@ class Platform
             final int length = readBuffer.data.getInt32(0);
             if (length > 0)
             {
-                final List<int> bytes = List();
+                final List<int> bytes = [];
                 for (int i = 0; i < length; i++)
                 {
                     bytes.add(readBuffer.data.getUint8(4 + i));

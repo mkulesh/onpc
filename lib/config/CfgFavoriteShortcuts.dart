@@ -55,7 +55,7 @@ class Shortcut
     String get alias
     => _alias;
 
-    final List<String> _pathItems = List();
+    final List<String> _pathItems = [];
 
     List<String> get pathItems
     => _pathItems;
@@ -180,7 +180,7 @@ class CfgFavoriteShortcuts extends CfgModule
 {
     static const Pair<String, int> FAVORITE_SHORTCUT_NUMBER = Pair<String, int>("favorite_shortcut_number", 0);
     static String FAVORITE_SHORTCUT_ITEM = "favorite_shortcut_item";
-    final List<Shortcut> _shortcuts = List();
+    final List<Shortcut> _shortcuts = [];
 
     // methods
     CfgFavoriteShortcuts(SharedPreferences preferences) : super(preferences);

@@ -38,7 +38,7 @@ class TrackMenuView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<Widget> controls = List<Widget>();
+        final List<Widget> controls = [];
         state.mediaListState.retrieveMenu().forEach((msg)
         {
             if (msg is XmlListItemMsg)

@@ -31,7 +31,7 @@ class CustomActivityTitle extends StatelessWidget
         final double titleSize = isPortrait ? td.textTheme.headline6.fontSize : td.textTheme.headline6.fontSize - 2;
         final double subTitleSize = isPortrait ? td.textTheme.headline6.fontSize - 4 : td.textTheme.headline6.fontSize - 6;
 
-        final List<Widget> children = List();
+        final List<Widget> children = [];
         children.add(Text(title,
             style: td.textTheme.headline6.copyWith(
                 fontSize: titleSize,

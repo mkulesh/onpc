@@ -117,7 +117,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     with WidgetsBindingObserver, TickerProviderStateMixin
 {
     final ViewContext _viewContext;
-    final List<AppTabs> _tabs = List();
+    final List<AppTabs> _tabs = [];
     TabController _tabController;
     final PopupManager _popupManager = PopupManager();
 

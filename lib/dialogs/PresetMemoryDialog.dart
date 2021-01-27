@@ -53,7 +53,7 @@ class _PresetMemoryDialogState extends State<PresetMemoryDialog>
     {
         final ThemeData td = viewContext.getThemeData();
 
-        final List<Widget> controls = List();
+        final List<Widget> controls = [];
 
         controls.add(CustomDialogEditField(_presetText,
             textLabel: Strings.cmd_preset_memory_number,

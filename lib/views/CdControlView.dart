@@ -71,7 +71,7 @@ class CdControlView extends UpdatableView
         columnWidths[3] = FlexColumnWidth();
 
         // Top rows: quick menu, setup, return
-        final List<TableRow> rows = List();
+        final List<TableRow> rows = [];
         rows.add(TableRow(children: [
             SizedBox.shrink(),
             CustomTextLabel.small(Strings.remote_interface_power, textAlign: TextAlign.center),

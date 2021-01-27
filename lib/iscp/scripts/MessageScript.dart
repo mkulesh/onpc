@@ -118,7 +118,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
     => _tab;
 
     // Actions to be performed
-    final List<Action> actions = List();
+    final List<Action> actions = [];
 
     MessageScript(final String data)
     {

@@ -115,7 +115,7 @@ class MultiroomDeviceInformationMsg extends ISCPMessage
     static const int DEFAULT_ZONE = 1;
 
     final Map<String, String> _properties = Map();
-    final List<MultiroomZone> _zones = List();
+    final List<MultiroomZone> _zones = [];
 
     MultiroomDeviceInformationMsg(EISCPMessage raw) : super(CODE, raw)
     {

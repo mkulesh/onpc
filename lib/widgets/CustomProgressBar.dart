@@ -86,7 +86,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         }
 
         final String extCaption = widget.onCaption != null ? widget.onCaption(currValue) : "";
-        final List<Widget> controls = List<Widget>();
+        final List<Widget> controls = [];
         if (widget.caption != null)
         {
             final String caption = widget.caption + ": " + extCaption;

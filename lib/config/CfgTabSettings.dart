@@ -108,7 +108,7 @@ class CfgTabSettings
 
     List<AppControl> _readVisibleControls(final AppControlGroup type, List<AppControl> defItems)
     {
-        final List<AppControl> res = List();
+        final List<AppControl> res = [];
         final String par = getParameterName(tab, type);
         for (CheckableItem sp in CheckableItem.readFromPreference(configuration, par, List()))
         {
@@ -134,7 +134,7 @@ class CfgTabSettings
 
     void createCheckableItems(final List<CheckableItem> _items, final AppControlGroup type, final List<AppControl> actualItems)
     {
-        final List<String> defItems = List();
+        final List<String> defItems = [];
         CfgTabSettings.ValueEnum.values.forEach((m) => defItems.add(m.code));
         // Add currently selected controls on the top
         actualItems.forEach((c)

@@ -46,7 +46,7 @@ class ListeningModeView extends UpdatableView
             return SizedBox.shrink();
         }
 
-        final List<Widget> buttons = List<Widget>();
+        final List<Widget> buttons = [];
 
         configuration.audioControl.getSortedListeningModes(false, state.soundControlState.listeningMode).forEach((m)
         {

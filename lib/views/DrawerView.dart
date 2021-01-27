@@ -56,7 +56,7 @@ class DrawerView extends UpdatableView
 
         final Widget header = DrawerHeader(child: _buildDrawerHeader(context), decoration: BoxDecoration(color: td.primaryColor));
 
-        final List<Widget> drawerItems = List<Widget>();
+        final List<Widget> drawerItems = [];
         {
             drawerItems.add(header);
             // Device

@@ -38,8 +38,8 @@ class _TabLayoutLandscapeState extends State<TabLayoutLandscape>
 {
     final Configuration _configuration;
     final CfgTabSettings _tabSettings;
-    final List<CheckableItem> _itemsLeft = List();
-    final List<CheckableItem> _itemsRight = List();
+    final List<CheckableItem> _itemsLeft = [];
+    final List<CheckableItem> _itemsRight = [];
     ScrollController _scrollControllerLeft, _scrollControllerRight;
 
     _TabLayoutLandscapeState(this._configuration, this._tabSettings)

@@ -37,7 +37,7 @@ class SetupOperationalCommandsView extends UpdatableView
         final bool enabled = state.isOn;
 
         // Commands to be shows
-        final List<SetupOperationCommandMsg> cmd = List();
+        final List<SetupOperationCommandMsg> cmd = [];
         if (state.receiverInformation.isControlExists("Setup"))
         {
             cmd.add(SetupOperationCommandMsg.output(SetupOperationCommand.MENU));
@@ -59,11 +59,11 @@ class SetupOperationalCommandsView extends UpdatableView
             columnWidths[i] = FixedColumnWidth(1.9 * ButtonDimens.bigButtonSize);
         }
 
-        final List<TableRow> rows = List();
+        final List<TableRow> rows = [];
 
         // Labels (first row)
         {
-            final List<Widget> cells = List();
+            final List<Widget> cells = [];
             cmd.forEach((c)
             => cells.add(InkWell(
                     child: CustomTextLabel.small(c.getValue.description,
@@ -78,7 +78,7 @@ class SetupOperationalCommandsView extends UpdatableView
 
         // Buttons
         {
-            final List<Widget> cells = List();
+            final List<Widget> cells = [];
             cmd.forEach((c)
             => cells.add(CustomImageButton.big(
                     c.getValue.icon,
