@@ -26,6 +26,7 @@ import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../iscp/StateManager.dart";
 import "../utils/Logging.dart";
 import "../views/UpdatableView.dart";
+import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 
@@ -79,7 +80,7 @@ class ShortcutsView extends UpdatableView
         {
             serviceIcon = Drawables.media_item_unknown;
         }
-        final Widget w = PositionedTapDetector(
+        final Widget w = ContextMenuListener(
             child: ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
                 dense: configuration.appSettings.textSize != "huge",
@@ -92,7 +93,7 @@ class ShortcutsView extends UpdatableView
                 onTap: ()
                 => _selectShortcut(s)
             ),
-            onLongPress: (position)
+            onContextMenu: (position)
             => _onCreateContextMenu(context, position, s),
         );
         return Row(

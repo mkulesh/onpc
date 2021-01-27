@@ -44,6 +44,7 @@ import "../iscp/messages/XmlListInfoMsg.dart";
 import "../iscp/messages/XmlListItemMsg.dart";
 import "../iscp/state/MediaListState.dart";
 import "../utils/Logging.dart";
+import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextField.dart";
@@ -302,7 +303,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
             );
 
-        final Widget w = PositionedTapDetector(
+        final Widget w = ContextMenuListener(
             key: Key(reorderId),
             child: ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
@@ -315,7 +316,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     final rowMsg = (cmd is XmlListItemMsg && cmd.iconType == _PLAYBACK_STRING) ? StateManager.DISPLAY_MSG : cmd;
                     stateManager.sendMessage(rowMsg, waitingForData: rowMsg != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
                 }),
-            onLongPress: (position)
+            onContextMenu: (position)
             => _onCreateContextMenu(context, position, cmd)
         );
         if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && reorderId != null)
