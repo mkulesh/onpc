@@ -65,15 +65,15 @@ class ActivityDimens
     static const EdgeInsetsGeometry _activityMarginsPort
     = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 16.0);
 
-    static const EdgeInsetsGeometry _activityMarginsLandAndroid
+    static const EdgeInsetsGeometry _activityMarginsLand
     = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
-    static const EdgeInsetsGeometry _activityMarginsLandIos
+    static const EdgeInsetsGeometry _activityMarginsLandIOS
     = EdgeInsets.only(left: 64.0, right: 64.0, top: 8.0, bottom: 16.0);
 
-    static EdgeInsetsGeometry activityMargins(BuildContext context, bool isAndroid)
+    static EdgeInsetsGeometry activityMargins(BuildContext context, bool isIOS)
     => DimensTransform.rotate(context, _activityMarginsPort,
-        isAndroid ? _activityMarginsLandAndroid : _activityMarginsLandIos);
+        isIOS ? _activityMarginsLandIOS : _activityMarginsLand);
 
     // Fonts: title text
     static const double titleFontSize = 18;
