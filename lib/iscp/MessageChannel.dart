@@ -58,7 +58,7 @@ class MessageChannel with ConnectionIf
 
     // message handling
     final Set<String> _allowedMessages = Set();
-    final List<int> _buffer = List<int>();
+    final List<int> _buffer = [];
     int _messageId = 0;
 
     MessageChannel(this._onConnected, this._onNewEISCPMessage, this._onDisconnected);

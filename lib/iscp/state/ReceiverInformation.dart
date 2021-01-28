@@ -42,27 +42,27 @@ class ReceiverInformation
     Map<String, String> get deviceProperties
     => _deviceProperties;
 
-    final List<NetworkService> _networkServices = List<NetworkService>();
+    final List<NetworkService> _networkServices = [];
 
     List<NetworkService> get networkServices
     => _networkServices;
 
-    final List<Zone> _zones = List<Zone>();
+    final List<Zone> _zones = [];
 
     List<Zone> get zones
     => _zones;
 
-    final List<Selector> _deviceSelectors = List<Selector>();
+    final List<Selector> _deviceSelectors = [];
 
     List<Selector> get deviceSelectors
     => _deviceSelectors;
 
-    final List<Preset> _presetList = List<Preset>();
+    final List<Preset> _presetList = [];
 
     List<Preset> get presetList
     => _presetList;
 
-    final List<String> _controlList = List<String>();
+    final List<String> _controlList = [];
     final Map<String, ToneControl> _toneControls = HashMap<String, ToneControl>();
 
     Map<String, ToneControl> get toneControls

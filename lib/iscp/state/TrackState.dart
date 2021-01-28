@@ -92,7 +92,7 @@ class TrackState
     bool get isCoverPending
     => _coverPending;
 
-    final List<int> _coverBuffer = List<int>();
+    final List<int> _coverBuffer = [];
 
     // Audio/Video information
     String _avInfoAudioInput;

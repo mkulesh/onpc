@@ -155,7 +155,7 @@ class StateManager
     => _state;
 
     // MessageScript processor
-    final List<MessageScriptIf> _messageScripts = List<MessageScriptIf>();
+    final List<MessageScriptIf> _messageScripts = [];
 
     void clearScripts()
     {
@@ -453,7 +453,7 @@ class StateManager
         {
             if (state.isPlaying)
             {
-                final List<String> queries = List<String>();
+                final List<String> queries = [];
                 queries.addAll(_state.trackState.getQueries());
                 queries.addAll(_state.trackState.getAvInfoQueries());
                 queries.add(MenuStatusMsg.CODE);

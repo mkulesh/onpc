@@ -86,7 +86,7 @@ class PlaybackState
         ];
     }
 
-    clear()
+    void clear()
     {
         _playStatus = PlayStatus.STOP;
         _repeatStatus = PlayStatusMsg.RepeatStatusEnum.defValue;

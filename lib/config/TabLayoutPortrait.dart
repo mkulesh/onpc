@@ -39,7 +39,7 @@ class _TabLayoutPortraitState extends State<TabLayoutPortrait>
     final Configuration _configuration;
     final CfgTabSettings _tabSettings;
     String _parameter;
-    final List<CheckableItem> _items = List<CheckableItem>();
+    final List<CheckableItem> _items = [];
 
     _TabLayoutPortraitState(this._configuration, this._tabSettings)
     {

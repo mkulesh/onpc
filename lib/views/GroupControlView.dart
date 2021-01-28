@@ -152,7 +152,7 @@ class GroupControlView extends UpdatableView
         return Padding(padding: DialogDimens.rowPadding, child: result);
     }
 
-    _sendGroupCmd(DeviceInfo device, bool attached, int myZone, int myGroupId, int targetGroupId)
+    void _sendGroupCmd(DeviceInfo device, bool attached, int myZone, int myGroupId, int targetGroupId)
     {
         if (attached)
         {

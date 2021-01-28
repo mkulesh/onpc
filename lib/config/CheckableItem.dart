@@ -65,7 +65,7 @@ class CheckableItem
         final String parameter,
         final List<String> defItems)
     {
-        final List<CheckableItem> retValue = List<CheckableItem>();
+        final List<CheckableItem> retValue = [];
 
         final String cfg = configuration.getStringDef(parameter, "");
 

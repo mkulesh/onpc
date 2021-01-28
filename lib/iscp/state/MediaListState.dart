@@ -68,7 +68,7 @@ class MediaListState
     => _currentCursorPosition;
 
     // Media list
-    final List<ISCPMessage> _mediaItems = List<ISCPMessage>();
+    final List<ISCPMessage> _mediaItems = [];
 
     List<ISCPMessage> get mediaItems
     => _mediaItems;
@@ -83,12 +83,12 @@ class MediaListState
     int get numberOfItems
     => _mediaItems.length;
 
-    final List<String> _pathItems = List<String>();
+    final List<String> _pathItems = [];
 
     List<String> get pathItems
     => _pathItems;
 
-    final List<String> listInfoItems = List<String>();
+    final List<String> listInfoItems = [];
 
     MediaListState()
     {

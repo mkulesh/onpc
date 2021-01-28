@@ -36,7 +36,7 @@ class _VisibleTabsState extends State<VisibleTabs>
 {
     final Configuration _configuration;
     String _parameter;
-    final List<CheckableItem> _items = List<CheckableItem>();
+    final List<CheckableItem> _items = [];
 
     _VisibleTabsState(this._configuration)
     {

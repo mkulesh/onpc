@@ -285,11 +285,11 @@ class ReceiverInformationMsg extends ISCPMessage
 
     String _deviceId;
     final Map<String, String> _deviceProperties = HashMap<String, String>();
-    final List<NetworkService> _networkServices = List<NetworkService>();
-    final List<Zone> _zones = List<Zone>();
-    final List<Selector> _deviceSelectors = List<Selector>();
-    final List<Preset> _presetList = List<Preset>();
-    final List<String> _controlList = List<String>();
+    final List<NetworkService> _networkServices = [];
+    final List<Zone> _zones = [];
+    final List<Selector> _deviceSelectors = [];
+    final List<Preset> _presetList = [];
+    final List<String> _controlList = [];
     final Map<String, ToneControl> _toneControls = HashMap<String, ToneControl>();
 
     ReceiverInformationMsg(EISCPMessage raw) : super(CODE, raw)

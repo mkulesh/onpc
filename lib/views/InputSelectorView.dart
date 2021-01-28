@@ -76,8 +76,8 @@ class InputSelectorView extends UpdatableView
 
     List<Selector> _getSortedDeviceSelectors(bool allItems, EnumItem<InputSelector> activeItem, final List<Selector> defaultItems)
     {
-        final List<Selector> result = List<Selector>();
-        final List<String> defItems = List<String>();
+        final List<Selector> result = [];
+        final List<String> defItems = [];
         defaultItems.forEach((i) => defItems.add(i.getId));
         final String par = configuration.getModelDependentParameter(Configuration.SELECTED_DEVICE_SELECTORS);
         for (CheckableItem sp in CheckableItem.readFromPreference(configuration, par, defItems))

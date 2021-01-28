@@ -100,6 +100,7 @@ class XmlListItemMsg extends ISCPMessage
             + "; CMD=" + (_cmdMessage == null ? "N/A" : _cmdMessage.toString())
             + "]";
 
+    @override
     EISCPMessage getCmdMsg()
     {
         return _cmdMessage == null ? super.getCmdMsg() : _cmdMessage;

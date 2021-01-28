@@ -37,7 +37,7 @@ class _ListeningModesState extends State<ListeningModes>
 {
     final Configuration _configuration;
     String _parameter;
-    final List<CheckableItem> _items = List<CheckableItem>();
+    final List<CheckableItem> _items = [];
 
     _ListeningModesState(this._configuration)
     {

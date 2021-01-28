@@ -110,7 +110,7 @@ class CfgTabSettings
     {
         final List<AppControl> res = [];
         final String par = getParameterName(tab, type);
-        for (CheckableItem sp in CheckableItem.readFromPreference(configuration, par, List()))
+        for (CheckableItem sp in CheckableItem.readFromPreference(configuration, par, []))
         {
             ValueEnum.values.forEach((m)
             {

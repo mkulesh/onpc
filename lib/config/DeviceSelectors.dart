@@ -36,7 +36,7 @@ class _DeviceSelectorsState extends State<DeviceSelectors>
 {
     final Configuration _configuration;
     String _parameter;
-    final List<CheckableItem> _items = List<CheckableItem>();
+    final List<CheckableItem> _items = [];
 
     _DeviceSelectorsState(this._configuration)
     {

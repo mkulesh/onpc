@@ -36,7 +36,7 @@ class _NetworkServicesState extends State<NetworkServices>
 {
     final Configuration _configuration;
     String _parameter;
-    final List<CheckableItem> _items = List<CheckableItem>();
+    final List<CheckableItem> _items = [];
 
     _NetworkServicesState(this._configuration)
     {

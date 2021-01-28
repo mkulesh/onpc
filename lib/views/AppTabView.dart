@@ -162,7 +162,7 @@ class AppTabView extends UpdatableView
     => (isPortrait) ? controlsPortrait : controlsLandscapeLeft;
 
     List<AppControl> _getSecondColumn(bool isPortrait)
-    => (!isPortrait) ? controlsLandscapeRight : List();
+    => (!isPortrait) ? controlsLandscapeRight : [];
 
     bool _isExpandable(final List<AppControl> types)
     => types.firstWhere((c) => EXPANDABLE.contains(c), orElse: () => null) != null;

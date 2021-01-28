@@ -96,7 +96,7 @@ class BroadcastSearch
             return;
         }
 
-        final List<int> buffer = List<int>();
+        final List<int> buffer = [];
         d.data.forEach((f)
         => buffer.add(f));
 
