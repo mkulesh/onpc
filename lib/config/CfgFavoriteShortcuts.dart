@@ -89,11 +89,17 @@ class Shortcut
         this._alias = alias;
     }
 
-    void setPathItems(final List<String> path)
+    void setPathItems(final List<String> path, final EnumItem<ServiceType> service)
     {
         _pathItems.clear();
         for (int i = 1; i < path.length; i++)
         {
+            // Issue #210: When creating a shortcut for a station from TuneIn "My Presets" on TX-NR646,
+            // additional "TuneIn Radio" is sometime added in front of the path that makes the path invalid
+            if (i == 1 && service != null && service.key == ServiceType.TUNEIN_RADIO && service.description == path[i])
+            {
+                continue;
+            }
             _pathItems.add(path[i]);
         }
     }

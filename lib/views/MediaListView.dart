@@ -798,7 +798,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 shortcutCfg.getNextId(), ms.inputType, ms.serviceType, title, title);
             if (state.mediaListState.numberOfLayers > 1)
             {
-                shortcut.setPathItems(ms.pathItems);
+                Logging.info(this.widget, "full path to the item: " + ms.pathItems.toString());
+                shortcut.setPathItems(ms.pathItems, ms.serviceType);
             }
             shortcutCfg.updateShortcut(shortcut, shortcut.alias);
             PopupManager.showToast(Strings.favorite_shortcut_added, context: context);
