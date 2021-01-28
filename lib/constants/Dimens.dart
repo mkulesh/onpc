@@ -191,11 +191,4 @@ class ControlViewDimens
     // The height of the device image
     static double get imageHeight
     => DimensTransform.scale(70.0);
-
-    static double get textButtonSize
-    => DimensTransform.scale(48.0);
-
-    // Padding for control buttons
-    static EdgeInsetsGeometry get imgButtonPadding
-    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(10), vertical: DimensTransform.scale(8));
 }

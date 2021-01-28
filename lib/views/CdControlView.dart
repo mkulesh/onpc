@@ -21,7 +21,6 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/CdPlayerOperationCommandMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
-import "../widgets/CustomTextButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
@@ -114,29 +113,17 @@ class CdControlView extends UpdatableView
         );
     }
 
-    Widget _buildImgBtn(final CdPlayerOperationCommandMsg cmd)
-    {
-        return CustomImageButton.normal(
-            cmd.getValue.icon,
-            cmd.getValue.description,
-            padding: ControlViewDimens.imgButtonPadding,
-            onPressed: ()
-            => stateManager.sendMessage(cmd),
-            isEnabled: stateManager.isConnected
-        );
-    }
-
     Widget _buildNumberRow1()
     {
         return Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_1)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_2)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_3)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_4)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_5))
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_1)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_2)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_3)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_4)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_5))
             ],
         );
     }
@@ -147,11 +134,11 @@ class CdControlView extends UpdatableView
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_6)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_7)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_8)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_9)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_0))
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_6)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_7)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_8)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_9)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_0))
             ],
         );
     }
@@ -162,23 +149,20 @@ class CdControlView extends UpdatableView
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_GREATER_10)),
-                _buildTextBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.CLEAR))
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_GREATER_10)),
+                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.CLEAR))
             ],
         );
     }
 
-    Widget _buildTextBtn(final CdPlayerOperationCommandMsg cmd)
+    Widget _buildImgBtn(final CdPlayerOperationCommandMsg cmd)
     {
-        return ConstrainedBox(
-            constraints: BoxConstraints.tight(Size.square(ControlViewDimens.textButtonSize)),
-            child: CustomTextButton(
-                cmd.getValue.name,
-                description: cmd.getValue.description,
-                padding: ControlViewDimens.imgButtonPadding,
-                onPressed: ()
-                => stateManager.sendMessage(cmd),
-                isEnabled: stateManager.isConnected
-        ));
+        return CustomImageButton.normal(
+            cmd.getValue.icon,
+            cmd.getValue.description,
+            onPressed: ()
+            => stateManager.sendMessage(cmd),
+            isEnabled: stateManager.isConnected
+        );
     }
 }

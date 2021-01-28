@@ -107,7 +107,6 @@ class AmplifierControlView extends UpdatableView
         return CustomImageButton.normal(
             cmd.getValue.icon,
             cmd.getValue.description,
-            padding: ControlViewDimens.imgButtonPadding,
             onPressed: ()
             => stateManager.sendMessage(cmd),
             isEnabled: stateManager.isConnected

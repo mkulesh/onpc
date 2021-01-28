@@ -16,6 +16,7 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
+import "../Platform.dart";
 import "../constants/Dimens.dart";
 
 class CustomImageButton extends StatelessWidget
@@ -80,27 +81,29 @@ class CustomImageButton extends StatelessWidget
 
         double _size;
         EdgeInsetsGeometry _padding;
-        if (_padding == null)
+        switch (this.type)
         {
-            switch (this.type)
-            {
-                case 0:
-                    _size = ButtonDimens.menuButtonSize;
-                    _padding = padding ?? ButtonDimens.imgButtonPadding;
-                    break;
-                case 1:
-                    _size = ButtonDimens.smallButtonSize;
-                    _padding = padding ?? ButtonDimens.smallButtonPadding;
-                    break;
-                case 2:
-                    _size = ButtonDimens.normalButtonSize;
-                    _padding = padding ?? ButtonDimens.imgButtonPadding;
-                    break;
-                default:
-                    _size = ButtonDimens.bigButtonSize;
-                    _padding = padding ?? ButtonDimens.imgButtonPadding;
-                    break;
-            }
+            case 0:
+                _size = ButtonDimens.menuButtonSize;
+                _padding = padding ?? ButtonDimens.imgButtonPadding;
+                break;
+            case 1:
+                _size = ButtonDimens.smallButtonSize;
+                _padding = padding ?? ButtonDimens.smallButtonPadding;
+                break;
+            case 2:
+                _size = ButtonDimens.normalButtonSize;
+                _padding = padding ?? ButtonDimens.imgButtonPadding;
+                break;
+            default:
+                _size = ButtonDimens.bigButtonSize;
+                _padding = padding ?? ButtonDimens.imgButtonPadding;
+                break;
+        }
+
+        if (_padding != null && Platform.isDesktop)
+        {
+            _padding = _padding * 1.5;
         }
 
         final SvgPicture svg = SvgPicture.asset(
@@ -133,11 +136,15 @@ class CustomImageButton extends StatelessWidget
             }
         }
 
-        return (description == null) ?
-            result : Tooltip(message: description,
+        if (!Platform.isDesktop && description != null)
+        {
+            result = Tooltip(message: description,
                 child: result,
-            preferBelow: false,
-            waitDuration: Duration(seconds: 2)
-        );
+                preferBelow: false,
+                waitDuration: Duration(seconds: 2)
+            );
+        }
+
+        return result;
     }
 }

@@ -133,4 +133,17 @@ class Drawables
     static const String volume_max_limit = BUTTONS_PATH + "volume_max_limit.svg";
     static const String wrap_around = BUTTONS_PATH + "wrap_around.svg";
     static const String equalizer = BUTTONS_PATH + "equalizer.svg";
+
+    static const String numeric_0 = BUTTONS_PATH + "numeric_0.svg";
+    static const String numeric_1 = BUTTONS_PATH + "numeric_1.svg";
+    static const String numeric_2 = BUTTONS_PATH + "numeric_2.svg";
+    static const String numeric_3 = BUTTONS_PATH + "numeric_3.svg";
+    static const String numeric_4 = BUTTONS_PATH + "numeric_4.svg";
+    static const String numeric_5 = BUTTONS_PATH + "numeric_5.svg";
+    static const String numeric_6 = BUTTONS_PATH + "numeric_6.svg";
+    static const String numeric_7 = BUTTONS_PATH + "numeric_7.svg";
+    static const String numeric_8 = BUTTONS_PATH + "numeric_8.svg";
+    static const String numeric_9 = BUTTONS_PATH + "numeric_9.svg";
+    static const String numeric_greater_9 = BUTTONS_PATH + "numeric_greater_9.svg";
+    static const String numeric_clean = BUTTONS_PATH + "numeric_clean.svg";
 }

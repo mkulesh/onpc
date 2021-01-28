@@ -15,6 +15,7 @@
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
+import "../Platform.dart";
 import "../constants/Dimens.dart";
 
 class CustomTextButton extends StatelessWidget
@@ -41,9 +42,15 @@ class CustomTextButton extends StatelessWidget
             (isSelected ? td.accentColor : td.textTheme.button.color)
                 : td.disabledColor;
 
+        EdgeInsetsGeometry _padding = padding ?? ButtonDimens.textButtonPadding;
+        if (_padding != null && Platform.isDesktop)
+        {
+            _padding = _padding * 1.5;
+        }
+
         final Widget result = MaterialButton(
             child: Text(text, style: td.textTheme.button.copyWith(color: color)),
-            padding: padding ?? ButtonDimens.textButtonPadding,
+            padding: _padding,
             color: td.backgroundColor,
             textColor: color,
             elevation: 0,
