@@ -138,6 +138,9 @@ class CustomImageButton extends StatelessWidget
 
         if (!Platform.isDesktop && description != null)
         {
+            // A strange exception on master branch:
+            // The following _CastError was thrown building Tooltip("Amplifier on/standby toggle", ...):
+            // Null check operator used on a null value
             result = Tooltip(message: description,
                 child: result,
                 preferBelow: false,
