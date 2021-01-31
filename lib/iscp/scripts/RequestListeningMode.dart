@@ -61,7 +61,7 @@ class RequestListeningMode implements MessageScriptIf
     void processMessage(ISCPMessage msg, State state, MessageChannel channel)
     {
         if (msg is ListeningModeMsg &&
-            msg.getValue.key == ListeningMode.MODE_FF &&
+            (msg.getValue.key == ListeningMode.MODE_FF || msg.getValue.key == ListeningMode.NONE) &&
             listeningModeRequests < MAX_LISTENING_MODE_REQUESTS &&
             listeningModeTimer == null)
         {

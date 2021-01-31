@@ -134,13 +134,13 @@ class SoundControlState
     {
         Logging.info(this, "Requesting data for zone " + zone.toString() + "...");
         final List<String> cmd = [
+            AllChannelEqMsg.CODE,
             AudioMutingMsg.ZONE_COMMANDS[zone],
             MasterVolumeMsg.ZONE_COMMANDS[zone],
             SubwooferLevelCommandMsg.CODE,
             CenterLevelCommandMsg.CODE,
             ListeningModeMsg.CODE,
-            DirectCommandMsg.CODE,
-            AllChannelEqMsg.CODE
+            DirectCommandMsg.CODE
         ];
 
         if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
