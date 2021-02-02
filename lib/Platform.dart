@@ -64,7 +64,7 @@ class Platform
     static String get operatingSystem => io.Platform.operatingSystem;
     static bool get isAndroid => io.Platform.isAndroid;
     static bool get isIOS => io.Platform.isIOS;
-    static bool get isDesktop => io.Platform.isMacOS;
+    static bool get isDesktop => (io.Platform.isMacOS || io.Platform.isLinux);
 
     // Network state from host platforms
     static Future<ByteData> requestNetworkState()
