@@ -2,9 +2,11 @@
 .flutter-plugins
 .packages
 .metadata
-build
-patches
-release
+build patches
+release/*.apk
+release/*.ipa
+release/*.dmg
+release/*.zip
 /android/.gradle
 /android/key.properties
 /android/local.properties
