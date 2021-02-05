@@ -81,18 +81,24 @@ class ShortcutsView extends UpdatableView
             serviceIcon = Drawables.media_item_unknown;
         }
         final Widget w = ContextMenuListener(
-            child: ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
-                dense: configuration.appSettings.textSize != "huge",
-                leading: CustomImageButton.normal(
-                    serviceIcon, null,
-                    isEnabled: false,
-                    padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
+            child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                removeBottom: true,
+                removeLeft: true,
+                removeRight: true,
+                child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
+                    dense: configuration.appSettings.textSize != "huge",
+                    leading: CustomImageButton.normal(
+                        serviceIcon, null,
+                        isEnabled: false,
+                        padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
+                    ),
+                    title: CustomTextLabel.normal(s.alias),
+                    onTap: ()
+                    => _selectShortcut(s)),
                 ),
-                title: CustomTextLabel.normal(s.alias),
-                onTap: ()
-                => _selectShortcut(s)
-            ),
             onContextMenu: (position)
             => _onCreateContextMenu(context, position, s),
         );

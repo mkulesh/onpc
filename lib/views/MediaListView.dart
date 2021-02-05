@@ -305,17 +305,24 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         final Widget w = ContextMenuListener(
             key: Key(reorderId),
-            child: ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
-                dense: configuration.appSettings.textSize != "huge",
-                leading: iconImg,
-                title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
-                onTap: ()
-                {
-                    state.closeMediaFilter();
-                    final rowMsg = (cmd is XmlListItemMsg && cmd.iconType == _PLAYBACK_STRING) ? StateManager.DISPLAY_MSG : cmd;
-                    stateManager.sendMessage(rowMsg, waitingForData: rowMsg != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
-                }),
+            child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                removeBottom: true,
+                removeLeft: true,
+                removeRight: true,
+                child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
+                    dense: configuration.appSettings.textSize != "huge",
+                    leading: iconImg,
+                    title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
+                    onTap: ()
+                    {
+                        state.closeMediaFilter();
+                        final rowMsg = (cmd is XmlListItemMsg && cmd.iconType == _PLAYBACK_STRING) ? StateManager.DISPLAY_MSG : cmd;
+                        stateManager.sendMessage(rowMsg, waitingForData: rowMsg != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
+                    }),
+                ),
             onContextMenu: (position)
             => _onCreateContextMenu(context, position, cmd)
         );
