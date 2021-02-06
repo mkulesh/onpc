@@ -103,7 +103,7 @@ class CustomImageButton extends StatelessWidget
 
         if (_padding != null && Platform.isDesktop)
         {
-            _padding = _padding * 1.5;
+            _padding = _padding * ButtonDimens.desktopPaddingFactor;
         }
 
         final SvgPicture svg = SvgPicture.asset(

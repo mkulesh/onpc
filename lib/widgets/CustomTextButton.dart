@@ -45,7 +45,7 @@ class CustomTextButton extends StatelessWidget
         EdgeInsetsGeometry _padding = padding ?? ButtonDimens.textButtonPadding;
         if (_padding != null && Platform.isDesktop)
         {
-            _padding = _padding * 1.5;
+            _padding = _padding * ButtonDimens.desktopPaddingFactor;
         }
 
         final Widget result = MaterialButton(

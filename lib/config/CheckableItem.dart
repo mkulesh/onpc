@@ -18,6 +18,7 @@ import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../widgets/CustomActivityTitle.dart";
+import "../widgets/CustomTextLabel.dart";
 import "CfgModule.dart";
 import "Configuration.dart";
 
@@ -152,14 +153,30 @@ class CheckableItem
 
     Widget buildListItem(ValueChanged<bool> _onChanged)
     {
-        final Widget listTile = CheckboxListTile(
-            key: Key(this.code),
-            isThreeLine: false,
-            value: this.checked ?? false,
-            onChanged: _onChanged,
-            title: Text(this.text),
-            secondary: const Icon(Icons.drag_handle),
+        final bool val = this.checked ?? false;
+
+        final Widget checkBox = Checkbox(
+            value: val,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            onChanged: _onChanged
         );
-        return listTile;
+
+        final Widget listTile = ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
+            leading: checkBox,
+            title: CustomTextLabel.normal(this.text),
+            onTap: ()
+            => _onChanged(!val)
+        );
+
+        return Container(
+            key: Key(this.code),
+            margin: ActivityDimens.preferenceListPadding,
+            child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Expanded(child: listTile), Icon(Icons.drag_handle)]
+            )
+        );
     }
 }

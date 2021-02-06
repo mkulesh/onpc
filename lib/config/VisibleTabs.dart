@@ -67,7 +67,7 @@ class _VisibleTabsState extends State<VisibleTabs>
         Logging.logRebuild(this);
         return CheckableItem.buildList(context,
             _items.map<Widget>(_buildListItem).toList(),
-            Strings.pref_listening_modes,
+            Strings.pref_visible_tabs,
             _onReorder,
             _configuration);
     }

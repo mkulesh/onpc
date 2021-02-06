@@ -1,6 +1,13 @@
 #!/bin/bash
 
+VER=`cat VERSION.txt`
+APP_NAME=onpc-v${VER}-release.apk
+echo Building $APP_NAME
+
+rm -rf ./$APP_NAME
+
 flutter channel stable
 flutter doctor
 flutter build apk --release
-cp ../build/app/outputs/apk/release/app-release.apk onpc-v2.9.5-release.apk
+
+mv ../build/app/outputs/apk/release/app-release.apk ./$APP_NAME

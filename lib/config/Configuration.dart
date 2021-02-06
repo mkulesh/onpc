@@ -15,6 +15,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import "../Platform.dart";
+import "../constants/Version.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
@@ -122,9 +123,9 @@ class Configuration extends CfgModule
     CfgFavoriteConnections favoriteConnections;
     CfgFavoriteShortcuts favoriteShortcuts;
 
-    Configuration(final SharedPreferences preferences, packageInfo) : super(preferences)
+    Configuration(final SharedPreferences preferences) : super(preferences)
     {
-        appVersion = "v." + packageInfo.version;
+        appVersion = Version.NAME;
         appSettings = CfgAppSettings(preferences);
         audioControl = CfgAudioControl(preferences);
         favoriteConnections = CfgFavoriteConnections(preferences);

@@ -3,10 +3,7 @@
 .packages
 .metadata
 build patches
-release/*.apk
-release/*.ipa
-release/*.dmg
-release/*.zip
+release/*-release.*
 /android/.gradle
 /android/key.properties
 /android/local.properties

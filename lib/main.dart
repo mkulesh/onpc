@@ -21,7 +21,6 @@ import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
 import "package:flutter/scheduler.dart" show timeDilation;
 import "package:flutter/services.dart";
-import "package:package_info/package_info.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "Platform.dart";
@@ -61,8 +60,7 @@ void main() async
 
     WidgetsFlutterBinding.ensureInitialized();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final Configuration configuration = Configuration(prefs, packageInfo);
+    final Configuration configuration = Configuration(prefs);
     configuration.read();
 
     final StateManager stateManager = StateManager(configuration.favoriteConnections.getDevices);

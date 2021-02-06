@@ -105,6 +105,9 @@ class ActivityDimens
     static EdgeInsetsGeometry get headerPaddingTop
     => EdgeInsets.only(top: DimensTransform.scale(10));
 
+    static EdgeInsetsGeometry get preferenceListPadding
+    => EdgeInsets.only(left: 4, right: 16);
+
     static const EdgeInsetsGeometry noPadding
     = EdgeInsets.all(0);
 }
@@ -154,6 +157,8 @@ class ButtonDimens
 
     static double get equalizerWidth
     => DimensTransform.scale(42.0);
+
+    static const double desktopPaddingFactor = 1.5;
 }
 
 class MediaListDimens
@@ -182,8 +187,16 @@ class DialogDimens
     => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0));
 
     // Top and bottom padding of TextField
-    static EdgeInsetsGeometry get textFieldPadding
-    => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0), horizontal: DimensTransform.scale(0));
+    static EdgeInsetsGeometry textFieldPadding(bool isDesktop)
+    => isDesktop ?
+    EdgeInsets.only(
+        top: DimensTransform.scale(28.0),
+        bottom: DimensTransform.scale(16.0),
+        right: DimensTransform.scale(0),
+        left: DimensTransform.scale(0)) :
+    EdgeInsets.symmetric(
+        vertical: DimensTransform.scale(6.0),
+        horizontal: DimensTransform.scale(0));
 }
 
 class ControlViewDimens
