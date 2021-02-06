@@ -283,7 +283,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             key: _toastKey,
             // Disable activity resize when a software keyboard is open:
             // The keyboard is placed above the activity view
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: false,
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(appBarHeight), // desired height of appBar + tabBar
                 child: appBarView),

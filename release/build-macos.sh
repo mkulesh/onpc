@@ -1,5 +1,9 @@
 #!/bin/bash
 
+VER=`cat VERSION.txt`
+APP_NAME=onpc-v${VER}-release.dmg
+echo Building $APP_NAME
+
 # The macOS build can be currently done on master channel only
 flutter channel master
 flutter doctor
@@ -18,8 +22,8 @@ create-dmg \
   --icon "Application.app" 200 190 \
   --hide-extension "Application.app" \
   --app-drop-link 600 185 \
-  "onpc-v2.9.5-release.dmg" \
+  "${APP_NAME}" \
   "Music Control.app/"
 
-mv rw.onpc-v2.9.5-release.dmg onpc-v2.9.5-release.dmg
+mv rw.${APP_NAME} ${APP_NAME}
 rm -rf Music\ Control.app

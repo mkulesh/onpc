@@ -69,7 +69,7 @@ class ActivityDimens
     = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     static const EdgeInsetsGeometry _activityMarginsLandIOS
-    = EdgeInsets.only(left: 64.0, right: 64.0, top: 8.0, bottom: 16.0);
+    = EdgeInsets.only(left: 48.0, right: 48.0, top: 8.0, bottom: 16.0);
 
     static EdgeInsetsGeometry activityMargins(BuildContext context, bool isIOS)
     => DimensTransform.rotate(context, _activityMarginsPort,
@@ -104,9 +104,6 @@ class ActivityDimens
 
     static EdgeInsetsGeometry get headerPaddingTop
     => EdgeInsets.only(top: DimensTransform.scale(10));
-
-    static EdgeInsetsGeometry get preferenceListPadding
-    => EdgeInsets.only(left: 4, right: 16);
 
     static const EdgeInsetsGeometry noPadding
     = EdgeInsets.all(0);

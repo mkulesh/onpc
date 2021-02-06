@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 
+import "../Platform.dart";
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
@@ -142,7 +143,16 @@ class CheckableItem
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, title))),
-            body: body
+            body: Container(
+                margin: ActivityDimens.activityMargins(context, Platform.isIOS),
+                child: MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                    removeBottom: true,
+                    removeLeft: true,
+                    removeRight: true,
+                    child: body)
+            )
         );
 
         return Theme(data: td, child: scaffold);
@@ -162,21 +172,18 @@ class CheckableItem
         );
 
         final Widget listTile = ListTile(
-            contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
+            contentPadding: ActivityDimens.noPadding,
             leading: checkBox,
             title: CustomTextLabel.normal(this.text),
             onTap: ()
             => _onChanged(!val)
         );
 
-        return Container(
+        return Row(
             key: Key(this.code),
-            margin: ActivityDimens.preferenceListPadding,
-            child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [Expanded(child: listTile), Icon(Icons.drag_handle)]
-            )
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [Expanded(child: listTile), Icon(Icons.drag_handle)]
         );
     }
 }
