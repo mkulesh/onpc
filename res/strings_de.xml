@@ -501,6 +501,15 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="privacy_policy_google">Google Cast Lizenz zustimmen</string>
     <string name="privacy_policy_sue">SUE - Datenschutzerklärung zustimmen</string>
 
+    <!-- Late Night Command -->
+    <string name="device_late_night">Late-Night-Modus</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Aus</string>
+    <string name="device_late_night_low">Niedrig</string>
+    <string name="device_late_night_high">Hoch</string>
+    <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_up">Sets late night wechseln</string>
+
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Klangprofile durchwechseln</string>
     <string name="listening_mode_down">Klangprofile durchwechseln</string>

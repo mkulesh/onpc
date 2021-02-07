@@ -23,6 +23,7 @@ import "../iscp/messages/DigitalFilterMsg.dart";
 import "../iscp/messages/DimmerLevelMsg.dart";
 import "../iscp/messages/GoogleCastAnalyticsMsg.dart";
 import "../iscp/messages/HdmiCecMsg.dart";
+import "../iscp/messages/LateNightCommandMsg.dart";
 import "../iscp/messages/MusicOptimizerMsg.dart";
 import "../iscp/messages/PhaseMatchingBassMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
@@ -57,7 +58,8 @@ class DeviceSettingsView extends UpdatableView
         SleepSetCommandMsg.CODE,
         SpeakerACommandMsg.CODE,
         SpeakerBCommandMsg.CODE,
-        GoogleCastAnalyticsMsg.CODE
+        GoogleCastAnalyticsMsg.CODE,
+        LateNightCommandMsg.CODE
     ];
 
     DeviceSettingsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -230,6 +232,15 @@ class DeviceSettingsView extends UpdatableView
                 ds.googleCastAnalytics.description,
                 Strings.device_two_way_switch_toggle,
                 GoogleCastAnalyticsMsg.output(GoogleCastAnalyticsMsg.toggle(ds.googleCastAnalytics.key))));
+        }
+
+        if (ds.lateNightMode.key != LateNightMode.NONE)
+        {
+            rows.add(_buildRow(context,
+                Strings.device_late_night,
+                ds.lateNightMode.description,
+                Strings.device_late_night_up,
+                LateNightCommandMsg.output(LateNightMode.UP)));
         }
 
         final Map<int, TableColumnWidth> columnWidths = Map();

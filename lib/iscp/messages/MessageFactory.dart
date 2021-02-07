@@ -36,6 +36,7 @@ import "GoogleCastVersionMsg.dart";
 import "HdmiCecMsg.dart";
 import "InputSelectorMsg.dart";
 import "JacketArtMsg.dart";
+import "LateNightCommandMsg.dart";
 import "ListInfoMsg.dart";
 import "ListItemInfoMsg.dart";
 import "ListTitleInfoMsg.dart";
@@ -110,6 +111,8 @@ class MessageFactory
                 return SpeakerBCommandMsg(raw);
             case GoogleCastAnalyticsMsg.CODE:
                 return GoogleCastAnalyticsMsg(raw);
+            case LateNightCommandMsg.CODE:
+                return LateNightCommandMsg(raw);
 
         // Track info
             case AlbumNameMsg.CODE:

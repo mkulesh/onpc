@@ -500,6 +500,15 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
 
+    <!-- Late Night Command -->
+    <string name="device_late_night">Mode nocturne</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Arrêt</string>
+    <string name="device_late_night_low">Faible</string>
+    <string name="device_late_night_high">Haute</string>
+    <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_up">Changer le mode de nuit</string>
+
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Changer mode d\'écoute</string>
     <string name="listening_mode_down">Changer mode d\'écoute</string>

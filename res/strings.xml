@@ -546,6 +546,15 @@ Enjoy!""</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
 
+    <!-- Late Night Command -->
+    <string name="device_late_night">Late night mode</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Off</string>
+    <string name="device_late_night_low">Low</string>
+    <string name="device_late_night_high">High</string>
+    <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_up">Sets late night state wrap-around</string>
+
     <!-- Listening Mode Command -->
     <string name="listening_mode_mode_00" translatable="false">Stereo</string>
     <string name="listening_mode_mode_01" translatable="false">Direct</string>

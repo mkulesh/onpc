@@ -2973,7 +2973,7 @@ Enjoy!"""];
 
     static const List<String> l_speaker_ab_command_ab_off = [
         /*en*/ "Both off",
-        /*ru*/ "оба выкл.",
+        /*ru*/ "оба выкл",
         /*de*/ "Beide aus",
         /*fr*/ "Toutes éteintes",
         /*pl*/ "Oba wyłączone"];
@@ -2981,7 +2981,7 @@ Enjoy!"""];
 
     static const List<String> l_speaker_ab_command_ab_on = [
         /*en*/ "Both on",
-        /*ru*/ "оба вкл.",
+        /*ru*/ "оба вкл",
         /*de*/ "Beide an",
         /*fr*/ "Toutes allumées",
         /*pl*/ "Oba włączone"];
@@ -3026,6 +3026,62 @@ Enjoy!"""];
         /*fr*/ "Agree SUE - Privacy Policy",
         /*pl*/ "Agree SUE - Privacy Policy"];
     static String get privacy_policy_sue => l_privacy_policy_sue[_language];
+
+    static const List<String> l_device_late_night = [
+        /*en*/ "Late night mode",
+        /*ru*/ "Режим \"Late night\"",
+        /*de*/ "Late-Night-Modus",
+        /*fr*/ "Mode nocturne",
+        /*pl*/ "Tryb późnej nocy"];
+    static String get device_late_night => l_device_late_night[_language];
+
+    static const List<String> l_device_late_night_none = [
+        /*en*/ "N/A",
+        /*ru*/ "N/A",
+        /*de*/ "N/A",
+        /*fr*/ "N/A",
+        /*pl*/ "N/A"];
+    static String get device_late_night_none => l_device_late_night_none[_language];
+
+    static const List<String> l_device_late_night_off = [
+        /*en*/ "Off",
+        /*ru*/ "Выкл",
+        /*de*/ "Aus",
+        /*fr*/ "Arrêt",
+        /*pl*/ "Off"];
+    static String get device_late_night_off => l_device_late_night_off[_language];
+
+    static const List<String> l_device_late_night_low = [
+        /*en*/ "Low",
+        /*ru*/ "Низкий",
+        /*de*/ "Niedrig",
+        /*fr*/ "Faible",
+        /*pl*/ "Niska"];
+    static String get device_late_night_low => l_device_late_night_low[_language];
+
+    static const List<String> l_device_late_night_high = [
+        /*en*/ "High",
+        /*ru*/ "Высокий",
+        /*de*/ "Hoch",
+        /*fr*/ "Haute",
+        /*pl*/ "Wysoki"];
+    static String get device_late_night_high => l_device_late_night_high[_language];
+
+    static const List<String> l_device_late_night_auto = [
+        /*en*/ "Auto",
+        /*ru*/ "Авто",
+        /*de*/ "Auto",
+        /*fr*/ "Auto",
+        /*pl*/ "Auto"];
+    static String get device_late_night_auto => l_device_late_night_auto[_language];
+
+    static const List<String> l_device_late_night_up = [
+        /*en*/ "Sets late night state wrap-around",
+        /*ru*/ "Изменить режим \"Late night\"",
+        /*de*/ "Sets late night wechseln",
+        /*fr*/ "Changer le mode de nuit",
+        /*pl*/ "Zmień tryb późnej nocy"];
+    static String get device_late_night_up => l_device_late_night_up[_language];
 
     static const List<String> l_listening_mode_up = [
         /*en*/ "Sets listening mode wrap-around up",

@@ -48,7 +48,7 @@ void main(List<String> arguments) async
         await File(tFile).readAsString().then((String inContent)
         {
             print("    transtation " + tFile + ": " + inContent.length.toString() + "B");
-            inTranslations[tName] = xml.parse(inContent);
+            inTranslations[tName] = xml.XmlDocument.parse(inContent);
         });
     };
 
@@ -62,7 +62,7 @@ void main(List<String> arguments) async
         outContent.writeln("class Strings");
         outContent.writeln("{");
 
-        final xml.XmlDocument document = xml.parse(inContent);
+        final xml.XmlDocument document = xml.XmlDocument.parse(inContent);
 
         outContent.writeln("    /* All supported languages */");
         outContent.writeln("");

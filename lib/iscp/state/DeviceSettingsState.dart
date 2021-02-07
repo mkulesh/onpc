@@ -19,6 +19,7 @@ import "../messages/DimmerLevelMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/GoogleCastAnalyticsMsg.dart";
 import "../messages/HdmiCecMsg.dart";
+import "../messages/LateNightCommandMsg.dart";
 import "../messages/MusicOptimizerMsg.dart";
 import "../messages/PhaseMatchingBassMsg.dart";
 import "../messages/PrivacyPolicyStatusMsg.dart";
@@ -78,6 +79,11 @@ class DeviceSettingsState
     EnumItem<GoogleCastAnalytics> get googleCastAnalytics
     => _googleCastAnalytics;
 
+    EnumItem<LateNightMode> _lateNightMode;
+
+    EnumItem<LateNightMode> get lateNightMode
+    => _lateNightMode;
+
     DeviceSettingsState()
     {
         clear();
@@ -97,7 +103,8 @@ class DeviceSettingsState
             SpeakerACommandMsg.ZONE_COMMANDS[zone],
             SpeakerBCommandMsg.ZONE_COMMANDS[zone],
             GoogleCastAnalyticsMsg.CODE,
-            PrivacyPolicyStatusMsg.CODE
+            PrivacyPolicyStatusMsg.CODE,
+            LateNightCommandMsg.CODE
         ];
     }
 
@@ -113,6 +120,7 @@ class DeviceSettingsState
         _speakerA = SpeakerACommandMsg.ValueEnum.defValue;
         _speakerB = SpeakerBCommandMsg.ValueEnum.defValue;
         _googleCastAnalytics = GoogleCastAnalyticsMsg.ValueEnum.defValue;
+        _lateNightMode = LateNightCommandMsg.ValueEnum.defValue;
     }
 
     bool processDimmerLevel(DimmerLevelMsg msg)
@@ -182,6 +190,13 @@ class DeviceSettingsState
     {
         final bool changed = _googleCastAnalytics.key != msg.getValue.key;
         _googleCastAnalytics = msg.getValue;
+        return changed;
+    }
+
+    bool processLateNightCommand(LateNightCommandMsg msg)
+    {
+        final bool changed = _lateNightMode.key != msg.getValue.key;
+        _lateNightMode = msg.getValue;
         return changed;
     }
 }

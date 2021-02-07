@@ -489,8 +489,8 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <!-- Speaker A/B three-way switch -->
     <string name="speaker_ab_command">Динамик A/B</string>
     <string name="speaker_ab_command_toggle">Переключить динамик</string>
-    <string name="speaker_ab_command_ab_off">оба выкл.</string>
-    <string name="speaker_ab_command_ab_on">оба вкл.</string>
+    <string name="speaker_ab_command_ab_off">оба выкл</string>
+    <string name="speaker_ab_command_ab_on">оба вкл</string>
     <string name="speaker_ab_command_a_only">только A</string>
     <string name="speaker_ab_command_b_only">только B</string>
 
@@ -498,6 +498,15 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>
     <string name="privacy_policy_google">Подтвердить лицензию Google Cast</string>
     <string name="privacy_policy_sue">Подтвердить соглашение SUE-Privacy</string>
+
+    <!-- Late Night Command -->
+    <string name="device_late_night">Режим \"Late night\"</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Выкл</string>
+    <string name="device_late_night_low">Низкий</string>
+    <string name="device_late_night_high">Высокий</string>
+    <string name="device_late_night_auto">Авто</string>
+    <string name="device_late_night_up">Изменить режим \"Late night\"</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Следующий звуковой профиль</string>

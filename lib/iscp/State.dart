@@ -41,6 +41,7 @@ import "messages/GoogleCastVersionMsg.dart";
 import "messages/HdmiCecMsg.dart";
 import "messages/InputSelectorMsg.dart";
 import "messages/JacketArtMsg.dart";
+import "messages/LateNightCommandMsg.dart";
 import "messages/ListInfoMsg.dart";
 import "messages/ListTitleInfoMsg.dart";
 import "messages/ListeningModeMsg.dart";
@@ -306,6 +307,10 @@ class State
         else if (msg is GoogleCastAnalyticsMsg)
         {
             return _isChange(GoogleCastAnalyticsMsg.CODE, _deviceSettingsState.processGoogleCastAnalytics(msg));
+        }
+        else if (msg is LateNightCommandMsg)
+        {
+            return _isChange(LateNightCommandMsg.CODE, _deviceSettingsState.processLateNightCommand(msg));
         }
 
         // Track info
