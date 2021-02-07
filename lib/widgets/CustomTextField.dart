@@ -44,7 +44,7 @@ class CustomTextField extends StatelessWidget
             onEditingComplete: onPressed,
             cursorColor: td.accentColor,
             decoration: InputDecoration(
-                contentPadding: DialogDimens.textFieldPadding(Platform.isDesktop),
+                contentPadding: DialogDimens.textFieldPadding(Platform.isLinux),
                 isDense: true,
                 border: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.disabledColor)) : InputBorder.none,
                 focusedBorder: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.accentColor)) : InputBorder.none
