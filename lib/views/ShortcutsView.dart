@@ -29,6 +29,7 @@ import "../views/UpdatableView.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/ReorderableItem.dart";
 
 enum _ShortcutContextMenu
 {
@@ -102,12 +103,7 @@ class ShortcutsView extends UpdatableView
             onContextMenu: (position)
             => _onCreateContextMenu(context, position, s),
         );
-        return Row(
-            key: Key(s.id.toString()),
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [Expanded(child: w), Icon(Icons.drag_handle)]
-        );
+        return ReorderableItem(key: Key(s.id.toString()), child: w);
     }
 
     void _onCreateContextMenu(final BuildContext context, final TapPosition position, final Shortcut s)

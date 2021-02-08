@@ -20,6 +20,7 @@ import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/ReorderableItem.dart";
 import "CfgModule.dart";
 import "Configuration.dart";
 
@@ -179,11 +180,6 @@ class CheckableItem
             => _onChanged(!val)
         );
 
-        return Row(
-            key: Key(this.code),
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [Expanded(child: listTile), Icon(Icons.drag_handle)]
-        );
+        return ReorderableItem(key: Key(this.code), child: listTile);
     }
 }

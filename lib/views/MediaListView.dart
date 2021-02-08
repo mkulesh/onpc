@@ -49,6 +49,7 @@ import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/ReorderableItem.dart";
 import "UpdatableView.dart";
 
 enum MediaContextMenu
@@ -328,12 +329,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         );
         if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && reorderId != null)
         {
-            return Row(
-                key: Key(reorderId),
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [Expanded(child: w), Icon(Icons.drag_handle)]
-            );
+            return ReorderableItem(key: Key(reorderId), child: w);
         }
         else
         {
