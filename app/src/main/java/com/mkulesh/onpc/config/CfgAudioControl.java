@@ -35,6 +35,7 @@ public class CfgAudioControl
     private static final String VOLUME_KEYS = "volume_keys";
 
     static final ListeningModeMsg.Mode[] DEFAULT_LISTENING_MODES = new ListeningModeMsg.Mode[]{
+            ListeningModeMsg.Mode.MODE_0F, // MONO
             ListeningModeMsg.Mode.MODE_00, // STEREO
             ListeningModeMsg.Mode.MODE_01, // DIRECT
             ListeningModeMsg.Mode.MODE_09, // UNPLUGGED
@@ -42,11 +43,17 @@ public class CfgAudioControl
             ListeningModeMsg.Mode.MODE_0A, // STUDIO-MIX
             ListeningModeMsg.Mode.MODE_11, // PURE AUDIO
             ListeningModeMsg.Mode.MODE_0C, // ALL CH STEREO
+            ListeningModeMsg.Mode.MODE_0B, // TV Logic
+            ListeningModeMsg.Mode.MODE_0D, // Theater-Dimensional
             ListeningModeMsg.Mode.MODE_40, // DOLBY DIGITAL
             ListeningModeMsg.Mode.MODE_80, // DOLBY SURROUND
             ListeningModeMsg.Mode.MODE_84, // Dolby THX Cinema
             ListeningModeMsg.Mode.MODE_8B, // Dolby THX Music
             ListeningModeMsg.Mode.MODE_89, // Dolby THX Games
+            ListeningModeMsg.Mode.MODE_03, // Game-RPG
+            ListeningModeMsg.Mode.MODE_05, // Game-Action
+            ListeningModeMsg.Mode.MODE_06, // Game-Rock
+            ListeningModeMsg.Mode.MODE_0E, // Game-Sports
             ListeningModeMsg.Mode.MODE_82  // DTS NEURAL:X
     };
 
