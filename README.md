@@ -18,17 +18,23 @@ This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a N
 
 *Premium Version*
 
+This premium version is developed with Flutter, see [onpc-flutter branch for source code](https://github.com/mkulesh/onpc/tree/onpc-flutter)
+
 The "Premium" version implements exactly the same receiver control functionality as the free version, but has a more flexible user interface.
 It allows you to reorder the play queue using drag-and-drop, change the font and buttons size, and show/hide/reorder all control elements for all tabs.
+Android version also allows to create a home screen widget that shows all shortcuts. 
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus)
-[<img src="https://github.com/mkulesh/onpc/blob/master/images/app_store_badge.png"
+[<img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_app_store.png"
       alt="Download on the App Store" height="110">](https://apps.apple.com/app/id1490166845)
 
-This premium version is developed with Flutter, see [onpc-flutter branch](https://github.com/mkulesh/onpc/tree/onpc-flutter)
-Do you want try the last version in development? Install TestFlight and tap [this link on your iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
-
+Do you want try the last version in development?
+- [TestFlight on iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
+- <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_windows10.png" align="center" height="48" width="48"> [Windows 10](https://github.com/mkulesh/onpc/tree/autobuild/release)
+- <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_macos.png" align="center" height="48" width="48"> [macOS (Catalina, Big Sur)](https://github.com/mkulesh/onpc/tree/autobuild/release)
+- <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_linux.png" align="center" height="48" width="48"> [Linux (Fedora Workstation)](https://github.com/mkulesh/onpc/tree/autobuild/release)
+ 
 The two most popular features of the app are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 - The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
