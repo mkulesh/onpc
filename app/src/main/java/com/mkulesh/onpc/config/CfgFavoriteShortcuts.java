@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class CfgFavoriteShortcuts
 {
@@ -91,11 +92,18 @@ public class CfgFavoriteShortcuts
             this.order = id;
         }
 
-        public void setPathItems(final List<String> path)
+        public void setPathItems(@NonNull final List<String> path, @Nullable final Context context, @NonNull final ServiceType service)
         {
             pathItems.clear();
             for (int i = 1; i < path.size(); i++)
             {
+                // Issue #210: When creating a shortcut for a station from TuneIn "My Presets" on TX-NR646,
+                // additional "TuneIn Radio" is sometime added in front of the path that makes the path invalid
+                if (i == 1 && service == ServiceType.TUNEIN_RADIO && context != null &&
+                        context.getString(service.getDescriptionId()).equals(path.get(i)))
+                {
+                    continue;
+                }
                 pathItems.add(path.get(i));
             }
         }
