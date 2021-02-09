@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VER=`cat VERSION.txt`
-APP_NAME=onpc-v${VER}-release.fc30
+APP_NAME=onpc-v${VER}-release.linux
 echo Building $APP_NAME
 
 rm -rf ./$APP_NAME

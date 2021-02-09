@@ -16,6 +16,7 @@ import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
 import "../Platform.dart";
+import "../constants/Dimens.dart";
 
 class ReorderableItem extends StatelessWidget
 {
@@ -28,7 +29,12 @@ class ReorderableItem extends StatelessWidget
     {
         final List<Widget> items = [];
         items.add(Expanded(child: child));
-        if (!Platform.isDesktop)
+        if (Platform.isDesktop)
+        {
+            // On desktop, add a placeholder for drag_handle instead a button
+            items.add(SizedBox(width: ButtonDimens.normalButtonSize, height: 0));
+        }
+        else
         {
             items.add(Icon(Icons.drag_handle));
         }
