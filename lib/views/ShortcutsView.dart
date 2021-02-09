@@ -17,6 +17,7 @@ import "package:flutter/services.dart";
 import "package:positioned_tap_detector/positioned_tap_detector.dart";
 import "package:sprintf/sprintf.dart";
 
+import "../Platform.dart";
 import "../config/CfgAppSettings.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../constants/Dimens.dart";
@@ -54,8 +55,11 @@ class ShortcutsView extends UpdatableView
         Widget tab;
         if (configuration.favoriteShortcuts.shortcuts.isEmpty)
         {
-            final String message = sprintf(Strings.favorite_shortcut_howto,
-                [CfgAppSettings.getTabName(AppTabs.MEDIA), Strings.favorite_shortcut_create]);
+            final String message = sprintf(Strings.favorite_shortcut_howto, [
+                CfgAppSettings.getTabName(AppTabs.MEDIA),
+                Platform.isDesktop ? Strings.action_context_desktop : Strings.action_context_mobile,
+                Strings.favorite_shortcut_create
+            ]);
             tab = CustomTextLabel.small(message, textAlign: TextAlign.center);
         }
         else

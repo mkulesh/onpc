@@ -211,6 +211,22 @@ class Strings
         /*pl*/ "Wstecz"];
     static String get action_cancel => l_action_cancel[_language];
 
+    static const List<String> l_action_context_mobile = [
+        /*en*/ "using long click",
+        /*ru*/ "используя долгое нажатие",
+        /*de*/ "mit einem langen Klick",
+        /*fr*/ "en utilisant un clic long",
+        /*pl*/ "za pomocą długiego kliknięcia"];
+    static String get action_context_mobile => l_action_context_mobile[_language];
+
+    static const List<String> l_action_context_desktop = [
+        /*en*/ "right mouse button",
+        /*ru*/ "используя правую клавишу мыши",
+        /*de*/ "mit rechte Maustaste",
+        /*fr*/ "bouton droit de la souris",
+        /*pl*/ "prawy przycisk myszy"];
+    static String get action_context_desktop => l_action_context_desktop[_language];
+
     static const List<String> l_about_text = [
         /*en*/ """
 # Enhanced Controller for Onkyo and Pioneer
@@ -548,11 +564,11 @@ Enjoy!"""];
     static String get favorite_shortcut_failed => l_favorite_shortcut_failed[_language];
 
     static const List<String> l_favorite_shortcut_howto = [
-        /*en*/ "To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu using long click and select \"%s\"",
-        /*ru*/ "Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню, используя долгое нажатие, и выберите \"%s\"",
-        /*de*/ "Bisher kein Favorit gesetzt. So fügen Sie einen Favoriten hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü mit einem langen Klick und wählen Sie \"%s\".",
-        /*fr*/ "Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel en utilisant un clic long et sélectionnez \"%s\"",
-        /*pl*/ "Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe długim kliknięciem i wybierz \"%s\""];
+        /*en*/ "To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu (%s) and select \"%s\"",
+        /*ru*/ "Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню (%s) и выберите \"%s\"",
+        /*de*/ "Bisher kein Favorit gesetzt. So fügen Sie einen Favoriten hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü (%s) und wählen Sie \"%s\".",
+        /*fr*/ "Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel (%s) et sélectionnez \"%s\"",
+        /*pl*/ "Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe (%s) i wybierz \"%s\""];
     static String get favorite_shortcut_howto => l_favorite_shortcut_howto[_language];
 
     static const List<String> l_menu_power_standby = [

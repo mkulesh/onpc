@@ -24,6 +24,8 @@
     <string name="action_exit_confirm">Naciśnij ponownie przycisk wstecz aby wyjść</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Wstecz</string>
+    <string name="action_context_mobile">za pomocą długiego kliknięcia</string>
+    <string name="action_context_desktop">prawy przycisk myszy</string>
 
     <string name="about_text">""
 # Enhanced Controller for Onkyo and Pioneer
@@ -88,7 +90,7 @@ Enjoy!""</string>
     <string name="favorite_shortcut_create">Utwórz skrót</string>
     <string name="favorite_shortcut_added">Dodano skrót</string>
     <string name="favorite_shortcut_failed">Nie można utworzyć skrótu: przejdź do elementu multimedialnego z najwyższego poziomu</string>
-    <string name="favorite_shortcut_howto">Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe długim kliknięciem i wybierz \"%s\"</string>
+    <string name="favorite_shortcut_howto">Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe (%s) i wybierz \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>

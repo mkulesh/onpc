@@ -24,6 +24,8 @@
     <string name="action_exit_confirm">Appuyez sur retour pour quitter</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Annuler</string>
+    <string name="action_context_mobile">en utilisant un clic long</string>
+    <string name="action_context_desktop">bouton droit de la souris</string>
 
     <string name="about_text">""
 # Contrôleur optimisé pour Onkyo/Pioneer:
@@ -85,7 +87,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="favorite_shortcut_create">Créer un raccourci</string>
     <string name="favorite_shortcut_added">Raccourci ajouté</string>
     <string name="favorite_shortcut_failed">Impossible de créer un raccourci: accédez à l\'élément multimédia à partir du niveau supérieur</string>
-    <string name="favorite_shortcut_howto">Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel en utilisant un clic long et sélectionnez \"%s\"</string>
+    <string name="favorite_shortcut_howto">Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel (%s) et sélectionnez \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>
