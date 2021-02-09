@@ -1,7 +1,6 @@
 echo off
-setlocal EnableDelayedExpansion
 
-set /p VER = < VERSION.txt
+set /p VER=<VERSION.txt
 echo Building onpc-v%VER%-release.win
 
 :: The Window build can be currently done on master channel only
