@@ -134,7 +134,6 @@ class SoundControlState
     {
         Logging.info(this, "Requesting data for zone " + zone.toString() + "...");
         final List<String> cmd = [
-            AllChannelEqMsg.CODE,
             AudioMutingMsg.ZONE_COMMANDS[zone],
             MasterVolumeMsg.ZONE_COMMANDS[zone],
             SubwooferLevelCommandMsg.CODE,
@@ -146,6 +145,13 @@ class SoundControlState
         if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
         {
             cmd.add(ToneCommandMsg.ZONE_COMMANDS[zone]);
+        }
+
+        if (ri.model != "TX-NR646")
+        {
+            // #216 TX-NR646: listening mode information is sometime missing
+            // It seems to be AllChannelEq requests stops the receiver to answer ListeningMode request
+            cmd.add(AllChannelEqMsg.CODE);
         }
 
         return cmd;
