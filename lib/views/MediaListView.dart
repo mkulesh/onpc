@@ -252,6 +252,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final List<Widget> _rows = [];
         _playQueueIds.clear();
 
+        Widget header;
         items.forEach((rowMsg)
         {
             if (rowMsg is XmlListItemMsg)
@@ -261,13 +262,22 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
             else if (rowMsg is OperationCommandMsg)
             {
-                _rows.add(_buildOperationCommandMsg(context, rowMsg));
-                _playQueueIds.add(rowMsg.getMessageId);
+                final Widget row = _buildOperationCommandMsg(context, rowMsg);
+                if (rowMsg == StateManager.RETURN_MSG)
+                {
+                    header = row;
+                }
+                else
+                {
+                    _rows.add(row);
+                    _playQueueIds.add(rowMsg.getMessageId);
+                }
             }
         });
 
         return ReorderableListView(
             onReorder: _onReorder,
+            header: header,
             reverse: false,
             padding: ActivityDimens.noPadding,
             scrollController: _scrollController,
