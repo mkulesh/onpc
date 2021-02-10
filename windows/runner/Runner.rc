@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 1,0,0
+#define VERSION_AS_NUMBER 2,10,0
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "1.0.0"
+#define VERSION_AS_STRING "2.10.0"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -90,11 +90,11 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "Mikhail Kulesh" "\0"
-            VALUE "FileDescription", "Enhanced Controller for Onkyo and Pioneer" "\0"
+            VALUE "FileDescription", "Enhanced Controller for Onkyo and Pioneer Pro" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "Music Control" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 by Mikhail Kulesh. All rights reserved." "\0"
-            VALUE "OriginalFilename", "music_control.exe" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2019-2021 by Mikhail Kulesh. All rights reserved." "\0"
+            VALUE "OriginalFilename", "Music Control.exe" "\0"
             VALUE "ProductName", "Music Control" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END

@@ -1,10 +1,11 @@
 #!/bin/bash
 
 VER=`cat VERSION.txt`
-APP_NAME=onpc-v${VER}-release.dmg
+APP_NAME=MusicControl-v${VER}-macos.dmg
 echo Building $APP_NAME
 
 # The macOS build can be currently done on master channel only
+flutter clean
 flutter channel master
 flutter doctor
 flutter build macos --release
@@ -27,3 +28,4 @@ create-dmg \
 
 mv rw.${APP_NAME} ${APP_NAME}
 rm -rf Music\ Control.app
+zip -r ${APP_NAME}.zip ${APP_NAME}
