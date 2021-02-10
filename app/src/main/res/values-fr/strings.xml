@@ -24,6 +24,8 @@
     <string name="action_exit_confirm">Appuyez sur retour pour quitter</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Annuler</string>
+    <string name="action_context_mobile">en utilisant un clic long</string>
+    <string name="action_context_desktop">bouton droit de la souris</string>
 
     <string name="about_text"><![CDATA[
     <p>Contrôleur optimisé pour Onkyo/Pioneer: Ecoutez votre musique correctement!</p>
@@ -58,6 +60,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="drawer_app_settings">Paramètres</string>
     <string name="drawer_about">À propos</string>
     <string name="drawer_premium">Essayez la version Premium</string>
+    <string name="drawer_desktop">Version de bureau</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse IP</string>
@@ -79,7 +82,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="favorite_shortcut_create">Créer un raccourci</string>
     <string name="favorite_shortcut_added">Raccourci ajouté</string>
     <string name="favorite_shortcut_failed">Impossible de créer un raccourci: accédez à l\'élément multimédia à partir du niveau supérieur</string>
-    <string name="favorite_shortcut_howto">Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel en utilisant un clic long et sélectionnez \"%s\"</string>
+    <string name="favorite_shortcut_howto">Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel (%s) et sélectionnez \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>
@@ -263,6 +266,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="tone_direct">DIRECT</string>
     <string name="master_volume_restrict">Restreindre le volume</string>
     <string name="master_volume_max">Maximum</string>
+    <string name="equalizer">Equalizer</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Présélection haut</string>
@@ -492,6 +496,15 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+
+    <!-- Late Night Command -->
+    <string name="device_late_night">Mode nocturne</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Arrêt</string>
+    <string name="device_late_night_low">Faible</string>
+    <string name="device_late_night_high">Haute</string>
+    <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_up">Changer le mode de nuit</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Changer mode d\'écoute</string>

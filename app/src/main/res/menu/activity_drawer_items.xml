@@ -118,6 +118,10 @@
                 android:id="@+id/drawer_premium"
                 app:actionLayout="@layout/activity_drawer_item"
                 android:title="@null" />
+            <item
+                android:id="@+id/drawer_desktop"
+                app:actionLayout="@layout/activity_drawer_item"
+                android:title="@null" />
         </menu>
     </item>
 

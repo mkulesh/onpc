@@ -103,6 +103,7 @@ public class ShortcutsFragment extends BaseFragment
             final String message = String.format(
                     activity.getResources().getString(R.string.favorite_shortcut_howto),
                     CfgAppSettings.getTabName(activity, CfgAppSettings.Tabs.MEDIA),
+                    activity.getResources().getString(R.string.action_context_mobile),
                     activity.getResources().getString(R.string.favorite_shortcut_create));
             howto.setText(message);
             howto.setVisibility(View.VISIBLE);

@@ -24,6 +24,8 @@
     <string name="action_exit_confirm">Naciśnij ponownie przycisk wstecz aby wyjść</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Wstecz</string>
+    <string name="action_context_mobile">za pomocą długiego kliknięcia</string>
+    <string name="action_context_desktop">prawy przycisk myszy</string>
 
     <string name="about_text"><![CDATA[
     <p>Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</p>
@@ -58,6 +60,7 @@
     <string name="drawer_app_settings">Ustawienia</string>
     <string name="drawer_about">Info</string>
     <string name="drawer_premium">Wypróbuj wersję Premium</string>
+    <string name="drawer_desktop">Wersja na komputer</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adres IP</string>
@@ -79,7 +82,7 @@
     <string name="favorite_shortcut_create">Utwórz skrót</string>
     <string name="favorite_shortcut_added">Dodano skrót</string>
     <string name="favorite_shortcut_failed">Nie można utworzyć skrótu: przejdź do elementu multimedialnego z najwyższego poziomu</string>
-    <string name="favorite_shortcut_howto">Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe długim kliknięciem i wybierz \"%s\"</string>
+    <string name="favorite_shortcut_howto">Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe (%s) i wybierz \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
@@ -262,6 +265,7 @@
     <string name="tone_direct">Tone Direct</string>
     <string name="master_volume_restrict">Ogranicz poziom głośności</string>
     <string name="master_volume_max">Maksymalny</string>
+    <string name="equalizer">Equalizer</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>
@@ -491,6 +495,15 @@
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+
+    <!-- Late Night Command -->
+    <string name="device_late_night">Tryb późnej nocy</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Off</string>
+    <string name="device_late_night_low">Niska</string>
+    <string name="device_late_night_high">Wysoki</string>
+    <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_up">Zmień tryb późnej nocy</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Zmień tryb na następny</string>

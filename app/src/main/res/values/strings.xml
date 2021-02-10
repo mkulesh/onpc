@@ -26,6 +26,8 @@
     <string name="action_exit_confirm">Press back button again to exit</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_context_mobile">using long click</string>
+    <string name="action_context_desktop">right mouse button</string>
 
     <string name="about_text"><![CDATA[
     <p>Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</p>
@@ -61,6 +63,8 @@
     <string name="drawer_about">About</string>
     <string name="drawer_premium">Get Premium version</string>
     <string name="drawer_premium_link" translatable="false">https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus</string>
+    <string name="drawer_desktop">Desktop version</string>
+    <string name="drawer_desktop_link" translatable="false">https://github.com/mkulesh/onpc/tree/autobuild/release</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Address</string>
@@ -82,7 +86,7 @@
     <string name="favorite_shortcut_create">Create shortcut</string>
     <string name="favorite_shortcut_added">Shortcut added</string>
     <string name="favorite_shortcut_failed">Cannot create shortcut: navigate to the media item from the top level</string>
-    <string name="favorite_shortcut_howto">To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu using long click and select \"%s\"</string>
+    <string name="favorite_shortcut_howto">To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu (%s) and select \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
@@ -326,6 +330,7 @@
     <string name="tone_direct">Tone Direct</string>
     <string name="master_volume_restrict">Restrict volume level</string>
     <string name="master_volume_max">Maximum</string>
+    <string name="equalizer">Equalizer</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Sets preset wrap-around up</string>
@@ -555,6 +560,15 @@
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+
+    <!-- Late Night Command -->
+    <string name="device_late_night">Late night mode</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Off</string>
+    <string name="device_late_night_low">Low</string>
+    <string name="device_late_night_high">High</string>
+    <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_up">Sets late night state wrap-around</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_mode_00" translatable="false">Stereo</string>

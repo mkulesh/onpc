@@ -24,6 +24,8 @@
     <string name="action_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="action_ok">OK</string>
     <string name="action_cancel">Отмена</string>
+    <string name="action_context_mobile">используя долгое нажатие</string>
+    <string name="action_context_desktop">используя правую клавишу мыши</string>
 
     <string name="about_text"><![CDATA[
     <p>Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!</p>
@@ -61,6 +63,7 @@
     <string name="drawer_app_settings">Настройки</string>
     <string name="drawer_about">О программе</string>
     <string name="drawer_premium">Попробуйте \"Премиум\" версию</string>
+    <string name="drawer_desktop">Версия для ПК</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Адрес</string>
@@ -82,7 +85,7 @@
     <string name="favorite_shortcut_create">Создать ярлык</string>
     <string name="favorite_shortcut_added">Ярлык добавлен</string>
     <string name="favorite_shortcut_failed">Невозможно создать ярлык: перейдите к мультимедиа-элементу начиная с верхнего уровня</string>
-    <string name="favorite_shortcut_howto">Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню, используя долгое нажатие, и выберите \"%s\"</string>
+    <string name="favorite_shortcut_howto">Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню (%s) и выберите \"%s\"</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">Вкл/выкл</string>
@@ -264,6 +267,7 @@
     <string name="tone_direct">DIRECT</string>
     <string name="master_volume_restrict">Ограничить максимальную громкость</string>
     <string name="master_volume_max">Максимум</string>
+    <string name="equalizer">Эквалайзер</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Следующий канал</string>
@@ -484,8 +488,8 @@
     <!-- Speaker A/B three-way switch -->
     <string name="speaker_ab_command">Динамик A/B</string>
     <string name="speaker_ab_command_toggle">Переключить динамик</string>
-    <string name="speaker_ab_command_ab_off">оба выкл.</string>
-    <string name="speaker_ab_command_ab_on">оба вкл.</string>
+    <string name="speaker_ab_command_ab_off">оба выкл</string>
+    <string name="speaker_ab_command_ab_on">оба вкл</string>
     <string name="speaker_ab_command_a_only">только A</string>
     <string name="speaker_ab_command_b_only">только B</string>
 
@@ -493,6 +497,15 @@
     <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>
     <string name="privacy_policy_google">Подтвердить лицензию Google Cast</string>
     <string name="privacy_policy_sue">Подтвердить соглашение SUE-Privacy</string>
+
+    <!-- Late Night Command -->
+    <string name="device_late_night">Режим \"Late night\"</string>
+    <string name="device_late_night_none">N/A</string>
+    <string name="device_late_night_off">Выкл</string>
+    <string name="device_late_night_low">Низкий</string>
+    <string name="device_late_night_high">Высокий</string>
+    <string name="device_late_night_auto">Авто</string>
+    <string name="device_late_night_up">Изменить режим \"Late night\"</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Следующий звуковой профиль</string>

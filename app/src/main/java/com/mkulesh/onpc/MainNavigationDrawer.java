@@ -113,11 +113,15 @@ class MainNavigationDrawer
                     R.mipmap.ic_launcher, R.string.app_name, R.string.about_text).show();
             break;
         case R.id.drawer_premium:
+        case R.id.drawer_desktop:
             try
             {
+                final String uri = menuItem.getItemId() == R.id.drawer_premium ?
+                        activity.getString(R.string.drawer_premium_link) :
+                        activity.getString(R.string.drawer_desktop_link);
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(android.net.Uri.parse(activity.getString(R.string.drawer_premium_link)));
+                intent.setData(android.net.Uri.parse(uri));
                 activity.startActivity(intent);
             }
             catch (Exception e)
@@ -327,6 +331,9 @@ class MainNavigationDrawer
                         break;
                     case R.id.drawer_premium:
                         updateItem(m, R.drawable.drawer_premium, R.string.drawer_premium);
+                        break;
+                    case R.id.drawer_desktop:
+                        updateItem(m, R.drawable.drawer_desktop, R.string.drawer_desktop);
                         break;
                     }
                 }
