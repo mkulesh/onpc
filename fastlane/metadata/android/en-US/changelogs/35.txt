@@ -1,0 +1,3 @@
+• Added more listening modes
+• Fixed missed AirPlay service on some receivers
+• TX-NR646: fixed shortcuts for TuneIn Radio
