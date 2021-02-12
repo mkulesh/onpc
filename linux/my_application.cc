@@ -9,6 +9,7 @@
 
 struct _MyApplication {
   GtkApplication parent_instance;
+  char** cmd_arguments;
   char** dart_entrypoint_arguments;
 };
 
@@ -48,6 +49,16 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_title(window, "Music Control");
   }
 
+  const gchar * exe_name = "Music-Control";
+  if (g_str_has_suffix(self->cmd_arguments[0], exe_name))
+  {
+    gchar * app_path = g_strndup(self->cmd_arguments[0], strlen(self->cmd_arguments[0]) - strlen(exe_name));
+    gchar * icon_path = g_strconcat(app_path, "data/flutter_assets/lib/assets/app_icon.png", NULL);
+    gtk_window_set_icon_from_file(GTK_WINDOW (window), icon_path, NULL);
+    g_free(app_path);
+    g_free(icon_path);
+  }
+
   gtk_window_set_default_size(window, 350, 720);
   gtk_widget_show(GTK_WIDGET(window));
 
@@ -66,6 +77,8 @@ static void my_application_activate(GApplication* application) {
 // Implements GApplication::local_command_line.
 static gboolean my_application_local_command_line(GApplication* application, gchar ***arguments, int *exit_status) {
   MyApplication* self = MY_APPLICATION(application);
+
+  self->cmd_arguments = g_strdupv(*arguments);
   // Strip out the first argument as it is the binary name.
   self->dart_entrypoint_arguments = g_strdupv(*arguments + 1);
 

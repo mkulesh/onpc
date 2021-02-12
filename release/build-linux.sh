@@ -14,5 +14,5 @@ flutter doctor
 flutter build linux --release
 
 mv ../build/linux/release/bundle ./$APP_NAME
-cp ../linux/Music-Control.png ./$APP_NAME
+cp ./$APP_NAME/data/flutter_assets/lib/assets/app_icon.png ./$APP_NAME/Music-Control.png
 zip -r ${APP_NAME}.zip ./$APP_NAME
