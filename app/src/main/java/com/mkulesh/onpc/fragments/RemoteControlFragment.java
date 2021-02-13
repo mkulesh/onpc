@@ -147,7 +147,7 @@ public class RemoteControlFragment extends BaseFragment
         rootView.findViewById(R.id.cmd_home_layout).setVisibility(
                 state.isControlExists("Home") ? View.VISIBLE : View.GONE);
         rootView.findViewById(R.id.cmd_quick_menu_layout).setVisibility(
-                state.isControlExists("Quick") ? View.VISIBLE : View.GONE);
+                (state.isControlExists("Quick") || state.BRAND_PIONEER.equals(state.getBrand())) ? View.VISIBLE : View.GONE);
 
         // All buttons
         for (View b : buttons)

@@ -86,6 +86,7 @@ import androidx.annotation.NonNull;
 public class State implements ConnectionIf
 {
     private static final boolean SKIP_XML_MESSAGES = false;
+    public static final String BRAND_PIONEER = "Pioneer";
 
     // Changes
     public enum ChangeType
@@ -312,6 +313,13 @@ public class State implements ConnectionIf
     public String getModel()
     {
         final String m = deviceProperties.get("model");
+        return m == null ? "" : m;
+    }
+
+    @NonNull
+    public String getBrand()
+    {
+        final String m = deviceProperties.get("brand");
         return m == null ? "" : m;
     }
 
