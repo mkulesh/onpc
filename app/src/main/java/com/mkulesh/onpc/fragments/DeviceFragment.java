@@ -212,7 +212,7 @@ public class DeviceFragment extends BaseFragment
         if (isRiValid)
         {
             // Common properties
-            ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.deviceProperties.get("brand"));
+            ((TextView) rootView.findViewById(R.id.device_brand)).setText(state.getBrand());
             ((TextView) rootView.findViewById(R.id.device_model)).setText(state.getModel());
             ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
             // Firmware version
