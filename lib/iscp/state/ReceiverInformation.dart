@@ -31,6 +31,8 @@ import "../messages/ToneCommandMsg.dart";
 
 class ReceiverInformation
 {
+    static const String BRAND_PIONEER = "Pioneer";
+
     // From ReceiverInformationMsg
     String _xml;
 

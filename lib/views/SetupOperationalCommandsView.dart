@@ -18,6 +18,7 @@ import "../constants/Dimens.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/SetupOperationCommandMsg.dart";
+import "../iscp/state/ReceiverInformation.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -46,7 +47,7 @@ class SetupOperationalCommandsView extends UpdatableView
         {
             cmd.add(SetupOperationCommandMsg.output(SetupOperationCommand.HOME));
         }
-        if (state.receiverInformation.isControlExists("Quick"))
+        if (state.receiverInformation.isControlExists("Quick") || state.receiverInformation.brand == ReceiverInformation.BRAND_PIONEER)
         {
             cmd.add(SetupOperationCommandMsg.output(SetupOperationCommand.QUICK));
         }
