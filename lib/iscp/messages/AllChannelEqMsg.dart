@@ -47,9 +47,10 @@ class AllChannelEqMsg extends ISCPMessage
     {
         for (int i = 0; i < CHANNELS; i++)
         {
-            if (i + 2 < getData.length)
+            final int k = i * 3;
+            if (k + 2 < getData.length)
             {
-                _eqValues[i] = ISCPMessage.nonNullInteger(getData.substring(i, i + 3), 16, NO_LEVEL);
+                _eqValues[i] = ISCPMessage.nonNullInteger(getData.substring(k, k + 3), 16, NO_LEVEL);
             }
         }
     }
