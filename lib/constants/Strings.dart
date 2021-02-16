@@ -38,6 +38,7 @@ class Strings
     static const String pref_theme_default = "indigo-orange";
     static const String pref_language_default = "system";
     static const String pref_text_size_default = "normal";
+    static const String cmd_fm_info = "RDS: RT/PTY/TP";
     static const String listening_mode_mode_00 = "Stereo";
     static const String listening_mode_mode_01 = "Direct";
     static const String listening_mode_mode_02 = "Surround";

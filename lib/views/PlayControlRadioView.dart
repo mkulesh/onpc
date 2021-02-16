@@ -14,12 +14,16 @@
 
 import "package:flutter/material.dart";
 
+import "../constants/Drawables.dart";
+import "../constants/Strings.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/PresetCommandMsg.dart";
-import "../iscp/messages/TuningCommandMsg.dart";
+import "../iscp/messages/RDSInformationMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
+import "../iscp/messages/TuningCommandMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
@@ -29,7 +33,8 @@ class PlayControlRadioView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
         ReceiverInformationMsg.CODE,
-        PowerStatusMsg.CODE
+        PowerStatusMsg.CODE,
+        InputSelectorMsg.CODE
     ];
 
     PlayControlRadioView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -39,9 +44,10 @@ class PlayControlRadioView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<ZonedMessage> cmd = [
+        final List<ISCPMessage> cmd = [
             PresetCommandMsg.outputCmd(state.getActiveZone, PresetCommand.DOWN),
             TuningCommandMsg.outputCmd(state.getActiveZone, TuningCommand.DOWN),
+            RDSInformationMsg.output(RDSInformationMsg.TOGGLE),
             TuningCommandMsg.outputCmd(state.getActiveZone, TuningCommand.UP),
             PresetCommandMsg.outputCmd(state.getActiveZone, PresetCommand.UP)
         ];
@@ -65,6 +71,16 @@ class PlayControlRadioView extends UpdatableView
                 buttons.add(CustomImageButton.normal(
                     cmd.getCommand.icon,
                     cmd.getCommand.description,
+                    onPressed: ()
+                    => stateManager.sendMessage(cmd),
+                    isEnabled: state.isOn
+                ));
+            }
+            else if (cmd is RDSInformationMsg && state.mediaListState.isFM)
+            {
+                buttons.add(CustomImageButton.normal(
+                    Drawables.cmd_fm_info,
+                    Strings.cmd_fm_info,
                     onPressed: ()
                     => stateManager.sendMessage(cmd),
                     isEnabled: state.isOn

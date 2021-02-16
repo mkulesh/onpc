@@ -333,6 +333,9 @@ class MediaListState
     => _inputType != null &&
         [InputSelector.FM, InputSelector.AM, InputSelector.DAB].contains(_inputType.key);
 
+    bool get isFM
+    => _inputType != null && _inputType.key == InputSelector.FM;
+
     bool get isDAB
     => _inputType != null && _inputType.key == InputSelector.DAB;
 
