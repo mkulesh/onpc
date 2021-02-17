@@ -47,10 +47,18 @@ class PlayControlRadioView extends UpdatableView
         final List<ISCPMessage> cmd = [
             PresetCommandMsg.outputCmd(state.getActiveZone, PresetCommand.DOWN),
             TuningCommandMsg.outputCmd(state.getActiveZone, TuningCommand.DOWN),
-            RDSInformationMsg.output(RDSInformationMsg.TOGGLE),
             TuningCommandMsg.outputCmd(state.getActiveZone, TuningCommand.UP),
             PresetCommandMsg.outputCmd(state.getActiveZone, PresetCommand.UP)
         ];
+
+        if (state.mediaListState.isFM)
+        {
+            cmd.insert(2, RDSInformationMsg.output(RDSInformationMsg.TOGGLE));
+        }
+        else if (state.mediaListState.isDAB)
+        {
+            cmd.insert(2, StateManager.DISPLAY_MSG);
+        }
 
         final List<Widget> buttons = [];
 
@@ -76,11 +84,11 @@ class PlayControlRadioView extends UpdatableView
                     isEnabled: state.isOn
                 ));
             }
-            else if (cmd is RDSInformationMsg && state.mediaListState.isFM)
+            else if (cmd is RDSInformationMsg || cmd == StateManager.DISPLAY_MSG)
             {
                 buttons.add(CustomImageButton.normal(
-                    Drawables.cmd_fm_info,
-                    Strings.cmd_fm_info,
+                    Drawables.cmd_rds_info,
+                    Strings.cmd_rds_info,
                     onPressed: ()
                     => stateManager.sendMessage(cmd),
                     isEnabled: state.isOn
