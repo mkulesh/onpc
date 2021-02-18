@@ -537,7 +537,7 @@ class StateManager
     void _requestXmlListState(final ListTitleInfoMsg liMsg)
     {
         _requestXmlList = false;
-        if (liMsg.isNetTopService)
+        if (liMsg.isNetTopService || state.mediaListState.isRadioInput)
         {
             Logging.info(this, "requesting XML list state skipped");
         }

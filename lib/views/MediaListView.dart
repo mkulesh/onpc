@@ -372,11 +372,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     Widget _buildPresetCommandMsg(BuildContext context, PresetCommandMsg rowMsg)
     {
         String serviceIcon = Drawables.media_item_music;
-        if (rowMsg.getPresetConfig.getId == state.radioState.preset)
+        final bool isPlaying = rowMsg.getPresetConfig.getId == state.radioState.preset;
+        if (isPlaying)
         {
             serviceIcon = Drawables.media_item_play;
         }
-        final bool isPlaying = rowMsg.getPresetConfig.getId == state.radioState.preset;
         return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getPresetConfig.displayedString, rowMsg);
     }
 
@@ -391,9 +391,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final Selector selector = state.getActualSelector;
         final NetworkService networkService = state.getNetworkService;
         final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
-        final String title = cmd is XmlListItemMsg ? cmd.getTitle : null;
         final bool isQueue = state.mediaListState.isQueue;
-        final bool isMediaItem = cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING;
+        final bool isMediaItem = (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING) || cmd is PresetCommandMsg;
+        final String shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
+        final String shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
 
         if (isMediaItem && selector != null)
         {
@@ -448,7 +449,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 child: Text(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
         }
 
-        if (state.isShortcutPossible && title != null)
+        if (state.isShortcutPossible && shortcutItem != null && shortcutAlias != null)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
                 child: Text(Strings.favorite_shortcut_create), value: MediaContextMenu.ADD_TO_FAVORITES));
@@ -460,12 +461,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 context: context,
                 position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
                 items: contextMenu).then((m)
-            => _onContextItemSelected(context, m, cmd.getMessageId, title)
+            => _onContextItemSelected(context, m, cmd.getMessageId, shortcutItem, shortcutAlias)
             );
         }
     }
 
-    void _onContextItemSelected(final BuildContext context, final MediaContextMenu m, final int idx, final String title)
+    void _onContextItemSelected(final BuildContext context, final MediaContextMenu m, final int idx, final String shortcutItem, final String shortcutAlias)
     {
         if (m == null)
         {
@@ -508,9 +509,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 stateManager.sendMessage(StateManager.LIST_MSG);
                 break;
             case MediaContextMenu.ADD_TO_FAVORITES:
-                if (state.isShortcutPossible && title != null)
+                if (state.isShortcutPossible && shortcutItem != null && shortcutAlias != null)
                 {
-                    _addShortcut(context, title);
+                    _addShortcut(context, shortcutItem, shortcutAlias);
                 }
                 break;
         }
@@ -801,14 +802,14 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         );
     }
 
-    void _addShortcut(final BuildContext context, String title)
+    void _addShortcut(final BuildContext context, final String item, final String alias)
     {
         final MediaListState ms = state.mediaListState;
         if (ms.isPathItemsConsistent())
         {
             final CfgFavoriteShortcuts shortcutCfg = configuration.favoriteShortcuts;
             final Shortcut shortcut = Shortcut(
-                shortcutCfg.getNextId(), ms.inputType, ms.serviceType, title, title);
+                shortcutCfg.getNextId(), ms.inputType, ms.serviceType, item, alias);
             if (state.mediaListState.numberOfLayers > 1)
             {
                 Logging.info(this.widget, "full path to the item: " + ms.pathItems.toString());

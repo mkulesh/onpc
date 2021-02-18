@@ -80,11 +80,6 @@ class ShortcutsView extends UpdatableView
 
     Widget _buildRow(final BuildContext context, final Shortcut s)
     {
-        String serviceIcon = s.service.icon;
-        if (serviceIcon == null)
-        {
-            serviceIcon = Drawables.media_item_unknown;
-        }
         final Widget w = ContextMenuListener(
             child: MediaQuery.removePadding(
                 context: context,
@@ -96,7 +91,7 @@ class ShortcutsView extends UpdatableView
                     contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
                     dense: configuration.appSettings.textSize != "huge",
                     leading: CustomImageButton.normal(
-                        serviceIcon, null,
+                        s.getIcon(), null,
                         isEnabled: false,
                         padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
                     ),

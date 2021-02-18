@@ -17,6 +17,7 @@ import 'dart:math';
 import "package:shared_preferences/shared_preferences.dart";
 import "package:xml/xml.dart" as xml;
 
+import "../constants/Drawables.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
@@ -147,6 +148,15 @@ class Shortcut
         data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>";
         data += "<send cmd=\"SLI\" par=\"" + input.getCode
             + "\" wait=\"SLI\" resp=\"" + input.getCode + "\"/>";
+
+        // Radio input requires a special handling
+        if (input.key == InputSelector.FM || input.key == InputSelector.DAB)
+        {
+            data += "<send cmd=\"PRS\" par=\"" + item + "\" wait=\"PRS\"/>";
+            data += "</onpcScript>";
+            return data;
+        }
+
         data += "<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>";
 
         // Go to the top level. Response depends on the input type
@@ -179,6 +189,20 @@ class Shortcut
         data += "<send cmd=\"NLA\" par=\"" + item + "\" wait=\"1000\"/>";
         data += "</onpcScript>";
         return data;
+    }
+
+    String getIcon()
+    {
+        String icon = service.icon;
+        if (icon == null)
+        {
+            icon = input.icon;
+        }
+        if (icon == null)
+        {
+            icon = Drawables.media_item_unknown;
+        }
+        return icon;
     }
 }
 
