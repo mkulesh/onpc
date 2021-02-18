@@ -332,6 +332,7 @@
     <string name="cmd_description_f2">Не нравится</string>
     <string name="cmd_description_sort">Сортировать</string>
     <string name="cmd_track_menu">Меню трека</string>
+    <string name="cmd_rds_info">Информация RDS</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">элементов</string>

@@ -109,6 +109,8 @@ public class MessageFactory
         case TuningCommandMsg.ZONE3_CODE:
         case TuningCommandMsg.ZONE4_CODE:
             return new TuningCommandMsg(raw);
+        case RDSInformationMsg.CODE:
+            return new RDSInformationMsg(raw);
         case MusicOptimizerMsg.CODE:
             return new MusicOptimizerMsg(raw);
         case AutoPowerMsg.CODE:

@@ -331,6 +331,7 @@
     <string name="cmd_description_f2">Negativ markieren</string>
     <string name="cmd_description_sort">Sortierung</string>
     <string name="cmd_track_menu">Titel Menü</string>
+    <string name="cmd_rds_info">RDS Info</string>
 
     <!-- Media list tab -->
     <string name="medialist_items">Elemente</string>

@@ -46,6 +46,7 @@ import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PresetMemoryMsg;
+import com.mkulesh.onpc.iscp.messages.RDSInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
@@ -132,6 +133,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         fmDabButtons.add(rootView.findViewById(R.id.btn_preset_down));
         fmDabButtons.add(rootView.findViewById(R.id.btn_tuning_up));
         fmDabButtons.add(rootView.findViewById(R.id.btn_tuning_down));
+        fmDabButtons.add(rootView.findViewById(R.id.btn_rds_info));
         prepareFmDabButtons();
 
         // Audio control buttons
@@ -237,6 +239,19 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 {
                     prepareButton(b, tMsg, tMsg.getCommand().getImageId(), tMsg.getCommand().getDescriptionId());
                 }
+                break;
+            case RDSInformationMsg.CODE:
+                prepareButton(b, null, R.drawable.cmd_rds_info, R.string.cmd_rds_info);
+                prepareButtonListeners(b, null, () ->
+                {
+                    if (activity != null && activity.isConnected())
+                    {
+                        final InputSelectorMsg.InputType inp = activity.getStateManager().getState().inputType;
+                        final ISCPMessage msg = inp == InputSelectorMsg.InputType.FM ?
+                                new RDSInformationMsg(RDSInformationMsg.TOGGLE) : new DisplayModeMsg(DisplayModeMsg.TOGGLE);
+                        activity.getStateManager().sendMessage(msg);
+                    }
+                });
                 break;
             }
         }

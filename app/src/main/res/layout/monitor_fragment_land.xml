@@ -292,6 +292,11 @@
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_rds_info"
+                android:tag="RDS:UP" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/ImageButtonPrimaryStyle"
                 android:id="@+id/btn_tuning_up"
                 android:tag="TUN:UP" />
 
