@@ -34,6 +34,7 @@ import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
 import com.mkulesh.onpc.iscp.messages.FriendlyNameMsg;
 import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
+import com.mkulesh.onpc.iscp.messages.LateNightCommandMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
@@ -129,6 +130,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.sleep_time_toggle, null);
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
+        prepareImageButton(R.id.late_night_command_toggle, new LateNightCommandMsg(LateNightCommandMsg.Status.UP));
 
         updateContent();
         return rootView;
@@ -165,7 +167,8 @@ public class DeviceFragment extends BaseFragment
                     R.id.phase_matching_bass_layout,
                     R.id.sleep_time_layout,
                     R.id.speaker_ab_layout,
-                    R.id.google_cast_analytics_layout
+                    R.id.google_cast_analytics_layout,
+                    R.id.late_night_command_layout
             };
             for (int layoutId : settingsLayout)
             {
@@ -346,6 +349,10 @@ public class DeviceFragment extends BaseFragment
         prepareSettingPanel(state, state.googleCastAnalytics != GoogleCastAnalyticsMsg.Status.NONE,
                 R.id.google_cast_analytics_layout, state.googleCastAnalytics.getDescriptionId(),
                 new GoogleCastAnalyticsMsg(GoogleCastAnalyticsMsg.toggle(state.googleCastAnalytics)));
+
+        // Late Night Command
+        prepareSettingPanel(state, state.lateNightMode != LateNightCommandMsg.Status.NONE,
+                R.id.late_night_command_layout, state.lateNightMode.getDescriptionId(), null);
     }
 
     private void sendQueries(int zone)

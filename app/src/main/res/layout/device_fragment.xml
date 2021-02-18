@@ -340,6 +340,26 @@
                     android:contentDescription="@string/device_two_way_switch_toggle" />
             </LinearLayout>
 
+            <LinearLayout
+                    style="@style/DeviceRowStyle"
+                    android:id="@+id/late_night_command_layout">
+
+                <TextView
+                        style="@style/DeviceLabelViewStyle"
+                        android:text="@string/device_late_night" />
+
+                <TextView
+                        style="@style/DeviceValueViewStyle"
+                        android:tag="VALUE"
+                        android:gravity="center" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                        style="@style/ImageButtonSecondaryStyle"
+                        android:id="@+id/late_night_command_toggle"
+                        android:src="@drawable/wrap_around"
+                        android:contentDescription="@string/device_late_night_up" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

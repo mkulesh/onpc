@@ -137,6 +137,8 @@ public class MessageFactory
         case SpeakerBCommandMsg.CODE:
         case SpeakerBCommandMsg.ZONE2_CODE:
             return new SpeakerBCommandMsg(raw);
+        case LateNightCommandMsg.CODE:
+            return new LateNightCommandMsg(raw);
         case PrivacyPolicyStatusMsg.CODE:
             return new PrivacyPolicyStatusMsg(raw);
         case CdPlayerOperationCommandMsg.CODE:

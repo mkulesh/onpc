@@ -40,6 +40,7 @@ import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
+import com.mkulesh.onpc.iscp.messages.LateNightCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -475,6 +476,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     GoogleCastAnalyticsMsg.CODE,
                     SpeakerACommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     SpeakerBCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    LateNightCommandMsg.CODE,
                     // SoundControlState
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],

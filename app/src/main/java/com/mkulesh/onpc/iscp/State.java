@@ -39,6 +39,7 @@ import com.mkulesh.onpc.iscp.messages.GoogleCastVersionMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
+import com.mkulesh.onpc.iscp.messages.LateNightCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ListInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -132,6 +133,7 @@ public class State implements ConnectionIf
     public int sleepTime = SleepSetCommandMsg.NOT_APPLICABLE;
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
     public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
+    public LateNightCommandMsg.Status lateNightMode = LateNightCommandMsg.Status.NONE;
 
     // Sound control
     public enum SoundControlType
@@ -515,6 +517,10 @@ public class State implements ConnectionIf
         if (msg instanceof SpeakerBCommandMsg)
         {
             return isCommonChange(process((SpeakerBCommandMsg) msg));
+        }
+        if (msg instanceof LateNightCommandMsg)
+        {
+            return isCommonChange(process((LateNightCommandMsg) msg));
         }
 
         // Sound control
@@ -904,6 +910,13 @@ public class State implements ConnectionIf
     {
         final boolean changed = speakerB != msg.getStatus();
         speakerB = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(LateNightCommandMsg msg)
+    {
+        final boolean changed = lateNightMode != msg.getStatus();
+        lateNightMode = msg.getStatus();
         return changed;
     }
 
