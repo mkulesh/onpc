@@ -582,7 +582,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     private void requestXmlListState(final ListTitleInfoMsg liMsg)
     {
         requestXmlList.set(false);
-        if (liMsg.isNetTopService())
+        if (liMsg.isNetTopService() || state.isRadioInput())
         {
             Logging.info(this, "requesting XML list state skipped");
         }

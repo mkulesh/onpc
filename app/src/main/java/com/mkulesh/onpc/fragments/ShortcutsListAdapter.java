@@ -22,7 +22,6 @@ import android.widget.BaseAdapter;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
-import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.widgets.DraggableItemView;
 
 import java.util.ArrayList;
@@ -92,10 +91,7 @@ class ShortcutsListAdapter extends BaseAdapter
         view.setTag(d.id);
         view.setText(d.alias);
         view.setCheckBoxVisibility(View.GONE);
-        if (d.service != ServiceType.UNKNOWN)
-        {
-            view.setImage(d.service.getImageId());
-        }
+        view.setImage(d.getIcon());
         return view;
     }
 

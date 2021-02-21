@@ -17,6 +17,7 @@ package com.mkulesh.onpc.config;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
@@ -30,6 +31,7 @@ import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -160,6 +162,15 @@ public class CfgFavoriteShortcuts
             data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>");
             data.append("<send cmd=\"SLI\" par=\"").append(input.getCode())
                     .append("\" wait=\"SLI\" resp=\"").append(input.getCode()).append("\"/>");
+
+            // Radio input requires a special handling
+            if (input == InputSelectorMsg.InputType.FM || input == InputSelectorMsg.InputType.DAB)
+            {
+                data.append("<send cmd=\"PRS\" par=\"").append(item).append("\" wait=\"PRS\"/>");
+                data.append("</onpcScript>");
+                return data.toString();
+            }
+
             data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
 
             // Go to the top level. Response depends on the input type
@@ -203,7 +214,18 @@ public class CfgFavoriteShortcuts
             data.append("</onpcScript>");
             return data.toString();
         }
-        
+
+        @DrawableRes
+        public int getIcon()
+        {
+            int icon = service.getImageId();
+            if (icon == R.drawable.media_item_unknown)
+            {
+                icon = input.getImageId();
+            }
+            return icon;
+        }
+
         private String escape(final String d)
         {
             return StringEscapeUtils.escapeXml10(d);

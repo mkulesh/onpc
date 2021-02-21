@@ -1584,7 +1584,8 @@ public class State implements ConnectionIf
 
     public boolean isShortcutPossible()
     {
-        return !SKIP_XML_MESSAGES && numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
+        final boolean isMediaList = numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
+        return !SKIP_XML_MESSAGES && (isMediaList || isRadioInput());
     }
 
     public boolean isPathItemsConsistent()

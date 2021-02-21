@@ -66,6 +66,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private MediaListAdapter listViewAdapter;
     private LinearLayout selectorPaletteLayout;
     private XmlListItemMsg selectedItem = null;
+    private PresetCommandMsg selectedStation = null;
     int moveFrom = -1;
     private int filteredItems = 0;
 
@@ -155,10 +156,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 ListView lv = (ListView) v;
                 AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 final Object item = lv.getItemAtPosition(acmi.position);
+                final boolean isShortcut = state.isShortcutPossible();
                 if (item instanceof XmlListItemMsg)
                 {
                     selectedItem = (XmlListItemMsg) item;
-                    MenuInflater inflater = activity.getMenuInflater();
+                    final MenuInflater inflater = activity.getMenuInflater();
                     inflater.inflate(R.menu.playlist_context_menu, menu);
 
                     final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE;
@@ -185,7 +187,17 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu && isPlaying && !isQueue);
                     menu.findItem(R.id.cmd_playback_mode).setVisible(isPlaying && !state.isPlaybackMode());
 
-                    final boolean isShortcut = state.isShortcutPossible();
+                    menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
+                }
+                else if (item instanceof PresetCommandMsg)
+                {
+                    selectedStation = (PresetCommandMsg) item;
+                    final MenuInflater inflater = activity.getMenuInflater();
+                    inflater.inflate(R.menu.playlist_context_menu, menu);
+                    for (int i = 0; i < menu.size(); i++)
+                    {
+                        menu.getItem(i).setVisible(false);
+                    }
                     menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
                 }
             }
@@ -249,34 +261,49 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 activity.getStateManager().sendMessage(StateManager.LIST_MSG);
                 return true;
             case R.id.cmd_shortcut_create:
-                if (state.isShortcutPossible())
-                {
-                    final CfgFavoriteShortcuts shortcutCfg = activity.getConfiguration().favoriteShortcuts;
-                    if (state.isPathItemsConsistent())
-                    {
-                        final CfgFavoriteShortcuts.Shortcut shortcut = new CfgFavoriteShortcuts.Shortcut(
-                                shortcutCfg.getNextId(),
-                                state.inputType,
-                                state.serviceType,
-                                title,
-                                title);
-                        if (state.numberOfLayers > 1)
-                        {
-                            shortcut.setPathItems(state.pathItems, getActivity(), state.serviceType);
-                        }
-                        shortcutCfg.updateShortcut(shortcut, shortcut.alias);
-                        Toast.makeText(activity, R.string.favorite_shortcut_added, Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(activity, R.string.favorite_shortcut_failed, Toast.LENGTH_LONG).show();
-                    }
-                }
+                addShortcut(state, title, title);
                 return true;
             }
         }
+        else if (selectedStation != null && activity.isConnected() && item.getItemId() == R.id.cmd_shortcut_create)
+        {
+            addShortcut(activity.getStateManager().getState(),
+                    String.format("%02x", selectedStation.getPresetConfig().getId()),
+                    selectedStation.getPresetConfig().displayedString());
+            selectedStation = null;
+            return true;
+        }
         return super.onContextItemSelected(item);
     }
+
+    private void addShortcut(final @NonNull State state, final String item, final String alias)
+    {
+        if (state.isShortcutPossible())
+        {
+            final CfgFavoriteShortcuts shortcutCfg = activity.getConfiguration().favoriteShortcuts;
+            if (state.isPathItemsConsistent())
+            {
+                final ServiceType s = state.serviceType == null ? ServiceType.UNKNOWN : state.serviceType;
+                final CfgFavoriteShortcuts.Shortcut shortcut = new CfgFavoriteShortcuts.Shortcut(
+                        shortcutCfg.getNextId(),
+                        state.inputType,
+                        s,
+                        item,
+                        alias);
+                if (state.numberOfLayers > 1)
+                {
+                    shortcut.setPathItems(state.pathItems, getActivity(), s);
+                }
+                shortcutCfg.updateShortcut(shortcut, shortcut.alias);
+                Toast.makeText(activity, R.string.favorite_shortcut_added, Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(activity, R.string.favorite_shortcut_failed, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     @Override
     protected void updateStandbyView(@Nullable final State state)
