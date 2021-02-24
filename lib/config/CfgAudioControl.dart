@@ -82,7 +82,8 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_05, // Game-Action
         ListeningMode.MODE_06, // Game-Rock
         ListeningMode.MODE_0E, // Game-Sports
-        ListeningMode.MODE_82  // DTS NEURAL:X
+        ListeningMode.MODE_82, // DTS NEURAL:X
+        ListeningMode.MODE_17  // DTS Virtual:X
     ];
 
     // Master volume hardware keys

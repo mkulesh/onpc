@@ -60,6 +60,7 @@ class Strings
     static const String listening_mode_mode_14 = "Surround Enhancer";
     static const String listening_mode_mode_15 = "DTS Surround Sensation";
     static const String listening_mode_mode_16 = "Audyssey DSX";
+    static const String listening_mode_mode_17 = "DTS Virtual:X";
     static const String listening_mode_mode_1f = "Whole House Mode";
     static const String listening_mode_mode_40 = "Dolby Digital";
     static const String listening_mode_mode_41 = "Dolby EX/DTS ES";
