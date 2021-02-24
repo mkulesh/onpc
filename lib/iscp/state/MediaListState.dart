@@ -109,8 +109,12 @@ class MediaListState
         clearItems();
     }
 
-    void clearItems()
+    void clearItems({bool skipForRadio = false})
     {
+        if (skipForRadio && isRadioInput)
+        {
+            return;
+        }
         _mediaItems.clear();
         _movedItem = -1;
     }
@@ -144,7 +148,8 @@ class MediaListState
         if (_uiType != msg.getUiType.key)
         {
             _uiType = msg.getUiType.key;
-            clearItems();
+            // skip deletion of items since there can be invalid NLT messages in radio mode upon app startup
+            clearItems(skipForRadio: true);
             changed = true;
         }
         if (_titleBar != msg.getTitleBar)
