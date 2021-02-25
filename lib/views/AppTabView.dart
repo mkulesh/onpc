@@ -185,7 +185,7 @@ class AppTabView extends UpdatableView
     Widget _buildWidget(BuildContext context, AppControl c)
     {
         _wId++;
-        final Key key = FOCUSABLE.contains(c) ? null : Key(_extId.toString() + "_" + _wId.toString());
+        final Key key = Key(_extId.toString() + "_" + _wId.toString());
         switch (c)
         {
             case AppControl.DIVIDER1:
@@ -223,7 +223,7 @@ class AppTabView extends UpdatableView
                 return UpdatableWidget(key: key, child: InputSelectorView(viewContext));
 
             case AppControl.MEDIA_LIST:
-                return MediaListView(viewContext);
+                return MediaListView(key: key, viewContext: viewContext);
 
             case AppControl.SETUP_OP_CMD:
                 return UpdatableWidget(key: key, child: SetupOperationalCommandsView(viewContext));

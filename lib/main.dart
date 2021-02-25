@@ -258,7 +258,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
             AppBarView(_viewContext, _tabController, _tabs)
         );
 
-        _tabId++;
+        if (!_stateManager.state.mediaFilterVisible)
+        {
+            _tabId++;
+        }
         final Widget tabBar = TabBarView(
             key: Key(_tabBarId.toString()),
             controller: _tabController,

@@ -74,7 +74,7 @@ class MediaListButtons
 
 class MediaListView extends StatefulWidget
 {
-    final ViewContext _viewContext;
+    final ViewContext viewContext;
 
     static const List<String> UPDATE_TRIGGERS = [
         Configuration.CONFIGURATION_EVENT,
@@ -89,10 +89,14 @@ class MediaListView extends StatefulWidget
         PresetCommandMsg.CODE
     ];
 
-    MediaListView(this._viewContext);
+    MediaListView({Key key, this.viewContext}) : super(key: key);
 
-    @override _MediaListViewState createState()
-    => _MediaListViewState(_viewContext, UPDATE_TRIGGERS);
+    @override
+    String toStringShort() => "MediaListView";
+
+    @override
+    _MediaListViewState createState()
+    => _MediaListViewState(viewContext, UPDATE_TRIGGERS);
 }
 
 class _MediaListViewState extends WidgetStreamState<MediaListView>
