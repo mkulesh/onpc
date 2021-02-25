@@ -54,7 +54,8 @@ public class CfgAudioControl
             ListeningModeMsg.Mode.MODE_05, // Game-Action
             ListeningModeMsg.Mode.MODE_06, // Game-Rock
             ListeningModeMsg.Mode.MODE_0E, // Game-Sports
-            ListeningModeMsg.Mode.MODE_82  // DTS NEURAL:X
+            ListeningModeMsg.Mode.MODE_82, // DTS NEURAL:X
+            ListeningModeMsg.Mode.MODE_17  // DTS Virtual:X
     };
 
     private SharedPreferences preferences;

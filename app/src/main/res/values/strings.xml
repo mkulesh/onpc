@@ -594,6 +594,7 @@
     <string name="listening_mode_mode_14" translatable="false">Surround Enhancer</string>
     <string name="listening_mode_mode_15" translatable="false">DTS Surround Sensation</string>
     <string name="listening_mode_mode_16" translatable="false">Audyssey DSX</string>
+    <string name="listening_mode_mode_17" translatable="false">DTS Virtual:X</string>
     <string name="listening_mode_mode_1f" translatable="false">Whole House Mode</string>
     <string name="listening_mode_mode_40" translatable="false">Dolby Digital</string>
     <string name="listening_mode_mode_41" translatable="false">Dolby EX/DTS ES</string>

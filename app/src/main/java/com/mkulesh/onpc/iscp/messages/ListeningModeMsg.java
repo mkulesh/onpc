@@ -53,6 +53,7 @@ public class ListeningModeMsg extends ISCPMessage
         MODE_14("14", R.string.listening_mode_mode_14),
         MODE_15("15", R.string.listening_mode_mode_15),
         MODE_16("16", R.string.listening_mode_mode_16),
+        MODE_17("17", R.string.listening_mode_mode_17),
         MODE_1F("1F", R.string.listening_mode_mode_1f),
         MODE_40("40", R.string.listening_mode_mode_40),
         MODE_41("41", R.string.listening_mode_mode_41),
