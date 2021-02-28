@@ -1,0 +1,5 @@
+• Added "DTS Virtual:X" listening mode
+• Added shortcuts for FM/DAB radio input
+• Added RDS Information button for FM radio input
+• Added "Late Night Mode" setting for Onkyo receivers
+• Allowed "Quick Menu" in RC tab for Pioneer devices

@@ -58,7 +58,7 @@ The two most popular features of the app are music playback and sound profile ma
 - Track time seek is missing in Tidal (that is a limitation of the Onkyo firmware)
 - In order to use Spotify, you need the official Spotify app additionally to this app
 - Amazon Music HD subscription: broadcast in AAC 256 kbps only (that is a limitation of the Onkyo firmware)
-- Following Pioneer models are NOT supported: VSX-529, VSX-830, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
+- Following Pioneer models are NOT supported: VSX-529, VSX-830, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
 
 ## Supported devices
 This list is based on the user feedback from Google Play and github. Not all from these devices are tested by developer:
