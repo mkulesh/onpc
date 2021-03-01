@@ -331,6 +331,9 @@ class MediaListState
     bool get isTuneIn
     => serviceType.key == ServiceType.TUNEIN_RADIO;
 
+    bool get isDeezer
+    => serviceType.key == ServiceType.DEEZER;
+
     bool get isNetworkServices
     => _serviceType.key == ServiceType.NET;
 

@@ -163,6 +163,18 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             items = filteredItems;
         }
 
+        if (ms.isDeezer && !_headerButtons.sort && _isSortableItem(items))
+        {
+            final List<ISCPMessage> sortedItems = List.from(items);
+            sortedItems.sort((a, b)
+            {
+                final String aName = _getItemName(a);
+                final String bName = _getItemName(b);
+                return aName != null && bName != null ? aName.compareTo(bName) : 0;
+            });
+            items = sortedItems;
+        }
+
         // Add "Return" button if necessary
         if (state.isOn && ms.layerInfo != null && !ms.isTopLayer() && !configuration.backAsReturn)
         {
@@ -398,7 +410,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final bool isQueue = state.mediaListState.isQueue;
         final bool isMediaItem = (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING) || cmd is PresetCommandMsg;
         final String shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
-        final String shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
+        final String shortcutAlias = _getItemName(cmd);
 
         if (isMediaItem && selector != null)
         {
@@ -828,4 +840,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             PopupManager.showToast(Strings.favorite_shortcut_failed, context: context);
         }
     }
+
+    String _getItemName(final ISCPMessage cmd)
+    => cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
+
+    bool _isSortableItem(final List<ISCPMessage> items)
+    => items.every((rowMsg) => rowMsg is XmlListItemMsg && !([ListItemIcon.MUSIC, ListItemIcon.PLAY].contains(rowMsg.getIcon.key)));
 }
