@@ -42,6 +42,7 @@ import "../iscp/messages/ServiceType.dart";
 import "../iscp/messages/TitleNameMsg.dart";
 import "../iscp/messages/XmlListInfoMsg.dart";
 import "../iscp/messages/XmlListItemMsg.dart";
+import "../iscp/state/MediaListSorter.dart";
 import "../iscp/state/MediaListState.dart";
 import "../utils/Logging.dart";
 import "../widgets/ContextMenuListener.dart";
@@ -68,7 +69,8 @@ enum MediaContextMenu
 class MediaListButtons
 {
     bool filter = false;
-    bool sort = false;
+    bool remoteSort = false;
+    bool appSort = false;
     bool progress = false;
 }
 
@@ -102,10 +104,13 @@ class MediaListView extends StatefulWidget
 class _MediaListViewState extends WidgetStreamState<MediaListView>
 {
     static final String _PLAYBACK_STRING = "_PLAYBACK_STRING_";
+    static final String _DEEZER_ALBUMS = "MY ALBUMS";
+
     final List<int> _playQueueIds = [];
     ScrollController _scrollController;
     int _currentLayer = -1;
     final MediaListButtons _headerButtons = MediaListButtons();
+    final MediaListSorter _mediaListSorter = MediaListSorter();
     TextEditingController _mediaFilterController;
 
     _MediaListViewState(final ViewContext _viewContext, final List<String> _updateTriggers) : super(_viewContext, _updateTriggers);
@@ -145,7 +150,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         // Header buttons
         _headerButtons.filter = state.isOn && ms.isListMode && dataItems > 1;
-        _headerButtons.sort = state.isOn && state.getNetworkService != null && state.getNetworkService.isSort;
+        _headerButtons.remoteSort = state.isOn && state.getNetworkService != null && state.getNetworkService.isSort;
+        _headerButtons.appSort = state.isOn && !_headerButtons.remoteSort && ms.isDeezer && _DEEZER_ALBUMS == ms.titleBar.toUpperCase();
         _headerButtons.progress = state.isOn && stateManager.waitingForData;
 
         // Apply filter
@@ -163,16 +169,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             items = filteredItems;
         }
 
-        if (ms.isDeezer && !_headerButtons.sort && _isSortableItem(items))
+        if (!_headerButtons.remoteSort && ms.isDeezer && _mediaListSorter.isSortableItem(items))
         {
-            final List<ISCPMessage> sortedItems = List.from(items);
-            sortedItems.sort((a, b)
-            {
-                final String aName = _getItemName(a);
-                final String bName = _getItemName(b);
-                return aName != null && bName != null ? aName.compareTo(bName) : 0;
-            });
-            items = sortedItems;
+            items = _mediaListSorter.sortDeezerItems(items, configuration.appSettings.mediaSortMode);
         }
 
         // Add "Return" button if necessary
@@ -410,7 +409,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final bool isQueue = state.mediaListState.isQueue;
         final bool isMediaItem = (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING) || cmd is PresetCommandMsg;
         final String shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
-        final String shortcutAlias = _getItemName(cmd);
+        final String shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
 
         if (isMediaItem && selector != null)
         {
@@ -736,7 +735,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
 
         // Sort button
-        if (!buttons.progress && buttons.sort)
+        if (!buttons.progress && buttons.remoteSort)
         {
             // show sort button
             final OperationCommandMsg cmd = OperationCommandMsg.output(
@@ -746,6 +745,19 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 cmd.getValue.description,
                 onPressed: ()
                 => stateManager.sendMessage(cmd)));
+        }
+        else if (buttons.appSort)
+        {
+            elements.add(CustomImageButton.small(
+                Drawables.cmd_sort,
+                Strings.cmd_description_sort,
+                onPressed: ()
+                {
+                    setState(()
+                    {
+                        configuration.appSettings.toggleSortMode();
+                    });
+                }));
         }
 
         // Progress indicator
@@ -840,10 +852,4 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             PopupManager.showToast(Strings.favorite_shortcut_failed, context: context);
         }
     }
-
-    String _getItemName(final ISCPMessage cmd)
-    => cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
-
-    bool _isSortableItem(final List<ISCPMessage> items)
-    => items.every((rowMsg) => rowMsg is XmlListItemMsg && !([ListItemIcon.MUSIC, ListItemIcon.PLAY].contains(rowMsg.getIcon.key)));
 }

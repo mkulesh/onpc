@@ -38,6 +38,12 @@ enum AppTabs
     RI,
 }
 
+enum MediaSortMode
+{
+    ITEM_NAME,
+    ARTIST_ALBUM
+}
+
 class CfgAppSettings extends CfgModule
 {
     // Theme
@@ -155,6 +161,19 @@ class CfgAppSettings extends CfgModule
     CfgTabSettings tabSettings(AppTabs t)
     => t != null ? _tabSettings[t.index] : null;
 
+    // Media list sort mode
+    static const Pair<String, String> MEDIA_SORT_MODE = Pair<String, String>("media_sort_mode", "ITEM_NAME");
+    MediaSortMode _mediaSortMode;
+
+    MediaSortMode get mediaSortMode
+    => _mediaSortMode;
+
+    set mediaSortMode(MediaSortMode value)
+    {
+        _mediaSortMode = value;
+        saveStringParameter(MEDIA_SORT_MODE, Convert.enumToString(value));
+    }
+
     // methods
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);
 
@@ -165,8 +184,11 @@ class CfgAppSettings extends CfgModule
         _language = getString(LANGUAGE, doLog: true);
         _textSize = getString(TEXT_SIZE, doLog: true);
         final String tab = getString(OPENED_TAB_NAME, doLog: true);
-        _openedTab = AppTabs.values.isEmpty ? AppTabs.LISTEN :
-            AppTabs.values.firstWhere((t) => Convert.enumToString(t) == tab, orElse: () => AppTabs.values.first);
+        _openedTab = AppTabs.values.firstWhere((t)
+            => Convert.enumToString(t) == tab, orElse: () => AppTabs.values.first);
+        final String sortMode = getString(MEDIA_SORT_MODE, doLog: true);
+        _mediaSortMode = MediaSortMode.values.firstWhere((t)
+            => Convert.enumToString(t) == sortMode, orElse: () => MediaSortMode.values.first);
         _readVisibleTabs();
         _readControlElements();
     }
@@ -295,5 +317,18 @@ class CfgAppSettings extends CfgModule
                 c.read();
             }
         });
+    }
+
+    void toggleSortMode()
+    {
+        switch (mediaSortMode)
+        {
+            case MediaSortMode.ITEM_NAME:
+                mediaSortMode = MediaSortMode.ARTIST_ALBUM;
+                break;
+            case MediaSortMode.ARTIST_ALBUM:
+                mediaSortMode = MediaSortMode.ITEM_NAME;
+                break;
+        }
     }
 }
