@@ -274,6 +274,8 @@ Enjoy!""</string>
     <string name="master_volume_restrict">Ogranicz poziom głośności</string>
     <string name="master_volume_max">Maksymalny</string>
     <string name="equalizer">Equalizer</string>
+    <string name="listening_mode_audio">Pokaż tylko tryby audio</string>
+    <string name="listening_mode_video">Pokaż tylko tryby wideo</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>

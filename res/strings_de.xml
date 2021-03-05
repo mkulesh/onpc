@@ -273,6 +273,8 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="master_volume_restrict">Lautstärke einschränken</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
+    <string name="listening_mode_audio">Nur Audiomodi anzeigen</string>
+    <string name="listening_mode_video">Nur Videomodi anzeigen</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Nächster gespeicherter Sender</string>

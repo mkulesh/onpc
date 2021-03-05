@@ -14,11 +14,15 @@
 
 import "package:flutter/material.dart";
 
+import "../config/CfgAudioControl.dart";
+import "../constants/Drawables.dart";
+import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextButton.dart";
 import "UpdatableView.dart";
 
@@ -61,8 +65,47 @@ class ListeningModeView extends UpdatableView
             );
         });
 
-        return buttons.isEmpty ? SizedBox.shrink() : Center(
-            child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons))
+        if (buttons.isEmpty)
+        {
+            return SizedBox.shrink();
+        }
+
+        final List<Widget> elements = [];
+
+        elements.add(CustomImageButton.small(
+            Drawables.listening_mode_audio,
+            Strings.listening_mode_audio,
+            isEnabled: state.isOn,
+            isSelected: configuration.audioControl.listeningModeFilter == ListeningModeFilter.AUDIO,
+            onPressed: ()
+            {
+                _toggleListeningModeFilter(ListeningModeFilter.AUDIO);
+                updateCallback();
+            })
         );
+
+        elements.add(Expanded(
+            child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons)))
+        );
+
+        elements.add(CustomImageButton.small(
+            Drawables.listening_mode_video,
+            Strings.listening_mode_video,
+            isEnabled: state.isOn,
+            isSelected: configuration.audioControl.listeningModeFilter == ListeningModeFilter.VIDEO,
+            onPressed: ()
+            {
+                _toggleListeningModeFilter(ListeningModeFilter.VIDEO);
+                updateCallback();
+            })
+        );
+
+        return Row(mainAxisSize: MainAxisSize.max, children: elements);
+    }
+
+    void _toggleListeningModeFilter(ListeningModeFilter mode)
+    {
+        configuration.audioControl.listeningModeFilter =
+            configuration.audioControl.listeningModeFilter == mode ?  ListeningModeFilter.NONE : mode;
     }
 }

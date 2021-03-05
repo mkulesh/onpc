@@ -24,6 +24,7 @@ class Drawables
     static const String timer_sand = "lib/assets/timer_sand.svg";
 
     // Buttons
+    static const String menu_power_standby = BUTTONS_PATH + "menu_power_standby.svg";
     static const String cd_eject = BUTTONS_PATH + "cd_eject.svg";
     static const String cmd_delete = BUTTONS_PATH + "cmd_delete.svg";
     static const String cmd_down = BUTTONS_PATH + "cmd_down.svg";
@@ -71,6 +72,9 @@ class Drawables
     static const String feed_love = BUTTONS_PATH + "feed_love.svg";
     static const String input_selector_down = BUTTONS_PATH + "input_selector_down.svg";
     static const String input_selector_up = BUTTONS_PATH + "input_selector_up.svg";
+    static const String listening_mode_audio = BUTTONS_PATH + "listening_mode_audio.svg";
+    static const String listening_mode_video = BUTTONS_PATH + "listening_mode_video.svg";
+
     static const String media_item_airplay = BUTTONS_PATH + "media_item_airplay.svg";
     static const String media_item_amazon = BUTTONS_PATH + "media_item_amazon.svg";
     static const String media_item_aux = BUTTONS_PATH + "media_item_aux.svg";
@@ -101,7 +105,6 @@ class Drawables
     static const String media_item_tv = BUTTONS_PATH + "media_item_tv.svg";
     static const String media_item_unknown = BUTTONS_PATH + "media_item_unknown.svg";
     static const String media_item_usb = BUTTONS_PATH + "media_item_usb.svg";
-    static const String menu_power_standby = BUTTONS_PATH + "menu_power_standby.svg";
     static const String media_item_disc_player = BUTTONS_PATH + "media_item_disc_player.svg";
     static const String media_item_toslink = BUTTONS_PATH + "media_item_toslink.svg";
     static const String media_item_filter = BUTTONS_PATH + "media_item_filter.svg";

@@ -318,6 +318,8 @@ Enjoy!""</string>
     <string name="master_volume_restrict">Restrict volume level</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
+    <string name="listening_mode_audio">Show audio modes only</string>
+    <string name="listening_mode_video">Show video modes only</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Sets preset wrap-around up</string>
