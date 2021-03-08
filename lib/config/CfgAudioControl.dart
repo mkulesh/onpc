@@ -19,17 +19,9 @@ import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
-import "../utils/Convert.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";
 import "CheckableItem.dart";
-
-enum ListeningModeFilter
-{
-    NONE,
-    AUDIO,
-    VIDEO
-}
 
 class CfgAudioControl extends CfgModule
 {
@@ -69,8 +61,8 @@ class CfgAudioControl extends CfgModule
         saveIntegerParameter(getModelDependentInt(MASTER_VOLUME_MAX), value);
     }
 
-    // Listening modes
-    static const List<ListeningMode> _AUDIO_MODES = [
+    // Default modes
+    static const List<ListeningMode> DEFAULT_LISTENING_MODES = [
         ListeningMode.MODE_0F, // MONO
         ListeningMode.MODE_00, // STEREO
         ListeningMode.MODE_01, // DIRECT
@@ -78,9 +70,8 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_08, // ORCHESTRA
         ListeningMode.MODE_0A, // STUDIO-MIX
         ListeningMode.MODE_11, // PURE AUDIO
+        ListeningMode.MODE_13, // FULL MONO
         ListeningMode.MODE_0C, // ALL CH STEREO
-    ];
-    static const List<ListeningMode> _VIDEO_MODES = [
         ListeningMode.MODE_0B, // TV Logic
         ListeningMode.MODE_0D, // Theater-Dimensional
         ListeningMode.MODE_40, // DOLBY DIGITAL
@@ -96,21 +87,6 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_0E  // Game-Sports
     ];
 
-    static List<ListeningMode> DEFAULT_LISTENING_MODES = [];
-
-    // Audio/Video filter for the listening modes
-    static const Pair<String, String> LISTENING_MODE_FILTER = Pair<String, String>("listening_mode_filter", "NONE");
-    ListeningModeFilter _listeningModeFilter;
-
-    ListeningModeFilter get listeningModeFilter
-    => _listeningModeFilter;
-
-    set listeningModeFilter(ListeningModeFilter value)
-    {
-        _listeningModeFilter = value;
-        saveStringParameter(LISTENING_MODE_FILTER, Convert.enumToString(value));
-    }
-
     // Master volume hardware keys
     static const Pair<String, bool> VOLUME_KEYS = Pair<String, bool>("volume_keys", true); // For Android only
     bool _volumeKeys;
@@ -119,11 +95,7 @@ class CfgAudioControl extends CfgModule
     => _volumeKeys;
 
     // methods
-    CfgAudioControl(final SharedPreferences preferences) : super(preferences)
-    {
-        DEFAULT_LISTENING_MODES.addAll(_AUDIO_MODES);
-        DEFAULT_LISTENING_MODES.addAll(_VIDEO_MODES);
-    }
+    CfgAudioControl(final SharedPreferences preferences) : super(preferences);
 
     @override
     void read()
@@ -131,9 +103,6 @@ class CfgAudioControl extends CfgModule
         _soundControl = getString(SOUND_CONTROL, doLog: true);
         _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
         _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
-        final String filter = getString(LISTENING_MODE_FILTER, doLog: true);
-        _listeningModeFilter = ListeningModeFilter.values.firstWhere((t)
-            => Convert.enumToString(t) == filter, orElse: () => ListeningModeFilter.values.first);
     }
 
     @override
@@ -147,21 +116,8 @@ class CfgAudioControl extends CfgModule
         final List<EnumItem<ListeningMode>> result = [];
         final List<String> defItems = [];
 
-        switch(_listeningModeFilter)
-        {
-        case ListeningModeFilter.NONE:
-            DEFAULT_LISTENING_MODES.forEach((m)
-            => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
-            break;
-        case ListeningModeFilter.AUDIO:
-            _AUDIO_MODES.forEach((m)
-            => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
-            break;
-        case ListeningModeFilter.VIDEO:
-            _VIDEO_MODES.forEach((m)
-            => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
-            break;
-        }
+        DEFAULT_LISTENING_MODES.forEach((m)
+        => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
 
         final String par = getModelDependentParameter(SELECTED_LISTENING_MODES);
         for (CheckableItem sp in CheckableItem.readFromPreference(this, par, defItems))

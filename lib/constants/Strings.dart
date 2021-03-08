@@ -1476,22 +1476,6 @@ Enjoy!"""];
         /*pl*/ "Equalizer"];
     static String get equalizer => l_equalizer[_language];
 
-    static const List<String> l_listening_mode_audio = [
-        /*en*/ "Show audio modes only",
-        /*ru*/ "Показать только профили аудио",
-        /*de*/ "Nur Audiomodi anzeigen",
-        /*fr*/ "Afficher uniquement les modes audio",
-        /*pl*/ "Pokaż tylko tryby audio"];
-    static String get listening_mode_audio => l_listening_mode_audio[_language];
-
-    static const List<String> l_listening_mode_video = [
-        /*en*/ "Show video modes only",
-        /*ru*/ "Показать только профили видео",
-        /*de*/ "Nur Videomodi anzeigen",
-        /*fr*/ "Afficher uniquement les modes vidéo",
-        /*pl*/ "Pokaż tylko tryby wideo"];
-    static String get listening_mode_video => l_listening_mode_video[_language];
-
     static const List<String> l_preset_command_up = [
         /*en*/ "Sets preset wrap-around up",
         /*ru*/ "Следующий канал",
@@ -3139,6 +3123,22 @@ Enjoy!"""];
         /*fr*/ "Changer mode d\'écoute",
         /*pl*/ "Zmień tryb na poprzedni"];
     static String get listening_mode_down => l_listening_mode_down[_language];
+
+    static const List<String> l_listening_mode_audio = [
+        /*en*/ "Sets audio mode wrap-around up",
+        /*ru*/ "Следующий звуковой профиль аудио",
+        /*de*/ "Audioprofile durchwechseln",
+        /*fr*/ "Changer audio mode d\'écouteo",
+        /*pl*/ "Zmień tryby audio na następny"];
+    static String get listening_mode_audio => l_listening_mode_audio[_language];
+
+    static const List<String> l_listening_mode_video = [
+        /*en*/ "Sets video mode wrap-around up",
+        /*ru*/ "Следующий звуковой профиль видео",
+        /*de*/ "Videoprofile durchwechseln",
+        /*fr*/ "Changer video d\'écoute",
+        /*pl*/ "Zmień tryby wideo na następn"];
+    static String get listening_mode_video => l_listening_mode_video[_language];
 
     static const List<String> l_remote_interface_power = [
         /*en*/ "Power",

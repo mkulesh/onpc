@@ -318,8 +318,6 @@ Enjoy!""</string>
     <string name="master_volume_restrict">Restrict volume level</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
-    <string name="listening_mode_audio">Show audio modes only</string>
-    <string name="listening_mode_video">Show video modes only</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Sets preset wrap-around up</string>
@@ -632,6 +630,8 @@ Enjoy!""</string>
     <string name="listening_mode_mode_ff" translatable="false">Auto Surround</string>
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
     <string name="listening_mode_down">Sets listening mode wrap-around down</string>
+    <string name="listening_mode_audio">Sets audio mode wrap-around up</string>
+    <string name="listening_mode_video">Sets video mode wrap-around up</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Power</string>

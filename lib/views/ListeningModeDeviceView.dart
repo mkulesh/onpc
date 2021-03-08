@@ -63,8 +63,10 @@ class ListeningModeDeviceView extends UpdatableView
                 Row(mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                        _buildBtn(ListeningModeMsg.output(ListeningMode.MUSIC)),
                         _buildBtn(ListeningModeMsg.output(ListeningMode.DOWN)),
-                        _buildBtn(ListeningModeMsg.output(ListeningMode.UP))
+                        _buildBtn(ListeningModeMsg.output(ListeningMode.UP)),
+                        _buildBtn(ListeningModeMsg.output(ListeningMode.MOVIE))
                     ]
                 )
             ]

@@ -272,8 +272,6 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="master_volume_restrict">Restreindre le volume</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
-    <string name="listening_mode_audio">Afficher uniquement les modes audio</string>
-    <string name="listening_mode_video">Afficher uniquement les modes vidéo</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Présélection haut</string>
@@ -517,6 +515,8 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Changer mode d\'écoute</string>
     <string name="listening_mode_down">Changer mode d\'écoute</string>
+    <string name="listening_mode_audio">Changer audio mode d\'écouteo</string>
+    <string name="listening_mode_video">Changer video d\'écoute</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Marche</string>

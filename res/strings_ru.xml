@@ -271,8 +271,6 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="master_volume_restrict">Ограничить максимальную громкость</string>
     <string name="master_volume_max">Максимум</string>
     <string name="equalizer">Эквалайзер</string>
-    <string name="listening_mode_audio">Показать только профили аудио</string>
-    <string name="listening_mode_video">Показать только профили видео</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Следующий канал</string>
@@ -516,6 +514,8 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Следующий звуковой профиль</string>
     <string name="listening_mode_down">Предыдущий звуковой профиль</string>
+    <string name="listening_mode_audio">Следующий звуковой профиль аудио</string>
+    <string name="listening_mode_video">Следующий звуковой профиль видео</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Питание</string>
