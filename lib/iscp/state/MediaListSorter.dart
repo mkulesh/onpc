@@ -26,57 +26,47 @@ class MediaListSorter
 
     List<ISCPMessage> sortDeezerItems(final List<ISCPMessage> items, final MediaSortMode _sortMode)
     {
-        final List<ISCPMessage> sortedItems = List.from(items);
-        switch (_sortMode)
-        {
-            case MediaSortMode.ITEM_NAME:
-                sortedItems.sort((a, b)
-                => _sortByItemName(a, b));
-                break;
-            case MediaSortMode.ARTIST_ALBUM:
-                sortedItems.sort((a, b)
-                => _sortByArtistAlbum(a, b));
-                break;
-        }
+        final List<ISCPMessage> sortedItems = _sortMode == MediaSortMode.ITEM_NAME ? List.from(items) : _swapArtistAndAlbum(items);
+        sortedItems.sort((a, b) => _sortByItemName(a, b));
         return sortedItems;
     }
 
     String _getItemName(final ISCPMessage cmd)
     => cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
 
+    List<ISCPMessage> _swapArtistAndAlbum(final List<ISCPMessage> items)
+    {
+        final List<ISCPMessage> newItems = [];
+        items.forEach((a)
+        {
+            final String aName = _getItemName(a);
+            if (a is XmlListItemMsg && aName != null)
+            {
+                String newTitle = a.getTitle;
+                final List<String> aTerms = aName.split(_ALBUMS_SEPARATOR);
+                if (aTerms.isNotEmpty)
+                {
+                    final String album = aTerms.first;
+                    final String artist = aTerms.last;
+                    if (artist != album)
+                    {
+                        newTitle = artist + _ALBUMS_SEPARATOR + album;
+                    }
+                }
+                newItems.add(XmlListItemMsg.rename(a, newTitle));
+            }
+            else
+            {
+                newItems.add(a);
+            }
+        });
+        return newItems;
+    }
+
     int _sortByItemName(final ISCPMessage a, final ISCPMessage b)
     {
         final String aName = _getItemName(a);
         final String bName = _getItemName(b);
         return aName != null && bName != null ? aName.compareTo(bName) : 0;
-    }
-
-    int _sortByArtistAlbum(final ISCPMessage a, final ISCPMessage b)
-    {
-        final String aName = _getItemName(a);
-        if (aName == null)
-        {
-            return 0;
-        }
-        final List<String> aTerms = aName.split(_ALBUMS_SEPARATOR);
-
-        final String bName = _getItemName(b);
-        if (bName == null)
-        {
-            return 0;
-        }
-        final List<String> bTerms = bName.split(_ALBUMS_SEPARATOR);
-
-        if (aTerms.isEmpty || bTerms.isEmpty)
-        {
-            return 0;
-        }
-
-        final int artist = aTerms.last.compareTo(bTerms.last);
-        if (aTerms.length < 2 || bTerms.length < 2 || artist != 0)
-        {
-            return artist;
-        }
-        return aTerms.first.compareTo(bTerms.first);
     }
 }

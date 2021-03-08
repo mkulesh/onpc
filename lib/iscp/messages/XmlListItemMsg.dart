@@ -70,6 +70,17 @@ class XmlListItemMsg extends ISCPMessage
         _cmdMessage = cmdMessage;
     }
 
+    XmlListItemMsg.rename(final XmlListItemMsg src, final String newTitle) :
+            super.outputId(src.getMessageId, src.getCode, src.getData)
+    {
+        _title = newTitle;
+        _iconType = src._iconType;
+        _icon = src._icon;
+        _iconId = src._iconId;
+        _selectable = src._selectable;
+        _cmdMessage = src._cmdMessage;
+    }
+
     static String _getParameterAsString(final int id, final int numberOfLayers)
     {
         return "I" +
