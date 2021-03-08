@@ -7,9 +7,8 @@ echo Building $APP_NAME
 rm -rf ./$APP_NAME
 rm -rf ${APP_NAME}.zip
 
-# The Linux build can be currently done on master channel only
 flutter clean
-flutter channel master
+flutter channel stable
 flutter doctor
 flutter build linux --release
 
