@@ -22,8 +22,8 @@ import "CdControlView.dart";
 import "DeviceInfoView.dart";
 import "DeviceSettingsView.dart";
 import "InputSelectorView.dart";
-import "ListeningModeDeviceView.dart";
-import "ListeningModeView.dart";
+import "ListeningModeButtonsView.dart";
+import "ListeningModeListView.dart";
 import "MediaListView.dart";
 import "PlayControlView.dart";
 import "SetupNavigationCommandsView.dart";
@@ -196,7 +196,7 @@ class AppTabView extends UpdatableView
                 return CustomDivider();
 
             case AppControl.LISTENING_MODE_LIST:
-                return UpdatableWidget(key: key, child: ListeningModeView(viewContext));
+                return UpdatableWidget(key: key, child: ListeningModeListView(viewContext));
 
             case AppControl.AUDIO_CONTROL:
                 return UpdatableWidget(key: key, child: VolumeControlView(viewContext));
@@ -231,8 +231,11 @@ class AppTabView extends UpdatableView
             case AppControl.SETUP_NAV_CMD:
                 return UpdatableWidget(key: key, child: SetupNavigationCommandsView(viewContext));
 
-            case AppControl.LISTENING_MODE_BTN:
-                return UpdatableWidget(key: key, child: ListeningModeDeviceView(viewContext));
+            case AppControl.LISTENING_MODE_SWITCH:
+                return UpdatableWidget(key: key, child: ListeningModeButtonsView(viewContext, LMButtonsType.SWITCH));
+
+            case AppControl.LISTENING_MODE_GROUPS:
+                return UpdatableWidget(key: key, child: ListeningModeButtonsView(viewContext, LMButtonsType.GROUPS));
 
             case AppControl.DEVICE_INFO:
                 return DeviceInfoView(viewContext);

@@ -107,6 +107,11 @@ class Strings
     static const String listening_mode_mode_a6 = "Neural Digital Music + Audyssey DSX";
     static const String listening_mode_mode_a7 = "Dolby EX + Audyssey DSX";
     static const String listening_mode_mode_ff = "Auto Surround";
+    static const String listening_mode_music = "MUSIC";
+    static const String listening_mode_movie = "MOVIE";
+    static const String listening_mode_game = "GAME";
+    static const String listening_mode_stereo = "STEREO";
+    static const String listening_mode_thx = "THX";
 
     /* Non-translatable arrays */
 
@@ -829,20 +834,28 @@ Enjoy!"""];
     static String get app_control_divider => l_app_control_divider[_language];
 
     static const List<String> l_app_control_listening_mode_list = [
-        /*en*/ "Listening mode buttons",
-        /*ru*/ "Звуковой профиль (кнопки)",
-        /*de*/ "Hörmodus-Tasten",
-        /*fr*/ "Boutons de mode d\'écoute",
-        /*pl*/ "Przyciski trybu odsłuchu"];
+        /*en*/ "Listening mode: list",
+        /*ru*/ "Звуковой профиль: список",
+        /*de*/ "Hörmodus: Liste",
+        /*fr*/ "Mode d\'écoute: liste",
+        /*pl*/ "Tryb odsłuchu: lista"];
     static String get app_control_listening_mode_list => l_app_control_listening_mode_list[_language];
 
-    static const List<String> l_app_control_listening_mode_btn = [
-        /*en*/ "Listening mode switch",
-        /*ru*/ "Звуковой профиль (переключатель)",
-        /*de*/ "Hörmodusschalter",
-        /*fr*/ "Commutateur de mode d\'écoute",
-        /*pl*/ "Przełącznik trybu słuchania"];
-    static String get app_control_listening_mode_btn => l_app_control_listening_mode_btn[_language];
+    static const List<String> l_app_control_listening_mode_switch = [
+        /*en*/ "Listening mode: switch",
+        /*ru*/ "Звуковой профиль: переключатель",
+        /*de*/ "Hörmodus: Schalter",
+        /*fr*/ "Mode d\'écoute: commutateur",
+        /*pl*/ "Tryb odsłuchu: przełącznik"];
+    static String get app_control_listening_mode_switch => l_app_control_listening_mode_switch[_language];
+
+    static const List<String> l_app_control_listening_mode_groups = [
+        /*en*/ "Listening mode: groups",
+        /*ru*/ "Звуковой профиль: группы",
+        /*de*/ "Hörmodus: Gruppen",
+        /*fr*/ "Mode d'écoute: groupes",
+        /*pl*/ "Tryb odsłuchu: grupy"];
+    static String get app_control_listening_mode_groups => l_app_control_listening_mode_groups[_language];
 
     static const List<String> l_app_control_audio_control = [
         /*en*/ "Audio control",
@@ -3123,22 +3136,6 @@ Enjoy!"""];
         /*fr*/ "Changer mode d\'écoute",
         /*pl*/ "Zmień tryb na poprzedni"];
     static String get listening_mode_down => l_listening_mode_down[_language];
-
-    static const List<String> l_listening_mode_audio = [
-        /*en*/ "Sets audio mode wrap-around up",
-        /*ru*/ "Следующий звуковой профиль аудио",
-        /*de*/ "Audioprofile durchwechseln",
-        /*fr*/ "Changer audio mode d\'écouteo",
-        /*pl*/ "Zmień tryby audio na następny"];
-    static String get listening_mode_audio => l_listening_mode_audio[_language];
-
-    static const List<String> l_listening_mode_video = [
-        /*en*/ "Sets video mode wrap-around up",
-        /*ru*/ "Следующий звуковой профиль видео",
-        /*de*/ "Videoprofile durchwechseln",
-        /*fr*/ "Changer video d\'écoute",
-        /*pl*/ "Zmień tryby wideo na następn"];
-    static String get listening_mode_video => l_listening_mode_video[_language];
 
     static const List<String> l_remote_interface_power = [
         /*en*/ "Power",

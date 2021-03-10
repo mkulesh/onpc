@@ -72,8 +72,6 @@ class Drawables
     static const String feed_love = BUTTONS_PATH + "feed_love.svg";
     static const String input_selector_down = BUTTONS_PATH + "input_selector_down.svg";
     static const String input_selector_up = BUTTONS_PATH + "input_selector_up.svg";
-    static const String listening_mode_audio = BUTTONS_PATH + "listening_mode_audio.svg";
-    static const String listening_mode_video = BUTTONS_PATH + "listening_mode_video.svg";
 
     static const String media_item_airplay = BUTTONS_PATH + "media_item_airplay.svg";
     static const String media_item_amazon = BUTTONS_PATH + "media_item_amazon.svg";

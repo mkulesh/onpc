@@ -23,7 +23,7 @@ import "../widgets/CustomTextButton.dart";
 import "UpdatableView.dart";
 
 
-class ListeningModeView extends UpdatableView
+class ListeningModeListView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
@@ -31,7 +31,7 @@ class ListeningModeView extends UpdatableView
         ListeningModeMsg.CODE
     ];
 
-    ListeningModeView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    ListeningModeListView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

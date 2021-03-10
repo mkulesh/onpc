@@ -227,8 +227,9 @@ Enjoy!""</string>
 
     <!-- Application settings: Controls -->
     <string name="app_control_divider">Divider</string>
-    <string name="app_control_listening_mode_list">Listening mode buttons</string>
-    <string name="app_control_listening_mode_btn">Listening mode switch</string>
+    <string name="app_control_listening_mode_list">Listening mode: list</string>
+    <string name="app_control_listening_mode_switch">Listening mode: switch</string>
+    <string name="app_control_listening_mode_groups">Listening mode: groups</string>
     <string name="app_control_audio_control">Audio control</string>
     <string name="app_control_track_file_info">File information</string>
     <string name="app_control_track_cover">Album cover</string>
@@ -628,10 +629,13 @@ Enjoy!""</string>
     <string name="listening_mode_mode_a6" translatable="false">Neural Digital Music + Audyssey DSX</string>
     <string name="listening_mode_mode_a7" translatable="false">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff" translatable="false">Auto Surround</string>
+    <string name="listening_mode_music" translatable="false">MUSIC</string>
+    <string name="listening_mode_movie" translatable="false">MOVIE</string>
+    <string name="listening_mode_game" translatable="false">GAME</string>
+    <string name="listening_mode_stereo" translatable="false">STEREO</string>
+    <string name="listening_mode_thx" translatable="false">THX</string>
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
     <string name="listening_mode_down">Sets listening mode wrap-around down</string>
-    <string name="listening_mode_audio">Sets audio mode wrap-around up</string>
-    <string name="listening_mode_video">Sets video mode wrap-around up</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Power</string>

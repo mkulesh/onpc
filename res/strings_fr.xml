@@ -181,8 +181,9 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
     <!-- Application settings: Controls -->
     <string name="app_control_divider">Diviseur</string>
-    <string name="app_control_listening_mode_list">Boutons de mode d\'écoute</string>
-    <string name="app_control_listening_mode_btn">Commutateur de mode d\'écoute</string>
+    <string name="app_control_listening_mode_list">Mode d\'écoute: liste</string>
+    <string name="app_control_listening_mode_switch">Mode d\'écoute: commutateur</string>
+    <string name="app_control_listening_mode_groups">Mode d'écoute: groupes</string>
     <string name="app_control_audio_control">Réglages Audio</string>
     <string name="app_control_track_file_info">Informations sur le fichier</string>
     <string name="app_control_track_cover">Couverture de l\'album</string>
@@ -515,8 +516,6 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Changer mode d\'écoute</string>
     <string name="listening_mode_down">Changer mode d\'écoute</string>
-    <string name="listening_mode_audio">Changer audio mode d\'écouteo</string>
-    <string name="listening_mode_video">Changer video d\'écoute</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Marche</string>

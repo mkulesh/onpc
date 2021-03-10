@@ -286,12 +286,12 @@ class CfgAppSettings extends CfgModule
                 AppControl.DIVIDER1,
                 AppControl.SETUP_NAV_CMD,
                 AppControl.DIVIDER2,
-                AppControl.LISTENING_MODE_BTN
+                AppControl.LISTENING_MODE_SWITCH
             ],
             controlsLandscapeLeft: [
                 AppControl.SETUP_OP_CMD,
                 AppControl.DIVIDER1,
-                AppControl.LISTENING_MODE_BTN
+                AppControl.LISTENING_MODE_SWITCH
             ],
             controlsLandscapeRight: [
                 AppControl.SETUP_NAV_CMD

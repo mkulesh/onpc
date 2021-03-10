@@ -180,8 +180,9 @@ Copyright © 2019-2021 by __Михаил Кулеш__
 
     <!-- Application settings: Controls -->
     <string name="app_control_divider">Разделитель</string>
-    <string name="app_control_listening_mode_list">Звуковой профиль (кнопки)</string>
-    <string name="app_control_listening_mode_btn">Звуковой профиль (переключатель)</string>
+    <string name="app_control_listening_mode_list">Звуковой профиль: список</string>
+    <string name="app_control_listening_mode_switch">Звуковой профиль: переключатель</string>
+    <string name="app_control_listening_mode_groups">Звуковой профиль: группы</string>
     <string name="app_control_audio_control">Контроль звука</string>
     <string name="app_control_track_file_info">Описание файла</string>
     <string name="app_control_track_cover">Картинка альбома</string>
@@ -514,8 +515,6 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Следующий звуковой профиль</string>
     <string name="listening_mode_down">Предыдущий звуковой профиль</string>
-    <string name="listening_mode_audio">Следующий звуковой профиль аудио</string>
-    <string name="listening_mode_video">Следующий звуковой профиль видео</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Питание</string>

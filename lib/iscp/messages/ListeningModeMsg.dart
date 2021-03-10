@@ -92,7 +92,10 @@ enum ListeningMode
     UP,
     DOWN,
     MUSIC,
-    MOVIE
+    MOVIE,
+    GAME,
+    STEREO,
+    THX
 }
 
 /*
@@ -250,11 +253,15 @@ class ListeningModeMsg extends EnumParameterMsg<ListeningMode>
             descrList: Strings.l_listening_mode_down,
             icon: Drawables.cmd_left),
         EnumItem.code(ListeningMode.MUSIC, "MUSIC",
-            descrList: Strings.l_listening_mode_audio,
-            icon: Drawables.listening_mode_audio),
+            descr: Strings.listening_mode_music),
         EnumItem.code(ListeningMode.MOVIE, "MOVIE",
-            descrList: Strings.l_listening_mode_video,
-            icon: Drawables.listening_mode_video)
+            descr: Strings.listening_mode_movie),
+        EnumItem.code(ListeningMode.GAME, "GAME",
+            descr: Strings.listening_mode_game),
+        EnumItem.code(ListeningMode.STEREO, "STEREO",
+            descr: Strings.listening_mode_stereo),
+        EnumItem.code(ListeningMode.THX, "THX",
+            descr: Strings.listening_mode_thx),
     ]);
 
     ListeningModeMsg(EISCPMessage raw) : super(CODE, raw, ValueEnum);

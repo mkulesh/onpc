@@ -183,8 +183,9 @@ Enjoy!""</string>
 
     <!-- Application settings: Controls -->
     <string name="app_control_divider">Rozdzielacz</string>
-    <string name="app_control_listening_mode_list">Przyciski trybu odsłuchu</string>
-    <string name="app_control_listening_mode_btn">Przełącznik trybu słuchania</string>
+    <string name="app_control_listening_mode_list">Tryb odsłuchu: lista</string>
+    <string name="app_control_listening_mode_switch">Tryb odsłuchu: przełącznik</string>
+    <string name="app_control_listening_mode_groups">Tryb odsłuchu: grupy</string>
     <string name="app_control_audio_control">Sterowanie dźwiękiem</string>
     <string name="app_control_track_file_info">Informacje o pliku</string>
     <string name="app_control_track_cover">Okładka albumu</string>
@@ -517,8 +518,6 @@ Enjoy!""</string>
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Zmień tryb na następny</string>
     <string name="listening_mode_down">Zmień tryb na poprzedni</string>
-    <string name="listening_mode_audio">Zmień tryby audio na następny</string>
-    <string name="listening_mode_video">Zmień tryby wideo na następn</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Zasilanie</string>
