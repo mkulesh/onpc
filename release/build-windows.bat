@@ -5,7 +5,7 @@ echo Building MusicControl-v%VER%-windows-x86_64
 
 :: The Window build can be currently done on master channel only
 call flutter clean
-call flutter channel master
+call flutter channel stable
 call flutter doctor
 call flutter build windows --release
 
