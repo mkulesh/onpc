@@ -53,8 +53,10 @@ class ListeningModeButtonsView extends UpdatableView
             return SizedBox.shrink();
         }
 
-        final Widget currentMode = state.isOn ?
-        CustomTextLabel.small(state.soundControlState.listeningMode.description) : SizedBox.shrink();
+        final String currentModeStr =
+            state.soundControlState.listeningMode.key == ListeningMode.MODE_40 ?
+                state.trackState.getListeningModeFromAvInfo() : state.soundControlState.listeningMode.description;
+        final Widget currentMode = state.isOn ? CustomTextLabel.small(currentModeStr) : SizedBox.shrink();
 
         Widget control;
         if (lmButtonsType == LMButtonsType.SWITCH)

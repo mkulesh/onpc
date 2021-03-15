@@ -60,19 +60,24 @@ class RequestListeningMode implements MessageScriptIf
     @override
     void processMessage(ISCPMessage msg, State state, MessageChannel channel)
     {
-        if (msg is ListeningModeMsg &&
-            (msg.getValue.key == ListeningMode.MODE_FF || msg.getValue.key == ListeningMode.NONE) &&
-            listeningModeRequests < MAX_LISTENING_MODE_REQUESTS &&
-            listeningModeTimer == null)
+        if (msg is ListeningModeMsg)
         {
-            Logging.info(this, "scheduling listening mode request in " + LISTENING_MODE_DELAY.toString() + "ms");
-            listeningModeTimer = Timer(LISTENING_MODE_DELAY, ()
+            final bool invalid = msg.getValue.key == ListeningMode.MODE_FF || msg.getValue.key == ListeningMode.NONE;
+            if (invalid && listeningModeRequests < MAX_LISTENING_MODE_REQUESTS && listeningModeTimer == null)
             {
-                listeningModeRequests++;
-                listeningModeTimer = null;
-                Logging.info(this, "re-requesting LM state [" + listeningModeRequests.toString() + "]...");
-                channel.sendMessage(EISCPMessage.query(ListeningModeMsg.CODE));
-            });
+                Logging.info(this, "scheduling listening mode request in " + LISTENING_MODE_DELAY.toString() + "ms");
+                listeningModeTimer = Timer(LISTENING_MODE_DELAY, ()
+                {
+                    listeningModeRequests++;
+                    listeningModeTimer = null;
+                    Logging.info(this, "re-requesting LM state [" + listeningModeRequests.toString() + "]...");
+                    channel.sendMessage(EISCPMessage.query(ListeningModeMsg.CODE));
+                });
+            }
+            if (!invalid)
+            {
+                channel.sendQueries(state.trackState.getAvInfoQueries());
+            }
         }
     }
 }

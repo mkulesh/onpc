@@ -434,7 +434,6 @@ class StateManager
             sendQueries(_state.deviceSettingsState.getQueries(state.getActiveZone));
             sendQueries(_state.soundControlState.getQueries(state.getActiveZone, state.receiverInformation));
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
-            sendQueries(_state.trackState.getAvInfoQueries());
             _requestListState();
             return changed;
         }

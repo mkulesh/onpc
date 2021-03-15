@@ -275,4 +275,10 @@ class TrackState
             }
         }
     }
+
+    String getListeningModeFromAvInfo()
+    {
+        final List<String> aTerms = avInfoAudioInput.split(",");
+        return aTerms.length > 1 ? aTerms[1] : "Unknown";
+    }
 }
