@@ -76,12 +76,14 @@ class TrackFileInfoView extends UpdatableView
             textFileFormat = InkWell(
                 child: textFileFormat,
                 onTap: ()
-                => showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext c)
-                    => AvInfoDialog(viewContext))
-                );
+                {
+                    stateManager.sendQueries(state.trackState.getAvInfoQueries());
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext c)
+                        => AvInfoDialog(viewContext));
+                });
          }
 
         // Track info
