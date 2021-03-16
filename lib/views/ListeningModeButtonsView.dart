@@ -16,6 +16,7 @@ import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
+import "../iscp/messages/AudioInformationMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
@@ -37,7 +38,8 @@ class ListeningModeButtonsView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         ReceiverInformationMsg.CODE,
         PowerStatusMsg.CODE,
-        ListeningModeMsg.CODE
+        ListeningModeMsg.CODE,
+        AudioInformationMsg.CODE
     ];
 
     final LMButtonsType lmButtonsType;
