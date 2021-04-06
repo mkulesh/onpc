@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-
+// @dart=2.9
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:xml/xml.dart" as xml;

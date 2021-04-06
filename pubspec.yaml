@@ -15,7 +15,7 @@ author: Mikhail Kulesh
 version: 2.10.1+297
 
 environment:
-  sdk: ">=2.1.1 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
