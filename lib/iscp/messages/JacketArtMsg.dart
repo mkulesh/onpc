@@ -130,16 +130,12 @@ class JacketArtMsg extends ISCPMessage
     List<int> convertRaw(String str)
     {
         final int size = (str.length / 2).floor();
-        final List<int> bytes = List<int>(size);
-        for (int i = 0; i < size; i++)
+        final List<int> bytes = List.generate(size, (i)
         {
             final int j1 = 2 * i;
             final int j2 = 2 * i + 1;
-            if (j1 < str.length && j2 < str.length)
-            {
-                bytes[i] = ISCPMessage.nonNullInteger(str.substring(j1, j2 + 1), 16, 0);
-            }
-        }
+            return (j1 < str.length && j2 < str.length) ? ISCPMessage.nonNullInteger(str.substring(j1, j2 + 1), 16, 0) : 0;
+        });
         return bytes;
     }
 

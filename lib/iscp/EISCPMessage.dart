@@ -222,8 +222,7 @@ class EISCPMessage
         {
             return null;
         }
-        final List<int> bytes = List<int>(_headerSize + dSize);
-        bytes.fillRange(0, _headerSize + dSize, 0);
+        final List<int> bytes = List<int>.filled(_headerSize + dSize, 0);
 
         // Message header
         List.copyRange(bytes, 0, MSG_START.codeUnits, 0, 4);
