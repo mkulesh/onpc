@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Fedora packages:
+# dnf install clang cmake ninja-build gtk3-devel xz-devel
+
 VER=`cat VERSION.txt`
 APP_NAME=MusicControl-v${VER}-linux-x86_64
 echo Building $APP_NAME
