@@ -42,7 +42,7 @@ class _AvInfoDialogState extends State<AvInfoDialog>
             contentPadding: DialogDimens.contentPadding,
             content: UpdatableWidget(child: AvInfoView(widget._viewContext)),
             actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()

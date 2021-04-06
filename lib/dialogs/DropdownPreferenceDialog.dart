@@ -64,7 +64,7 @@ class DropdownPreferenceDialog extends StatelessWidget
                 scrollDirection: Axis.vertical,
                 child: ListBody(children: controls)),
             actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()

@@ -46,7 +46,7 @@ class _GroupControlDialogState extends State<GroupControlDialog>
             contentPadding: DialogDimens.contentPadding,
             content: UpdatableWidget(child: GroupControlView(viewContext)),
             actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()

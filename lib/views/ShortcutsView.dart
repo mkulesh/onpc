@@ -21,7 +21,6 @@ import "../Platform.dart";
 import "../config/CfgAppSettings.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../constants/Dimens.dart";
-import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../iscp/StateManager.dart";

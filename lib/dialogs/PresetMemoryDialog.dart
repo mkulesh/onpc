@@ -74,13 +74,13 @@ class _PresetMemoryDialogState extends State<PresetMemoryDialog>
                 scrollDirection: Axis.vertical,
                 child: ListBody(children: controls)),
             actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();
                     }),
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_ok.toUpperCase(),
                         style: _presetText.text.isEmpty ? td.textTheme.button.copyWith(color: td.disabledColor) : td.textTheme.button
                     ),

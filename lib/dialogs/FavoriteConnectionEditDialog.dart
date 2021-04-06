@@ -117,13 +117,13 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
                 scrollDirection: Axis.vertical,
                 child: ListBody(children: controls)),
             actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();
                     }),
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     {

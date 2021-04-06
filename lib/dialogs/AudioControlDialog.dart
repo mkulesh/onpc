@@ -74,7 +74,7 @@ class _AudioControlDialogState extends State<AudioControlDialog>
             contentPadding: DialogDimens.contentPadding,
             content: dialogContent,
             actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()

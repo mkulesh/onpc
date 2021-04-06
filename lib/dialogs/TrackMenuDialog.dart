@@ -57,7 +57,7 @@ class _TrackMenuDialogState extends State<TrackMenuDialog>
                 Navigator.of(context).pop();
             })),
             actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()

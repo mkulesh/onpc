@@ -56,7 +56,6 @@ class BaseAppTheme
             disabledColor: disabledColor,
             backgroundColor: backgroundColor,
             toggleableActiveColor: accentColor,
-            textSelectionColor: accentColor,
 
             appBarTheme: AppBarTheme(
                 color: strong ? backgroundColor : primaryColor,
@@ -81,6 +80,11 @@ class BaseAppTheme
                 // Buttons
                 button: TextStyle(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
             ),
+
+            textSelectionTheme: TextSelectionThemeData(
+                cursorColor: accentColor,
+                selectionColor: accentColor,
+            )
         );
     }
 
