@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 36
-        versionName "1.23"
+        versionName "1.24"
         setProperty("archivesBaseName", "onpc-v" + versionName)
     }
 
