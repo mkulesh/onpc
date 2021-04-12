@@ -307,7 +307,7 @@ class ReceiverInformationMsg extends ISCPMessage
     => _networkServices;
 
     static List<Zone> get defaultZones
-    => [Zone("1", "Main", 1, 0x82), Zone("2", "Zone2", 1, 0x82)];
+    => [Zone("1", "Main", 1, 0x82), Zone("2", "Zone2", 1, 0x82), Zone("3", "Zone3", 1, 0x82), Zone("4", "Zone4", 1, 0x82)];
 
     List<Zone> get zones
     => _zones;
@@ -407,7 +407,7 @@ class ReceiverInformationMsg extends ISCPMessage
             Logging.info(this, "  preset: " + z.toString());
         });
 
-        // Control list
+        // Control list and Tone controls
         document.findAllElements("control").forEach((element)
         {
             final String id = element.getAttribute("id");
@@ -424,7 +424,5 @@ class ReceiverInformationMsg extends ISCPMessage
         });
         Logging.info(this, "  controls: " + _controlList.toString());
         Logging.info(this, "  tone controls: " + _toneControls.toString());
-
-        // Tone controls
     }
 }
