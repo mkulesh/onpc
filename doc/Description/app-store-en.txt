@@ -27,6 +27,7 @@ Known limitations:
 - In order to use Spotify, you need the official Spotify app additionally to this app
 - Amazon Music HD subscription: broadcast in AAC 256 kbps only (that is a limitation of the Onkyo firmware)
 - Following Pioneer models are NOT supported: VSX-529, VSX-830, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
+- Following models do not support "Play Queue" feature (that is a limitation of the Onkyo firmware): CR-N765, DTR-40.5, HM76, HT-R693, HT-R695, TX-8130, TX-8150, TX-NR626, TX-NR636, TX-NR646, TX-RZ900
 
 At the moment, the app is tested with following devices:
 - Onkyo: TX-L50, TX-NR414, TX-NR509, TX-NR525, TX-NR575E, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-RZ810, TX-RZ830, TX-RZ900, TX-RZ1100, HT-S7805, NS-6130, NS-6170, TX-8130, TX-8150, TX-8250, TX-8270, TX-8390, TX-L20D, R-N855, CS-N575D, CR-N765, CR-N775D, NCP-302
