@@ -83,6 +83,7 @@ class MediaListState
     int get numberOfItems
     => _mediaItems.length;
 
+    int _pathIndexOffset = 0;
     final List<String> _pathItems = [];
 
     List<String> get pathItems
@@ -106,6 +107,7 @@ class MediaListState
         _numberOfTitles = 0;
         _currentCursorPosition = 0;
         _pathItems.clear();
+        _pathIndexOffset = 0;
         clearItems();
     }
 
@@ -173,24 +175,29 @@ class MediaListState
             changed = true;
         }
         // Update path items
-        for (int i = _pathItems.length; i < numberOfLayers; i++)
+        if (_layerInfo != LayerInfo.UNDER_2ND_LAYER)
+        {
+            _pathItems.clear();
+            _pathIndexOffset = _numberOfLayers;
+        }
+        // Issue #233: For some receivers like TX-8130, the LAYERS value for the top of service is 0 instead 1.
+        // Therefore, we shift it by one in this case
+        final int pathIndex = _numberOfLayers + 1 - _pathIndexOffset;
+        for (int i = _pathItems.length; i < pathIndex; i++)
         {
             _pathItems.add("");
         }
         if (_uiType != UIType.PLAYBACK)
         {
-            if (_numberOfLayers > 0)
+            if (pathIndex > 0)
             {
-                _pathItems[numberOfLayers - 1] = _titleBar;
-                while (_pathItems.length > _numberOfLayers)
+                _pathItems[pathIndex - 1] = _titleBar;
+                while (_pathItems.length > pathIndex)
                 {
                     _pathItems.removeLast();
                 }
             }
-            else
-            {
-                _pathItems.clear();
-            }
+            Logging.info(this, "media list path = " + _pathItems.toString() + "(offset = " + _pathIndexOffset.toString() + ")");
         }
         return changed;
     }
