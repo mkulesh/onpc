@@ -838,7 +838,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             final CfgFavoriteShortcuts shortcutCfg = configuration.favoriteShortcuts;
             final Shortcut shortcut = Shortcut(
                 shortcutCfg.getNextId(), ms.inputType, ms.serviceType, item, alias);
-            if (state.mediaListState.numberOfLayers > 1)
+            if (ms.pathItems.isNotEmpty)
             {
                 Logging.info(this.widget, "full path to the item: " + ms.pathItems.toString());
                 shortcut.setPathItems(ms.pathItems, ms.serviceType);
