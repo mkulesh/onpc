@@ -146,7 +146,7 @@ class ShortcutsView extends UpdatableView
                 stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
                 break;
             case _ShortcutContextMenu.COPY_TO_CLIPBOARD:
-                Clipboard.setData(ClipboardData(text: s.toScript()));
+                Clipboard.setData(ClipboardData(text: s.toScript(state.receiverInformation.model)));
                 break;
         }
     }

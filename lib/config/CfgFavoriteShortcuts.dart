@@ -139,7 +139,7 @@ class Shortcut
         return label.toString();
     }
 
-    String toScript()
+    String toScript(final String model)
     {
         String data = "";
         data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
@@ -159,15 +159,15 @@ class Shortcut
 
         data += "<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>";
 
-        // Go to the top level. Response depends on the input type
+        // Go to the top level. Response depends on the input type and model
         String firstPath = pathItems.isEmpty ? item : pathItems.first;
-        if (input.key == InputSelector.NET && service.key != ServiceType.UNKNOWN)
+        if (input.key == InputSelector.NET && service.key != ServiceType.UNKNOWN && model != "TX-8130")
         {
             data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"" + service.description + "\"/>";
         }
         else
         {
-            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\"/>";
         }
 
         // Select target service

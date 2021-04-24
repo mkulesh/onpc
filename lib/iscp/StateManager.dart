@@ -800,7 +800,7 @@ class StateManager
         if (shortcut != null)
         {
             Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-            activateScript(MessageScript(shortcut.toScript()));
+            activateScript(MessageScript(shortcut.toScript(state.receiverInformation.model)));
         }
     }
 }
