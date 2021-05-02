@@ -75,6 +75,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO TX-NR656](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr656/index.html)
 - [ONKYO TX-NR676E](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr676e/index.html)
 - [ONKYO TX-NR686](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr686/index.html)
+- [ONKYO TX-NR696](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr696/index.html)
 - [ONKYO TX-RZ810](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz810/index.html)
 - [ONKYO TX-RZ830](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz830/index.html)
 - [ONKYO TX-RZ900](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz900/index.html)
