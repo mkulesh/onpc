@@ -161,13 +161,23 @@ class Shortcut
 
         // Go to the top level. Response depends on the input type and model
         String firstPath = pathItems.isEmpty ? item : pathItems.first;
-        if (input.key == InputSelector.NET && service.key != ServiceType.UNKNOWN && model != "TX-8130")
+        if (input.key == InputSelector.NET && service.key != ServiceType.UNKNOWN)
         {
-            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"" + service.description + "\"/>";
+            if (model == "TX-8130")
+            {
+                // Issue #233: on TX-8130, NTC(TOP) not always changes to the NET top. Sometime is still be
+                // within a service line DLNA, i.e NTC(TOP) sometime moves to the top of the current service
+                // (not to the top of network). In this case, listitem shall be ignored in the output
+                data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\"/>";
+            }
+            else
+            {
+                data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"" + service.description + "\"/>";
+            }
         }
         else
         {
-            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\"/>";
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
         }
 
         // Select target service
