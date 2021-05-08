@@ -48,6 +48,7 @@ import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PresetMemoryMsg;
 import com.mkulesh.onpc.iscp.messages.RDSInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
@@ -564,8 +565,8 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         updateMultiroomChannelBtn(btnMultiroomChanel, state);
 
         // Feeds
-        updateFeedButton(positiveFeed, state.positiveFeed);
-        updateFeedButton(negativeFeed, state.negativeFeed);
+        updateFeedButton(positiveFeed, state.positiveFeed, state.serviceType);
+        updateFeedButton(negativeFeed, state.negativeFeed, state.serviceType);
     }
 
     private void updatePresetButtons()
@@ -908,14 +909,16 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         }
     }
 
-    private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed)
+    private void updateFeedButton(final AppCompatImageButton btn, final MenuStatusMsg.Feed feed, ServiceType serviceType)
     {
         btn.setVisibility(feed.isImageValid() ? View.VISIBLE : View.GONE);
         if (feed.isImageValid())
         {
             btn.setImageResource(feed.getImageId());
             setButtonEnabled(btn, true);
-            setButtonSelected(btn, feed == MenuStatusMsg.Feed.LOVE);
+            final boolean isSelected = serviceType == ServiceType.AMAZON_MUSIC ?
+                    feed == MenuStatusMsg.Feed.LIKE : feed == MenuStatusMsg.Feed.LOVE;
+            setButtonSelected(btn, isSelected);
         }
     }
 
