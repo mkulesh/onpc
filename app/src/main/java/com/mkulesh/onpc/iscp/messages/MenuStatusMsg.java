@@ -67,7 +67,8 @@ public class MenuStatusMsg extends ISCPMessage
         BAN_WHITE("08", R.drawable.feed_ban),
         FAVORITE_BLACK("09", R.drawable.feed_love),
         FAVORITE_WHITE("0A", R.drawable.feed_love),
-        FAVORITE_YELLOW("0B", R.drawable.feed_love);
+        FAVORITE_YELLOW("0B", R.drawable.feed_love),
+        LIKE_AMAZON("0C", R.drawable.feed_like);
 
         final String code;
 
