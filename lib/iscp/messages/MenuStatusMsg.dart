@@ -37,7 +37,8 @@ enum FeedType
     BAN_WHITE,
     FAVORITE_BLACK,
     FAVORITE_WHITE,
-    FAVORITE_YELLOW
+    FAVORITE_YELLOW,
+    LIKE_AMAZON
 }
 
 enum TimeSeek
@@ -87,7 +88,8 @@ class MenuStatusMsg extends ISCPMessage
         EnumItem.code(FeedType.BAN_WHITE, "08", icon: Drawables.feed_ban),
         EnumItem.code(FeedType.FAVORITE_BLACK, "09", icon: Drawables.feed_love),
         EnumItem.code(FeedType.FAVORITE_WHITE, "0A", icon: Drawables.feed_love),
-        EnumItem.code(FeedType.FAVORITE_YELLOW, "0B", icon: Drawables.feed_love)
+        EnumItem.code(FeedType.FAVORITE_YELLOW, "0B", icon: Drawables.feed_love),
+        EnumItem.code(FeedType.LIKE_AMAZON, "0C", icon: Drawables.feed_like)
     ]);
 
     EnumItem<FeedType> _positiveFeed, _negativeFeed;

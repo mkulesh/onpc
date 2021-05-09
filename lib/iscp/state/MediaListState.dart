@@ -341,6 +341,9 @@ class MediaListState
     bool get isDeezer
     => serviceType.key == ServiceType.DEEZER;
 
+    bool get isAmazonMusic
+    => serviceType.key == ServiceType.AMAZON_MUSIC;
+
     bool get isNetworkServices
     => _serviceType.key == ServiceType.NET;
 

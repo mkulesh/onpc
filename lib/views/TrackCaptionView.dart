@@ -68,13 +68,15 @@ class TrackCaptionView extends UpdatableView
         titleItems.add(Expanded(child: CustomTextLabel.normal(_buildTrackTitle(), textAlign: TextAlign.center)));
         if (state.playbackState.positiveFeed.isImageValid)
         {
+            final FeedType feed = state.playbackState.positiveFeed.key;
+            final bool isSelected = state.mediaListState.isAmazonMusic ? feed == FeedType.LIKE : feed == FeedType.LOVE;
             titleItems.add(CustomImageButton.normal(
                 state.playbackState.positiveFeed.icon,
                 Strings.cmd_description_f1,
                 onPressed: ()
                 => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.F1, false),
                 isEnabled: true,
-                isSelected: state.playbackState.positiveFeed.key == FeedType.LOVE
+                isSelected: isSelected
             ));
         }
 
