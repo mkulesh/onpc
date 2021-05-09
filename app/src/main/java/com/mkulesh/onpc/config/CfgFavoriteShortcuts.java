@@ -45,7 +45,7 @@ public class CfgFavoriteShortcuts
     {
         public final int id;
         final InputSelectorMsg.InputType input;
-        public final ServiceType service;
+        final ServiceType service;
         final String item;
         public final String alias;
         public int order;
@@ -153,7 +153,7 @@ public class CfgFavoriteShortcuts
         }
 
         @NonNull
-        public String toScript(final Context context)
+        public String toScript(@NonNull final Context context, @NonNull final String model)
         {
             final StringBuilder data = new StringBuilder();
             data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
@@ -173,12 +173,22 @@ public class CfgFavoriteShortcuts
 
             data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
 
-            // Go to the top level. Response depends on the input type
+            // Go to the top level. Response depends on the input type and model
             String firstPath = escape(pathItems.isEmpty() ? item : pathItems.get(0));
             if (input == InputSelectorMsg.InputType.NET && service != ServiceType.UNKNOWN)
             {
-                data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"")
-                        .append(context.getString(service.getDescriptionId())).append("\"/>");
+                if ("TX-8130".equals(model))
+                {
+                    // Issue #233: on TX-8130, NTC(TOP) not always changes to the NET top. Sometime is still be
+                    // within a service line DLNA, i.e NTC(TOP) sometime moves to the top of the current service
+                    // (not to the top of network). In this case, listitem shall be ignored in the output
+                    data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\"/>");
+                }
+                else
+                {
+                    data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"NLS\" listitem=\"")
+                            .append(context.getString(service.getDescriptionId())).append("\"/>");
+                }
             }
             else
             {

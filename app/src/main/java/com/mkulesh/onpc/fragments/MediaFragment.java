@@ -290,8 +290,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                         s,
                         item,
                         alias);
-                if (state.numberOfLayers > 1)
+                if (!state.pathItems.isEmpty())
                 {
+                    Logging.info(this, "full path to the item: " + state.pathItems.toString());
                     shortcut.setPathItems(state.pathItems, getActivity(), s);
                 }
                 shortcutCfg.updateShortcut(shortcut, shortcut.alias);

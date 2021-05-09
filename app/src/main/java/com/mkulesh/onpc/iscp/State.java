@@ -185,13 +185,16 @@ public class State implements ConnectionIf
     public ServiceType serviceType = null; // service that is currently selected (may differs from currently playing)
     ListTitleInfoMsg.LayerInfo layerInfo = null;
     private ListTitleInfoMsg.UIType uiType = null;
-    public int numberOfLayers = 0;
+    int numberOfLayers = 0;
     public int numberOfItems = 0;
     private int currentCursorPosition = 0;
     public String titleBar = "";
     private final List<XmlListItemMsg> mediaItems = new ArrayList<>();
     final List<NetworkServiceMsg> serviceItems = new ArrayList<>();
     private final List<String> listInfoItems = new ArrayList<>();
+
+    // Path used for shortcuts
+    private int pathIndexOffset = 0;
     public final List<String> pathItems = new ArrayList<>();
 
     // Multiroom
@@ -1108,24 +1111,29 @@ public class State implements ConnectionIf
             changed = true;
         }
         // Update path items
-        for (int i = pathItems.size(); i < numberOfLayers; i++)
+        if (layerInfo != ListTitleInfoMsg.LayerInfo.UNDER_2ND_LAYER)
+        {
+            pathItems.clear();
+            pathIndexOffset = numberOfLayers;
+        }
+        // Issue #233: For some receivers like TX-8130, the LAYERS value for the top of service is 0 instead 1.
+        // Therefore, we shift it by one in this case
+        final int pathIndex = numberOfLayers + 1 - pathIndexOffset;
+        for (int i = pathItems.size(); i < pathIndex; i++)
         {
             pathItems.add("");
         }
         if (uiType != ListTitleInfoMsg.UIType.PLAYBACK)
         {
-            if (numberOfLayers > 0)
+            if (pathIndex > 0)
             {
-                pathItems.set(numberOfLayers - 1, titleBar);
-                while (pathItems.size() > numberOfLayers)
+                pathItems.set(pathIndex - 1, titleBar);
+                while (pathItems.size() > pathIndex)
                 {
                     pathItems.remove(pathItems.size() - 1);
                 }
             }
-            else
-            {
-                pathItems.clear();
-            }
+            Logging.info(this, "media list path = " + pathItems.toString() + "(offset = " + pathIndexOffset + ")");
         }
         return changed;
     }

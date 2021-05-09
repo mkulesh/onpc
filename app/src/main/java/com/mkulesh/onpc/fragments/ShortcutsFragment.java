@@ -199,7 +199,11 @@ public class ShortcutsFragment extends BaseFragment
 
     private void copyToClipboard(CfgFavoriteShortcuts.Shortcut shortcut)
     {
-        final String data = shortcut.toScript(activity);
+        if (activity == null || !activity.isConnected())
+        {
+            return;
+        }
+        final String data = shortcut.toScript(activity, activity.getStateManager().getState().getModel());
         try
         {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) activity
