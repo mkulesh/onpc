@@ -193,7 +193,7 @@ class StateManager
         }
         _manualHost = manualHost;
         _manualAlias = manualAlias;
-        _messageChannel.start(host, port);
+        _messageChannel.start(host, port, keepConnection: Platform.isIOS);
     }
 
     void disconnect(bool waitForDisconnect)

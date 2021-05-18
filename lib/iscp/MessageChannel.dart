@@ -55,6 +55,7 @@ class MessageChannel with ConnectionIf
 
     // connection state
     Socket _socket;
+    bool _keepConnection = false;
 
     // message handling
     final Set<String> _allowedMessages = Set();
@@ -68,7 +69,7 @@ class MessageChannel with ConnectionIf
         _allowedMessages.add(code);
     }
 
-    void start(String host, int port)
+    void start(String host, int port, {bool keepConnection = false})
     {
         setHost(host);
         setPort(port);
@@ -76,7 +77,8 @@ class MessageChannel with ConnectionIf
         {
             return;
         }
-        Logging.info(this, "Connecting to " + getHostAndPort + "...");
+        Logging.info(this, "Connecting to " + getHostAndPort + ", keep connection: " + keepConnection.toString());
+        _keepConnection = keepConnection;
         _state = MessageChannelState.CONNECTING;
         Socket.connect(host, port, timeout: Duration(seconds: 10)).then((Socket sock)
         {
@@ -118,6 +120,7 @@ class MessageChannel with ConnectionIf
 
     void stop()
     {
+        _keepConnection = false;
         if (_socket != null)
         {
             _socket.destroy();
@@ -129,7 +132,17 @@ class MessageChannel with ConnectionIf
         _state = MessageChannelState.IDLE;
         _socket = null;
         _onDisconnected(ConnectionErrorType.CONNECTION_CLOSED, "Disconnected from " + getHostAndPort);
-        clearConnection();
+        if (_keepConnection)
+        {
+            // Issue #235: Randomly disconnection on iOS 14+
+            sleep(Duration(seconds: 2));
+            Logging.info(this, "reconnecting...");
+            start(getHost, getPort, keepConnection: true);
+        }
+        else
+        {
+            clearConnection();
+        }
     }
 
     void _onError(Object error)
