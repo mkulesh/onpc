@@ -26,7 +26,6 @@ dependencies:
   flutter_svg: ^0.22.0
   http: ^0.13.3
   draggable_scrollbar: ^0.1.0
-  positioned_tap_detector: ^1.0.3 # discontinued
   shared_preferences: ^2.0.5
   back_button_interceptor: ^5.0.0
   sprintf: ^6.0.0

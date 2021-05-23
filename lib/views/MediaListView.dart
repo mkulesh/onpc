@@ -14,7 +14,6 @@
 // @dart=2.9
 import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
-import "package:positioned_tap_detector/positioned_tap_detector.dart";
 
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CheckableItem.dart";
@@ -50,6 +49,7 @@ import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/PositionedTapDetector.dart";
 import "../widgets/ReorderableItem.dart";
 import "UpdatableView.dart";
 

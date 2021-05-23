@@ -14,9 +14,9 @@
 // @dart=2.9
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
-import 'package:positioned_tap_detector/positioned_tap_detector.dart';
 
 import "../Platform.dart";
+import "../widgets/PositionedTapDetector.dart";
 
 typedef ContextMenuCallback = void Function(TapPosition position);
 

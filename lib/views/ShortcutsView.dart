@@ -14,7 +14,6 @@
 // @dart=2.9
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:positioned_tap_detector/positioned_tap_detector.dart";
 import "package:sprintf/sprintf.dart";
 
 import "../Platform.dart";
@@ -29,6 +28,7 @@ import "../views/UpdatableView.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/PositionedTapDetector.dart";
 import "../widgets/ReorderableItem.dart";
 
 enum _ShortcutContextMenu
