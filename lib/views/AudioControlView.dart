@@ -12,7 +12,6 @@
  * Public License along with this program.
  */
 // @dart=2.9
-import "dart:async";
 import "dart:math";
 
 import "package:flutter/material.dart";

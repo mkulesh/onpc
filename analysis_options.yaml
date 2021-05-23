@@ -14,3 +14,5 @@ linter:
     prefer_collection_literals: false
     prefer_if_null_operators: false
     prefer_conditional_assignment: false
+    sort_child_properties_last: false
+    unnecessary_getters_setters: false
