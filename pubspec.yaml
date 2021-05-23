@@ -27,12 +27,11 @@ dependencies:
   http: ^0.12.2
   draggable_scrollbar: ^0.0.4
   positioned_tap_detector: ^1.0.3
-  shared_preferences: ^0.5.12
-  preferences: ^5.2.0
-  back_button_interceptor: ^4.1.1
+  shared_preferences: ^2.0.5
+  back_button_interceptor: ^5.0.0
   sprintf: ^4.0.0
   flutter_markdown: ^0.4.4
-  url_launcher: ^5.7.10
+  url_launcher: ^6.0.4
 
 dev_dependencies:
   flutter_test:

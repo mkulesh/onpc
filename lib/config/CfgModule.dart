@@ -95,18 +95,22 @@ abstract class CfgModule
     Pair<String, int> getModelDependentInt(final Pair<String, int> par)
     => Pair<String, int>(getModelDependentParameter(par.item1), par.item2);
 
-    void saveStringParameter(final Pair<String, String> par, final String value, {String prefix = ""})
-    async
+    void saveStringParameter(final Pair<String, String> par, final String value, {String prefix = ""}) async
     {
         Logging.info(this, prefix + "saving " + par.item1 + ": " + value);
         await preferences.setString(par.item1, value);
     }
 
-    void saveIntegerParameter(final Pair<String, int> par, final int value, {String prefix = ""})
-    async
+    void saveIntegerParameter(final Pair<String, int> par, final int value, {String prefix = ""}) async
     {
         Logging.info(this, prefix + "saving " + par.item1 + ": " + value.toString());
         await preferences.setInt(par.item1, value);
+    }
+
+    void saveBoolParameter(final Pair<String, bool> par, final bool value, {String prefix = ""}) async
+    {
+        Logging.info(this, prefix + "saving " + par.item1 + ": " + value.toString());
+        await preferences.setBool(par.item1, value);
     }
 
     List<String> getTokens(final String par)

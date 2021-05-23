@@ -14,7 +14,6 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:preferences/preferences.dart';
 
 import "../Platform.dart";
 import "../constants/Activities.dart";
@@ -26,6 +25,8 @@ import "../dialogs/DropdownPreferenceDialog.dart";
 import "../utils/Pair.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
+import "../widgets/PreferenceTitle.dart";
+import "../widgets/SwitchPreference.dart";
 import "CfgAppSettings.dart";
 import "CfgAudioControl.dart";
 import "Configuration.dart";
@@ -224,7 +225,7 @@ class _PreferencesMainState extends State<PreferencesMain>
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, null))),
-            body: DropdownButtonHideUnderline(child: Scrollbar(child: PreferencePage(elements)))
+            body: DropdownButtonHideUnderline(child: Scrollbar(child:  ListView(children: (elements))))
         );
 
         return Theme(data: td, child: scaffold);
@@ -253,13 +254,15 @@ class _PreferencesMainState extends State<PreferencesMain>
         return res;
     }
 
-    Widget _customSwitchPreference(final ThemeData td, String name, Pair<String, bool> par, {String icon, String desc})
+    Widget _customSwitchPreference(final ThemeData td, String title, Pair<String, bool> par, {String icon, String desc})
     {
-        return ListTile(
-            leading: _getIcon(td, icon),
-            title: ListTileTheme(
-                contentPadding: ActivityDimens.noPadding,
-                child: SwitchPreference(name, par.item1, defaultVal: par.item2, desc: desc))
+        return SwitchPreference(
+            title,
+            _configuration.getBool(par),
+            icon: _getIcon(td, icon),
+            desc: desc,
+            onChanged: (bool val)
+            => _configuration.saveBoolParameter(par, val)
         );
     }
 
