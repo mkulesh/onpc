@@ -141,7 +141,7 @@ class JacketArtMsg extends ISCPMessage
 
     Future<Image> loadFromUrl()
     {
-        return http.get(url).then((response)
+        return http.get(Uri.parse(url)).then((response)
         {
             try
             {

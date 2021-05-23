@@ -21,16 +21,16 @@ dependencies:
   flutter:
     sdk: flutter
 
-  quiver: ^2.1.3
-  xml: ^4.5.1
-  flutter_svg: ^0.19.3
-  http: ^0.12.2
-  draggable_scrollbar: ^0.0.4
-  positioned_tap_detector: ^1.0.3
+  quiver: ^3.0.1
+  xml: ^5.1.1
+  flutter_svg: ^0.22.0
+  http: ^0.13.3
+  draggable_scrollbar: ^0.1.0
+  positioned_tap_detector: ^1.0.3 # discontinued
   shared_preferences: ^2.0.5
   back_button_interceptor: ^5.0.0
-  sprintf: ^4.0.0
-  flutter_markdown: ^0.4.4
+  sprintf: ^6.0.0
+  flutter_markdown: ^0.6.2
   url_launcher: ^6.0.4
 
 dev_dependencies:
