@@ -198,13 +198,10 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
             data: data,
             styleSheet: styleSheet,
             padding: padding,
-            onTapLink: (String text, String href, String title)
+            onTapLink: (String href)
             {
-                if (href != null)
-                {
-                    Logging.info(this.widget, "Pressed " + href);
-                    _launchURL(href);
-                }
+                Logging.info(this.widget, "Pressed " + href);
+                _launchURL(href);
             });
     }
 

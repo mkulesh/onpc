@@ -11,6 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:onpc/constants/Dimens.dart';
 
@@ -18,9 +19,9 @@ class SwitchPreference extends StatefulWidget
 {
     final String title;
     final bool value;
-    final Widget? icon;
-    final String? desc;
-    final ValueChanged<bool>? onChanged;
+    final Widget icon;
+    final String desc;
+    final ValueChanged<bool> onChanged;
 
     SwitchPreference(this.title, this.value,
     {
@@ -48,7 +49,7 @@ class _SwitchPreferenceState extends State<SwitchPreference>
             title: ListTileTheme(
                 contentPadding: ActivityDimens.noPadding,
                 child: Text(widget.title)),
-            subtitle: widget.desc == null ? null : Text(widget.desc!),
+            subtitle: widget.desc == null ? null : Text(widget.desc),
             trailing: Switch.adaptive(
                 value: _value,
                 activeColor: Theme.of(context).accentColor,
@@ -68,7 +69,7 @@ class _SwitchPreferenceState extends State<SwitchPreference>
         });
         if (widget.onChanged != null)
         {
-            widget.onChanged!(_value);
+            widget.onChanged(_value);
         }
     }
 
@@ -80,7 +81,7 @@ class _SwitchPreferenceState extends State<SwitchPreference>
         });
         if (widget.onChanged != null)
         {
-            widget.onChanged!(_value);
+            widget.onChanged(_value);
         }
     }
 }
