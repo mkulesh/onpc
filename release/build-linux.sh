@@ -10,8 +10,11 @@ echo Building $APP_NAME
 rm -rf ./$APP_NAME
 rm -rf ${APP_NAME}.zip
 
+# Build with Flutter version 2.0.4, Dart version 2.12.2
+cd /work/android/flutter
+git checkout 2.0.4
+cd -
 flutter clean
-flutter channel stable
 flutter doctor
 flutter build linux --release
 
