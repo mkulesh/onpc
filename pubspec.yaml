@@ -36,6 +36,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.4.0
+  msix: 0.1.19
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
@@ -78,3 +79,14 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+msix_config:
+  display_name: Enhanced Controller for Onkyo/Pioneer
+  publisher_display_name: Mikhail Kulesh
+  msix_version: 2.10.3.0
+  logo_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
+  start_menu_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
+  tile_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
+  icons_background_color: transparent
+  architecture: x64
+  capabilities: 'internetClient'
