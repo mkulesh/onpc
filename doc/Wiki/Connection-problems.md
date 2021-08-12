@@ -1,4 +1,6 @@
 If a connection problem occurs:
+- ensure that your phone and your receiver are connected to the same WLAN.
+- if you use VPN, try to temporary disable it and connect to your receiver directly without VPN.
 - ensure that you use the latest firmware version on your receiver. If not, update the firmware.
 - many people reports that Onkyo firmware may work unstable and the factory reset of the Onkyo 
 device sometime helps. If the APP previously worked but suddenly can not connect the Onkyo device 

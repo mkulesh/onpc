@@ -1,3 +1,5 @@
+We already know that following Pioneer models are not supported: VSX-529, VSX-830, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
+
 Pioneer has two different versions of the network protocol used for the communication between 
 the receiver and remote app:
 - "External Command for CI": The first version that is a plain text protocol that was uses for older 
