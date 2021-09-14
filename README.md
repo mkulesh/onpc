@@ -72,6 +72,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO TX-NR414](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr414/index.html)
 - [ONKYO TX-NR509](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr509/index.html)
 - [ONKYO TX-NR525](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr525/index.html)
+- [ONKYO TX-NR535](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr535/index.html)
 - [ONKYO TX-NR575E](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr575e/index.html)
 - [ONKYO TX-NR616](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr616/index.html)
 - [ONKYO TX-NR636](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr636/index.html)
