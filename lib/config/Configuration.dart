@@ -12,7 +12,7 @@
  * Public License along with this program.
  */
 // @dart=2.9
-import 'package:shared_preferences/shared_preferences.dart';
+import "package:shared_preferences/shared_preferences.dart";
 
 import "../Platform.dart";
 import "../constants/Version.dart";
@@ -25,6 +25,7 @@ import "CfgAudioControl.dart";
 import "CfgFavoriteConnections.dart";
 import "CfgFavoriteShortcuts.dart";
 import "CfgModule.dart";
+import "CfgRiCommands.dart";
 
 class Configuration extends CfgModule
 {
@@ -122,6 +123,7 @@ class Configuration extends CfgModule
     CfgAudioControl audioControl;
     CfgFavoriteConnections favoriteConnections;
     CfgFavoriteShortcuts favoriteShortcuts;
+    CfgRiCommands riCommands;
 
     Configuration(final SharedPreferences preferences) : super(preferences)
     {
@@ -130,6 +132,7 @@ class Configuration extends CfgModule
         audioControl = CfgAudioControl(preferences);
         favoriteConnections = CfgFavoriteConnections(preferences);
         favoriteShortcuts = CfgFavoriteShortcuts(preferences);
+        riCommands = CfgRiCommands(preferences);
         Logging.info(this, "Application started: " + appVersion + ", OS: " + Platform.operatingSystem);
     }
 
@@ -160,6 +163,7 @@ class Configuration extends CfgModule
         audioControl.read();
         favoriteConnections.read();
         favoriteShortcuts.read();
+        riCommands.read();
     }
 
     void saveDevice(final String device, final int port) async

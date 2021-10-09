@@ -14,11 +14,13 @@
 // @dart=2.9
 import "package:flutter/material.dart";
 
+import "../config/CfgRiCommands.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/CdPlayerOperationCommandMsg.dart";
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -157,12 +159,14 @@ class RiCdControlView extends UpdatableView
 
     Widget _buildImgBtn(final CdPlayerOperationCommandMsg cmd)
     {
+        final RiCommand rc = configuration.riCommands.findCommand(
+            RiDeviceType.CD_PLAYER, Convert.enumToString(cmd.getValue.key));
         return CustomImageButton.normal(
             cmd.getValue.icon,
             cmd.getValue.description,
             onPressed: ()
-            => stateManager.sendMessage(cmd),
-            isEnabled: stateManager.isConnected
+            => stateManager.sendRiMessage(rc, cmd),
+            isEnabled: stateManager.isConnected && (!configuration.riCommands.isOn || rc != null)
         );
     }
 }

@@ -29,6 +29,7 @@ import "../widgets/PreferenceTitle.dart";
 import "../widgets/SwitchPreference.dart";
 import "CfgAppSettings.dart";
 import "CfgAudioControl.dart";
+import "CfgRiCommands.dart";
 import "Configuration.dart";
 
 class PreferencesMain extends StatefulWidget
@@ -182,6 +183,30 @@ class _PreferencesMainState extends State<PreferencesMain>
         // Advanced options
         elements.add(CustomDivider());
         elements.add(PreferenceTitle(Strings.pref_category_advanced_options));
+
+        if (Platform.isDesktop)
+        {
+            final List<String> values = [ "" ];
+            final List<String> displayValues = [ Strings.pref_usb_ri_interface_none ];
+            _configuration.riCommands.ports.forEach((p)
+            {
+                values.add(p.item1);
+                displayValues.add(p.item2);
+            });
+            elements.add(_customDropdownPreference(td,
+                Strings.pref_usb_ri_interface,
+                CfgRiCommands.USB_PORT,
+                icon: Drawables.pref_usb_ri_interface,
+                values: values,
+                displayValues: displayValues,
+                onChange: (String val)
+                {
+                    setState(()
+                    {
+                        _configuration.riCommands.usbPort = val;
+                    });
+                }));
+        }
 
         if (Platform.isAndroid)
         {

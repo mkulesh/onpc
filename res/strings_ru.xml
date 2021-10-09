@@ -116,6 +116,8 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="pref_device_selectors">Входные каналы</string>
     <string name="pref_listening_modes">Звуковые профили</string>
     <string name="pref_network_services">Сетевые сервисы</string>
+    <string name="pref_usb_ri_interface">Использовать интерфейс USB-RI</string>
+    <string name="pref_usb_ri_interface_none">Нет</string>
 
     <string name="pref_auto_power">Включить удаленное устройство при запуске приложения</string>
     <string name="pref_friendly_names">Удобные названия каналов и устройства</string>
@@ -198,6 +200,8 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="app_control_device_settings">Настройки устройства</string>
     <string name="app_control_ri_amplifier">Усилитель (RI)</string>
     <string name="app_control_ri_cd_player">CD-проигрыватель (RI)</string>
+    <string name="app_control_ri_md_player">MD-проигрыватель (RI)</string>
+    <string name="app_control_ri_tape_deck">Магнитофон (RI)</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Режим отображения на дисплее устройства</string>
@@ -251,6 +255,14 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="cd_cmd_disc4">Диск 4</string>
     <string name="cd_cmd_disc5">Диск 5</string>
     <string name="cd_cmd_disc6">Диск 6</string>
+
+    <!-- TAPE1 commands (RI interface) -->
+    <string name="tape_cmd_play_ff">Воспроизведение вперед</string>
+    <string name="tape_cmd_play_rew">Воспроизведение назад</string>
+    <string name="tape_cmd_stop">Стоп</string>
+    <string name="tape_cmd_record">Запись/Пауза</string>
+    <string name="tape_cmd_ff">Перемотка вперед</string>
+    <string name="tape_cmd_rew">Перемотка назад</string>
 
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">Нет</string>

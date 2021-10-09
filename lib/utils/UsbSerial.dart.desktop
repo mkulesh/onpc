@@ -1,0 +1,105 @@
+/*
+ * Enhanced Controller for Onkyo and Pioneer Pro
+ * Copyright (C) 2019-2021 by Mikhail Kulesh
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details. You should have received a copy of the GNU General
+ * Public License along with this program.
+ */
+// @dart=2.9
+
+import "dart:typed_data";
+import "package:flutter_libserialport/flutter_libserialport.dart";
+
+import "Logging.dart";
+import "Pair.dart";
+
+class UsbSerial
+{
+    SerialPort _port;
+
+    static List<Pair<String, String>> getPorts()
+    {
+        final List<Pair<String, String>> _ports = [];
+        for (final String name in SerialPort.availablePorts)
+        {
+            final SerialPort sp = SerialPort(name);
+            final Pair<String, String> port = Pair(name, sp.description);
+            _ports.add(port);
+            sp.dispose();
+        }
+        return _ports;
+    }
+
+    void openPort(String name)
+    {
+        if (name.isEmpty)
+        {
+            _port = null;
+            return;
+        }
+        final SerialPort sp = SerialPort(name);
+        if (sp.openReadWrite())
+        {
+            final SerialPortConfig cfg = SerialPortConfig();
+            cfg.baudRate = 115200;
+            cfg.bits = 8;
+            cfg.parity = -1;
+            cfg.stopBits = 1;
+            cfg.rts = 0;
+            cfg.cts = 0;
+            cfg.dtr = 0;
+            cfg.dsr = 0;
+            cfg.xonXoff = 0;
+            _port = sp;
+            _port.config = cfg;
+            Logging.info(this, "open serial port: " + _port.name);
+        }
+        else
+        {
+            Logging.info(this, "can not open serial port: " + SerialPort.lastError.toString());
+            sp.dispose();
+        }
+    }
+
+    void dispose()
+    {
+        if (_port != null)
+        {
+            Logging.info(this, "close serial port: " + _port.name);
+            _port.close();
+            _port.dispose();
+            _port = null;
+        }
+    }
+
+    void sendMessage(final String data)
+    {
+        if (_port == null || !_port.isOpen)
+        {
+            Logging.info(this, "can not send RI command: port not initialized");
+            return;
+        }
+        if (data == null || data.isEmpty)
+        {
+            return;
+        }
+        try
+        {
+            final Uint8List bytes = Uint8List.fromList(data.codeUnits);
+            final int res = _port.write(bytes);
+            Logging.info(this, "sending " + data + bytes.toString()
+                + " to " + _port.name + "; written " + res.toString() + " bytes");
+            _port.drain();
+        }
+        on Exception
+        {
+            Logging.info(this, "can not write into serial port: " + SerialPort.lastError.toString());
+        }
+    }
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<riCommands>
+    <device type="AMPLIFIER" model="">
+        <cmd code="PWRTG"             hex="0x0004"/>
+        <cmd code="SLIDOWN"           hex=""/>
+        <cmd code="SLIUP"             hex=""/>
+        <cmd code="AMTTG"             hex="0x0005"/>
+        <cmd code="MVLDOWN"           hex="0x0003"/>
+        <cmd code="MVLUP"             hex="0x0002"/>
+    </device>
+    <device type="CD_PLAYER" model="">
+        <cmd code="POWER"             hex="0x0F04"/>
+        <cmd code="OP_CL"             hex="0x0F0B"/>
+        <cmd code="REPEAT"            hex="0x0F06"/>
+        <cmd code="RANDOM"            hex="0x0F46"/>
+        <cmd code="SKIP_R"            hex="0x0F1E"/>
+        <cmd code="STOP"              hex="0x0F1C"/>
+        <cmd code="PLAY"              hex="0x0F1B"/>
+        <cmd code="PAUSE"             hex="0x0F1F"/>
+        <cmd code="SKIP_F"            hex="0x0F1D"/>
+        <cmd code="NUMBER_1"          hex="0x0F10"/>
+        <cmd code="NUMBER_2"          hex="0x0F11"/>
+        <cmd code="NUMBER_3"          hex="0x0F12"/>
+        <cmd code="NUMBER_4"          hex="0x0F13"/>
+        <cmd code="NUMBER_5"          hex="0x0F18"/>
+        <cmd code="NUMBER_6"          hex="0x0F19"/>
+        <cmd code="NUMBER_7"          hex="0x0F1A"/>
+        <cmd code="NUMBER_8"          hex="0x0F0C"/>
+        <cmd code="NUMBER_9"          hex="0x0F0D"/>
+        <cmd code="NUMBER_0"          hex="0x0F0E"/>
+        <cmd code="NUMBER_GREATER_10" hex="0x0F0F"/>
+        <cmd code="CLEAR"             hex="0x0F08"/>
+    </device>
+    <device type="MD_PLAYER" model="">
+        <cmd code="POWER"             hex="0x0804"/>
+        <cmd code="EJECT"             hex="0x0805"/>
+        <cmd code="REPEAT"            hex="0x0844"/>
+        <cmd code="RANDOM"            hex="0x080A"/>
+        <cmd code="SKIP_R"            hex="0x081E"/>
+        <cmd code="STOP"              hex="0x081C"/>
+        <cmd code="PLAY"              hex="0x081B"/>
+        <cmd code="PAUSE"             hex="0x081F"/>
+        <cmd code="SKIP_F"            hex="0x081D"/>
+        <cmd code="NUMBER_1"          hex="0x080E"/>
+        <cmd code="NUMBER_2"          hex="0x080F"/>
+        <cmd code="NUMBER_3"          hex="0x0810"/>
+        <cmd code="NUMBER_4"          hex="0x0811"/>
+        <cmd code="NUMBER_5"          hex="0x0812"/>
+        <cmd code="NUMBER_6"          hex="0x0813"/>
+        <cmd code="NUMBER_7"          hex="0x0814"/>
+        <cmd code="NUMBER_8"          hex="0x0815"/>
+        <cmd code="NUMBER_9"          hex="0x0816"/>
+        <cmd code="NUMBER_0"          hex="0x0817"/>
+        <cmd code="NUMBER_GREATER_10" hex="0x085B"/>
+        <cmd code="CLEAR"             hex="0x084B"/>
+    </device>
+    <device type="TAPE_DECK" model="">
+        <cmd code="PLAY_F"            hex="0x0D15"/>
+        <cmd code="PLAY_R"            hex=""/>
+        <cmd code="STOP"              hex="0x0D13"/>
+        <cmd code="RC_PAU"            hex=""/>
+        <cmd code="FF"                hex="0x0D19"/>
+        <cmd code="REW"               hex="0x0D1A"/>
+    </device>
+</riCommands>

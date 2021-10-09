@@ -17,6 +17,10 @@ VER=`cat VERSION.txt`
 APP_NAME=MusicControl-v${VER}-macos.dmg
 echo Building $APP_NAME
 
+# Prepare platform-specific files: enable flutter_libserialport
+rm -f ../lib/utils/UsbSerial.dart
+ln -s UsbSerial.dart.desktop ../lib/utils/UsbSerial.dart
+
 # Build app
 flutter build macos --release
 mv ../build/macos/Build/Products/Release/Music\ Control.app .

@@ -115,6 +115,8 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="pref_device_selectors">Sélection des sources</string>
     <string name="pref_listening_modes">Modes d\'écoutes</string>
     <string name="pref_network_services">Sources réseau</string>
+    <string name="pref_usb_ri_interface">Utiliser l\'interface USB-RI</string>
+    <string name="pref_usb_ri_interface_none">Aucun</string>
 
     <string name="pref_auto_power">Allumer le dispositif au démarrage de l\'application</string>
     <string name="pref_friendly_names">Noms personnalisés des sources et dispositifs</string>
@@ -199,6 +201,8 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="app_control_device_settings">Réglages de l\'appareil</string>
     <string name="app_control_ri_amplifier">Amplificateur (RI)</string>
     <string name="app_control_ri_cd_player">CD Player (RI)</string>
+    <string name="app_control_ri_md_player">MD Player (RI)</string>
+    <string name="app_control_ri_tape_deck">Tape Deck (RI)</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Mode affichage sur le dispositif</string>
@@ -252,6 +256,14 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="cd_cmd_disc4">Disque 4</string>
     <string name="cd_cmd_disc5">Disque 5</string>
     <string name="cd_cmd_disc6">Disque 6</string>
+
+    <!-- TAPE1 commands (RI interface) -->
+    <string name="tape_cmd_play_ff">Play forward</string>
+    <string name="tape_cmd_play_rew">Play backwards</string>
+    <string name="tape_cmd_stop">Stop</string>
+    <string name="tape_cmd_record">Record/Pause</string>
+    <string name="tape_cmd_ff">Skip forward</string>
+    <string name="tape_cmd_rew">Skip backwards</string>
 
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>

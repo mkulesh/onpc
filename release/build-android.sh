@@ -13,6 +13,10 @@ git checkout 2.2.1
 cd -
 flutter doctor -v
 
+# Prepare platform-specific files: disable flutter_libserialport
+rm -f ../lib/utils/UsbSerial.dart
+ln -s UsbSerial.dart.mobile ../lib/utils/UsbSerial.dart
+
 # Build APK
 VER=`cat VERSION.txt`
 APP_NAME=MusicControl-v${VER}-android.apk

@@ -181,6 +181,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _viewContext.updateNotifier.close();
         _tabController.dispose();
         BackButtonInterceptor.remove(_onBackPressed);
+        _stateManager.usbSerial.dispose();
         super.dispose();
     }
 
@@ -540,6 +541,12 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (updScripts)
         {
             _stateManager.updateScripts(autoPower: _configuration.autoPower);
+        }
+
+        if (Platform.isDesktop)
+        {
+            _stateManager.usbSerial.dispose();
+            _stateManager.usbSerial.openPort(_configuration.riCommands.usbPort);
         }
     }
 

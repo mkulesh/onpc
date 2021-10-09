@@ -737,6 +737,22 @@ Enjoy!"""];
         /*pl*/ "Usługi sieciowe"];
     static String get pref_network_services => l_pref_network_services[_language];
 
+    static const List<String> l_pref_usb_ri_interface = [
+        /*en*/ "Use USB-RI interface",
+        /*ru*/ "Использовать интерфейс USB-RI",
+        /*de*/ "USB-RI-Schnittstelle verwenden",
+        /*fr*/ "Utiliser l\'interface USB-RI",
+        /*pl*/ "Użyj interfejsu USB-RI"];
+    static String get pref_usb_ri_interface => l_pref_usb_ri_interface[_language];
+
+    static const List<String> l_pref_usb_ri_interface_none = [
+        /*en*/ "None",
+        /*ru*/ "Нет",
+        /*de*/ "Keine",
+        /*fr*/ "Aucun",
+        /*pl*/ "Brak"];
+    static String get pref_usb_ri_interface_none => l_pref_usb_ri_interface_none[_language];
+
     static const List<String> l_pref_auto_power = [
         /*en*/ "Switch-on remote device on app startup",
         /*ru*/ "Включить удаленное устройство при запуске приложения",
@@ -976,6 +992,22 @@ Enjoy!"""];
         /*fr*/ "CD Player (RI)",
         /*pl*/ "CD Player (RI)"];
     static String get app_control_ri_cd_player => l_app_control_ri_cd_player[_language];
+
+    static const List<String> l_app_control_ri_md_player = [
+        /*en*/ "MD Player (RI)",
+        /*ru*/ "MD-проигрыватель (RI)",
+        /*de*/ "MD Player (RI)",
+        /*fr*/ "MD Player (RI)",
+        /*pl*/ "MD Player (RI)"];
+    static String get app_control_ri_md_player => l_app_control_ri_md_player[_language];
+
+    static const List<String> l_app_control_ri_tape_deck = [
+        /*en*/ "Tape Deck (RI)",
+        /*ru*/ "Магнитофон (RI)",
+        /*de*/ "Tape Deck (RI)",
+        /*fr*/ "Tape Deck (RI)",
+        /*pl*/ "Tape Deck (RI)"];
+    static String get app_control_ri_tape_deck => l_app_control_ri_tape_deck[_language];
 
     static const List<String> l_tv_display_mode = [
         /*en*/ "Display mode on device",
@@ -1352,6 +1384,54 @@ Enjoy!"""];
         /*fr*/ "Disque 6",
         /*pl*/ "Dysk 6"];
     static String get cd_cmd_disc6 => l_cd_cmd_disc6[_language];
+
+    static const List<String> l_tape_cmd_play_ff = [
+        /*en*/ "Play forward",
+        /*ru*/ "Воспроизведение вперед",
+        /*de*/ "Wiedergabe vorwärts",
+        /*fr*/ "Play forward",
+        /*pl*/ "Play forward"];
+    static String get tape_cmd_play_ff => l_tape_cmd_play_ff[_language];
+
+    static const List<String> l_tape_cmd_play_rew = [
+        /*en*/ "Play backwards",
+        /*ru*/ "Воспроизведение назад",
+        /*de*/ "Wiedergabe rückwärts",
+        /*fr*/ "Play backwards",
+        /*pl*/ "Play backwards"];
+    static String get tape_cmd_play_rew => l_tape_cmd_play_rew[_language];
+
+    static const List<String> l_tape_cmd_stop = [
+        /*en*/ "Stop",
+        /*ru*/ "Стоп",
+        /*de*/ "Stopp",
+        /*fr*/ "Stop",
+        /*pl*/ "Stop"];
+    static String get tape_cmd_stop => l_tape_cmd_stop[_language];
+
+    static const List<String> l_tape_cmd_record = [
+        /*en*/ "Record/Pause",
+        /*ru*/ "Запись/Пауза",
+        /*de*/ "Aufname/Pause",
+        /*fr*/ "Record/Pause",
+        /*pl*/ "Record/Pause"];
+    static String get tape_cmd_record => l_tape_cmd_record[_language];
+
+    static const List<String> l_tape_cmd_ff = [
+        /*en*/ "Skip forward",
+        /*ru*/ "Перемотка вперед",
+        /*de*/ "Vorwärts springen",
+        /*fr*/ "Skip forward",
+        /*pl*/ "Skip forward"];
+    static String get tape_cmd_ff => l_tape_cmd_ff[_language];
+
+    static const List<String> l_tape_cmd_rew = [
+        /*en*/ "Skip backwards",
+        /*ru*/ "Перемотка назад",
+        /*de*/ "Zurück springen",
+        /*fr*/ "Skip backwards",
+        /*pl*/ "Skip backwards"];
+    static String get tape_cmd_rew => l_tape_cmd_rew[_language];
 
     static const List<String> l_audio_muting_none = [
         /*en*/ "N/A",

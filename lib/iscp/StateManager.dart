@@ -18,10 +18,12 @@ import 'dart:math';
 
 import "../Platform.dart";
 import "../config/CfgFavoriteShortcuts.dart";
+import "../config/CfgRiCommands.dart";
 import "../iscp/BroadcastSearch.dart";
 import "../iscp/scripts/MessageScript.dart";
 import "../iscp/scripts/MessageScriptIf.dart";
 import "../utils/Logging.dart";
+import "../utils/UsbSerial.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
 import "MessageChannel.dart";
@@ -29,6 +31,7 @@ import "State.dart";
 import "messages/AmpOperationCommandMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
 import "messages/DisplayModeMsg.dart";
+import "messages/EnumParameterMsg.dart";
 import "messages/InputSelectorMsg.dart";
 import "messages/JacketArtMsg.dart";
 import "messages/ListInfoMsg.dart";
@@ -156,6 +159,9 @@ class StateManager
 
     // MessageScript processor
     final List<MessageScriptIf> _messageScripts = [];
+
+    // USB-RI interface
+    final UsbSerial usbSerial = UsbSerial();
 
     void clearScripts()
     {
@@ -620,6 +626,18 @@ class StateManager
         if (doReturn)
         {
             _messageChannel.sendMessage(LIST_MSG.getCmdMsg());
+        }
+    }
+
+    void sendRiMessage<T>(final RiCommand rc, EnumParameterMsg<T> cmd)
+    {
+        if (rc != null)
+        {
+            usbSerial.sendMessage(rc.hex);
+        }
+        else
+        {
+            sendMessage(cmd);
         }
     }
 

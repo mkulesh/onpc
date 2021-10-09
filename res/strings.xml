@@ -121,6 +121,8 @@ Enjoy!""</string>
     <string name="pref_device_selectors">Input selectors</string>
     <string name="pref_listening_modes">Listening modes</string>
     <string name="pref_network_services">Network services</string>
+    <string name="pref_usb_ri_interface">Use USB-RI interface</string>
+    <string name="pref_usb_ri_interface_none">None</string>
 
     <string name="pref_auto_power">Switch-on remote device on app startup</string>
     <string name="pref_friendly_names">Friendly selector and device names</string>
@@ -245,6 +247,8 @@ Enjoy!""</string>
     <string name="app_control_device_settings">Device settings</string>
     <string name="app_control_ri_amplifier">Amplifier (RI)</string>
     <string name="app_control_ri_cd_player">CD Player (RI)</string>
+    <string name="app_control_ri_md_player">MD Player (RI)</string>
+    <string name="app_control_ri_tape_deck">Tape Deck (RI)</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Display mode on device</string>
@@ -298,6 +302,14 @@ Enjoy!""</string>
     <string name="cd_cmd_disc4">Disk 4</string>
     <string name="cd_cmd_disc5">Disk 5</string>
     <string name="cd_cmd_disc6">Disk 6</string>
+
+    <!-- TAPE1 commands (RI interface) -->
+    <string name="tape_cmd_play_ff">Play forward</string>
+    <string name="tape_cmd_play_rew">Play backwards</string>
+    <string name="tape_cmd_stop">Stop</string>
+    <string name="tape_cmd_record">Record/Pause</string>
+    <string name="tape_cmd_ff">Skip forward</string>
+    <string name="tape_cmd_rew">Skip backwards</string>
 
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
