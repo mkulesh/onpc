@@ -2,14 +2,20 @@
 .flutter-plugins
 .packages
 .metadata
-build patches
-release/*-release.*
-/android/.gradle
-/android/key.properties
-/android/local.properties
-/android/gen
-/images/svgcleaner/svgcleaner
 .dart_tool/
 .flutter-plugins-dependencies
+pubspec.lock
+pubspec.yaml
+build
+images/svgcleaner/svgcleaner
+lib/utils/UsbSerial.dart
+release/MusicControl-v*
+android/.gradle
+android/key.properties
+android/local.properties
+android/gen
 ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
+ios/Podfile
+macos/Flutter/ephemeral
+macos/Podfile
