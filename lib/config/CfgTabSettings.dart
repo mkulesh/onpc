@@ -46,6 +46,8 @@ enum AppControl
     DEVICE_SETTINGS,
     RI_AMPLIFIER,
     RI_CD_PLAYER,
+    RI_MD_PLAYER,
+    RI_TAPE_DECK,
 }
 
 enum AppControlGroup
@@ -81,6 +83,8 @@ class CfgTabSettings
         EnumItem.code(AppControl.DEVICE_SETTINGS, "DST", descrList: Strings.l_app_control_device_settings),
         EnumItem.code(AppControl.RI_AMPLIFIER, "RIA", descrList: Strings.l_app_control_ri_amplifier),
         EnumItem.code(AppControl.RI_CD_PLAYER, "RIC", descrList: Strings.l_app_control_ri_cd_player),
+        EnumItem.code(AppControl.RI_MD_PLAYER, "RIM", descrList: Strings.l_app_control_ri_md_player),
+        EnumItem.code(AppControl.RI_TAPE_DECK, "RIT", descrList: Strings.l_app_control_ri_tape_deck),
     ]);
 
     static final String TAB_SETTINGS = "tab_settings";

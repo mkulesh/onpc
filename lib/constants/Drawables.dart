@@ -24,6 +24,8 @@ class Drawables
     // RI devices
     static const String ri_amplifier = "lib/assets/ri_amplifier.png";
     static const String ri_cd_player = "lib/assets/ri_cd_player.png";
+    static const String ri_md_player = "lib/assets/ri_md_player.png";
+    static const String ri_tape_deck = "lib/assets/ri_tape_deck.png";
 
     // Buttons
     static const String menu_power_standby = BUTTONS_PATH + "menu_power_standby.svg";

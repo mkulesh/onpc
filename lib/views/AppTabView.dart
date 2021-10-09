@@ -17,8 +17,6 @@ import "package:flutter/material.dart";
 import "../config/CfgTabSettings.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomDivider.dart";
-import "RiAmplifierControlView.dart";
-import "RiCdControlView.dart";
 import "DeviceInfoView.dart";
 import "DeviceSettingsView.dart";
 import "InputSelectorView.dart";
@@ -26,6 +24,10 @@ import "ListeningModeButtonsView.dart";
 import "ListeningModeListView.dart";
 import "MediaListView.dart";
 import "PlayControlView.dart";
+import "RiAmplifierControlView.dart";
+import "RiCdControlView.dart";
+import "RiMdControlView.dart";
+import "RiTapeDeckControlView.dart";
 import "SetupNavigationCommandsView.dart";
 import "SetupOperationalCommandsView.dart";
 import "ShortcutsView.dart";
@@ -248,6 +250,12 @@ class AppTabView extends UpdatableView
 
             case AppControl.RI_CD_PLAYER:
                 return UpdatableWidget(key: key, child: RiCdControlView(viewContext));
+
+            case AppControl.RI_MD_PLAYER:
+                return UpdatableWidget(key: key, child: RiMdControlView(viewContext));
+
+            case AppControl.RI_TAPE_DECK:
+                return UpdatableWidget(key: key, child: RiTapeDeckControlView(viewContext));
         }
         return null;
     }
