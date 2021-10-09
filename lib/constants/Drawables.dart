@@ -17,11 +17,13 @@ class Drawables
     static const String BUTTONS_PATH = "lib/assets/buttons/";
 
     // Common images
-    static const String amplifier = "lib/assets/amplifier.png";
-    static const String cd_player = "lib/assets/cd_player.png";
     static const String drawer_header = "lib/assets/drawer_header.svg";
     static const String empty_cover = "lib/assets/empty_cover.svg";
     static const String timer_sand = "lib/assets/timer_sand.svg";
+
+    // RI devices
+    static const String ri_amplifier = "lib/assets/ri_amplifier.png";
+    static const String ri_cd_player = "lib/assets/ri_cd_player.png";
 
     // Buttons
     static const String menu_power_standby = BUTTONS_PATH + "menu_power_standby.svg";

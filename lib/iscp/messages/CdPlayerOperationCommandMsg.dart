@@ -58,7 +58,7 @@ enum CdPlayerOperationCommand
 }
 
 /*
- * CD Player Operation Command
+ * RI CD Player Operation Commands
  */
 class CdPlayerOperationCommandMsg extends EnumParameterMsg<CdPlayerOperationCommand>
 {

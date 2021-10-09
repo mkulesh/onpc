@@ -17,8 +17,8 @@ import "package:flutter/material.dart";
 import "../config/CfgTabSettings.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomDivider.dart";
-import "AmplifierControlView.dart";
-import "CdControlView.dart";
+import "RiAmplifierControlView.dart";
+import "RiCdControlView.dart";
 import "DeviceInfoView.dart";
 import "DeviceSettingsView.dart";
 import "InputSelectorView.dart";
@@ -244,10 +244,10 @@ class AppTabView extends UpdatableView
                 return UpdatableWidget(key: key, child: DeviceSettingsView(viewContext));
 
             case AppControl.RI_AMPLIFIER:
-                return UpdatableWidget(key: key, child: AmplifierControlView(viewContext));
+                return UpdatableWidget(key: key, child: RiAmplifierControlView(viewContext));
 
             case AppControl.RI_CD_PLAYER:
-                return UpdatableWidget(key: key, child: CdControlView(viewContext));
+                return UpdatableWidget(key: key, child: RiCdControlView(viewContext));
         }
         return null;
     }

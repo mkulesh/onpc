@@ -24,13 +24,13 @@ import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
-class AmplifierControlView extends UpdatableView
+class RiAmplifierControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.CONNECTION_EVENT
     ];
 
-    AmplifierControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    RiAmplifierControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -41,7 +41,7 @@ class AmplifierControlView extends UpdatableView
             padding: ActivityDimens.coverImagePadding(context),
             child: ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: ControlViewDimens.imageHeight),
-                child: Image.asset(Drawables.amplifier)
+                child: Image.asset(Drawables.ri_amplifier)
             )
         );
 

@@ -24,13 +24,13 @@ import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
-class CdControlView extends UpdatableView
+class RiCdControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.CONNECTION_EVENT
     ];
 
-    CdControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    RiCdControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -41,7 +41,7 @@ class CdControlView extends UpdatableView
             padding: ActivityDimens.coverImagePadding(context),
             child: ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: ControlViewDimens.imageHeight),
-                child: Image.asset(Drawables.cd_player)
+                child: Image.asset(Drawables.ri_cd_player)
             )
         );
 

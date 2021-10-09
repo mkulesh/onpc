@@ -32,7 +32,7 @@ enum AmpOperationCommand
 }
 
 /*
- * Amplifier Operation AmpOperationCommand
+ * RI Amplifier Operation Commands
  */
 class AmpOperationCommandMsg extends EnumParameterMsg<AmpOperationCommand>
 {
