@@ -1,0 +1,53 @@
+# Project script for desktop versions (Linux, macOS, Windows)
+name: onpc
+description: Enhanced Controller for Onkyo/Pioneer
+author: Mikhail Kulesh
+
+version: 2.10.4+300
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  quiver: ^3.0.1
+  xml: ^5.1.1
+  flutter_svg: ^0.22.0
+  http: ^0.13.3
+  draggable_scrollbar: ^0.1.0
+  shared_preferences: ^2.0.5
+  back_button_interceptor: ^5.0.0
+  sprintf: ^6.0.0
+  flutter_markdown: ^0.4.4
+  url_launcher: ^6.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pedantic: ^1.4.0
+  msix: 0.1.19
+
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - lib/assets/
+    - lib/assets/buttons/
+
+msix_config:
+  display_name: Enhanced Controller for Onkyo/Pioneer
+  publisher_display_name: Mikhail Kulesh
+  msix_version: 2.10.3.0
+  logo_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
+  start_menu_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
+  tile_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
+  icons_background_color: transparent
+  architecture: x64
+  capabilities: 'internetClient'
