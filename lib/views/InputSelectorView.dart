@@ -16,6 +16,7 @@ import "package:flutter/material.dart";
 
 import "../config/CheckableItem.dart";
 import "../config/Configuration.dart";
+import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
@@ -70,6 +71,11 @@ class InputSelectorView extends UpdatableView
                 );
             }
         });
+
+        if (buttons.isEmpty)
+        {
+            buttons.add(CustomTextButton(Strings.dashed_string, isEnabled: false, isSelected: false));
+        }
 
         return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons));
     }
