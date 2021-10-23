@@ -1,9 +1,16 @@
 echo off
 
 set /p VER=<VERSION.txt
-echo Building MusicControl-v%VER%-windows-x86_64
+echo Build Windows app MusicControl-v%VER%-windows-x86_64
 
-:: The Window build can be currently done on master channel only
+:: Prepare Yaml file
+call copy ..\pubspec.yaml_desktop ..\pubspec.yaml
+
+:: Prepare platform-specific files: enable flutter_libserialport
+call copy ..\lib\utils\UsbSerial.dart.desktop ..\lib\utils\UsbSerial.dart
+
+:: The Window build shall be currently done using:
+:: Flutter version 2.2.2, Dart version 2.13.3
 call del *.msix
 call flutter clean
 call flutter channel stable
