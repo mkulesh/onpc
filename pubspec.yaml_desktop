@@ -45,7 +45,7 @@ flutter:
 msix_config:
   display_name: Enhanced Controller for Onkyo/Pioneer
   publisher_display_name: Mikhail Kulesh
-  msix_version: 2.10.3.0
+  msix_version: 2.10.4.0
   logo_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
   start_menu_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
   tile_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
