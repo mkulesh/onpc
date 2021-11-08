@@ -100,12 +100,40 @@ class CfgRiCommands extends CfgModule
 
     bool get isOn => Platform.isDesktop && _usbPort.isNotEmpty;
 
+    // Device images
+    static const Pair<String, String> AMP_MODEL = Pair<String, String>("amp_model", "A-9010");
+    String _ampModel;
+
+    String get ampModel
+    => _ampModel;
+
+    set ampModel(String value)
+    {
+        _ampModel = value;
+        saveStringParameter(AMP_MODEL, value);
+    }
+
+    static const Pair<String, String> CD_MODEL = Pair<String, String>("cd_model", "C-7030");
+    String _cdModel;
+
+    String get cdModel
+    => _cdModel;
+
+    set cdModel(String value)
+    {
+        _cdModel = value;
+        saveStringParameter(CD_MODEL, value);
+    }
+
     // methods
     CfgRiCommands(final SharedPreferences preferences) : super(preferences);
 
     @override
     void read()
     {
+        _ampModel = getString(AMP_MODEL, doLog: true);
+        _cdModel = getString(CD_MODEL, doLog: true);
+
         if (!Platform.isDesktop)
         {
             return;
@@ -124,7 +152,7 @@ class CfgRiCommands extends CfgModule
         try
         {
             _devices.clear();
-            rootBundle.loadString('lib/assets/ri_commands.xml').then((String content)
+            rootBundle.loadString('lib/assets/ri/commands.xml').then((String content)
             {
                 final xml.XmlDocument document = xml.XmlDocument.parse(content);
                 document.findAllElements("device").forEach((d) => _devices.add(RiDevice.fromXml(d)));

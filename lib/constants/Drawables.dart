@@ -22,10 +22,16 @@ class Drawables
     static const String timer_sand = "lib/assets/timer_sand.svg";
 
     // RI devices
-    static const String ri_amplifier = "lib/assets/ri_amplifier.png";
-    static const String ri_cd_player = "lib/assets/ri_cd_player.png";
-    static const String ri_md_player = "lib/assets/ri_md_player.png";
-    static const String ri_tape_deck = "lib/assets/ri_tape_deck.png";
+    static const List<String> ri_amplifier_models = ["A-9010", "A-9110", "A-9130", "A-9150", "P-3000R"];
+    static String ri_amplifier(String model)
+    => "lib/assets/ri/" + model + ".png";
+
+    static const List<String> ri_cd_models = ["C-7030", "DX-C390"];
+    static String ri_cd_player(String model)
+    => "lib/assets/ri/" + model + ".png";
+
+    static const String ri_md_player = "lib/assets/ri/MD-2321.png";
+    static const String ri_tape_deck = "lib/assets/ri/TA-6511.png";
 
     // Buttons
     static const String menu_power_standby = BUTTONS_PATH + "menu_power_standby.svg";

@@ -41,6 +41,7 @@ flutter:
   assets:
     - lib/assets/
     - lib/assets/buttons/
+    - lib/assets/ri/
 
 msix_config:
   display_name: Enhanced Controller for Onkyo/Pioneer

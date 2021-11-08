@@ -12,24 +12,31 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'dart:math';
+
 import "package:flutter/material.dart";
 
 import "../config/CfgRiCommands.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/DropdownPreferenceDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/CdPlayerOperationCommandMsg.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/ContextMenuListener.dart";
 import "UpdatableView.dart";
 
 class RiCdControlView extends UpdatableView
 {
+    static const String CD_MODEL_CHANGE = "CD_MODEL_CHANGE";
+
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT
+        StateManager.CONNECTION_EVENT,
+        CD_MODEL_CHANGE
     ];
 
     RiCdControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -39,11 +46,12 @@ class RiCdControlView extends UpdatableView
     {
         Logging.logRebuild(this);
 
+        final String cdModel = configuration.riCommands.cdModel;
         final Widget image = Padding(
             padding: ActivityDimens.coverImagePadding(context),
             child: ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: ControlViewDimens.imageHeight),
-                child: Image.asset(Drawables.ri_cd_player)
+                child: Image.asset(Drawables.ri_cd_player(cdModel))
             )
         );
 
@@ -53,7 +61,11 @@ class RiCdControlView extends UpdatableView
                 CustomTextLabel.small(Strings.app_control_ri_cd_player,
                     padding: ActivityDimens.headerPaddingTop,
                     textAlign: TextAlign.center),
-                image,
+                ContextMenuListener(
+                    child: image,
+                    onContextMenu: (position)
+                    => modelSelectorDialog(context, cdModel)
+                ),
                 _buildTopTable(),
                 CustomTextLabel.small(Strings.remote_interface_playback, textAlign: TextAlign.center),
                 _buildPlaybackRow(),
@@ -167,6 +179,24 @@ class RiCdControlView extends UpdatableView
             onPressed: ()
             => stateManager.sendRiMessage(rc, cmd),
             isEnabled: stateManager.isConnected && (!configuration.riCommands.isOn || rc != null)
+        );
+    }
+
+    void modelSelectorDialog(BuildContext context, final String ampModel)
+    {
+        final int cdValue = max(0, Drawables.ri_cd_models.indexOf(ampModel));
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => DropdownPreferenceDialog(Strings.app_control_ri_cd_player,
+                Drawables.ri_cd_models, Drawables.ri_cd_models,
+                cdValue,
+                    (String val)
+                {
+                    configuration.riCommands.cdModel = val;
+                    stateManager.triggerStateEvent(CD_MODEL_CHANGE);
+                })
         );
     }
 }

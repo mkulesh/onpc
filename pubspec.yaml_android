@@ -39,4 +39,4 @@ flutter:
   assets:
     - lib/assets/
     - lib/assets/buttons/
-
+    - lib/assets/ri/

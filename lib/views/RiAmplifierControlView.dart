@@ -12,24 +12,31 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'dart:math';
+
 import "package:flutter/material.dart";
 
 import "../config/CfgRiCommands.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/DropdownPreferenceDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AmpOperationCommandMsg.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/ContextMenuListener.dart";
 import "UpdatableView.dart";
 
 class RiAmplifierControlView extends UpdatableView
 {
+    static const String AMP_MODEL_CHANGE = "AMP_MODEL_CHANGE";
+
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT
+        StateManager.CONNECTION_EVENT,
+        AMP_MODEL_CHANGE
     ];
 
     RiAmplifierControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -39,11 +46,12 @@ class RiAmplifierControlView extends UpdatableView
     {
         Logging.logRebuild(this);
 
+        final String ampModel = configuration.riCommands.ampModel;
         final Widget image = Padding(
             padding: ActivityDimens.coverImagePadding(context),
             child: ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: ControlViewDimens.imageHeight),
-                child: Image.asset(Drawables.ri_amplifier)
+                child: Image.asset(Drawables.ri_amplifier(ampModel))
             )
         );
 
@@ -53,7 +61,11 @@ class RiAmplifierControlView extends UpdatableView
                 CustomTextLabel.small(Strings.app_control_ri_amplifier,
                     padding: ActivityDimens.headerPaddingTop,
                     textAlign: TextAlign.center),
-                image,
+                ContextMenuListener(
+                    child: image,
+                    onContextMenu: (position)
+                    => modelSelectorDialog(context, ampModel)
+                ),
                 _buildTable()
             ]);
     }
@@ -114,6 +126,24 @@ class RiAmplifierControlView extends UpdatableView
             onPressed: ()
             => stateManager.sendRiMessage(rc, cmd),
             isEnabled: stateManager.isConnected && (!configuration.riCommands.isOn || rc != null)
+        );
+    }
+
+    void modelSelectorDialog(BuildContext context, final String ampModel)
+    {
+        final int ampValue = max(0, Drawables.ri_amplifier_models.indexOf(ampModel));
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => DropdownPreferenceDialog(Strings.app_control_ri_amplifier,
+                Drawables.ri_amplifier_models, Drawables.ri_amplifier_models,
+                ampValue,
+                (String val)
+                {
+                    configuration.riCommands.ampModel = val;
+                    stateManager.triggerStateEvent(AMP_MODEL_CHANGE);
+                })
         );
     }
 }
