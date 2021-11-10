@@ -14,7 +14,6 @@
 // @dart=2.9
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
-import "../Platform.dart";
 
 import "../constants/Dimens.dart";
 
@@ -44,7 +43,7 @@ class CustomTextField extends StatelessWidget
             onEditingComplete: onPressed,
             cursorColor: td.accentColor,
             decoration: InputDecoration(
-                contentPadding: DialogDimens.textFieldPadding(Platform.isLinux),
+                contentPadding: DialogDimens.textFieldPadding,
                 isDense: true,
                 border: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.disabledColor)) : InputBorder.none,
                 focusedBorder: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.accentColor)) : InputBorder.none

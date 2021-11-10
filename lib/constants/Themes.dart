@@ -13,7 +13,9 @@
  */
 // @dart=2.9
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import "../Platform.dart";
 import "Dimens.dart";
 import "Strings.dart";
 
@@ -43,6 +45,8 @@ class BaseAppTheme
 
     ThemeData _getData()
     {
+        final TextStyle mainStyle = Platform.isDesktop ? GoogleFonts.getFont('Roboto') : TextStyle();
+
         return ThemeData(
             brightness: brightness,
             primaryColor: primaryColor,
@@ -64,21 +68,21 @@ class BaseAppTheme
             ),
 
             tabBarTheme: TabBarTheme(
-                labelStyle: TextStyle(fontSize: ActivityDimens.secondaryFontSize),
-                unselectedLabelStyle: TextStyle(fontSize: ActivityDimens.secondaryFontSize),
+                labelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
+                unselectedLabelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
             ),
 
             textTheme: TextTheme(
                 // Title in activity and dialogs
-                headline6: TextStyle(color: textColor, fontSize: ActivityDimens.titleFontSize),
+                headline6: mainStyle.copyWith(color: textColor, fontSize: ActivityDimens.titleFontSize),
                 // Main text in views, dialogs and drawer
                 // Parameter names in the preference screen
-                subtitle1: TextStyle(color: textColor, fontSize: ActivityDimens.primaryFontSize, fontWeight: FontWeight.normal),
+                subtitle1: mainStyle.copyWith(color: textColor, fontSize: ActivityDimens.primaryFontSize, fontWeight: FontWeight.normal),
                 // "Disabled" text in views, dialogs and drawer
                 // Parameter descriptions in the preference screen
-                bodyText2: TextStyle(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
+                bodyText2: mainStyle.copyWith(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
                 // Buttons
-                button: TextStyle(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
+                button: mainStyle.copyWith(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
             ),
 
             textSelectionTheme: TextSelectionThemeData(

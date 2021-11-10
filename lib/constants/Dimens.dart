@@ -183,14 +183,8 @@ class DialogDimens
     => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0));
 
     // Top and bottom padding of TextField
-    static EdgeInsetsGeometry textFieldPadding(bool isLinux)
-    => isLinux ?
-    EdgeInsets.only(
-        top: DimensTransform.scale(28.0),
-        bottom: DimensTransform.scale(16.0),
-        right: DimensTransform.scale(0),
-        left: DimensTransform.scale(0)) :
-    EdgeInsets.symmetric(
+    static EdgeInsetsGeometry get textFieldPadding
+    => EdgeInsets.symmetric(
         vertical: DimensTransform.scale(6.0),
         horizontal: DimensTransform.scale(0));
 }

@@ -22,6 +22,7 @@ dependencies:
   sprintf: ^6.0.0
   flutter_markdown: ^0.4.4
   url_launcher: ^6.0.4
+  google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_test:

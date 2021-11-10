@@ -15,6 +15,7 @@
 import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
 
+import "../Platform.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CheckableItem.dart";
 import "../config/Configuration.dart";
@@ -225,42 +226,43 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     Widget _buildMediaList(final ThemeData td, final int visibleItems, List<ISCPMessage> items)
     {
-        return DraggableScrollbar.rrect(
+        final Widget list = ListView.builder(
+            padding: ActivityDimens.noPadding,
+            scrollDirection: Axis.vertical,
+            itemCount: visibleItems,
+            physics: ClampingScrollPhysics(),
+            controller: _scrollController,
+            itemBuilder: (BuildContext itemContext, int index)
+            {
+                final ISCPMessage rowMsg = items[index];
+                if (rowMsg is NetworkServiceMsg)
+                {
+                    return _buildNetworkServiceRow(itemContext, rowMsg);
+                }
+                else if (rowMsg is XmlListItemMsg)
+                {
+                    return _buildXmlListItemMsg(itemContext, rowMsg);
+                }
+                else if (rowMsg is PresetCommandMsg)
+                {
+                    return _buildPresetCommandMsg(itemContext, rowMsg);
+                }
+                else if (rowMsg is OperationCommandMsg)
+                {
+                    return _buildOperationCommandMsg(itemContext, rowMsg);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        );
+
+        return Platform.isDesktop ? list : DraggableScrollbar.rrect(
             controller: _scrollController,
             backgroundColor: td.accentColor,
-            child: ListView.builder(
-                padding: ActivityDimens.noPadding,
-                scrollDirection: Axis.vertical,
-                itemCount: visibleItems,
-                physics: ClampingScrollPhysics(),
-                controller: _scrollController,
-                itemBuilder: (BuildContext itemContext, int index)
-                {
-                    final ISCPMessage rowMsg = items[index];
-                    if (rowMsg is NetworkServiceMsg)
-                    {
-                        return _buildNetworkServiceRow(itemContext, rowMsg);
-                    }
-                    else if (rowMsg is XmlListItemMsg)
-                    {
-                        return _buildXmlListItemMsg(itemContext, rowMsg);
-                    }
-                    else if (rowMsg is PresetCommandMsg)
-                    {
-                        return _buildPresetCommandMsg(itemContext, rowMsg);
-                    }
-                    else if (rowMsg is OperationCommandMsg)
-                    {
-                        return _buildOperationCommandMsg(itemContext, rowMsg);
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            )
-        );
-    }
+            child: list);
+        }
 
     Widget _buildPlayQueueList(BuildContext context, List<ISCPMessage> items)
     {
