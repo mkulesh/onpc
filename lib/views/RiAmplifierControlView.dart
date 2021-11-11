@@ -49,14 +49,10 @@ class RiAmplifierControlView extends UpdatableView
         final String ampModel = configuration.riCommands.ampModel;
         final Widget image = Padding(
             padding: ActivityDimens.coverImagePadding(context),
-            child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: ControlViewDimens.imageHeight),
-                child: Image.asset(Drawables.ri_amplifier(ampModel))
-            )
+            child: Image.asset(Drawables.ri_amplifier(ampModel), width: ControlViewDimens.imageWidth)
         );
 
         return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
                 CustomTextLabel.small(Strings.app_control_ri_amplifier,
                     padding: ActivityDimens.headerPaddingTop,

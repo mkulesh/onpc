@@ -41,14 +41,10 @@ class RiMdControlView extends UpdatableView
 
         final Widget image = Padding(
             padding: ActivityDimens.coverImagePadding(context),
-            child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: ControlViewDimens.imageHeight),
-                child: Image.asset(Drawables.ri_md_player)
-            )
+            child: Image.asset(Drawables.ri_md_player, width: ControlViewDimens.imageWidth)
         );
 
         return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
                 CustomTextLabel.small(Strings.app_control_ri_md_player,
                     padding: ActivityDimens.headerPaddingTop,

@@ -41,14 +41,10 @@ class RiTapeDeckControlView extends UpdatableView
 
         final Widget image = Padding(
             padding: ActivityDimens.coverImagePadding(context),
-            child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: ControlViewDimens.imageHeight),
-                child: Image.asset(Drawables.ri_tape_deck)
-            )
+            child: Image.asset(Drawables.ri_tape_deck, width: ControlViewDimens.imageWidth)
         );
 
         return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
                 CustomTextLabel.small(Strings.app_control_ri_tape_deck,
                     padding: ActivityDimens.headerPaddingTop,

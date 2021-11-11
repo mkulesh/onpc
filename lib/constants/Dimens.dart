@@ -192,6 +192,6 @@ class DialogDimens
 class ControlViewDimens
 {
     // The height of the device image
-    static double get imageHeight
-    => DimensTransform.scale(70.0);
+    static double get imageWidth
+    => DimensTransform.scale(300.0);
 }
