@@ -753,6 +753,14 @@ Enjoy!"""];
         /*pl*/ "Brak"];
     static String get pref_usb_ri_interface_none => l_pref_usb_ri_interface_none[_language];
 
+    static const List<String> l_pref_column_separator = [
+        /*en*/ "Position of column separator (%)",
+        /*ru*/ "Положение разделителя столбцов (%)",
+        /*de*/ "Position des Spaltentrenners (%)",
+        /*fr*/ "Position du séparateur de colonnes (%)",
+        /*pl*/ "Pozycja separatora kolumn (%)"];
+    static String get pref_column_separator => l_pref_column_separator[_language];
+
     static const List<String> l_pref_auto_power = [
         /*en*/ "Switch-on remote device on app startup",
         /*ru*/ "Включить удаленное устройство при запуске приложения",

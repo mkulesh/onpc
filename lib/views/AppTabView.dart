@@ -57,12 +57,13 @@ class AppTabView extends UpdatableView
 
     final int _extId;
     int _wId = 0;
+    final CfgTabSettings _cfg;
 
-    AppTabView(this._extId, final ViewContext viewContext, final CfgTabSettings cfg) : super(viewContext, [])
+    AppTabView(this._extId, final ViewContext viewContext, this._cfg) : super(viewContext, [])
     {
-        controlsPortrait = cfg.controlsPortrait;
-        controlsLandscapeLeft = cfg.controlsLandscapeLeft;
-        controlsLandscapeRight = cfg.controlsLandscapeRight;
+        controlsPortrait = _cfg.controlsPortrait;
+        controlsLandscapeLeft = _cfg.controlsLandscapeLeft;
+        controlsLandscapeRight = _cfg.controlsLandscapeRight;
     }
 
     @override
@@ -110,20 +111,18 @@ class AppTabView extends UpdatableView
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: rightViews);
 
-            // - If there are no expandable column, both columns are scrollable with the same width
-            final Map<int, FlexColumnWidth> columnWidths = Map();
-            columnWidths[0] = FlexColumnWidth(10);
-            columnWidths[1] = FlexColumnWidth(1);
+            // - If there are no expandable column, both columns are scrollable
             if (!leftExpandable && !rightExpandable)
             {
                 leftColumn = SingleChildScrollView(scrollDirection: Axis.vertical, child: leftColumn);
                 rightColumn = SingleChildScrollView(scrollDirection: Axis.vertical, child: rightColumn);
-                columnWidths[2] = FlexColumnWidth(10);
             }
-            else
-            {
-                columnWidths[2] = FlexColumnWidth(20);
-            }
+
+            // - Column width is configured using parameter in percentage
+            final Map<int, FlexColumnWidth> columnWidths = Map();
+            columnWidths[0] = FlexColumnWidth(_cfg.columnSeparator.toDouble());
+            columnWidths[1] = FlexColumnWidth(3);
+            columnWidths[2] = FlexColumnWidth(100.0 - _cfg.columnSeparator.toDouble());
 
             tab = Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

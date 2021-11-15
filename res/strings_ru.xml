@@ -118,6 +118,7 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="pref_network_services">Сетевые сервисы</string>
     <string name="pref_usb_ri_interface">Использовать интерфейс USB-RI</string>
     <string name="pref_usb_ri_interface_none">Нет</string>
+    <string name="pref_column_separator">Положение разделителя столбцов (%)</string>
 
     <string name="pref_auto_power">Включить удаленное устройство при запуске приложения</string>
     <string name="pref_friendly_names">Удобные названия каналов и устройства</string>

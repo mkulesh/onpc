@@ -16,6 +16,7 @@ import "../constants/Strings.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
+import "../utils/Pair.dart";
 import "CfgAppSettings.dart";
 import "CfgModule.dart";
 import "CheckableItem.dart";
@@ -95,6 +96,18 @@ class CfgTabSettings
     List<AppControl> controlsLandscapeLeft;
     List<AppControl> controlsLandscapeRight;
 
+    static final String COLUMN_SEPARATOR = "column_separator";
+    int _columnSeparator;
+
+    int get columnSeparator
+    => _columnSeparator;
+
+    set columnSeparator(int value)
+    {
+        _columnSeparator = value;
+        configuration.saveIntegerParameter(getColumnSeparatorName(tab, 0), _columnSeparator);
+    }
+
     CfgTabSettings(this.configuration, this.tab,
     {
         this.controlsPortrait,
@@ -107,7 +120,12 @@ class CfgTabSettings
         controlsPortrait = _readVisibleControls(AppControlGroup.PORTRAIT, controlsPortrait);
         controlsLandscapeLeft = _readVisibleControls(AppControlGroup.LAND_LEFT, controlsLandscapeLeft);
         controlsLandscapeRight = _readVisibleControls(AppControlGroup.LAND_RIGHT, controlsLandscapeRight);
+        final int defSeparator = tab == AppTabs.LISTEN ? 33 : 50;
+        _columnSeparator = configuration.getInt(getColumnSeparatorName(tab, defSeparator), doLog: true);
     }
+
+    static Pair<String, int> getColumnSeparatorName(final AppTabs tab, final int defValue)
+    => Pair<String, int>(COLUMN_SEPARATOR + "_" + Convert.enumToString(tab).toLowerCase(), defValue);
 
     static String getParameterName(final AppTabs tab, final AppControlGroup type)
     => TAB_SETTINGS + "_" + Convert.enumToString(tab).toLowerCase() + "_" + Convert.enumToString(type).toLowerCase();

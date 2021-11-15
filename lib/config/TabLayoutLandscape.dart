@@ -17,6 +17,9 @@ import 'package:flutter/material.dart';
 import "../config/CfgTabSettings.dart";
 import "../constants/Strings.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomDivider.dart";
+import "../widgets/CustomNumberPicker.dart";
+import "../widgets/CustomTextLabel.dart";
 import "CfgAppSettings.dart";
 import "CfgTabSettings.dart";
 import "CheckableItem.dart";
@@ -72,7 +75,7 @@ class _TabLayoutLandscapeState extends State<TabLayoutLandscape>
     {
         Logging.logRebuild(this);
 
-        final Widget body = Row(
+        final Widget controlLists = Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
                 Expanded(flex: 20,
@@ -91,9 +94,32 @@ class _TabLayoutLandscapeState extends State<TabLayoutLandscape>
             ]
         );
 
+        final Widget columnWidth = Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+                CustomTextLabel.normal(Strings.pref_column_separator),
+                CustomNumberPicker(
+                    initialValue: _tabSettings.columnSeparator,
+                    maxValue: 90,
+                    minValue: 10,
+                    step: 1,
+                    onValue: (value)
+                    => _tabSettings.columnSeparator = value)
+            ]
+        );
+
         return CheckableItem.buildScaffold(context,
             Strings.drawer_tab_layout + " (" + CfgAppSettings.getTabName(_tabSettings.tab) + ")",
-            body, _configuration
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                    Expanded(child: controlLists),
+                    CustomDivider(),
+                    columnWidth
+                ],
+            ),
+            _configuration
         );
     }
 

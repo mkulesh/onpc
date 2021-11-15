@@ -117,6 +117,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="pref_network_services">Sources réseau</string>
     <string name="pref_usb_ri_interface">Utiliser l\'interface USB-RI</string>
     <string name="pref_usb_ri_interface_none">Aucun</string>
+    <string name="pref_column_separator">Position du séparateur de colonnes (%)</string>
 
     <string name="pref_auto_power">Allumer le dispositif au démarrage de l\'application</string>
     <string name="pref_friendly_names">Noms personnalisés des sources et dispositifs</string>

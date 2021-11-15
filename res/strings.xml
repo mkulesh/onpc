@@ -123,6 +123,7 @@ Enjoy!""</string>
     <string name="pref_network_services">Network services</string>
     <string name="pref_usb_ri_interface">Use USB-RI interface</string>
     <string name="pref_usb_ri_interface_none">None</string>
+    <string name="pref_column_separator">Position of column separator (%)</string>
 
     <string name="pref_auto_power">Switch-on remote device on app startup</string>
     <string name="pref_friendly_names">Friendly selector and device names</string>
