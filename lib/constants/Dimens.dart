@@ -61,18 +61,18 @@ class ActivityDimens
     => 1.0 /* divider height*/ + DimensTransform.rotate(context, _tabBarHeightPort, _tabBarHeightLand);
 
     // Activity margins
-    static const EdgeInsetsGeometry _activityMarginsPort
+    static const EdgeInsetsGeometry _activityMargins
     = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 16.0);
 
-    static const EdgeInsetsGeometry _activityMarginsLand
+    static const EdgeInsetsGeometry _activityMarginsLandAndroid
     = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
     static const EdgeInsetsGeometry _activityMarginsLandIOS
     = EdgeInsets.only(left: 48.0, right: 48.0, top: 8.0, bottom: 16.0);
 
-    static EdgeInsetsGeometry activityMargins(BuildContext context, bool isIOS)
-    => DimensTransform.rotate(context, _activityMarginsPort,
-        isIOS ? _activityMarginsLandIOS : _activityMarginsLand);
+    static EdgeInsetsGeometry activityMargins(BuildContext context, bool isIOS, bool isAndroid)
+    => DimensTransform.rotate(context, _activityMargins,
+        isIOS ? _activityMarginsLandIOS : (isAndroid ? _activityMarginsLandAndroid : _activityMargins));
 
     // Fonts: title text
     static const double titleFontSize = 18;

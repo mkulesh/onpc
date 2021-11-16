@@ -145,7 +145,7 @@ class CheckableItem
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, title))),
             body: Container(
-                margin: ActivityDimens.activityMargins(context, Platform.isIOS),
+                margin: ActivityDimens.activityMargins(context, Platform.isIOS, Platform.isAndroid),
                 child: MediaQuery.removePadding(
                     context: context,
                     removeTop: true,

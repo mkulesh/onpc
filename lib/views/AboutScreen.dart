@@ -97,7 +97,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
                             break;
                     }
                     return Container(
-                        margin: ActivityDimens.activityMargins(context, Platform.isIOS),
+                        margin: ActivityDimens.activityMargins(context, Platform.isIOS, Platform.isAndroid),
                         child: tabContent
                     );
                 }).toList(),
@@ -105,7 +105,8 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
         }
         else
         {
-            scaffoldBody = _buildMarkdownView(td, Strings.about_text, ActivityDimens.activityMargins(context, Platform.isIOS));
+            scaffoldBody = _buildMarkdownView(
+                td, Strings.about_text, ActivityDimens.activityMargins(context, Platform.isIOS, Platform.isAndroid));
         }
 
         final Widget scaffold = Scaffold(
