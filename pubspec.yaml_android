@@ -1,6 +1,6 @@
 # Project script for Android version
 name: onpc
-description: Enhanced Controller for Onkyo/Pioneer
+description: Enhanced Controller for Onkyo and Pioneer Pro
 author: Mikhail Kulesh
 
 version: 2.10.4+300

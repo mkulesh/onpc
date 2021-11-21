@@ -1,10 +1,16 @@
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
+At the moment, the app is tested and works with following devices:
+- Onkyo: TX-L50, TX-NR414, TX-NR509, TX-NR525, TX-NR535, TX-NR575E, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-NR696, TX-RZ810, TX-RZ830, TX-RZ900, TX-RZ1100, HT-S7805, NS-6130, NS-6170, TX-8130, TX-8150, TX-8250, TX-8270, TX-8390, TX-L20D, R-N855, CS-N575D, CR-N765, CR-N775D, NCP-302
+- Integra: DTM-6, DRX-5.2, DTR 30.7, DTR 40.7
+- Pioneer: VSX-LX303, VSX-LX503, VSX-LX504, VSX-832, VSX-932, VSX-933, SC-LX701, NC-50DAB, N-70AE, XC-HM86D, MRX-3, MRX-5
+- Teac: NT-503, AG-D500
+
 The two most popular features of the app are music playback and sound profile management.
 
 Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
-- The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
+- The modern design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 - One-click access to music playback actions
 - One-click access to media items using shortcuts
 - Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
@@ -28,11 +34,5 @@ Known limitations:
 - Amazon Music HD subscription: broadcast in AAC 256 kbps only (that is a limitation of the Onkyo firmware)
 - Following Pioneer models are NOT supported: VSX-529, VSX-830, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
 - Following models do not support "Play Queue" feature (that is a limitation of the Onkyo firmware): CR-N765, DTR-40.5, HM76, HT-R693, HT-R695, TX-8130, TX-8150, TX-NR626, TX-NR636, TX-NR646, TX-RZ900
-
-At the moment, the app is tested with following devices:
-- Onkyo: TX-L50, TX-NR414, TX-NR509, TX-NR525, TX-NR575E, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-RZ810, TX-RZ830, TX-RZ900, TX-RZ1100, HT-S7805, NS-6130, NS-6170, TX-8130, TX-8150, TX-8250, TX-8270, TX-8390, TX-L20D, R-N855, CS-N575D, CR-N765, CR-N775D, NCP-302
-- Integra: DTM-6, DRX-5.2, DTR 30.7, DTR 40.7
-- Pioneer: VSX-LX303, VSX-LX503, VSX-LX504, VSX-832, VSX-932, VSX-933, SC-LX701, NC-50DAB, N-70AE, XC-HM86D, MRX-3, MRX-5
-- Teac: NT-503, AG-D500
 
 The app is 100% open source. Please feel free to download, explore, fork or contribute to it on https://github.com/mkulesh/onpc

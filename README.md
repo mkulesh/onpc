@@ -1,14 +1,19 @@
 [![Flutter Logo](https://github.com/mkulesh/onpc/blob/onpc-flutter/images/flutter_logo.png)](https://flutter.dev)
 
-# Enhanced Controller for Onkyo and Pioneer Pro
+# Enhanced Music Controller
 
-*Enhanced controller for Onkyo/Pioneer devices: listen to music properly!*
+*Enhanced controller for Onkyo and Pioneer Pro: listen to music properly!*
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
 This "Premium" version implements exactly the same receiver control functionality as the free version, but has more flexible user interface.
 It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
 Android version allows to create home screen widgets.
+
+## Names
+* Official app name on App Store and Google Play: *Enhanced Music Controller*
+* Technical app name, the short name on the Home Screen, executable name: *Music Control*
+* Obsolete name used in the source code and navigation drawer: *Enhanced Controller for Onkyo and Pioneer Pro*
 
 ## Screenshots
 * Playback screen in landscape orientation, 12 Inch iPad, Strong Dark theme
