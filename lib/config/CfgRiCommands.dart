@@ -20,7 +20,7 @@ import "package:xml/xml.dart" as xml;
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
-import "../utils/UsbSerial.dart";
+import "../utils/CompatUtils.dart";
 import "../Platform.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
@@ -140,7 +140,7 @@ class CfgRiCommands extends CfgModule
         }
         try
         {
-            _ports = UsbSerial.getPorts();
+            _ports = CompatUtils.getPorts();
             Logging.info(this, "Available USB ports:");
             _ports.forEach((p) => Logging.info(this, "  " + p.toString()));
         }

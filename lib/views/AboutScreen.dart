@@ -15,7 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:onpc/utils/CompatUtils.dart';
 
 import "../Platform.dart";
 import "../constants/Dimens.dart";
@@ -193,24 +193,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
             h1: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
             h2: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
             p: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color),
-            a: td.textTheme.bodyText2.copyWith(color: td.accentColor),
-        );
-        return Markdown(
-            data: data,
-            styleSheet: styleSheet,
-            padding: padding,
-            onTapLink: (String href)
-            {
-                Logging.info(this.widget, "Pressed " + href);
-                _launchURL(href);
-            });
-    }
-
-    void _launchURL(final String url) async
-    {
-        if (await canLaunch(url))
-        {
-            await launch(url);
-        }
+            a: td.textTheme.bodyText2.copyWith(color: td.accentColor));
+        return CompatUtils.buildMarkdown(data, styleSheet, padding);
     }
 }

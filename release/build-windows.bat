@@ -7,7 +7,7 @@ echo Build Windows app MusicControl-v%VER%-windows-x86_64
 call copy ..\pubspec.yaml_desktop ..\pubspec.yaml
 
 :: Prepare platform-specific files: enable flutter_libserialport
-call copy ..\lib\utils\UsbSerial.dart.desktop ..\lib\utils\UsbSerial.dart
+call copy ..\lib\utils\CompatUtils.dart.desktop ..\lib\utils\CompatUtils.dart
 
 :: The Window build shall be currently done using:
 :: Flutter version 2.2.2, Dart version 2.13.3

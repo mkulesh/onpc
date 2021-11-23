@@ -8,7 +8,7 @@ pubspec.lock
 pubspec.yaml
 build
 images/svgcleaner/svgcleaner
-lib/utils/UsbSerial.dart
+lib/utils/CompatUtils.dart
 release/MusicControl-v*
 android/.gradle
 android/key.properties

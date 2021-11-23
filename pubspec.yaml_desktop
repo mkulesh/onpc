@@ -20,7 +20,7 @@ dependencies:
   shared_preferences: ^2.0.5
   back_button_interceptor: ^5.0.0
   sprintf: ^6.0.0
-  flutter_markdown: ^0.4.4
+  flutter_markdown: ^0.6.8
   url_launcher: ^6.0.4
   flutter_libserialport: ^0.2.2
   google_fonts: ^2.1.0
@@ -29,7 +29,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.4.0
-  msix: 0.1.19
+  msix: 2.6.3
 
 flutter:
 
@@ -45,12 +45,14 @@ flutter:
     - lib/assets/ri/
 
 msix_config:
-  display_name: Enhanced Controller for Onkyo/Pioneer
+  display_name: Enhanced Music Controller
+  identity-name: com.mkulesh.onpc
   publisher_display_name: Mikhail Kulesh
   msix_version: 2.10.4.0
   logo_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
   start_menu_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
   tile_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
-  icons_background_color: transparent
+  icons_background_color: '#0077dd'
   architecture: x64
   capabilities: 'internetClient'
+  dont_install_cert: true

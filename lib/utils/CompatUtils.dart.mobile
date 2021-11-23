@@ -13,9 +13,16 @@
  */
 // @dart=2.9
 
+import "package:flutter/src/painting/edge_insets.dart";
+import "package:flutter/src/widgets/framework.dart";
+import "package:flutter_markdown/flutter_markdown.dart";
+import "package:flutter_markdown/src/style_sheet.dart";
+import "package:url_launcher/url_launcher.dart";
+
+import "Logging.dart";
 import "Pair.dart";
 
-class UsbSerial
+class CompatUtils
 {
     static List<Pair<String, String>> getPorts()
     {
@@ -35,5 +42,25 @@ class UsbSerial
     void sendMessage(final String data)
     {
         // empty
+    }
+
+    static Widget buildMarkdown(String data, MarkdownStyleSheet styleSheet, EdgeInsetsGeometry padding)
+    {
+        return Markdown(
+            data: data,
+            styleSheet: styleSheet,
+            padding: padding,
+            onTapLink: (String href)
+            {
+                _launchURL(href);
+            });
+    }
+
+    static void _launchURL(final String url) async
+    {
+        if (await canLaunch(url))
+        {
+            await launch(url);
+        }
     }
 }

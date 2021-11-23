@@ -23,7 +23,7 @@ import "../iscp/BroadcastSearch.dart";
 import "../iscp/scripts/MessageScript.dart";
 import "../iscp/scripts/MessageScriptIf.dart";
 import "../utils/Logging.dart";
-import "../utils/UsbSerial.dart";
+import "../utils/CompatUtils.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
 import "MessageChannel.dart";
@@ -161,7 +161,7 @@ class StateManager
     final List<MessageScriptIf> _messageScripts = [];
 
     // USB-RI interface
-    final UsbSerial usbSerial = UsbSerial();
+    final CompatUtils usbSerial = CompatUtils();
 
     void clearScripts()
     {

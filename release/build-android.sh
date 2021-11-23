@@ -14,8 +14,8 @@ cd -
 flutter doctor -v
 
 # Prepare platform-specific files: disable flutter_libserialport
-rm -f ../lib/utils/UsbSerial.dart
-ln -s UsbSerial.dart.mobile ../lib/utils/UsbSerial.dart
+rm -f ../lib/utils/CompatUtils.dart
+ln -s CompatUtils.dart.mobile ../lib/utils/CompatUtils.dart
 
 # Build APK
 VER=`cat VERSION.txt`
