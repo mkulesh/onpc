@@ -16,9 +16,9 @@
 
     <!-- Main view -->
     <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
-    <string name="app_name_pro">Enhanced Controller for Onkyo and Pioneer Pro</string>
+    <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!</string>
+    <string name="app_description">Улучшенный контроллер для Onkyo и Pioneer: слушайте музыку правильно!</string>
     <string name="state_not_connected">Отсутствует соединение</string>
     <string name="state_standby">Ожидание</string>
     <string name="action_exit_confirm">Для выхода нажмите Назад дважды</string>
@@ -28,8 +28,8 @@
     <string name="action_context_desktop">используя правую клавишу мыши</string>
 
     <string name="about_text">""
-# Enhanced Controller for Onkyo and Pioneer
-Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!
+# Улучшенный контроллер для Onkyo и Pioneer
+Слушайте музыку правильно!
 
 Copyright © 2019-2021 by __Михаил Кулеш__
 

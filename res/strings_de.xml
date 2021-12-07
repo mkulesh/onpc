@@ -16,9 +16,9 @@
 
     <!-- Main view -->
     <string name="app_name">Erweiterte Bedienung für Onkyo und Pioneer</string>
-    <string name="app_name_pro">Erweiterte Bedienung für Onkyo und Pioneer Pro</string>
-    <string name="app_short_name">Musik Kontrolle</string>
-    <string name="app_description">Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</string>
+    <string name="app_name_pro">Enhanced Music Controller</string>
+    <string name="app_short_name">Music Control</string>
+    <string name="app_description">Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!</string>
     <string name="state_not_connected">Nicht verbunden</string>
     <string name="state_standby">Schlafmodus</string>
     <string name="action_exit_confirm">Zum Beenden erneut zurück drücken</string>
@@ -28,8 +28,8 @@
     <string name="action_context_desktop">mit rechte Maustaste</string>
 
     <string name="about_text">""
-# Erweiterte Bedienung für Onkyo und Pioneer
-Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!
+# Verbesserte Fernsteuerung für Onkyo und Pioneer
+Musik richtig hören!
 
 Copyright © 2019-2021 by __Mikhail Kulesh__
 

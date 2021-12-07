@@ -154,26 +154,26 @@ class Strings
     static String get app_name => l_app_name[_language];
 
     static const List<String> l_app_name_pro = [
-        /*en*/ "Enhanced Controller for Onkyo and Pioneer Pro",
-        /*ru*/ "Enhanced Controller for Onkyo and Pioneer Pro",
-        /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer Pro",
-        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer Pro",
-        /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer Pro"];
+        /*en*/ "Enhanced Music Controller",
+        /*ru*/ "Enhanced Music Controller",
+        /*de*/ "Enhanced Music Controller",
+        /*fr*/ "Enhanced Music Controller",
+        /*pl*/ "Enhanced Music Controller"];
     static String get app_name_pro => l_app_name_pro[_language];
 
     static const List<String> l_app_short_name = [
         /*en*/ "Music Control",
         /*ru*/ "Music Control",
-        /*de*/ "Musik Kontrolle",
+        /*de*/ "Music Control",
         /*fr*/ "Music Control",
         /*pl*/ "Music Control"];
     static String get app_short_name => l_app_short_name[_language];
 
     static const List<String> l_app_description = [
-        /*en*/ "Enhanced controller for Onkyo/Pioneer devices: listen to music properly!",
-        /*ru*/ "Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!",
-        /*de*/ "Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!",
-        /*fr*/ "Contrôleur optimisé pour Onkyo/Pioneer: Écoutez votre musique correctement!",
+        /*en*/ "Enhanced controller for Onkyo and Pioneer: listen to music properly!",
+        /*ru*/ "Улучшенный контроллер для Onkyo и Pioneer: слушайте музыку правильно!",
+        /*de*/ "Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!",
+        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer: Écoutez votre musique correctement!",
         /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer: słuchaj muzyki poprawnie!"];
     static String get app_description => l_app_description[_language];
 
@@ -263,8 +263,8 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 Enjoy!""",
         /*ru*/ """
-# Enhanced Controller for Onkyo and Pioneer
-Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!
+# Улучшенный контроллер для Onkyo и Pioneer
+Слушайте музыку правильно!
 
 Copyright © 2019-2021 by __Михаил Кулеш__
 
@@ -289,8 +289,8 @@ Copyright © 2019-2021 by __Михаил Кулеш__
 * Flutter: [https://flutter.dev](https://flutter.dev)
 * Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)""",
         /*de*/ """
-# Erweiterte Bedienung für Onkyo und Pioneer
-Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!
+# Verbesserte Fernsteuerung für Onkyo und Pioneer
+Musik richtig hören!
 
 Copyright © 2019-2021 by __Mikhail Kulesh__
 
@@ -315,7 +315,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 * Flutter: [https://flutter.dev](https://flutter.dev)
 * Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)""",
         /*fr*/ """
-# Contrôleur optimisé pour Onkyo/Pioneer:
+# Contrôleur optimisé pour Onkyo et Pioneer
 Ecoutez votre musique correctement!
 
 Copyright © 2018-2019 by __Mikhail Kulesh__
