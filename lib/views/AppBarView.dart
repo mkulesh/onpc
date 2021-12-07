@@ -25,8 +25,10 @@ import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomActivityTitle.dart";
+import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
+import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
 class AppBarView extends UpdatableView
@@ -95,14 +97,60 @@ class AppBarView extends UpdatableView
                     isEnabled: state.isConnected,
                     isSelected: !state.isOn,
                     onPressed: ()
-                    {
-                        Logging.info(this, "App bar menu: " + Strings.menu_power_standby);
-                        final PowerStatus p = state.isOn ? PowerStatus.STB : PowerStatus.ON;
-                        stateManager.sendMessage(PowerStatusMsg.output(state.getActiveZone, p));
-                    }),
+                    => _powerOnOff(context)),
             ],
             bottom: tabBar
         );
+    }
+
+    void _powerOnOff(BuildContext context)
+    {
+        Logging.info(this, "App bar menu: " + Strings.menu_power_standby);
+        final PowerStatus p = state.isOn ? PowerStatus.STB : PowerStatus.ON;
+        final PowerStatusMsg cmdMsg = PowerStatusMsg.output(state.getActiveZone, p);
+        if (state.isOn && stateManager.isMultiroomAvailable() && stateManager.sourceDevice.isMasterDevice)
+        {
+            final ThemeData td = Theme.of(context);
+            final Widget dialog = AlertDialog(
+                title: CustomDialogTitle(Strings.menu_power_standby, Drawables.menu_power_standby),
+                contentPadding: DialogDimens.contentPadding,
+                content: CustomTextLabel.normal(Strings.menu_switch_off_group),
+                actions: <Widget>[
+                    TextButton(
+                        child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                        onPressed: ()
+                        {
+                            Navigator.of(context).pop();
+                        }
+                    ),
+                    TextButton(
+                        child: Text(Strings.action_no.toUpperCase(), style: td.textTheme.button),
+                        onPressed: ()
+                        {
+                            Navigator.of(context).pop();
+                            stateManager.sendMessage(cmdMsg);
+                        }
+                    ),
+                    TextButton(
+                        child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
+                        onPressed: ()
+                        {
+                            Navigator.of(context).pop();
+                            stateManager.sendMessageToGroup(cmdMsg);
+                        }
+                    )
+                ]
+            );
+
+            showDialog(
+                context: context,
+                builder: (BuildContext context)
+                => dialog);
+        }
+        else
+        {
+            stateManager.sendMessage(cmdMsg);
+        }
     }
 
     Widget _buildTabs(final ThemeData td)

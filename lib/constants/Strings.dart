@@ -209,6 +209,14 @@ class Strings
         /*pl*/ "OK"];
     static String get action_ok => l_action_ok[_language];
 
+    static const List<String> l_action_no = [
+        /*en*/ "No",
+        /*ru*/ "Нет",
+        /*de*/ "Nein",
+        /*fr*/ "Non",
+        /*pl*/ "Nie"];
+    static String get action_no => l_action_no[_language];
+
     static const List<String> l_action_cancel = [
         /*en*/ "Cancel",
         /*ru*/ "Отмена",
@@ -600,6 +608,14 @@ Enjoy!"""];
         /*fr*/ "Dernière entrée",
         /*pl*/ "Ostatnie logowanie"];
     static String get menu_latest_logging => l_menu_latest_logging[_language];
+
+    static const List<String> l_menu_switch_off_group = [
+        /*en*/ "Switch off all devices in the group?",
+        /*ru*/ "Выключить все устройства в группе?",
+        /*de*/ "Alle Geräte in der Gruppe ausschalten?",
+        /*fr*/ "Éteindre tous les appareils du groupe?",
+        /*pl*/ "Wyłączyć wszystkie urządzenia w grupie?"];
+    static String get menu_switch_off_group => l_menu_switch_off_group[_language];
 
     static const List<String> l_shortcut_power_on = [
         /*en*/ "Power On",

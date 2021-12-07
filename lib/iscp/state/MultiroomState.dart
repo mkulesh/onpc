@@ -86,6 +86,12 @@ class DeviceInfo
     EnumItem<ChannelType> getChannelType(int zone)
     => _channelType.key != MultiroomZone.ChannelTypeEnum.defValue.key ? _channelType :
         (groupMsg != null ? groupMsg.getChannelType(zone) : MultiroomZone.ChannelTypeEnum.defValue);
+
+    bool get isMasterDevice
+    {
+        final EnumItem<RoleType> roleType = groupMsg.getRole(MultiroomDeviceInformationMsg.DEFAULT_ZONE);
+        return roleType.key == RoleType.SRC;
+    }
 }
 
 class MultiroomState

@@ -47,7 +47,7 @@ class _GroupControlDialogState extends State<GroupControlDialog>
             content: UpdatableWidget(child: GroupControlView(viewContext)),
             actions: <Widget>[
                 TextButton(
-                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )

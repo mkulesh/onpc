@@ -23,6 +23,7 @@
     <string name="state_standby">Éteint</string>
     <string name="action_exit_confirm">Appuyez sur retour pour quitter</string>
     <string name="action_ok">OK</string>
+    <string name="action_no">Non</string>
     <string name="action_cancel">Annuler</string>
     <string name="action_context_mobile">en utilisant un clic long</string>
     <string name="action_context_desktop">bouton droit de la souris</string>
@@ -93,6 +94,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="menu_power_standby">marche/arrêt</string>
     <string name="menu_receiver_information">Information du récepteur</string>
     <string name="menu_latest_logging">Dernière entrée</string>
+    <string name="menu_switch_off_group">Éteindre tous les appareils du groupe?</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Allumer</string>

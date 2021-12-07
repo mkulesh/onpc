@@ -586,6 +586,13 @@ class StateManager
         }
     }
 
+    void sendMessageToGroup(final ISCPMessage msg)
+    {
+        Logging.info(this, "sending message to group: " + msg.toString());
+        _multiroomChannels.values.forEach((m) => m.sendMessage(msg.getCmdMsg()));
+        _messageChannel.sendMessage(msg.getCmdMsg());
+    }
+
     void sendPlayQueueMsg(ISCPMessage msg, bool repeat)
     {
         if (msg == null)

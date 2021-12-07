@@ -23,6 +23,7 @@
     <string name="state_standby">Schlafmodus</string>
     <string name="action_exit_confirm">Zum Beenden erneut zurück drücken</string>
     <string name="action_ok">OK</string>
+    <string name="action_no">Nein</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_context_mobile">mit einem langen Klick</string>
     <string name="action_context_desktop">mit rechte Maustaste</string>
@@ -94,6 +95,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="menu_power_standby">An/Standby</string>
     <string name="menu_receiver_information">Receiver Informationen</string>
     <string name="menu_latest_logging">Letzte Log</string>
+    <string name="menu_switch_off_group">Alle Geräte in der Gruppe ausschalten?</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Einschalten</string>

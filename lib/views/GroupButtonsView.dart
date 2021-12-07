@@ -49,7 +49,6 @@ class GroupButtonsView extends UpdatableView
 
         final int zone = MultiroomDeviceInformationMsg.DEFAULT_ZONE;
         final EnumItem<ChannelType> channelType = myDevice.getChannelType(zone);
-        final EnumItem<RoleType> roleType = myDevice.groupMsg.getRole(zone);
         return Padding(
             padding: ButtonDimens.smallButtonPadding,
             child: Row(
@@ -62,7 +61,7 @@ class GroupButtonsView extends UpdatableView
                         onPressed: ()
                         => _showGroupControlDialog(context),
                         isEnabled: true,
-                        isSelected: roleType.key == RoleType.SRC,
+                        isSelected: myDevice.isMasterDevice,
                     ),
                     CustomImageButton.small(
                         Drawables.cmd_multiroom_channel,

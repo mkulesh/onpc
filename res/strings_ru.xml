@@ -23,6 +23,7 @@
     <string name="state_standby">Ожидание</string>
     <string name="action_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="action_ok">OK</string>
+    <string name="action_no">Нет</string>
     <string name="action_cancel">Отмена</string>
     <string name="action_context_mobile">используя долгое нажатие</string>
     <string name="action_context_desktop">используя правую клавишу мыши</string>
@@ -94,6 +95,7 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="menu_power_standby">Вкл/выкл</string>
     <string name="menu_receiver_information">Информация об устройстве</string>
     <string name="menu_latest_logging">Лог приложения</string>
+    <string name="menu_switch_off_group">Выключить все устройства в группе?</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Включить</string>

@@ -25,6 +25,7 @@
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
     <string name="action_ok">OK</string>
+    <string name="action_no">No</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_context_mobile">using long click</string>
     <string name="action_context_desktop">right mouse button</string>
@@ -99,6 +100,7 @@ Enjoy!""</string>
     <string name="menu_power_standby">On/Standby</string>
     <string name="menu_receiver_information">Receiver information</string>
     <string name="menu_latest_logging">Latest logging</string>
+    <string name="menu_switch_off_group">Switch off all devices in the group?</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Power On</string>
