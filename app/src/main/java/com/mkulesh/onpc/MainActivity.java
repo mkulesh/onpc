@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -57,6 +58,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -298,10 +300,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         case R.id.menu_power_standby:
             if (isConnected())
             {
-                final PowerStatusMsg.PowerStatus p = getStateManager().getState().isOn() ?
-                        PowerStatusMsg.PowerStatus.STB : PowerStatusMsg.PowerStatus.ON;
-                getStateManager().sendMessage(
-                        new PowerStatusMsg(getStateManager().getState().getActiveZone(), p));
+                powerOnOff();
             }
             return true;
         case R.id.menu_receiver_information:
@@ -320,6 +319,41 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
         default:
             return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    private void powerOnOff()
+    {
+        final State state = getStateManager().getState();
+        final PowerStatusMsg.PowerStatus p = state.isOn() ?
+                PowerStatusMsg.PowerStatus.STB : PowerStatusMsg.PowerStatus.ON;
+        final PowerStatusMsg cmdMsg = new PowerStatusMsg(getStateManager().getState().getActiveZone(), p);
+        if (state.isOn() && isMultiroomAvailable() && state.isMasterDevice())
+        {
+            final Drawable icon = Utils.getDrawable(this, R.drawable.menu_power_standby);
+            Utils.setDrawableColorAttr(this, icon, android.R.attr.textColorSecondary);
+            final AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.menu_power_standby)
+                    .setIcon(icon)
+                    .setCancelable(true)
+                    .setMessage(R.string.menu_switch_off_group)
+                    .setNeutralButton(R.string.action_cancel, (d, which) -> d.dismiss())
+                    .setNegativeButton(R.string.action_no, (d, which) ->
+                    {
+                        getStateManager().sendMessage(cmdMsg);
+                        d.dismiss();
+                    })
+                    .setPositiveButton(R.string.action_ok, (d, which) ->
+                    {
+                        getStateManager().sendMessageToGroup(cmdMsg);
+                        d.dismiss();
+                    }).create();
+            dialog.show();
+            Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        }
+        else
+        {
+            getStateManager().sendMessage(cmdMsg);
         }
     }
 
@@ -697,6 +731,11 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     public DeviceList getDeviceList()
     {
         return deviceList;
+    }
+
+    public boolean isMultiroomAvailable()
+    {
+        return deviceList.getDevicesNumber() > 1;
     }
 
     @NonNull

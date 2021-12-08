@@ -16,19 +16,20 @@
 
     <!-- Main view -->
     <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
-    <string name="app_name_pro">Enhanced Controller for Onkyo and Pioneer Pro</string>
+    <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!</string>
+    <string name="app_description">Улучшенный контроллер для Onkyo и Pioneer: слушайте музыку правильно!</string>
     <string name="state_not_connected">Отсутствует соединение</string>
     <string name="state_standby">Ожидание</string>
     <string name="action_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="action_ok">OK</string>
+    <string name="action_no">Нет</string>
     <string name="action_cancel">Отмена</string>
     <string name="action_context_mobile">используя долгое нажатие</string>
     <string name="action_context_desktop">используя правую клавишу мыши</string>
 
     <string name="about_text"><![CDATA[
-    <p>Управляй музыкой на устройствах Onkyo/Pioneer одним кликом!</p>
+    <p>Улучшенный контроллер для Onkyo и Pioneer: Слушайте музыку правильно!</p>
     <p>Copyright © 2018-2021 by <b>Михаил Кулеш, Александр Гоманюк</b></p>
     <p>Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Pioneer/Integra по
        локальной сети, используя сетевой протокол "Integra Serial Communication Protocol".
@@ -91,6 +92,7 @@
     <string name="menu_power_standby">Вкл/выкл</string>
     <string name="menu_receiver_information">Информация об устройстве</string>
     <string name="menu_latest_logging">Лог приложения</string>
+    <string name="menu_switch_off_group">Выключить все устройства в группе?</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Включить</string>
@@ -113,6 +115,9 @@
     <string name="pref_device_selectors">Входные каналы</string>
     <string name="pref_listening_modes">Звуковые профили</string>
     <string name="pref_network_services">Сетевые сервисы</string>
+    <string name="pref_usb_ri_interface">Использовать интерфейс USB-RI</string>
+    <string name="pref_usb_ri_interface_none">Нет</string>
+    <string name="pref_column_separator">Положение разделителя столбцов (%)</string>
 
     <string name="pref_auto_power">Включить удаленное устройство при запуске приложения</string>
     <string name="pref_friendly_names">Удобные названия каналов и устройства</string>
@@ -177,8 +182,9 @@
 
     <!-- Application settings: Controls -->
     <string name="app_control_divider">Разделитель</string>
-    <string name="app_control_listening_mode_list">Звуковой профиль (кнопки)</string>
-    <string name="app_control_listening_mode_btn">Звуковой профиль (переключатель)</string>
+    <string name="app_control_listening_mode_list">Звуковой профиль: список</string>
+    <string name="app_control_listening_mode_switch">Звуковой профиль: переключатель</string>
+    <string name="app_control_listening_mode_groups">Звуковой профиль: группы</string>
     <string name="app_control_audio_control">Контроль звука</string>
     <string name="app_control_track_file_info">Описание файла</string>
     <string name="app_control_track_cover">Картинка альбома</string>
@@ -194,6 +200,8 @@
     <string name="app_control_device_settings">Настройки устройства</string>
     <string name="app_control_ri_amplifier">Усилитель (RI)</string>
     <string name="app_control_ri_cd_player">CD-проигрыватель (RI)</string>
+    <string name="app_control_ri_md_player">MD-проигрыватель (RI)</string>
+    <string name="app_control_ri_tape_deck">Магнитофон (RI)</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Режим отображения на дисплее устройства</string>
@@ -247,6 +255,14 @@
     <string name="cd_cmd_disc4">Диск 4</string>
     <string name="cd_cmd_disc5">Диск 5</string>
     <string name="cd_cmd_disc6">Диск 6</string>
+
+    <!-- TAPE1 commands (RI interface) -->
+    <string name="tape_cmd_play_ff">Воспроизведение вперед</string>
+    <string name="tape_cmd_play_rew">Воспроизведение назад</string>
+    <string name="tape_cmd_stop">Стоп</string>
+    <string name="tape_cmd_record">Запись/Пауза</string>
+    <string name="tape_cmd_ff">Перемотка вперед</string>
+    <string name="tape_cmd_rew">Перемотка назад</string>
 
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">Нет</string>

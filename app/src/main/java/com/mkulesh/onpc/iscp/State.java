@@ -1527,10 +1527,12 @@ public class State implements ConnectionIf
         return false;
     }
 
-    public MultiroomDeviceInformationMsg.RoleType getMultiroomRole()
+    public boolean isMasterDevice()
     {
         final MultiroomDeviceInformationMsg msg = multiroomLayout.get(multiroomDeviceId);
-        return (msg == null) ? MultiroomDeviceInformationMsg.RoleType.NONE : msg.getRole(getActiveZone() + 1);
+        final MultiroomDeviceInformationMsg.RoleType role = (msg == null) ?
+                MultiroomDeviceInformationMsg.RoleType.NONE : msg.getRole(getActiveZone() + 1);
+        return role == MultiroomDeviceInformationMsg.RoleType.SRC;
     }
 
     private MultiroomDeviceInformationMsg.ChannelType getMultiroomChannelType()

@@ -16,19 +16,20 @@
 
     <!-- Main view -->
     <string name="app_name">Erweiterte Bedienung für Onkyo und Pioneer</string>
-    <string name="app_name_pro">Erweiterte Bedienung für Onkyo und Pioneer Pro</string>
-    <string name="app_short_name">Musik Kontrolle</string>
-    <string name="app_description">Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</string>
+    <string name="app_name_pro">Enhanced Music Controller</string>
+    <string name="app_short_name">Music Control</string>
+    <string name="app_description">Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!</string>
     <string name="state_not_connected">Nicht verbunden</string>
     <string name="state_standby">Schlafmodus</string>
     <string name="action_exit_confirm">Zum Beenden erneut zurück drücken</string>
     <string name="action_ok">OK</string>
+    <string name="action_no">Nein</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_context_mobile">mit einem langen Klick</string>
     <string name="action_context_desktop">mit rechte Maustaste</string>
 
     <string name="about_text"><![CDATA[
-    <p>Verbesserte Fernsteuerung für Onkyo/Pioneer Geräte: Musik richtig hören!</p>
+    <p>Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!</p>
     <p>Copyright © 2018-2021 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das
        "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.</p>
@@ -88,6 +89,7 @@
     <string name="menu_power_standby">An/Standby</string>
     <string name="menu_receiver_information">Receiver Informationen</string>
     <string name="menu_latest_logging">Letzte Log</string>
+    <string name="menu_switch_off_group">Alle Geräte in der Gruppe ausschalten?</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Einschalten</string>
@@ -110,6 +112,9 @@
     <string name="pref_device_selectors">Eingangskanäle</string>
     <string name="pref_listening_modes">Klangprofile</string>
     <string name="pref_network_services">Netzwerkdienste</string>
+    <string name="pref_usb_ri_interface">USB-RI-Schnittstelle verwenden</string>
+    <string name="pref_usb_ri_interface_none">Keine</string>
+    <string name="pref_column_separator">Position des Spaltentrenners (%)</string>
 
     <string name="pref_auto_power">Remote-Gerät beim Start der App einschalten</string>
     <string name="pref_friendly_names">Lesbare Kanal- und Gerätenamen</string>
@@ -176,8 +181,9 @@
 
     <!-- Application settings: Controls -->
     <string name="app_control_divider">Teiler</string>
-    <string name="app_control_listening_mode_list">Hörmodus-Tasten</string>
-    <string name="app_control_listening_mode_btn">Hörmodusschalter</string>
+    <string name="app_control_listening_mode_list">Hörmodus: Liste</string>
+    <string name="app_control_listening_mode_switch">Hörmodus: Schalter</string>
+    <string name="app_control_listening_mode_groups">Hörmodus: Gruppen</string>
     <string name="app_control_audio_control">Audiosteuerung</string>
     <string name="app_control_track_file_info">Dateiinformationen</string>
     <string name="app_control_track_cover">Album-Cover</string>
@@ -193,6 +199,8 @@
     <string name="app_control_device_settings">Geräteeinstellungen</string>
     <string name="app_control_ri_amplifier">Verstärker (RI)</string>
     <string name="app_control_ri_cd_player">CD Player (RI)</string>
+    <string name="app_control_ri_md_player">MD Player (RI)</string>
+    <string name="app_control_ri_tape_deck">Tape Deck (RI)</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Anzeigemodus am Gerät</string>
@@ -246,6 +254,14 @@
     <string name="cd_cmd_disc4">Disk 4</string>
     <string name="cd_cmd_disc5">Disk 5</string>
     <string name="cd_cmd_disc6">Disk 6</string>
+
+    <!-- TAPE1 commands (RI interface) -->
+    <string name="tape_cmd_play_ff">Wiedergabe vorwärts</string>
+    <string name="tape_cmd_play_rew">Wiedergabe rückwärts</string>
+    <string name="tape_cmd_stop">Stopp</string>
+    <string name="tape_cmd_record">Aufname/Pause</string>
+    <string name="tape_cmd_ff">Vorwärts springen</string>
+    <string name="tape_cmd_rew">Zurück springen</string>
 
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>

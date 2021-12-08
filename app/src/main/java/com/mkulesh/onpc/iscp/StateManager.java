@@ -622,6 +622,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
+    public void sendMessageToGroup(final ISCPMessage msg)
+    {
+        Logging.info(this, "sending message to group: " + msg.toString());
+        for (MessageChannel m : multiroomChannels.values())
+        {
+            m.sendMessage(msg.getCmdMsg());
+        }
+        messageChannel.sendMessage(msg.getCmdMsg());
+    }
+
     public void sendPlayQueueMsg(ISCPMessage msg, boolean repeat)
     {
         if (msg == null)

@@ -18,19 +18,20 @@
 
     <!-- Main view -->
     <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
-    <string name="app_name_pro">Enhanced Controller for Onkyo and Pioneer Pro</string>
+    <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</string>
+    <string name="app_description">Enhanced controller for Onkyo and Pioneer: listen to music properly!</string>
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
     <string name="action_ok">OK</string>
+    <string name="action_no">No</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_context_mobile">using long click</string>
     <string name="action_context_desktop">right mouse button</string>
 
     <string name="about_text"><![CDATA[
-    <p>Enhanced controller for Onkyo/Pioneer devices: listen to music properly!</p>
+    <p>Enhanced controller for Onkyo and Pioneer: listen to music properly!</p>
     <p>Copyright © 2018-2021 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
        "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.</p>
@@ -92,6 +93,7 @@
     <string name="menu_power_standby">On/Standby</string>
     <string name="menu_receiver_information">Receiver information</string>
     <string name="menu_latest_logging">Latest logging</string>
+    <string name="menu_switch_off_group">Switch off all devices in the group?</string>
 
     <!-- Shortcuts -->
     <string name="shortcut_power_on">Power On</string>
@@ -114,6 +116,9 @@
     <string name="pref_device_selectors">Input selectors</string>
     <string name="pref_listening_modes">Listening modes</string>
     <string name="pref_network_services">Network services</string>
+    <string name="pref_usb_ri_interface">Use USB-RI interface</string>
+    <string name="pref_usb_ri_interface_none">None</string>
+    <string name="pref_column_separator">Position of column separator (%)</string>
 
     <string name="pref_auto_power">Switch-on remote device on app startup</string>
     <string name="pref_friendly_names">Friendly selector and device names</string>
@@ -240,8 +245,9 @@
 
     <!-- Application settings: Controls -->
     <string name="app_control_divider">Divider</string>
-    <string name="app_control_listening_mode_list">Listening mode buttons</string>
-    <string name="app_control_listening_mode_btn">Listening mode switch</string>
+    <string name="app_control_listening_mode_list">Listening mode: list</string>
+    <string name="app_control_listening_mode_switch">Listening mode: switch</string>
+    <string name="app_control_listening_mode_groups">Listening mode: groups</string>
     <string name="app_control_audio_control">Audio control</string>
     <string name="app_control_track_file_info">File information</string>
     <string name="app_control_track_cover">Album cover</string>
@@ -257,6 +263,8 @@
     <string name="app_control_device_settings">Device settings</string>
     <string name="app_control_ri_amplifier">Amplifier (RI)</string>
     <string name="app_control_ri_cd_player">CD Player (RI)</string>
+    <string name="app_control_ri_md_player">MD Player (RI)</string>
+    <string name="app_control_ri_tape_deck">Tape Deck (RI)</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Display mode on device</string>
@@ -310,6 +318,14 @@
     <string name="cd_cmd_disc4">Disk 4</string>
     <string name="cd_cmd_disc5">Disk 5</string>
     <string name="cd_cmd_disc6">Disk 6</string>
+
+    <!-- TAPE1 commands (RI interface) -->
+    <string name="tape_cmd_play_ff">Play forward</string>
+    <string name="tape_cmd_play_rew">Play backwards</string>
+    <string name="tape_cmd_stop">Stop</string>
+    <string name="tape_cmd_record">Record/Pause</string>
+    <string name="tape_cmd_ff">Skip forward</string>
+    <string name="tape_cmd_rew">Skip backwards</string>
 
     <!-- Device audio muting, duplicate some amplifier commands -->
     <string name="audio_muting_none">N/A</string>
@@ -641,6 +657,11 @@
     <string name="listening_mode_mode_a6" translatable="false">Neural Digital Music + Audyssey DSX</string>
     <string name="listening_mode_mode_a7" translatable="false">Dolby EX + Audyssey DSX</string>
     <string name="listening_mode_mode_ff" translatable="false">Auto Surround</string>
+    <string name="listening_mode_music" translatable="false">MUSIC</string>
+    <string name="listening_mode_movie" translatable="false">MOVIE</string>
+    <string name="listening_mode_game" translatable="false">GAME</string>
+    <string name="listening_mode_stereo" translatable="false">STEREO</string>
+    <string name="listening_mode_thx" translatable="false">THX</string>
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
     <string name="listening_mode_down">Sets listening mode wrap-around down</string>
 

@@ -736,19 +736,13 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
     /*
      * Multiroom control
      */
-    private boolean isGroupMenu()
-    {
-        return activity.getDeviceList().getDevicesNumber() > 1;
-    }
-
     private void updateMultiroomGroupBtn(AppCompatImageButton b, @Nullable final State state)
     {
-        if (state != null && isGroupMenu())
+        if (state != null && activity.isMultiroomAvailable())
         {
-            final boolean isMaster = state.getMultiroomRole() == MultiroomDeviceInformationMsg.RoleType.SRC;
             b.setVisibility(View.VISIBLE);
             setButtonEnabled(b, true);
-            setButtonSelected(b, isMaster);
+            setButtonSelected(b, state.isMasterDevice());
             b.setContentDescription(activity.getString(R.string.cmd_multiroom_group));
 
             prepareButtonListeners(b, null, () ->
@@ -774,7 +768,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         MultiroomDeviceInformationMsg.ChannelType ch = state != null ?
                 state.multiroomChannel : MultiroomDeviceInformationMsg.ChannelType.NONE;
 
-        if (ch != MultiroomDeviceInformationMsg.ChannelType.NONE && isGroupMenu())
+        if (ch != MultiroomDeviceInformationMsg.ChannelType.NONE && activity.isMultiroomAvailable())
         {
             final MultiroomChannelSettingMsg cmd = new MultiroomChannelSettingMsg(
                     state.getActiveZone() + 1, MultiroomChannelSettingMsg.getUpType(ch));
