@@ -32,6 +32,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
+import static com.mkulesh.onpc.utils.Utils.getStringPref;
+
 public class Configuration
 {
     public static final boolean ENABLE_MOCKUP = false;
@@ -114,7 +116,7 @@ public class Configuration
 
     public void initActiveZone(int defaultActiveZone)
     {
-        final String activeZone = preferences.getString(ACTIVE_ZONE, "");
+        final String activeZone = getStringPref(preferences, ACTIVE_ZONE, "");
         if (activeZone.isEmpty())
         {
             setActiveZone(defaultActiveZone);
@@ -133,7 +135,7 @@ public class Configuration
     {
         try
         {
-            final String activeZone = preferences.getString(ACTIVE_ZONE, "");
+            final String activeZone = getStringPref(preferences, ACTIVE_ZONE, "");
             return (activeZone.isEmpty()) ? ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE : Integer.parseInt(activeZone);
         }
         catch (Exception e)

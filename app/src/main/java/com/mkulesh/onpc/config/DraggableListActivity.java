@@ -19,6 +19,8 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.List;
 
+import static com.mkulesh.onpc.utils.Utils.getStringPref;
+
 public abstract class DraggableListActivity extends AppCompatPreferenceActivity
 {
     CheckableItemAdapter adapter;
@@ -31,7 +33,7 @@ public abstract class DraggableListActivity extends AppCompatPreferenceActivity
 
     String[] getTokens(String par)
     {
-        final String cfg = preferences.getString(par, "");
+        final String cfg = getStringPref(preferences, par, "");
         return cfg.isEmpty() ? null : cfg.split(",");
     }
 

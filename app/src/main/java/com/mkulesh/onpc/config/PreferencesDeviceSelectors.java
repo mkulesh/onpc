@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mkulesh.onpc.utils.Utils.getStringPref;
+
 public class PreferencesDeviceSelectors extends DraggableListActivity
 {
     @Override
@@ -63,7 +65,7 @@ public class PreferencesDeviceSelectors extends DraggableListActivity
             }
 
             final String defName = getString(item.getDescriptionId());
-            final String name = fName ? preferences.getString(
+            final String name = fName ? getStringPref(preferences,
                     Configuration.DEVICE_SELECTORS + "_" + item.getCode(), defName) : defName;
             targetItems.add(new CheckableItem(
                     item.getDescriptionId(),

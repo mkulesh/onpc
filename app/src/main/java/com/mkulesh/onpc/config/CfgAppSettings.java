@@ -27,6 +27,8 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 
+import static com.mkulesh.onpc.utils.Utils.getStringPref;
+
 public class CfgAppSettings
 {
     // Themes
@@ -141,7 +143,7 @@ public class CfgAppSettings
         CfgAppSettings.Tabs retValue = Tabs.LISTEN;
         try
         {
-            final String tab = preferences.getString(OPENED_TAB_NAME, Tabs.LISTEN.toString());
+            final String tab = getStringPref(preferences, OPENED_TAB_NAME, Tabs.LISTEN.toString());
             retValue = CfgAppSettings.Tabs.valueOf(tab.toUpperCase());
         }
         catch (Exception ex)

@@ -27,6 +27,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static com.mkulesh.onpc.utils.Utils.getStringPref;
+
 public class CfgFavoriteConnections
 {
     private static final String FAVORITE_CONNECTION_SEP = "<;>";
@@ -49,7 +51,7 @@ public class CfgFavoriteConnections
         for (int i = 0; i < fcNumber; i++)
         {
             final String key = FAVORITE_CONNECTION_ITEM + "_" + i;
-            final String val = preferences.getString(key, "");
+            final String val = getStringPref(preferences, key, "");
             final String[] tokens = val.split(FAVORITE_CONNECTION_SEP);
             if (tokens.length >= 3)
             {

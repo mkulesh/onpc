@@ -26,6 +26,8 @@ import java.util.List;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 
+import static com.mkulesh.onpc.utils.Utils.getStringPref;
+
 class CheckableItem
 {
     final int id;
@@ -104,7 +106,7 @@ class CheckableItem
             @NonNull final ArrayList<String> defItems)
     {
         ArrayList<CheckableItem> retValue = new ArrayList<>();
-        final String cfg = preference.getString(parameter, "");
+        final String cfg = getStringPref(preference, parameter, "");
 
         // Add items stored in the configuration
         if (!cfg.isEmpty())

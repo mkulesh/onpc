@@ -16,6 +16,7 @@ package com.mkulesh.onpc.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -419,5 +420,13 @@ public class Utils
     public static String ipToString(String host, int port)
     {
         return host + ":" + port;
+    }
+
+    @NonNull
+    public static String getStringPref(@NonNull final SharedPreferences preferences,
+                                       @NonNull final String par, @NonNull final String def)
+    {
+        final String val = preferences.getString(par, def);
+        return val == null ? def : val;
     }
 }

@@ -35,6 +35,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static com.mkulesh.onpc.utils.Utils.getStringPref;
+
 public class CfgFavoriteShortcuts
 {
     private static final String FAVORITE_SHORTCUT_TAG = "favoriteShortcut";
@@ -258,7 +260,7 @@ public class CfgFavoriteShortcuts
         for (int i = 0; i < fcNumber; i++)
         {
             final String key = FAVORITE_SHORTCUT_ITEM + "_" + i;
-            Utils.openXml(this, preferences.getString(key, ""), (final Element elem) ->
+            Utils.openXml(this, getStringPref(preferences, key, ""), (final Element elem) ->
             {
                 if (elem.getTagName().equals(FAVORITE_SHORTCUT_TAG))
                 {
