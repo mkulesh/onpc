@@ -80,6 +80,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
 
         if (!state.receiverInformation.isFriendlyName && !state.receiverInformation.isReceiverInformation)
         {
+            _friendlyNameController.text = "";
             return SizedBox.shrink();
         }
 
@@ -102,6 +103,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                     Expanded(
                         child: CustomTextField(_friendlyNameController,
                             isFocused: false,
+                            readOnly: !state.isOn,
                             onPressed: ()
                             => _submitDeviceName(context, state.isOn)),
                         flex: 1),

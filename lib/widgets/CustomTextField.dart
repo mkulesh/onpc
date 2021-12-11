@@ -22,10 +22,11 @@ class CustomTextField extends StatelessWidget
     final TextEditingController text;
     final bool isFocused;
     final bool isBorder;
+    final bool readOnly;
     final VoidCallback onPressed;
     final ValueChanged<String> onChanged;
 
-    CustomTextField(this.text, { this.isFocused = false, this.isBorder = true, this.onPressed, this.onChanged });
+    CustomTextField(this.text, { this.isFocused = false, this.isBorder = true, this.readOnly = false, this.onPressed, this.onChanged });
 
     @override
     Widget build(BuildContext context)
@@ -37,6 +38,7 @@ class CustomTextField extends StatelessWidget
             autofocus: isFocused,
             style: td.textTheme.subtitle1,
             autovalidateMode: AutovalidateMode.disabled,
+            readOnly: readOnly,
             autocorrect: false,
             enableSuggestions: false,
             textInputAction: onPressed != null ? TextInputAction.done : null,
