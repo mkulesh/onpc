@@ -46,8 +46,9 @@ flutter:
 
 msix_config:
   display_name: Enhanced Music Controller
-  identity-name: com.mkulesh.onpc
   publisher_display_name: Mikhail Kulesh
+  identity_name: 25529MikhailKulesh.EnhancedMusicController
+  publisher: CN=9D09E66E-B667-4A38-BC96-E7825A87B8DB
   msix_version: 2.11.0.0
   logo_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
   start_menu_icon_path: C:\Work\android\solutions\onpc-flutter\windows\runner\resources\app_icon_512.png
