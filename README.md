@@ -34,9 +34,13 @@ On Mac, iPhone, iPad:
 [<img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_app_store.png"
       alt="Download on the App Store" height="110">](https://apps.apple.com/app/id1490166845)
 
+On Windows: 
+
+[<img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_windows_store.png"
+      alt="Download on Windows Store" height="110">](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+
 Do you want try the last version in development?
 - [TestFlight on iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
-- <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_windows10.png" align="center" height="48" width="48"> [Windows 10](https://github.com/mkulesh/onpc/tree/autobuild/release)
 - <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_linux.png" align="center" height="48" width="48"> [Linux (Fedora Workstation)](https://github.com/mkulesh/onpc/tree/autobuild/release)
  
 The two most popular features of the app are music playback and sound profile management. Other benefits include:
