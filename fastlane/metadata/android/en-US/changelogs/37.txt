@@ -1,0 +1,4 @@
+• Added a function to switch off all devices in a group
+• Enabled Zone3 and Zone4 for older Onkyo models
+• TX-8130: Fixed a bug that shortcuts don't work as expected
+• Amazon Music: fixed missed positive feed button

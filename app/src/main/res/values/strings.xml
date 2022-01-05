@@ -65,7 +65,7 @@
     <string name="drawer_premium">Get Premium version</string>
     <string name="drawer_premium_link" translatable="false">https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus</string>
     <string name="drawer_desktop">Desktop version</string>
-    <string name="drawer_desktop_link" translatable="false">https://github.com/mkulesh/onpc/tree/autobuild/release</string>
+    <string name="drawer_desktop_link" translatable="false">https://www.microsoft.com/store/apps/9P9V57CZ8JG3</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Address</string>

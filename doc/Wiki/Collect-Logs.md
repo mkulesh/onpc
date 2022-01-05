@@ -3,10 +3,6 @@
 this log on any public Internet resources!
 
 **The first way: Using Developer Mode in the APP**
-- Download and install the latest nightly build, for example 
-https://github.com/mkulesh/onpc/raw/autobuild/autobuild/onpc-v1.24-debug.apk.
-**Note** This debug version is not signed. You may need to remove the signed version, 
-installed from Google Play or F-Droid before installing this debug version.
 - Open "Settings" dialog and activate the "Developer options" at the end of the settings list
 - Go back to the App. An application menu (three dots on the right of toolbar) appears
 - In the APP, perform the action that does not work as desired 
