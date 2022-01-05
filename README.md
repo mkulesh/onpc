@@ -1,9 +1,9 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
 ![Release Status](https://img.shields.io/github/v/release/mkulesh/onpc)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Controller for Onkyo and Pioneer
+# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Music Controller
 
-*Enhanced controller for Onkyo/Pioneer devices: listen to music properly!*
+*Enhanced Music Controller for Onkyo and Pioneer: listen to music properly!*
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
