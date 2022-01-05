@@ -40,7 +40,7 @@ On Windows:
 
 Do you want try the last version in development?
 - [TestFlight on iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
-- <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_linux.png" align="center" height="48" width="48"> [Linux (Fedora Workstation)](https://github.com/mkulesh/onpc/tree/autobuild/release)
+- <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_linux.png" align="center" height="48" width="48"> [Linux (Fedora Workstation)](https://1drv.ms/u/s!At2sh2-YDyGFdzit8tNpLYRim34?e=ck3LS1)
  
 The two most popular features of the app are music playback and sound profile management. Other benefits include:
 - Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
