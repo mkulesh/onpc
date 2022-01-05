@@ -68,6 +68,7 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="drawer_app_settings">Настройки</string>
     <string name="drawer_about">О программе</string>
     <string name="drawer_premium">Попробуйте \"Премиум\" версию</string>
+    <string name="drawer_desktop">Версия для ПК</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Адрес</string>

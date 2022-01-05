@@ -34,6 +34,7 @@ class Strings
 
     static const String dashed_string = "---";
     static const String drawer_premium_link = "https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus";
+    static const String drawer_desktop_link = "https://www.microsoft.com/store/apps/9P9V57CZ8JG3";
     static const String pref_sound_control_default = "device";
     static const String pref_theme_default = "indigo-orange";
     static const String pref_language_default = "system";
@@ -473,6 +474,14 @@ Enjoy!"""];
         /*pl*/ "Wypróbuj wersję Premium"];
     static String get drawer_premium => l_drawer_premium[_language];
 
+    static const List<String> l_drawer_desktop = [
+        /*en*/ "Desktop version",
+        /*ru*/ "Версия для ПК",
+        /*de*/ "Desktop-Version",
+        /*fr*/ "Version de bureau",
+        /*pl*/ "Wersja na komputer"];
+    static String get drawer_desktop => l_drawer_desktop[_language];
+
     static const List<String> l_connect_dialog_address = [
         /*en*/ "Address",
         /*ru*/ "Адрес",
@@ -893,7 +902,7 @@ Enjoy!"""];
         /*en*/ "Listening mode: groups",
         /*ru*/ "Звуковой профиль: группы",
         /*de*/ "Hörmodus: Gruppen",
-        /*fr*/ "Mode d'écoute: groupes",
+        /*fr*/ "Mode d\'écoute: groupes",
         /*pl*/ "Tryb odsłuchu: grupy"];
     static String get app_control_listening_mode_groups => l_app_control_listening_mode_groups[_language];
 

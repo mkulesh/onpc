@@ -70,6 +70,7 @@ Enjoy!""</string>
     <string name="drawer_app_settings">Ustawienia</string>
     <string name="drawer_about">Info</string>
     <string name="drawer_premium">Wypróbuj wersję Premium</string>
+    <string name="drawer_desktop">Wersja na komputer</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adres IP</string>

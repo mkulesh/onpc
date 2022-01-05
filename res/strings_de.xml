@@ -68,6 +68,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="drawer_app_settings">Einstellungen</string>
     <string name="drawer_about">Über</string>
     <string name="drawer_premium">Probieren Sie die Premium-Version aus</string>
+    <string name="drawer_desktop">Desktop-Version</string>
 
     <!-- Connection dialog -->
     <string name="connect_dialog_address">Adresse</string>
