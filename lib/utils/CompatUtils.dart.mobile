@@ -52,6 +52,7 @@ class CompatUtils
             padding: padding,
             onTapLink: (String href)
             {
+                Logging.info(styleSheet, "URL pressed: " + href);
                 _launchURL(href);
             });
     }
