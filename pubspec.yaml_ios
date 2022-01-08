@@ -3,7 +3,7 @@ name: onpc
 description: Enhanced Music Controller
 author: Mikhail Kulesh
 
-version: 2.11.0+301
+version: 2.11.1+302
 
 environment:
   sdk: ">=2.1.1 <3.0.0"
