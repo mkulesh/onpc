@@ -18,11 +18,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@drawable/toast_frame"
-    android:layout_marginEnd="@dimen/tooltip_margin"
-    android:layout_marginStart="@dimen/tooltip_margin"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:background="?attr/toastFrame"
+    android:layout_marginRight="@dimen/tooltip_margin"
+    android:layout_marginLeft="@dimen/tooltip_margin"
+    android:paddingTop="@dimen/tooltip_margin"
+    android:paddingBottom="@dimen/tooltip_margin"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
 
     <TextView
         android:id="@+id/toast_message"
@@ -30,8 +32,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
-        android:paddingTop="@dimen/tooltip_margin"
-        android:paddingBottom="@dimen/tooltip_margin"
         android:textAppearance="@style/TextAppearance.AppCompat.Tooltip"
         android:textColor="?attr/colorTooltipText"/>
 </LinearLayout>

@@ -200,11 +200,11 @@ class MultiroomManager
                 removeCmd.getDevice().add(id);
             }
         }
-        if (removeCmd.getDevice().size() > 0)
+        if (removeCmd.getDevice().size() > 0 && activity.isConnected())
         {
             activity.getStateManager().sendMessage(removeCmd);
         }
-        if (addCmd.getDevice().size() > 0)
+        if (addCmd.getDevice().size() > 0 && activity.isConnected())
         {
             activity.getStateManager().sendMessage(addCmd);
         }

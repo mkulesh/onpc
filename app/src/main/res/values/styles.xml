@@ -22,7 +22,7 @@
         <item name="android:textColorTertiary">@android:color/white</item>
         <item name="colorButtonEnabled">?android:attr/textColor</item>
         <item name="colorButtonDisabled">?android:attr/textColorSecondary</item>
-        <item name="colorTooltipBackground">@color/tooltip_background_dark</item>
+        <item name="toastFrame">@drawable/toast_frame_light</item>
         <item name="colorTooltipText">@android:color/white</item>
     </style>
 
@@ -34,7 +34,7 @@
         <item name="android:textColorTertiary">@android:color/white</item>
         <item name="colorButtonEnabled">?android:attr/textColor</item>
         <item name="colorButtonDisabled">?android:attr/textColorSecondary</item>
-        <item name="colorTooltipBackground">@color/tooltip_background_light</item>
+        <item name="toastFrame">@drawable/toast_frame_dark</item>
         <item name="colorTooltipText">@android:color/black</item>
     </style>
 

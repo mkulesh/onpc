@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Controller for Onkyo and Pioneer
-  ~ Copyright (C) 2018-2021 by Mikhail Kulesh
+  ~ Copyright (C) 2018-2020. Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -12,18 +12,8 @@
   ~ Public License along with this program.
   -->
 
-<resources>
-
-    <attr name="themeActivityToolBar" format="reference" />
-    <attr name="themeActivityPopup" format="reference" />
-    <attr name="colorButtonEnabled" format="color" />
-    <attr name="colorButtonDisabled" format="color" />
-    <attr name="toastFrame" format="reference" />
-    <attr name="colorTooltipText" format="color" />
-
-    <declare-styleable name="HorizontalNumberPicker">
-        <attr name="label" format="string" />
-        <attr name="minWidth" format="dimension" />
-    </declare-styleable>
-
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/tooltip_background_dark" />
+    <corners android:radius="@dimen/tooltip_corner_radius" />
+</shape>
