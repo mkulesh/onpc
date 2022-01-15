@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -372,15 +373,30 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             finish();
         }
-        else if (exitToast != null && exitToast.getView().isShown())
+        else if (Utils.isToastVisible(exitToast))
         {
             exitToast.cancel();
+            exitToast = null;
             finish();
         }
         else
         {
             exitToast = Toast.makeText(this, R.string.action_exit_confirm, Toast.LENGTH_LONG);
-            exitToast.show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            {
+                exitToast.addCallback(new Toast.Callback()
+                {
+                    @Override
+                    public void onToastHidden()
+                    {
+                        exitToast = null;
+                    }
+                });
+            }
+            if (exitToast != null)
+            {
+                exitToast.show();
+            }
         }
     }
 

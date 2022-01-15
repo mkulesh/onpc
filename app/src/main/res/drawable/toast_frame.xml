@@ -12,18 +12,8 @@
   ~ Public License along with this program.
   -->
 
-<resources>
-
-    <attr name="themeActivityToolBar" format="reference" />
-    <attr name="themeActivityPopup" format="reference" />
-    <attr name="colorButtonEnabled" format="color" />
-    <attr name="colorButtonDisabled" format="color" />
-    <attr name="colorTooltipBackground" format="color" />
-    <attr name="colorTooltipText" format="color" />
-
-    <declare-styleable name="HorizontalNumberPicker">
-        <attr name="label" format="string" />
-        <attr name="minWidth" format="dimension" />
-    </declare-styleable>
-
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/colorTooltipBackground" />
+    <corners android:radius="@dimen/tooltip_corner_radius" />
+</shape>
