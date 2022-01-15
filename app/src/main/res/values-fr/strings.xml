@@ -30,7 +30,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Contrôleur optimisé pour Onkyo et Pioneer: Ecoutez votre musique correctement!</p>
-    <p>Copyright © 2018-2021 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2022 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol".
 Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.</p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>

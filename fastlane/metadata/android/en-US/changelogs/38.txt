@@ -1,0 +1,1 @@
+• Fixed app crash in Android 11 and 12 when a tooltip is opened or back button is pressed
