@@ -825,7 +825,7 @@ class StateManager
         if (shortcut != null)
         {
             Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-            activateScript(MessageScript(shortcut.toScript(state.receiverInformation.model)));
+            activateScript(MessageScript(shortcut.toScript(state.receiverInformation.model, state.mediaListState)));
         }
     }
 }

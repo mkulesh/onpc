@@ -23,6 +23,7 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ServiceType.dart";
+import "../iscp/state/MediaListState.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";
@@ -139,7 +140,7 @@ class Shortcut
         return label.toString();
     }
 
-    String toScript(final String model)
+    String toScript(final String model, final MediaListState mediaState)
     {
         String data = "";
         data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
@@ -157,7 +158,13 @@ class Shortcut
             return data;
         }
 
-        data += "<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>";
+        // Issue #248: Shortcuts not working when an empty play queue is selected in MEDIA tab:
+        // when an empty play queue is selected in MEDIA tab, NLT message is not answered by receiver
+        final bool emptyQueue = mediaState.serviceType.key == ServiceType.PLAYQUEUE && mediaState.numberOfTitles == 0;
+        if (!emptyQueue)
+        {
+            data += "<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>";
+        }
 
         // Go to the top level. Response depends on the input type and model
         String firstPath = pathItems.isEmpty ? item : pathItems.first;
