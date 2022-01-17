@@ -161,7 +161,7 @@ class StateManager
     final List<MessageScriptIf> _messageScripts = [];
 
     // USB-RI interface
-    final CompatUtils usbSerial = CompatUtils();
+    final SerialPortWrapper usbSerial = SerialPortWrapper();
 
     void clearScripts()
     {

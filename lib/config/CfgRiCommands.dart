@@ -140,7 +140,7 @@ class CfgRiCommands extends CfgModule
         }
         try
         {
-            _ports = CompatUtils.getPorts();
+            _ports = SerialPortWrapper.getPorts();
             Logging.info(this, "Available USB ports:");
             _ports.forEach((p) => Logging.info(this, "  " + p.toString()));
         }

@@ -14,17 +14,21 @@
 // @dart=2.9
 
 import "dart:typed_data";
+import "dart:ui";
+
 import "package:flutter/src/painting/edge_insets.dart";
 import "package:flutter/src/widgets/framework.dart";
 import "package:flutter_libserialport/flutter_libserialport.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
 import "package:flutter_markdown/src/style_sheet.dart";
 import "package:url_launcher/url_launcher.dart";
+import "package:window_manager/window_manager.dart";
 
+import "../config/Configuration.dart";
 import "Logging.dart";
 import "Pair.dart";
 
-class CompatUtils
+class SerialPortWrapper
 {
     SerialPort _port;
 
@@ -107,7 +111,10 @@ class CompatUtils
             Logging.info(this, "can not write into serial port: " + SerialPort.lastError.toString());
         }
     }
+}
 
+class MarkdownWrapper
+{
     static Widget buildMarkdown(String data, MarkdownStyleSheet styleSheet, EdgeInsetsGeometry padding)
     {
         return Markdown(data: data,
@@ -128,5 +135,54 @@ class CompatUtils
         {
             await launch(url);
         }
+    }
+}
+
+class WindowManagerWrapper with WindowListener
+{
+    final Configuration _configuration;
+
+    WindowManagerWrapper(this._configuration);
+
+    void restoreWindow() async
+    {
+        Logging.info(this, "Restore window size and position");
+        await windowManager.ensureInitialized();
+        await windowManager.waitUntilReadyToShow().then((_) async
+        {
+            await windowManager.setSize(_configuration.appSettings.windowSize());
+            await windowManager.setPosition(_configuration.appSettings.windowOffset());
+            await windowManager.show();
+        });
+    }
+
+    void initState()
+    {
+        windowManager.addListener(this);
+    }
+
+    void dispose()
+    {
+        windowManager.removeListener(this);
+    }
+
+    @override
+    void onWindowResize()
+    {
+        windowManager.getBounds().then((Rect rect)
+        {
+            Logging.info(this, "Window resize:" + rect.toString());
+            _configuration.appSettings.windowFrame = rect;
+        });
+    }
+
+    @override
+    void onWindowMove()
+    {
+        windowManager.getBounds().then((Rect rect)
+        {
+            Logging.info(this, "Window move:" + rect.toString());
+            _configuration.appSettings.windowFrame = rect;
+        });
     }
 }

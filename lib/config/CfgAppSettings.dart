@@ -18,6 +18,7 @@ import "package:flutter/material.dart";
 import "package:onpc/constants/Themes.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
+import "../Platform.dart";
 import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../utils/Convert.dart";
@@ -174,6 +175,47 @@ class CfgAppSettings extends CfgModule
         saveStringParameter(MEDIA_SORT_MODE, Convert.enumToString(value));
     }
 
+    // Window size and position for desktop app
+    static const Pair<String, int> WINDOW_WIDTH = Pair<String, int>("window_width", 350);
+    static const Pair<String, int> WINDOW_HEIGHT = Pair<String, int>("window_height", 720);
+    static const Pair<String, int> WINDOW_OFFSET_X = Pair<String, int>("window_offset_x", 100);
+    static const Pair<String, int> WINDOW_OFFSET_Y = Pair<String, int>("window_offset_y", 100);
+    int _windowWidth, _windowHeight, _windowOffsetX, _windowOffsetY;
+
+    Size windowSize()
+    => Size(_windowWidth.toDouble(), _windowHeight.toDouble());
+
+    Offset windowOffset()
+    => Offset(_windowOffsetX.toDouble(), _windowOffsetY.toDouble());
+
+    set windowFrame(Rect s)
+    {
+        final int offsetX = s.left.ceil();
+        final int width = s.right.ceil() - offsetX;
+        if (_windowWidth != width)
+        {
+            _windowWidth = width;
+            saveIntegerParameter(WINDOW_WIDTH, _windowWidth);
+        }
+        final int offsetY = s.top.ceil();
+        final int height = s.bottom.ceil() - offsetY;
+        if (_windowHeight != height)
+        {
+            _windowHeight = height;
+            saveIntegerParameter(WINDOW_HEIGHT, _windowHeight);
+        }
+        if (offsetX != _windowOffsetX)
+        {
+            _windowOffsetX = offsetX;
+            saveIntegerParameter(WINDOW_OFFSET_X, _windowOffsetX);
+        }
+        if (offsetY != _windowOffsetY)
+        {
+            _windowOffsetY = offsetY;
+            saveIntegerParameter(WINDOW_OFFSET_Y, _windowOffsetY);
+        }
+    }
+
     // methods
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);
 
@@ -191,6 +233,13 @@ class CfgAppSettings extends CfgModule
             => Convert.enumToString(t) == sortMode, orElse: () => MediaSortMode.values.first);
         _readVisibleTabs();
         _readControlElements();
+        if (Platform.isDesktop)
+        {
+            _windowWidth = getInt(WINDOW_WIDTH, doLog: true);
+            _windowHeight = getInt(WINDOW_HEIGHT, doLog: true);
+            _windowOffsetX = getInt(WINDOW_OFFSET_X, doLog: true);
+            _windowOffsetY = getInt(WINDOW_OFFSET_Y, doLog: true);
+        }
     }
 
     @override
