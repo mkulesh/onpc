@@ -162,8 +162,10 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             if (ri.firmwareStatus.key != FirmwareUpdate.ACTUAL &&
                 ri.firmwareStatus.key != FirmwareUpdate.NONE)
             {
-                final bool isEnabled = ri.firmwareStatus.key == FirmwareUpdate.NEW_VERSION ||
-                    ri.firmwareStatus.key == FirmwareUpdate.NEW_VERSION_FORCE;
+                final bool isEnabled = [
+                    FirmwareUpdate.NEW_VERSION,
+                    FirmwareUpdate.NEW_VERSION_NORMAL,
+                    FirmwareUpdate.NEW_VERSION_FORCE].contains(ri.firmwareStatus.key);
                 firmwareInfo = Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
