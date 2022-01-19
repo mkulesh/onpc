@@ -2852,6 +2852,14 @@ Enjoy!"""];
         /*pl*/ "Ustawienia"];
     static String get device_settings => l_device_settings[_language];
 
+    static const List<String> l_device_parameter_help = [
+        /*en*/ "Show parameter description",
+        /*ru*/ "Показать описание параметра",
+        /*de*/ "Parameterbeschreibung anzeigen",
+        /*fr*/ "Afficher la description du paramètre",
+        /*pl*/ "Pokaż opis parametru"];
+    static String get device_parameter_help => l_device_parameter_help[_language];
+
     static const List<String> l_device_firmware = [
         /*en*/ "Firmware",
         /*ru*/ "Прошивка",
@@ -2972,6 +2980,14 @@ Enjoy!"""];
         /*pl*/ "Zmień na kolejny"];
     static String get device_dimmer_level_toggle => l_device_dimmer_level_toggle[_language];
 
+    static const List<String> l_device_dimmer_level_help = [
+        /*en*/ "You can change the brightness level of the device display.",
+        /*ru*/ "Вы можете изменить уровень яркости дисплея устройства.",
+        /*de*/ "Sie können die Helligkeitsstufe des Gerätedisplays ändern.",
+        /*fr*/ "Vous pouvez modifier le niveau de luminosité de l\'écran de l\'appareil.",
+        /*pl*/ "Możesz zmienić poziom jasności wyświetlacza urządzenia."];
+    static String get device_dimmer_level_help => l_device_dimmer_level_help[_language];
+
     static const List<String> l_device_digital_filter = [
         /*en*/ "Digital filter",
         /*ru*/ "Цифровой фильтр",
@@ -2990,7 +3006,7 @@ Enjoy!"""];
 
     static const List<String> l_device_digital_filter_slow = [
         /*en*/ "Slow",
-        /*ru*/ "Slow",
+        /*ru*/ "Медленный",
         /*de*/ "Langsam",
         /*fr*/ "Lent",
         /*pl*/ "Wolny"];
@@ -2998,7 +3014,7 @@ Enjoy!"""];
 
     static const List<String> l_device_digital_filter_sharp = [
         /*en*/ "Sharp",
-        /*ru*/ "Sharp",
+        /*ru*/ "Резкий",
         /*de*/ "Klar",
         /*fr*/ "Précis",
         /*pl*/ "Ostry"];
@@ -3006,7 +3022,7 @@ Enjoy!"""];
 
     static const List<String> l_device_digital_filter_short = [
         /*en*/ "Short",
-        /*ru*/ "Short",
+        /*ru*/ "Короткий",
         /*de*/ "Kurz",
         /*fr*/ "Court",
         /*pl*/ "Krótki"];
@@ -3019,6 +3035,14 @@ Enjoy!"""];
         /*fr*/ "Changer filtre digital",
         /*pl*/ "Zmień na kolejny"];
     static String get device_digital_filter_toggle => l_device_digital_filter_toggle[_language];
+
+    static const List<String> l_device_digital_filter_help = [
+        /*en*/ "You can switch the type of digital filter in the audio DAC. You can choose \"Slow\" (gives the sound a soft and fluid feel), \"Sharp\" (gives the sound more structure and firmer feel) or \"Short\" (auto).",
+        /*ru*/ "Вы можете переключать тип цифрового фильтра в аудио ЦАП. Вы можете выбрать \"Медленный\" (придает звуку мягкость и плавность), \"Резкий\" (придает звуку более структурированный и твердый вид) или \"Короткий\" (авто).",
+        /*de*/ "Sie können den Typ des digitalen Filters im Audio-DAC umschalten. Sie können \"Langsam\" (verleiht dem Klang ein weiches und flüssiges Gefühl), \"Klar\" (verleiht dem Klang mehr Struktur und ein festeres Gefühl) oder \"Kurz\" (automatisch) wählen.",
+        /*fr*/ "Vous pouvez changer le type de filtre numérique dans le DAC audio. Vous pouvez choisir \"Lent\" (donne au son une sensation douce et fluide), \"Précis\" (donne au son plus de structure et une sensation plus ferme) ou \"Court\" (auto).",
+        /*pl*/ "Możesz zmienić typ filtra cyfrowego w DAC audio. Możesz wybrać \"Wolny\" (nadaje dźwiękowi miękkie i płynne odczucie), \"Ostry\" (nadaje dźwiękowi bardziej strukturę i jędrność) lub \"Krótki\" (auto)."];
+    static String get device_digital_filter_help => l_device_digital_filter_help[_language];
 
     static const List<String> l_device_two_way_switch_none = [
         /*en*/ "N/A",
@@ -3060,6 +3084,14 @@ Enjoy!"""];
         /*pl*/ "Music optimizer"];
     static String get device_music_optimizer => l_device_music_optimizer[_language];
 
+    static const List<String> l_device_music_optimizer_help = [
+        /*en*/ "Improve the quality of the compressed audio. Playback sound of lossy compressed files such as MP3 will be improved. The setting is effective with 2 ch signals with a sampling frequency of 48 kHz or less. The setting is not effective in the bitstream signals.",
+        /*ru*/ "Улучшить качество сжатого звука. Воспроизведение сжатых файлов с потерями, таких как MP3, будет улучшено. Настройка эффективна для 2-канальных сигналов с частотой дискретизации 48 кГц или меньше. Эта настройка не действует для несжатых потоковыx сигналов.",
+        /*de*/ "Verbessern Sie die Qualität des komprimierten Audios. Der Wiedergabeton von verlustbehafteten komprimierten Dateien wie MP3 wird verbessert. Die Einstellung ist bei 2-Kanal-Signalen mit einer Abtastfrequenz von 48 kHz oder weniger wirksam. Die Einstellung ist bei den Bitstream-Signalen nicht wirksam.",
+        /*fr*/ "Améliorer la qualité de l\'audio compressé. Le son de lecture des fichiers compressés avec perte tels que MP3 sera amélioré. Le réglage est efficace avec des signaux à 2 canaux avec une fréquence d\'échantillonnage de 48 kHz ou moins. Le réglage n\'est pas efficace dans les signaux de flux binaire.",
+        /*pl*/ "Popraw jakość skompresowanego dźwięku. Poprawiony zostanie dźwięk odtwarzanych stratnych plików skompresowanych, takich jak MP3. To ustawienie jest skuteczne w przypadku sygnałów 2-kanałowych o częstotliwości próbkowania 48 kHz lub mniejszej. To ustawienie nie działa w przypadku sygnałów strumienia bitów."];
+    static String get device_music_optimizer_help => l_device_music_optimizer_help[_language];
+
     static const List<String> l_device_auto_power = [
         /*en*/ "Auto power",
         /*ru*/ "Авто-отключение",
@@ -3067,6 +3099,14 @@ Enjoy!"""];
         /*fr*/ "Allumage auto",
         /*pl*/ "Auto power"];
     static String get device_auto_power => l_device_auto_power[_language];
+
+    static const List<String> l_device_auto_power_help = [
+        /*en*/ "Allows the unit to enter standby automatically when the certain time of inactivity without any audio input elapses. The time value depends on the device model.",
+        /*ru*/ "Позволяет устройству автоматически переходить в режим ожидания по истечении определенного времени бездействия (без сигнала на входе). Время задержки зависит от модели устройства.",
+        /*de*/ "Ermöglicht dem Gerät, automatisch in den Standby-Modus zu wechseln, wenn eine bestimmte Zeit der Inaktivität ohne Audioeingang verstrichen ist. Der Zeitwert hängt vom Gerätemodell ab. ",
+        /*fr*/ "Permet à l\'appareil de se mettre automatiquement en veille lorsqu\'un certain temps d\'inactivité sans aucune entrée audio s\'est écoulé. La valeur de temps dépend du modèle d\'appareil.",
+        /*pl*/ "Umożliwia automatyczne przejście urządzenia w stan czuwania po upływie określonego czasu bezczynności bez żadnego sygnału wejściowego audio. Wartość czasu zależy od modelu urządzenia."];
+    static String get device_auto_power_help => l_device_auto_power_help[_language];
 
     static const List<String> l_device_hdmi_cec = [
         /*en*/ "HDMI CEC",
@@ -3076,13 +3116,29 @@ Enjoy!"""];
         /*pl*/ "HDMI CEC"];
     static String get device_hdmi_cec => l_device_hdmi_cec[_language];
 
+    static const List<String> l_device_hdmi_cec_help = [
+        /*en*/ "By connecting a device that complies with CEC (Consumer Electronics Control) of the HDMI standard using an HDMI cable, a variety of linked operations between devices are possible. This function enables various linking operations with players, such as switching input selectors interlocking with a player, adjusting the volume of this unit using the remote controller of a TV, and automatically switching this unit to standby when the TV is turned off.",
+        /*ru*/ "При подключении устройства, соответствующего CEC (Consumer Electronics Control) стандарта HDMI, с помощью кабеля HDMI возможны различные связанные операции между устройствами. Эта функция позволяет выполнять различные операции привязки к проигрывателям, такие как переключение селекторов входа, связанных с проигрывателем, регулировка громкости данного устройства с помощью пульта дистанционного управления телевизора и автоматическое переключение этого устройства в режим ожидания при выключении телевизора.",
+        /*de*/ "Durch Anschließen eines Geräts, das CEC (Consumer Electronics Control) des HDMI-Standards entspricht, über ein HDMI-Kabel ist eine Vielzahl von verknüpften Vorgängen zwischen Geräten möglich. Diese Funktion ermöglicht verschiedene Verknüpfungsoperationen mit Playern, wie z. B. das Umschalten von Eingangsselektoren, die mit einem Player gekoppelt sind, das Einstellen der Lautstärke dieses Geräts mit der Fernbedienung eines Fernsehgeräts und das automatische Umschalten dieses Geräts in den Standby-Modus, wenn das Fernsehgerät ausgeschaltet wird.",
+        /*fr*/ "En connectant un appareil conforme à CEC (Consumer Electronics Control) de la norme HDMI à l\'aide d\'un câble HDMI, une variété d\'opérations liées entre les appareils est possible. Cette fonction permet diverses opérations de liaison avec des lecteurs, telles que la commutation de sélecteurs d\'entrée verrouillés avec un lecteur, le réglage du volume de cet appareil à l\'aide de la télécommande d\'un téléviseur et la mise automatiquement en veille de cet appareil lorsque le téléviseur est éteint.",
+        /*pl*/ "Podłączając urządzenie zgodne ze standardem CEC (Consumer Electronics Control) za pomocą kabla HDMI, możliwe są różne operacje połączone między urządzeniami. Ta funkcja umożliwia różne operacje łączenia z odtwarzaczami, takie jak przełączanie selektorów wejścia sprzężonych z odtwarzaczem, regulacja głośności tego urządzenia za pomocą pilota telewizora oraz automatyczne przełączanie tego urządzenia w tryb gotowości, gdy telewizor jest wyłączony. "];
+    static String get device_hdmi_cec_help => l_device_hdmi_cec_help[_language];
+
     static const List<String> l_device_phase_matching_bass = [
-        /*en*/ "PM Bass",
-        /*ru*/ "PM Bass",
-        /*de*/ "PM Bass",
+        /*en*/ "Phase Matching Bass",
+        /*ru*/ "Phase Matching Bass",
+        /*de*/ "Phase Matching Bass",
         /*fr*/ "Basses avec adaptation de phase",
-        /*pl*/ "PM Bass"];
+        /*pl*/ "Phase Matching Bass"];
     static String get device_phase_matching_bass => l_device_phase_matching_bass[_language];
+
+    static const List<String> l_device_phase_matching_bass_help = [
+        /*en*/ "Phase Matching Bass function eliminates phase-shift between low- and mid-range frequency bands above 300 Hz. Bass response is enhanced without compromising vocal clarity, and that\'s something especially useful when playing music at low volume where bass and high-frequency sounds are more difficult to hear.",
+        /*ru*/ "Функция Phase Matching Bass устраняет фазовый сдвиг между полосами низких и средних частот выше 300 Гц. Отклик басов усиливается без ущерба для чистоты голоса, и это особенно полезно при воспроизведении музыки на низкой громкости, когда басы и высокие частоты труднее расслышать.",
+        /*de*/ "Die Phase-Matching-Bass-Boost-Funktion eliminiert Phasenverschiebungen zwischen niedrigen und mittleren Frequenzbändern über 300 Hz. Die Basswiedergabe wird verbessert, ohne die Stimmklarheit zu beeinträchtigen, und das ist besonders nützlich, wenn Sie Musik bei niedriger Lautstärke spielen, wo Bässe und hochfrequente Töne schwerer zu hören sind.",
+        /*fr*/ "La fonction Phase Matching Bass Boost élimine le déphasage entre les bandes de fréquences basses et moyennes supérieures à 300 Hz. La réponse des basses est améliorée sans compromettre la clarté vocale, et c\'est quelque chose de particulièrement utile lors de la lecture de musique à faible volume où les sons graves et haute fréquence sont plus difficiles à entendre.",
+        /*pl*/ "Funkcja Phase Matching Bass Boost eliminuje przesunięcie fazowe między niskimi i średnimi pasmami częstotliwości powyżej 300 Hz. Reakcja basów jest wzmocniona bez pogarszania czystości głosu, co jest szczególnie przydatne podczas odtwarzania muzyki przy niskim poziomie głośności, gdzie basy i dźwięki o wysokiej częstotliwości są trudniejsze do usłyszenia."];
+    static String get device_phase_matching_bass_help => l_device_phase_matching_bass_help[_language];
 
     static const List<String> l_device_sleep_time = [
         /*en*/ "Sleep Time",
@@ -3100,6 +3156,14 @@ Enjoy!"""];
         /*pl*/ "min"];
     static String get device_sleep_time_minutes => l_device_sleep_time_minutes[_language];
 
+    static const List<String> l_device_sleep_time_help = [
+        /*en*/ "Allows the device to enter standby automatically when the specified time given in minutes elapses.",
+        /*ru*/ "Позволяет устройству автоматически переходить в режим ожидания по истечении указанного времени (в минутах).",
+        /*de*/ "Ermöglicht dem Gerät, automatisch in den Standby-Modus zu wechseln, wenn die in Minuten angegebene Zeit verstrichen ist.",
+        /*fr*/ "Permet à l\'appareil de se mettre en veille automatiquement lorsque le temps spécifié en minutes s\'est écoulé. ",
+        /*pl*/ "Umożliwia automatyczne przejście urządzenia w stan czuwania po upływie określonego czasu podanego w minutach."];
+    static String get device_sleep_time_help => l_device_sleep_time_help[_language];
+
     static const List<String> l_device_google_cast_analytics = [
         /*en*/ "Google Cast analytics",
         /*ru*/ "Аналитика Google Cast",
@@ -3107,6 +3171,14 @@ Enjoy!"""];
         /*fr*/ "Google Cast analytics",
         /*pl*/ "Google Cast analytics"];
     static String get device_google_cast_analytics => l_device_google_cast_analytics[_language];
+
+    static const List<String> l_device_google_cast_analytics_help = [
+        /*en*/ "Controls the collection of marketing and analytics data when using Google Cast. To protect your privacy, keep this setting always Off.",
+        /*ru*/ "Контролирует сбор маркетинговых и аналитических данных при использовании Google Cast. Чтобы защитить вашу конфиденциальность, держите этот параметр всегда выключенным.",
+        /*de*/ "Steuert die Erfassung von Marketing- und Analysedaten bei der Verwendung von Google Cast. Um Ihre Privatsphäre zu schützen, lassen Sie diese Einstellung immer deaktiviert.",
+        /*fr*/ "Contrôle la collecte de données marketing et d\'analyse lors de l\'utilisation de Google Cast. Pour protéger votre vie privée, gardez ce paramètre toujours désactivé.",
+        /*pl*/ "Kontroluje gromadzenie danych marketingowych i analitycznych podczas korzystania z Google Cast. Aby chronić swoją prywatność, pozostaw to ustawienie zawsze wyłączone."];
+    static String get device_google_cast_analytics_help => l_device_google_cast_analytics_help[_language];
 
     static const List<String> l_speaker_a_command_toggle = [
         /*en*/ "Sets speaker A switch wrap-around",
@@ -3172,29 +3244,13 @@ Enjoy!"""];
         /*pl*/ "Tylko B"];
     static String get speaker_ab_command_b_only => l_speaker_ab_command_b_only[_language];
 
-    static const List<String> l_privacy_policy_onkyo = [
-        /*en*/ "Agree Onkyo Privacy Policy",
-        /*ru*/ "Подтвердить соглашение Onkyo Privacy",
-        /*de*/ "Onkyo Datenschutzerklärung zustimmen",
-        /*fr*/ "Agree Onkyo Privacy Policy",
-        /*pl*/ "Agree Onkyo Privacy Policy"];
-    static String get privacy_policy_onkyo => l_privacy_policy_onkyo[_language];
-
-    static const List<String> l_privacy_policy_google = [
-        /*en*/ "Agree Google Cast License",
-        /*ru*/ "Подтвердить лицензию Google Cast",
-        /*de*/ "Google Cast Lizenz zustimmen",
-        /*fr*/ "Agree Google Cast License",
-        /*pl*/ "Agree Google Cast License"];
-    static String get privacy_policy_google => l_privacy_policy_google[_language];
-
-    static const List<String> l_privacy_policy_sue = [
-        /*en*/ "Agree SUE - Privacy Policy",
-        /*ru*/ "Подтвердить соглашение SUE-Privacy",
-        /*de*/ "SUE - Datenschutzerklärung zustimmen",
-        /*fr*/ "Agree SUE - Privacy Policy",
-        /*pl*/ "Agree SUE - Privacy Policy"];
-    static String get privacy_policy_sue => l_privacy_policy_sue[_language];
+    static const List<String> l_speaker_ab_command_help = [
+        /*en*/ "Speaker A/B selection. Works for Main zone and Zone 2 only.",
+        /*ru*/ "Выбор динамика A/B. Работает только для основной зоны и зоны 2.",
+        /*de*/ "Lautsprecher A/B-Auswahl. Funktioniert nur für Hauptzone und Zone 2. ",
+        /*fr*/ "Sélection du haut-parleur A/B. Fonctionne uniquement pour la zone principale et la zone 2.",
+        /*pl*/ "Wybór głośnika A/B. Działa tylko w strefie głównej i strefie 2. "];
+    static String get speaker_ab_command_help => l_speaker_ab_command_help[_language];
 
     static const List<String> l_device_late_night = [
         /*en*/ "Late night mode",
@@ -3251,6 +3307,38 @@ Enjoy!"""];
         /*fr*/ "Changer le mode de nuit",
         /*pl*/ "Zmień tryb późnej nocy"];
     static String get device_late_night_up => l_device_late_night_up[_language];
+
+    static const List<String> l_device_late_night_help = [
+        /*en*/ "Make small sounds easily heard. It is useful when you need to reduce the volume while watching a movie late night.",
+        /*ru*/ "Выборочное усиление звуков низкой громкости. Это полезно, когда вам нужно уменьшить громкость во время просмотра фильма поздно вечером.",
+        /*de*/ "Machen Sie kleine Geräusche leicht hörbar. Dies ist nützlich, wenn Sie die Lautstärke reduzieren müssen, während Sie sich spät abends einen Film ansehen.",
+        /*fr*/ "Faites de petits sons facilement audibles. Il est utile lorsque vous devez réduire le volume tout en regardant un film tard dans la nuit.",
+        /*pl*/ "Spraw, by małe dźwięki były łatwo słyszalne. Jest to przydatne, gdy chcesz zmniejszyć głośność podczas oglądania filmu późnym wieczorem."];
+    static String get device_late_night_help => l_device_late_night_help[_language];
+
+    static const List<String> l_privacy_policy_onkyo = [
+        /*en*/ "Agree Onkyo Privacy Policy",
+        /*ru*/ "Подтвердить соглашение Onkyo Privacy",
+        /*de*/ "Onkyo Datenschutzerklärung zustimmen",
+        /*fr*/ "Agree Onkyo Privacy Policy",
+        /*pl*/ "Agree Onkyo Privacy Policy"];
+    static String get privacy_policy_onkyo => l_privacy_policy_onkyo[_language];
+
+    static const List<String> l_privacy_policy_google = [
+        /*en*/ "Agree Google Cast License",
+        /*ru*/ "Подтвердить лицензию Google Cast",
+        /*de*/ "Google Cast Lizenz zustimmen",
+        /*fr*/ "Agree Google Cast License",
+        /*pl*/ "Agree Google Cast License"];
+    static String get privacy_policy_google => l_privacy_policy_google[_language];
+
+    static const List<String> l_privacy_policy_sue = [
+        /*en*/ "Agree SUE - Privacy Policy",
+        /*ru*/ "Подтвердить соглашение SUE-Privacy",
+        /*de*/ "SUE - Datenschutzerklärung zustimmen",
+        /*fr*/ "Agree SUE - Privacy Policy",
+        /*pl*/ "Agree SUE - Privacy Policy"];
+    static String get privacy_policy_sue => l_privacy_policy_sue[_language];
 
     static const List<String> l_listening_mode_up = [
         /*en*/ "Sets listening mode wrap-around up",

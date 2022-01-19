@@ -32,6 +32,7 @@ import "../iscp/messages/SpeakerACommandMsg.dart";
 import "../iscp/messages/SpeakerBCommandMsg.dart";
 import "../iscp/state/DeviceSettingsState.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
@@ -77,62 +78,87 @@ class DeviceSettingsView extends UpdatableView
         final List<TableRow> rows = [];
 
         final DeviceSettingsState ds = state.deviceSettingsState;
+        final bool showAll = false;
 
-        if (ds.dimmerLevel.key != DimmerLevel.NONE)
+        // Change the brightness level of the receiver display.
+        if (showAll || ds.dimmerLevel.key != DimmerLevel.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_dimmer_level,
                 ds.dimmerLevel.description,
-                Strings.device_dimmer_level_toggle,
+                Strings.device_dimmer_level_help,
                 DimmerLevelMsg.output(DimmerLevel.TOGGLE)));
         }
 
-        if (ds.digitalFilter.key != DigitalFilter.NONE)
+        // Digital Filter: You can switch the type of digital filter in the audio DAC.
+        // You can choose "Slow" (gives the sound a soft and fluid feel), "Sharp"
+        // (gives the sound more structure and firmer feel) or "Auto" (auto).
+        if (showAll || ds.digitalFilter.key != DigitalFilter.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_digital_filter,
                 ds.digitalFilter.description,
-                Strings.device_digital_filter_toggle,
+                Strings.device_digital_filter_help,
                 DigitalFilterMsg.output(DigitalFilter.TOGGLE)));
         }
 
-        if (ds.musicOptimizer.key != MusicOptimizer.NONE)
+        // Improve the quality of the compressed audio. Playback
+        // sound of lossy compressed files such as MP3 will be
+        // improved. The setting is effective with 2 ch signals with a
+        // sampling frequency of 48 kHz or less. The setting is not
+        // effective in the bitstream signals.
+        if (showAll || ds.musicOptimizer.key != MusicOptimizer.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_music_optimizer,
                 ds.musicOptimizer.description,
-                Strings.device_two_way_switch_toggle,
+                Strings.device_music_optimizer_help,
                 MusicOptimizerMsg.output(MusicOptimizer.TOGGLE)));
         }
 
-        if (ds.autoPower.key != AutoPower.NONE)
+        // Allows the unit to enter standby automatically when
+        // the certain time of inactivity without any audio input elapses.
+        // The time value depends on the receiver model.
+        if (showAll || ds.autoPower.key != AutoPower.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_auto_power,
                 ds.autoPower.description,
-                Strings.device_two_way_switch_toggle,
+                Strings.device_auto_power_help,
                 AutoPowerMsg.output(AutoPower.TOGGLE)));
         }
 
-        if (ds.hdmiCec.key != HdmiCec.NONE)
+        // By connecting a device that complies with CEC (Consumer Electronics Control)
+        // of the HDMI standard using an HDMI cable, a variety of linked operations
+        // between devices are possible. This function enables various linking operations
+        // with players, such as switching input selectors interlocking with a player,
+        // adjusting the volume of this unit using the remote controller of a TV, and
+        // automatically switching this unit to standby when the TV is turned off.
+        if (showAll || ds.hdmiCec.key != HdmiCec.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_hdmi_cec,
                 ds.hdmiCec.description,
-                Strings.device_two_way_switch_toggle,
+                Strings.device_hdmi_cec_help,
                 HdmiCecMsg.output(HdmiCec.TOGGLE)));
         }
 
-        if (ds.phaseMatchingBass.key != PhaseMatchingBass.NONE)
+        // Phase Matching Bass Boost function eliminates phase-shift between low- and mid-range
+        // frequency bands above 300 Hz. Bass response is enhanced without compromising vocal clarity,
+        // and that's something especially useful when playing music at low volume where bass and
+        // high-frequency sounds are more difficult to hear.
+        if (showAll || ds.phaseMatchingBass.key != PhaseMatchingBass.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_phase_matching_bass,
                 ds.phaseMatchingBass.description,
-                Strings.device_two_way_switch_toggle,
+                Strings.device_phase_matching_bass_help,
                 PhaseMatchingBassMsg.output(PhaseMatchingBass.TOGGLE)));
         }
 
-        if (ds.sleepTime != SleepSetCommandMsg.NOT_APPLICABLE)
+        // Allows the unit to enter standby automatically when
+        // the specified time elapses.
+        if (showAll || ds.sleepTime != SleepSetCommandMsg.NOT_APPLICABLE)
         {
             final String description = ds.sleepTime == SleepSetCommandMsg.SLEEP_OFF ?
                 Strings.device_two_way_switch_off :
@@ -140,11 +166,11 @@ class DeviceSettingsView extends UpdatableView
             rows.add(_buildRow(context,
                 Strings.device_sleep_time,
                 description,
-                Strings.device_two_way_switch_toggle,
+                Strings.device_sleep_time_help,
                 SleepSetCommandMsg.output(SleepSetCommandMsg.toggle(ds.sleepTime))));
         }
 
-        // Speaker A/B (For Main zone and Zone 2 only)
+        // Speaker A/B selection. Works for Main zone and Zone 2 only.
         final int zone = state.getActiveZone;
         if (zone < 2)
         {
@@ -152,11 +178,18 @@ class DeviceSettingsView extends UpdatableView
             // OFF -> A_ONLY -> B_ONLY -> ON -> OFF (optional) -> A_ONLY -> B_ONLY -> ON -> ...
             switch (spState)
             {
+                case _SpeakerABStatus.NONE:
+                    if (showAll)
+                    {
+                        continue showAllCase;
+                    }
+                    break;
+                showAllCase:
                 case _SpeakerABStatus.OFF: // OFF -> A_ONLY
                     rows.add(_buildRow(context,
                         Strings.speaker_ab_command,
                         Strings.speaker_ab_command_ab_off,
-                        Strings.speaker_ab_command_toggle,
+                        Strings.speaker_ab_command_help,
                         SpeakerACommandMsg.output(zone, SpeakerACommand.ON),
                         postQueries: [
                             SpeakerACommandMsg.ZONE_COMMANDS[zone]
@@ -167,7 +200,7 @@ class DeviceSettingsView extends UpdatableView
                     rows.add(_buildRow(context,
                         Strings.speaker_ab_command,
                         Strings.speaker_ab_command_a_only,
-                        Strings.speaker_ab_command_toggle,
+                        Strings.speaker_ab_command_help,
                         SpeakerBCommandMsg.output(zone, SpeakerBCommand.ON),
                         postMessages: [
                             SpeakerACommandMsg.output(zone, SpeakerACommand.OFF)
@@ -182,7 +215,7 @@ class DeviceSettingsView extends UpdatableView
                     rows.add(_buildRow(context,
                         Strings.speaker_ab_command,
                         Strings.speaker_ab_command_b_only,
-                        Strings.speaker_ab_command_toggle,
+                        Strings.speaker_ab_command_help,
                         SpeakerACommandMsg.output(zone, SpeakerACommand.ON),
                         postQueries: [
                             SpeakerACommandMsg.ZONE_COMMANDS[zone]
@@ -195,7 +228,7 @@ class DeviceSettingsView extends UpdatableView
                         rows.add(_buildRow(context,
                             Strings.speaker_ab_command,
                             Strings.speaker_ab_command_ab_on,
-                            Strings.speaker_ab_command_toggle,
+                            Strings.speaker_ab_command_help,
                             SpeakerACommandMsg.output(zone, SpeakerACommand.OFF),
                             postMessages: [
                                 SpeakerBCommandMsg.output(zone, SpeakerBCommand.OFF)
@@ -211,7 +244,7 @@ class DeviceSettingsView extends UpdatableView
                         rows.add(_buildRow(context,
                             Strings.speaker_ab_command,
                             Strings.speaker_ab_command_ab_on,
-                            Strings.speaker_ab_command_toggle,
+                            Strings.speaker_ab_command_help,
                             SpeakerBCommandMsg.output(zone, SpeakerBCommand.OFF),
                             postQueries: [
                                 SpeakerBCommandMsg.ZONE_COMMANDS[zone]
@@ -219,27 +252,29 @@ class DeviceSettingsView extends UpdatableView
                         ));
                     }
                     break;
-                case _SpeakerABStatus.NONE:
-                    // nothing to do
-                    break;
             }
         }
 
-        if (ds.googleCastAnalytics.key != GoogleCastAnalytics.NONE)
+        // Controls the collection of marketing and analytics data when using Google Cast.
+        // To protect the privacy, keep this setting Off.
+        if (showAll || ds.googleCastAnalytics.key != GoogleCastAnalytics.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_google_cast_analytics,
                 ds.googleCastAnalytics.description,
-                Strings.device_two_way_switch_toggle,
+                Strings.device_google_cast_analytics_help,
                 GoogleCastAnalyticsMsg.output(GoogleCastAnalyticsMsg.toggle(ds.googleCastAnalytics.key))));
         }
 
-        if (ds.lateNightMode.key != LateNightMode.NONE)
+        // Make small sounds easily heard. It is useful when you
+        // need to reduce the volume while watching a movie late
+        // night.
+        if (showAll || ds.lateNightMode.key != LateNightMode.NONE)
         {
             rows.add(_buildRow(context,
                 Strings.device_late_night,
                 ds.lateNightMode.description,
-                Strings.device_late_night_up,
+                Strings.device_late_night_help,
                 LateNightCommandMsg.output(LateNightMode.UP)));
         }
 
@@ -262,11 +297,9 @@ class DeviceSettingsView extends UpdatableView
     }
 
     TableRow _buildRow(BuildContext context, final String title,
-        final String value, final buttonDescription,
+        final String value, final String description,
         final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
     {
-        final bool isEnabled = stateManager.state.isOn;
-
         final Widget rowTitle = CustomTextLabel.small(title, padding: ActivityDimens.headerPadding);
 
         final Widget rowValue = Row(
@@ -278,23 +311,17 @@ class DeviceSettingsView extends UpdatableView
                         child: CustomTextLabel.normal(value, textAlign: TextAlign.center),
                         onTap: ()
                         {
-                            if (isEnabled)
+                            if (stateManager.state.isOn)
                             {
-                                _onPress(context, cmd, postMessages: postMessages, postQueries: postQueries);
+                                _onToggleButton(context, cmd, postMessages: postMessages, postQueries: postQueries);
                             }
                         }),
                     flex: 1),
                 CustomImageButton.small(
-                    Drawables.wrap_around,
-                    buttonDescription,
+                    Drawables.cmd_help,
+                    Strings.device_parameter_help,
                     onPressed: ()
-                    {
-                        if (isEnabled)
-                        {
-                            _onPress(context, cmd, postMessages: postMessages, postQueries: postQueries);
-                        }
-                    },
-                    isEnabled: isEnabled,
+                    => _onParameterHelpButton(context, title, description),
                     isSelected: false,
                 )
             ]
@@ -303,7 +330,7 @@ class DeviceSettingsView extends UpdatableView
         return TableRow(children: [rowTitle, rowValue]);
     }
 
-    void _onPress(BuildContext context, final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
+    void _onToggleButton(BuildContext context, final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
     {
         FocusScope.of(context).unfocus();
         stateManager.sendMessage(cmd);
@@ -315,6 +342,31 @@ class DeviceSettingsView extends UpdatableView
         {
             stateManager.sendQueries(postQueries);
         }
+    }
+
+    void _onParameterHelpButton(BuildContext context, final String title, final String description)
+    {
+        Logging.info(this, "Parameter help button pressed");
+        final ThemeData td = Theme.of(context);
+        final Widget dialog = AlertDialog(
+            title: CustomDialogTitle(title, Drawables.cmd_help),
+            contentPadding: DialogDimens.contentPadding,
+            content: CustomTextLabel.normal(description),
+            actions: <Widget>[
+                TextButton(
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
+                    onPressed: ()
+                    {
+                        Navigator.of(context).pop();
+                    }
+                )
+            ]
+        );
+
+        showDialog(
+            context: context,
+            builder: (BuildContext context)
+            => dialog);
     }
 
     _SpeakerABStatus _getSpeakerABStatus(SpeakerACommand speakerA, SpeakerBCommand speakerB)

@@ -463,6 +463,7 @@ Enjoy!""</string>
     <string name="device_year">Rok</string>
     <string name="google_cast_version">Google Cast</string>
     <string name="device_settings">Ustawienia</string>
+    <string name="device_parameter_help">Pokaż opis parametru</string>
 
     <!-- Firmware -->
     <string name="device_firmware">Firmware</string>
@@ -482,6 +483,7 @@ Enjoy!""</string>
     <string name="device_dimmer_level_dark">Ciemny</string>
     <string name="device_dimmer_level_off">Wyłączony</string>
     <string name="device_dimmer_level_toggle">Zmień na kolejny</string>
+    <string name="device_dimmer_level_help">Możesz zmienić poziom jasności wyświetlacza urządzenia.</string>
 
     <!-- Digital Filter -->
     <string name="device_digital_filter">Filtr cyfrowy</string>
@@ -490,6 +492,7 @@ Enjoy!""</string>
     <string name="device_digital_filter_sharp">Ostry</string>
     <string name="device_digital_filter_short">Krótki</string>
     <string name="device_digital_filter_toggle">Zmień na kolejny</string>
+    <string name="device_digital_filter_help">Możesz zmienić typ filtra cyfrowego w DAC audio. Możesz wybrać \"Wolny\" (nadaje dźwiękowi miękkie i płynne odczucie), \"Ostry\" (nadaje dźwiękowi bardziej strukturę i jędrność) lub \"Krótki\" (auto).</string>
 
     <!-- Any two-way switch commands -->
     <string name="device_two_way_switch_none">N/A</string>
@@ -499,31 +502,34 @@ Enjoy!""</string>
 
     <!-- Two-way switches -->
     <string name="device_music_optimizer">Music optimizer</string>
+    <string name="device_music_optimizer_help">Popraw jakość skompresowanego dźwięku. Poprawiony zostanie dźwięk odtwarzanych stratnych plików skompresowanych, takich jak MP3. To ustawienie jest skuteczne w przypadku sygnałów 2-kanałowych o częstotliwości próbkowania 48 kHz lub mniejszej. To ustawienie nie działa w przypadku sygnałów strumienia bitów.</string>
+
     <string name="device_auto_power">Auto power</string>
+    <string name="device_auto_power_help">Umożliwia automatyczne przejście urządzenia w stan czuwania po upływie określonego czasu bezczynności bez żadnego sygnału wejściowego audio. Wartość czasu zależy od modelu urządzenia.</string>
+
     <string name="device_hdmi_cec">HDMI CEC</string>
-    <string name="device_phase_matching_bass">PM Bass</string>
+    <string name="device_hdmi_cec_help">Podłączając urządzenie zgodne ze standardem CEC (Consumer Electronics Control) za pomocą kabla HDMI, możliwe są różne operacje połączone między urządzeniami. Ta funkcja umożliwia różne operacje łączenia z odtwarzaczami, takie jak przełączanie selektorów wejścia sprzężonych z odtwarzaczem, regulacja głośności tego urządzenia za pomocą pilota telewizora oraz automatyczne przełączanie tego urządzenia w tryb gotowości, gdy telewizor jest wyłączony. </string>
+
+    <string name="device_phase_matching_bass">Phase Matching Bass</string>
+    <string name="device_phase_matching_bass_help">Funkcja Phase Matching Bass Boost eliminuje przesunięcie fazowe między niskimi i średnimi pasmami częstotliwości powyżej 300 Hz. Reakcja basów jest wzmocniona bez pogarszania czystości głosu, co jest szczególnie przydatne podczas odtwarzania muzyki przy niskim poziomie głośności, gdzie basy i dźwięki o wysokiej częstotliwości są trudniejsze do usłyszenia.</string>
+
     <string name="device_sleep_time">Wyłącznik czasowy</string>
     <string name="device_sleep_time_minutes">min</string>
+    <string name="device_sleep_time_help">Umożliwia automatyczne przejście urządzenia w stan czuwania po upływie określonego czasu podanego w minutach.</string>
+
     <string name="device_google_cast_analytics">Google Cast analytics</string>
+    <string name="device_google_cast_analytics_help">Kontroluje gromadzenie danych marketingowych i analitycznych podczas korzystania z Google Cast. Aby chronić swoją prywatność, pozostaw to ustawienie zawsze wyłączone.</string>
 
-    <!-- Speaker A Command -->
+    <!-- Speaker A/B selection -->
     <string name="speaker_a_command_toggle">Przełącz głośnik A na kolejny</string>
-
-    <!-- Speaker B Command -->
     <string name="speaker_b_command_toggle">Przełącz głośnik B na kolejny</string>
-
-    <!-- Speaker A/B three-way switch -->
     <string name="speaker_ab_command">Głośnik A/B</string>
     <string name="speaker_ab_command_toggle">Przełącz pomiędzy głośnikami</string>
     <string name="speaker_ab_command_ab_off">Oba wyłączone</string>
     <string name="speaker_ab_command_ab_on">Oba włączone</string>
     <string name="speaker_ab_command_a_only">Tylko A</string>
     <string name="speaker_ab_command_b_only">Tylko B</string>
-
-    <!-- Privacy Policy Status -->
-    <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
-    <string name="privacy_policy_google">Agree Google Cast License</string>
-    <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+    <string name="speaker_ab_command_help">Wybór głośnika A/B. Działa tylko w strefie głównej i strefie 2. </string>
 
     <!-- Late Night Command -->
     <string name="device_late_night">Tryb późnej nocy</string>
@@ -533,6 +539,12 @@ Enjoy!""</string>
     <string name="device_late_night_high">Wysoki</string>
     <string name="device_late_night_auto">Auto</string>
     <string name="device_late_night_up">Zmień tryb późnej nocy</string>
+    <string name="device_late_night_help">Spraw, by małe dźwięki były łatwo słyszalne. Jest to przydatne, gdy chcesz zmniejszyć głośność podczas oglądania filmu późnym wieczorem.</string>
+
+    <!-- Privacy Policy Status -->
+    <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
+    <string name="privacy_policy_google">Agree Google Cast License</string>
+    <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Zmień tryb na następny</string>

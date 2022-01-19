@@ -66,6 +66,7 @@ class Drawables
     static const String cmd_up = BUTTONS_PATH + "cmd_up.svg";
     static const String cmd_sort = BUTTONS_PATH + "cmd_sort.svg";
     static const String cmd_rds_info = BUTTONS_PATH + "cmd_rds_info.svg";
+    static const String cmd_help = BUTTONS_PATH + "cmd_help.svg";
 
     static const String drawer_about = BUTTONS_PATH + "drawer_about.svg";
     static const String drawer_tab_layout = BUTTONS_PATH + "drawer_tab_layout.svg";
@@ -149,7 +150,6 @@ class Drawables
     static const String volume_amp_up = BUTTONS_PATH + "volume_amp_up.svg";
     static const String volume_audio_control = BUTTONS_PATH + "volume_audio_control.svg";
     static const String volume_max_limit = BUTTONS_PATH + "volume_max_limit.svg";
-    static const String wrap_around = BUTTONS_PATH + "wrap_around.svg";
     static const String equalizer = BUTTONS_PATH + "equalizer.svg";
 
     static const String numeric_0 = BUTTONS_PATH + "numeric_0.svg";
