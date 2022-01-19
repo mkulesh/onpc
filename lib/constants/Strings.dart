@@ -247,9 +247,15 @@ class Strings
 # Enhanced Controller for Onkyo and Pioneer
 Listen to music properly!
 
-Copyright © 2019-2021 by __Mikhail Kulesh__
+Copyright © 2019-2022 by __Mikhail Kulesh__
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
+
+## Links
+
+Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
 ## License
 
@@ -258,10 +264,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
-
-## Links
-
-Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Used Open Source Libraries
 
@@ -275,9 +277,15 @@ Enjoy!""",
 # Улучшенный контроллер для Onkyo и Pioneer
 Слушайте музыку правильно!
 
-Copyright © 2019-2021 by __Михаил Кулеш__
+Copyright © 2019-2022 by __Михаил Кулеш__
 
 Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Pioneer/Integra по локальной сети, используя сетевой протокол "Integra Serial Communication Protocol". Основное предназначение программы - управление воспроизведением и звуковыми профилями.
+
+## Ссылки
+
+Репозиторий с исходным кодом: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Версии: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
 ## Лицензия
 
@@ -286,10 +294,6 @@ Copyright © 2019-2021 by __Михаил Кулеш__
 Мы распространяем данную программу в надежде на то, что она будет вам полезной, однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ. Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией GNU.
 
 Вместе с данной программой вы должны были получить экземпляр [Стандартной Общественной Лицензии GNU](https://www.gnu.org/licenses)
-
-## Ссылки
-
-Репозиторий с исходным кодом: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Библиотеки с открытым исходным кодом
 
@@ -301,9 +305,15 @@ Copyright © 2019-2021 by __Михаил Кулеш__
 # Verbesserte Fernsteuerung für Onkyo und Pioneer
 Musik richtig hören!
 
-Copyright © 2019-2021 by __Mikhail Kulesh__
+Copyright © 2019-2022 by __Mikhail Kulesh__
 
 Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.
+
+## Links
+
+Öffentliches repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Versionen: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
 ## Lizenz
 
@@ -312,10 +322,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
-
-## Links
-
-Öffentliches repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Genutzte Open Source Bibliotheken
 
@@ -327,19 +333,21 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 # Contrôleur optimisé pour Onkyo et Pioneer
 Ecoutez votre musique correctement!
 
-Copyright © 2018-2019 by __Mikhail Kulesh__
+Copyright © 2019-2022 by __Mikhail Kulesh__
 
 Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol". Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.
 
-## License
+## Liens
+
+Référentiel public: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+
+## Licence
 
 Ce programme est à usage gratuit: vous pouvez le distribuer et/ou le modifier celon les termes de GNU La "General Public License" telle que publiée par le "Free Software Foundation", sous la version 3 de la licence ou (à votre choix) toute version posterieure.
 
 Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; sans même la garantie implicite d\'une QUALITE MARCHANDE ou sa FIABILITE POUR UN USAGE QUELCONQUE. Voir GNU General Public License pour plus d\'information. Vous devez avoir reçu une copie de la GNU General Public License avec ce programme.
-
-## Links
-
-Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Used Open Source Libraries
 
@@ -352,9 +360,15 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 # Enhanced Controller for Onkyo and Pioneer
 Listen to music properly!
 
-Copyright © 2019-2021 by __Mikhail Kulesh__
+Copyright © 2019-2022 by __Mikhail Kulesh__
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
+
+## Links
+
+Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
 ## License
 
@@ -363,10 +377,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
-
-## Links
-
-Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Used Open Source Libraries
 
@@ -2897,6 +2907,14 @@ Enjoy!"""];
         /*fr*/ "Lancer la mise à jour par le réseau",
         /*pl*/ "Rozpocznij aktualizację urządzenia przez sieć"];
     static String get device_firmware_net => l_device_firmware_net[_language];
+
+    static const List<String> l_device_firmware_confirm = [
+        /*en*/ "Do you really want to download and install the actual firmware?",
+        /*ru*/ "Вы действительно хотите скачать и установить актуальную прошивку?",
+        /*de*/ "Möchten Sie wirklich die aktuelle Firmware herunterladen und installieren?",
+        /*fr*/ "Voulez-vous vraiment télécharger et installer le firmware actuel?",
+        /*pl*/ "Czy na pewno chcesz pobrać i zainstalować aktualne oprogramowanie?"];
+    static String get device_firmware_confirm => l_device_firmware_confirm[_language];
 
     static const List<String> l_device_dimmer_level = [
         /*en*/ "Dimmer level",

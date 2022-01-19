@@ -32,9 +32,15 @@
 # Verbesserte Fernsteuerung für Onkyo und Pioneer
 Musik richtig hören!
 
-Copyright © 2019-2021 by __Mikhail Kulesh__
+Copyright © 2019-2022 by __Mikhail Kulesh__
 
 Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.
+
+## Links
+
+Öffentliches repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Versionen: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
 ## Lizenz
 
@@ -43,10 +49,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
-
-## Links
-
-Öffentliches repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Genutzte Open Source Bibliotheken
 
@@ -469,6 +471,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="device_firmware_update_started">Update gestartet, bitte warten</string>
     <string name="device_firmware_update_complete">Update abgeschlossen</string>
     <string name="device_firmware_net">Update über Netzwerk starten</string>
+    <string name="device_firmware_confirm">Möchten Sie wirklich die aktuelle Firmware herunterladen und installieren?</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Anzeigehelligkeit</string>

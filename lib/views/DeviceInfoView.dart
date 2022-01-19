@@ -25,6 +25,7 @@ import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -159,13 +160,9 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                     ]);
             }
 
-            if (ri.firmwareStatus.key != FirmwareUpdate.ACTUAL &&
-                ri.firmwareStatus.key != FirmwareUpdate.NONE)
+            final List validVersions = [FirmwareUpdate.ACTUAL, FirmwareUpdate.NEW_VERSION, FirmwareUpdate.NEW_VERSION_NORMAL, FirmwareUpdate.NEW_VERSION_FORCE];
+            if (validVersions.contains(ri.firmwareStatus.key))
             {
-                final bool isEnabled = [
-                    FirmwareUpdate.NEW_VERSION,
-                    FirmwareUpdate.NEW_VERSION_NORMAL,
-                    FirmwareUpdate.NEW_VERSION_FORCE].contains(ri.firmwareStatus.key);
                 firmwareInfo = Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -180,10 +177,10 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                             {
                                 if (isData && stateManager.state.isOn)
                                 {
-                                    stateManager.sendMessage(FirmwareUpdateMsg.output(FirmwareUpdate.NET));
+                                    _onFirmwareUpdateButton(context);
                                 }
                             },
-                            isEnabled: isData && stateManager.state.isOn && isEnabled,
+                            isEnabled: isData && stateManager.state.isOn,
                             isSelected: false,
                         )
                     ]);
@@ -246,5 +243,38 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             stateManager.sendMessage(FriendlyNameMsg.output(_friendlyNameController.text));
             FocusScope.of(context).unfocus();
         }
+    }
+
+    void _onFirmwareUpdateButton(BuildContext context)
+    {
+        Logging.info(this, "Firmware update button pressed");
+        final ThemeData td = Theme.of(context);
+        final Widget dialog = AlertDialog(
+            title: CustomDialogTitle(Strings.device_firmware, Drawables.cmd_firmware_update),
+            contentPadding: DialogDimens.contentPadding,
+            content: CustomTextLabel.normal(Strings.device_firmware_confirm),
+            actions: <Widget>[
+                TextButton(
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                    onPressed: ()
+                    {
+                        Navigator.of(context).pop();
+                    }
+                ),
+                TextButton(
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
+                    onPressed: ()
+                    {
+                        Navigator.of(context).pop();
+                        stateManager.sendMessage(FirmwareUpdateMsg.output(FirmwareUpdate.NET));
+                    }
+                )
+            ]
+        );
+
+        showDialog(
+            context: context,
+            builder: (BuildContext context)
+            => dialog);
     }
 }

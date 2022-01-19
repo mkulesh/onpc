@@ -32,19 +32,21 @@
 # Contrôleur optimisé pour Onkyo et Pioneer
 Ecoutez votre musique correctement!
 
-Copyright © 2018-2019 by __Mikhail Kulesh__
+Copyright © 2019-2022 by __Mikhail Kulesh__
 
 Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol". Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.
 
-## License
+## Liens
+
+Référentiel public: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+
+## Licence
 
 Ce programme est à usage gratuit: vous pouvez le distribuer et/ou le modifier celon les termes de GNU La "General Public License" telle que publiée par le "Free Software Foundation", sous la version 3 de la licence ou (à votre choix) toute version posterieure.
 
 Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; sans même la garantie implicite d\'une QUALITE MARCHANDE ou sa FIABILITE POUR UN USAGE QUELCONQUE. Voir GNU General Public License pour plus d\'information. Vous devez avoir reçu une copie de la GNU General Public License avec ce programme.
-
-## Links
-
-Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Used Open Source Libraries
 
@@ -468,6 +470,7 @@ Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
     <string name="device_firmware_update_started">Mise à jour en cours, patientez…</string>
     <string name="device_firmware_update_complete">Mise à jour terminée, merci d\'attendre le redémarrage et connecter de nouveau</string>
     <string name="device_firmware_net">Lancer la mise à jour par le réseau</string>
+    <string name="device_firmware_confirm">Voulez-vous vraiment télécharger et installer le firmware actuel?</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Niveau éclairage</string>

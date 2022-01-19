@@ -32,9 +32,15 @@
 # Улучшенный контроллер для Onkyo и Pioneer
 Слушайте музыку правильно!
 
-Copyright © 2019-2021 by __Михаил Кулеш__
+Copyright © 2019-2022 by __Михаил Кулеш__
 
 Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Pioneer/Integra по локальной сети, используя сетевой протокол "Integra Serial Communication Protocol". Основное предназначение программы - управление воспроизведением и звуковыми профилями.
+
+## Ссылки
+
+Репозиторий с исходным кодом: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Версии: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
 ## Лицензия
 
@@ -43,10 +49,6 @@ Copyright © 2019-2021 by __Михаил Кулеш__
 Мы распространяем данную программу в надежде на то, что она будет вам полезной, однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ. Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией GNU.
 
 Вместе с данной программой вы должны были получить экземпляр [Стандартной Общественной Лицензии GNU](https://www.gnu.org/licenses)
-
-## Ссылки
-
-Репозиторий с исходным кодом: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Библиотеки с открытым исходным кодом
 
@@ -467,6 +469,7 @@ Copyright © 2019-2021 by __Михаил Кулеш__
     <string name="device_firmware_update_started">Обновление началось, ждите</string>
     <string name="device_firmware_update_complete">Обновление завершено</string>
     <string name="device_firmware_net">Обновить устройство по сети</string>
+    <string name="device_firmware_confirm">Вы действительно хотите скачать и установить актуальную прошивку?</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Яркость дисплея</string>

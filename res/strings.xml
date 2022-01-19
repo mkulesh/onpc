@@ -34,9 +34,15 @@
 # Enhanced Controller for Onkyo and Pioneer
 Listen to music properly!
 
-Copyright © 2019-2021 by __Mikhail Kulesh__
+Copyright © 2019-2022 by __Mikhail Kulesh__
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
+
+## Links
+
+Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
+
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
 ## License
 
@@ -45,10 +51,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
-
-## Links
-
-Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
 ## Used Open Source Libraries
 
@@ -515,6 +517,7 @@ Enjoy!""</string>
     <string name="device_firmware_update_started">Update started, please wait</string>
     <string name="device_firmware_update_complete">Update completed, please wait until device is rebooted and reconnect it</string>
     <string name="device_firmware_net">Start device update via network</string>
+    <string name="device_firmware_confirm">Do you really want to download and install the actual firmware?</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Dimmer level</string>
