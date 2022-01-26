@@ -12,123 +12,89 @@
  * Public License along with this program.
  */
 // @dart=2.9
-import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:io' as io;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'utils/Logging.dart';
 
 import 'iscp/StateManager.dart';
 
-enum PlatformCmd
-{
-    NETWORK_STATE,
-    VOLUME_UP,
-    VOLUME_DOWN,
-    VOLUME_KEYS_ENABLED,
-    VOLUME_KEYS_DISABLED,
-    KEEP_SCREEN_ON_ENABLED,
-    KEEP_SCREEN_ON_DISABLED,
-    INTENT,
-    INVALID
-}
-
 class Platform
 {
-    static const String PLATFORM_CHANNEL = "platform_channel";
+    static const String METHOD_CHANNEL = "platform_method_channel";
+
+    // dart -> platform
+    static const String GET_NETWORK_STATE = "getNetworkState";
+    static const String VOLUME_KEYS_ENABLED = "setVolumeKeysEnabled";
+    static const String VOLUME_KEYS_DISABLED = "setVolumeKeysDisabled";
+    static const String KEEP_SCREEN_ON_ENABLED = "setKeepScreenOnEnabled";
+    static const String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnDisabled";
+    static const String GET_INTENT = "getIntent";
+
+    // platform -> dart
+    static const String PLATFORM_LOG = "log";
+    static const String SHORTCUT = "shortcut";
+    static const String VOLUME_UP = "volumeUp";
+    static const String VOLUME_DOWN = "volumeDown";
+    static const String NETWORK_STATE_CHANGE = "networkStateChange";
+
+    // Intents
     static const String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.plus.AUTO_POWER";
     static const String WIDGET_SHORTCUT = "com.mkulesh.onpc.plus.WIDGET_SHORTCUT";
-    static const int INT8_SIZE = 1;
-    static const int INT32_SIZE = 4;
 
-    static Future<ByteData> sendPlatformCommand(PlatformCmd cmd)
-    {
-        final WriteBuffer buffer = WriteBuffer();
-        buffer.putInt32(cmd.index);
-        final ByteData message = buffer.done();
-        return ServicesBinding.instance.defaultBinaryMessenger.send(PLATFORM_CHANNEL, message);
-    }
-
-    static PlatformCmd readPlatformCommand(ByteData message)
-    {
-        final ReadBuffer readBuffer = ReadBuffer(message);
-        if (readBuffer.data.lengthInBytes >= INT8_SIZE)
-        {
-            final int code = readBuffer.data.getUint8(0);
-            return PlatformCmd.values.singleWhere((p) => p.index == code, orElse: () => PlatformCmd.INVALID);
-        }
-        return PlatformCmd.INVALID;
-    }
-
+    // Platforms
     static String get operatingSystem => io.Platform.operatingSystem;
     static bool get isAndroid => io.Platform.isAndroid;
     static bool get isIOS => io.Platform.isIOS;
     static bool get isDesktop => (io.Platform.isMacOS || io.Platform.isLinux || io.Platform.isWindows);
 
-    // Network state from host platforms
-    static Future<ByteData> requestNetworkState()
+    // Send a command to platform
+    static Future<String> sendPlatformCommand(final MethodChannel _methodChannel, final String cmd)
     {
         if (isAndroid)
         {
-            return sendPlatformCommand(PlatformCmd.NETWORK_STATE);
+            Logging.info(_methodChannel, "Call platform method: " + cmd);
+            return _methodChannel.invokeMethod(cmd);
         }
         else
         {
-            final WriteBuffer buffer = WriteBuffer();
-            buffer.putUint8(PlatformCmd.NETWORK_STATE.index);
-            buffer.putUint8(NetworkState.WIFI.index);
-            return Future.value(buffer.done());
+            return Future.value("");
         }
     }
 
-    static NetworkState parseNetworkState(ByteData message)
+    // Network state from host platforms
+    static Future<String> requestNetworkState(final MethodChannel _methodChannel)
     {
-        final ReadBuffer readBuffer = ReadBuffer(message);
-        if (readBuffer.data.lengthInBytes >= INT8_SIZE)
+        if (isAndroid)
         {
-            final int code = readBuffer.data.getUint8(0);
-            if (code == PlatformCmd.NETWORK_STATE.index && readBuffer.data.lengthInBytes > 1)
-            {
-                final int state = readBuffer.data.getUint8(1);
-                return NetworkState.values.singleWhere((p) => p.index == state, orElse: () => NetworkState.NONE);
-            }
+            return sendPlatformCommand(_methodChannel, Platform.GET_NETWORK_STATE);
         }
-        return NetworkState.NONE;
+        else
+        {
+            return Future.value(NetworkState.WIFI.index.toString());
+        }
+    }
+
+    static NetworkState parseNetworkState(final String state)
+    {
+        final int idx = int.tryParse(state);
+        if (idx == null)
+        {
+            NetworkState.NONE;
+        }
+        return NetworkState.values.singleWhere((p) => p.index == idx, orElse: () => NetworkState.NONE);
     }
 
     // Auto power state from host platforms
-    static Future<ByteData> requestIntent()
+    static Future<String> requestIntent(final MethodChannel _methodChannel)
     {
         if (isAndroid)
         {
-            return sendPlatformCommand(PlatformCmd.INTENT);
+            return sendPlatformCommand(_methodChannel, Platform.GET_INTENT);
         }
         else
         {
-            final WriteBuffer buffer = WriteBuffer();
-            buffer.putUint8(0);
-            return Future.value(buffer.done());
+            return Future.value("");
         }
-    }
-
-    static String parseIntent(ByteData message)
-    {
-        final ReadBuffer readBuffer = ReadBuffer(message);
-        if (readBuffer.data.lengthInBytes >= INT32_SIZE)
-        {
-            final int length = readBuffer.data.getInt32(0);
-            if (length > 0)
-            {
-                final List<int> bytes = [];
-                for (int i = 0; i < length; i++)
-                {
-                    bytes.add(readBuffer.data.getUint8(4 + i));
-                }
-                final String intent = utf8.decode(bytes);
-                return intent;
-            }
-        }
-        return null;
     }
 }

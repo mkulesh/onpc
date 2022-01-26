@@ -28,54 +28,39 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+import io.flutter.plugin.common.MethodChannel;
 
 interface NetworkStateListener
 {
     void onNetworkStateChanged(boolean isConnected, boolean isWiFi);
 }
 
-public class MainActivity extends FlutterActivity implements BinaryMessenger.BinaryMessageHandler, NetworkStateListener
+public class MainActivity extends FlutterActivity implements NetworkStateListener
 {
-    private static final String PLATFORM_CHANNEL = "platform_channel";
+    private static final String METHOD_CHANNEL = "platform_method_channel";
     private static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
 
-    private enum PlatformCmd
-    {
-        NETWORK_STATE           (0),
-        VOLUME_UP               (1),
-        VOLUME_DOWN             (2),
-        VOLUME_KEYS_ENABLED     (3),
-        VOLUME_KEYS_DISABLED    (4),
-        KEEP_SCREEN_ON_ENABLED  (5),
-        KEEP_SCREEN_ON_DISABLED (6),
-        INTENT                  (7),
-        INVALID                 (8);
+    // dart -> platform
+    private static final String GET_NETWORK_STATE = "getNetworkState";
+    private static final String VOLUME_KEYS_ENABLED = "setVolumeKeysEnabled";
+    private static final String VOLUME_KEYS_DISABLED = "setVolumeKeysDisabled";
+    private static final String KEEP_SCREEN_ON_ENABLED = "setKeepScreenOnEnabled";
+    private static final String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnEnabled";
+    private static final  String GET_INTENT = "getIntent";
 
-        final int code;
-
-        PlatformCmd(int code)
-        {
-            this.code = code;
-        }
-
-        byte getByteCode()
-        {
-            return (byte)code;
-        }
-    }
+    // platform -> dart
+    private static final String VOLUME_UP = "volumeUp";
+    private static final String VOLUME_DOWN = "volumeDown";
+    private static final String NETWORK_STATE_CHANGE = "networkStateChange";
 
     @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
@@ -157,10 +142,10 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     }
 
     private ConnectivityChangeReceiver receiver;
-    private boolean volumeKeys = false;
+    private boolean volumeKeys = true;
     private boolean keepScreenOn = false;
     private String intentData = null;
-    private BinaryMessenger messenger = null;
+    private MethodChannel platformChannel = null;
 
     @Override
     public void configureFlutterEngine(FlutterEngine flutterEngine)
@@ -174,11 +159,11 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        // Message channel to Flutter code
-        this.messenger = flutterEngine.getDartExecutor().getBinaryMessenger();
-        messenger.setMessageHandler(PLATFORM_CHANNEL, this);
-
         receiver = new ConnectivityChangeReceiver(this, this);
+
+        // Message channel to Flutter code
+        platformChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), METHOD_CHANNEL);
+        platformChannel.setMethodCallHandler(this::onPlatformMethodCall);
     }
 
     @Override
@@ -226,32 +211,11 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
     @Override
     public void onNetworkStateChanged(boolean isConnected, boolean isWiFi)
     {
-        if (messenger != null)
+        if (platformChannel != null)
         {
-            messenger.send(PLATFORM_CHANNEL, getNetworkStateMsg(isConnected, isWiFi));
+            final int state = !receiver.isConnected() ? 0 : (!receiver.isWifi() ? 1 : 2);
+            platformChannel.invokeMethod(NETWORK_STATE_CHANGE, String.valueOf(state));
         }
-    }
-
-    private ByteBuffer getNetworkStateMsg(boolean isConnected, boolean isWiFi)
-    {
-        final ByteBuffer message = ByteBuffer.allocateDirect(4);
-        final int state = !isConnected ? 0 : (!isWiFi ? 1 : 2);
-        message.put(PlatformCmd.NETWORK_STATE.getByteCode());
-        message.put((byte)state);
-        return message;
-    }
-
-    private ByteBuffer getIntentMsg()
-    {
-        final int msgSize = intentData == null ? 0 : intentData.length();
-        final ByteBuffer message = ByteBuffer.allocateDirect(4 + msgSize + 1);
-        message.putInt(msgSize);
-        if (intentData != null)
-        {
-            final byte[] bytes = intentData.getBytes(Charset.forName("UTF-8"));
-            message.put(bytes);
-        }
-        return message;
     }
 
     @Override
@@ -323,45 +287,43 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
         startActivity(intent);
     }
 
-    @Override
-    public void onMessage(ByteBuffer byteBuffer, BinaryMessenger.BinaryReply binaryReply)
+    void onPlatformMethodCall(MethodCall methodCall, MethodChannel.Result result)
     {
-        byteBuffer.order(ByteOrder.nativeOrder());
-        int input = byteBuffer.getInt();
-        PlatformCmd cmd = input >= 0 && input < PlatformCmd.values().length ?
-                PlatformCmd.values()[input] : PlatformCmd.INVALID;
-
-        Log.d("onpc", "platform command from dart code: " + cmd.toString());
-        ByteBuffer r = null;
         boolean newKeepScreenOn = keepScreenOn;
-        switch (cmd)
+        if (methodCall.method.equals(VOLUME_KEYS_ENABLED))
         {
-            case VOLUME_UP:
-            case VOLUME_DOWN:
-            case INVALID:
-                // nothing to do
-                break;
-            case VOLUME_KEYS_ENABLED:
-                volumeKeys = true;
-                break;
-            case VOLUME_KEYS_DISABLED:
-                volumeKeys = false;
-                break;
-            case KEEP_SCREEN_ON_ENABLED:
-                newKeepScreenOn = true;
-                break;
-            case KEEP_SCREEN_ON_DISABLED:
-                newKeepScreenOn = false;
-                break;
-            case NETWORK_STATE:
-                r = getNetworkStateMsg(receiver.isConnected(), receiver.isWifi());
-                break;
-            case INTENT:
-                r = getIntentMsg();
-                break;
+            volumeKeys = true;
+            result.success("volume keys enabled");
+        }
+        else if (methodCall.method.equals(VOLUME_KEYS_DISABLED))
+        {
+            volumeKeys = false;
+            result.success("volume keys disabled");
+        }
+        else if (methodCall.method.equals(KEEP_SCREEN_ON_ENABLED))
+        {
+            newKeepScreenOn = true;
+            result.success("keep screen on enabled");
+        }
+        else if (methodCall.method.equals(KEEP_SCREEN_ON_DISABLED))
+        {
+            newKeepScreenOn = false;
+            result.success("keep screen on disabled");
+        }
+        else if (methodCall.method.equals(GET_NETWORK_STATE))
+        {
+            final int state = !receiver.isConnected() ? 0 : (!receiver.isWifi() ? 1 : 2);
+            result.success(String.valueOf(state));
+        }
+        else if (methodCall.method.equals(GET_INTENT))
+        {
+            result.success(intentData != null ? intentData : "");
+        }
+        else
+        {
+            result.success("nothing to do");
         }
 
-        binaryReply.reply(r);
         if (newKeepScreenOn != keepScreenOn)
         {
             restartActivity();
@@ -377,14 +339,8 @@ public class MainActivity extends FlutterActivity implements BinaryMessenger.Bin
             {
                 if (event.getAction() == KeyEvent.ACTION_DOWN)
                 {
-                    final ByteBuffer message = ByteBuffer.allocateDirect(4);
-                    final byte code = event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP ?
-                            PlatformCmd.VOLUME_UP.getByteCode() : PlatformCmd.VOLUME_DOWN.getByteCode();
-                    message.put(code);
-                    if (messenger != null)
-                    {
-                        messenger.send(PLATFORM_CHANNEL, message);
-                    }
+                    platformChannel.invokeMethod(event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP ?
+                            VOLUME_UP : VOLUME_DOWN, "");
                     return true;
                 }
                 else if (event.getAction() == KeyEvent.ACTION_UP)

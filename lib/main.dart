@@ -13,7 +13,6 @@
  */
 // @dart=2.9
 import 'dart:async';
-import 'dart:typed_data';
 
 import "package:back_button_interceptor/back_button_interceptor.dart";
 import "package:flutter/foundation.dart";
@@ -123,7 +122,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     final List<AppTabs> _tabs = [];
     TabController _tabController;
     final PopupManager _popupManager = PopupManager();
-    MethodChannel _methodChannel;
+    static const MethodChannel _methodChannel = MethodChannel('platform_method_channel');
 
     ConnectionState _connectionState;
     bool _exitConfirm, _searchDialog;
@@ -159,29 +158,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         {
             // Prepare platform channel after connection data are processed in order
             // to prevent unnecessary NetworkStateChange handling
-            _methodChannel = MethodChannel('platform_method_channel');
             _methodChannel.setMethodCallHandler(_onPlatformMethodCall);
-
-            ServicesBinding.instance.defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
-            {
-                final PlatformCmd cmd = Platform.readPlatformCommand(message);
-                if (cmd == PlatformCmd.NETWORK_STATE)
-                {
-                    _processNetworkStateChange(message);
-                }
-                else if (_configuration.audioControl.volumeKeys && _stateManager.isConnected)
-                {
-                    if (cmd == PlatformCmd.VOLUME_UP)
-                    {
-                        _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
-                    }
-                    if (cmd == PlatformCmd.VOLUME_DOWN)
-                    {
-                        _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
-                    }
-                }
-                return null;
-            });
         });
     }
 
@@ -214,11 +191,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
     Future<void> _onResume({bool autoPower = false}) async
     {
         Logging.info(this.widget, "resuming application");
-        await Platform.requestIntent().then((replay)
+        await Platform.requestIntent(_methodChannel).then((replay)
         {
             _stateManager.updateScripts(
                 autoPower: autoPower,
-                intent: Platform.parseIntent(replay),
+                intent: replay,
                 shortcuts: _configuration.favoriteShortcuts.shortcuts);
         });
 
@@ -247,7 +224,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         if (connect)
         {
-            await Platform.requestNetworkState().then((replay)
+            await Platform.requestNetworkState(_methodChannel).then((replay)
             {
                 _processNetworkStateChange(replay, noChangeCheck: true);
             });
@@ -402,7 +379,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _startSearch()
     {
-        Platform.requestNetworkState().then((replay)
+        Platform.requestNetworkState(_methodChannel).then((replay)
         {
             final NetworkState n = Platform.parseNetworkState(replay);
             _stateManager.setNetworkState(n);
@@ -495,7 +472,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         return false;
     }
 
-    void _processNetworkStateChange(final ByteData state, {final bool noChangeCheck = false})
+    void _processNetworkStateChange(final String state, {final bool noChangeCheck = false})
     {
         final NetworkState n = Platform.parseNetworkState(state);
         if (_stateManager.setNetworkState(n) || noChangeCheck)
@@ -544,10 +521,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
         // Depending on new setting, app may be restarted by platform code here
         if (informPlatform)
         {
-            Platform.sendPlatformCommand(_configuration.audioControl.volumeKeys ?
-                PlatformCmd.VOLUME_KEYS_ENABLED : PlatformCmd.VOLUME_KEYS_DISABLED);
-            Platform.sendPlatformCommand(_configuration.keepScreenOn ?
-                PlatformCmd.KEEP_SCREEN_ON_ENABLED : PlatformCmd.KEEP_SCREEN_ON_DISABLED);
+            Platform.sendPlatformCommand(_methodChannel, _configuration.audioControl.volumeKeys ?
+                Platform.VOLUME_KEYS_ENABLED : Platform.VOLUME_KEYS_DISABLED);
+            Platform.sendPlatformCommand(_methodChannel, _configuration.keepScreenOn ?
+                Platform.KEEP_SCREEN_ON_ENABLED : Platform.KEEP_SCREEN_ON_DISABLED);
         }
 
         if (updScripts)
@@ -624,13 +601,25 @@ class MusicControllerAppState extends State<MusicControllerApp>
         {
             par = call.arguments;
         }
+        if (call.method != Platform.SHORTCUT)
+        {
+            Logging.info(this.widget, "Call from platform: " + call.method + "(" + par + ")");
+        }
         switch(call.method)
         {
-            case "log":
-                Logging.info(this.widget, "Platform call (" + call.method + "): " + par);
+            case Platform.PLATFORM_LOG:
                 break;
-            case "shortcut":
+            case Platform.SHORTCUT:
                 _processGlobalShortcut(call.method, par);
+                break;
+            case Platform.VOLUME_UP:
+                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
+                break;
+            case Platform.VOLUME_DOWN:
+                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
+                break;
+            case Platform.NETWORK_STATE_CHANGE:
+                _processNetworkStateChange(par);
                 break;
         }
     }
@@ -640,11 +629,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
         switch(par)
         {
             case "Alt + Num +":
-                Logging.info(this.widget, "Platform call (" + method + "): '" + par + "': volume up");
+                Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume up");
                 _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
                 break;
             case "Alt + Num -":
-                Logging.info(this.widget, "Platform call (" + method + "): '" + par + "': volume down");
+                Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume down");
                 _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
                 break;
         }
