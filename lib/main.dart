@@ -123,6 +123,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     final List<AppTabs> _tabs = [];
     TabController _tabController;
     final PopupManager _popupManager = PopupManager();
+    MethodChannel _methodChannel;
 
     ConnectionState _connectionState;
     bool _exitConfirm, _searchDialog;
@@ -158,6 +159,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
         {
             // Prepare platform channel after connection data are processed in order
             // to prevent unnecessary NetworkStateChange handling
+            _methodChannel = MethodChannel('platform_method_channel');
+            _methodChannel.setMethodCallHandler(_onPlatformMethodCall);
+
             ServicesBinding.instance.defaultBinaryMessenger.setMessageHandler(Platform.PLATFORM_CHANNEL, (ByteData message) async
             {
                 final PlatformCmd cmd = Platform.readPlatformCommand(message);
@@ -610,6 +614,39 @@ class MusicControllerAppState extends State<MusicControllerApp>
             }
 
             _stateManager.state.closeMediaFilter();
+        }
+    }
+
+    Future<void> _onPlatformMethodCall(MethodCall call) async
+    {
+        String par = "";
+        if (call.arguments is String)
+        {
+            par = call.arguments;
+        }
+        switch(call.method)
+        {
+            case "log":
+                Logging.info(this.widget, "Platform call (" + call.method + "): " + par);
+                break;
+            case "shortcut":
+                _processGlobalShortcut(call.method, par);
+                break;
+        }
+    }
+
+    void _processGlobalShortcut(final String method, final String par)
+    {
+        switch(par)
+        {
+            case "Alt + Num +":
+                Logging.info(this.widget, "Platform call (" + method + "): '" + par + "': volume up");
+                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
+                break;
+            case "Alt + Num -":
+                Logging.info(this.widget, "Platform call (" + method + "): '" + par + "': volume down");
+                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
+                break;
         }
     }
 }
