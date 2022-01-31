@@ -796,6 +796,30 @@ Enjoy!"""];
         /*pl*/ "Pozycja separatora kolumn (%)"];
     static String get pref_column_separator => l_pref_column_separator[_language];
 
+    static const List<String> l_pref_keyboard_shortcuts = [
+        /*en*/ "Global keyboard shortcuts",
+        /*ru*/ "Глобальные сочетания клавиш",
+        /*de*/ "Globale Tastaturkürzel",
+        /*fr*/ "Raccourcis clavier globaux",
+        /*pl*/ "Globalne skróty klawiaturowe"];
+    static String get pref_keyboard_shortcuts => l_pref_keyboard_shortcuts[_language];
+
+    static const List<String> l_pref_keyboard_shortcut_update = [
+        /*en*/ "Edit",
+        /*ru*/ "Изменить",
+        /*de*/ "Bearbeiten",
+        /*fr*/ "Modifier",
+        /*pl*/ "Edytuj"];
+    static String get pref_keyboard_shortcut_update => l_pref_keyboard_shortcut_update[_language];
+
+    static const List<String> l_pref_keyboard_shortcut_delete = [
+        /*en*/ "Delete",
+        /*ru*/ "Удалить",
+        /*de*/ "Löschen",
+        /*fr*/ "Supprimer",
+        /*pl*/ "Usuń"];
+    static String get pref_keyboard_shortcut_delete => l_pref_keyboard_shortcut_delete[_language];
+
     static const List<String> l_pref_auto_power = [
         /*en*/ "Switch-on remote device on app startup",
         /*ru*/ "Включить удаленное устройство при запуске приложения",

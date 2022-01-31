@@ -184,6 +184,14 @@ class _PreferencesMainState extends State<PreferencesMain>
         elements.add(CustomDivider());
         elements.add(PreferenceTitle(Strings.pref_category_advanced_options));
 
+        if (Platform.isWindows)
+        {
+            elements.add(_customPreferenceScreen(td,
+                Strings.pref_keyboard_shortcuts,
+                icon: Drawables.keyboard_shortcuts,
+                activity: Activities.activity_keyboard_shortcuts));
+        }
+
         if (Platform.isDesktop)
         {
             final List<String> values = [ "" ];

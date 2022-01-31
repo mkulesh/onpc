@@ -126,6 +126,9 @@ Enjoy!""</string>
     <string name="pref_usb_ri_interface">Użyj interfejsu USB-RI</string>
     <string name="pref_usb_ri_interface_none">Brak</string>
     <string name="pref_column_separator">Pozycja separatora kolumn (%)</string>
+    <string name="pref_keyboard_shortcuts">Globalne skróty klawiaturowe</string>
+    <string name="pref_keyboard_shortcut_update">Edytuj</string>
+    <string name="pref_keyboard_shortcut_delete">Usuń</string>
 
     <string name="pref_auto_power">Włącz zdalne urządzenie podczas uruchamiania aplikacji</string>
     <string name="pref_friendly_names">Nazwa urządzenia</string>

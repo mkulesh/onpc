@@ -27,6 +27,7 @@ import "config/CfgAppSettings.dart";
 import "config/CfgTabSettings.dart";
 import "config/Configuration.dart";
 import "config/DeviceSelectors.dart";
+import "config/KeyboardShortcuts.dart";
 import "config/ListeningModes.dart";
 import "config/NetworkServices.dart";
 import "config/PreferencesMain.dart";
@@ -89,6 +90,7 @@ void main() async
             Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(configuration),
             Activities.activity_listening_modes: (BuildContext context) => ListeningModes(configuration),
             Activities.activity_network_services: (BuildContext context) => NetworkServices(configuration),
+            Activities.activity_keyboard_shortcuts: (BuildContext context) => KeyboardShortcuts(configuration),
             Activities.activity_about_screen: (BuildContext context) => AboutScreen(viewContext),
         }));
 }
@@ -626,16 +628,23 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _processGlobalShortcut(final String method, final String par)
     {
-        switch(par)
+        if (par.isEmpty)
         {
-            case "Alt + Num +":
-                Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume up");
-                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
-                break;
-            case "Alt + Num -":
-                Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume down");
-                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
-                break;
+            return;
+        }
+        if (_configuration.appSettings.processKeyboardShortcut(par))
+        {
+            // nothing to do: shortcut processed
+        }
+        else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_up"))
+        {
+            Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume up");
+            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
+        }
+        else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_down"))
+        {
+            Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume down");
+            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
         }
     }
 }

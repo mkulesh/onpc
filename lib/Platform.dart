@@ -46,6 +46,7 @@ class Platform
     static String get operatingSystem => io.Platform.operatingSystem;
     static bool get isAndroid => io.Platform.isAndroid;
     static bool get isIOS => io.Platform.isIOS;
+    static bool get isWindows => io.Platform.isWindows;
     static bool get isDesktop => (io.Platform.isMacOS || io.Platform.isLinux || io.Platform.isWindows);
 
     // Send a command to platform

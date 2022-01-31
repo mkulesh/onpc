@@ -45,6 +45,8 @@ enum MediaSortMode
     ARTIST_ALBUM
 }
 
+typedef OnKeyboardShortcut = void Function(String par, String shortcut);
+
 class CfgAppSettings extends CfgModule
 {
     // Theme
@@ -216,6 +218,55 @@ class CfgAppSettings extends CfgModule
         }
     }
 
+    // Keyboard shortcuts
+    static const List<Pair<String, String>> KEYBOARD_SHORTCUTS = [
+        Pair<String, String>("ks_volume_up", "Alt + Num +"),
+        Pair<String, String>("ks_volume_down", "Alt + Num -")
+    ];
+    final Map<String, String> _keyboardShortcuts = Map();
+
+    String getKeyboardShortcut(final String par)
+    => _keyboardShortcuts.containsKey(par)? _keyboardShortcuts[par] : "";
+
+    void updateKeyboardShortcut(final String par, final String value)
+    {
+        if (_keyboardShortcuts.containsKey(par))
+        {
+            _keyboardShortcuts[par] = value;
+            saveStringParameter(Pair<String, String>(par, ""), value);
+        }
+    }
+
+    // Capture keyboard shortcuts
+    Pair<String, OnKeyboardShortcut> _captureKeyboardShortcut;
+
+    void captureKeyboardShortcut(OnKeyboardShortcut handler, {String parameter: ""})
+    {
+        if (handler != null)
+        {
+            Logging.info(this, "Waiting for keyboard shortcut for " + parameter);
+            _captureKeyboardShortcut = Pair<String, OnKeyboardShortcut>(parameter, handler);
+        }
+        else if (_captureKeyboardShortcut != null)
+        {
+            Logging.info(this, "Cancelled keyboard shortcut for " + _captureKeyboardShortcut.item1);
+            _captureKeyboardShortcut = null;
+        }
+    }
+
+    bool isWaitingForShortcut(final String par)
+    => _captureKeyboardShortcut != null && _captureKeyboardShortcut.item1 == par;
+
+    bool processKeyboardShortcut(final String shortcut)
+    {
+        if (_captureKeyboardShortcut != null)
+        {
+            _captureKeyboardShortcut.item2(_captureKeyboardShortcut.item1, shortcut);
+            return true;
+        }
+        return false;
+    }
+
     // methods
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);
 
@@ -240,6 +291,8 @@ class CfgAppSettings extends CfgModule
             _windowOffsetX = getInt(WINDOW_OFFSET_X, doLog: true);
             _windowOffsetY = getInt(WINDOW_OFFSET_Y, doLog: true);
         }
+        KEYBOARD_SHORTCUTS.forEach((shortcut)
+            => _keyboardShortcuts[shortcut.item1] = getString(shortcut, doLog: true));
     }
 
     @override

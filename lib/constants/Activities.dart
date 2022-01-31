@@ -19,5 +19,6 @@ class Activities
     static const String activity_device_selectors = "/DeviceSelectors";
     static const String activity_listening_modes = "/ListeningModes";
     static const String activity_network_services = "/NetworkServices";
+    static const String activity_keyboard_shortcuts = "/KeyboardShortcuts";
     static const String activity_about_screen = "/AboutScreen";
 }

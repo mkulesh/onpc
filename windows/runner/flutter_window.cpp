@@ -140,6 +140,16 @@ void FlutterWindow::ProcessKeyEvent(const KBDLLHOOKSTRUCT * kbdStruct)
     {
         return;
     }
+
+    // Ignore combination if the latest key is a system key
+    for (UINT sysCode : sysKeys)
+    {
+        if (kbdStruct->vkCode == sysCode)
+        {
+            return;
+        }
+    }
+
     std::string vkName = "";
     if (VirtualKeyCodeToString(kbdStruct->vkCode, vkName) > 0)
     {
@@ -154,13 +164,9 @@ void FlutterWindow::ProcessKeyEvent(const KBDLLHOOKSTRUCT * kbdStruct)
                     description += " + ";
                 }
                 description += sysName;
-                if (sysCode == kbdStruct->vkCode)
-                {
-                    vkName = "";
-                }
             }
         }
-        if (!description.empty() && !vkName.empty())
+        if (!description.empty())
         {
             description += " + ";
         }

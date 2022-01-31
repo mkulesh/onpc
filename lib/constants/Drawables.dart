@@ -166,4 +166,8 @@ class Drawables
     static const String numeric_clean = BUTTONS_PATH + "numeric_clean.svg";
     static const String numeric_negative_1 = BUTTONS_PATH + "numeric_negative_1.svg";
     static const String numeric_positive_1 = BUTTONS_PATH + "numeric_positive_1.svg";
+
+    static const String keyboard_shortcuts = BUTTONS_PATH + "keyboard_shortcuts.svg";
+    static const String keyboard_shortcut_update = BUTTONS_PATH + "keyboard_shortcut_update.svg";
+    static const String keyboard_shortcut_delete = BUTTONS_PATH + "keyboard_shortcut_delete.svg";
 }
