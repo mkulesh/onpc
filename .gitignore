@@ -19,5 +19,5 @@ ios/Flutter/flutter_export_environment.sh
 ios/Podfile
 macos/Flutter/ephemeral
 macos/Podfile
-*.impl
-android/*.impl
+*.iml
+android/*.iml
