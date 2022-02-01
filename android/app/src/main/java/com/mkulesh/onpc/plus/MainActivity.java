@@ -54,8 +54,8 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
     private static final String VOLUME_KEYS_ENABLED = "setVolumeKeysEnabled";
     private static final String VOLUME_KEYS_DISABLED = "setVolumeKeysDisabled";
     private static final String KEEP_SCREEN_ON_ENABLED = "setKeepScreenOnEnabled";
-    private static final String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnEnabled";
-    private static final  String GET_INTENT = "getIntent";
+    private static final String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnDisabled";
+    private static final String GET_INTENT = "getIntent";
 
     // platform -> dart
     private static final String VOLUME_UP = "volumeUp";
@@ -261,18 +261,18 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
     {
         final SharedPreferences preferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         Map<String, ?> allPrefs = preferences.getAll();
-        volumeKeys = readBooleanPreference(allPrefs, "flutter.volume_keys");
-        keepScreenOn = readBooleanPreference(allPrefs, "flutter.keep_screen_on");
+        volumeKeys = readBooleanPreference(allPrefs, "flutter.volume_keys", volumeKeys);
+        keepScreenOn = readBooleanPreference(allPrefs, "flutter.keep_screen_on", keepScreenOn);
     }
 
-    private boolean readBooleanPreference(final Map<String, ?> allPrefs, final String name)
+    private boolean readBooleanPreference(final Map<String, ?> allPrefs, final String name, final boolean defValue)
     {
         Object val = allPrefs.get(name);
         if (val instanceof Boolean)
         {
             return (Boolean)val;
         }
-        return false;
+        return defValue;
     }
 
     public void restartActivity()
