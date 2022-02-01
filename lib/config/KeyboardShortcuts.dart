@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../constants/Themes.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -52,7 +53,10 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts>
     Widget build(BuildContext context)
     {
         Logging.logRebuild(this);
-        final ThemeData td = Theme.of(context);
+        final ThemeData td = BaseAppTheme.getThemeData(
+            _configuration.appSettings.theme,
+            _configuration.appSettings.language,
+            _configuration.appSettings.textSize);
 
         final List<TableRow> rows = [];
 
