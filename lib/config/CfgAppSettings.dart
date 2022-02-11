@@ -221,7 +221,12 @@ class CfgAppSettings extends CfgModule
     // Keyboard shortcuts
     static const List<Pair<String, String>> KEYBOARD_SHORTCUTS = [
         Pair<String, String>("ks_volume_up", "Alt + Num +"),
-        Pair<String, String>("ks_volume_down", "Alt + Num -")
+        Pair<String, String>("ks_volume_down", "Alt + Num -"),
+        Pair<String, String>("ks_volume_mute", "Alt + Num *"),
+        Pair<String, String>("ks_volume_trdn", "Alt + Num 4"),
+        Pair<String, String>("ks_volume_play", "Alt + Num 8"),
+        Pair<String, String>("ks_volume_stop", "Alt + Num 2"),
+        Pair<String, String>("ks_volume_trup", "Alt + Num 6"),
     ];
     final Map<String, String> _keyboardShortcuts = Map();
 
@@ -291,8 +296,11 @@ class CfgAppSettings extends CfgModule
             _windowOffsetX = getInt(WINDOW_OFFSET_X, doLog: true);
             _windowOffsetY = getInt(WINDOW_OFFSET_Y, doLog: true);
         }
-        KEYBOARD_SHORTCUTS.forEach((shortcut)
+        if (Platform.isWindows)
+        {
+            KEYBOARD_SHORTCUTS.forEach((shortcut)
             => _keyboardShortcuts[shortcut.item1] = getString(shortcut, doLog: true));
+        }
     }
 
     @override

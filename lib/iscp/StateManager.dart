@@ -29,6 +29,7 @@ import "ISCPMessage.dart";
 import "MessageChannel.dart";
 import "State.dart";
 import "messages/AmpOperationCommandMsg.dart";
+import "messages/AudioMutingMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
 import "messages/DisplayModeMsg.dart";
 import "messages/EnumParameterMsg.dart";
@@ -648,7 +649,29 @@ class StateManager
         }
     }
 
-    void changeMasterVolume(final String soundControlStr, bool isUp)
+    void changePlaybackState(OperationCommand key)
+    {
+        if (!state.mediaListState.isPlaybackMode
+            && state.mediaListState.isUsb
+            && [OperationCommand.TRDN, OperationCommand.TRUP].contains(key))
+        {
+            // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
+            // in playback mode. Therefore, switch to this mode before
+            // send OperationCommandMsg if current mode is LIST
+            sendTrackCmd(state.getActiveZone, key, false);
+        }
+        else if (key == OperationCommand.PLAY)
+        {
+            // To start play in normal mode, PAUSE shall be issue instead of PLAY command
+            sendMessage(OperationCommandMsg.output(state.getActiveZone, OperationCommand.PAUSE));
+        }
+        else
+        {
+            sendMessage(OperationCommandMsg.output(state.getActiveZone, key));
+        }
+    }
+
+    void changeMasterVolume(final String soundControlStr, int cmd)
     {
         final SoundControlType soundControl = state.soundControlState.soundControlType(
             soundControlStr, state.getActiveZoneInfo);
@@ -658,11 +681,23 @@ class StateManager
             case SoundControlType.DEVICE_BUTTONS:
             case SoundControlType.DEVICE_SLIDER:
             case SoundControlType.DEVICE_BTN_SLIDER:
-                sendMessage(MasterVolumeMsg.output(state.getActiveZone, isUp ? MasterVolume.UP : MasterVolume.DOWN));
-                break;
+            {
+                final List<ISCPMessage> cmds = [
+                    MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP),
+                    MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN),
+                    AudioMutingMsg.output(state.getActiveZone, AudioMuting.TOGGLE)
+                ];
+                return sendMessage(cmds[cmd]);
+            }
             case SoundControlType.RI_AMP:
-                sendMessage(AmpOperationCommandMsg.output(isUp ? AmpOperationCommand.MVLUP : AmpOperationCommand.MVLDOWN));
-                break;
+            {
+                final List<ISCPMessage> cmds = [
+                    AmpOperationCommandMsg.output(AmpOperationCommand.MVLUP),
+                    AmpOperationCommandMsg.output(AmpOperationCommand.MVLDOWN),
+                    AmpOperationCommandMsg.output(AmpOperationCommand.AMTTG)
+                ];
+                return sendMessage(cmds[cmd]);
+            }
             default:
                 // Nothing to do
                 break;

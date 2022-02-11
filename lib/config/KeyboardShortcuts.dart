@@ -59,9 +59,13 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts>
             _configuration.appSettings.textSize);
 
         final List<TableRow> rows = [];
-
-        rows.add(_buildRow(td, Strings.master_volume_up, "ks_volume_up"));
-        rows.add(_buildRow(td, Strings.master_volume_down, "ks_volume_down"));
+        rows.add(_buildRow(td, Strings.master_volume_up,     "ks_volume_up"));
+        rows.add(_buildRow(td, Strings.master_volume_down,   "ks_volume_down"));
+        rows.add(_buildRow(td, Strings.audio_muting_toggle,  "ks_volume_mute"));
+        rows.add(_buildRow(td, Strings.cmd_description_trdn, "ks_volume_trdn"));
+        rows.add(_buildRow(td, Strings.cmd_description_play, "ks_volume_play"));
+        rows.add(_buildRow(td, Strings.cmd_description_pause,"ks_volume_stop"));
+        rows.add(_buildRow(td, Strings.cmd_description_trup, "ks_volume_trup"));
 
         final Map<int, TableColumnWidth> columnWidths = Map();
         columnWidths[0] = FractionColumnWidth(0.4);

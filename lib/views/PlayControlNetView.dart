@@ -82,7 +82,7 @@ class PlayControlNetView extends UpdatableView
                 icon,
                 cmd.description,
                 onPressed: ()
-                => _sendCommand(cmd.key),
+                => stateManager.changePlaybackState(cmd.key),
                 isEnabled: enabled,
                 isSelected: selected
             ));
@@ -94,25 +94,4 @@ class PlayControlNetView extends UpdatableView
         );
     }
 
-    void _sendCommand(OperationCommand key)
-    {
-        if (!state.mediaListState.isPlaybackMode
-            && state.mediaListState.isUsb
-            && [OperationCommand.TRDN, OperationCommand.TRUP].contains(key))
-        {
-            // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
-            // in playback mode. Therefore, switch to this mode before
-            // send OperationCommandMsg if current mode is LIST
-            stateManager.sendTrackCmd(state.getActiveZone, key, false);
-        }
-        else if (key == OperationCommand.PLAY)
-        {
-            // To start play in normal mode, PAUSE shall be issue instead of PLAY command
-            stateManager.sendMessage(OperationCommandMsg.output(state.getActiveZone, OperationCommand.PAUSE));
-        }
-        else
-        {
-            stateManager.sendMessage(OperationCommandMsg.output(state.getActiveZone, key));
-        }
-    }
 }

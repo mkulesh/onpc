@@ -41,6 +41,7 @@ import "dialogs/DeviceSearchDialog.dart";
 import "dialogs/PopupManager.dart";
 import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
+import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
 import "utils/CompatUtils.dart";
@@ -615,10 +616,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 _processGlobalShortcut(call.method, par);
                 break;
             case Platform.VOLUME_UP:
-                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
+                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 0);
                 break;
             case Platform.VOLUME_DOWN:
-                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
+                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 1);
                 break;
             case Platform.NETWORK_STATE_CHANGE:
                 _processNetworkStateChange(par);
@@ -639,12 +640,37 @@ class MusicControllerAppState extends State<MusicControllerApp>
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_up"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume up");
-            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, true);
+            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 0);
         }
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_down"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume down");
-            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, false);
+            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 1);
+        }
+        else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_mute"))
+        {
+            Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume mute");
+            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 2);
+        }
+        else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_trdn"))
+        {
+            Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> track down");
+            _stateManager.changePlaybackState(OperationCommand.TRDN);
+        }
+        else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_play"))
+        {
+            Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> play");
+            _stateManager.changePlaybackState(OperationCommand.PLAY);
+        }
+        else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_stop"))
+        {
+            Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> stop");
+            _stateManager.changePlaybackState(OperationCommand.STOP);
+        }
+        else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_trup"))
+        {
+            Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> track up");
+            _stateManager.changePlaybackState(OperationCommand.TRUP);
         }
     }
 }
