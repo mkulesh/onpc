@@ -84,6 +84,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO TX-NR676E](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr676e/index.html)
 - [ONKYO TX-NR686](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr686/index.html)
 - [ONKYO TX-NR696](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr696/index.html)
+- [ONKYO TX-NR818](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-nr818/index.html)
 - [ONKYO TX-RZ810](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz810/index.html)
 - [ONKYO TX-RZ830](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz830/index.html)
 - [ONKYO TX-RZ900](https://www.intl.onkyo.com/products/av_components/av_receivers/tx-rz900/index.html)
@@ -96,7 +97,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO TX-8250](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8250/index.html)
 - [ONKYO TX-8270](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8270/index.html)
 - [ONKYO TX-8390](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8390/index.html)
-- [ONKYO TX-L20D](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-l20d/index.html )
+- [ONKYO TX-L20D](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-l20d/index.html)
 - [ONKYO R-N855](https://www.intl.onkyo.com/products/hi-fi_components/compact_hi-fi/r-n855/index.html)
 - [ONKYO CS-N575D](https://www.intl.onkyo.com/products/system_components/mini_systems/cs-n575d/index.html)
 - [ONKYO CR-N765](https://www.intl.onkyo.com/products/system_components/mini_systems/cr-n765/index.html)
@@ -115,6 +116,8 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Pioneer VSX-932](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-932)
 - [Pioneer VSX-933](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-933)
 - [Pioneer SC-LX701](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx701)
+- [Pioneer SC-LX901](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx901)
+- [Pioneer SX-N30](https://intl.pioneer-audiovisual.com/products/2ch_components/sx-n30)
 - [Pioneer NC-50DAB](https://intl.pioneer-audiovisual.com/products/2ch_components/nc-50dab/)
 - [Pioneer N-70AE](https://intl.pioneer-audiovisual.com/products/2ch_components/n-70ae)
 - [Pioneer XC-HM86D](https://intl.pioneer-audiovisual.com/products/system_components/xc-hm86d)
@@ -161,7 +164,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright © 2018-2021 by Mikhail Kulesh, Alexander Gomanyuk
+Copyright © 2018-2022 by Mikhail Kulesh, Alexander Gomanyuk
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
