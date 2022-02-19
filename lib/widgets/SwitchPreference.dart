@@ -50,9 +50,10 @@ class _SwitchPreferenceState extends State<SwitchPreference>
                 contentPadding: ActivityDimens.noPadding,
                 child: Text(widget.title)),
             subtitle: widget.desc == null ? null : Text(widget.desc),
-            trailing: Switch.adaptive(
+            trailing: Switch(
                 value: _value,
                 activeColor: Theme.of(context).accentColor,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 onChanged: (val)
                 => val ? onEnable() : onDisable()
             ),

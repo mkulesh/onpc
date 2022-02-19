@@ -88,6 +88,10 @@ class BaseAppTheme
             textSelectionTheme: TextSelectionThemeData(
                 cursorColor: accentColor,
                 selectionColor: accentColor,
+            ),
+
+            tooltipTheme:
+                TooltipThemeData(waitDuration: Duration(seconds: 2)
             )
         );
     }

@@ -140,8 +140,7 @@ class CustomImageButton extends StatelessWidget
         {
             result = Tooltip(message: description,
                 child: result,
-                preferBelow: false,
-                waitDuration: Duration(seconds: 2)
+                preferBelow: false
             );
         }
 
