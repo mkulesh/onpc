@@ -170,4 +170,10 @@ class MultiroomDeviceInformationMsg extends ISCPMessage
         final MultiroomZone z = _zones.firstWhere((z) => z.id == zone, orElse: () => null);
         return z != null ? z.groupid : MultiroomZone.NO_GROUP;
     }
+
+    String getRoomName(int zone)
+    {
+        final MultiroomZone z = _zones.firstWhere((z) => z.id == zone, orElse: () => null);
+        return z != null ? z._roomname : "";
+    }
 }

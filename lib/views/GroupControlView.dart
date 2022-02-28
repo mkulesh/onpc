@@ -24,6 +24,7 @@ import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/MultiroomChannelSettingMsg.dart";
 import "../iscp/messages/MultiroomDeviceInformationMsg.dart";
 import "../iscp/messages/MultiroomGroupSettingMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/MultiroomState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -79,10 +80,23 @@ class GroupControlView extends UpdatableView
         final int targetGroupId = myGroupId == MultiroomZone.NO_GROUP ? maxGroupId + 1 : myGroupId;
 
         final List<Widget> controls = [];
-        Logging.info(this, "Devices for group: " + myGroupId.toString() + ",  maximum group ID=" + maxGroupId.toString());
+        Logging.info(this, "Devices for group: " + myGroupId.toString() + ", maximum group ID=" + maxGroupId.toString());
         devices.forEach((di)
         {
-            controls.add(_buildDeviceItem(di, stateManager.isMasterDevice(di), myZone, myGroupId, targetGroupId));
+            if (stateManager.isMasterDevice(di))
+            {
+                controls.add(_buildDeviceItem(di, true, myZone, myGroupId, targetGroupId, myZone));
+            }
+            else
+            {
+                ReceiverInformationMsg.defaultZones.forEach((zone) {
+                    final Widget row = _buildDeviceItem(di, false, myZone, myGroupId, targetGroupId, int.parse(zone.getId));
+                    if (row != null)
+                    {
+                        controls.add(row);
+                    }
+                });
+            }
         });
 
         return SingleChildScrollView(
@@ -90,34 +104,45 @@ class GroupControlView extends UpdatableView
             child: ListBody(children: controls));
     }
 
-    Widget _buildDeviceItem(DeviceInfo device, bool myDevice, int myZone, int myGroupId, int targetGroupId)
+    Widget _buildDeviceItem(DeviceInfo device, bool myDevice, int myZone, int myGroupId, int targetGroupId, int targetZoneId)
     {
         final MultiroomDeviceInformationMsg di = device.groupMsg;
-        final int tz = myDevice ? myZone : MultiroomGroupSettingMsg.TARGET_ZONE_ID;
+        String roomName = di.getRoomName(targetZoneId);
+        if (!myDevice && targetZoneId > 1 && roomName.isEmpty)
+        {
+            roomName = "Zone" + targetZoneId.toString();
+            return null;
+        }
+
         String description = Strings.multiroom_none;
         bool attached = false;
         if (di != null)
         {
-            final int groupId = di.getGroupId(tz);
+            final int groupId = di.getGroupId(targetZoneId);
             if (groupId != MultiroomZone.NO_GROUP)
             {
                 description = Strings.multiroom_group
                     + " " + groupId.toString()
-                    + ": " + di.getRole(tz).description
+                    + ": " + di.getRole(targetZoneId).description
                     + ", " + Strings.multiroom_channel
-                    + " " + device.getChannelType(tz).toString();
+                    + " " + device.getChannelType(targetZoneId).toString();
                 if (myGroupId == groupId)
                 {
-                    attached = device.getChannelType(tz).key != ChannelType.NONE;
+                    attached = device.getChannelType(targetZoneId).key != ChannelType.NONE;
                 }
             }
         }
 
+        String name = device.getDeviceName(configuration.friendlyNames);
+        if (name != roomName)
+        {
+            name += "/" + roomName;
+        }
         Widget result = Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                CustomTextLabel.normal(device.getDeviceName(configuration.friendlyNames)),
+                CustomTextLabel.normal(name),
                 CustomTextLabel.small(description)
             ]);
 
@@ -125,7 +150,7 @@ class GroupControlView extends UpdatableView
             value: attached,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             onChanged: (bool newValue)
-            => _sendGroupCmd(device, attached, myZone, myGroupId, targetGroupId));
+            => _sendGroupCmd(device, attached, myZone, targetGroupId, targetZoneId));
 
         if (!myDevice)
         {
@@ -142,23 +167,27 @@ class GroupControlView extends UpdatableView
                 result = InkWell(
                     child: result,
                     onTap: ()
-                    => _sendGroupCmd(device, attached, myZone, myGroupId, targetGroupId)
+                    => _sendGroupCmd(device, attached, myZone, targetGroupId, targetZoneId)
                 );
             }
         }
 
-        Logging.info(this, "    ID: " + device.getHostAndPort() + "; " + description + "; attached=" + attached.toString());
+        Logging.info(this, "    " + (myDevice ? "MASTER" : "SLAVE") + ": " + device.getHostAndPort()
+            + "; zone=" + targetZoneId.toString()
+            + "; attached=" + attached.toString()
+            + "; " + description);
 
         return Padding(padding: DialogDimens.rowPadding, child: result);
     }
 
-    void _sendGroupCmd(DeviceInfo device, bool attached, int myZone, int myGroupId, int targetGroupId)
+    void _sendGroupCmd(DeviceInfo device, bool attached, int myZone, int targetGroupId, int targetZoneId)
     {
         if (attached)
         {
             Logging.info(this, "remove device " + device.getHostAndPort());
             final MultiroomGroupSettingMsg removeCmd = MultiroomGroupSettingMsg.output(
                 MultiroomGroupCommand.REMOVE_SLAVE, myZone, 0, MAX_DELAY);
+            removeCmd.addDevice(device.responseMsg.getIdentifier, targetZoneId);
             stateManager.sendMessage(removeCmd, waitingForData: true);
         }
         else
@@ -166,7 +195,7 @@ class GroupControlView extends UpdatableView
             Logging.info(this, "add device " + device.getHostAndPort() + " to group " + targetGroupId.toString());
             final MultiroomGroupSettingMsg addCmd = MultiroomGroupSettingMsg.output(
                 MultiroomGroupCommand.ADD_SLAVE, myZone, targetGroupId, MAX_DELAY);
-            addCmd.devices.add(device.responseMsg.getIdentifier);
+            addCmd.addDevice(device.responseMsg.getIdentifier, targetZoneId);
             stateManager.sendMessage(addCmd, waitingForData: true);
         }
     }

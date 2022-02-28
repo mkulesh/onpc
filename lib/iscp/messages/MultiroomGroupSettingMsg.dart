@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import "../../utils/Pair.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -28,17 +29,18 @@ enum MultiroomGroupCommand
 class MultiroomGroupSettingMsg extends ISCPMessage
 {
     static const String CODE = "MGS";
-    static const int TARGET_ZONE_ID = 1;
 
     final MultiroomGroupCommand _command;
     final int _zone, _groupId, _maxDelay;
-    final List<String> _devices = [];
+    final List<Pair<String, int>> _devices = [];
 
     MultiroomGroupSettingMsg.output(this._command, this._zone, this._groupId, this._maxDelay) :
             super.output(CODE, "");
 
-    List<String> get devices
-    => _devices;
+    void addDevice(String name, int zone)
+    {
+        _devices.add(Pair(name, zone));
+    }
 
     @override
     String toString()
@@ -63,9 +65,9 @@ class MultiroomGroupSettingMsg extends ISCPMessage
                 cmd += "</groupid><maxdelay>";
                 cmd += _maxDelay.toString();
                 cmd += "</maxdelay><devices>";
-                for (String d in _devices)
+                for (Pair<String, int> d in _devices)
                 {
-                    cmd += "<device id=\"" + d + "\" zoneid=\"1\"/>";
+                    cmd += "<device id=\"" + d.item1 + "\" zoneid=\"" + d.item2.toString() + "\"/>";
                 }
                 cmd += "</devices></mgs>";
                 return EISCPMessage.output(CODE, cmd.toString());
@@ -90,9 +92,9 @@ class MultiroomGroupSettingMsg extends ISCPMessage
                 cmd += "</groupid><maxdelay>";
                 cmd += _maxDelay.toString();
                 cmd += "</maxdelay><devices>";
-                for (String d in _devices)
+                for (Pair<String, int> d in _devices)
                 {
-                    cmd += "<device id=\"" + d + "\" zoneid=\"" + TARGET_ZONE_ID.toString() + "\"/>";
+                    cmd += "<device id=\"" + d.item1 + "\" zoneid=\"" + d.item2.toString() + "\"/>";
                 }
                 cmd += "</devices></mgs>";
                 return EISCPMessage.output(CODE, cmd.toString());
