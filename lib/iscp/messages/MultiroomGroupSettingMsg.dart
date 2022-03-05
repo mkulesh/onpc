@@ -29,6 +29,7 @@ enum MultiroomGroupCommand
 class MultiroomGroupSettingMsg extends ISCPMessage
 {
     static const String CODE = "MGS";
+    static const int TARGET_ZONE_ID = 1;
 
     final MultiroomGroupCommand _command;
     final int _zone, _groupId, _maxDelay;

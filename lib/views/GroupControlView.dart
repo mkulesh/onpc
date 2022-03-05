@@ -24,7 +24,6 @@ import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/MultiroomChannelSettingMsg.dart";
 import "../iscp/messages/MultiroomDeviceInformationMsg.dart";
 import "../iscp/messages/MultiroomGroupSettingMsg.dart";
-import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/MultiroomState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -89,13 +88,7 @@ class GroupControlView extends UpdatableView
             }
             else
             {
-                ReceiverInformationMsg.defaultZones.forEach((zone) {
-                    final Widget row = _buildDeviceItem(di, false, myZone, myGroupId, targetGroupId, int.parse(zone.getId));
-                    if (row != null)
-                    {
-                        controls.add(row);
-                    }
-                });
+                controls.add(_buildDeviceItem(di, false, myZone, myGroupId, targetGroupId, MultiroomGroupSettingMsg.TARGET_ZONE_ID));
             }
         });
 
@@ -107,13 +100,6 @@ class GroupControlView extends UpdatableView
     Widget _buildDeviceItem(DeviceInfo device, bool myDevice, int myZone, int myGroupId, int targetGroupId, int targetZoneId)
     {
         final MultiroomDeviceInformationMsg di = device.groupMsg;
-        String roomName = di.getRoomName(targetZoneId);
-        if (!myDevice && targetZoneId > 1 && roomName.isEmpty)
-        {
-            roomName = "Zone" + targetZoneId.toString();
-            return null;
-        }
-
         String description = Strings.multiroom_none;
         bool attached = false;
         if (di != null)
@@ -133,16 +119,11 @@ class GroupControlView extends UpdatableView
             }
         }
 
-        String name = device.getDeviceName(configuration.friendlyNames);
-        if (name != roomName)
-        {
-            name += "/" + roomName;
-        }
         Widget result = Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                CustomTextLabel.normal(name),
+                CustomTextLabel.normal(device.getDeviceName(configuration.friendlyNames)),
                 CustomTextLabel.small(description)
             ]);
 
