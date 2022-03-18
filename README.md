@@ -65,7 +65,7 @@ The two most popular features of the app are music playback and sound profile ma
 - Track time seek is missing in Tidal (that is a limitation of the Onkyo firmware)
 - In order to use Spotify, you need the official Spotify app additionally to this app
 - Amazon Music HD subscription: broadcast in AAC 256 kbps only (that is a limitation of the Onkyo firmware)
-- Following Pioneer models are NOT supported: VSX-529, VSX-830, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
+- Following Pioneer models are NOT supported: VSX-424, VSX-529, VSX-830, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
 - Following models do not support "Play Queue" feature (that is a limitation of the Onkyo firmware): CR-N765, DTR-40.5, HM76, HT-R693, HT-R695, TX-8130, TX-8150, TX-NR626, TX-NR636, TX-NR646, TX-RZ900
 
 ## Supported devices
@@ -113,6 +113,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Pioneer VSX-LX303](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx303)
 - [Pioneer VSX-LX503](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx503)
 - [Pioneer VSX-LX504](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx504)
+- [Pioneer VSX-S520D](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-s520d)
 - [Pioneer VSX-832](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-832)
 - [Pioneer VSX-932](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-932)
 - [Pioneer VSX-933](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-933)
