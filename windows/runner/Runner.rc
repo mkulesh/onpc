@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "Enhanced Music Controller" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "Music Control" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2019-2021 by Mikhail Kulesh. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2019-2022 by Mikhail Kulesh. All rights reserved." "\0"
             VALUE "OriginalFilename", "Music Control.exe" "\0"
             VALUE "ProductName", "Music Control" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
