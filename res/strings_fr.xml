@@ -482,6 +482,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="device_dimmer_level_bright">Lumineux</string>
     <string name="device_dimmer_level_dim">Doux</string>
     <string name="device_dimmer_level_dark">Sombre</string>
+    <string name="device_dimmer_level_shut_off">Éteint</string>
     <string name="device_dimmer_level_off">Éteint</string>
     <string name="device_dimmer_level_toggle">Changer niveau luminosité</string>
     <string name="device_dimmer_level_help">Vous pouvez modifier le niveau de luminosité de l\'écran de l\'appareil.</string>

@@ -483,6 +483,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="device_dimmer_level_bright">Hell</string>
     <string name="device_dimmer_level_dim">Mittel</string>
     <string name="device_dimmer_level_dark">Dunkel</string>
+    <string name="device_dimmer_level_shut_off">Aus</string>
     <string name="device_dimmer_level_off">Aus</string>
     <string name="device_dimmer_level_toggle">Helligkeitseinstellung wechseln</string>
     <string name="device_dimmer_level_help">Sie können die Helligkeitsstufe des Gerätedisplays ändern.</string>

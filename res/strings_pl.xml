@@ -484,6 +484,7 @@ Enjoy!""</string>
     <string name="device_dimmer_level_bright">Jasny</string>
     <string name="device_dimmer_level_dim">Średni</string>
     <string name="device_dimmer_level_dark">Ciemny</string>
+    <string name="device_dimmer_level_shut_off">Wyłączony</string>
     <string name="device_dimmer_level_off">Wyłączony</string>
     <string name="device_dimmer_level_toggle">Zmień na kolejny</string>
     <string name="device_dimmer_level_help">Możesz zmienić poziom jasności wyświetlacza urządzenia.</string>

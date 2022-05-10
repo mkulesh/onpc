@@ -529,6 +529,7 @@ Enjoy!""</string>
     <string name="device_dimmer_level_bright">Bright</string>
     <string name="device_dimmer_level_dim">Dim</string>
     <string name="device_dimmer_level_dark">Dark</string>
+    <string name="device_dimmer_level_shut_off">Off</string>
     <string name="device_dimmer_level_off">Off</string>
     <string name="device_dimmer_level_toggle">Sets dimmer level wrap-around</string>
     <string name="device_dimmer_level_help">You can change the brightness level of the device display.</string>

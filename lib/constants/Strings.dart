@@ -2988,6 +2988,14 @@ Enjoy!"""];
         /*pl*/ "Ciemny"];
     static String get device_dimmer_level_dark => l_device_dimmer_level_dark[_language];
 
+    static const List<String> l_device_dimmer_level_shut_off = [
+        /*en*/ "Off",
+        /*ru*/ "Выключено",
+        /*de*/ "Aus",
+        /*fr*/ "Éteint",
+        /*pl*/ "Wyłączony"];
+    static String get device_dimmer_level_shut_off => l_device_dimmer_level_shut_off[_language];
+
     static const List<String> l_device_dimmer_level_off = [
         /*en*/ "Off",
         /*ru*/ "Выключено",

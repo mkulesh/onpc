@@ -481,6 +481,7 @@ Copyright © 2019-2022 by __Михаил Кулеш__
     <string name="device_dimmer_level_bright">Ярко</string>
     <string name="device_dimmer_level_dim">Неярко</string>
     <string name="device_dimmer_level_dark">Тускло</string>
+    <string name="device_dimmer_level_shut_off">Выключено</string>
     <string name="device_dimmer_level_off">Выключено</string>
     <string name="device_dimmer_level_toggle">Изменить яркость дисплея</string>
     <string name="device_dimmer_level_help">Вы можете изменить уровень яркости дисплея устройства.</string>

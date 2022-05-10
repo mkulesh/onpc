@@ -22,6 +22,7 @@ enum DimmerLevel
     BRIGHT,
     DIM,
     DARK,
+    SHUT_OFF,
     OFF,
     TOGGLE
 }
@@ -42,6 +43,8 @@ class DimmerLevelMsg extends EnumParameterMsg<DimmerLevel>
             descrList: Strings.l_device_dimmer_level_dim),
         EnumItem.code(DimmerLevel.DARK, "02",
             descrList: Strings.l_device_dimmer_level_dark),
+        EnumItem.code(DimmerLevel.SHUT_OFF, "03",
+            descrList: Strings.l_device_dimmer_level_shut_off),
         EnumItem.code(DimmerLevel.OFF, "08",
             descrList: Strings.l_device_dimmer_level_off),
         EnumItem.code(DimmerLevel.TOGGLE, "DIM",
