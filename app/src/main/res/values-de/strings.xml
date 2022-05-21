@@ -115,6 +115,9 @@
     <string name="pref_usb_ri_interface">USB-RI-Schnittstelle verwenden</string>
     <string name="pref_usb_ri_interface_none">Keine</string>
     <string name="pref_column_separator">Position des Spaltentrenners (%)</string>
+    <string name="pref_keyboard_shortcuts">Globale Tastaturkürzel</string>
+    <string name="pref_keyboard_shortcut_update">Bearbeiten</string>
+    <string name="pref_keyboard_shortcut_delete">Löschen</string>
 
     <string name="pref_auto_power">Remote-Gerät beim Start der App einschalten</string>
     <string name="pref_friendly_names">Lesbare Kanal- und Gerätenamen</string>
@@ -453,6 +456,7 @@
     <string name="device_year">Jahr</string>
     <string name="google_cast_version">Google Cast</string>
     <string name="device_settings">Einstellungen</string>
+    <string name="device_parameter_help">Parameterbeschreibung anzeigen</string>
 
     <!-- Firmware -->
     <string name="device_firmware">Firmware</string>
@@ -462,6 +466,7 @@
     <string name="device_firmware_update_started">Update gestartet, bitte warten</string>
     <string name="device_firmware_update_complete">Update abgeschlossen</string>
     <string name="device_firmware_net">Update über Netzwerk starten</string>
+    <string name="device_firmware_confirm">Möchten Sie wirklich die aktuelle Firmware herunterladen und installieren?</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Anzeigehelligkeit</string>
@@ -469,8 +474,10 @@
     <string name="device_dimmer_level_bright">Hell</string>
     <string name="device_dimmer_level_dim">Mittel</string>
     <string name="device_dimmer_level_dark">Dunkel</string>
+    <string name="device_dimmer_level_shut_off">Aus</string>
     <string name="device_dimmer_level_off">Aus</string>
     <string name="device_dimmer_level_toggle">Helligkeitseinstellung wechseln</string>
+    <string name="device_dimmer_level_help">Sie können die Helligkeitsstufe des Gerätedisplays ändern.</string>
 
     <!-- Digital Filter -->
     <string name="device_digital_filter">Digitalfilter</string>
@@ -479,6 +486,7 @@
     <string name="device_digital_filter_sharp">Klar</string>
     <string name="device_digital_filter_short">Kurz</string>
     <string name="device_digital_filter_toggle">Digitalfilter wechseln</string>
+    <string name="device_digital_filter_help">Sie können den Typ des digitalen Filters im Audio-DAC umschalten. Sie können \"Langsam\" (verleiht dem Klang ein weiches und flüssiges Gefühl), \"Klar\" (verleiht dem Klang mehr Struktur und ein festeres Gefühl) oder \"Kurz\" (automatisch) wählen.</string>
 
     <!-- Any two-way switch commands -->
     <string name="device_two_way_switch_none">N/A</string>
@@ -488,31 +496,34 @@
 
     <!-- Two-way switches -->
     <string name="device_music_optimizer">Musikoptimierung</string>
+    <string name="device_music_optimizer_help">Verbessern Sie die Qualität des komprimierten Audios. Der Wiedergabeton von verlustbehafteten komprimierten Dateien wie MP3 wird verbessert. Die Einstellung ist bei 2-Kanal-Signalen mit einer Abtastfrequenz von 48 kHz oder weniger wirksam. Die Einstellung ist bei den Bitstream-Signalen nicht wirksam.</string>
+
     <string name="device_auto_power">Auto an/aus</string>
+    <string name="device_auto_power_help">Ermöglicht dem Gerät, automatisch in den Standby-Modus zu wechseln, wenn eine bestimmte Zeit der Inaktivität ohne Audioeingang verstrichen ist. Der Zeitwert hängt vom Gerätemodell ab. </string>
+
     <string name="device_hdmi_cec">HDMI CEC</string>
-    <string name="device_phase_matching_bass">PM Bass</string>
+    <string name="device_hdmi_cec_help">Durch Anschließen eines Geräts, das CEC (Consumer Electronics Control) des HDMI-Standards entspricht, über ein HDMI-Kabel ist eine Vielzahl von verknüpften Vorgängen zwischen Geräten möglich. Diese Funktion ermöglicht verschiedene Verknüpfungsoperationen mit Playern, wie z. B. das Umschalten von Eingangsselektoren, die mit einem Player gekoppelt sind, das Einstellen der Lautstärke dieses Geräts mit der Fernbedienung eines Fernsehgeräts und das automatische Umschalten dieses Geräts in den Standby-Modus, wenn das Fernsehgerät ausgeschaltet wird.</string>
+
+    <string name="device_phase_matching_bass">Phase Matching Bass</string>
+    <string name="device_phase_matching_bass_help">Die Phase-Matching-Bass-Boost-Funktion eliminiert Phasenverschiebungen zwischen niedrigen und mittleren Frequenzbändern über 300 Hz. Die Basswiedergabe wird verbessert, ohne die Stimmklarheit zu beeinträchtigen, und das ist besonders nützlich, wenn Sie Musik bei niedriger Lautstärke spielen, wo Bässe und hochfrequente Töne schwerer zu hören sind.</string>
+
     <string name="device_sleep_time">Ruhemodus-Zeit</string>
     <string name="device_sleep_time_minutes">min</string>
+    <string name="device_sleep_time_help">Ermöglicht dem Gerät, automatisch in den Standby-Modus zu wechseln, wenn die in Minuten angegebene Zeit verstrichen ist.</string>
+
     <string name="device_google_cast_analytics">Google Cast analytics</string>
+    <string name="device_google_cast_analytics_help">Steuert die Erfassung von Marketing- und Analysedaten bei der Verwendung von Google Cast. Um Ihre Privatsphäre zu schützen, lassen Sie diese Einstellung immer deaktiviert.</string>
 
-    <!-- Speaker A Command -->
+    <!-- Speaker A/B selection -->
     <string name="speaker_a_command_toggle">Lautsprecher A umschalten</string>
-
-    <!-- Speaker B Command -->
     <string name="speaker_b_command_toggle">Lautsprecher B umschalten</string>
-
-    <!-- Speaker A/B three-way switch -->
     <string name="speaker_ab_command">Lautsprecher A/B</string>
     <string name="speaker_ab_command_toggle">Zwischen Lautsprechern wechseln</string>
     <string name="speaker_ab_command_ab_off">Beide aus</string>
     <string name="speaker_ab_command_ab_on">Beide an</string>
     <string name="speaker_ab_command_a_only">nur A</string>
     <string name="speaker_ab_command_b_only">nur B</string>
-
-    <!-- Privacy Policy Status -->
-    <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>
-    <string name="privacy_policy_google">Google Cast Lizenz zustimmen</string>
-    <string name="privacy_policy_sue">SUE - Datenschutzerklärung zustimmen</string>
+    <string name="speaker_ab_command_help">Lautsprecher A/B-Auswahl. Funktioniert nur für Hauptzone und Zone 2. </string>
 
     <!-- Late Night Command -->
     <string name="device_late_night">Late-Night-Modus</string>
@@ -522,6 +533,12 @@
     <string name="device_late_night_high">Hoch</string>
     <string name="device_late_night_auto">Auto</string>
     <string name="device_late_night_up">Sets late night wechseln</string>
+    <string name="device_late_night_help">Machen Sie kleine Geräusche leicht hörbar. Dies ist nützlich, wenn Sie die Lautstärke reduzieren müssen, während Sie sich spät abends einen Film ansehen.</string>
+
+    <!-- Privacy Policy Status -->
+    <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>
+    <string name="privacy_policy_google">Google Cast Lizenz zustimmen</string>
+    <string name="privacy_policy_sue">SUE - Datenschutzerklärung zustimmen</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Klangprofile durchwechseln</string>

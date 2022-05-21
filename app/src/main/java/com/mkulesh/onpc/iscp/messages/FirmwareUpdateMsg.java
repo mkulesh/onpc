@@ -31,9 +31,11 @@ public class FirmwareUpdateMsg extends ISCPMessage
     public enum Status implements StringParameterIf
     {
         NONE("N/A", R.string.device_firmware_none),
-        ACTUAL("00", R.string.device_firmware_actual),
-        NEW_VERSION("01", R.string.device_firmware_new_version),
+        ACTUAL("FF", R.string.device_firmware_actual),
+        NEW_VERSION("00", R.string.device_firmware_new_version),
+        NEW_VERSION_NORMAL("01", R.string.device_firmware_new_version),
         NEW_VERSION_FORCE("02", R.string.device_firmware_new_version),
+        UPDATE_STARTED("Dxx-xx", R.string.device_firmware_update_started),
         UPDATE_COMPLETE("CMP", R.string.device_firmware_update_complete),
         NET("NET", R.string.device_firmware_net);
 

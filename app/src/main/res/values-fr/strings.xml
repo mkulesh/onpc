@@ -115,6 +115,9 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="pref_usb_ri_interface">Utiliser l\'interface USB-RI</string>
     <string name="pref_usb_ri_interface_none">Aucun</string>
     <string name="pref_column_separator">Position du séparateur de colonnes (%)</string>
+    <string name="pref_keyboard_shortcuts">Raccourcis clavier globaux</string>
+    <string name="pref_keyboard_shortcut_update">Modifier</string>
+    <string name="pref_keyboard_shortcut_delete">Supprimer</string>
 
     <string name="pref_auto_power">Allumer le dispositif au démarrage de l\'application</string>
     <string name="pref_friendly_names">Noms personnalisés des sources et dispositifs</string>
@@ -453,6 +456,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_year">Année</string>
     <string name="google_cast_version">Google Cast</string>
     <string name="device_settings">Paramètres</string>
+    <string name="device_parameter_help">Afficher la description du paramètre</string>
 
     <!-- Firmware -->
     <string name="device_firmware">Firmware</string>
@@ -462,6 +466,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_firmware_update_started">Mise à jour en cours, patientez…</string>
     <string name="device_firmware_update_complete">Mise à jour terminée, merci d\'attendre le redémarrage et connecter de nouveau</string>
     <string name="device_firmware_net">Lancer la mise à jour par le réseau</string>
+    <string name="device_firmware_confirm">Voulez-vous vraiment télécharger et installer le firmware actuel?</string>
 
     <!-- Dimmer Level -->
     <string name="device_dimmer_level">Niveau éclairage</string>
@@ -469,8 +474,10 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_dimmer_level_bright">Lumineux</string>
     <string name="device_dimmer_level_dim">Doux</string>
     <string name="device_dimmer_level_dark">Sombre</string>
+    <string name="device_dimmer_level_shut_off">Éteint</string>
     <string name="device_dimmer_level_off">Éteint</string>
     <string name="device_dimmer_level_toggle">Changer niveau luminosité</string>
+    <string name="device_dimmer_level_help">Vous pouvez modifier le niveau de luminosité de l\'écran de l\'appareil.</string>
 
     <!-- Digital Filter -->
     <string name="device_digital_filter">Filtre Digital</string>
@@ -479,6 +486,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_digital_filter_sharp">Précis</string>
     <string name="device_digital_filter_short">Court</string>
     <string name="device_digital_filter_toggle">Changer filtre digital</string>
+    <string name="device_digital_filter_help">Vous pouvez changer le type de filtre numérique dans le DAC audio. Vous pouvez choisir \"Lent\" (donne au son une sensation douce et fluide), \"Précis\" (donne au son plus de structure et une sensation plus ferme) ou \"Court\" (auto).</string>
 
     <!-- Any two-way switch commands -->
     <string name="device_two_way_switch_none">N/A</string>
@@ -488,31 +496,34 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
     <!-- Two-way switches -->
     <string name="device_music_optimizer">Optimiseur audio</string>
+    <string name="device_music_optimizer_help">Améliorer la qualité de l\'audio compressé. Le son de lecture des fichiers compressés avec perte tels que MP3 sera amélioré. Le réglage est efficace avec des signaux à 2 canaux avec une fréquence d\'échantillonnage de 48 kHz ou moins. Le réglage n\'est pas efficace dans les signaux de flux binaire.</string>
+
     <string name="device_auto_power">Allumage auto</string>
+    <string name="device_auto_power_help">Permet à l\'appareil de se mettre automatiquement en veille lorsqu\'un certain temps d\'inactivité sans aucune entrée audio s\'est écoulé. La valeur de temps dépend du modèle d\'appareil.</string>
+
     <string name="device_hdmi_cec">HDMI CEC</string>
+    <string name="device_hdmi_cec_help">En connectant un appareil conforme à CEC (Consumer Electronics Control) de la norme HDMI à l\'aide d\'un câble HDMI, une variété d\'opérations liées entre les appareils est possible. Cette fonction permet diverses opérations de liaison avec des lecteurs, telles que la commutation de sélecteurs d\'entrée verrouillés avec un lecteur, le réglage du volume de cet appareil à l\'aide de la télécommande d\'un téléviseur et la mise automatiquement en veille de cet appareil lorsque le téléviseur est éteint.</string>
+
     <string name="device_phase_matching_bass">Basses avec adaptation de phase</string>
+    <string name="device_phase_matching_bass_help">La fonction Phase Matching Bass Boost élimine le déphasage entre les bandes de fréquences basses et moyennes supérieures à 300 Hz. La réponse des basses est améliorée sans compromettre la clarté vocale, et c\'est quelque chose de particulièrement utile lors de la lecture de musique à faible volume où les sons graves et haute fréquence sont plus difficiles à entendre.</string>
+
     <string name="device_sleep_time">Arrêt automatique</string>
     <string name="device_sleep_time_minutes">min</string>
+    <string name="device_sleep_time_help">Permet à l\'appareil de se mettre en veille automatiquement lorsque le temps spécifié en minutes s\'est écoulé. </string>
+
     <string name="device_google_cast_analytics">Google Cast analytics</string>
+    <string name="device_google_cast_analytics_help">Contrôle la collecte de données marketing et d\'analyse lors de l\'utilisation de Google Cast. Pour protéger votre vie privée, gardez ce paramètre toujours désactivé.</string>
 
-    <!-- Speaker A Command -->
+    <!-- Speaker A/B selection -->
     <string name="speaker_a_command_toggle">Sélecteur Sortie A</string>
-
-    <!-- Speaker B Command -->
     <string name="speaker_b_command_toggle">Sélecteur Sortie B</string>
-
-    <!-- Speaker A/B three-way switch -->
     <string name="speaker_ab_command">Sortie A/B</string>
     <string name="speaker_ab_command_toggle">Changement sortie</string>
     <string name="speaker_ab_command_ab_off">Toutes éteintes</string>
     <string name="speaker_ab_command_ab_on">Toutes allumées</string>
     <string name="speaker_ab_command_a_only">A seulement</string>
     <string name="speaker_ab_command_b_only">B seulement</string>
-
-    <!-- Privacy Policy Status -->
-    <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
-    <string name="privacy_policy_google">Agree Google Cast License</string>
-    <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+    <string name="speaker_ab_command_help">Sélection du haut-parleur A/B. Fonctionne uniquement pour la zone principale et la zone 2.</string>
 
     <!-- Late Night Command -->
     <string name="device_late_night">Mode nocturne</string>
@@ -522,6 +533,12 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_late_night_high">Haute</string>
     <string name="device_late_night_auto">Auto</string>
     <string name="device_late_night_up">Changer le mode de nuit</string>
+    <string name="device_late_night_help">Faites de petits sons facilement audibles. Il est utile lorsque vous devez réduire le volume tout en regardant un film tard dans la nuit.</string>
+
+    <!-- Privacy Policy Status -->
+    <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
+    <string name="privacy_policy_google">Agree Google Cast License</string>
+    <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Changer mode d\'écoute</string>

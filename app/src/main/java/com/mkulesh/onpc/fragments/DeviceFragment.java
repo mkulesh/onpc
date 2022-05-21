@@ -14,6 +14,7 @@
 
 package com.mkulesh.onpc.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
 
@@ -48,6 +50,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 public class DeviceFragment extends BaseFragment
@@ -120,7 +123,7 @@ public class DeviceFragment extends BaseFragment
             }
         }
 
-        prepareImageButton(R.id.btn_firmware_update, new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
+        prepareImageButton(R.id.btn_firmware_update, null);
         prepareImageButton(R.id.device_dimmer_level_toggle, new DimmerLevelMsg(DimmerLevelMsg.Level.TOGGLE));
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
         prepareImageButton(R.id.music_optimizer_toggle, new MusicOptimizerMsg(MusicOptimizerMsg.Status.TOGGLE));
@@ -222,22 +225,27 @@ public class DeviceFragment extends BaseFragment
             {
                 StringBuilder version = new StringBuilder();
                 version.append(state.deviceProperties.get("firmwareversion"));
-                if (state.firmwareStatus != FirmwareUpdateMsg.Status.NONE)
+                final boolean isValidVersions =
+                        state.firmwareStatus == FirmwareUpdateMsg.Status.ACTUAL ||
+                                state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION ||
+                                state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_NORMAL ||
+                                state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_FORCE;
+                final boolean isUpdating =
+                        state.firmwareStatus == FirmwareUpdateMsg.Status.UPDATE_STARTED ||
+                                state.firmwareStatus == FirmwareUpdateMsg.Status.UPDATE_COMPLETE;
+                if (isValidVersions || isUpdating)
                 {
                     version.append(", ").append(getStringValue(state.firmwareStatus.getDescriptionId()));
                 }
-                ((TextView) rootView.findViewById(R.id.device_firmware)).setText(version.toString());
-            }
-            // Update button
-            {
-                final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
-                b.setVisibility((state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION ||
-                        state.firmwareStatus == FirmwareUpdateMsg.Status.NEW_VERSION_FORCE) ?
-                        View.VISIBLE : View.GONE);
-                if (b.getVisibility() == View.VISIBLE)
+                if (isValidVersions)
                 {
-                    setButtonEnabled(b, true);
+                    // Update button
+                    final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
+                    b.setVisibility(View.VISIBLE);
+                    setButtonEnabled(b, state.isOn());
+                    prepareButtonListeners(b, null, this::onFirmwareUpdateButton);
                 }
+                ((TextView) rootView.findViewById(R.id.device_firmware)).setText(version.toString());
             }
             // Google cast version
             ((TextView) rootView.findViewById(R.id.google_cast_version)).setText(state.googleCastVersion);
@@ -250,6 +258,32 @@ public class DeviceFragment extends BaseFragment
         for (int layoutId : deviceInfoLayout)
         {
             rootView.findViewById(layoutId).setVisibility(isFnValid || isRiValid ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void onFirmwareUpdateButton()
+    {
+        if (getContext() != null && activity.isConnected() && activity.getStateManager().getState().isOn())
+        {
+            final Drawable icon = Utils.getDrawable(getContext(), R.drawable.cmd_firmware_update);
+            Utils.setDrawableColorAttr(getContext(), icon, android.R.attr.textColorSecondary);
+            final AlertDialog dialog = new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.device_firmware)
+                    .setIcon(icon)
+                    .setCancelable(true)
+                    .setMessage(R.string.device_firmware_confirm)
+                    .setNeutralButton(R.string.action_cancel, (d, which) -> d.dismiss())
+                    .setPositiveButton(R.string.action_ok, (d, which) ->
+                    {
+                        if (activity.isConnected())
+                        {
+                            activity.getStateManager().sendMessageToGroup(
+                                    new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
+                        }
+                        d.dismiss();
+                    }).create();
+            dialog.show();
+            Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
         }
     }
 
