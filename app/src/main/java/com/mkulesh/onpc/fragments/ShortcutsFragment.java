@@ -14,6 +14,7 @@
 
 package com.mkulesh.onpc.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -139,6 +140,7 @@ public class ShortcutsFragment extends BaseFragment
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item)
     {
@@ -203,7 +205,7 @@ public class ShortcutsFragment extends BaseFragment
         {
             return;
         }
-        final String data = shortcut.toScript(activity, activity.getStateManager().getState().getModel());
+        final String data = shortcut.toScript(activity, activity.getStateManager().getState());
         try
         {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) activity

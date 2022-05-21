@@ -757,7 +757,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     public void applyShortcut(@NonNull final Context context, @NonNull final CfgFavoriteShortcuts.Shortcut shortcut)
     {
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        final String data = shortcut.toScript(context, state.getModel());
+        final String data = shortcut.toScript(context, state);
         final MessageScript messageScript = new MessageScript(context, data);
         activateScript(messageScript);
     }

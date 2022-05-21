@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
@@ -155,7 +156,7 @@ public class CfgFavoriteShortcuts
         }
 
         @NonNull
-        public String toScript(@NonNull final Context context, @NonNull final String model)
+        public String toScript(@NonNull final Context context, @NonNull final State state)
         {
             final StringBuilder data = new StringBuilder();
             data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
@@ -173,13 +174,19 @@ public class CfgFavoriteShortcuts
                 return data.toString();
             }
 
-            data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
+            // Issue #248: Shortcuts not working when an empty play queue is selected in MEDIA tab:
+            // when an empty play queue is selected in MEDIA tab, NLT message is not answered by receiver
+            final boolean emptyQueue = state.serviceType == ServiceType.PLAYQUEUE && state.numberOfItems == 0;
+            if (!emptyQueue)
+            {
+                data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");
+            }
 
             // Go to the top level. Response depends on the input type and model
             String firstPath = escape(pathItems.isEmpty() ? item : pathItems.get(0));
             if (input == InputSelectorMsg.InputType.NET && service != ServiceType.UNKNOWN)
             {
-                if ("TX-8130".equals(model))
+                if ("TX-8130".equals(state.getModel()))
                 {
                     // Issue #233: on TX-8130, NTC(TOP) not always changes to the NET top. Sometime is still be
                     // within a service line DLNA, i.e NTC(TOP) sometime moves to the top of the current service
