@@ -34,6 +34,7 @@ public class DimmerLevelMsg extends ISCPMessage
         BRIGHT("00", R.string.device_dimmer_level_bright),
         DIM("01", R.string.device_dimmer_level_dim),
         DARK("02", R.string.device_dimmer_level_dark),
+        SHUT_OFF("03", R.string.device_dimmer_level_shut_off),
         OFF("08", R.string.device_dimmer_level_off),
         TOGGLE("DIM", R.string.device_dimmer_level_toggle);
 
