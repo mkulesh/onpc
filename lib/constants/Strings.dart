@@ -804,21 +804,21 @@ Enjoy!"""];
         /*pl*/ "Globalne skróty klawiaturowe"];
     static String get pref_keyboard_shortcuts => l_pref_keyboard_shortcuts[_language];
 
-    static const List<String> l_pref_keyboard_shortcut_update = [
+    static const List<String> l_pref_item_update = [
         /*en*/ "Edit",
         /*ru*/ "Изменить",
         /*de*/ "Bearbeiten",
         /*fr*/ "Modifier",
         /*pl*/ "Edytuj"];
-    static String get pref_keyboard_shortcut_update => l_pref_keyboard_shortcut_update[_language];
+    static String get pref_item_update => l_pref_item_update[_language];
 
-    static const List<String> l_pref_keyboard_shortcut_delete = [
+    static const List<String> l_pref_item_delete = [
         /*en*/ "Delete",
         /*ru*/ "Удалить",
         /*de*/ "Löschen",
         /*fr*/ "Supprimer",
         /*pl*/ "Usuń"];
-    static String get pref_keyboard_shortcut_delete => l_pref_keyboard_shortcut_delete[_language];
+    static String get pref_item_delete => l_pref_item_delete[_language];
 
     static const List<String> l_pref_auto_power = [
         /*en*/ "Switch-on remote device on app startup",

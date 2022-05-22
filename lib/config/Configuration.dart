@@ -17,6 +17,8 @@ import "package:shared_preferences/shared_preferences.dart";
 import "../Platform.dart";
 import "../constants/Version.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
+import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
@@ -80,6 +82,7 @@ class Configuration extends CfgModule
 
     static const String DEVICE_SELECTORS = "device_selectors";
     static const String SELECTED_DEVICE_SELECTORS = "selected_device_selectors";
+    static const String MANUAL_DEVICE_SELECTORS = "manual_device_selectors";
 
     // Advanced options
     static const Pair<String, bool> KEEP_SCREEN_ON = Pair<String, bool>("keep_screen_on", false); // For Android only
@@ -216,5 +219,28 @@ class Configuration extends CfgModule
         audioControl.setReceiverInformation(stateManager);
         favoriteConnections.setReceiverInformation(stateManager);
         favoriteShortcuts.setReceiverInformation(stateManager);
+    }
+
+    void saveManualDeviceSelector(final EnumItem<InputSelector> item, final String name)
+    {
+        final Pair<String, String> par = Pair<String, String>(MANUAL_DEVICE_SELECTORS + "_" + item.code, "");
+        saveStringParameter(par, name);
+    }
+
+    String deviceSelectorName(final EnumItem<InputSelector> item, {bool useFriendlyName = false, String friendlyName = ""})
+    {
+        final Pair<String, String> par = Pair<String, String>(MANUAL_DEVICE_SELECTORS + "_" + item.code, "");
+        final String manName = getString(par);
+        if (manName.isNotEmpty)
+        {
+            return manName;
+        }
+        final String defName = item.description.toUpperCase();
+        if (useFriendlyName)
+        {
+            return friendlyName.isNotEmpty ? friendlyName :
+                getStringDef(Configuration.DEVICE_SELECTORS + "_" + item.getCode, defName);
+        }
+        return defName;
     }
 }

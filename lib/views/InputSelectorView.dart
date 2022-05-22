@@ -56,8 +56,10 @@ class InputSelectorView extends UpdatableView
             if (selectorEnum.key != InputSelector.NONE)
             {
                 final InputSelectorMsg cmd = InputSelectorMsg.output(state.getActiveZone, selectorEnum.key);
-                buttons.add(CustomTextButton(
-                    configuration.friendlyNames ? deviceSelector.getName : selectorEnum.description.toUpperCase(),
+                final String name = configuration.deviceSelectorName(selectorEnum,
+                    useFriendlyName: configuration.friendlyNames,
+                    friendlyName: deviceSelector.getName);
+                buttons.add(CustomTextButton(name,
                     isEnabled: state.isConnected,
                     isSelected: state.isOn && state.mediaListState.inputType.code == selectorEnum.code,
                     onPressed: ()

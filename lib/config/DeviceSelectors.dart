@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 
 import "../constants/Strings.dart";
+import "../constants/Themes.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../utils/Logging.dart";
@@ -46,6 +47,7 @@ class _DeviceSelectorsState extends State<DeviceSelectors>
 
     void _createItems()
     {
+        _items.clear();
         final List<String> defItems = _configuration.getTokens(Configuration.DEVICE_SELECTORS);
         if (defItems == null || defItems.isEmpty)
         {
@@ -61,11 +63,8 @@ class _DeviceSelectorsState extends State<DeviceSelectors>
                 Logging.info(this, "Input selector not known: " + sp.code);
                 continue;
             }
-
-            final String defName = item.description;
-            final String name = fName ? _configuration.getStringDef(
-                Configuration.DEVICE_SELECTORS + "_" + item.getCode, defName) : defName;
-            _items.add(CheckableItem(item.getCode, name, sp.checked));
+            final String name = _configuration.deviceSelectorName(item, useFriendlyName: fName);
+            _items.add(CheckableItem(item.getCode, name, sp.checked, onRename: (String name) => _onRename(item, name)));
         }
     }
 
@@ -73,14 +72,21 @@ class _DeviceSelectorsState extends State<DeviceSelectors>
     Widget build(BuildContext context)
     {
         Logging.logRebuild(this);
+
+        final ThemeData td = BaseAppTheme.getThemeData(
+            _configuration.appSettings.theme, _configuration.appSettings.language, _configuration.appSettings.textSize);
+
+        final List<Widget> rows = [];
+        _items.forEach((item) => rows.add(_buildListItem(context, td, item)) );
+
         return CheckableItem.buildList(context,
-            _items.map<Widget>(_buildListItem).toList(),
+            rows,
             Strings.pref_device_selectors,
             _onReorder,
             _configuration);
     }
 
-    Widget _buildListItem(CheckableItem item)
+    Widget _buildListItem(final BuildContext context, final ThemeData theme, final CheckableItem item)
     {
         return item.buildListItem((bool newValue)
         {
@@ -89,6 +95,17 @@ class _DeviceSelectorsState extends State<DeviceSelectors>
                 item.checked = newValue;
                 CheckableItem.writeToPreference(_configuration, _parameter, _items);
             });
+        },
+        context: context,
+        theme: theme);
+    }
+
+    void _onRename(EnumItem<InputSelector> item, String name)
+    {
+        setState(()
+        {
+            _configuration.saveManualDeviceSelector(item, name);
+            _createItems();
         });
     }
 

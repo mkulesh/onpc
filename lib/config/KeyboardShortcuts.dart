@@ -100,7 +100,7 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts>
             shortcut,
             CustomImageButton.small(
                 Drawables.keyboard_shortcut_update,
-                Strings.pref_keyboard_shortcut_update,
+                Strings.pref_item_update,
                 onPressed: ()
                 {
                     setState(()
@@ -111,7 +111,7 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts>
             ),
             CustomImageButton.small(
                 Drawables.keyboard_shortcut_delete,
-                Strings.pref_keyboard_shortcut_delete,
+                Strings.pref_item_delete,
                 onPressed: ()
                 {
                     setState(()

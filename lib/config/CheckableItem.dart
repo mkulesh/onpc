@@ -16,23 +16,34 @@ import 'package:flutter/material.dart';
 
 import "../Platform.dart";
 import "../constants/Dimens.dart";
+import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
+import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomActivityTitle.dart";
+import "../widgets/CustomDialogEditField.dart";
+import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomTextLabel.dart";
+import "../widgets/PositionedTapDetector.dart";
 import "../widgets/ReorderableItem.dart";
 import "CfgModule.dart";
 import "Configuration.dart";
+
+enum _CheckableItemContextMenu
+{
+    EDIT
+}
 
 class CheckableItem
 {
     final String code;
     final String text;
     bool checked;
+    final void Function(String name) onRename;
 
-    CheckableItem(this.code, this.text, this.checked);
+    CheckableItem(this.code, this.text, this.checked, { this.onRename });
 
-    CheckableItem.fromCode(this.code, this.checked, { this.text = "" });
+    CheckableItem.fromCode(this.code, this.checked, { this.text = "", this.onRename });
 
     static void reorder(final CfgModule configuration, final String parameter, final List<CheckableItem> items, int oldIndex, int newIndex)
     {
@@ -162,7 +173,8 @@ class CheckableItem
     static Widget buildList(BuildContext context, List<Widget> rows, String title, ReorderCallback onReorder, final Configuration configuration)
     => buildScaffold(context, title, buildPanel(rows, onReorder), configuration);
 
-    Widget buildListItem(ValueChanged<bool> _onChanged)
+    Widget buildListItem(ValueChanged<bool> _onChanged,
+        { final BuildContext context, final ThemeData theme })
     {
         final bool val = this.checked ?? false;
 
@@ -172,7 +184,7 @@ class CheckableItem
             onChanged: _onChanged
         );
 
-        final Widget listTile = ListTile(
+        Widget listTile = ListTile(
             contentPadding: ActivityDimens.noPadding,
             leading: checkBox,
             title: CustomTextLabel.normal(this.text),
@@ -180,6 +192,72 @@ class CheckableItem
             => _onChanged(!val)
         );
 
+        if (onRename != null && context != null && theme != null)
+        {
+            listTile = ContextMenuListener(
+                child: listTile,
+                onContextMenu: (position)
+                => _onCreateContextMenu(context, theme, position, this)
+            );
+        }
         return ReorderableItem(key: Key(this.code), child: listTile);
+    }
+
+    static void _onCreateContextMenu(final BuildContext context, final ThemeData theme,
+        final TapPosition position, final CheckableItem item)
+    {
+        final List<PopupMenuItem<_CheckableItemContextMenu>> contextMenu = [];
+        contextMenu.add(PopupMenuItem<_CheckableItemContextMenu>(
+            child: CustomTextLabel.small(item.text), enabled: false));
+        contextMenu.add(PopupMenuItem<_CheckableItemContextMenu>(
+            child: Text(Strings.pref_item_update), value: _CheckableItemContextMenu.EDIT));
+
+        showMenu(
+            context: context,
+            position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
+            items: contextMenu).then((m)
+        => _onContextItemSelected(context, theme, m, item));
+    }
+
+    static void _onContextItemSelected(final BuildContext context, final ThemeData theme,
+        final _CheckableItemContextMenu m, final CheckableItem item)
+    {
+        if (m != _CheckableItemContextMenu.EDIT)
+        {
+            return;
+        }
+
+        final _alias = TextEditingController();
+        _alias.text = item.text;
+
+        final Widget dialog = AlertDialog(
+            title: CustomDialogTitle(Strings.pref_item_update, Drawables.drawer_edit_item),
+            contentPadding: DialogDimens.contentPadding,
+            content: CustomDialogEditField(_alias, isFocused: true),
+            actions: <Widget>[
+                TextButton(
+                    child: Text(Strings.action_cancel.toUpperCase(), style: theme.textTheme.button),
+                    onPressed: ()
+                    {
+                        Navigator.of(context).pop();
+                    }),
+                TextButton(
+                    child: Text(Strings.action_ok.toUpperCase(), style: theme.textTheme.button),
+                    onPressed: ()
+                    {
+                        if (item.onRename  != null)
+                        {
+                            item.onRename(_alias.text);
+                        }
+                        Navigator.of(context).pop();
+                    }),
+            ]
+        );
+
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c) => Theme(data: theme, child: dialog)
+        );
     }
 }

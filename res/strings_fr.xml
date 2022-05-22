@@ -124,8 +124,8 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="pref_usb_ri_interface_none">Aucun</string>
     <string name="pref_column_separator">Position du séparateur de colonnes (%)</string>
     <string name="pref_keyboard_shortcuts">Raccourcis clavier globaux</string>
-    <string name="pref_keyboard_shortcut_update">Modifier</string>
-    <string name="pref_keyboard_shortcut_delete">Supprimer</string>
+    <string name="pref_item_update">Modifier</string>
+    <string name="pref_item_delete">Supprimer</string>
 
     <string name="pref_auto_power">Allumer le dispositif au démarrage de l\'application</string>
     <string name="pref_friendly_names">Noms personnalisés des sources et dispositifs</string>

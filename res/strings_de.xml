@@ -125,8 +125,8 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="pref_usb_ri_interface_none">Keine</string>
     <string name="pref_column_separator">Position des Spaltentrenners (%)</string>
     <string name="pref_keyboard_shortcuts">Globale Tastaturkürzel</string>
-    <string name="pref_keyboard_shortcut_update">Bearbeiten</string>
-    <string name="pref_keyboard_shortcut_delete">Löschen</string>
+    <string name="pref_item_update">Bearbeiten</string>
+    <string name="pref_item_delete">Löschen</string>
 
     <string name="pref_auto_power">Remote-Gerät beim Start der App einschalten</string>
     <string name="pref_friendly_names">Lesbare Kanal- und Gerätenamen</string>
