@@ -171,7 +171,6 @@ class WindowManagerWrapper with WindowListener
     {
         windowManager.getBounds().then((Rect rect)
         {
-            Logging.info(this, "Window resize:" + rect.toString());
             _configuration.appSettings.windowFrame = rect;
         });
     }
@@ -181,7 +180,6 @@ class WindowManagerWrapper with WindowListener
     {
         windowManager.getBounds().then((Rect rect)
         {
-            Logging.info(this, "Window move:" + rect.toString());
             _configuration.appSettings.windowFrame = rect;
         });
     }

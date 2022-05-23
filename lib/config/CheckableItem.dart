@@ -142,7 +142,8 @@ class CheckableItem
                 scrollDirection: Axis.vertical,
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 children: rows,
-            )
+            ),
+            controller: scrollController,
         );
     }
 

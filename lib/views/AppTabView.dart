@@ -114,8 +114,14 @@ class AppTabView extends UpdatableView
             // - If there are no expandable column, both columns are scrollable
             if (!leftExpandable && !rightExpandable)
             {
-                leftColumn = SingleChildScrollView(scrollDirection: Axis.vertical, child: leftColumn);
-                rightColumn = SingleChildScrollView(scrollDirection: Axis.vertical, child: rightColumn);
+                leftColumn = SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    controller:  ScrollController(),
+                    child: leftColumn);
+                rightColumn = SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    controller:  ScrollController(),
+                    child: rightColumn);
             }
 
             // - Column width is configured using parameter in percentage

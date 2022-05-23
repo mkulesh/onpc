@@ -127,7 +127,7 @@ class DrawerView extends UpdatableView
                 context: context,
                 // Remove padding that corresponds to status bar height.
                 removeTop: true,
-                child: ListView(children: drawerItems))
+                child: ListView(children: drawerItems, controller: ScrollController()))
         );
     }
 
