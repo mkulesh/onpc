@@ -24,11 +24,11 @@ import "../constants/Strings.dart";
 import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../iscp/StateManager.dart";
 import "../utils/Logging.dart";
+import "../utils/Pair.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
-import "../widgets/PositionedTapDetector.dart";
 import "../widgets/ReorderableItem.dart";
 
 enum _ShortcutContextMenu
@@ -79,7 +79,7 @@ class ShortcutsView extends UpdatableView
 
     Widget _buildRow(final BuildContext context, final Shortcut s)
     {
-        final Widget w = ContextMenuListener(
+        final Widget w = ContextMenuListener<_ShortcutContextMenu>(
             child: MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
@@ -98,38 +98,20 @@ class ShortcutsView extends UpdatableView
                     onTap: ()
                     => _selectShortcut(s)),
                 ),
-            onContextMenu: (position)
-            => _onCreateContextMenu(context, position, s),
+            menuName: Strings.favorite_shortcut_edit,
+            menuItems: [
+                Pair(Strings.pref_item_update, _ShortcutContextMenu.EDIT),
+                Pair(Strings.pref_item_delete, _ShortcutContextMenu.DELETE),
+                Pair(Strings.favorite_copy_to_clipboard, _ShortcutContextMenu.COPY_TO_CLIPBOARD)
+            ],
+            onItemSelected: (BuildContext c, _ShortcutContextMenu m)
+            => _onContextItemSelected(c, m, s)
         );
         return ReorderableItem(key: Key(s.id.toString()), child: w);
     }
 
-    void _onCreateContextMenu(final BuildContext context, final TapPosition position, final Shortcut s)
-    {
-        final List<PopupMenuItem<_ShortcutContextMenu>> contextMenu = [];
-        contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(
-            child: CustomTextLabel.small(Strings.favorite_shortcut_edit), enabled: false));
-        contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(
-            child: Text(Strings.favorite_update), value: _ShortcutContextMenu.EDIT));
-        contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(
-            child: Text(Strings.favorite_delete), value: _ShortcutContextMenu.DELETE));
-        contextMenu.add(PopupMenuItem<_ShortcutContextMenu>(
-            child: Text(Strings.favorite_copy_to_clipboard), value: _ShortcutContextMenu.COPY_TO_CLIPBOARD));
-
-        showMenu(
-            context: context,
-            position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
-            items: contextMenu).then((m)
-        => _onContextItemSelected(context, m, s)
-        );
-    }
-
     void _onContextItemSelected(final BuildContext context, final _ShortcutContextMenu m, final Shortcut s)
     {
-        if (m == null)
-        {
-            return;
-        }
         Logging.info(this, "selected context menu: " + m.toString() + ", shortcut: " + s.toString());
         switch (m)
         {

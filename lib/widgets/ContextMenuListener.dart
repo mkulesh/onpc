@@ -13,19 +13,29 @@
  */
 // @dart=2.9
 import 'package:flutter/gestures.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import "../Platform.dart";
-import "../widgets/PositionedTapDetector.dart";
+import "../utils/Pair.dart";
+import "CustomTextLabel.dart";
+import "PositionedTapDetector.dart";
 
-typedef ContextMenuCallback = void Function(TapPosition position);
-
-class ContextMenuListener extends StatelessWidget
+class ContextMenuListener<T> extends StatelessWidget
 {
     final Widget child;
-    final ContextMenuCallback onContextMenu;
+    final void Function(TapPosition position) onContextMenu;
+    final String menuName;
+    final List<Pair<String, T>> menuItems;
+    final void Function(BuildContext context, T item) onItemSelected;
 
-    ContextMenuListener({Key key, this.child, this.onContextMenu}) : super(key: key);
+    ContextMenuListener(
+        {Key key,
+        this.child,
+        this.onContextMenu,
+        this.menuName,
+        this.menuItems,
+        this.onItemSelected,
+        }) : super(key: key);
 
     @override
     Widget build(BuildContext context)
@@ -40,7 +50,7 @@ class ContextMenuListener extends StatelessWidget
                     if (event.buttons == kSecondaryButton)
                     {
                         final TapPosition position = TapPosition(event.position, event.localPosition);
-                        onContextMenu(position);
+                        _onContextMenu(context, position);
                     }
                 }
             );
@@ -51,8 +61,40 @@ class ContextMenuListener extends StatelessWidget
                 key: key,
                 child: child,
                 onLongPress: (position)
-                => onContextMenu(position)
+                => _onContextMenu(context, position)
             );
+        }
+    }
+
+    void _onContextMenu(BuildContext context, TapPosition position)
+    {
+        if (onItemSelected != null)
+        {
+            final List<PopupMenuItem<T>> contextMenu = [];
+            if (menuName != null)
+            {
+                contextMenu.add(
+                    PopupMenuItem<T>(child: CustomTextLabel.small(menuName), enabled: false));
+            }
+            if (menuItems != null)
+            {
+                menuItems.forEach((item) =>
+                    contextMenu.add(PopupMenuItem<T>(child: Text(item.item1), value: item.item2)));
+            }
+            showMenu(
+                context: context,
+                position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
+                items: contextMenu).then((m)
+            {
+                if (m != null)
+                {
+                    onItemSelected(context, m);
+                }
+            });
+        }
+        else if (onContextMenu != null)
+        {
+            onContextMenu(position);
         }
     }
 }

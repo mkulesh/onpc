@@ -76,12 +76,6 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="connect_dialog_port">Port (optionnel)</string>
     <string name="connect_dialog_save">Enregistrer la connexion</string>
 
-    <!-- Favorites -->
-    <string name="favorite_alias">Nom</string>
-    <string name="favorite_update">Modifier</string>
-    <string name="favorite_delete">Supprimer</string>
-    <string name="favorite_copy_to_clipboard">Copier dans le presse-papier</string>
-
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Modifier la connexion</string>
     <string name="favorite_connection_identifier">Adresse MAC (optionnelle)</string>
@@ -92,6 +86,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="favorite_shortcut_added">Raccourci ajouté</string>
     <string name="favorite_shortcut_failed">Impossible de créer un raccourci: accédez à l\'élément multimédia à partir du niveau supérieur</string>
     <string name="favorite_shortcut_howto">Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel (%s) et sélectionnez \"%s\"</string>
+    <string name="favorite_copy_to_clipboard">Copier dans le presse-papier</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>
@@ -126,6 +121,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="pref_keyboard_shortcuts">Raccourcis clavier globaux</string>
     <string name="pref_item_update">Modifier</string>
     <string name="pref_item_delete">Supprimer</string>
+    <string name="pref_item_name">Nom</string>
 
     <string name="pref_auto_power">Allumer le dispositif au démarrage de l\'application</string>
     <string name="pref_friendly_names">Noms personnalisés des sources et dispositifs</string>

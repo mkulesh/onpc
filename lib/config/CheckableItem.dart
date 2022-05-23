@@ -19,12 +19,12 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
+import "../utils/Pair.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDialogEditField.dart";
 import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomTextLabel.dart";
-import "../widgets/PositionedTapDetector.dart";
 import "../widgets/ReorderableItem.dart";
 import "CfgModule.dart";
 import "Configuration.dart";
@@ -194,29 +194,15 @@ class CheckableItem
 
         if (onRename != null && context != null && theme != null)
         {
-            listTile = ContextMenuListener(
+            listTile = ContextMenuListener<_CheckableItemContextMenu>(
                 child: listTile,
-                onContextMenu: (position)
-                => _onCreateContextMenu(context, theme, position, this)
+                menuName: this.text,
+                menuItems: [Pair(Strings.pref_item_update, _CheckableItemContextMenu.EDIT)],
+                onItemSelected: (BuildContext c, _CheckableItemContextMenu m)
+                => _onContextItemSelected(c, theme, m, this)
             );
         }
         return ReorderableItem(key: Key(this.code), child: listTile);
-    }
-
-    static void _onCreateContextMenu(final BuildContext context, final ThemeData theme,
-        final TapPosition position, final CheckableItem item)
-    {
-        final List<PopupMenuItem<_CheckableItemContextMenu>> contextMenu = [];
-        contextMenu.add(PopupMenuItem<_CheckableItemContextMenu>(
-            child: CustomTextLabel.small(item.text), enabled: false));
-        contextMenu.add(PopupMenuItem<_CheckableItemContextMenu>(
-            child: Text(Strings.pref_item_update), value: _CheckableItemContextMenu.EDIT));
-
-        showMenu(
-            context: context,
-            position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
-            items: contextMenu).then((m)
-        => _onContextItemSelected(context, theme, m, item));
     }
 
     static void _onContextItemSelected(final BuildContext context, final ThemeData theme,
@@ -233,7 +219,9 @@ class CheckableItem
         final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.pref_item_update, Drawables.drawer_edit_item),
             contentPadding: DialogDimens.contentPadding,
-            content: CustomDialogEditField(_alias, isFocused: true),
+            content: CustomDialogEditField(_alias,
+                textLabel: Strings.pref_item_name,
+                isFocused: true),
             actions: <Widget>[
                 TextButton(
                     child: Text(Strings.action_cancel.toUpperCase(), style: theme.textTheme.button),

@@ -64,7 +64,7 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
         );
 
         controls.add(CustomDialogEditField(_alias,
-            textLabel: Strings.favorite_alias,
+            textLabel: Strings.pref_item_name,
             isFocused: true)
         );
 

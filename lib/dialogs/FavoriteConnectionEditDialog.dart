@@ -71,7 +71,7 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
 
         controls.add(CustomTextLabel.small(Strings.connect_dialog_address + " " + widget._msg.getHostAndPort));
 
-        controls.add(CustomCheckbox(Strings.favorite_update,
+        controls.add(CustomCheckbox(Strings.pref_item_update,
             icon: Radio(
                 value: _ConnectionAction.UPDATE,
                 groupValue: _connectionAction,
@@ -87,14 +87,14 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
         );
 
         controls.add(CustomDialogEditField(_alias,
-            textLabel: Strings.favorite_alias,
+            textLabel: Strings.pref_item_name,
             isFocused: true)
         );
 
         controls.add(CustomDialogEditField(_identifier,
             textLabel: Strings.favorite_connection_identifier));
 
-        controls.add(CustomCheckbox(Strings.favorite_delete,
+        controls.add(CustomCheckbox(Strings.pref_item_delete,
             icon: Radio(
                 value: _ConnectionAction.DELETE,
                 groupValue: _connectionAction,

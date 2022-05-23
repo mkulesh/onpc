@@ -516,38 +516,6 @@ Enjoy!"""];
         /*pl*/ "Zapisz połączenie"];
     static String get connect_dialog_save => l_connect_dialog_save[_language];
 
-    static const List<String> l_favorite_alias = [
-        /*en*/ "Name",
-        /*ru*/ "Имя",
-        /*de*/ "Name",
-        /*fr*/ "Nom",
-        /*pl*/ "Nazwa"];
-    static String get favorite_alias => l_favorite_alias[_language];
-
-    static const List<String> l_favorite_update = [
-        /*en*/ "Edit",
-        /*ru*/ "Изменить",
-        /*de*/ "Bearbeiten",
-        /*fr*/ "Modifier",
-        /*pl*/ "Edytuj"];
-    static String get favorite_update => l_favorite_update[_language];
-
-    static const List<String> l_favorite_delete = [
-        /*en*/ "Delete",
-        /*ru*/ "Удалить",
-        /*de*/ "Löschen",
-        /*fr*/ "Supprimer",
-        /*pl*/ "Usuń"];
-    static String get favorite_delete => l_favorite_delete[_language];
-
-    static const List<String> l_favorite_copy_to_clipboard = [
-        /*en*/ "Copy to clipboard",
-        /*ru*/ "Скопировать в буфер обмена",
-        /*de*/ "In die Zwischenablage kopieren",
-        /*fr*/ "Copier dans le presse-papier",
-        /*pl*/ "Skopiuj do schowka"];
-    static String get favorite_copy_to_clipboard => l_favorite_copy_to_clipboard[_language];
-
     static const List<String> l_favorite_connection_edit = [
         /*en*/ "Edit connection",
         /*ru*/ "Изменить соединение",
@@ -603,6 +571,14 @@ Enjoy!"""];
         /*fr*/ "Pour ajouter un raccourci: ouvrez l\'onglet \"%s\", accédez à un élément multimédia du niveau supérieur, ouvrez le menu contextuel (%s) et sélectionnez \"%s\"",
         /*pl*/ "Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe (%s) i wybierz \"%s\""];
     static String get favorite_shortcut_howto => l_favorite_shortcut_howto[_language];
+
+    static const List<String> l_favorite_copy_to_clipboard = [
+        /*en*/ "Copy to clipboard",
+        /*ru*/ "Скопировать в буфер обмена",
+        /*de*/ "In die Zwischenablage kopieren",
+        /*fr*/ "Copier dans le presse-papier",
+        /*pl*/ "Skopiuj do schowka"];
+    static String get favorite_copy_to_clipboard => l_favorite_copy_to_clipboard[_language];
 
     static const List<String> l_menu_power_standby = [
         /*en*/ "On/Standby",
@@ -819,6 +795,14 @@ Enjoy!"""];
         /*fr*/ "Supprimer",
         /*pl*/ "Usuń"];
     static String get pref_item_delete => l_pref_item_delete[_language];
+
+    static const List<String> l_pref_item_name = [
+        /*en*/ "Name",
+        /*ru*/ "Имя",
+        /*de*/ "Name",
+        /*fr*/ "Nom",
+        /*pl*/ "Nazwa"];
+    static String get pref_item_name => l_pref_item_name[_language];
 
     static const List<String> l_pref_auto_power = [
         /*en*/ "Switch-on remote device on app startup",

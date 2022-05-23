@@ -77,12 +77,6 @@ Copyright © 2019-2022 by __Михаил Кулеш__
     <string name="connect_dialog_port">Порт (необязательно)</string>
     <string name="connect_dialog_save">Сохранить соединение</string>
 
-    <!-- Favorites -->
-    <string name="favorite_alias">Имя</string>
-    <string name="favorite_update">Изменить</string>
-    <string name="favorite_delete">Удалить</string>
-    <string name="favorite_copy_to_clipboard">Скопировать в буфер обмена</string>
-
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Изменить соединение</string>
     <string name="favorite_connection_identifier">MAC адрес (необязательно)</string>
@@ -93,6 +87,7 @@ Copyright © 2019-2022 by __Михаил Кулеш__
     <string name="favorite_shortcut_added">Ярлык добавлен</string>
     <string name="favorite_shortcut_failed">Невозможно создать ярлык: перейдите к мультимедиа-элементу начиная с верхнего уровня</string>
     <string name="favorite_shortcut_howto">Чтобы добавить ярлык: откройте вкладку \"%s\", перейдите к мультимедиа-элементу начиная с верхнего уровня, откройте контекстное меню (%s) и выберите \"%s\"</string>
+    <string name="favorite_copy_to_clipboard">Скопировать в буфер обмена</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">Вкл/выкл</string>
@@ -127,6 +122,7 @@ Copyright © 2019-2022 by __Михаил Кулеш__
     <string name="pref_keyboard_shortcuts">Глобальные сочетания клавиш</string>
     <string name="pref_item_update">Изменить</string>
     <string name="pref_item_delete">Удалить</string>
+    <string name="pref_item_name">Имя</string>
 
     <string name="pref_auto_power">Включить удаленное устройство при запуске приложения</string>
     <string name="pref_friendly_names">Удобные названия каналов и устройства</string>
