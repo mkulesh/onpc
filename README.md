@@ -110,6 +110,10 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Integra DTR 30.7](http://www.integrahometheater.com/Products/model.php?m=DTR-30.7&class=Receiver&source=prodClass)
 - [Integra DTR 40.7](http://www.integrahometheater.com/Products/model.php?m=DTR-40.7&class=Receiver&source=prodClass)
 ### Pioneer
+- [Pioneer VSX-LX101](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx101)
+- [Pioneer VSX-LX103](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx103)
+- [Pioneer VSX-LX104](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx104)
+- [Pioneer VSX-LX302](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx302)
 - [Pioneer VSX-LX303](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx303)
 - [Pioneer VSX-LX503](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx503)
 - [Pioneer VSX-LX504](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx504)
