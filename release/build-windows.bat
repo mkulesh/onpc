@@ -1,8 +1,10 @@
 echo off
 
 set /p VER=<VERSION.txt
+set myPath=%cd%
 echo Build Windows app MusicControl-v%VER%-windows-x86_64
 echo Windows Store: pass --store flag as argument
+echo Current directory: %myPath%
 
 :: Prepare Yaml file
 call copy ..\pubspec.yaml_desktop ..\pubspec.yaml
@@ -14,7 +16,10 @@ call copy ..\lib\utils\CompatUtils.dart.desktop ..\lib\utils\CompatUtils.dart
 :: Flutter version 2.2.2, Dart version 2.13.3
 call del *.msix
 call flutter clean
-call flutter doctor
+call cd c:\work\android\flutter
+call git checkout 2.2.2
+call cd %myPath%
+call flutter doctor -v
 call flutter build windows --release
 
 :: Create msix installer
