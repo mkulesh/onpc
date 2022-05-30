@@ -382,7 +382,7 @@ class ReceiverInformationMsg extends ISCPMessage
             final String id = element.getAttribute("id");
             final String name = element.getAttribute("name");
             final int value = ISCPMessage.nonNullInteger(element.getAttribute("value"), 10, 0);
-            if (id != null && name != null && value == 1)
+            if (id != null && name != null && value > 0)
             {
                 _deviceSelectors.add(Selector.fromXml(element));
             }
