@@ -13,6 +13,7 @@
  */
 // @dart=2.9
 
+import "package:flutter/material.dart";
 import "package:flutter/src/painting/edge_insets.dart";
 import "package:flutter/src/widgets/framework.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
@@ -22,6 +23,11 @@ import "package:url_launcher/url_launcher.dart";
 import "../config/Configuration.dart";
 import "Logging.dart";
 import "Pair.dart";
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior
+{
+    // empty
+}
 
 class SerialPortWrapper
 {

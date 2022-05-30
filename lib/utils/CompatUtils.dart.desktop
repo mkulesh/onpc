@@ -16,6 +16,7 @@
 import "dart:typed_data";
 import "dart:ui";
 
+import "package:flutter/material.dart";
 import "package:flutter/src/painting/edge_insets.dart";
 import "package:flutter/src/widgets/framework.dart";
 import "package:flutter_libserialport/flutter_libserialport.dart";
@@ -27,6 +28,19 @@ import "package:window_manager/window_manager.dart";
 import "../config/Configuration.dart";
 import "Logging.dart";
 import "Pair.dart";
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior
+{
+    // Override behavior methods and getters like dragDevices
+    // See https://docs.flutter.dev/release/breaking-changes/default-scroll-behavior-drag
+    @override
+    Set<PointerDeviceKind> get dragDevices =>
+    {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        // etc.
+    };
+}
 
 class SerialPortWrapper
 {
