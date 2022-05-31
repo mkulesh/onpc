@@ -17,30 +17,25 @@ import "dart:typed_data";
 import "dart:ui";
 
 import "package:flutter/material.dart";
-import "package:flutter/src/painting/edge_insets.dart";
-import "package:flutter/src/widgets/framework.dart";
 import "package:flutter_libserialport/flutter_libserialport.dart";
 import "package:flutter_markdown/flutter_markdown.dart";
-import "package:flutter_markdown/src/style_sheet.dart";
 import "package:url_launcher/url_launcher.dart";
 import "package:window_manager/window_manager.dart";
 
+import "../config/CfgAppSettings.dart";
 import "../config/Configuration.dart";
+import "../config/DeviceSelectors.dart";
+import "../config/KeyboardShortcuts.dart";
+import "../config/ListeningModes.dart";
+import "../config/NetworkServices.dart";
+import "../config/PreferencesMain.dart";
+import "../config/VisibleTabs.dart";
+import "../constants/Activities.dart";
+import "../constants/Strings.dart";
+import "../views/AboutScreen.dart";
+import "../views/UpdatableView.dart";
 import "Logging.dart";
 import "Pair.dart";
-
-class MyCustomScrollBehavior extends MaterialScrollBehavior
-{
-    // Override behavior methods and getters like dragDevices
-    // See https://docs.flutter.dev/release/breaking-changes/default-scroll-behavior-drag
-    @override
-    Set<PointerDeviceKind> get dragDevices =>
-    {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        // etc.
-    };
-}
 
 class SerialPortWrapper
 {
@@ -197,4 +192,46 @@ class WindowManagerWrapper with WindowListener
             _configuration.appSettings.windowFrame = rect;
         });
     }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior
+{
+    // Override behavior methods and getters like dragDevices
+    // See https://docs.flutter.dev/release/breaking-changes/default-scroll-behavior-drag
+    @override
+    Set<PointerDeviceKind> get dragDevices =>
+        {
+            PointerDeviceKind.touch,
+            PointerDeviceKind.mouse,
+            // etc.
+        };
+}
+
+MaterialApp createApp(final ViewContext viewContext, final StatefulWidget app)
+{
+    return MaterialApp(
+        scrollBehavior: MyCustomScrollBehavior(),
+        debugShowCheckedModeBanner: Logging.isDebugBanner,
+        title: Strings.app_short_name,
+        theme: viewContext.getThemeData(),
+        home: app,
+        localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales)
+        {
+            if (locale != null)
+            {
+                viewContext.configuration.appSettings.systemLocale = locale;
+            }
+            return CfgAppSettings.DEFAULT_LOCALE;
+        },
+        routes: <String, WidgetBuilder>
+        {
+            Activities.activity_preferences: (BuildContext context) => PreferencesMain(viewContext.configuration),
+            Activities.activity_visible_tabs: (BuildContext context) => VisibleTabs(viewContext.configuration),
+            Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(viewContext.configuration),
+            Activities.activity_listening_modes: (BuildContext context) => ListeningModes(viewContext.configuration),
+            Activities.activity_network_services: (BuildContext context) => NetworkServices(viewContext.configuration),
+            Activities.activity_keyboard_shortcuts: (BuildContext context) => KeyboardShortcuts(viewContext.configuration),
+            Activities.activity_about_screen: (BuildContext context) => AboutScreen(viewContext),
+        }
+    );
 }

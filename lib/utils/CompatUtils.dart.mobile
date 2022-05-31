@@ -20,14 +20,20 @@ import "package:flutter_markdown/flutter_markdown.dart";
 import "package:flutter_markdown/src/style_sheet.dart";
 import "package:url_launcher/url_launcher.dart";
 
+import "../config/CfgAppSettings.dart";
 import "../config/Configuration.dart";
+import "../config/DeviceSelectors.dart";
+import "../config/KeyboardShortcuts.dart";
+import "../config/ListeningModes.dart";
+import "../config/NetworkServices.dart";
+import "../config/PreferencesMain.dart";
+import "../config/VisibleTabs.dart";
+import "../constants/Activities.dart";
+import "../constants/Strings.dart";
+import "../views/AboutScreen.dart";
+import "../views/UpdatableView.dart";
 import "Logging.dart";
 import "Pair.dart";
-
-class MyCustomScrollBehavior extends MaterialScrollBehavior
-{
-    // empty
-}
 
 class SerialPortWrapper
 {
@@ -96,4 +102,33 @@ class WindowManagerWrapper
     {
         // empty
     }
+}
+
+MaterialApp createApp(final ViewContext viewContext, final StatefulWidget app)
+{
+    return MaterialApp(
+        //scrollBehavior: MyCustomScrollBehavior(),
+        debugShowCheckedModeBanner: Logging.isDebugBanner,
+        title: Strings.app_short_name,
+        theme: viewContext.getThemeData(),
+        home: app,
+        localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales)
+        {
+            if (locale != null)
+            {
+                viewContext.configuration.appSettings.systemLocale = locale;
+            }
+            return CfgAppSettings.DEFAULT_LOCALE;
+        },
+        routes: <String, WidgetBuilder>
+        {
+            Activities.activity_preferences: (BuildContext context) => PreferencesMain(viewContext.configuration),
+            Activities.activity_visible_tabs: (BuildContext context) => VisibleTabs(viewContext.configuration),
+            Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(viewContext.configuration),
+            Activities.activity_listening_modes: (BuildContext context) => ListeningModes(viewContext.configuration),
+            Activities.activity_network_services: (BuildContext context) => NetworkServices(viewContext.configuration),
+            Activities.activity_keyboard_shortcuts: (BuildContext context) => KeyboardShortcuts(viewContext.configuration),
+            Activities.activity_about_screen: (BuildContext context) => AboutScreen(viewContext),
+        }
+    );
 }
