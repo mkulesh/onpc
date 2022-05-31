@@ -12,7 +12,6 @@
  * Public License along with this program.
  */
 // @dart=2.9
-import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";

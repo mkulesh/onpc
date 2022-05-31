@@ -48,6 +48,7 @@ class SerialPortWrapper
 
 class WindowManagerWrapper
 {
+    // ignore: unused_field
     final Configuration _configuration;
 
     WindowManagerWrapper(this._configuration);

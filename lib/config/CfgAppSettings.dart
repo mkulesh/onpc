@@ -245,7 +245,7 @@ class CfgAppSettings extends CfgModule
     // Capture keyboard shortcuts
     Pair<String, OnKeyboardShortcut> _captureKeyboardShortcut;
 
-    void captureKeyboardShortcut(OnKeyboardShortcut handler, {String parameter: ""})
+    void captureKeyboardShortcut(OnKeyboardShortcut handler, {String parameter = ""})
     {
         if (handler != null)
         {
