@@ -26,8 +26,15 @@ import "Platform.dart";
 import "config/CfgAppSettings.dart";
 import "config/CfgTabSettings.dart";
 import "config/Configuration.dart";
+import "config/DeviceSelectors.dart";
+import "config/KeyboardShortcuts.dart";
+import "config/ListeningModes.dart";
+import "config/NetworkServices.dart";
+import "config/PreferencesMain.dart";
 import "config/TabLayoutLandscape.dart";
 import "config/TabLayoutPortrait.dart";
+import "config/VisibleTabs.dart";
+import "constants/Activities.dart";
 import "constants/Dimens.dart";
 import "constants/Strings.dart";
 import "dialogs/DeviceSearchDialog.dart";
@@ -40,6 +47,7 @@ import "iscp/messages/TimeInfoMsg.dart";
 import "utils/CompatUtils.dart";
 import "utils/Convert.dart";
 import "utils/Logging.dart";
+import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
 import "views/AppTabView.dart";
 import "views/DrawerView.dart";
@@ -62,8 +70,31 @@ void main() async
 
     final StateManager stateManager = StateManager(configuration.favoriteConnections.getDevices);
     final ViewContext viewContext = ViewContext(configuration, stateManager, StreamController.broadcast());
-    final StatefulWidget app = MusicControllerApp(windowManager, viewContext);
-    runApp(createApp(viewContext, app));
+
+    runApp(MaterialApp(
+        scrollBehavior: MyCustomScrollBehavior(),
+        debugShowCheckedModeBanner: Logging.isDebugBanner,
+        title: Strings.app_short_name,
+        theme: viewContext.getThemeData(),
+        home: MusicControllerApp(windowManager, viewContext),
+        localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales)
+        {
+            if (locale != null)
+            {
+                configuration.appSettings.systemLocale = locale;
+            }
+            return CfgAppSettings.DEFAULT_LOCALE;
+        },
+        routes: <String, WidgetBuilder>
+        {
+            Activities.activity_preferences: (BuildContext context) => PreferencesMain(configuration),
+            Activities.activity_visible_tabs: (BuildContext context) => VisibleTabs(configuration),
+            Activities.activity_device_selectors: (BuildContext context) => DeviceSelectors(configuration),
+            Activities.activity_listening_modes: (BuildContext context) => ListeningModes(configuration),
+            Activities.activity_network_services: (BuildContext context) => NetworkServices(configuration),
+            Activities.activity_keyboard_shortcuts: (BuildContext context) => KeyboardShortcuts(configuration),
+            Activities.activity_about_screen: (BuildContext context) => AboutScreen(viewContext),
+        }));
 }
 
 class MusicControllerApp extends StatefulWidget

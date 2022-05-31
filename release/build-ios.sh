@@ -4,12 +4,12 @@ echo Build iOS app...
 
 # Prepare Yaml file
 rm -f ../pubspec.yaml
-ln -s pubspec.yaml_ios ../pubspec.yaml
+ln -s pubspec.yaml_mobile ../pubspec.yaml
 
-# Build with: Flutter version 1.22.6, Dart version 2.10.5
+# Build with: Flutter version 2.8.1, Dart version 2.15.1
 flutter clean
 cd /Volumes/ExtWork/home/family/work/android/flutter
-git checkout 1.22.6
+git checkout 2.8.1
 cd -
 flutter doctor -v
 
