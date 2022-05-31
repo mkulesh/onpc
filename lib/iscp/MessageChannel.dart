@@ -80,7 +80,7 @@ class MessageChannel with ConnectionIf
         Logging.info(this, "Connecting to " + getHostAndPort + ", keep connection: " + keepConnection.toString());
         _keepConnection = keepConnection;
         _state = MessageChannelState.CONNECTING;
-        Socket.connect(host, port, timeout: Duration(seconds: 10)).then((Socket sock)
+        Socket.connect(InternetAddress(host), port, timeout: Duration(seconds: 10)).then((Socket sock)
         {
             _socket = sock;
             _socket.listen(_onData,
