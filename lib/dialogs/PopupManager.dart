@@ -86,7 +86,7 @@ class PopupManager
         }
     }
 
-    void showPopupDialog(final BuildContext context, final ViewContext viewContext, { final GlobalKey<ScaffoldState> toastKey })
+    void showPopupDialog(final BuildContext context, final ViewContext viewContext, { final GlobalKey<ScaffoldMessengerState> toastKey })
     {
         if (_isDialog(_DialogType.TRACK_MENU) && Navigator.of(context).canPop())
         {
@@ -121,11 +121,11 @@ class PopupManager
         }
     }
 
-    static void showToast(final String msg, {final BuildContext context, final GlobalKey<ScaffoldState> toastKey})
+    static void showToast(final String msg, {final BuildContext context, final GlobalKey<ScaffoldMessengerState> toastKey})
     {
         try
         {
-            final ScaffoldState sm = (toastKey != null) ? toastKey.currentState : Scaffold.of(context);
+            final ScaffoldMessengerState sm = (toastKey != null) ? toastKey.currentState : ScaffoldMessenger.of(context);
             if (sm != null)
             {
                 sm.showSnackBar(SnackBar(content: Text(msg)));

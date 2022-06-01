@@ -132,7 +132,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     bool _exitConfirm, _searchDialog;
     int _tabBarId = 0, _tabId = 0;
 
-    final _toastKey = GlobalKey<ScaffoldState>();
+    final _toastKey = GlobalKey<ScaffoldMessengerState>();
 
     MusicControllerAppState(this._windowManager, this._viewContext);
 
@@ -277,7 +277,6 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
 
         final Widget scaffold = Scaffold(
-            key: _toastKey,
             // Disable activity resize when a software keyboard is open:
             // The keyboard is placed above the activity view
             resizeToAvoidBottomInset: false,
@@ -296,7 +295,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
             body: tabBar
         );
 
-        return Theme(data: td, child: scaffold);
+        return Theme(data: td,
+            child: ScaffoldMessenger(
+                key: _toastKey,
+                child: scaffold)
+        );
     }
 
     void _onStateChanged(Set<String> changes)
