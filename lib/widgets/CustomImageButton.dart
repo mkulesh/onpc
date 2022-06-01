@@ -75,7 +75,7 @@ class CustomImageButton extends StatelessWidget
     {
         final ThemeData td = Theme.of(context);
         final Color color = isEnabled ?
-            (isSelected ? td.accentColor : (isMenu ? td.bottomAppBarColor : td.textTheme.button.color))
+            (isSelected ? td.colorScheme.secondary : (isMenu ? td.bottomAppBarColor : td.textTheme.button.color))
                 : (isMenu ? td.appBarTheme.backgroundColor : td.disabledColor);
 
         double _size;

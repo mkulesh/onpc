@@ -52,7 +52,7 @@ class _SwitchPreferenceState extends State<SwitchPreference>
             subtitle: widget.desc == null ? null : Text(widget.desc),
             trailing: Switch(
                 value: _value,
-                activeColor: Theme.of(context).accentColor,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 onChanged: (val)
                 => val ? onEnable() : onDisable()

@@ -25,7 +25,7 @@ class PreferenceTitle extends StatelessWidget
     {
         return Padding(
             padding: EdgeInsets.only(left: leftPadding, bottom: 0.0, top: 20.0),
-            child: Text(title, style: TextStyle(color: Theme.of(context).accentColor, fontWeight: FontWeight.bold))
+            child: Text(title, style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold))
         );
     }
 }

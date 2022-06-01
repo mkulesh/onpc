@@ -115,8 +115,8 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             data: SliderTheme.of(context).copyWith(
                 trackShape: CustomTrackShape(),
                 thumbShape: RoundSliderThumbShape(enabledThumbRadius: radius),
-                thumbColor: td.accentColor,
-                activeTrackColor: td.accentColor,
+                thumbColor: td.colorScheme.secondary,
+                activeTrackColor: td.colorScheme.secondary,
                 inactiveTrackColor: td.disabledColor.withAlpha(125),
                 activeTickMarkColor: td.disabledColor,
                 inactiveTickMarkColor: td.disabledColor),

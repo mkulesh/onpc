@@ -38,7 +38,7 @@ class CustomTextButton extends StatelessWidget
     {
         final ThemeData td = Theme.of(context);
         final Color color = isEnabled ?
-            (isSelected ? td.accentColor : td.textTheme.button.color)
+            (isSelected ? td.colorScheme.secondary : td.textTheme.button.color)
                 : td.disabledColor;
 
         EdgeInsetsGeometry _padding = padding ?? ButtonDimens.textButtonPadding;

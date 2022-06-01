@@ -89,7 +89,7 @@ class _KeyboardShortcutsState extends State<KeyboardShortcuts>
             margin: const EdgeInsets.all(0.0),
             padding: const EdgeInsets.all(0.0),
             decoration: BoxDecoration(
-                border: Border.all(color: appSettings.isWaitingForShortcut(par) ? td.accentColor : Colors.transparent)
+                border: Border.all(color: appSettings.isWaitingForShortcut(par) ? td.colorScheme.secondary : Colors.transparent)
             ),
             child: CustomTextLabel.normal(appSettings.getKeyboardShortcut(par),
                 padding: ActivityDimens.headerPadding, textAlign: TextAlign.center)

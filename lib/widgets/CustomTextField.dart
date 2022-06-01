@@ -42,12 +42,12 @@ class CustomTextField extends StatelessWidget
             enableSuggestions: false,
             textInputAction: onPressed != null ? TextInputAction.done : null,
             onEditingComplete: onPressed,
-            cursorColor: td.accentColor,
+            cursorColor: td.colorScheme.secondary,
             decoration: InputDecoration(
                 contentPadding: DialogDimens.textFieldPadding,
                 isDense: true,
                 border: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.disabledColor)) : InputBorder.none,
-                focusedBorder: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.accentColor)) : InputBorder.none
+                focusedBorder: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.colorScheme.secondary)) : InputBorder.none
             )
         );
     }

@@ -47,12 +47,21 @@ class BaseAppTheme
     {
         final TextStyle mainStyle = Platform.isDesktop ? GoogleFonts.getFont('Roboto') : TextStyle();
 
+        final ColorScheme colorScheme = brightness == Brightness.dark ?
+        ColorScheme.dark(
+            primary: primaryColor,
+            secondary: accentColor
+        ) :
+        ColorScheme.light(
+            primary: primaryColor,
+            secondary: accentColor
+        );
+
         return ThemeData(
             brightness: brightness,
             primaryColor: primaryColor,
             primaryColorBrightness: Brightness.dark,
             primaryColorDark: primaryColorDark,
-            accentColor: accentColor,
             canvasColor: brightness == Brightness.dark ? primaryColor : backgroundColor,
             scaffoldBackgroundColor: backgroundColor,
             bottomAppBarColor: textColorAppBar,
@@ -60,6 +69,7 @@ class BaseAppTheme
             disabledColor: disabledColor,
             backgroundColor: backgroundColor,
             toggleableActiveColor: accentColor,
+            colorScheme: colorScheme,
 
             appBarTheme: AppBarTheme(
                 backgroundColor: strong ? backgroundColor : primaryColor,

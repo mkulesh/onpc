@@ -137,7 +137,7 @@ class DrawerView extends UpdatableView
 
         final SvgPicture drawerHeaderImage = SvgPicture.asset(
             Drawables.drawer_header,
-            color: td.accentColor,
+            color: td.colorScheme.secondary,
             fit: BoxFit.fitHeight
         );
 
@@ -157,9 +157,9 @@ class DrawerView extends UpdatableView
                         )
                     ),
                     CustomTextLabel.small(Strings.app_name_pro,
-                        color: td.accentColor, textAlign: TextAlign.center, bold: true),
+                        color: td.colorScheme.secondary, textAlign: TextAlign.center, bold: true),
                     CustomTextLabel.small(configuration.appVersion,
-                        color: td.accentColor, textAlign: TextAlign.center),
+                        color: td.colorScheme.secondary, textAlign: TextAlign.center),
                 ],
             )
         );
@@ -179,7 +179,7 @@ class DrawerView extends UpdatableView
                     isEnabled: false,
                 ),
                 Expanded(child: CustomTextLabel.small(title,
-                    color: isSelected ? td.accentColor :
+                    color: isSelected ? td.colorScheme.secondary :
                     (td.brightness == Brightness.dark ? td.bottomAppBarColor : td.textTheme.subtitle1.color))
                 )
             ]),

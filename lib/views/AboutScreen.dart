@@ -193,7 +193,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
             h1: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
             h2: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
             p: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color),
-            a: td.textTheme.bodyText2.copyWith(color: td.accentColor));
+            a: td.textTheme.bodyText2.copyWith(color: td.colorScheme.secondary));
         return Markdown(data: data,
             styleSheet: styleSheet,
             padding: padding,

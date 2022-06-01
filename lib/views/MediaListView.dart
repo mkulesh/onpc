@@ -260,7 +260,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         return Platform.isDesktop ? list : DraggableScrollbar.rrect(
             controller: _scrollController,
-            backgroundColor: td.accentColor,
+            backgroundColor: td.colorScheme.secondary,
             child: list);
         }
 
