@@ -62,7 +62,7 @@ class BaseAppTheme
             toggleableActiveColor: accentColor,
 
             appBarTheme: AppBarTheme(
-                color: strong ? backgroundColor : primaryColor,
+                backgroundColor: strong ? backgroundColor : primaryColor,
                 iconTheme: IconThemeData(color: textColorAppBar),
                 elevation: ActivityDimens.elevation,
             ),

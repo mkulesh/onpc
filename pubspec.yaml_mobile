@@ -1,7 +1,6 @@
 # Project script for Android version
 name: onpc
 description: Enhanced Music Controller
-author: Mikhail Kulesh
 
 version: 2.11.2+303
 

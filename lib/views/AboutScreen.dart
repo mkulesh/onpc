@@ -208,9 +208,10 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
 
     static void _launchURL(final String url) async
     {
-        if (await canLaunch(url))
+        final Uri uri = Uri.parse(url);
+        if (await canLaunchUrl(uri))
         {
-            await launch(url);
+            await launchUrl(uri);
         }
     }
 }

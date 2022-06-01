@@ -267,10 +267,10 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
 ## Used Open Source Libraries
 
-* Material Design Icons: [http://materialdesignicons.com](http://materialdesignicons.com)
-* Material Design Palette: [https://www.materialpalette.com](https://www.materialpalette.com)
-* Flutter: [https://flutter.dev](https://flutter.dev)
-* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)
+* Material Design Icons: [materialdesignicons.com](https://materialdesignicons.com)
+* Material Design Palette: [www.materialpalette.com](https://www.materialpalette.com)
+* Flutter: [flutter.dev](https://flutter.dev)
+* Flutter packages: [pub.dev/packages](https://pub.dev/packages)
 
 Enjoy!""",
         /*ru*/ """
@@ -297,10 +297,10 @@ Copyright © 2019-2022 by __Михаил Кулеш__
 
 ## Библиотеки с открытым исходным кодом
 
-* Material Design Icons: [http://materialdesignicons.com](http://materialdesignicons.com)
-* Material Design Palette: [https://www.materialpalette.com](https://www.materialpalette.com)
-* Flutter: [https://flutter.dev](https://flutter.dev)
-* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)""",
+* Material Design Icons: [materialdesignicons.com](https://materialdesignicons.com)
+* Material Design Palette: [www.materialpalette.com](https://www.materialpalette.com)
+* Flutter: [flutter.dev](https://flutter.dev)
+* Flutter packages: [pub.dev/packages](https://pub.dev/packages)""",
         /*de*/ """
 # Verbesserte Fernsteuerung für Onkyo und Pioneer
 Musik richtig hören!
@@ -325,10 +325,10 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
 ## Genutzte Open Source Bibliotheken
 
-* Material Design Icons: [http://materialdesignicons.com](http://materialdesignicons.com)
-* Material Design Palette: [https://www.materialpalette.com](https://www.materialpalette.com)
-* Flutter: [https://flutter.dev](https://flutter.dev)
-* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)""",
+* Material Design Icons: [materialdesignicons.com](https://materialdesignicons.com)
+* Material Design Palette: [www.materialpalette.com](https://www.materialpalette.com)
+* Flutter: [flutter.dev](https://flutter.dev)
+* Flutter packages: [pub.dev/packages](https://pub.dev/packages)""",
         /*fr*/ """
 # Contrôleur optimisé pour Onkyo et Pioneer
 Ecoutez votre musique correctement!
@@ -351,10 +351,10 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
 
 ## Used Open Source Libraries
 
-* Material Design Icons: [http://materialdesignicons.com](http://materialdesignicons.com)
-* Material Design Palette: [https://www.materialpalette.com](https://www.materialpalette.com)
-* Flutter: [https://flutter.dev](https://flutter.dev)
-* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)
+* Material Design Icons: [materialdesignicons.com](https://materialdesignicons.com)
+* Material Design Palette: [www.materialpalette.com](https://www.materialpalette.com)
+* Flutter: [flutter.dev](https://flutter.dev)
+* Flutter packages: [pub.dev/packages](https://pub.dev/packages)
 """,
         /*pl*/ """
 # Enhanced Controller for Onkyo and Pioneer
@@ -380,10 +380,10 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
 ## Used Open Source Libraries
 
-* Material Design Icons: [http://materialdesignicons.com](http://materialdesignicons.com)
-* Material Design Palette: [https://www.materialpalette.com](https://www.materialpalette.com)
-* Flutter: [https://flutter.dev](https://flutter.dev)
-* Flutter packages: [https://pub.dev/packages](https://pub.dev/packages)
+* Material Design Icons: [materialdesignicons.com](https://materialdesignicons.com)
+* Material Design Palette: [www.materialpalette.com](https://www.materialpalette.com)
+* Flutter: [flutter.dev](https://flutter.dev)
+* Flutter packages: [pub.dev/packages](https://pub.dev/packages)
 
 Enjoy!"""];
     static String get about_text => l_about_text[_language];
