@@ -12,11 +12,11 @@ call copy ..\pubspec.yaml_desktop ..\pubspec.yaml
 :: Prepare platform-specific files: enable flutter_libserialport
 call copy ..\lib\utils\CompatUtils.dart.desktop ..\lib\utils\CompatUtils.dart
 
-:: Build with: Flutter version 2.8.1, Dart version 2.15.1
+:: Build with: Flutter version 2.10.1, Dart version 2.15.1
 call del *.msix
 call flutter clean
 call cd c:\work\android\flutter
-call git checkout 2.8.1
+call git checkout 2.10.1
 call cd %myPath%
 call flutter doctor -v
 call flutter build windows --release

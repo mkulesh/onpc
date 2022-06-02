@@ -6,7 +6,7 @@ version: 2.11.2+303
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
-  flutter: 2.8.1
+  flutter: 2.10.1
 
 dependencies:
   flutter:
