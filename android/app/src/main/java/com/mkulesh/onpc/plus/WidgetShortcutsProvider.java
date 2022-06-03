@@ -203,7 +203,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
             final Intent refreshIntent = new Intent(context, WidgetShortcutsProvider.class);
             refreshIntent.setAction(WidgetShortcutsProvider.RUN_ACTION);
             final PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0,
-                    refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    refreshIntent, PendingIntent.FLAG_IMMUTABLE);
             rv.setOnClickPendingIntent(R.id.app_icon, refreshPendingIntent);
         }
 
@@ -219,7 +219,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
             final Intent refreshIntent = new Intent(context, WidgetShortcutsProvider.class);
             refreshIntent.setAction(WidgetShortcutsProvider.REFRESH_ACTION);
             final PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0,
-                    refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    refreshIntent, PendingIntent.FLAG_IMMUTABLE);
             rv.setOnClickPendingIntent(R.id.widget_refresh, refreshPendingIntent);
         }
 
@@ -232,7 +232,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
             onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
             final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
-                    onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    onClickIntent, PendingIntent.FLAG_MUTABLE);
             rv.setPendingIntentTemplate(R.id.shortcuts_list, onClickPendingIntent);
         }
         return rv;
