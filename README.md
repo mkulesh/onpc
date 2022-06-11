@@ -6,9 +6,12 @@
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
 
-This "Premium" version implements exactly the same receiver control functionality as the free version, but has more flexible user interface.
-It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
-Android version allows to create home screen widgets.
+This "Premium" version implements exactly the same receiver control functionality as the free version, but has some additional features:
+- It is available for all desktop systems (Linux, Windows, macOS). 
+- The Windows version allows to define global shortcuts for volume and playback control.
+- It allows to rename input channels for older Onkyo/Pioneer models that do not support this feature in the firmware.
+- It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
+- Android version allows to create home screen widgets.
 
 ## Names
 * Official app name on App Store, Google Play, and MS Store: *Enhanced Music Controller*
