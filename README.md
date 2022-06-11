@@ -19,9 +19,12 @@ This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a N
 
 This premium version is developed with Flutter, see [onpc-flutter branch for source code](https://github.com/mkulesh/onpc/tree/onpc-flutter)
 
-The "Premium" version implements exactly the same receiver control functionality as the free version, but has a more flexible user interface.
-It allows you to reorder the play queue using drag-and-drop, change the font and buttons size, and show/hide/reorder all control elements for all tabs.
-Android version also allows to create a home screen widget that shows all shortcuts. 
+This "Premium" version implements exactly the same receiver control functionality as the free version, but has some additional features:
+- It is available for all desktop systems (Linux, Windows, macOS).
+- The Windows version allows to define global shortcuts for volume and playback control.
+- It allows to rename input channels for older Onkyo/Pioneer models that do not support this feature in the firmware.
+- It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
+- Android version allows to create home screen widgets.
 
 On Android:
 

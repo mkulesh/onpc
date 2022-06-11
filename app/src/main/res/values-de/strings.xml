@@ -15,7 +15,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Erweiterte Bedienung für Onkyo und Pioneer</string>
+    <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!</string>

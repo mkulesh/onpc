@@ -15,7 +15,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Contrôleur optimisé pour Onkyo et Pioneer</string>
+    <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Contrôleur optimisé pour Onkyo et Pioneer: Écoutez votre musique correctement!</string>
