@@ -154,7 +154,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 ## Publications:
 
 * [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985)
-* [Logo design for Enhanced Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
+* [Logo design for Open Music Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
 * [Первое универсальное приложение «Enhanced Controller for Onkyo and Pioneer»(in Russian)](https://stereo.ru/to/b0erb-pervoe-universalnoe-prilozhenie-enhanced-controller-for-onkyo-and-pioneer)
 
 ## Used Open Source Libraries

@@ -1,6 +1,6 @@
 _Effective date: November 01, 2020_
 
-mkulesh ("us", "we", or "our") operates the "Enhanced Controller for Onkyo and Pioneer" open source mobile application (the "Service").
+mkulesh ("us", "we", or "our") operates the "Enhanced Music Controller" open source mobile application (the "Service").
 
 This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
 
