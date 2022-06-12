@@ -1,0 +1,4 @@
+• App is renamed due to new naming policies
+• Fixed a bug: Device setting "Display Off" is missing for some Pioneer receivers
+• Fixed a bug: Firmware update status in DEVICE tab is incorrect
+• Fixed a bug: Shortcuts not working when an empty play queue is selected in MEDIA tab
