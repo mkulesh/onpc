@@ -47,7 +47,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     private BroadcastSearch searchEngine = null;
 
     // Devices properties
-    public class DeviceInfo
+    public static class DeviceInfo
     {
         public final BroadcastResponseMsg message;
         private final boolean isFavorite;

@@ -54,7 +54,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
 
     private final static String[] ACTION_STATES = new String[]{ "UNSENT", "WAITING", "DONE" };
 
-    class Action
+    static class Action
     {
         // command to be sent
         final String cmd;

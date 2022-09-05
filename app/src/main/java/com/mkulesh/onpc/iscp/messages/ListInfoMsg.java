@@ -48,7 +48,7 @@ public class ListInfoMsg extends ISCPMessage
     private InformationType informationType = InformationType.CURSOR;
 
     /* Line Info (0-9 : 1st to 10th Line) */
-    private int lineInfo;
+    private final int lineInfo;
 
     /*
      * Property

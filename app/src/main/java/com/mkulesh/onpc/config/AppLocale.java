@@ -62,7 +62,7 @@ public final class AppLocale
             }
         }
 
-        @SuppressLint("NewApi")
+        @SuppressLint({ "NewApi", "AppBundleLocaleChanges" })
         public static ContextWrapper wrap(Context context, Locale newLocale)
         {
             final Resources res = context.getResources();

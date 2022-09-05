@@ -30,7 +30,8 @@ public class TimeInfoMsg extends ISCPMessage
     /*
      * (Elapsed time/Track Time Max 99:59:59. If time is unknown, this response is --:--)
      */
-    private String currentTime, maxTime;
+    private final String currentTime;
+    private final String maxTime;
 
     TimeInfoMsg(EISCPMessage raw) throws Exception
     {

@@ -92,6 +92,7 @@ public class ConnectionState extends AppTask
         }
     }
 
+    @SuppressWarnings("deprecation")
     boolean isWifi()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

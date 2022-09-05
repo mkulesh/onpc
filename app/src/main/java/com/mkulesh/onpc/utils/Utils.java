@@ -314,6 +314,7 @@ public class Utils
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isToastVisible(Toast toast)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
