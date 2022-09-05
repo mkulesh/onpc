@@ -212,7 +212,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final State state = activity.getStateManager().getState();
             final int idx = selectedItem.getMessageId();
             final String title = selectedItem.getTitle();
-            Logging.info(this, "Context menu: " + item.toString() + "; " + selectedItem.toString());
+            Logging.info(this, "Context menu '" + item.getTitle() + "'; " + selectedItem);
             selectedItem = null;
             switch (item.getItemId())
             {

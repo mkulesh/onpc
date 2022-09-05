@@ -134,7 +134,7 @@ public class ShortcutsFragment extends BaseFragment
         selectedItem = (CfgFavoriteShortcuts.Shortcut) listViewAdapter.getItem(acmi.position);
         if (selectedItem != null)
         {
-            Logging.info(this, "Context menu: " + selectedItem.toString());
+            Logging.info(this, "Context menu: " + selectedItem);
             MenuInflater inflater = activity.getMenuInflater();
             inflater.inflate(R.menu.favorite_context_menu, menu);
         }
@@ -146,20 +146,25 @@ public class ShortcutsFragment extends BaseFragment
     {
         if (selectedItem != null)
         {
+            Logging.info(this, "Context menu '" + item.getTitle() + "'; " + selectedItem);
             switch (item.getItemId())
             {
             case R.id.shortcut_menu_edit:
                 editFavoriteShortcut(selectedItem);
+                selectedItem = null;
                 return true;
             case R.id.shortcut_menu_delete:
                 activity.getConfiguration().favoriteShortcuts.deleteShortcut(selectedItem);
                 updateContent();
+                selectedItem = null;
                 return true;
             case R.id.shortcut_menu_copy_to_clipboard:
                 copyToClipboard(selectedItem);
+                selectedItem = null;
                 return true;
             }
         }
+        selectedItem = null;
         return super.onContextItemSelected(item);
     }
 
