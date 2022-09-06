@@ -123,13 +123,13 @@ public class CfgFavoriteConnections
         {
             final BroadcastResponseMsg oldMsg = devices.get(idx);
             newMsg = new BroadcastResponseMsg(connection.getHost(), connection.getPort(), alias, identifier);
-            Logging.info(this, "Update favorite connection: " + oldMsg.toString() + " -> " + newMsg.toString());
+            Logging.info(this, "Update favorite connection: " + oldMsg.toString() + " -> " + newMsg);
             devices.set(idx, newMsg);
         }
         else
         {
             newMsg = new BroadcastResponseMsg(connection.getHost(), connection.getPort(), alias, null);
-            Logging.info(this, "Add favorite connection: " + newMsg.toString());
+            Logging.info(this, "Add favorite connection: " + newMsg);
             devices.add(newMsg);
         }
         write();
@@ -167,7 +167,7 @@ public class CfgFavoriteConnections
             {
                 final BroadcastResponseMsg newMsg = new BroadcastResponseMsg(
                         oldMsg.getHost(), oldMsg.getPort(), oldMsg.getAlias(), identifier);
-                Logging.info(this, "Update favorite connection: " + oldMsg.toString() + " -> " + newMsg.toString());
+                Logging.info(this, "Update favorite connection: " + oldMsg + " -> " + newMsg);
                 devices.set(idx, newMsg);
                 write();
             }

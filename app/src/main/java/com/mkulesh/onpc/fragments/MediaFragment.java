@@ -151,8 +151,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final ReceiverInformationMsg.NetworkService networkService = state.getNetworkService();
             if (selector != null)
             {
-                Logging.info(this, "Context menu for selector " + selector.toString() +
-                        (networkService != null ? " and service " + networkService.toString() : ""));
+                Logging.info(this, "Context menu for selector " + selector +
+                        (networkService != null ? " and service " + networkService : ""));
                 ListView lv = (ListView) v;
                 AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 final Object item = lv.getItemAtPosition(acmi.position);
@@ -292,7 +292,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                         alias);
                 if (!state.pathItems.isEmpty())
                 {
-                    Logging.info(this, "full path to the item: " + state.pathItems.toString());
+                    Logging.info(this, "full path to the item: " + state.pathItems);
                     shortcut.setPathItems(state.pathItems, getActivity(), s);
                 }
                 shortcutCfg.updateShortcut(shortcut, shortcut.alias);

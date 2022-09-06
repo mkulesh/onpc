@@ -459,7 +459,7 @@ public class State implements ConnectionIf
         }
         else if (msg instanceof TimeInfoMsg && Logging.isTimeMsgEnabled())
         {
-            Logging.info(msg, "<< " + msg.toString());
+            Logging.info(msg, "<< " + msg);
         }
 
         //Common
@@ -948,7 +948,7 @@ public class State implements ConnectionIf
     {
         if (msg.getImageType() == JacketArtMsg.ImageType.URL)
         {
-            Logging.info(msg, "<< " + msg.toString());
+            Logging.info(msg, "<< " + msg);
             cover = msg.loadFromUrl();
             return true;
         }
@@ -957,7 +957,7 @@ public class State implements ConnectionIf
             final byte[] in = msg.getRawData();
             if (msg.getPacketFlag() == JacketArtMsg.PacketFlag.START)
             {
-                Logging.info(msg, "<< " + msg.toString());
+                Logging.info(msg, "<< " + msg);
                 coverBuffer = new ByteArrayOutputStream();
             }
             if (coverBuffer != null)
@@ -966,7 +966,7 @@ public class State implements ConnectionIf
             }
             if (msg.getPacketFlag() == JacketArtMsg.PacketFlag.END)
             {
-                Logging.info(msg, "<< " + msg.toString());
+                Logging.info(msg, "<< " + msg);
                 cover = msg.loadFromBuffer(coverBuffer);
                 coverBuffer = null;
                 return true;
@@ -974,7 +974,7 @@ public class State implements ConnectionIf
         }
         else
         {
-            Logging.info(msg, "<< " + msg.toString());
+            Logging.info(msg, "<< " + msg);
         }
         return false;
     }
@@ -1133,7 +1133,7 @@ public class State implements ConnectionIf
                     pathItems.remove(pathItems.size() - 1);
                 }
             }
-            Logging.info(this, "media list path = " + pathItems.toString() + "(offset = " + pathIndexOffset + ")");
+            Logging.info(this, "media list path = " + pathItems + "(offset = " + pathIndexOffset + ")");
         }
         return changed;
     }

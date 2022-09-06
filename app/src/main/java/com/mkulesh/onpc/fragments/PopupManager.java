@@ -101,7 +101,7 @@ class PopupManager
             {
                 continue;
             }
-            Logging.info(this, "    menu item: " + msg.toString());
+            Logging.info(this, "    menu item: " + msg);
             final LinearLayout itemView = (LinearLayout) LayoutInflater.from(activity).
                     inflate(R.layout.media_item, trackMenuGroup, false);
             final View textView = itemView.findViewById(R.id.media_item_title);

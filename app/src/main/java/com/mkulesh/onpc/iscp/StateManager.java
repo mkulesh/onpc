@@ -257,7 +257,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     @Override
     protected Void doInBackground(Void... params)
     {
-        Logging.info(this, "started: " + toString());
+        Logging.info(this, "started: " + this);
 
         messageChannel.sendMessage(
                 new EISCPMessage(JacketArtMsg.CODE,
@@ -365,7 +365,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
-        Logging.info(this, "stopped: " + toString());
+        Logging.info(this, "stopped: " + this);
         stateListener.onManagerStopped();
         return null;
     }
@@ -640,7 +640,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         }
         if (repeat)
         {
-            Logging.info(this, "starting repeat mode: " + msg.toString());
+            Logging.info(this, "starting repeat mode: " + msg);
             circlePlayQueueMsg = msg;
         }
         requestXmlList.set(true);
@@ -756,7 +756,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     public void applyShortcut(@NonNull final Context context, @NonNull final CfgFavoriteShortcuts.Shortcut shortcut)
     {
-        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
+        Logging.info(this, "selected favorite shortcut: " + shortcut);
         final String data = shortcut.toScript(context, state);
         final MessageScript messageScript = new MessageScript(context, data);
         activateScript(messageScript);

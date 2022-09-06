@@ -131,7 +131,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
         catch (Exception e)
         {
-            Logging.info(this, "Can not open socket: " + e.toString());
+            Logging.info(this, "Can not open socket: " + e);
         }
 
         Logging.info(this, "stopped");
@@ -167,12 +167,12 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         {
             final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
             socket.send(p);
-            Logging.info(this, "message " + m.toString() + " for category \'"
-                    + modelCategoryId + "\' send to " + target + ", wait response for " + TIMEOUT + "ms");
+            Logging.info(this, "message " + m + " for category '"
+                    + modelCategoryId + "' send to " + target + ", wait response for " + TIMEOUT + "ms");
         }
         catch (Exception e)
         {
-            Logging.info(BroadcastSearch.this, "  -> can not send request: " + e.toString());
+            Logging.info(BroadcastSearch.this, "  -> can not send request: " + e);
         }
 
         final long startTime = Calendar.getInstance().getTimeInMillis();
@@ -238,7 +238,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         super.onPostExecute(aVoid);
         if (failureReason != null)
         {
-            Logging.info(this, "Device not found: " + failureReason.toString());
+            Logging.info(this, "Device not found: " + failureReason);
             if (eventListener != null)
             {
                 eventListener.noDevice(failureReason);

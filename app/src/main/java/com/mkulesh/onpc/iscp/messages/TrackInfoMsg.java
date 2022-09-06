@@ -37,7 +37,7 @@ public class TrackInfoMsg extends ISCPMessage
         final String[] pars = data.split(PAR_SEP);
         if (pars.length != 2)
         {
-            throw new Exception("Can not find parameter split character in message " + raw.toString());
+            throw new Exception("Can not find parameter split character in message " + raw);
         }
         try
         {

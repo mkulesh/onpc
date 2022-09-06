@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     protected void attachBaseContext(Context newBase)
     {
         final Locale prefLocale = AppLocale.ContextWrapper.getPreferredLocale(newBase);
-        Logging.info(this, "Application locale: " + prefLocale.toString());
+        Logging.info(this, "Application locale: " + prefLocale);
         super.attachBaseContext(AppLocale.ContextWrapper.wrap(newBase, prefLocale));
     }
 
@@ -583,7 +583,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     {
         if (intent != null)
         {
-            Logging.info(this, "Received intent: " + intent.toString());
+            Logging.info(this, "Received intent: " + intent);
             if (intent.getDataString() != null)
             {
                 intentData = intent.getDataString();

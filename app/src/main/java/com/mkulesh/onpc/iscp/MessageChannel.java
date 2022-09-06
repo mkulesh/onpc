@@ -120,7 +120,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
     @Override
     public void run()
     {
-        Logging.info(this, "started " + getHostAndPort() + ":" + toString());
+        Logging.info(this, "started " + getHostAndPort() + ":" + this);
 
         ByteBuffer buffer = ByteBuffer.allocate(SOCKET_BUFFER);
         while (true)
@@ -171,7 +171,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
                     if (bytes != null)
                     {
                         final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
-                        Logging.info(this, ">> sending: " + m.toString() + " to " + getHostAndPort());
+                        Logging.info(this, ">> sending: " + m + " to " + getHostAndPort());
                         socket.write(messageBuffer);
                     }
                 }
@@ -192,7 +192,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
             // nothing to do
         }
         super.stop();
-        Logging.info(this, "stopped " + getHostAndPort() + ":" + toString());
+        Logging.info(this, "stopped " + getHostAndPort() + ":" + this);
         inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
     }
 
@@ -339,7 +339,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
                 }
                 catch (Exception e)
                 {
-                    Logging.info(this, "<< error: ignored: " + e.getLocalizedMessage() + ": " + raw.toString());
+                    Logging.info(this, "<< error: ignored: " + e.getLocalizedMessage() + ": " + raw);
                 }
             }
 

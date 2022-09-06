@@ -93,7 +93,7 @@ class CheckableItem
                 selectedItems.append(d.code).append(",").append(d.checked);
             }
         }
-        Logging.info(preferences, parameter + ": " + selectedItems.toString());
+        Logging.info(preferences, parameter + ": " + selectedItems);
         SharedPreferences.Editor prefEditor = preferences.edit();
         prefEditor.putString(parameter, selectedItems.toString());
         prefEditor.commit();

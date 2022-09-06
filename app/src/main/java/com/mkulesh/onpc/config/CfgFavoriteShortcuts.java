@@ -317,13 +317,13 @@ public class CfgFavoriteShortcuts
         {
             final Shortcut oldMsg = shortcuts.get(idx);
             newMsg = new Shortcut(oldMsg, alias);
-            Logging.info(this, "Update favorite shortcut: " + oldMsg.toString() + " -> " + newMsg.toString());
+            Logging.info(this, "Update favorite shortcut: " + oldMsg + " -> " + newMsg);
             shortcuts.set(idx, newMsg);
         }
         else
         {
             newMsg = new Shortcut(shortcut, alias);
-            Logging.info(this, "Add favorite shortcut: " + newMsg.toString());
+            Logging.info(this, "Add favorite shortcut: " + newMsg);
             shortcuts.add(newMsg);
         }
         write();

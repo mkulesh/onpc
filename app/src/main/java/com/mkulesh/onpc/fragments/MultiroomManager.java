@@ -145,7 +145,7 @@ class MultiroomManager
                         + " " + groupId
                         + ": " + activity.getString(di.getRole(tz).getDescriptionId())
                         + ", " + activity.getString(R.string.multiroom_channel)
-                        + " " + di.getChannelType(tz).toString();
+                        + " " + di.getChannelType(tz);
                 if (!myDevice && myGroupId == groupId)
                 {
                     attached = di.getChannelType(tz) != MultiroomDeviceInformationMsg.ChannelType.NONE;
@@ -160,7 +160,7 @@ class MultiroomManager
             cv.toggle();
         });
 
-        Logging.info(activity, "    " + msg.toString() + "; " + description + "; attached=" + attached);
+        Logging.info(activity, "    " + msg + "; " + description + "; attached=" + attached);
         return view;
     }
 

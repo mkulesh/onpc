@@ -53,7 +53,7 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
     protected void attachBaseContext(Context newBase)
     {
         final Locale prefLocale = AppLocale.ContextWrapper.getPreferredLocale(newBase);
-        Logging.info(this, "Settings locale: " + prefLocale.toString());
+        Logging.info(this, "Settings locale: " + prefLocale);
         super.attachBaseContext(AppLocale.ContextWrapper.wrap(newBase, prefLocale));
     }
 

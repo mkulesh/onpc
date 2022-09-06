@@ -223,7 +223,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             }
             if (a.state == ActionState.WAITING && a.wait != null)
             {
-                String log = a.toString() + ": compare with message " + msg.toString();
+                String log = a + ": compare with message " + msg;
                 if (isResponseMatched(state, a, msg.getCode(), msg.getData()))
                 {
                     info(this, log + " -> response matched");
@@ -331,7 +331,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
             boolean isMatched = (!a.resp.isEmpty() && isStateSet(state, a.wait, a.resp)) ||
                     isResponseMatched(state, a, a.wait, null);
             a.state = isMatched ? ActionState.DONE : ActionState.WAITING;
-            info(this, a.toString() + ": the required state is already set, no need to send action message");
+            info(this, a + ": the required state is already set, no need to send action message");
             if (a.state == ActionState.DONE)
             {
                 return a.state;
@@ -339,7 +339,7 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         }
         else if (a.cmd.equals("NA") && a.par.equals("NA"))
         {
-            info(this, a.toString() + ": no action message to send");
+            info(this, a + ": no action message to send");
         }
         else
         {
@@ -360,20 +360,20 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                 msg = new EISCPMessage(a.cmd, a.par);
             }
             channel.sendMessage(msg);
-            info(this, a.toString() + ": sent message " + msg.toString());
+            info(this, a + ": sent message " + msg);
         }
 
         a.state = ActionState.WAITING;
         if (a.milliseconds >= 0)
         {
-            info(this, a.toString() + ": scheduling timer for " + a.milliseconds + " milliseconds");
+            info(this, a + ": scheduling timer for " + a.milliseconds + " milliseconds");
             final Timer t = new Timer();
             t.schedule(new java.util.TimerTask()
             {
                 @Override
                 public void run()
                 {
-                    info(MessageScript.this, a.toString() + ": timer expired");
+                    info(MessageScript.this, a + ": timer expired");
                     a.state = ActionState.DONE;
                     processNextActions(state, channel);
                 }
