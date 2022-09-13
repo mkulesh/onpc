@@ -1,0 +1,2 @@
+• The app is adapted for the Android 12
+• Fixed a bug: Shortcut edit does not work after device orientation change
