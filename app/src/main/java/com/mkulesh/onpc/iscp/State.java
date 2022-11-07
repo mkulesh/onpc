@@ -49,6 +49,7 @@ import com.mkulesh.onpc.iscp.messages.MultiroomChannelSettingMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkStandByMsg;
 import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
@@ -134,6 +135,7 @@ public class State implements ConnectionIf
     public SpeakerACommandMsg.Status speakerA = SpeakerACommandMsg.Status.NONE;
     public SpeakerBCommandMsg.Status speakerB = SpeakerBCommandMsg.Status.NONE;
     public LateNightCommandMsg.Status lateNightMode = LateNightCommandMsg.Status.NONE;
+    public NetworkStandByMsg.Status networkStandBy = NetworkStandByMsg.Status.NONE;
 
     // Sound control
     public enum SoundControlType
@@ -524,6 +526,10 @@ public class State implements ConnectionIf
         if (msg instanceof LateNightCommandMsg)
         {
             return isCommonChange(process((LateNightCommandMsg) msg));
+        }
+        if (msg instanceof NetworkStandByMsg)
+        {
+            return isCommonChange(process((NetworkStandByMsg) msg));
         }
 
         // Sound control
@@ -920,6 +926,13 @@ public class State implements ConnectionIf
     {
         final boolean changed = lateNightMode != msg.getStatus();
         lateNightMode = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(NetworkStandByMsg msg)
+    {
+        final boolean changed = networkStandBy != msg.getStatus();
+        networkStandBy = msg.getStatus();
         return changed;
     }
 

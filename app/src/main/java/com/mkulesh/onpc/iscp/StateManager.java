@@ -48,6 +48,7 @@ import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkStandByMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -477,6 +478,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     SpeakerACommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     SpeakerBCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     LateNightCommandMsg.CODE,
+                    NetworkStandByMsg.CODE,
                     // SoundControlState
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],

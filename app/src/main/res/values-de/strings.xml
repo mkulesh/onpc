@@ -535,6 +535,11 @@
     <string name="device_late_night_up">Sets late night wechseln</string>
     <string name="device_late_night_help">Machen Sie kleine Geräusche leicht hörbar. Dies ist nützlich, wenn Sie die Lautstärke reduzieren müssen, während Sie sich spät abends einen Film ansehen.</string>
 
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Netzwerk-Standby</string>
+    <string name="device_network_standby_help">Wenn diese Funktion auf \"An\" geschaltet ist, können Sie dieses Gerät mit einer Anwendung wie Enhanced Music Controller über das Netzwerk einschalten.</string>
+    <string name="device_network_standby_confirm">Sie können das Gerät nicht mehr über das Netzwerk mit der App einschalten. Fortsetzen?</string>
+
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>
     <string name="privacy_policy_google">Google Cast Lizenz zustimmen</string>

@@ -536,6 +536,11 @@
     <string name="device_late_night_up">Изменить режим \"Late night\"</string>
     <string name="device_late_night_help">Выборочное усиление звуков низкой громкости. Это полезно, когда вам нужно уменьшить громкость во время просмотра фильма поздно вечером.</string>
 
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Включение по сети</string>
+    <string name="device_network_standby_help">Если для этой функции установлено значение \"Вкл\", вы можете включить питание устройства по сети с помощью приложения, которое может управлять этим устройством (такого как Enhanced Music Controller).</string>
+    <string name="device_network_standby_confirm">Вы больше не сможете включать питание устройства по сети с помощью приложения. Продолжать?</string>
+
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>
     <string name="privacy_policy_google">Подтвердить лицензию Google Cast</string>

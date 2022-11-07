@@ -534,6 +534,11 @@
     <string name="device_late_night_up">Zmień tryb późnej nocy</string>
     <string name="device_late_night_help">Spraw, by małe dźwięki były łatwo słyszalne. Jest to przydatne, gdy chcesz zmniejszyć głośność podczas oglądania filmu późnym wieczorem.</string>
 
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Tryb gotowości sieciowej</string>
+    <string name="device_network_standby_help">Gdy ta funkcja jest ustawiona na \"On\", możesz włączyć zasilanie urządzenia przez sieć za pomocą aplikacji, takiej jak Enhanced Music Controller, która może sterować tym urządzeniem.</string>
+    <string name="device_network_standby_confirm">Nie będziesz już mógł włączyć zasilania urządzenia przez sieć za pomocą aplikacji. Kontynuować?</string>
+
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>

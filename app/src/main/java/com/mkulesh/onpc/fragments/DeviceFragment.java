@@ -37,6 +37,7 @@ import com.mkulesh.onpc.iscp.messages.GoogleCastAnalyticsMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.LateNightCommandMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkStandByMsg;
 import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
 import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
@@ -134,6 +135,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
         prepareImageButton(R.id.late_night_command_toggle, new LateNightCommandMsg(LateNightCommandMsg.Status.UP));
+        prepareImageButton(R.id.network_standby_toggle, null);
 
         updateContent();
         return rootView;
@@ -171,7 +173,8 @@ public class DeviceFragment extends BaseFragment
                     R.id.sleep_time_layout,
                     R.id.speaker_ab_layout,
                     R.id.google_cast_analytics_layout,
-                    R.id.late_night_command_layout
+                    R.id.late_night_command_layout,
+                    R.id.network_standby_layout
             };
             for (int layoutId : settingsLayout)
             {
@@ -387,6 +390,48 @@ public class DeviceFragment extends BaseFragment
         // Late Night Command
         prepareSettingPanel(state, state.lateNightMode != LateNightCommandMsg.Status.NONE,
                 R.id.late_night_command_layout, state.lateNightMode.getDescriptionId(), null);
+
+        // Network Standby Command
+        prepareSettingPanel(state, state.networkStandBy != NetworkStandByMsg.Status.NONE,
+                R.id.network_standby_layout, state.networkStandBy.getDescriptionId(), null);
+        {
+            final AppCompatImageButton b = rootView.findViewById(R.id.network_standby_toggle);
+            prepareButtonListeners(b, null, this::onNetworkStandByToggle);
+        }
+    }
+
+    private void onNetworkStandByToggle()
+    {
+        if (getContext() == null || !activity.isConnected() || !activity.getStateManager().getState().isOn())
+        {
+            return;
+        }
+        final NetworkStandByMsg.Status networkStandBy = activity.getStateManager().getState().networkStandBy;
+        if (networkStandBy == NetworkStandByMsg.Status.OFF)
+        {
+            activity.getStateManager().sendMessage(new NetworkStandByMsg(NetworkStandByMsg.Status.ON));
+        }
+        else
+        {
+            final Drawable icon = Utils.getDrawable(getContext(), R.drawable.menu_power_standby);
+            Utils.setDrawableColorAttr(getContext(), icon, android.R.attr.textColorSecondary);
+            final AlertDialog dialog = new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.device_network_standby)
+                    .setIcon(icon)
+                    .setCancelable(true)
+                    .setMessage(R.string.device_network_standby_confirm)
+                    .setNeutralButton(R.string.action_cancel, (d, which) -> d.dismiss())
+                    .setPositiveButton(R.string.action_ok, (d, which) ->
+                    {
+                        if (activity.isConnected())
+                        {
+                            activity.getStateManager().sendMessage(new NetworkStandByMsg(NetworkStandByMsg.Status.OFF));
+                        }
+                        d.dismiss();
+                    }).create();
+            dialog.show();
+            Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        }
     }
 
     private void sendQueries(int zone)

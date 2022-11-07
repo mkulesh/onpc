@@ -599,6 +599,11 @@
     <string name="device_late_night_up">Sets late night state wrap-around</string>
     <string name="device_late_night_help">Make small sounds easily heard. It is useful when you need to reduce the volume while watching a movie late night.</string>
 
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Network standby</string>
+    <string name="device_network_standby_help">When this function is set to \"On\", you can turn on the power of the unit via network using an application such as Enhanced Music Controller that can control this unit.</string>
+    <string name="device_network_standby_confirm">You will be not able anymore to turn on the power of the unit via network using the app. Continue?</string>
+
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>

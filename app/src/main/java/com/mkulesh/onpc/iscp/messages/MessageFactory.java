@@ -139,6 +139,8 @@ public class MessageFactory
             return new SpeakerBCommandMsg(raw);
         case LateNightCommandMsg.CODE:
             return new LateNightCommandMsg(raw);
+        case NetworkStandByMsg.CODE:
+            return new NetworkStandByMsg(raw);
         case PrivacyPolicyStatusMsg.CODE:
             return new PrivacyPolicyStatusMsg(raw);
         case CdPlayerOperationCommandMsg.CODE:
