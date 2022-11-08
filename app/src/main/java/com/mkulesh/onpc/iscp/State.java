@@ -368,9 +368,13 @@ public class State implements ConnectionIf
             {
                 if (it != InputSelectorMsg.InputType.NONE)
                 {
+                    // #265 Add new input selector "SOURCE":
+                    // "SOURCE" input not allowed for main zone
+                    final int zones = it == InputSelectorMsg.InputType.SOURCE ?
+                            ReceiverInformationMsg.EXT_ZONES : ReceiverInformationMsg.ALL_ZONE;
                     final ReceiverInformationMsg.Selector s = new ReceiverInformationMsg.Selector(
                             it.getCode(), context.getString(it.getDescriptionId()),
-                            ReceiverInformationMsg.ALL_ZONE, it.getCode(), false);
+                            zones, it.getCode(), false);
                     deviceSelectors.add(s);
                 }
             }

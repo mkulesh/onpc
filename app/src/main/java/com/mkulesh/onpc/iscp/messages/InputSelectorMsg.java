@@ -76,6 +76,7 @@ public class InputSelectorMsg extends ZonedMessage
         HDMI_5("55", R.string.input_selector_hdmi_5),
         HDMI_6("56", R.string.input_selector_hdmi_6),
         HDMI_7("57", R.string.input_selector_hdmi_7),
+        SOURCE("80", R.string.input_selector_source),
         NONE("XX", -1);
 
         final String code;

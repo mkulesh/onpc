@@ -401,6 +401,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         for (ReceiverInformationMsg.Selector s : activity.getConfiguration().getSortedDeviceSelectors(
                 false, state.inputType, deviceSelectors))
         {
+            if (s.getId().equals(InputSelectorMsg.InputType.SOURCE.getCode()) &&
+                    !s.isActiveForZone(state.getActiveZone()))
+            {
+                // #265 Add new input selector "SOURCE":
+                // Ignore SOURCE input for all not allowed zones
+                continue;
+            }
             final InputSelectorMsg msg = new InputSelectorMsg(state.getActiveZone(), s.getId());
             if (msg.getInputType() == InputSelectorMsg.InputType.NONE)
             {

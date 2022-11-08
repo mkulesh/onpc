@@ -464,6 +464,7 @@
     <string name="input_selector_hdmi_5">HDMI 5</string>
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
+    <string name="input_selector_source">SOURCE</string>
 
     <!-- Services -->
     <string name="service_music_server">Music Server (DLNA)</string>
