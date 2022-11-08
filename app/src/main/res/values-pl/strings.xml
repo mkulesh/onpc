@@ -537,7 +537,7 @@
     <!-- Network Standby Command -->
     <string name="device_network_standby">Tryb gotowości sieciowej</string>
     <string name="device_network_standby_help">Gdy ta funkcja jest ustawiona na \"On\", możesz włączyć zasilanie urządzenia przez sieć za pomocą aplikacji, takiej jak Enhanced Music Controller, która może sterować tym urządzeniem.</string>
-    <string name="device_network_standby_confirm">Nie będziesz już mógł włączyć zasilania urządzenia przez sieć za pomocą aplikacji. Kontynuować?</string>
+    <string name="device_network_standby_confirm">Przy tym ustawieniu na \"Off\" nie będzie można włączyć urządzenia przez sieć za pomocą aplikacji. Kontynuować?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>

@@ -537,8 +537,8 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
     <!-- Network Standby Command -->
     <string name="device_network_standby">Veille réseau</string>
-    <string name="device_network_standby_help">Lorsque cette fonction est réglée sur "Marche", vous pouvez mettre sous tension l\'appareil via le réseau en utilisant une application telle que Enhanced Music Controller qui peut commander cet appareil.</string>
-    <string name="device_network_standby_confirm">Vous ne pourrez plus allumer l\'appareil via le réseau à l\'aide de l\'application. Continuer?</string>
+    <string name="device_network_standby_help">Lorsque cette fonction est réglée sur \"Marche\", vous pouvez mettre sous tension l\'appareil via le réseau en utilisant une application telle que Enhanced Music Controller qui peut commander cet appareil.</string>
+    <string name="device_network_standby_confirm">Avec ce paramètre sur \"Arrêt\", vous ne pourrez pas allumer l\'appareil via le réseau à l\'aide de l\'application. Continuer?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>

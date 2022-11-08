@@ -538,7 +538,7 @@
     <!-- Network Standby Command -->
     <string name="device_network_standby">Netzwerk-Standby</string>
     <string name="device_network_standby_help">Wenn diese Funktion auf \"An\" geschaltet ist, können Sie dieses Gerät mit einer Anwendung wie Enhanced Music Controller über das Netzwerk einschalten.</string>
-    <string name="device_network_standby_confirm">Sie können das Gerät nicht mehr über das Netzwerk mit der App einschalten. Fortsetzen?</string>
+    <string name="device_network_standby_confirm">Wenn diese Einstellung auf \"Aus\" gesetzt ist, können Sie das Gerät über das Netzwerk mit der App nicht mehr einschalten. Fortsetzen?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>

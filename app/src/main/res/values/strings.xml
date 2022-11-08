@@ -602,7 +602,7 @@
     <!-- Network Standby Command -->
     <string name="device_network_standby">Network standby</string>
     <string name="device_network_standby_help">When this function is set to \"On\", you can turn on the power of the unit via network using an application such as Enhanced Music Controller that can control this unit.</string>
-    <string name="device_network_standby_confirm">You will be not able anymore to turn on the power of the unit via network using the app. Continue?</string>
+    <string name="device_network_standby_confirm">With this setting to \"Off\" you\'ll not be able to power on the unit via network using the app. Continue?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>

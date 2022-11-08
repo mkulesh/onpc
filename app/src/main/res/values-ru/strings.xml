@@ -539,7 +539,7 @@
     <!-- Network Standby Command -->
     <string name="device_network_standby">Включение по сети</string>
     <string name="device_network_standby_help">Если для этой функции установлено значение \"Вкл\", вы можете включить питание устройства по сети с помощью приложения, которое может управлять этим устройством (такого как Enhanced Music Controller).</string>
-    <string name="device_network_standby_confirm">Вы больше не сможете включать питание устройства по сети с помощью приложения. Продолжать?</string>
+    <string name="device_network_standby_confirm">Если для этого параметра установлено значение \"Выкл\", вы не сможете включить устройство по сети с помощью приложения. Продолжать?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>
