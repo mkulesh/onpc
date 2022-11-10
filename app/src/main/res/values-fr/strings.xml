@@ -51,6 +51,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <!-- Navigation drawer -->
     <string name="drawer_open">Ouvrir le panneau de navigation</string>
     <string name="drawer_group_zone">Zone</string>
+    <string name="drawer_all_standby">Veille de toutes les zones</string>
     <string name="drawer_multiroom">Groupe</string>
     <string name="drawer_device">Équipement</string>
     <string name="drawer_device_connect">Connecter</string>

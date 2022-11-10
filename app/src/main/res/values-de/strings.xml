@@ -51,6 +51,7 @@
     <!-- Navigation drawer -->
     <string name="drawer_open">Navigation drawer öffnen</string>
     <string name="drawer_group_zone">Zone</string>
+    <string name="drawer_all_standby">Alle Zonen aus</string>
     <string name="drawer_multiroom">Gruppe</string>
     <string name="drawer_device">Gerät</string>
     <string name="drawer_device_connect">Verbinden</string>
@@ -539,7 +540,7 @@
     <!-- Network Standby Command -->
     <string name="device_network_standby">Netzwerk-Standby</string>
     <string name="device_network_standby_help">Wenn diese Funktion auf \"An\" geschaltet ist, können Sie dieses Gerät mit einer Anwendung wie Enhanced Music Controller über das Netzwerk einschalten.</string>
-    <string name="device_network_standby_confirm">Wenn diese Einstellung auf \"Aus\" gesetzt ist, können Sie das Gerät über das Netzwerk mit der App nicht mehr einschalten. Fortsetzen?</string>
+    <string name="device_network_standby_confirm">Mit dieser Einstellung auf \"Aus\" kann das Gerät nicht über das Netzwerk mit der App Eingeschaltet werden. Fortsetzen?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>

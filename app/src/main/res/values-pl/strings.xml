@@ -51,6 +51,7 @@
     <!-- Navigation drawer -->
     <string name="drawer_open">Okno nawigacji</string>
     <string name="drawer_group_zone">Strefa</string>
+    <string name="drawer_all_standby">Wszystkie strefy czuwania</string>
     <string name="drawer_multiroom">Grupa</string>
     <string name="drawer_device">Urządzenie</string>
     <string name="drawer_device_connect">Połącz</string>

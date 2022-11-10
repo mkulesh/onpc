@@ -35,6 +35,7 @@ import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
+import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
@@ -96,6 +97,9 @@ class MainNavigationDrawer
         case R.id.drawer_zone_3:
         case R.id.drawer_zone_4:
             navigationChangeZone(menuItem.getOrder());
+            break;
+        case R.id.drawer_all_standby:
+            navigationAllStandby(menuItem);
             break;
         case R.id.drawer_multiroom_1:
         case R.id.drawer_multiroom_2:
@@ -232,6 +236,16 @@ class MainNavigationDrawer
         activity.restartActivity();
     }
 
+    private void navigationAllStandby(MenuItem menuItem)
+    {
+        menuItem.setChecked(false);
+        if (activity.isConnected())
+        {
+            activity.getStateManager().sendMessage(new PowerStatusMsg(
+                    ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, PowerStatusMsg.PowerStatus.ALL_STB));
+        }
+    }
+
     private void updateNavigationHeader(final String versionName)
     {
         for (int i = 0; i < navigationView.getHeaderCount(); i++)
@@ -286,7 +300,21 @@ class MainNavigationDrawer
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
                     final MenuItem m = g.getSubMenu().getItem(i);
-                    if (zones == null || i >= zones.size())
+                    if (m.getItemId() == R.id.drawer_all_standby)
+                    {
+                        if (activity.isConnected() && zones != null && zones.size() > 1)
+                        {
+                            updateItem(m, R.drawable.drawer_all_standby,
+                                    activity.getString(R.string.drawer_all_standby), null);
+                            m.setChecked(false);
+                        }
+                        else
+                        {
+                            m.setVisible(false);
+                        }
+                        continue;
+                    }
+                    else if (zones == null || i >= zones.size())
                     {
                         m.setVisible(false);
                         continue;

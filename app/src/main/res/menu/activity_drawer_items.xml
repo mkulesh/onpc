@@ -58,6 +58,11 @@
                     app:actionLayout="@layout/activity_drawer_item"
                     android:orderInCategory="3"
                     android:title="@null" />
+                <item
+                    android:id="@+id/drawer_all_standby"
+                    app:actionLayout="@layout/activity_drawer_item"
+                    android:orderInCategory="4"
+                    android:title="@null" />
             </group>
         </menu>
     </item>
