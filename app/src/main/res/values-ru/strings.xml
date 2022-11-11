@@ -535,6 +535,7 @@
     <string name="device_late_night_low">Низкий</string>
     <string name="device_late_night_high">Высокий</string>
     <string name="device_late_night_auto">Авто</string>
+    <string name="device_late_night_disabled">Недоступен</string>
     <string name="device_late_night_up">Изменить режим \"Late night\"</string>
     <string name="device_late_night_help">Выборочное усиление звуков низкой громкости. Это полезно, когда вам нужно уменьшить громкость во время просмотра фильма поздно вечером.</string>
 

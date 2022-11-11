@@ -533,6 +533,7 @@
     <string name="device_late_night_low">Niska</string>
     <string name="device_late_night_high">Wysoki</string>
     <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_disabled">Wyłączone</string>
     <string name="device_late_night_up">Zmień tryb późnej nocy</string>
     <string name="device_late_night_help">Spraw, by małe dźwięki były łatwo słyszalne. Jest to przydatne, gdy chcesz zmniejszyć głośność podczas oglądania filmu późnym wieczorem.</string>
 

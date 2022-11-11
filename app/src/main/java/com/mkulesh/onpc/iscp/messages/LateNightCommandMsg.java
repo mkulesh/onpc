@@ -36,6 +36,7 @@ public class LateNightCommandMsg extends ISCPMessage
         LOW("01", R.string.device_late_night_low),
         HIGH("02", R.string.device_late_night_high),
         AUTO("03", R.string.device_late_night_auto),
+        DISABLED("DISABLED", R.string.device_late_night_disabled),
         UP("UP", R.string.device_late_night_up);
 
         final String code;
@@ -66,7 +67,7 @@ public class LateNightCommandMsg extends ISCPMessage
     LateNightCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
-        status = (Status) searchParameter(data, Status.values(), Status.NONE);
+        status = (Status) searchParameter(data, Status.values(), Status.DISABLED);
     }
 
     public LateNightCommandMsg(Status level)

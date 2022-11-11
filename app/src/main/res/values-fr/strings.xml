@@ -534,6 +534,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_late_night_low">Faible</string>
     <string name="device_late_night_high">Haute</string>
     <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_disabled">Handicapé</string>
     <string name="device_late_night_up">Changer le mode de nuit</string>
     <string name="device_late_night_help">Faites de petits sons facilement audibles. Il est utile lorsque vous devez réduire le volume tout en regardant un film tard dans la nuit.</string>
 

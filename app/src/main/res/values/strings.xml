@@ -598,6 +598,7 @@
     <string name="device_late_night_low">Low</string>
     <string name="device_late_night_high">High</string>
     <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_disabled">Disabled</string>
     <string name="device_late_night_up">Sets late night state wrap-around</string>
     <string name="device_late_night_help">Make small sounds easily heard. It is useful when you need to reduce the volume while watching a movie late night.</string>
 

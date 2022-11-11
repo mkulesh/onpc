@@ -263,7 +263,7 @@
     <string name="tape_cmd_play_ff">Wiedergabe vorwärts</string>
     <string name="tape_cmd_play_rew">Wiedergabe rückwärts</string>
     <string name="tape_cmd_stop">Stopp</string>
-    <string name="tape_cmd_record">Aufname/Pause</string>
+    <string name="tape_cmd_record">Aufnahme/Pause</string>
     <string name="tape_cmd_ff">Vorwärts springen</string>
     <string name="tape_cmd_rew">Zurück springen</string>
 
@@ -534,13 +534,14 @@
     <string name="device_late_night_low">Niedrig</string>
     <string name="device_late_night_high">Hoch</string>
     <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_disabled">Deaktiviert</string>
     <string name="device_late_night_up">Sets late night wechseln</string>
     <string name="device_late_night_help">Machen Sie kleine Geräusche leicht hörbar. Dies ist nützlich, wenn Sie die Lautstärke reduzieren müssen, während Sie sich spät abends einen Film ansehen.</string>
 
     <!-- Network Standby Command -->
     <string name="device_network_standby">Netzwerk-Standby</string>
     <string name="device_network_standby_help">Wenn diese Funktion auf \"An\" geschaltet ist, können Sie dieses Gerät mit einer Anwendung wie Enhanced Music Controller über das Netzwerk einschalten.</string>
-    <string name="device_network_standby_confirm">Mit dieser Einstellung auf \"Aus\" kann das Gerät nicht über das Netzwerk mit der App Eingeschaltet werden. Fortsetzen?</string>
+    <string name="device_network_standby_confirm">Mit dieser Einstellung auf \"Aus\" kann das Gerät nicht über das Netzwerk mit der App eingeschaltet werden. Fortsetzen?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>
