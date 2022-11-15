@@ -31,12 +31,12 @@ public class LateNightCommandMsg extends ISCPMessage
 
     public enum Status implements StringParameterIf
     {
-        NONE("N/A", R.string.device_late_night_none),
+        NONE("NONE", R.string.device_late_night_none),
+        DISABLED("N/A", R.string.device_late_night_disabled),
         OFF("00", R.string.device_late_night_off),
         LOW("01", R.string.device_late_night_low),
         HIGH("02", R.string.device_late_night_high),
         AUTO("03", R.string.device_late_night_auto),
-        DISABLED("DISABLED", R.string.device_late_night_disabled),
         UP("UP", R.string.device_late_night_up);
 
         final String code;

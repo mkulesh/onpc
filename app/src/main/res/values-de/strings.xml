@@ -89,7 +89,7 @@
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
     <string name="menu_receiver_information">Receiver Informationen</string>
-    <string name="menu_latest_logging">Letzte Log</string>
+    <string name="menu_latest_logging">Letztes Log</string>
     <string name="menu_switch_off_group">Alle Geräte in der Gruppe ausschalten?</string>
 
     <!-- Shortcuts -->
