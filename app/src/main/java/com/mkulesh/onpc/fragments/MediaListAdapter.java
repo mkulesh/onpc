@@ -114,7 +114,7 @@ final class MediaListAdapter extends ArrayAdapter<ISCPMessage>
                 icon.setImageResource(msg.getPresetConfig().getImageId());
                 Utils.setImageViewColorAttr(mediaFragment.activity, icon, android.R.attr.textColor);
             }
-            tvTitle.setText(msg.getPresetConfig().displayedString());
+            tvTitle.setText(msg.getPresetConfig().displayedString(true));
         }
 
         return convertView;

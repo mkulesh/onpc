@@ -440,7 +440,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             if (state.isRadioInput())
             {
                 final ReceiverInformationMsg.Preset preset = state.searchPreset();
-                final String text = preset != null ? preset.displayedString()
+                final String text = preset != null ? preset.displayedString(false)
                         : (state.inputType == InputSelectorMsg.InputType.DAB ? state.dabName : "");
                 title.setText(text);
                 format.setText(state.getFrequencyInfo(activity));

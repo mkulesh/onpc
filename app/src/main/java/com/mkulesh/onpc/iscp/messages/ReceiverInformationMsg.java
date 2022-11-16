@@ -308,7 +308,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         }
 
         @NonNull
-        public String displayedString()
+        public String displayedString(boolean withId)
         {
             String res = name.trim();
             final String band = (isFm() ? " MHz" : (isAm() ? " kHz" : " "));
@@ -320,7 +320,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             {
                 res = freq + band;
             }
-            return res;
+            return withId ? getId() + " - " + res : res;
         }
 
         @DrawableRes

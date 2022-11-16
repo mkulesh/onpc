@@ -269,7 +269,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             addShortcut(activity.getStateManager().getState(),
                     String.format("%02x", selectedStation.getPresetConfig().getId()),
-                    selectedStation.getPresetConfig().displayedString());
+                    selectedStation.getPresetConfig().displayedString(true));
             selectedStation = null;
             return true;
         }
