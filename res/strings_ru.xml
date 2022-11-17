@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2022 by Mikhail Kulesh
+  ~ Copyright (C) 2018-2022 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,7 +15,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
+    <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Улучшенный контроллер для Onkyo и Pioneer: слушайте музыку правильно!</string>
@@ -60,6 +60,7 @@ Copyright © 2019-2022 by __Михаил Кулеш__
     <!-- Navigation drawer -->
     <string name="drawer_open">Открыть панель навигатора</string>
     <string name="drawer_group_zone">Зона</string>
+    <string name="drawer_all_standby">Выкл. все зоны</string>
     <string name="drawer_multiroom">Группа</string>
     <string name="drawer_device">Устройство</string>
     <string name="drawer_device_connect">Соединение</string>
@@ -403,6 +404,7 @@ Copyright © 2019-2022 by __Михаил Кулеш__
     <string name="input_selector_hdmi_5">HDMI 5</string>
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
+    <string name="input_selector_source">SOURCE</string>
 
     <!-- Services -->
     <string name="service_music_server">Домашний музыкальный сервер</string>
@@ -535,8 +537,14 @@ Copyright © 2019-2022 by __Михаил Кулеш__
     <string name="device_late_night_low">Низкий</string>
     <string name="device_late_night_high">Высокий</string>
     <string name="device_late_night_auto">Авто</string>
+    <string name="device_late_night_disabled">Недоступен</string>
     <string name="device_late_night_up">Изменить режим \"Late night\"</string>
     <string name="device_late_night_help">Выборочное усиление звуков низкой громкости. Это полезно, когда вам нужно уменьшить громкость во время просмотра фильма поздно вечером.</string>
+
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Включение по сети</string>
+    <string name="device_network_standby_help">Если для этой функции установлено значение \"Вкл\", вы можете включить питание устройства по сети с помощью приложения, которое может управлять этим устройством (такого как Enhanced Music Controller).</string>
+    <string name="device_network_standby_confirm">Если для этого параметра установлено значение \"Выкл\", вы не сможете включить устройство по сети с помощью приложения. Продолжать?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>

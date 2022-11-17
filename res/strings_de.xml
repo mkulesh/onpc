@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2022 by Mikhail Kulesh
+  ~ Copyright (C) 2018-2022 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,7 +15,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Erweiterte Bedienung für Onkyo und Pioneer</string>
+    <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!</string>
@@ -60,6 +60,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <!-- Navigation drawer -->
     <string name="drawer_open">Navigation drawer öffnen</string>
     <string name="drawer_group_zone">Zone</string>
+    <string name="drawer_all_standby">Alle Zonen aus</string>
     <string name="drawer_multiroom">Gruppe</string>
     <string name="drawer_device">Gerät</string>
     <string name="drawer_device_connect">Verbinden</string>
@@ -92,7 +93,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
     <string name="menu_receiver_information">Receiver Informationen</string>
-    <string name="menu_latest_logging">Letzte Log</string>
+    <string name="menu_latest_logging">Letztes Log</string>
     <string name="menu_switch_off_group">Alle Geräte in der Gruppe ausschalten?</string>
 
     <!-- Shortcuts -->
@@ -267,7 +268,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="tape_cmd_play_ff">Wiedergabe vorwärts</string>
     <string name="tape_cmd_play_rew">Wiedergabe rückwärts</string>
     <string name="tape_cmd_stop">Stopp</string>
-    <string name="tape_cmd_record">Aufname/Pause</string>
+    <string name="tape_cmd_record">Aufnahme/Pause</string>
     <string name="tape_cmd_ff">Vorwärts springen</string>
     <string name="tape_cmd_rew">Zurück springen</string>
 
@@ -405,6 +406,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="input_selector_hdmi_5">HDMI 5</string>
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
+    <string name="input_selector_source">SOURCE</string>
 
     <!-- Services -->
     <string name="service_music_server">Musik Server (DLNA)</string>
@@ -537,8 +539,14 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="device_late_night_low">Niedrig</string>
     <string name="device_late_night_high">Hoch</string>
     <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_disabled">Deaktiviert</string>
     <string name="device_late_night_up">Sets late night wechseln</string>
     <string name="device_late_night_help">Machen Sie kleine Geräusche leicht hörbar. Dies ist nützlich, wenn Sie die Lautstärke reduzieren müssen, während Sie sich spät abends einen Film ansehen.</string>
+
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Netzwerk-Standby</string>
+    <string name="device_network_standby_help">Wenn diese Funktion auf \"An\" geschaltet ist, können Sie dieses Gerät mit einer Anwendung wie Enhanced Music Controller über das Netzwerk einschalten.</string>
+    <string name="device_network_standby_confirm">Mit dieser Einstellung auf \"Aus\" kann das Gerät nicht über das Netzwerk mit der App eingeschaltet werden. Fortsetzen?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>

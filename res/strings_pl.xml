@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2022 by Mikhail Kulesh
+  ~ Copyright (C) 2018-2022 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,7 +15,7 @@
 <resources>
 
     <!-- Main view -->
-    <string name="app_name">Ulepszony kontroler do urządzeń Onkyo i Pioneer</string>
+    <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Ulepszony kontroler do urządzeń Onkyo i Pioneer: słuchaj muzyki poprawnie!</string>
@@ -62,6 +62,7 @@ Enjoy!""</string>
     <!-- Navigation drawer -->
     <string name="drawer_open">Okno nawigacji</string>
     <string name="drawer_group_zone">Strefa</string>
+    <string name="drawer_all_standby">Wszystkie strefy czuwania</string>
     <string name="drawer_multiroom">Grupa</string>
     <string name="drawer_device">Urządzenie</string>
     <string name="drawer_device_connect">Połącz</string>
@@ -406,6 +407,7 @@ Enjoy!""</string>
     <string name="input_selector_hdmi_5">HDMI 5</string>
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
+    <string name="input_selector_source">SOURCE</string>
 
     <!-- Services -->
     <string name="service_music_server">Music Server (DLNA)</string>
@@ -538,8 +540,14 @@ Enjoy!""</string>
     <string name="device_late_night_low">Niska</string>
     <string name="device_late_night_high">Wysoki</string>
     <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_disabled">Wyłączone</string>
     <string name="device_late_night_up">Zmień tryb późnej nocy</string>
     <string name="device_late_night_help">Spraw, by małe dźwięki były łatwo słyszalne. Jest to przydatne, gdy chcesz zmniejszyć głośność podczas oglądania filmu późnym wieczorem.</string>
+
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Tryb gotowości sieciowej</string>
+    <string name="device_network_standby_help">Gdy ta funkcja jest ustawiona na \"On\", możesz włączyć zasilanie urządzenia przez sieć za pomocą aplikacji, takiej jak Enhanced Music Controller, która może sterować tym urządzeniem.</string>
+    <string name="device_network_standby_confirm">Przy tym ustawieniu na \"Off\" nie będzie można włączyć urządzenia przez sieć za pomocą aplikacji. Kontynuować?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>

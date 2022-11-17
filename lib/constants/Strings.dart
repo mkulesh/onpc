@@ -147,11 +147,11 @@ class Strings
     /* Translatable attributes */
 
     static const List<String> l_app_name = [
-        /*en*/ "Enhanced Controller for Onkyo and Pioneer",
-        /*ru*/ "Enhanced Controller for Onkyo and Pioneer",
-        /*de*/ "Erweiterte Bedienung für Onkyo und Pioneer",
-        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer",
-        /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer"];
+        /*en*/ "Enhanced Music Controller Lite",
+        /*ru*/ "Enhanced Music Controller Lite",
+        /*de*/ "Enhanced Music Controller Lite",
+        /*fr*/ "Enhanced Music Controller Lite",
+        /*pl*/ "Enhanced Music Controller Lite"];
     static String get app_name => l_app_name[_language];
 
     static const List<String> l_app_name_pro = [
@@ -404,6 +404,14 @@ Enjoy!"""];
         /*pl*/ "Strefa"];
     static String get drawer_group_zone => l_drawer_group_zone[_language];
 
+    static const List<String> l_drawer_all_standby = [
+        /*en*/ "All Zones standby",
+        /*ru*/ "Выкл. все зоны",
+        /*de*/ "Alle Zonen aus",
+        /*fr*/ "Veille de toutes les zones",
+        /*pl*/ "Wszystkie strefy czuwania"];
+    static String get drawer_all_standby => l_drawer_all_standby[_language];
+
     static const List<String> l_drawer_multiroom = [
         /*en*/ "Group",
         /*ru*/ "Группа",
@@ -599,7 +607,7 @@ Enjoy!"""];
     static const List<String> l_menu_latest_logging = [
         /*en*/ "Latest logging",
         /*ru*/ "Лог приложения",
-        /*de*/ "Letzte Log",
+        /*de*/ "Letztes Log",
         /*fr*/ "Dernière entrée",
         /*pl*/ "Ostatnie logowanie"];
     static String get menu_latest_logging => l_menu_latest_logging[_language];
@@ -1463,7 +1471,7 @@ Enjoy!"""];
     static const List<String> l_tape_cmd_record = [
         /*en*/ "Record/Pause",
         /*ru*/ "Запись/Пауза",
-        /*de*/ "Aufname/Pause",
+        /*de*/ "Aufnahme/Pause",
         /*fr*/ "Record/Pause",
         /*pl*/ "Record/Pause"];
     static String get tape_cmd_record => l_tape_cmd_record[_language];
@@ -2452,6 +2460,14 @@ Enjoy!"""];
         /*pl*/ "HDMI 7"];
     static String get input_selector_hdmi_7 => l_input_selector_hdmi_7[_language];
 
+    static const List<String> l_input_selector_source = [
+        /*en*/ "SOURCE",
+        /*ru*/ "SOURCE",
+        /*de*/ "SOURCE",
+        /*fr*/ "SOURCE",
+        /*pl*/ "SOURCE"];
+    static String get input_selector_source => l_input_selector_source[_language];
+
     static const List<String> l_service_music_server = [
         /*en*/ "Music Server (DLNA)",
         /*ru*/ "Домашний музыкальный сервер",
@@ -3316,6 +3332,14 @@ Enjoy!"""];
         /*pl*/ "Auto"];
     static String get device_late_night_auto => l_device_late_night_auto[_language];
 
+    static const List<String> l_device_late_night_disabled = [
+        /*en*/ "Disabled",
+        /*ru*/ "Недоступен",
+        /*de*/ "Deaktiviert",
+        /*fr*/ "Handicapé",
+        /*pl*/ "Wyłączone"];
+    static String get device_late_night_disabled => l_device_late_night_disabled[_language];
+
     static const List<String> l_device_late_night_up = [
         /*en*/ "Sets late night state wrap-around",
         /*ru*/ "Изменить режим \"Late night\"",
@@ -3331,6 +3355,30 @@ Enjoy!"""];
         /*fr*/ "Faites de petits sons facilement audibles. Il est utile lorsque vous devez réduire le volume tout en regardant un film tard dans la nuit.",
         /*pl*/ "Spraw, by małe dźwięki były łatwo słyszalne. Jest to przydatne, gdy chcesz zmniejszyć głośność podczas oglądania filmu późnym wieczorem."];
     static String get device_late_night_help => l_device_late_night_help[_language];
+
+    static const List<String> l_device_network_standby = [
+        /*en*/ "Network standby",
+        /*ru*/ "Включение по сети",
+        /*de*/ "Netzwerk-Standby",
+        /*fr*/ "Veille réseau",
+        /*pl*/ "Tryb gotowości sieciowej"];
+    static String get device_network_standby => l_device_network_standby[_language];
+
+    static const List<String> l_device_network_standby_help = [
+        /*en*/ "When this function is set to \"On\", you can turn on the power of the unit via network using an application such as Enhanced Music Controller that can control this unit.",
+        /*ru*/ "Если для этой функции установлено значение \"Вкл\", вы можете включить питание устройства по сети с помощью приложения, которое может управлять этим устройством (такого как Enhanced Music Controller).",
+        /*de*/ "Wenn diese Funktion auf \"An\" geschaltet ist, können Sie dieses Gerät mit einer Anwendung wie Enhanced Music Controller über das Netzwerk einschalten.",
+        /*fr*/ "Lorsque cette fonction est réglée sur \"Marche\", vous pouvez mettre sous tension l\'appareil via le réseau en utilisant une application telle que Enhanced Music Controller qui peut commander cet appareil.",
+        /*pl*/ "Gdy ta funkcja jest ustawiona na \"On\", możesz włączyć zasilanie urządzenia przez sieć za pomocą aplikacji, takiej jak Enhanced Music Controller, która może sterować tym urządzeniem."];
+    static String get device_network_standby_help => l_device_network_standby_help[_language];
+
+    static const List<String> l_device_network_standby_confirm = [
+        /*en*/ "With this setting to \"Off\" it is not possible to power ON the device via network using the app. Continue?",
+        /*ru*/ "Если для этого параметра установлено значение \"Выкл\", вы не сможете включить устройство по сети с помощью приложения. Продолжать?",
+        /*de*/ "Mit dieser Einstellung auf \"Aus\" kann das Gerät nicht über das Netzwerk mit der App eingeschaltet werden. Fortsetzen?",
+        /*fr*/ "Avec ce paramètre sur \"Arrêt\", vous ne pourrez pas allumer l\'appareil via le réseau à l\'aide de l\'application. Continuer?",
+        /*pl*/ "Przy tym ustawieniu na \"Off\" nie będzie można włączyć urządzenia przez sieć za pomocą aplikacji. Kontynuować?"];
+    static String get device_network_standby_confirm => l_device_network_standby_confirm[_language];
 
     static const List<String> l_privacy_policy_onkyo = [
         /*en*/ "Agree Onkyo Privacy Policy",

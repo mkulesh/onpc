@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2022 by Mikhail Kulesh
+  ~ Copyright (C) 2018-2022 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -17,7 +17,7 @@
     <string name="dashed_string" translatable="false">---</string>
 
     <!-- Main view -->
-    <string name="app_name">Enhanced Controller for Onkyo and Pioneer</string>
+    <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
     <string name="app_description">Enhanced controller for Onkyo and Pioneer: listen to music properly!</string>
@@ -64,6 +64,7 @@ Enjoy!""</string>
     <!-- Navigation drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_group_zone">Zone</string>
+    <string name="drawer_all_standby">All Zones standby</string>
     <string name="drawer_multiroom">Group</string>
     <string name="drawer_device">Device</string>
     <string name="drawer_device_connect">Connect</string>
@@ -451,6 +452,7 @@ Enjoy!""</string>
     <string name="input_selector_hdmi_5">HDMI 5</string>
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
+    <string name="input_selector_source">SOURCE</string>
 
     <!-- Services -->
     <string name="service_music_server">Music Server (DLNA)</string>
@@ -583,8 +585,14 @@ Enjoy!""</string>
     <string name="device_late_night_low">Low</string>
     <string name="device_late_night_high">High</string>
     <string name="device_late_night_auto">Auto</string>
+    <string name="device_late_night_disabled">Disabled</string>
     <string name="device_late_night_up">Sets late night state wrap-around</string>
     <string name="device_late_night_help">Make small sounds easily heard. It is useful when you need to reduce the volume while watching a movie late night.</string>
+
+    <!-- Network Standby Command -->
+    <string name="device_network_standby">Network standby</string>
+    <string name="device_network_standby_help">When this function is set to \"On\", you can turn on the power of the unit via network using an application such as Enhanced Music Controller that can control this unit.</string>
+    <string name="device_network_standby_confirm">With this setting to \"Off\" it is not possible to power ON the device via network using the app. Continue?</string>
 
     <!-- Privacy Policy Status -->
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
