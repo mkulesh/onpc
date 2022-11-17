@@ -46,6 +46,7 @@ import "MenuStatusMsg.dart";
 import "MultiroomChannelSettingMsg.dart";
 import "MultiroomDeviceInformationMsg.dart";
 import "MusicOptimizerMsg.dart";
+import "NetworkStandByMsg.dart";
 import "PhaseMatchingBassMsg.dart";
 import "PlayStatusMsg.dart";
 import "PowerStatusMsg.dart";
@@ -113,6 +114,8 @@ class MessageFactory
                 return GoogleCastAnalyticsMsg(raw);
             case LateNightCommandMsg.CODE:
                 return LateNightCommandMsg(raw);
+            case NetworkStandByMsg.CODE:
+                return NetworkStandByMsg(raw);
 
         // Track info
             case AlbumNameMsg.CODE:

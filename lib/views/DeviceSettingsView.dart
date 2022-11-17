@@ -25,6 +25,7 @@ import "../iscp/messages/GoogleCastAnalyticsMsg.dart";
 import "../iscp/messages/HdmiCecMsg.dart";
 import "../iscp/messages/LateNightCommandMsg.dart";
 import "../iscp/messages/MusicOptimizerMsg.dart";
+import "../iscp/messages/NetworkStandByMsg.dart";
 import "../iscp/messages/PhaseMatchingBassMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/SleepSetCommandMsg.dart";
@@ -60,7 +61,8 @@ class DeviceSettingsView extends UpdatableView
         SpeakerACommandMsg.CODE,
         SpeakerBCommandMsg.CODE,
         GoogleCastAnalyticsMsg.CODE,
-        LateNightCommandMsg.CODE
+        LateNightCommandMsg.CODE,
+        NetworkStandByMsg.CODE
     ];
 
     DeviceSettingsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -278,6 +280,18 @@ class DeviceSettingsView extends UpdatableView
                 LateNightCommandMsg.output(LateNightMode.UP)));
         }
 
+        // When this function is set to "On", you can turn on the power of
+        // the unit via network using an application such as Enhanced Music
+        // Controller that can control this unit.
+        if (showAll || ds.networkStandBy.key != NetworkStandBy.NONE)
+        {
+            rows.add(_buildRow(context,
+                Strings.device_network_standby,
+                ds.networkStandBy.description,
+                Strings.device_network_standby_help,
+                null, tapHandler: _onNetworkStandBy));
+        }
+
         final Map<int, TableColumnWidth> columnWidths = Map();
         columnWidths[0] = FractionColumnWidth(0.35);
         columnWidths[1] = FractionColumnWidth(0.65);
@@ -298,7 +312,8 @@ class DeviceSettingsView extends UpdatableView
 
     TableRow _buildRow(BuildContext context, final String title,
         final String value, final String description,
-        final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
+        final ISCPMessage cmd, {List<ISCPMessage> postMessages,
+            List<String> postQueries, void Function(BuildContext context) tapHandler})
     {
         final Widget rowTitle = CustomTextLabel.small(title, padding: ActivityDimens.headerPadding);
 
@@ -311,9 +326,19 @@ class DeviceSettingsView extends UpdatableView
                         child: CustomTextLabel.normal(value, textAlign: TextAlign.center),
                         onTap: ()
                         {
-                            if (stateManager.state.isOn)
+                            if (state.isOn)
                             {
-                                _onToggleButton(context, cmd, postMessages: postMessages, postQueries: postQueries);
+                                FocusScope.of(context).unfocus();
+                                if (tapHandler != null)
+                                {
+                                    tapHandler(context);
+                                }
+                                else
+                                {
+                                    _onToggleButton(context, cmd,
+                                        postMessages: postMessages,
+                                        postQueries: postQueries);
+                                }
                             }
                         }),
                     flex: 1),
@@ -332,8 +357,10 @@ class DeviceSettingsView extends UpdatableView
 
     void _onToggleButton(BuildContext context, final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
     {
-        FocusScope.of(context).unfocus();
-        stateManager.sendMessage(cmd);
+        if (cmd != null)
+        {
+            stateManager.sendMessage(cmd);
+        }
         if (postMessages != null)
         {
             postMessages.forEach((p) => stateManager.sendMessage(p));
@@ -395,5 +422,45 @@ class DeviceSettingsView extends UpdatableView
             return _SpeakerABStatus.B_ONLY;
         }
         return _SpeakerABStatus.NONE;
+    }
+
+    void _onNetworkStandBy(BuildContext context)
+    {
+        if (state.deviceSettingsState.networkStandBy.key == NetworkStandBy.OFF)
+        {
+            stateManager.sendMessage(NetworkStandByMsg.output(NetworkStandBy.ON));
+            return;
+        }
+
+        final ThemeData td = Theme.of(context);
+        final Widget dialog = AlertDialog(
+            title: CustomDialogTitle(Strings.device_network_standby, Drawables.cmd_help),
+            contentPadding: DialogDimens.contentPadding,
+            content: CustomTextLabel.normal(Strings.device_network_standby_confirm),
+            actions: <Widget>[
+                TextButton(
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                    onPressed: ()
+                    {
+                        Navigator.of(context).pop();
+                    }),
+                TextButton(
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
+                    onPressed: ()
+                    {
+                        if (state.isOn)
+                        {
+                            stateManager.sendMessage(
+                                NetworkStandByMsg.output(NetworkStandBy.OFF));
+                        }
+                        Navigator.of(context).pop();
+                    }),
+            ]
+        );
+
+        showDialog(
+            context: context,
+            builder: (BuildContext context)
+            => dialog);
     }
 }

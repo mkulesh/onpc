@@ -48,6 +48,7 @@ import "messages/ListeningModeMsg.dart";
 import "messages/MasterVolumeMsg.dart";
 import "messages/MenuStatusMsg.dart";
 import "messages/MusicOptimizerMsg.dart";
+import "messages/NetworkStandByMsg.dart";
 import "messages/PhaseMatchingBassMsg.dart";
 import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
@@ -311,6 +312,10 @@ class State
         else if (msg is LateNightCommandMsg)
         {
             return _isChange(LateNightCommandMsg.CODE, _deviceSettingsState.processLateNightCommand(msg));
+        }
+        else if (msg is NetworkStandByMsg)
+        {
+            return _isChange(NetworkStandByMsg.CODE, _deviceSettingsState.processNetworkStandBy(msg));
         }
 
         // Track info
