@@ -138,7 +138,11 @@ class ReceiverInformation
         _deviceSelectors.clear();
         InputSelectorMsg.ValueEnum.values.where((e) => e.key != InputSelector.NONE).forEach((it)
         {
-            final Selector s = Selector(it.getCode, it.description, ReceiverInformationMsg.ALL_ZONE, it.getCode, false);
+            // #265 Add new input selector "SOURCE":
+            // "SOURCE" input not allowed for the main zone
+            final int zones = it.key == InputSelector.SOURCE ?
+                ReceiverInformationMsg.EXT_ZONES : ReceiverInformationMsg.ALL_ZONE;
+            final Selector s = Selector(it.getCode, it.description, zones, it.getCode, false);
             _deviceSelectors.add(s);
         });
 

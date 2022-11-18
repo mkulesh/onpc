@@ -282,6 +282,7 @@ class ReceiverInformationMsg extends ISCPMessage
 
     static const int DEFAULT_ACTIVE_ZONE = 0;
     static const int ALL_ZONE = 0xFF;
+    static const int EXT_ZONES = 14; // 1110 - all zones except main
 
     String _deviceId;
     final Map<String, String> _deviceProperties = HashMap<String, String>();

@@ -59,7 +59,8 @@ enum InputSelector
     DAB,
     HDMI_5,
     HDMI_6,
-    HDMI_7
+    HDMI_7,
+    SOURCE
 }
 
 /*
@@ -156,6 +157,8 @@ class InputSelectorMsg extends EnumParameterZonedMsg
             descrList: Strings.l_input_selector_hdmi_6),
         EnumItem.code(InputSelector.HDMI_7, "57",
             descrList: Strings.l_input_selector_hdmi_7),
+        EnumItem.code(InputSelector.SOURCE, "80",
+            descrList: Strings.l_input_selector_source),
     ]);
 
     InputSelectorMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw, ValueEnum);

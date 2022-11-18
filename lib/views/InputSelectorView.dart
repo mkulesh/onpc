@@ -52,8 +52,12 @@ class InputSelectorView extends UpdatableView
         sortedSelectors.forEach((deviceSelector)
         {
             final EnumItem<InputSelector> selectorEnum =
-            InputSelectorMsg.ValueEnum.valueByCode(deviceSelector.getId);
-            if (selectorEnum.key != InputSelector.NONE)
+                InputSelectorMsg.ValueEnum.valueByCode(deviceSelector.getId);
+            // #265 Add new input selector "SOURCE":
+            // Ignore SOURCE input for all not allowed zones
+            final bool activeForZone = selectorEnum.key == InputSelector.SOURCE ?
+                deviceSelector.isActiveForZone(state.getActiveZone) : true;
+            if (selectorEnum.key != InputSelector.NONE && activeForZone)
             {
                 final InputSelectorMsg cmd = InputSelectorMsg.output(state.getActiveZone, selectorEnum.key);
                 final String name = configuration.deviceSelectorName(selectorEnum,
