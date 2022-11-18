@@ -475,12 +475,35 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         final List<NetworkServiceMsg> serviceItems = state.cloneServiceItems();
 
         ArrayList<ISCPMessage> newItems = new ArrayList<>();
-        if (!state.isTopLayer() && !activity.getConfiguration().isBackAsReturn())
-        {
-            newItems.add(StateManager.RETURN_MSG);
-        }
         int playing = -1;
-        if (!mediaItems.isEmpty())
+
+        if (state.isRadioInput())
+        {
+            // #270 Empty FM/DAB preset list: process radio input first
+            // since mediaItems can be not empty due to remaining track menu items
+            // or active playback mode
+            for (ReceiverInformationMsg.Preset p : state.presetList)
+            {
+                if ((state.inputType == InputSelectorMsg.InputType.FM && p.isFm())
+                        || (state.inputType == InputSelectorMsg.InputType.AM && p.isAm())
+                        || (state.inputType == InputSelectorMsg.InputType.DAB && p.isDab()))
+                {
+                    final boolean isPlaying = (p.getId() == state.preset);
+                    newItems.add(new PresetCommandMsg(
+                            state.getActiveZone(), p, isPlaying ? state.preset : PresetCommandMsg.NO_PRESET));
+                    if (isPlaying)
+                    {
+                        playing = newItems.size() - 1;
+                    }
+                }
+            }
+            filteredItems = newItems.size();
+        }
+        else if (state.isSimpleInput())
+        {
+            // Nothing to do: no media items for simple input
+        }
+        else if (!mediaItems.isEmpty())
         {
             if (mediaItems.size() > 1)
             {
@@ -506,28 +529,24 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             filteredItems = items.size();
             newItems.addAll(items);
         }
-        else if (state.isPlaybackMode())
+
+        final boolean isPlayback = state.isOn() && newItems.isEmpty() && (state.isPlaybackMode() || state.isSimpleInput());
+
+        // Add "Return" button if necessary
+        if (!state.isTopLayer() && !activity.getConfiguration().isBackAsReturn())
+        {
+            newItems.add(0, StateManager.RETURN_MSG);
+        }
+
+        // Add "Playback" indication if necessary
+        if (isPlayback)
         {
             final XmlListItemMsg nsMsg = new XmlListItemMsg(-1, 0,
                     activity.getResources().getString(R.string.medialist_playback_mode),
                     XmlListItemMsg.Icon.PLAY, false, null);
             newItems.add(nsMsg);
         }
-        else if (state.isRadioInput())
-        {
-            for (ReceiverInformationMsg.Preset p : state.presetList)
-            {
-                if ((state.inputType == InputSelectorMsg.InputType.FM && p.isFm())
-                        || (state.inputType == InputSelectorMsg.InputType.AM && p.isAm())
-                        || (state.inputType == InputSelectorMsg.InputType.DAB && p.isDab()))
-                {
-                    final boolean isPlaying = (p.getId() == state.preset);
-                    newItems.add(new PresetCommandMsg(
-                            state.getActiveZone(), p, isPlaying ? state.preset : PresetCommandMsg.NO_PRESET));
-                }
-            }
-            filteredItems = newItems.size();
-        }
+
         listViewAdapter = new MediaListAdapter(this, activity, newItems);
         listView.setAdapter(listViewAdapter);
         if (playing >= 0)

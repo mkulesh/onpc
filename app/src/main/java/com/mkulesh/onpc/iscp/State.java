@@ -763,20 +763,18 @@ public class State implements ConnectionIf
     {
         final boolean changed = inputType != msg.getInputType();
         inputType = msg.getInputType();
-        if (!inputType.isMediaList())
+        if (isSimpleInput())
         {
             Logging.info(msg, "New selector is not a media list. Clearing...");
             clearTrackInfo();
             serviceType = null;
             clearItems();
+            if (!isCdInput())
+            {
+                timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
+                serviceIcon = ServiceType.UNKNOWN;
+            }
         }
-
-        if (isSimpleInput())
-        {
-            timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
-            serviceIcon = ServiceType.UNKNOWN;
-        }
-
         return changed;
     }
 
@@ -1183,7 +1181,7 @@ public class State implements ConnectionIf
         }
         synchronized (mediaItems)
         {
-            if (!inputType.isMediaList())
+            if (isSimpleInput())
             {
                 mediaItems.clear();
                 Logging.info(msg, "skipped: input channel " + inputType.toString() + " is not a media list");
@@ -1374,13 +1372,13 @@ public class State implements ConnectionIf
     }
 
     /**
-     * Simple inputs do not have time or cover
+     * Simple inputs do not have time, cover, or media items
      *
      * @return boolean
      */
     public boolean isSimpleInput()
     {
-        return !isCdInput() && (inputType != InputSelectorMsg.InputType.NONE && !inputType.isMediaList());
+        return inputType != InputSelectorMsg.InputType.NONE && !inputType.isMediaList();
     }
 
     public boolean isUsb()
@@ -1391,12 +1389,13 @@ public class State implements ConnectionIf
 
     public boolean isTopLayer()
     {
+        if (isSimpleInput())
+        {
+            // Single inputs are always on top level
+            return true;
+        }
         if (!isPlaybackMode())
         {
-            if (isRadioInput())
-            {
-                return true;
-            }
             if (serviceType == ServiceType.NET &&
                     layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP)
             {
