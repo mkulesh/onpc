@@ -541,7 +541,7 @@ class State
     bool get isShortcutPossible
     {
         final bool isMediaList = mediaListState.numberOfLayers > 0 && mediaListState.titleBar.isNotEmpty && mediaListState.serviceType != null;
-        return !SKIP_XML_MESSAGES && (isMediaList || mediaListState.isRadioInput);
+        return !SKIP_XML_MESSAGES && (isMediaList || mediaListState.isSimpleInput);
     }
 
 }

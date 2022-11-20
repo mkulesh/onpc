@@ -158,6 +158,13 @@ class Shortcut
             return data;
         }
 
+        // #270: Simple inputs do not need additional processing
+        if (!input.isMediaList)
+        {
+            data += "</onpcScript>";
+            return data;
+        }
+
         // Issue #248: Shortcuts not working when an empty play queue is selected in MEDIA tab:
         // when an empty play queue is selected in MEDIA tab, NLT message is not answered by receiver
         final bool emptyQueue = mediaState.serviceType.key == ServiceType.PLAYQUEUE && mediaState.numberOfTitles == 0;

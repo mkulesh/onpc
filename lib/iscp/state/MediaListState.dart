@@ -327,7 +327,7 @@ class MediaListState
     => _uiType != null && _uiType == UIType.PLAYBACK;
 
     bool get isMenuMode
-    => _uiType != null && [UIType.MENU, UIType.MENU_LIST].contains(_uiType);
+    => _uiType != null && !isSimpleInput && [UIType.MENU, UIType.MENU_LIST].contains(_uiType);
 
     bool get isPopupMode
     => _uiType != null && [UIType.POPUP, UIType.KEYBOARD].contains(_uiType);
@@ -366,12 +366,12 @@ class MediaListState
 
     bool isTopLayer()
     {
+        if (isSimpleInput)
+        {
+            return true;
+        }
         if (!isPlaybackMode)
         {
-            if (isSimpleInput)
-            {
-                return true;
-            }
             if (_serviceType.key == ServiceType.NET && _layerInfo == LayerInfo.NET_TOP)
             {
                 return true;
