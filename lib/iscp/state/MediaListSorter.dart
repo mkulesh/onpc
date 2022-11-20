@@ -32,7 +32,7 @@ class MediaListSorter
     }
 
     String _getItemName(final ISCPMessage cmd)
-    => cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
+    => cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString() : null;
 
     List<ISCPMessage> _swapArtistAndAlbum(final List<ISCPMessage> items)
     {

@@ -203,7 +203,7 @@ class Preset
     String toString()
     => _id.toString() + ": " + _name + ", band=" + _band.toString() + ", freq=" + _freq.toLowerCase();
 
-    String get displayedString
+    String displayedString({bool withId = true})
     {
         String res = _name.trim();
         final String band = (isFm ? " MHz" : (isAm ? " kHz" : " "));
@@ -215,7 +215,7 @@ class Preset
         {
             res = _freq + band;
         }
-        return res;
+        return withId ? getId.toString() + " - " + res : res;
     }
 
     String getImageId()

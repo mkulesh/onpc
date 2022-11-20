@@ -394,7 +394,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             serviceIcon = Drawables.media_item_play;
         }
-        return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getPresetConfig.displayedString, rowMsg);
+        return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getPresetConfig.displayedString(), rowMsg);
     }
 
     Widget _buildOperationCommandMsg(BuildContext context, OperationCommandMsg rowMsg)
@@ -411,7 +411,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final bool isQueue = state.mediaListState.isQueue;
         final bool isMediaItem = (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING) || cmd is PresetCommandMsg;
         final String shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
-        final String shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString : null;
+        final String shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString() : null;
 
         if (isMediaItem && selector != null)
         {
@@ -790,7 +790,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
         else if (msg is PresetCommandMsg)
         {
-            title = msg.getPresetConfig.displayedString;
+            title = msg.getPresetConfig.displayedString();
         }
         else
         {
