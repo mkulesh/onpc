@@ -127,7 +127,7 @@ class DeviceSettingsState
         _speakerA = SpeakerACommandMsg.ValueEnum.defValue;
         _speakerB = SpeakerBCommandMsg.ValueEnum.defValue;
         _googleCastAnalytics = GoogleCastAnalyticsMsg.ValueEnum.defValue;
-        _lateNightMode = LateNightCommandMsg.ValueEnum.defValue;
+        _lateNightMode = LateNightCommandMsg.ValueEnum.valueByKey(LateNightMode.NONE);
         _networkStandBy = NetworkStandByMsg.ValueEnum.defValue;
     }
 

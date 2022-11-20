@@ -19,6 +19,7 @@ import "EnumParameterMsg.dart";
 enum LateNightMode
 {
     NONE,
+    DISABLED,
     OFF,
     LOW,
     HIGH,
@@ -34,7 +35,8 @@ class LateNightCommandMsg extends EnumParameterMsg<LateNightMode>
     static const String CODE = "LTN";
 
     static const ExtEnum<LateNightMode> ValueEnum = ExtEnum<LateNightMode>([
-        EnumItem.code(LateNightMode.NONE, "N/A", descrList: Strings.l_device_late_night_none, defValue: true),
+        EnumItem.code(LateNightMode.NONE, "NONE", descrList: Strings.l_device_late_night_none),
+        EnumItem.code(LateNightMode.DISABLED, "N/A", descrList: Strings.l_device_late_night_disabled, defValue: true),
         EnumItem.code(LateNightMode.OFF, "00", descrList: Strings.l_device_late_night_off),
         EnumItem.code(LateNightMode.LOW, "01", descrList: Strings.l_device_late_night_low),
         EnumItem.code(LateNightMode.HIGH, "02", descrList: Strings.l_device_late_night_high),
