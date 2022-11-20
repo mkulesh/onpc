@@ -77,6 +77,7 @@ class Drawables
     static const String drawer_found_device = BUTTONS_PATH + "drawer_found_device.svg"; // audio-video
     static const String drawer_edit_item = BUTTONS_PATH + "drawer_edit_item.svg"; // pencil-outline
     static const String drawer_favorite_shortcut = BUTTONS_PATH + "drawer_favorite_shortcut.svg"; // pencil-outline
+    static const String drawer_all_standby = BUTTONS_PATH + "drawer_all_standby.svg";
 
     static String drawerZone(String id)
     => BUTTONS_PATH + "drawer_zone_" + id + ".svg";

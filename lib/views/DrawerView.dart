@@ -25,6 +25,8 @@ import "../dialogs/FavoriteConnectionEditDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/MultiroomState.dart";
 import "../utils/Logging.dart";
 import "../views/UpdatableView.dart";
@@ -80,6 +82,15 @@ class DrawerView extends UpdatableView
                     }
                 ));
             });
+            if (state.receiverInformation.zones.length > 1)
+            {
+                drawerItems.add(_buildDrawerItem(
+                    context,
+                    Drawables.drawer_all_standby,
+                    Strings.drawer_all_standby,
+                    onTabListener: _navigationAllStandby
+                ));
+            }
 
             // Multiroom
             final List<DeviceInfo> devices = state.multiroomState.getSortedDevices();
@@ -227,6 +238,15 @@ class DrawerView extends UpdatableView
             builder: (BuildContext c)
             => DeviceConnectDialog(viewContext)
         );
+    }
+
+    void _navigationAllStandby(BuildContext context)
+    {
+        if (state.isConnected)
+        {
+            stateManager.sendMessage(PowerStatusMsg.output(
+                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, PowerStatus.ALL_STB));
+        }
     }
 
     void _showFavoriteConnectionEditDialog(final BuildContext context, final BroadcastResponseMsg msg)
