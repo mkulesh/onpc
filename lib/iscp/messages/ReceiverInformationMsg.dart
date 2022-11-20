@@ -20,7 +20,6 @@ import "../../constants/Drawables.dart";
 import "../../utils/Logging.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
-import "InputSelectorMsg.dart";
 
 class NetworkService
 {
@@ -389,19 +388,6 @@ class ReceiverInformationMsg extends ISCPMessage
                 _deviceSelectors.add(Selector.fromXml(element));
             }
         });
-        // Add hidden selectors
-        final String model = _deviceProperties["model"];
-        if (model != null)
-        {
-            InputSelectorMsg.ValueEnum.values.forEach((element)
-            {
-                final Selector s = _deviceSelectors.firstWhere((s) => s.getId == element.code, orElse: () => null);
-                if(_hiddenSelector(model, element.code) && s == null)
-                {
-                    _deviceSelectors.add(Selector(element.code, element.description, 1, element.icon, true));
-                }
-            });
-        }
         _deviceSelectors.forEach((z)
         {
             Logging.info(this, "  selector: " + z.toString());
@@ -439,11 +425,5 @@ class ReceiverInformationMsg extends ISCPMessage
         });
         Logging.info(this, "  controls: " + _controlList.toString());
         Logging.info(this, "  tone controls: " + _toneControls.toString());
-    }
-
-    bool _hiddenSelector(String model, String id)
-    {
-        // Hidden selectors: allow DLNA for "NS-6170" since it works
-        return model == "NS-6170" && id == "27";
     }
 }
