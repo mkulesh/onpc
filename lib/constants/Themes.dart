@@ -60,7 +60,6 @@ class BaseAppTheme
         return ThemeData(
             brightness: brightness,
             primaryColor: primaryColor,
-            primaryColorBrightness: Brightness.dark,
             primaryColorDark: primaryColorDark,
             canvasColor: brightness == Brightness.dark ? primaryColor : backgroundColor,
             scaffoldBackgroundColor: backgroundColor,

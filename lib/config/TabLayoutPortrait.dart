@@ -18,7 +18,6 @@ import "../config/CfgTabSettings.dart";
 import "../constants/Strings.dart";
 import "../utils/Logging.dart";
 import "CfgAppSettings.dart";
-import 'CfgTabSettings.dart';
 import "CheckableItem.dart";
 import "Configuration.dart";
 

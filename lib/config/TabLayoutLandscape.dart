@@ -21,7 +21,6 @@ import "../widgets/CustomDivider.dart";
 import "../widgets/CustomNumberPicker.dart";
 import "../widgets/CustomTextLabel.dart";
 import "CfgAppSettings.dart";
-import "CfgTabSettings.dart";
 import "CheckableItem.dart";
 import "Configuration.dart";
 

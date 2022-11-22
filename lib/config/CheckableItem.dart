@@ -134,8 +134,10 @@ class CheckableItem
 
     static Widget buildPanel(List<Widget> rows, ReorderCallback onReorder, {final ScrollController scrollController})
     {
+        final bool primary = scrollController == null;
         return Scrollbar(
             child: ReorderableListView(
+                primary: primary,
                 onReorder: onReorder,
                 reverse: false,
                 scrollController: scrollController,

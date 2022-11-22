@@ -52,7 +52,6 @@ import "messages/TimeSeekMsg.dart";
 import "messages/TrackInfoMsg.dart";
 import "messages/XmlListInfoMsg.dart";
 import "scripts/AutoPower.dart";
-import "scripts/MessageScript.dart";
 import "scripts/RequestListeningMode.dart";
 import "state/MediaListState.dart";
 import "state/MultiroomState.dart";

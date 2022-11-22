@@ -15,6 +15,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
+import "../Platform.dart";
 import "../config/Configuration.dart";
 import "../constants/Activities.dart";
 import "../constants/Dimens.dart";
@@ -138,7 +139,7 @@ class DrawerView extends UpdatableView
                 context: context,
                 // Remove padding that corresponds to status bar height.
                 removeTop: true,
-                child: ListView(children: drawerItems, controller: ScrollController()))
+                child: ListView(children: drawerItems, primary: true))
         );
     }
 
@@ -152,27 +153,34 @@ class DrawerView extends UpdatableView
             fit: BoxFit.fitHeight
         );
 
+        Widget content = Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+                Expanded(
+                    child: Container(
+                        padding: ActivityDimens.noPadding,
+                        child: FittedBox(
+                            fit: BoxFit.contain,
+                            alignment: Alignment.center,
+                            child: drawerHeaderImage)
+                    )
+                ),
+                CustomTextLabel.small(Strings.app_name_pro,
+                    color: td.colorScheme.secondary, textAlign: TextAlign.center, bold: true),
+                CustomTextLabel.small(configuration.appVersion,
+                    color: td.colorScheme.secondary, textAlign: TextAlign.center),
+            ],
+        );
+
+        if (Platform.isDesktop)
+        {
+            content = InkWell(child: content, onTap: () => Navigator.pop(context));
+        }
+
         return DrawerHeader(
             margin: EdgeInsets.zero,
             padding: EdgeInsets.only(top: 16),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                    Expanded(
-                        child: Container(
-                            padding: ActivityDimens.noPadding,
-                            child: FittedBox(
-                                fit: BoxFit.contain,
-                                alignment: Alignment.center,
-                                child: drawerHeaderImage)
-                        )
-                    ),
-                    CustomTextLabel.small(Strings.app_name_pro,
-                        color: td.colorScheme.secondary, textAlign: TextAlign.center, bold: true),
-                    CustomTextLabel.small(configuration.appVersion,
-                        color: td.colorScheme.secondary, textAlign: TextAlign.center),
-                ],
-            )
+            child: content
         );
     }
 

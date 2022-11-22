@@ -68,6 +68,7 @@ class ShortcutsView extends UpdatableView
             => rows.add(_buildRow(context, s)));
 
             tab = Scrollbar(child: ReorderableListView(
+                primary: true,
                 onReorder: _onReorder,
                 reverse: false,
                 scrollDirection: Axis.vertical,

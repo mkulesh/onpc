@@ -579,7 +579,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             if (ms.numberOfItems > 0)
             {
                 title += " | " + Strings.medialist_items + ": ";
-                if (numberOfItems != ms.numberOfItems)
+                if (numberOfItems < ms.numberOfItems)
                 {
                     title += numberOfItems.toString() + "/";
                 }
