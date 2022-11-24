@@ -31,7 +31,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     lintOptions {
         disable 'InvalidPackage'
@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 31
+        targetSdkVersion 32
         applicationId "com.mkulesh.onpc.plus"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

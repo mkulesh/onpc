@@ -68,6 +68,8 @@ class BaseAppTheme
             disabledColor: disabledColor,
             backgroundColor: backgroundColor,
             toggleableActiveColor: accentColor,
+            indicatorColor: accentColor,
+
             colorScheme: colorScheme,
 
             appBarTheme: AppBarTheme(
@@ -77,7 +79,9 @@ class BaseAppTheme
             ),
 
             tabBarTheme: TabBarTheme(
+                labelColor: textColorAppBar,
                 labelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
+                unselectedLabelColor: textColorAppBar.withAlpha(175),
                 unselectedLabelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
             ),
 
@@ -97,6 +101,7 @@ class BaseAppTheme
             textSelectionTheme: TextSelectionThemeData(
                 cursorColor: accentColor,
                 selectionColor: accentColor,
+                selectionHandleColor: accentColor,
             ),
 
             tooltipTheme:

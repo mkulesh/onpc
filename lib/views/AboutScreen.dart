@@ -141,9 +141,6 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
                 TabBar(
                     controller: _tabController,
                     isScrollable: true,
-                    labelColor: td.bottomAppBarColor,
-                    unselectedLabelColor: td.bottomAppBarColor.withAlpha(175),
-                    indicatorColor: td.colorScheme.secondary,
                     tabs: _tabs.map((AboutScreenTabs tab)
                     => Tab(text: TAB_NAMES[tab.index].toUpperCase())).toList(),
                 )

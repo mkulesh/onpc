@@ -42,7 +42,6 @@ class CustomTextField extends StatelessWidget
             enableSuggestions: false,
             textInputAction: onPressed != null ? TextInputAction.done : null,
             onEditingComplete: onPressed,
-            cursorColor: td.colorScheme.secondary,
             decoration: InputDecoration(
                 contentPadding: DialogDimens.textFieldPadding,
                 isDense: true,

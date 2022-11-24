@@ -164,9 +164,6 @@ class AppBarView extends UpdatableView
                 TabBar(
                     controller: _tabController,
                     isScrollable: true,
-                    labelColor: td.bottomAppBarColor,
-                    unselectedLabelColor: td.bottomAppBarColor.withAlpha(175),
-                    indicatorColor: td.colorScheme.secondary,
                     tabs: _tabs.map((AppTabs tab)
                     {
                         final String tabName = CfgAppSettings.getTabName(tab);
