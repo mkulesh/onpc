@@ -11,6 +11,7 @@ rm -rf ios/Flutter/Flutter.framework
 rm -rf ios/Flutter/Generated.xcconfig
 rm -rf ios/Flutter/flutter_export_environment.sh
 rm -rf ios/Flutter/Flutter.podspec
+rm -rf ios/Runner.xcodeproj/project.xcworkspace/xcshareddata
 rm -rf ios/Podfile
 rm -rf ios/Frameworks
 rm -rf ios/Podfile.lock
@@ -24,6 +25,8 @@ rm -rf macos/Podfile.lock
 rm -rf macos/Pods
 rm -rf macos/Runner.xcodeproj/xcuserdata
 rm -rf macos/Runner.xcworkspace/xcuserdata
+rm -rf macos/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
+rm -rf macos/Runner.xcworkspace/xcshareddata/swiftpm
 rm -rf android/.gradle
 
 find . -name .DS_Store -exec rm -f {} \;
