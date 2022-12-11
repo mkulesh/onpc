@@ -18,10 +18,10 @@
 
     <item
         android:id="@+id/shortcut_menu_edit"
-        android:title="@string/favorite_update" />
+        android:title="@string/pref_item_update" />
     <item
         android:id="@+id/shortcut_menu_delete"
-        android:title="@string/favorite_delete" />
+        android:title="@string/pref_item_delete" />
     <item
         android:id="@+id/shortcut_menu_copy_to_clipboard"
         android:title="@string/favorite_copy_to_clipboard" />

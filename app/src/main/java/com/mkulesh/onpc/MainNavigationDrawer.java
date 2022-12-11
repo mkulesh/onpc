@@ -269,7 +269,7 @@ class MainNavigationDrawer
         final int activeZone = state == null ?
                 ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE : state.getActiveZone();
         final List<ReceiverInformationMsg.Zone> zones = state == null ?
-                ReceiverInformationMsg.getDefaultZones() : state.getZones();
+                new ArrayList<>() : state.getZones();
 
         final int[] zoneImages = {
                 R.drawable.drawer_zone_1,

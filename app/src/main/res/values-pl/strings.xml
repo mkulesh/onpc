@@ -69,12 +69,6 @@
     <string name="connect_dialog_port">Port (opcjonalnie)</string>
     <string name="connect_dialog_save">Zapisz połączenie</string>
 
-    <!-- Favorites -->
-    <string name="favorite_alias">Nazwa</string>
-    <string name="favorite_update">Edytuj</string>
-    <string name="favorite_delete">Usuń</string>
-    <string name="favorite_copy_to_clipboard">Skopiuj do schowka</string>
-
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Edytuj połączenie</string>
     <string name="favorite_connection_identifier">Adres MAC (opcjonalnie)</string>
@@ -85,6 +79,7 @@
     <string name="favorite_shortcut_added">Dodano skrót</string>
     <string name="favorite_shortcut_failed">Nie można utworzyć skrótu: przejdź do elementu multimedialnego z najwyższego poziomu</string>
     <string name="favorite_shortcut_howto">Aby dodać skrót: otwórz zakładkę \"%s\", przejdź do elementu multimedialnego z najwyższego poziomu, otwórz menu kontekstowe (%s) i wybierz \"%s\"</string>
+    <string name="favorite_copy_to_clipboard">Skopiuj do schowka</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
@@ -117,8 +112,9 @@
     <string name="pref_usb_ri_interface_none">Brak</string>
     <string name="pref_column_separator">Pozycja separatora kolumn (%)</string>
     <string name="pref_keyboard_shortcuts">Globalne skróty klawiaturowe</string>
-    <string name="pref_keyboard_shortcut_update">Edytuj</string>
-    <string name="pref_keyboard_shortcut_delete">Usuń</string>
+    <string name="pref_item_update">Edytuj</string>
+    <string name="pref_item_delete">Usuń</string>
+    <string name="pref_item_name">Nazwa</string>
 
     <string name="pref_auto_power">Włącz zdalne urządzenie podczas uruchamiania aplikacji</string>
     <string name="pref_friendly_names">Nazwa urządzenia</string>

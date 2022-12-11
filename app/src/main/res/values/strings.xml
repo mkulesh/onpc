@@ -20,7 +20,7 @@
     <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced Music Controller: listen to music properly!</string>
+    <string name="app_description">Enhanced controller for Onkyo and Pioneer: listen to music properly!</string>
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
@@ -73,12 +73,6 @@
     <string name="connect_dialog_port">Port (optional)</string>
     <string name="connect_dialog_save">Save connection</string>
 
-    <!-- Favorites -->
-    <string name="favorite_alias">Name</string>
-    <string name="favorite_update">Edit</string>
-    <string name="favorite_delete">Delete</string>
-    <string name="favorite_copy_to_clipboard">Copy to clipboard</string>
-
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Edit connection</string>
     <string name="favorite_connection_identifier">MAC Address (optional)</string>
@@ -89,6 +83,7 @@
     <string name="favorite_shortcut_added">Shortcut added</string>
     <string name="favorite_shortcut_failed">Cannot create shortcut: navigate to the media item from the top level</string>
     <string name="favorite_shortcut_howto">To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu (%s) and select \"%s\"</string>
+    <string name="favorite_copy_to_clipboard">Copy to clipboard</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
@@ -121,8 +116,9 @@
     <string name="pref_usb_ri_interface_none">None</string>
     <string name="pref_column_separator">Position of column separator (%)</string>
     <string name="pref_keyboard_shortcuts">Global keyboard shortcuts</string>
-    <string name="pref_keyboard_shortcut_update">Edit</string>
-    <string name="pref_keyboard_shortcut_delete">Delete</string>
+    <string name="pref_item_update">Edit</string>
+    <string name="pref_item_delete">Delete</string>
+    <string name="pref_item_name">Name</string>
 
     <string name="pref_auto_power">Switch-on remote device on app startup</string>
     <string name="pref_friendly_names">Friendly selector and device names</string>

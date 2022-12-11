@@ -69,12 +69,6 @@
     <string name="connect_dialog_port">Port (optional)</string>
     <string name="connect_dialog_save">Verbindung speichern</string>
 
-    <!-- Favorites -->
-    <string name="favorite_alias">Name</string>
-    <string name="favorite_update">Bearbeiten</string>
-    <string name="favorite_delete">Löschen</string>
-    <string name="favorite_copy_to_clipboard">In die Zwischenablage kopieren</string>
-
     <!-- Favorite connections -->
     <string name="favorite_connection_edit">Verbindung bearbeiten</string>
     <string name="favorite_connection_identifier">MAC Adresse (optional)</string>
@@ -85,6 +79,7 @@
     <string name="favorite_shortcut_added">Favorit hinzugefügt</string>
     <string name="favorite_shortcut_failed">Favorit kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement</string>
     <string name="favorite_shortcut_howto">Bisher kein Favorit gesetzt. So fügen Sie einen Favoriten hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü (%s) und wählen Sie \"%s\".</string>
+    <string name="favorite_copy_to_clipboard">In die Zwischenablage kopieren</string>
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
@@ -107,7 +102,7 @@
     <string name="pref_advanced_queue_summary">Experimentell: fortgeschrittene Funktionen in Play Queue verwenden</string>
     <string name="pref_keep_playback_mode">Abspielmodus behalten</string>
     <string name="pref_keep_playback_mode_summary">Während die Wiedergabe aktiv ist, Abspielmodus in MEDIEN behalten</string>
-    <string name="pref_exit_confirm">Zweimal zurück zum beenden</string>
+    <string name="pref_exit_confirm">Zweimal zurück zum Beenden</string>
     <string name="pref_keep_screen_on">Bildschirm aktiv lassen</string>
     <string name="pref_developer_mode">Entwicklereinstellungen</string>
     <string name="pref_device_selectors">Eingangskanäle</string>
@@ -117,8 +112,9 @@
     <string name="pref_usb_ri_interface_none">Keine</string>
     <string name="pref_column_separator">Position des Spaltentrenners (%)</string>
     <string name="pref_keyboard_shortcuts">Globale Tastaturkürzel</string>
-    <string name="pref_keyboard_shortcut_update">Bearbeiten</string>
-    <string name="pref_keyboard_shortcut_delete">Löschen</string>
+    <string name="pref_item_update">Bearbeiten</string>
+    <string name="pref_item_delete">Löschen</string>
+    <string name="pref_item_name">Name</string>
 
     <string name="pref_auto_power">Remote-Gerät beim Start der App einschalten</string>
     <string name="pref_friendly_names">Lesbare Kanal- und Gerätenamen</string>

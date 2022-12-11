@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="@string/favorite_update"
+                    android:text="@string/pref_item_update"
                     android:checked="true" />
 
                 <LinearLayout
@@ -62,7 +62,7 @@
 
                     <TextView
                         style="@style/EditFieldCaptionStyle"
-                        android:text="@string/favorite_alias" />
+                        android:text="@string/pref_item_name" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/PrimaryTextViewStyle"
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="@string/favorite_delete" />
+                    android:text="@string/pref_item_delete" />
             </LinearLayout>
 
         </LinearLayout>
