@@ -1,0 +1,6 @@
+• Added FM/DAB preset number into the presets list in the MEDIA tab
+• Added "All Zones standby" command into the app menu
+• Added new input selector "SOURCE" (the current zone is automatically switched to the same audio source as the main zone)
+• Added "Network Standby" setting on the DEVICE tab
+• Fixed a bug: Invalid media items in the simple inputs like AUX, FM, DAB
+• Fixed a bug: Late Night Mode disappears for some input types
