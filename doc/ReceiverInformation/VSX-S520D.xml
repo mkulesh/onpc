@@ -6,23 +6,27 @@
         <year>2016</year>
         <model>VSX-S520D</model>
         <destination>xx</destination>
+        <productid>streamsdk</productid>
+        <deviceserial></deviceserial>
         <macaddress></macaddress>
         <modeliconurl>http://192.168.1.1/icon/PAVR_120.jpg</modeliconurl>
         <friendlyname></friendlyname>
-        <firmwareversion>2089-6030-2050-0008-0000</firmwareversion>
+        <firmwareversion>2160-8030-3080-0012-0000</firmwareversion>
         <ecosystemversion>200</ecosystemversion>
-        <netservicelist count="11">
+        <tidaloauthversion>0</tidaloauthversion>
+        <netservicelist count="12">
             <netservice id="0e" value="1" name="TuneIn Radio" account="Username" password="Password" zone="01" enable="01" />
             <netservice id="04" value="1" name="Pandora" account="Email" password="Password" zone="01" enable="01" />
             <netservice id="0a" value="1" name="Spotify" zone="01" enable="01" />
             <netservice id="12" value="1" name="Deezer" account="Email address" password="Password" zone="01" enable="01" />
-            <netservice id="18" value="1" name="AirPlay" zone="01" enable="01" />
-            <netservice id="1b" value="1" name="TIDAL" account="Username" password="Password" zone="01" enable="01" />
+            <netservice id="44" value="1" name="AirPlay" zone="01" enable="01" />
+            <netservice id="1b" value="1" name="TIDAL" account="Username" password="Password" zone="01" enable="01" multipage="1" />
             <netservice id="00" value="1" name="Music Server" zone="01" enable="01" addqueue="1" sort="1" />
-            <netservice id="43" value="1" name="FlareConnect" zone="07" enable="0e" />
+            <netservice id="43" value="1" name="FlareConnect" zone="01" enable="01" />
             <netservice id="40" value="1" name="Chromecast built-in" zone="01" enable="01" />
             <netservice id="1d" value="1" name="Play Queue" zone="01" enable="01" />
             <netservice id="42" value="1" name="DTS Play-Fi" zone="01" enable="01" />
+            <netservice id="1c" value="1" name="Amazon Music" account="Username" password="Password" zone="01" enable="01" multipage="1" />
         </netservicelist>
         <zonelist count="4">
             <zone id="1" value="1" name="Main" volmax="32" volstep="1" src="1" dst="1" lrselect="0" />
@@ -101,7 +105,7 @@
             <control id="LMD Stereo" value="0" code="00" position="4" />
             <control id="LMD Direct" value="0" code="01" position="1" />
             <control id="LMD Pure Audio" value="0" code="11" position="2" />
-            <control id="LMD PureDirect" value="1" code="11" position="4" />
+            <control id="LMD Pure Direct" value="1" code="11" position="4" />
             <control id="LMD Auto/Direct" value="1" code="AUTO" position="1" />
             <control id="LMD Stereo G" value="1" code="STEREO" position="3" />
             <control id="LMD Surround" value="1" code="SURR" position="2" />
@@ -145,7 +149,7 @@
             <control id="Lock Range Adjust" value="0" />
             <control id="P.BASS" value="0" />
             <control id="Tone Direct" value="0" />
-            <control id="DetailedFileInfo" value="0" />
+            <control id="DetailedFileInfo" value="1" />
             <control id="NoDABPresetFunc" value="0" />
             <control id="S.BASS" value="0" />
         </controllist>
