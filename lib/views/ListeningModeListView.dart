@@ -19,6 +19,7 @@ import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
+import '../widgets/TextButtonScroll.dart';
 import "../widgets/CustomTextButton.dart";
 import "UpdatableView.dart";
 
@@ -46,23 +47,27 @@ class ListeningModeListView extends UpdatableView
             return SizedBox.shrink();
         }
 
-        final List<Widget> buttons = [];
+        final List<CustomTextButton> buttons = [];
+        CustomTextButton selectedButton;
 
         configuration.audioControl.getSortedListeningModes(false, state.soundControlState.listeningMode).forEach((m)
         {
             final ListeningModeMsg cmd = ListeningModeMsg.output(m.key);
-
-            buttons.add(CustomTextButton(
+            final bool isSelected = state.soundControlState.listeningMode.key == m.key;
+            final Widget button = CustomTextButton(
                 m.description.toUpperCase(),
                 isEnabled: state.isOn,
-                isSelected: state.soundControlState.listeningMode.key == m.key,
+                isSelected: isSelected,
                 onPressed: ()
-                => stateManager.sendMessage(cmd))
+                => stateManager.sendMessage(cmd)
             );
+            if (isSelected)
+            {
+                selectedButton = button;
+            }
+            buttons.add(button);
         });
 
-        return buttons.isEmpty ? SizedBox.shrink() : Center(
-            child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons))
-        );
+        return buttons.isEmpty ? SizedBox.shrink() : Center(child: TextButtonScroll(buttons, selectedButton));
     }
 }

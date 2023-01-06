@@ -16,7 +16,6 @@ import "package:flutter/material.dart";
 
 import "../config/CheckableItem.dart";
 import "../config/Configuration.dart";
-import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
@@ -24,6 +23,7 @@ import "../iscp/messages/ListTitleInfoMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
+import '../widgets/TextButtonScroll.dart';
 import "../widgets/CustomTextButton.dart";
 import "UpdatableView.dart";
 
@@ -45,7 +45,8 @@ class InputSelectorView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<Widget> buttons = [];
+        final List<CustomTextButton> buttons = [];
+        CustomTextButton selectedButton;
 
         final List<Selector> sortedSelectors = _getSortedDeviceSelectors(
             false, state.mediaListState.inputType, state.receiverInformation.deviceSelectors);
@@ -63,9 +64,10 @@ class InputSelectorView extends UpdatableView
                 final String name = configuration.deviceSelectorName(selectorEnum,
                     useFriendlyName: configuration.friendlyNames,
                     friendlyName: deviceSelector.getName);
-                buttons.add(CustomTextButton(name,
+                final bool isSelected = state.isOn && state.mediaListState.inputType.code == selectorEnum.code;
+                final Widget button = CustomTextButton(name,
                     isEnabled: state.isConnected,
-                    isSelected: state.isOn && state.mediaListState.inputType.code == selectorEnum.code,
+                    isSelected: isSelected,
                     onPressed: ()
                     {
                         if (!state.isOn)
@@ -73,17 +75,16 @@ class InputSelectorView extends UpdatableView
                             stateManager.sendMessage(PowerStatusMsg.output(state.getActiveZone, PowerStatus.ON));
                         }
                         stateManager.sendMessage(cmd, waitingForData: true);
-                    })
-                );
+                    });
+                if (isSelected)
+                {
+                    selectedButton = button;
+                }
+                buttons.add(button);
             }
         });
 
-        if (buttons.isEmpty)
-        {
-            buttons.add(CustomTextButton(Strings.dashed_string, isEnabled: false, isSelected: false));
-        }
-
-        return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: buttons));
+        return buttons.isEmpty ? SizedBox.shrink() : TextButtonScroll(buttons, selectedButton);
     }
 
     List<Selector> _getSortedDeviceSelectors(bool allItems, EnumItem<InputSelector> activeItem, final List<Selector> defaultItems)
