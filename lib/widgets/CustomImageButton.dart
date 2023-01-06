@@ -100,11 +100,6 @@ class CustomImageButton extends StatelessWidget
                 break;
         }
 
-        if (_padding != null && Platform.isDesktop)
-        {
-            _padding = _padding * ButtonDimens.desktopPaddingFactor;
-        }
-
         final SvgPicture svg = SvgPicture.asset(
             icon,
             color: color,
@@ -120,6 +115,7 @@ class CustomImageButton extends StatelessWidget
             height: _size,
             padding: _padding,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: VisualDensity.standard,
             onPressed: isEnabled ? onPressed : null);
 
         if (text.isNotEmpty)

@@ -153,8 +153,6 @@ class ButtonDimens
 
     static double get equalizerWidth
     => DimensTransform.scale(42.0);
-
-    static const double desktopPaddingFactor = 1.5;
 }
 
 class MediaListDimens

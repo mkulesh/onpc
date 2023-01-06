@@ -41,24 +41,35 @@ class CustomTextButton extends StatelessWidget
             (isSelected ? td.colorScheme.secondary : td.textTheme.button.color)
                 : td.disabledColor;
 
-        EdgeInsetsGeometry _padding = padding ?? ButtonDimens.textButtonPadding;
-        if (_padding != null && Platform.isDesktop)
-        {
-            _padding = _padding * ButtonDimens.desktopPaddingFactor;
-        }
-
         final Widget result = MaterialButton(
             child: Text(text, style: td.textTheme.button.copyWith(color: color)),
-            padding: _padding,
+            padding: _getPadding(),
             color: td.backgroundColor,
             textColor: color,
             elevation: 0,
             minWidth: 0,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: VisualDensity.standard,
             height: ButtonDimens.normalButtonSize,
             onPressed: onPressed);
 
         return (description == null) ?
             result : Tooltip(message: description, child: result, preferBelow: false);
+    }
+
+    EdgeInsetsGeometry _getPadding()
+    => padding ?? ButtonDimens.textButtonPadding;
+
+    double getWidth(BuildContext context)
+    {
+        final ThemeData td = Theme.of(context);
+        final Size size = (TextPainter(
+            text: TextSpan(text: text, style: td.textTheme.button),
+            maxLines: 1,
+            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            textDirection: TextDirection.ltr)
+            ..layout())
+            .size;
+        return size.width + _getPadding().horizontal;
     }
 }
