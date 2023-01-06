@@ -57,6 +57,8 @@ class BaseAppTheme
             secondary: accentColor
         );
 
+        final Color focusColor = disabledColor.withOpacity(0.3);
+
         return ThemeData(
             brightness: brightness,
             primaryColor: primaryColor,
@@ -69,6 +71,7 @@ class BaseAppTheme
             backgroundColor: backgroundColor,
             toggleableActiveColor: accentColor,
             indicatorColor: accentColor,
+            focusColor: focusColor,
 
             colorScheme: colorScheme,
 
@@ -96,6 +99,17 @@ class BaseAppTheme
                 bodyText2: mainStyle.copyWith(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
                 // Buttons
                 button: mainStyle.copyWith(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
+            ),
+
+            textButtonTheme: TextButtonThemeData(
+                style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                        if (states.contains(MaterialState.focused)) {
+                            return focusColor;
+                        }
+                        return null; // Use the component's default.
+                    }),
+                )
             ),
 
             textSelectionTheme: TextSelectionThemeData(
