@@ -29,7 +29,7 @@ class MasterVolumeMaxView extends UpdatableView
     static const String VOLUME_MAX_EVENT = "VOLUME_MAX_CHANGE";
 
     static const List<String> UPDATE_TRIGGERS = [
-        // no external triggers
+        VOLUME_MAX_EVENT
     ];
 
     MasterVolumeMaxView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -54,7 +54,18 @@ class MasterVolumeMaxView extends UpdatableView
             {
                 configuration.audioControl.masterVolumeMax = v;
                 stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
-            }
+            },
+            onDownButton: (v)
+            {
+                configuration.audioControl.masterVolumeMax = max(0, configuration.audioControl.masterVolumeMax - 1);
+                stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
+            },
+            onUpButton: (v)
+            {
+                configuration.audioControl.masterVolumeMax = min(maxVolume, configuration.audioControl.masterVolumeMax + 1);
+                stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
+            },
+            isInDialog: true
         );
     }
 }

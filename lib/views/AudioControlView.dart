@@ -84,6 +84,11 @@ class AudioControlView extends UpdatableView
                 => SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo),
                 onChanged: (v)
                 => stateManager.sendMessage(MasterVolumeMsg.value(zone, max(v, 0))),
+                onDownButton: (v)
+                => stateManager.sendMessage(MasterVolumeMsg.output(zone, MasterVolume.DOWN)),
+                onUpButton: (v)
+                => stateManager.sendMessage(MasterVolumeMsg.output(zone, MasterVolume.UP)),
+                isInDialog: true,
                 extendedCmd: maxVolumeBtn
             ));
         }
@@ -171,20 +176,59 @@ class AudioControlView extends UpdatableView
                     {
                         case ToneCommandMsg.BASS_KEY:
                             stateManager.sendMessage(
-                                ToneCommandMsg.output(zone, newVal, ToneCommandMsg.NO_LEVEL));
+                                ToneCommandMsg.value(zone, newVal, ToneCommandMsg.NO_LEVEL));
                             break;
                         case ToneCommandMsg.TREBLE_KEY:
                             stateManager.sendMessage(
-                                ToneCommandMsg.output(zone, ToneCommandMsg.NO_LEVEL, newVal));
+                                ToneCommandMsg.value(zone, ToneCommandMsg.NO_LEVEL, newVal));
                             break;
                         case SubwooferLevelCommandMsg.KEY:
-                            stateManager.sendMessage(SubwooferLevelCommandMsg.output(newVal, state.soundControlState.subwooferCmdLength));
+                            stateManager.sendMessage(
+                                SubwooferLevelCommandMsg.value(newVal, state.soundControlState.subwooferCmdLength));
                             break;
                         case CenterLevelCommandMsg.KEY:
-                            stateManager.sendMessage(CenterLevelCommandMsg.output(newVal, state.soundControlState.centerCmdLength));
+                            stateManager.sendMessage(
+                                CenterLevelCommandMsg.value(newVal, state.soundControlState.centerCmdLength));
                             break;
                     }
-                }
+                },
+                onDownButton: (v)
+                {
+                    switch (key)
+                    {
+                        case ToneCommandMsg.BASS_KEY:
+                            stateManager.sendMessage(ToneCommandMsg.output(zone, ToneCommand.BDOWN));
+                            break;
+                        case ToneCommandMsg.TREBLE_KEY:
+                            stateManager.sendMessage(ToneCommandMsg.output(zone, ToneCommand.TDOWN));
+                            break;
+                        case SubwooferLevelCommandMsg.KEY:
+                            stateManager.sendMessage(SubwooferLevelCommandMsg.output(SubwooferLevelCommand.DOWN));
+                            break;
+                        case CenterLevelCommandMsg.KEY:
+                            stateManager.sendMessage(CenterLevelCommandMsg.output(CenterLevelCommand.DOWN));
+                            break;
+                    }
+                },
+                onUpButton: (v)
+                {
+                    switch (key)
+                    {
+                        case ToneCommandMsg.BASS_KEY:
+                            stateManager.sendMessage(ToneCommandMsg.output(zone, ToneCommand.BUP));
+                            break;
+                        case ToneCommandMsg.TREBLE_KEY:
+                            stateManager.sendMessage(ToneCommandMsg.output(zone, ToneCommand.TUP));
+                            break;
+                        case SubwooferLevelCommandMsg.KEY:
+                            stateManager.sendMessage(SubwooferLevelCommandMsg.output(SubwooferLevelCommand.UP));
+                            break;
+                        case CenterLevelCommandMsg.KEY:
+                            stateManager.sendMessage(CenterLevelCommandMsg.output(CenterLevelCommand.UP));
+                            break;
+                    }
+                },
+                isInDialog: true
             );
         }
         return null;

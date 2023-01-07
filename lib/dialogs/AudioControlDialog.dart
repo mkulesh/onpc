@@ -68,10 +68,18 @@ class _AudioControlDialogState extends State<AudioControlDialog>
                 break;
         }
 
+        if (widget._audioControlType != AudioControlType.MASTER_VOLUME_MAX)
+        {
+            dialogContent = SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: dialogContent);
+        }
+
         return AlertDialog(
             title: dialogTitle,
             contentPadding: DialogDimens.contentPadding,
             content: dialogContent,
+            insetPadding: DialogDimens.contentPadding,
             actions: <Widget>[
                 TextButton(
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),

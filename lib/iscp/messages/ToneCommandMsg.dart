@@ -14,6 +14,16 @@
 // @dart=2.9
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "EnumParameterMsg.dart";
+
+enum ToneCommand
+{
+    NONE,
+    BUP,
+    BDOWN,
+    TUP,
+    TDOWN
+}
 
 /*
  * Tone/Front (for main zone) and Tone (for zones 2, 3) command
@@ -30,6 +40,16 @@ class ToneCommandMsg extends ZonedMessage
 
     static const int NO_LEVEL = 0xFF;
 
+    static const ExtEnum<ToneCommand> ValueEnum = ExtEnum<ToneCommand>([
+        EnumItem(ToneCommand.NONE, defValue: true),
+        EnumItem(ToneCommand.BUP),
+        EnumItem(ToneCommand.BDOWN),
+        EnumItem(ToneCommand.TUP),
+        EnumItem(ToneCommand.TDOWN)
+    ]);
+
+    EnumItem<ToneCommand> _command;
+
     static const String BASS_KEY = "Bass";
     static const String BASS_MARKER = "B";
     int _bassLevel = NO_LEVEL;
@@ -40,6 +60,7 @@ class ToneCommandMsg extends ZonedMessage
 
     ToneCommandMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw)
     {
+        _command = ValueEnum.defValue;
         for (int i = 0; i < getData.length; i++)
         {
             if (getData.substring(i, i + 1) == BASS_MARKER)
@@ -53,11 +74,20 @@ class ToneCommandMsg extends ZonedMessage
         }
     }
 
-    ToneCommandMsg.output(int zoneIndex, int bass, int treble) :
+    ToneCommandMsg.output(int zoneIndex, ToneCommand v) :
+            super.output(ZONE_COMMANDS, zoneIndex, ValueEnum.valueByKey(v).getCode)
+    {
+        _command = ValueEnum.valueByKey(v);
+        _bassLevel = NO_LEVEL;
+        _trebleLevel = NO_LEVEL;
+    }
+
+    ToneCommandMsg.value(int zoneIndex, int bass, int treble) :
             super.output(ZONE_COMMANDS, zoneIndex, _getParameterAsString(bass, treble))
     {
-        this._bassLevel = bass;
-        this._trebleLevel = treble;
+        _command = ValueEnum.defValue;
+        _bassLevel = bass;
+        _trebleLevel = treble;
     }
 
     static String _getParameterAsString(int bass, int treble)
@@ -82,7 +112,9 @@ class ToneCommandMsg extends ZonedMessage
 
     @override
     String toString()
-    => super.toString() + "[BASS=" + _bassLevel.toString() + "; TREBLE=" + _trebleLevel.toString() + "]";
+    => super.toString() + "[COMMAND=" + _command.toString()
+        + "; BASS=" + _bassLevel.toString()
+        + "; TREBLE=" + _trebleLevel.toString() + "]";
 
     @override
     bool hasImpactOnMediaList()

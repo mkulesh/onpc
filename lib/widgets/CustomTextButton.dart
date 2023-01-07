@@ -14,7 +14,6 @@
 // @dart=2.9
 import "package:flutter/material.dart";
 
-import "../Platform.dart";
 import "../constants/Dimens.dart";
 
 class CustomTextButton extends StatelessWidget
@@ -22,7 +21,7 @@ class CustomTextButton extends StatelessWidget
     final String text, description;
     final VoidCallback onPressed;
     final EdgeInsetsGeometry padding;
-    final bool isEnabled, isSelected;
+    final bool isEnabled, isSelected, isInDialog;
 
     CustomTextButton(this.text,
     {
@@ -30,7 +29,8 @@ class CustomTextButton extends StatelessWidget
         this.onPressed,
         this.padding,
         this.isEnabled = true,
-        this.isSelected = false
+        this.isSelected = false,
+        this.isInDialog = false
     });
 
     @override
@@ -44,7 +44,7 @@ class CustomTextButton extends StatelessWidget
         final Widget result = MaterialButton(
             child: Text(text, style: td.textTheme.button.copyWith(color: color)),
             padding: _getPadding(),
-            color: td.backgroundColor,
+            color: isInDialog ? td.dialogBackgroundColor : td.backgroundColor,
             textColor: color,
             elevation: 0,
             minWidth: 0,

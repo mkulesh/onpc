@@ -14,6 +14,14 @@
 // @dart=2.9
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "EnumParameterMsg.dart";
+
+enum CenterLevelCommand
+{
+    NONE,
+    UP,
+    DOWN
+}
 
 /*
  * Center (temporary) Level Command
@@ -25,18 +33,35 @@ class CenterLevelCommandMsg extends ISCPMessage
     static const String KEY = "Center Level";
     static const int NO_LEVEL = 0xFF;
 
+    static const ExtEnum<CenterLevelCommand> ValueEnum = ExtEnum<CenterLevelCommand>([
+        EnumItem(CenterLevelCommand.NONE, defValue: true),
+        EnumItem(CenterLevelCommand.UP),
+        EnumItem(CenterLevelCommand.DOWN)
+    ]);
+
+    EnumItem<CenterLevelCommand> _command;
     int _level = NO_LEVEL;
     int _cmdLength = NO_LEVEL;
 
     CenterLevelCommandMsg(EISCPMessage raw) : super(CODE, raw)
     {
+        _command = ValueEnum.defValue;
         _level = ISCPMessage.nonNullInteger(getData, 16, NO_LEVEL);
         _cmdLength = getData == null ? NO_LEVEL : getData.length;
     }
 
-    CenterLevelCommandMsg.output(int level, int cmdLength) :
+    CenterLevelCommandMsg.output(CenterLevelCommand v) :
+            super.output(CODE, ValueEnum.valueByKey(v).getCode)
+    {
+        _command = ValueEnum.valueByKey(v);
+        _level = NO_LEVEL;
+        _cmdLength = NO_LEVEL;
+    }
+
+    CenterLevelCommandMsg.value(int level, int cmdLength) :
             super.output(CODE, _getParameterAsString(level, cmdLength))
     {
+        _command = ValueEnum.defValue;
         _level = level;
         _cmdLength = cmdLength;
     }
@@ -64,8 +89,9 @@ class CenterLevelCommandMsg extends ISCPMessage
 
     @override
     String toString()
-    => super.toString() + "[LEVEL=" + _level.toString() + "; CMD_LENGTH=" + _cmdLength.toString() + "]";
-
+    => super.toString() + "[COMMAND=" + _command.toString()
+        + "; LEVEL=" + _level.toString()
+        + "; CMD_LENGTH=" + _cmdLength.toString() + "]";
 
     @override
     bool hasImpactOnMediaList()

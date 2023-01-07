@@ -17,6 +17,7 @@ import 'dart:math';
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
+import "CustomTextButton.dart";
 import "CustomTextLabel.dart";
 
 typedef CaptionCallback = String Function(double);
@@ -30,8 +31,11 @@ class CustomProgressBar extends StatefulWidget
     final CaptionCallback onCaption;
     final NewValueCallback onMoving;
     final NewValueCallback onChanged;
+    final NewValueCallback onUpButton;
+    final NewValueCallback onDownButton;
     final Widget extendedCmd;
     final int divisions;
+    final bool isInDialog;
 
     CustomProgressBar({
         this.caption,
@@ -42,8 +46,11 @@ class CustomProgressBar extends StatefulWidget
         this.onCaption,
         this.onMoving,
         this.onChanged,
+        this.onUpButton,
+        this.onDownButton,
         this.extendedCmd,
-        this.divisions = 0
+        this.divisions = 0,
+        this.isInDialog = false
     });
 
     @override _CustomProgressBarState createState()
@@ -136,13 +143,31 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             child: Align(alignment: Alignment.center, child: slider)
         );
 
+        final Widget downButton = widget.onDownButton != null ?
+            CustomTextButton(widget.minValueStr,
+                padding: ActivityDimens.noPadding,
+                isEnabled: true,
+                isInDialog: widget.isInDialog,
+                onPressed: ()
+                {
+                    widget.onDownButton(currValue.round());
+                }) :
+            CustomTextLabel.small(widget.minValueStr, textAlign: TextAlign.left);
+
+        final Widget upButton = widget.onUpButton != null ?
+            CustomTextButton(widget.maxValueStr,
+                padding: ActivityDimens.noPadding,
+                isEnabled: true,
+                isInDialog: widget.isInDialog,
+                onPressed: ()
+                {
+                    widget.onUpButton(currValue.round());
+                }) :
+            CustomTextLabel.small(widget.maxValueStr, textAlign: TextAlign.right);
+
         controls.add(Row(
             mainAxisSize: MainAxisSize.max,
-            children: [
-                CustomTextLabel.small(widget.minValueStr, textAlign: TextAlign.left),
-                Expanded(child: sliderBox),
-                CustomTextLabel.small(widget.maxValueStr, textAlign: TextAlign.right)
-            ]
+            children: [downButton, Expanded(child: sliderBox), upButton]
         ));
 
         return Column(
