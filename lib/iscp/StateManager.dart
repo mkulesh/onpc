@@ -809,12 +809,21 @@ class StateManager
     {
         clearScripts();
         MessageScript messageScript;
+        AutoPowerMode powerMode;
+        if (autoPower)
+        {
+            powerMode = AutoPowerMode.POWER_ON;
+        }
         if (intent != null)
         {
             Logging.info(this, "received intent: " + intent);
             if (intent == Platform.SHORTCUT_AUTO_POWER)
             {
-                autoPower = true;
+                powerMode = AutoPowerMode.POWER_ON;
+            }
+            else if (intent == Platform.SHORTCUT_ALL_STANDBY)
+            {
+                powerMode = AutoPowerMode.ALL_STANDBY;
             }
             if (intent.contains(Platform.WIDGET_SHORTCUT) && shortcuts != null)
             {
@@ -832,9 +841,9 @@ class StateManager
                 messageScript = MessageScript(intent);
             }
         }
-        if (autoPower)
+        if (powerMode != null)
         {
-            addScript(AutoPower());
+            addScript(AutoPower(powerMode));
         }
         addScript(RequestListeningMode());
         if (messageScript != null && messageScript.isValid())

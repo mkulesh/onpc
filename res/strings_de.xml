@@ -96,7 +96,8 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="menu_latest_logging">Letztes Log</string>
     <string name="menu_switch_off_group">Alle Geräte in der Gruppe ausschalten?</string>
 
-    <!-- Shortcuts -->
+    <!-- Shortcuts and widgets -->
+    <string name="shortcut_widget_name">Favoriten</string>
     <string name="shortcut_power_on">Einschalten</string>
 
     <!-- Application settings -->

@@ -37,7 +37,7 @@
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/app_name_pro"
         android:description="@string/app_description"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
@@ -72,7 +72,7 @@
         <receiver android:name=".WidgetShortcutsProvider"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name">
+            android:label="@string/app_name_pro">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

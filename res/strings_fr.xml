@@ -95,7 +95,8 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="menu_latest_logging">Dernière entrée</string>
     <string name="menu_switch_off_group">Éteindre tous les appareils du groupe?</string>
 
-    <!-- Shortcuts -->
+    <!-- Shortcuts and widgets -->
+    <string name="shortcut_widget_name">Raccourcis</string>
     <string name="shortcut_power_on">Allumer</string>
 
     <!-- Application settings -->

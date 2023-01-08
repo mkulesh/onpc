@@ -12,6 +12,8 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:flutter/services.dart';
+
 import "../../utils/Logging.dart";
 import "../ISCPMessage.dart";
 import "../MessageChannel.dart";
@@ -19,12 +21,21 @@ import "../State.dart";
 import "../messages/PowerStatusMsg.dart";
 import "MessageScriptIf.dart";
 
+enum AutoPowerMode
+{
+    POWER_ON,
+    ALL_STANDBY
+}
+
 //
 // The class performs receiver auto-power on startup
 //
 class AutoPower implements MessageScriptIf
 {
+    final AutoPowerMode autoPowerMode;
     bool _done = false;
+
+    AutoPower(this.autoPowerMode);
 
     @override
     bool isValid()
@@ -48,13 +59,26 @@ class AutoPower implements MessageScriptIf
     @override
     void processMessage(ISCPMessage msg, final State state, MessageChannel channel)
     {
-        if (!state.isOn && msg is PowerStatusMsg && !_done)
+        // Auto power-on once at first PowerStatusMsg
+        if (msg is PowerStatusMsg && !_done)
         {
-            Logging.info(this, "request auto-power on startup");
-            // Auto power-on once at first PowerStatusMsg
-            final PowerStatusMsg cmd = PowerStatusMsg.output(state.getActiveZone, PowerStatus.ON);
-            channel.sendMessage(cmd.getCmdMsg());
-            _done = true;
+            if (autoPowerMode == AutoPowerMode.POWER_ON && !state.isOn)
+            {
+                Logging.info(this, "request auto-power on startup");
+                final PowerStatusMsg cmd = PowerStatusMsg.output(state.getActiveZone, PowerStatus.ON);
+                channel.sendMessage(cmd.getCmdMsg());
+                _done = true;
+            }
+            else if (autoPowerMode == AutoPowerMode.ALL_STANDBY && state.isOn)
+            {
+                Logging.info(this, "request all-standby on startup");
+                final PowerStatusMsg cmd = PowerStatusMsg.output(state.getActiveZone,
+                    state.receiverInformation.zones.length > 1 ? PowerStatus.ALL_STB : PowerStatus.STB);
+                channel.sendMessage(cmd.getCmdMsg());
+                // Close the app since remote device is off
+                SystemNavigator.pop();
+                _done = true;
+            }
         }
     }
 }

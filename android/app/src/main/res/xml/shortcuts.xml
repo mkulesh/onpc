@@ -15,11 +15,22 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android" >
     <shortcut
         android:shortcutId="auto_power"
-        android:icon="@drawable/menu_power_standby"
+        android:icon="@drawable/shortcut_power_on"
         android:shortcutShortLabel="@string/shortcut_power_on"
         android:shortcutLongLabel="@string/shortcut_power_on">
         <intent
             android:action="com.mkulesh.onpc.plus.AUTO_POWER"
+            android:targetPackage="com.mkulesh.onpc.plus"
+            android:targetClass="com.mkulesh.onpc.plus.MainActivity"
+            />
+    </shortcut>
+    <shortcut
+        android:shortcutId="all_standby"
+        android:icon="@drawable/shortcut_all_standby"
+        android:shortcutShortLabel="@string/drawer_all_standby"
+        android:shortcutLongLabel="@string/drawer_all_standby">
+        <intent
+            android:action="com.mkulesh.onpc.plus.ALL_STANDBY"
             android:targetPackage="com.mkulesh.onpc.plus"
             android:targetClass="com.mkulesh.onpc.plus.MainActivity"
             />

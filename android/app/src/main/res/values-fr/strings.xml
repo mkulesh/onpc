@@ -14,15 +14,13 @@
 
 <resources>
 
-    <string name="dashed_string" translatable="false">---</string>
-
     <!-- Main view -->
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo and Pioneer: listen to music properly!</string>
+    <string name="app_description">Contrôleur optimisé pour Onkyo et Pioneer: Écoutez votre musique correctement!</string>
 
     <!-- Navigation drawer -->
-    <string name="drawer_all_standby">All Zones standby</string>
+    <string name="drawer_all_standby">Veille de toutes les zones</string>
 
     <!-- Connection dialog -->
 
@@ -33,8 +31,8 @@
     <!-- Main menu -->
 
     <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Shortcuts</string>
-    <string name="shortcut_power_on">Power On</string>
+    <string name="shortcut_widget_name">Raccourcis</string>
+    <string name="shortcut_power_on">Allumer</string>
 
     <!-- Application settings -->
 
@@ -42,13 +40,10 @@
 
     <!-- App themes -->
 
+
     <!-- Application settings: Languages -->
 
-    <!-- Non-Translatable parameters of languages -->
-
     <!-- Application settings: Text size -->
-
-    <!-- Non-Translatable parameters of text size -->
 
     <!-- Application settings: Tabs -->
 

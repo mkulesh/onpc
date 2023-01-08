@@ -620,6 +620,14 @@ Enjoy!"""];
         /*pl*/ "Wyłączyć wszystkie urządzenia w grupie?"];
     static String get menu_switch_off_group => l_menu_switch_off_group[_language];
 
+    static const List<String> l_shortcut_widget_name = [
+        /*en*/ "Shortcuts",
+        /*ru*/ "Ярлыки",
+        /*de*/ "Favoriten",
+        /*fr*/ "Raccourcis",
+        /*pl*/ "Skróty"];
+    static String get shortcut_widget_name => l_shortcut_widget_name[_language];
+
     static const List<String> l_shortcut_power_on = [
         /*en*/ "Power On",
         /*ru*/ "Включить",

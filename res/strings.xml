@@ -102,7 +102,8 @@ Enjoy!""</string>
     <string name="menu_latest_logging">Latest logging</string>
     <string name="menu_switch_off_group">Switch off all devices in the group?</string>
 
-    <!-- Shortcuts -->
+    <!-- Shortcuts and widgets -->
+    <string name="shortcut_widget_name">Shortcuts</string>
     <string name="shortcut_power_on">Power On</string>
 
     <!-- Application settings -->

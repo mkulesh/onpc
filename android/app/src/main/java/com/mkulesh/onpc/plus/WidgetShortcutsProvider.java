@@ -197,7 +197,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
         final int hColor = Utils.getColor(context, "widget_h_text", R.color.widget_h_text);
         rv.setInt(R.id.widget_title, "setBackgroundColor",
                 Utils.getColor(context, "widget_h_background", R.color.widget_h_background));
-        rv.setTextViewText(R.id.widget_name, context.getString(R.string.wigdet_shortcuts));
+        rv.setTextViewText(R.id.widget_name, context.getString(R.string.shortcut_widget_name));
         rv.setTextColor(R.id.widget_name, hColor);
         {
             final Intent refreshIntent = new Intent(context, WidgetShortcutsProvider.class);

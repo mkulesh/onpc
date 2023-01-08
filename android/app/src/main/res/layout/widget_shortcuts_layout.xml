@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="@string/wigdet_shortcuts"
+            android:text="@string/shortcut_widget_name"
             android:textAllCaps="true"
             android:textSize="18sp"
             android:background="@android:color/transparent" />
