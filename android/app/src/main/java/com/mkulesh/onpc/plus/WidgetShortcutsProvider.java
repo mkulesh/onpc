@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.mkulesh.onpc.plus.R;
 import com.mkulesh.onpc.utils.Utils;
 
 /**
@@ -43,10 +41,10 @@ import com.mkulesh.onpc.utils.Utils;
  */
 public class WidgetShortcutsProvider extends AppWidgetProvider
 {
-    public static String RUN_ACTION = "com.mkulesh.onpc.pro.RUN";
-    public static String CLICK_ACTION = "com.mkulesh.onpc.pro.CLICK";
-    public static String REFRESH_ACTION = "com.mkulesh.onpc.pro.REFRESH";
-    public static String WIDGET_SHORTCUT = "com.mkulesh.onpc.plus.WIDGET_SHORTCUT";
+    public static final String RUN_ACTION = "com.mkulesh.onpc.pro.RUN";
+    public static final String CLICK_ACTION = "com.mkulesh.onpc.pro.CLICK";
+    public static final String REFRESH_ACTION = "com.mkulesh.onpc.pro.REFRESH";
+    public static final String WIDGET_SHORTCUT = "com.mkulesh.onpc.plus.WIDGET_SHORTCUT";
 
     private static HandlerThread sWorkerThread;
     private static Handler sWorkerQueue;
@@ -168,7 +166,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
                 {
                     i.setDataAndType(Uri.parse(script), "text/xml");
                 }
-                Log.d("onpc", "called with intent: " + i.toString());
+                Log.d("onpc", "called with intent: " + i);
                 context.startActivity(i);
             }
         }
@@ -202,6 +200,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
         {
             final Intent refreshIntent = new Intent(context, WidgetShortcutsProvider.class);
             refreshIntent.setAction(WidgetShortcutsProvider.RUN_ACTION);
+            // noinspection NewApi
             final PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0,
                     refreshIntent, PendingIntent.FLAG_IMMUTABLE);
             rv.setOnClickPendingIntent(R.id.app_icon, refreshPendingIntent);
@@ -212,12 +211,13 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
         if (drawable != null)
         {
             drawable.clearColorFilter();
-            drawable.setColorFilter(hColor, PorterDuff.Mode.SRC_ATOP);
+            Utils.setColorFilter(drawable, hColor);
             rv.setImageViewBitmap(R.id.widget_refresh, Utils.drawableToBitmap(drawable));
         }
         {
             final Intent refreshIntent = new Intent(context, WidgetShortcutsProvider.class);
             refreshIntent.setAction(WidgetShortcutsProvider.REFRESH_ACTION);
+            // noinspection NewApi
             final PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0,
                     refreshIntent, PendingIntent.FLAG_IMMUTABLE);
             rv.setOnClickPendingIntent(R.id.widget_refresh, refreshPendingIntent);
@@ -231,6 +231,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
             onClickIntent.setAction(WidgetShortcutsProvider.CLICK_ACTION);
             onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
+            // noinspection NewApi
             final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
                     onClickIntent, PendingIntent.FLAG_MUTABLE);
             rv.setPendingIntentTemplate(R.id.shortcuts_list, onClickPendingIntent);
@@ -244,8 +245,8 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
  */
 class WeatherDataProviderObserver extends ContentObserver
 {
-    private AppWidgetManager mAppWidgetManager;
-    private ComponentName mComponentName;
+    private final AppWidgetManager mAppWidgetManager;
+    private final ComponentName mComponentName;
 
     WeatherDataProviderObserver(AppWidgetManager mgr, ComponentName cn, Handler h)
     {

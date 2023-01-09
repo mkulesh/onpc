@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.plus;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,18 +32,16 @@ import android.view.WindowManager;
 
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.plugin.common.MethodChannel;
 
-interface NetworkStateListener
-{
-    void onNetworkStateChanged(boolean isConnected, boolean isWiFi);
-}
-
-public class MainActivity extends FlutterActivity implements NetworkStateListener
+@SuppressWarnings({"RedundantSuppression"})
+public class MainActivity extends FlutterActivity
 {
     private static final String METHOD_CHANNEL = "platform_method_channel";
     private static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
@@ -62,27 +59,18 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
     private static final String VOLUME_DOWN = "volumeDown";
     private static final String NETWORK_STATE_CHANGE = "networkStateChange";
 
-    @SuppressLint("NewApi")
-    @SuppressWarnings("deprecation")
-    class ConnectivityChangeReceiver extends BroadcastReceiver
+    static class ConnectionState
     {
-        private final NetworkStateListener listener;
-        private final ConnectivityManager connectivity;
+        final ConnectivityManager connectivity;
         private final Context context;
 
-        ConnectivityChangeReceiver(NetworkStateListener listener, Context context)
+        ConnectionState(Context context)
         {
-            this.listener = listener;
             this.connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             this.context = context;
         }
 
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            listener.onNetworkStateChanged(isConnected(), isWifi());
-        }
-
+        @SuppressWarnings("deprecation")
         boolean isConnected()
         {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -99,11 +87,12 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
             else
             {
                 // getActiveNetworkInfo, Added in API level 1, Deprecated in API level 29
-                final NetworkInfo netInfo = connectivity.getActiveNetworkInfo();
+                final android.net.NetworkInfo netInfo = connectivity.getActiveNetworkInfo();
                 return netInfo != null && netInfo.isConnected();
             }
         }
 
+        @SuppressWarnings("deprecation")
         boolean isWifi()
         {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -141,14 +130,52 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
         }
     }
 
-    private ConnectivityChangeReceiver receiver;
+    static class MyBroadcastReceiver extends BroadcastReceiver
+    {
+        private final MainActivity listener;
+        MyBroadcastReceiver(MainActivity listener)
+        {
+            this.listener = listener;
+        }
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            //Log.d("onpc", "network state change via broadcast: " + intent);
+            listener.onNetworkStateChanged();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    static class MyNetworkCallback extends ConnectivityManager.NetworkCallback
+    {
+        private final MainActivity listener;
+        MyNetworkCallback(MainActivity listener)
+        {
+            this.listener = listener;
+        }
+        @Override
+        public void onAvailable(Network network) {
+            super.onAvailable(network);
+            //Log.d("onpc", "network available via network callback: " + network);
+            listener.runOnUiThread(listener::onNetworkStateChanged);
+        }
+        @Override
+        public void onLost(Network network) {
+            //Log.d("onpc", "network lost via network callback: " + network);
+            listener.runOnUiThread(listener::onNetworkStateChanged);
+        }
+    }
+
+    private ConnectionState connectionState;
+    private MyBroadcastReceiver broadcastReceiver;
+    private MyNetworkCallback networkCallback;
     private boolean volumeKeys = true;
     private boolean keepScreenOn = false;
     private String intentData = null;
     private MethodChannel platformChannel = null;
 
     @Override
-    public void configureFlutterEngine(FlutterEngine flutterEngine)
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine)
     {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
 
@@ -159,7 +186,7 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
-        receiver = new ConnectivityChangeReceiver(this, this);
+        connectionState = new ConnectionState(this);
 
         // Message channel to Flutter code
         platformChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), METHOD_CHANNEL);
@@ -208,12 +235,14 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
         }
     }
 
-    @Override
-    public void onNetworkStateChanged(boolean isConnected, boolean isWiFi)
+    public void onNetworkStateChanged()
     {
         if (platformChannel != null)
         {
-            final int state = !receiver.isConnected() ? 0 : (!receiver.isWifi() ? 1 : 2);
+            final boolean isConnected = connectionState.isConnected();
+            final boolean isWifi = connectionState.isWifi();
+            //Log.d("onpc", "network state: isConnected = " + isConnected + ", isWifi = " + isWifi);
+            final int state = !isConnected ? 0 : (!isWifi ? 1 : 2);
             platformChannel.invokeMethod(NETWORK_STATE_CHANGE, String.valueOf(state));
         }
     }
@@ -223,12 +252,26 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
     protected void onResume()
     {
         super.onResume();
-        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            NetworkRequest.Builder builder = new NetworkRequest.Builder();
+            builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            builder.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR);
+            builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
+            builder.addTransportType(NetworkCapabilities.TRANSPORT_VPN);
+            networkCallback = new MyNetworkCallback(this);
+            connectionState.connectivity.registerNetworkCallback(builder.build(), networkCallback);
+        }
+        else
+        {
+            broadcastReceiver = new MyBroadcastReceiver(this);
+            registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
         handleIntent(getIntent());
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
+    protected void onNewIntent(@NonNull Intent intent)
     {
         super.onNewIntent(intent);
         handleIntent(intent);
@@ -254,7 +297,14 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
     protected void onPause()
     {
         super.onPause();
-        unregisterReceiver(receiver);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && networkCallback != null)
+        {
+            connectionState.connectivity.unregisterNetworkCallback(networkCallback);
+        }
+        else if (broadcastReceiver != null)
+        {
+            unregisterReceiver(broadcastReceiver);
+        }
     }
 
     private void readPreferences()
@@ -312,7 +362,7 @@ public class MainActivity extends FlutterActivity implements NetworkStateListene
         }
         else if (methodCall.method.equals(GET_NETWORK_STATE))
         {
-            final int state = !receiver.isConnected() ? 0 : (!receiver.isWifi() ? 1 : 2);
+            final int state = !connectionState.isConnected() ? 0 : (!connectionState.isWifi() ? 1 : 2);
             result.success(String.valueOf(state));
         }
         else if (methodCall.method.equals(GET_INTENT))

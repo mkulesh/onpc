@@ -18,7 +18,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Canvas;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -34,6 +37,11 @@ import java.nio.charset.Charset;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
+@SuppressWarnings({"RedundantSuppression"})
 public class Utils
 {
     public static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
@@ -132,7 +140,21 @@ public class Utils
     public static int getColor(Context context, String par, int defValue)
     {
         final SharedPreferences preferences = context.getSharedPreferences(
-                SHARED_PREFERENCES_NAME, context.MODE_PRIVATE);
-        return (int) preferences.getLong("flutter." + par, context.getColor(defValue));
+                SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return (int) preferences.getLong("flutter." + par, ContextCompat.getColor(context, defValue));
+    }
+
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
+    public static void setColorFilter(@NonNull Drawable drawable, @ColorInt int color)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+        }
+        else
+        {
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        }
     }
 }

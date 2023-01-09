@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.mkulesh.onpc.plus.R;
 import com.mkulesh.onpc.utils.Utils;
 
 /**
@@ -42,7 +41,7 @@ public class WidgetShortcutsService extends RemoteViewsService
  */
 class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 {
-    private Context mContext;
+    private final Context mContext;
     private Cursor mCursor;
     private final int mAppWidgetId;
 
@@ -78,8 +77,16 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
         String script = "";
         if (mCursor.moveToPosition(position))
         {
-            alias = mCursor.getString(mCursor.getColumnIndex(WidgetShortcutsDataProvider.Columns.ALIAS));
-            script = mCursor.getString(mCursor.getColumnIndex(WidgetShortcutsDataProvider.Columns.SCRIPT));
+            final int aliasIdx = mCursor.getColumnIndex(WidgetShortcutsDataProvider.Columns.ALIAS);
+            if (aliasIdx >= 0)
+            {
+                alias = mCursor.getString(aliasIdx);
+            }
+            final int scriptIdx = mCursor.getColumnIndex(WidgetShortcutsDataProvider.Columns.SCRIPT);
+            if (scriptIdx >= 0)
+            {
+                script = mCursor.getString(scriptIdx);
+            }
         }
 
         // Return a proper item with filled data
