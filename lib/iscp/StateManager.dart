@@ -234,6 +234,9 @@ class StateManager
         if (_state.changeZone(getId))
         {
             sendQueries(_state.receiverInformation.getQueries(_state.getActiveZone));
+            // Issue #266: send an additional request for cover art image:
+            _messageChannel.sendMessage(
+                EISCPMessage.output(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
             triggerStateEvent(ZONE_EVENT);
         }
         return _state.getActiveZone;
