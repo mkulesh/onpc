@@ -75,6 +75,10 @@ class AutoPower implements MessageScriptIf
                 final PowerStatusMsg cmd = PowerStatusMsg.output(state.getActiveZone,
                     state.receiverInformation.zones.length > 1 ? PowerStatus.ALL_STB : PowerStatus.STB);
                 channel.sendMessage(cmd.getCmdMsg());
+                // wait until OFF state will be reached
+            }
+            else if (autoPowerMode == AutoPowerMode.ALL_STANDBY && !state.isOn)
+            {
                 // Close the app since remote device is off
                 SystemNavigator.pop();
                 _done = true;
