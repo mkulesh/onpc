@@ -72,9 +72,10 @@ class AutoPower implements MessageScriptIf
             else if (autoPowerMode == AutoPowerMode.ALL_STANDBY && state.isOn)
             {
                 Logging.info(this, "request all-standby on startup");
-                final PowerStatusMsg cmd = PowerStatusMsg.output(state.getActiveZone,
-                    state.receiverInformation.zones.length > 1 ? PowerStatus.ALL_STB : PowerStatus.STB);
-                channel.sendMessage(cmd.getCmdMsg());
+                final PowerStatusMsg cmd1 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.ALL_STB);
+                channel.sendMessage(cmd1.getCmdMsg());
+                final PowerStatusMsg cmd2 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.STB);
+                channel.sendMessage(cmd2.getCmdMsg());
                 // wait until OFF state will be reached
             }
             else if (autoPowerMode == AutoPowerMode.ALL_STANDBY && !state.isOn)
