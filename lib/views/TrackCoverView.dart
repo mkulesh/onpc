@@ -38,10 +38,12 @@ class TrackCoverView extends UpdatableView
     {
         final ThemeData td = Theme.of(context);
 
-        final Widget cover = state.trackState.cover != null ? state.trackState.cover : SvgPicture.asset(
-            Drawables.empty_cover,
-            color: state.isOn ? td.colorScheme.secondary : td.disabledColor,
-            fit: BoxFit.contain);
+        final Widget cover = state.isOn && state.trackState.cover != null ?
+            state.trackState.cover : SvgPicture.asset(
+                Drawables.empty_cover,
+                color: state.isOn ? td.colorScheme.secondary : td.disabledColor,
+                fit: BoxFit.contain
+            );
 
         Widget box = FittedBox(
             fit: BoxFit.contain,

@@ -198,11 +198,11 @@ class TrackState
         return changed;
     }
 
-    bool processJacketArt(JacketArtMsg msg)
+    bool processJacketArt(JacketArtMsg msg, bool isOn)
     {
         if (msg.getImageType == ImageType.URL)
         {
-            _coverPending = true;
+            _coverPending = isOn;
             Logging.info(this, "loading image from URL: " + msg.url);
             msg.loadFromUrl().then((image)
             {

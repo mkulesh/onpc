@@ -345,7 +345,7 @@ class State
         }
         else if (msg is JacketArtMsg)
         {
-            return _isChange(JacketArtMsg.CODE, _trackState.processJacketArt(msg));
+            return _isChange(JacketArtMsg.CODE, _trackState.processJacketArt(msg, isOn));
         }
         else if (msg is AudioInformationMsg)
         {
