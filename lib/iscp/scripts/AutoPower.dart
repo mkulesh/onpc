@@ -33,7 +33,7 @@ enum AutoPowerMode
 class AutoPower implements MessageScriptIf
 {
     final AutoPowerMode autoPowerMode;
-    bool _done = false;
+    bool _done = false, _closeApp = false;
 
     AutoPower(this.autoPowerMode);
 
@@ -52,8 +52,9 @@ class AutoPower implements MessageScriptIf
     @override
     void start(final State state, MessageChannel channel)
     {
-        Logging.info(this, "started script");
+        Logging.info(this, "started script: " + autoPowerMode.toString());
         _done = false;
+        _closeApp = false;
     }
 
     @override
@@ -69,20 +70,27 @@ class AutoPower implements MessageScriptIf
                 channel.sendMessage(cmd.getCmdMsg());
                 _done = true;
             }
-            else if (autoPowerMode == AutoPowerMode.ALL_STANDBY && state.isOn)
+            else if (autoPowerMode == AutoPowerMode.ALL_STANDBY)
             {
-                Logging.info(this, "request all-standby on startup");
-                final PowerStatusMsg cmd1 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.ALL_STB);
-                channel.sendMessage(cmd1.getCmdMsg());
-                final PowerStatusMsg cmd2 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.STB);
-                channel.sendMessage(cmd2.getCmdMsg());
-                // wait until OFF state will be reached
-            }
-            else if (autoPowerMode == AutoPowerMode.ALL_STANDBY && !state.isOn)
-            {
-                // Close the app since remote device is off
-                SystemNavigator.pop();
-                _done = true;
+                if (_closeApp)
+                {
+                    if (msg.getValue.key == PowerStatus.STB || msg.getValue.key == PowerStatus.ALL_STB)
+                    {
+                        Logging.info(this, "close app after all-standby on startup");
+                        _done = true;
+                        SystemNavigator.pop();
+                    }
+                }
+                else
+                {
+                    Logging.info(this, "request all-standby on startup");
+                    final PowerStatusMsg cmd1 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.ALL_STB);
+                    channel.sendMessage(cmd1.getCmdMsg());
+                    final PowerStatusMsg cmd2 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.STB);
+                    channel.sendMessage(cmd2.getCmdMsg());
+                    // wait until OFF state will be reached
+                    _closeApp = true;
+                }
             }
         }
     }
