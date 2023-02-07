@@ -19,6 +19,7 @@ import "../ISCPMessage.dart";
 import "../MessageChannel.dart";
 import "../State.dart";
 import "../messages/PowerStatusMsg.dart";
+import "../messages/ReceiverInformationMsg.dart";
 import "MessageScriptIf.dart";
 
 enum AutoPowerMode
@@ -27,13 +28,21 @@ enum AutoPowerMode
     ALL_STANDBY
 }
 
+enum _AllStandbyStep
+{
+    NONE,
+    ALL_STB_SEND,
+    STB_SEND
+}
+
 //
 // The class performs receiver auto-power on startup
 //
 class AutoPower implements MessageScriptIf
 {
     final AutoPowerMode autoPowerMode;
-    bool _done = false, _closeApp = false;
+    bool _done = false;
+    _AllStandbyStep _allStandbyStep = _AllStandbyStep.NONE;
 
     AutoPower(this.autoPowerMode);
 
@@ -54,7 +63,7 @@ class AutoPower implements MessageScriptIf
     {
         Logging.info(this, "started script: " + autoPowerMode.toString());
         _done = false;
-        _closeApp = false;
+        _allStandbyStep = _AllStandbyStep.NONE;
     }
 
     @override
@@ -72,24 +81,37 @@ class AutoPower implements MessageScriptIf
             }
             else if (autoPowerMode == AutoPowerMode.ALL_STANDBY)
             {
-                if (_closeApp)
+                switch (_allStandbyStep)
                 {
+                case _AllStandbyStep.NONE:
+                    Logging.info(this, "request all-standby on startup");
+                    final PowerStatusMsg cmd = PowerStatusMsg.output(
+                      ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, PowerStatus.ALL_STB);
+                    channel.sendMessage(cmd.getCmdMsg());
+                    _allStandbyStep = _AllStandbyStep.ALL_STB_SEND;
+                    break;
+                case _AllStandbyStep.ALL_STB_SEND:
                     if (msg.getValue.key == PowerStatus.STB || msg.getValue.key == PowerStatus.ALL_STB)
                     {
-                        Logging.info(this, "close app after all-standby on startup");
                         _done = true;
-                        SystemNavigator.pop();
                     }
+                    else
+                    {
+                        Logging.info(this, "request standby on startup");
+                        final PowerStatusMsg cmd = PowerStatusMsg.output(
+                            ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, PowerStatus.STB);
+                        channel.sendMessage(cmd.getCmdMsg());
+                        _allStandbyStep = _AllStandbyStep.STB_SEND;
+                    }
+                    break;
+                case _AllStandbyStep.STB_SEND:
+                    _done = true;
+                    break;
                 }
-                else
+                if (_done)
                 {
-                    Logging.info(this, "request all-standby on startup");
-                    final PowerStatusMsg cmd1 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.ALL_STB);
-                    channel.sendMessage(cmd1.getCmdMsg());
-                    final PowerStatusMsg cmd2 = PowerStatusMsg.output(state.getActiveZone, PowerStatus.STB);
-                    channel.sendMessage(cmd2.getCmdMsg());
-                    // wait until OFF state will be reached
-                    _closeApp = true;
+                    Logging.info(this, "close app after all-standby on startup");
+                    SystemNavigator.pop();
                 }
             }
         }
