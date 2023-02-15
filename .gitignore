@@ -10,6 +10,8 @@ build
 images/svgcleaner/svgcleaner
 lib/utils/CompatUtils.dart
 release/MusicControl-v*
+release/manual_test.txt
+release/win-report.xml
 android/.gradle
 android/key.properties
 android/local.properties
