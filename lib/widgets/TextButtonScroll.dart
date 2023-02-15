@@ -73,7 +73,7 @@ class _TextButtonScrollState extends State<TextButtonScroll>
             padding: ActivityDimens.noPadding,
             child: Row(children: widget._items));
 
-        if (left > 0 && width > 0)
+        if (left >= 0 && width > 0)
         {
             WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToPosition(left, width));
         }
