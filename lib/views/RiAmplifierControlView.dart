@@ -121,7 +121,7 @@ class RiAmplifierControlView extends UpdatableView
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendRiMessage(rc, cmd),
-            isEnabled: stateManager.isConnected && (!configuration.riCommands.isOn || rc != null)
+            isEnabled: stateManager.isConnected
         );
     }
 
