@@ -57,7 +57,8 @@ class MasterVolumeMaxView extends UpdatableView
             },
             onDownButton: (v)
             {
-                configuration.audioControl.masterVolumeMax = max(0, configuration.audioControl.masterVolumeMax - 1);
+                configuration.audioControl.masterVolumeMax = max(0,
+                    min(maxVolume, configuration.audioControl.masterVolumeMax) - 1);
                 stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
             },
             onUpButton: (v)
