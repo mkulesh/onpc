@@ -247,7 +247,7 @@ class Strings
 # Enhanced Controller for Onkyo and Pioneer
 Listen to music properly!
 
-Copyright © 2019-2022 by __Mikhail Kulesh__
+Copyright © 2019-2023 by __Mikhail Kulesh__
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
 
@@ -277,7 +277,7 @@ Enjoy!""",
 # Улучшенный контроллер для Onkyo и Pioneer
 Слушайте музыку правильно!
 
-Copyright © 2019-2022 by __Михаил Кулеш__
+Copyright © 2019-2023 by __Михаил Кулеш__
 
 Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Pioneer/Integra по локальной сети, используя сетевой протокол "Integra Serial Communication Protocol". Основное предназначение программы - управление воспроизведением и звуковыми профилями.
 
@@ -305,7 +305,7 @@ Copyright © 2019-2022 by __Михаил Кулеш__
 # Verbesserte Fernsteuerung für Onkyo und Pioneer
 Musik richtig hören!
 
-Copyright © 2019-2022 by __Mikhail Kulesh__
+Copyright © 2019-2023 by __Mikhail Kulesh__
 
 Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.
 
@@ -333,7 +333,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 # Contrôleur optimisé pour Onkyo et Pioneer
 Ecoutez votre musique correctement!
 
-Copyright © 2019-2022 by __Mikhail Kulesh__
+Copyright © 2019-2023 by __Mikhail Kulesh__
 
 Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol". Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.
 
@@ -360,7 +360,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
 # Enhanced Controller for Onkyo and Pioneer
 Listen to music properly!
 
-Copyright © 2019-2022 by __Mikhail Kulesh__
+Copyright © 2019-2023 by __Mikhail Kulesh__
 
 This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
 
