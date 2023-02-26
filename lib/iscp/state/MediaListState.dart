@@ -454,6 +454,10 @@ class MediaListState
 
     bool isPathItemsConsistent()
     {
+        if (isRadioInput)
+        {
+            return true;
+        }
         for (int i = 1; i < pathItems.length; i++)
         {
             if (pathItems[i] == null || pathItems[i].isEmpty)
