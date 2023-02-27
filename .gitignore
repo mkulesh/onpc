@@ -12,6 +12,7 @@ lib/utils/CompatUtils.dart
 release/MusicControl-v*
 release/manual_test.txt
 release/win-report.xml
+release/config
 android/.gradle
 android/key.properties
 android/local.properties
