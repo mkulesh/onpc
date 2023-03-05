@@ -128,6 +128,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Pioneer SC-LX901](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx901)
 - [Pioneer SX-N30](https://intl.pioneer-audiovisual.com/products/2ch_components/sx-n30)
 - [Pioneer NC-50DAB](https://intl.pioneer-audiovisual.com/products/2ch_components/nc-50dab/)
+- [Pioneer N-50AE](https://intl.pioneer-audiovisual.com/products/2ch_components/n-50ae)
 - [Pioneer N-70AE](https://intl.pioneer-audiovisual.com/products/2ch_components/n-70ae)
 - [Pioneer XC-HM86D](https://intl.pioneer-audiovisual.com/products/system_components/xc-hm86d)
 - [Pioneer MRX-3](https://intl.pioneer-audiovisual.com/products/system_components/mrx-3/)
@@ -173,7 +174,7 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 
 This software is published under the *GNU General Public License, Version 3*
 
-Copyright © 2018-2022 by Mikhail Kulesh, Alexander Gomanyuk
+Copyright © 2018-2023 by Mikhail Kulesh, Alexander Gomanyuk
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
