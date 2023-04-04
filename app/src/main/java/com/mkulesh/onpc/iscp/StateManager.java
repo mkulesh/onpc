@@ -590,6 +590,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             final String[] playStateQueries = new String[]{
                     // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    // DeviceSettingsState
+                    DimmerLevelMsg.CODE,
                     // SoundControlState
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],

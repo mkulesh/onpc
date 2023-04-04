@@ -420,6 +420,12 @@ public class State implements ConnectionIf
             bassLevel = bassLevel == ToneCommandMsg.NO_LEVEL ? 0 : bassLevel;
             trebleLevel = trebleLevel == ToneCommandMsg.NO_LEVEL ? 0 : trebleLevel;
         }
+        // Settings
+        if (protoType == Utils.ProtoType.DCP)
+        {
+            controlList.add("Setup");
+            controlList.add("Quick");
+        }
     }
 
     public ReceiverInformationMsg.ToneControl getToneControl(final String toneKey, final boolean forceAudioControl)

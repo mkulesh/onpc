@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -31,17 +32,17 @@ public class SetupOperationCommandMsg extends ISCPMessage
 
     public enum Command implements StringParameterIf
     {
-        MENU("MENU", R.string.cmd_description_setup, R.drawable.cmd_setup),
-        UP("UP", R.string.cmd_description_up, R.drawable.cmd_up),
-        DOWN("DOWN", R.string.cmd_description_down, R.drawable.cmd_down),
-        RIGHT("RIGHT", R.string.cmd_description_right, R.drawable.cmd_right),
-        LEFT("LEFT", R.string.cmd_description_left, R.drawable.cmd_left),
-        ENTER("ENTER", R.string.cmd_description_select, R.drawable.cmd_select),
-        EXIT("EXIT", R.string.cmd_description_return, R.drawable.cmd_return),
-        HOME("HOME", R.string.cmd_description_home, R.drawable.cmd_home),
-        QUICK("QUICK", R.string.cmd_description_quick_menu, R.drawable.cmd_quick_menu);
+        MENU("MENU", "MEN ON", R.string.cmd_description_setup, R.drawable.cmd_setup),
+        UP("UP", "CUP", R.string.cmd_description_up, R.drawable.cmd_up),
+        DOWN("DOWN", "CDN", R.string.cmd_description_down, R.drawable.cmd_down),
+        RIGHT("RIGHT", "CRT", R.string.cmd_description_right, R.drawable.cmd_right),
+        LEFT("LEFT", "CLT", R.string.cmd_description_left, R.drawable.cmd_left),
+        ENTER("ENTER", "ENT", R.string.cmd_description_select, R.drawable.cmd_select),
+        EXIT("EXIT", "RTN", R.string.cmd_description_return, R.drawable.cmd_return),
+        HOME("HOME", "N/A", R.string.cmd_description_home, R.drawable.cmd_home),
+        QUICK("QUICK", "OPT", R.string.cmd_description_quick_menu, R.drawable.cmd_quick_menu);
 
-        final String code;
+        final String code, dcpCode;
 
         @StringRes
         final int descriptionId;
@@ -49,9 +50,10 @@ public class SetupOperationCommandMsg extends ISCPMessage
         @DrawableRes
         final int imageId;
 
-        Command(final String code, @StringRes final int descriptionId, @DrawableRes final int imageId)
+        Command(final String code, final String dcpCode, @StringRes final int descriptionId, @DrawableRes final int imageId)
         {
             this.code = code;
+            this.dcpCode = dcpCode;
             this.descriptionId = descriptionId;
             this.imageId = imageId;
         }
@@ -59,6 +61,11 @@ public class SetupOperationCommandMsg extends ISCPMessage
         public String getCode()
         {
             return code;
+        }
+
+        public String getDcpCode()
+        {
+            return dcpCode;
         }
 
         @StringRes
@@ -111,5 +118,21 @@ public class SetupOperationCommandMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND = "MN";
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (command != null && !isQuery)
+        {
+            return DCP_COMMAND + command.getDcpCode();
+        }
+        return null;
     }
 }

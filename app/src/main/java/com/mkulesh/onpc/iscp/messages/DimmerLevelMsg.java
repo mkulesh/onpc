@@ -19,6 +19,7 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -30,28 +31,34 @@ public class DimmerLevelMsg extends ISCPMessage
 
     public enum Level implements StringParameterIf
     {
-        NONE("N/A", R.string.device_dimmer_level_none),
-        BRIGHT("00", R.string.device_dimmer_level_bright),
-        DIM("01", R.string.device_dimmer_level_dim),
-        DARK("02", R.string.device_dimmer_level_dark),
-        SHUT_OFF("03", R.string.device_dimmer_level_shut_off),
-        OFF("08", R.string.device_dimmer_level_off),
-        TOGGLE("DIM", R.string.device_dimmer_level_toggle);
+        NONE("N/A", "N/A",R.string.device_dimmer_level_none),
+        BRIGHT("00", "BRI", R.string.device_dimmer_level_bright),
+        DIM("01", "DIM", R.string.device_dimmer_level_dim),
+        DARK("02", "DAR", R.string.device_dimmer_level_dark),
+        SHUT_OFF("03", "N/A", R.string.device_dimmer_level_shut_off),
+        OFF("08", "OFF", R.string.device_dimmer_level_off),
+        TOGGLE("DIM", "SEL", R.string.device_dimmer_level_toggle);
 
-        final String code;
+        final String code, dcpCode;
 
         @StringRes
         final int descriptionId;
 
-        Level(final String code, @StringRes final int descriptionId)
+        Level(final String code, final String dcpCode, @StringRes final int descriptionId)
         {
             this.code = code;
+            this.dcpCode = dcpCode;
             this.descriptionId = descriptionId;
         }
 
         public String getCode()
         {
             return code;
+        }
+
+        public String getDcpCode()
+        {
+            return dcpCode;
         }
 
         @StringRes
@@ -97,5 +104,35 @@ public class DimmerLevelMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND = "DIM";
+
+    @Nullable
+    public static DimmerLevelMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        if (dcpMsg.startsWith(DCP_COMMAND))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
+            for (Level level : Level.values())
+            {
+                if (par.equalsIgnoreCase(level.getDcpCode()))
+                {
+                    return new DimmerLevelMsg(level);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        // A space is needed for "DIM ?" command
+        return DCP_COMMAND + " " + (isQuery ? DCP_MSG_REQ : level.getDcpCode());
     }
 }

@@ -16,6 +16,7 @@ package com.mkulesh.onpc.iscp;
 
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
@@ -50,6 +51,9 @@ public class DCPMessage
         addISCPMsg(ToneCommandMsg.processDcpMessage(dcpMsg));
         addISCPMsg(AudioMutingMsg.processDcpMessage(dcpMsg));
         addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
+
+        // Settings
+        addISCPMsg(DimmerLevelMsg.processDcpMessage(dcpMsg));
 
         return messages;
     }
