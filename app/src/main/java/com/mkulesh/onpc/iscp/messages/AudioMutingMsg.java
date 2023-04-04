@@ -19,6 +19,7 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -35,25 +36,31 @@ public class AudioMutingMsg extends ZonedMessage
 
     public enum Status implements StringParameterIf
     {
-        NONE("N/A", R.string.audio_muting_none),
-        OFF("00", R.string.audio_muting_off),
-        ON("01", R.string.audio_muting_on),
-        TOGGLE("TG", R.string.audio_muting_toggle);
+        NONE("N/A", "N/A", R.string.audio_muting_none),
+        OFF("00", "OFF", R.string.audio_muting_off),
+        ON("01", "ON", R.string.audio_muting_on),
+        TOGGLE("TG", "N/A", R.string.audio_muting_toggle);
 
-        final String code;
+        final String code, dcpCode;
 
         @StringRes
         final int descriptionId;
 
-        Status(final String code, @StringRes final int descriptionId)
+        Status(String code, String dcpCode, @StringRes final int descriptionId)
         {
             this.code = code;
+            this.dcpCode = dcpCode;
             this.descriptionId = descriptionId;
         }
 
         public String getCode()
         {
             return code;
+        }
+
+        public String getDcpCode()
+        {
+            return dcpCode;
         }
 
         @StringRes
@@ -112,5 +119,41 @@ public class AudioMutingMsg extends ZonedMessage
     public static Status toggle(Status s)
     {
         return (s == Status.OFF) ? Status.ON : Status.OFF;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String[] DCP_COMMANDS = new String[]{ "MU", "Z2MU", "Z3MU" };
+
+    @Nullable
+    public static AudioMutingMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        for (int i = 0; i < DCP_COMMANDS.length; i++)
+        {
+            if (dcpMsg.startsWith(DCP_COMMANDS[i]))
+            {
+                final String par = dcpMsg.substring(DCP_COMMANDS[i].length()).trim();
+                for (Status status : Status.values())
+                {
+                    if (par.equalsIgnoreCase(status.getDcpCode()))
+                    {
+                        return new AudioMutingMsg(i, status);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (zoneIndex < DCP_COMMANDS.length)
+        {
+            return DCP_COMMANDS[zoneIndex] + (isQuery ? DCP_MSG_REQ : status.getDcpCode());
+        }
+        return null;
     }
 }

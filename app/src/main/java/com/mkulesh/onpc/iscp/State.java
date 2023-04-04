@@ -848,8 +848,22 @@ public class State implements ConnectionIf
         final boolean changed =
                 (msg.getBassLevel() != ToneCommandMsg.NO_LEVEL && bassLevel != msg.getBassLevel()) ||
                         (msg.getTrebleLevel() != ToneCommandMsg.NO_LEVEL && trebleLevel != msg.getTrebleLevel());
-        bassLevel = msg.getBassLevel();
-        trebleLevel = msg.getTrebleLevel();
+        if (msg.isTonJoined())
+        {
+            bassLevel = msg.getBassLevel();
+            trebleLevel = msg.getTrebleLevel();
+        }
+        else
+        {
+            if (msg.getBassLevel() != ToneCommandMsg.NO_LEVEL)
+            {
+                bassLevel = msg.getBassLevel();
+            }
+            if (msg.getTrebleLevel() != ToneCommandMsg.NO_LEVEL)
+            {
+                trebleLevel = msg.getTrebleLevel();
+            }
+        }
         return changed;
     }
 
@@ -1718,6 +1732,36 @@ public class State implements ConnectionIf
                     deviceSelectors.add(msg.getSelector());
                 }
             }
+        }
+        // List of zones
+        if (!msg.getZones().isEmpty())
+        {
+            boolean changed = zones.size() != msg.getZones().size();
+            for (int i = 0; i < Math.min(zones.size(), msg.getZones().size()); i++)
+            {
+                if (!zones.get(i).equals(msg.getZones().get(i)))
+                {
+                    changed = true;
+                    break;
+                }
+            }
+            if (changed)
+            {
+                zones = msg.getZones();
+                for (ReceiverInformationMsg.Zone s : zones)
+                {
+                    Logging.info(this, "    DCP Zone " + s);
+                }
+            }
+            return changed;
+        }
+        // Tone control
+        final ReceiverInformationMsg.ToneControl toneControl = msg.getToneControl();
+        if (toneControl != null)
+        {
+            boolean changed = !toneControl.equals(toneControls.get(toneControl.getId()));
+            toneControls.put(toneControl.getId(), toneControl);
+            return changed;
         }
         return false;
     }

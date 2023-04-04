@@ -17,9 +17,14 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
+
+import java.text.DecimalFormat;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -40,10 +45,12 @@ public class MasterVolumeMsg extends ZonedMessage
     @SuppressWarnings("unused")
     public enum Command implements StringParameterIf
     {
-        UP(R.string.master_volume_up, R.drawable.volume_amp_up),
-        DOWN(R.string.master_volume_down, R.drawable.volume_amp_down),
-        UP1(R.string.master_volume_up1, R.drawable.volume_amp_up),
-        DOWN1(R.string.master_volume_down1, R.drawable.volume_amp_down);
+        UP("UP", R.string.master_volume_up, R.drawable.volume_amp_up),
+        DOWN("DOWN", R.string.master_volume_down, R.drawable.volume_amp_down),
+        UP1("N/A", R.string.master_volume_up1, R.drawable.volume_amp_up),
+        DOWN1("N/A", R.string.master_volume_down1, R.drawable.volume_amp_down);
+
+        final String dcpCode;
 
         @StringRes
         final int descriptionId;
@@ -51,8 +58,9 @@ public class MasterVolumeMsg extends ZonedMessage
         @DrawableRes
         final int imageId;
 
-        Command(@StringRes final int descriptionId, @DrawableRes final int imageId)
+        Command(final String dcpCode, @StringRes final int descriptionId, @DrawableRes final int imageId)
         {
+            this.dcpCode = dcpCode;
             this.descriptionId = descriptionId;
             this.imageId = imageId;
         }
@@ -60,6 +68,11 @@ public class MasterVolumeMsg extends ZonedMessage
         public String getCode()
         {
             return toString();
+        }
+
+        public String getDcpCode()
+        {
+            return dcpCode;
         }
 
         @StringRes
@@ -146,5 +159,66 @@ public class MasterVolumeMsg extends ZonedMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String[] DCP_COMMANDS = new String[]{ "MV", "Z2", "Z3" };
+
+    public static MasterVolumeMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        for (int i = 0; i < DCP_COMMANDS.length; i++)
+        {
+            if (dcpMsg.startsWith(DCP_COMMANDS[i]) && !dcpMsg.contains("MAX"))
+            {
+                final String par = dcpMsg.substring(DCP_COMMANDS[i].length()).trim();
+                try
+                {
+                    float volumeLevel = Integer.parseInt(par);
+                    if (par.length() > 2)
+                    {
+                        volumeLevel = volumeLevel / 10;
+                    }
+                    return new MasterVolumeMsg(i, (int) (2.0 * volumeLevel));
+                }
+                catch (Exception e)
+                {
+                    Logging.info(MasterVolumeMsg.class, "Unable to parse volume level " + par);
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (isQuery)
+        {
+            return DCP_COMMANDS[0] + DCP_MSG_REQ;
+        }
+        else if (zoneIndex < DCP_COMMANDS.length)
+        {
+            if (command != null)
+            {
+                return DCP_COMMANDS[zoneIndex] + command.getDcpCode();
+            }
+            else if (volumeLevel != NO_LEVEL)
+            {
+                final float f = 10.0f * ((float) volumeLevel / 2.0f);
+                final DecimalFormat df = Utils.getDecimalFormat("000");
+                final String fullStr = df.format(f);
+                final String par = fullStr.endsWith("0") ? fullStr.substring(0, 2) :
+                        (fullStr.endsWith("5") ? fullStr : "");
+                if (!par.isEmpty())
+                {
+                    return DCP_COMMANDS[zoneIndex] + par;
+                }
+            }
+        }
+        return null;
     }
 }

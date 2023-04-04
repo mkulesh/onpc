@@ -585,10 +585,15 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof PowerStatusMsg && changed != State.ChangeType.NONE)
         {
+            final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
+                    ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
             final String[] playStateQueries = new String[]{
                     // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     // SoundControlState
+                    AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    toneCommand,
                     ListeningModeMsg.CODE,
             };
             sendQueries(playStateQueries, "DCP: requesting play state...");

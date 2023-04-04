@@ -14,11 +14,15 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Tone/Front (for main zone) and Tone (for zones 2, 3) command
@@ -157,4 +161,75 @@ public class ToneCommandMsg extends ZonedMessage
     {
         return false;
     }
+
+    /*
+     * Denon control protocol
+     */
+    public static ToneCommandMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        // Bass
+        for (int i = 0; i < DcpReceiverInformationMsg.DCP_COMMANDS_BASS.length; i++)
+        {
+            if (dcpMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMANDS_BASS[i]))
+            {
+                final String par = dcpMsg.substring(
+                        DcpReceiverInformationMsg.DCP_COMMANDS_BASS[i].length()).trim();
+                try
+                {
+                    final int level = Integer.parseInt(par) - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
+                    return new ToneCommandMsg(i, level, NO_LEVEL);
+                }
+                catch (Exception e)
+                {
+                    Logging.info(ToneCommandMsg.class, "Unable to parse bass level " + par);
+                    return null;
+                }
+            }
+        }
+        // Treble
+        for (int i = 0; i < DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE.length; i++)
+        {
+            if (dcpMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[i]))
+            {
+                final String par = dcpMsg.substring(
+                        DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[i].length()).trim();
+                try
+                {
+                    final int level = Integer.parseInt(par) - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
+                    return new ToneCommandMsg(i, NO_LEVEL, level);
+                }
+                catch (Exception e)
+                {
+                    Logging.info(ToneCommandMsg.class, "Unable to parse treble level " + par);
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    @SuppressLint("DefaultLocale")
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (isQuery)
+        {
+            final String bassReq = DcpReceiverInformationMsg.DCP_COMMANDS_BASS[zoneIndex] + " " + DCP_MSG_REQ;
+            final String trebleReq = DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[zoneIndex] + " " + DCP_MSG_REQ;
+            return bassReq + DCP_MSG_SEP + trebleReq;
+        }
+        else if (bassLevel != NO_LEVEL)
+        {
+            final String par = String.format("%02d", bassLevel + DcpReceiverInformationMsg.DCP_TON_SHIFT[zoneIndex]);
+            return DcpReceiverInformationMsg.DCP_COMMANDS_BASS[zoneIndex] + " " + par;
+        }
+        else if (trebleLevel != NO_LEVEL)
+        {
+            final String par = String.format("%02d", trebleLevel + DcpReceiverInformationMsg.DCP_TON_SHIFT[zoneIndex]);
+            return DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[zoneIndex] + " " + par;
+        }
+        return null;
+    }
+
 }

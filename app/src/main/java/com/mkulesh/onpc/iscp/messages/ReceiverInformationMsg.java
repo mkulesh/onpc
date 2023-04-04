@@ -171,6 +171,15 @@ public class ReceiverInformationMsg extends ISCPMessage
                     ", volumeStep=" + volumeStep
                     + ", volMax=" + volMax;
         }
+
+        public boolean equals(Zone other)
+        {
+            return other != null &&
+                    id.equals(other.id) &&
+                    name.equals(other.name) &&
+                    volumeStep == other.volumeStep &&
+                    volMax == other.volMax;
+        }
     }
 
     public static class Selector
@@ -397,6 +406,15 @@ public class ReceiverInformationMsg extends ISCPMessage
         public String toString()
         {
             return getId() + ": min=" + getMin() + ", max=" + getMax() + ", step=" + getStep();
+        }
+
+        public boolean equals(ToneControl other)
+        {
+            return other != null &&
+                    id.equals(other.id) &&
+                    min == other.min &&
+                    max == other.max &&
+                    step == other.step;
         }
     }
 
