@@ -155,6 +155,8 @@ public class MessageFactory
             return new VideoInformationMsg(raw);
         case SetupOperationCommandMsg.CODE:
             return new SetupOperationCommandMsg(raw);
+        case DcpTunerModeMsg.CODE:
+            return new DcpTunerModeMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

@@ -14,12 +14,16 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
+
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+import com.mkulesh.onpc.utils.Logging;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -158,4 +162,50 @@ public class PresetCommandMsg extends ZonedMessage
     {
         return false;
     }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND = "TPAN";
+    private final static String DCP_COMMAND_OFF = "OFF";
+
+    public static PresetCommandMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        if (dcpMsg.startsWith(DCP_COMMAND))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
+            if (par.equalsIgnoreCase(DCP_COMMAND_OFF))
+            {
+                return new PresetCommandMsg(
+                        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, null, NO_PRESET);
+            }
+            try
+            {
+                final int preset = Integer.parseInt(par);
+                return new PresetCommandMsg(
+                        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, null, preset);
+            }
+            catch (Exception e)
+            {
+                Logging.info(PresetCommandMsg.class, "Unable to parse preset " + par);
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (zoneIndex == ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE)
+        {
+            // Only available for main zone
+            return DCP_COMMAND + (isQuery ? DCP_MSG_REQ :
+                    (command != null ? command.name() : String.format("%02d", preset)));
+        }
+        return null;
+    }
+
 }

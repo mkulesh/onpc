@@ -27,6 +27,7 @@ import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
+import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -599,6 +600,27 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     ListeningModeMsg.CODE,
             };
             sendQueries(playStateQueries, "DCP: requesting play state...");
+        }
+
+        if (msg instanceof InputSelectorMsg && changed != State.ChangeType.NONE)
+        {
+            if (((InputSelectorMsg)msg).getInputType() == InputSelectorMsg.InputType.DCP_TUNER)
+            {
+                final String[] tunerStatusQueries = new String[]{
+                        DcpTunerModeMsg.CODE
+                };
+                sendQueries(tunerStatusQueries, "DCP: requesting tuner state...");
+            }
+        }
+
+        if (msg instanceof DcpTunerModeMsg)
+        {
+            final String[] tunerStatusQueries = new String[]{
+                    PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    RadioStationNameMsg.CODE
+            };
+            sendQueries(tunerStatusQueries, "DCP: requesting radio playback state...");
         }
 
         return true;

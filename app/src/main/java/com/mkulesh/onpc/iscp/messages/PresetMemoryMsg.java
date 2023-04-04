@@ -14,10 +14,13 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Preset Memory Command (Include Tuner Pack Model Only)
@@ -66,5 +69,18 @@ public class PresetMemoryMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND = "TPANMEM";
+
+    @SuppressLint("DefaultLocale")
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ : String.format("%02d", preset));
     }
 }

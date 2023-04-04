@@ -15,7 +15,10 @@
 package com.mkulesh.onpc.iscp;
 
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
+import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -23,6 +26,7 @@ import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
+import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -51,6 +55,12 @@ public class DCPMessage
         addISCPMsg(ToneCommandMsg.processDcpMessage(dcpMsg));
         addISCPMsg(AudioMutingMsg.processDcpMessage(dcpMsg));
         addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
+
+        // Tuner
+        addISCPMsg(DcpTunerModeMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(TuningCommandMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(RadioStationNameMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(PresetCommandMsg.processDcpMessage(dcpMsg));
 
         // Settings
         addISCPMsg(DimmerLevelMsg.processDcpMessage(dcpMsg));

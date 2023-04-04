@@ -353,6 +353,15 @@ public class ReceiverInformationMsg extends ISCPMessage
             }
             return R.drawable.media_item_unknown;
         }
+
+        public boolean equals(Preset other)
+        {
+            return other != null &&
+                    band == other.band &&
+                    freq.equals(other.freq) &&
+                    name.equals(other.name);
+        }
+
     }
 
     public static class ToneControl
@@ -661,6 +670,6 @@ public class ReceiverInformationMsg extends ISCPMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        return "SSFUN ?";
+        return "SSFUN ?" + DCP_MSG_SEP + "OPTPN ?";
     }
 }

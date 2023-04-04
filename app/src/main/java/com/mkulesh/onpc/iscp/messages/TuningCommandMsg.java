@@ -17,9 +17,11 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -71,12 +73,14 @@ public class TuningCommandMsg extends ZonedMessage
 
     private final Command command;
     private final String frequency;
+    private final DcpTunerModeMsg.TunerMode dcpTunerMode;
 
     TuningCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw, ZONE_COMMANDS);
-        command = null;
-        frequency = data;
+        this.command = (Command) searchParameter(data, Command.values(), null);
+        this.frequency = (command == null) ? data : "";
+        this.dcpTunerMode = DcpTunerModeMsg.TunerMode.NONE;
     }
 
     public TuningCommandMsg(int zoneIndex, final String command)
@@ -84,6 +88,15 @@ public class TuningCommandMsg extends ZonedMessage
         super(0, null, zoneIndex);
         this.command = (Command) searchParameter(command, Command.values(), null);
         this.frequency = "";
+        this.dcpTunerMode = DcpTunerModeMsg.TunerMode.NONE;
+    }
+
+    public TuningCommandMsg(final String frequency, @NonNull DcpTunerModeMsg.TunerMode dcpTunerMode)
+    {
+        super(0, null, ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+        this.command = null;
+        this.frequency = String.valueOf(frequency);
+        this.dcpTunerMode = dcpTunerMode;
     }
 
     @Override
@@ -109,7 +122,9 @@ public class TuningCommandMsg extends ZonedMessage
         return getZoneCommand() + "[" + data
                 + "; ZONE_INDEX=" + zoneIndex
                 + "; CMD=" + (command != null ? command.toString() : "null")
-                + "; FREQ=" + frequency + "]";
+                + "; FREQ=" + frequency
+                + "; MODE=" + dcpTunerMode
+                + "]";
     }
 
     @Override
@@ -122,5 +137,48 @@ public class TuningCommandMsg extends ZonedMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND_FM = "TFAN";
+    private final static String DCP_COMMAND_DAB = "DAFRQ";
+
+    @Nullable
+    public static TuningCommandMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        if (dcpMsg.startsWith(DCP_COMMAND_FM))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND_FM.length()).trim();
+            if (Utils.isInteger(par))
+            {
+                return new TuningCommandMsg(par, DcpTunerModeMsg.TunerMode.FM);
+            }
+        }
+        if (dcpMsg.startsWith(DCP_COMMAND_DAB))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND_DAB.length()).trim();
+            return new TuningCommandMsg(par, DcpTunerModeMsg.TunerMode.DAB);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (zoneIndex == ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE)
+        {
+            // Only available for main zone
+            return DCP_COMMAND_FM + (isQuery ? DCP_MSG_REQ : (command != null ? command.name() : null));
+        }
+        return null;
+    }
+
+    @NonNull
+    public DcpTunerModeMsg.TunerMode getDcpTunerMode()
+    {
+        return dcpTunerMode;
     }
 }

@@ -464,4 +464,17 @@ public class Utils
         final String val = preferences.getString(par, def);
         return val == null ? def : val;
     }
+
+    public static boolean isInteger(final String text)
+    {
+        try
+        {
+            Integer.parseInt(text);
+            return true;
+        }
+        catch (NumberFormatException nfe)
+        {
+            return false;
+        }
+    }
 }

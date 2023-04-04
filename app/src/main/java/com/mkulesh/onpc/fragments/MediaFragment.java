@@ -33,6 +33,7 @@ import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
+import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
@@ -479,6 +480,18 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
         if (state.isRadioInput())
         {
+            // Add band selectors for Denon
+            if (state.protoType == Utils.ProtoType.DCP)
+            {
+                for (DcpTunerModeMsg.TunerMode t : DcpTunerModeMsg.TunerMode.values())
+                {
+                    if (t != DcpTunerModeMsg.TunerMode.NONE)
+                    {
+                        newItems.add(new DcpTunerModeMsg(t));
+                    }
+                }
+            }
+
             // #270 Empty FM/DAB preset list: process radio input first
             // since mediaItems can be not empty due to remaining track menu items
             // or active playback mode

@@ -29,6 +29,7 @@ import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -171,6 +172,7 @@ public class State implements ConnectionIf
     private ByteArrayOutputStream coverBuffer = null;
 
     // Radio
+    public DcpTunerModeMsg.TunerMode dcpTunerMode = DcpTunerModeMsg.TunerMode.NONE;
     public List<ReceiverInformationMsg.Preset> presetList = new ArrayList<>();
     public int preset = PresetCommandMsg.NO_PRESET;
     private String frequency = "";
@@ -707,6 +709,10 @@ public class State implements ConnectionIf
         {
             return process((DcpReceiverInformationMsg) msg) ? ChangeType.RECEIVER_INFO : ChangeType.NONE;
         }
+        if (msg instanceof DcpTunerModeMsg)
+        {
+            return process((DcpTunerModeMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+        }
 
         return ChangeType.NONE;
     }
@@ -907,20 +913,38 @@ public class State implements ConnectionIf
     private boolean process(TuningCommandMsg msg)
     {
         final boolean changed = !msg.getFrequency().equals(frequency);
-        frequency = msg.getFrequency();
-        if (!isDab())
+        if (inputType != InputSelectorMsg.InputType.DCP_TUNER)
         {
-            // For ISCP, station name is only available for DAB
-            stationName = "";
+            frequency = msg.getFrequency();
+            if (!isDab())
+            {
+                // For ISCP, station name is only available for DAB
+                stationName = "";
+            }
+            return changed;
         }
-        return changed;
+        else if (dcpTunerMode == msg.getDcpTunerMode())
+        {
+            frequency = msg.getFrequency();
+            return changed;
+        }
+        return false;
     }
 
     private boolean process(RadioStationNameMsg msg)
     {
         final boolean changed = !msg.getData().equals(stationName);
-        stationName = isDab() ? msg.getData() : "";
-        return changed;
+        if (inputType != InputSelectorMsg.InputType.DCP_TUNER)
+        {
+            stationName = isDab() ? msg.getData() : "";
+            return changed;
+        }
+        else if (dcpTunerMode == msg.getDcpTunerMode())
+        {
+            stationName = msg.getData();
+            return changed;
+        }
+        return false;
     }
 
     private boolean process(MusicOptimizerMsg msg)
@@ -1409,12 +1433,16 @@ public class State implements ConnectionIf
 
     public boolean isFm()
     {
-        return inputType == InputSelectorMsg.InputType.FM;
+        return inputType == InputSelectorMsg.InputType.FM ||
+                (inputType == InputSelectorMsg.InputType.DCP_TUNER &&
+                        dcpTunerMode == DcpTunerModeMsg.TunerMode.FM);
     }
 
     public boolean isDab()
     {
-        return inputType == InputSelectorMsg.InputType.DAB;
+        return inputType == InputSelectorMsg.InputType.DAB ||
+                (inputType == InputSelectorMsg.InputType.DCP_TUNER &&
+                        dcpTunerMode == DcpTunerModeMsg.TunerMode.DAB);
     }
 
     public boolean isRadioInput()
@@ -1641,6 +1669,12 @@ public class State implements ConnectionIf
         if (serviceIcon == R.drawable.media_item_unknown)
         {
             serviceIcon = inputType.getImageId();
+            if (inputType == InputSelectorMsg.InputType.DCP_TUNER &&
+                    dcpTunerMode != DcpTunerModeMsg.TunerMode.NONE)
+            {
+                // Special icon for Denon tuner input
+                serviceIcon = dcpTunerMode.getImageId();
+            }
         }
         return serviceIcon;
     }
@@ -1769,6 +1803,41 @@ public class State implements ConnectionIf
             toneControls.put(toneControl.getId(), toneControl);
             return changed;
         }
+        // Radio presets
+        final ReceiverInformationMsg.Preset preset = msg.getPreset();
+        if (preset != null)
+        {
+            boolean changed = false;
+            int oldPresetIdx = -1;
+            for (int i = 0; i < presetList.size(); i++)
+            {
+                if (presetList.get(i).getId() == preset.getId())
+                {
+                    oldPresetIdx = i;
+                    break;
+                }
+            }
+            if (oldPresetIdx >= 0)
+            {
+                changed = !preset.equals(presetList.get(oldPresetIdx));
+                presetList.set(oldPresetIdx, preset);
+                Logging.info(this, "    DCP Preset " + preset);
+            }
+            else if (presetList.isEmpty() || !preset.equals(presetList.get(presetList.size() - 1)))
+            {
+                changed = true;
+                presetList.add(preset);
+                Logging.info(this, "    DCP Preset " + preset);
+            }
+            return changed;
+        }
         return false;
+    }
+
+    private boolean process(DcpTunerModeMsg msg)
+    {
+        final boolean changed = dcpTunerMode != msg.getTunerMode();
+        dcpTunerMode = msg.getTunerMode();
+        return changed;
     }
 }

@@ -16,7 +16,9 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,11 +47,16 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     public final static int[] DCP_TON_MAX = new int[]{ 6, 10, 10 };
     public final static int[] DCP_TON_SHIFT = new int[]{ 50, 50, 50 };
 
+    // Radio presets
+    public final static String DCP_COMMAND_PRESET = "OPTPN";
+
     private ReceiverInformationMsg.Selector selector = null;
     private int maxVolume = NO_LEVEL;
     private final List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
 
     private ReceiverInformationMsg.ToneControl toneControl;
+
+    private ReceiverInformationMsg.Preset preset;
 
     public DcpReceiverInformationMsg(final ReceiverInformationMsg.Selector selector)
     {
@@ -70,6 +77,12 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         this.toneControl = toneControl;
     }
 
+    public DcpReceiverInformationMsg(final ReceiverInformationMsg.Preset preset)
+    {
+        super(-1, "");
+        this.preset = preset;
+    }
+
     public ReceiverInformationMsg.Selector getSelector()
     {
         return selector;
@@ -85,6 +98,11 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         return toneControl;
     }
 
+    public ReceiverInformationMsg.Preset getPreset()
+    {
+        return preset;
+    }
+
     @NonNull
     @Override
     public String toString()
@@ -92,7 +110,8 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         return "DCP receiver configuration: " +
                 (selector != null ? "Selector=" + selector + " " : "") +
                 (maxVolume != NO_LEVEL ? "MaxVol=" + maxVolume + " " : "") +
-                (toneControl != null ? "ToneCtrl=" + toneControl + " " : "");
+                (toneControl != null ? "ToneCtrl=" + toneControl + " " : "") +
+                (preset != null ? "Preset=" + preset + " " : "");
     }
 
     @Nullable
@@ -159,6 +178,39 @@ public class DcpReceiverInformationMsg extends ISCPMessage
                         new ReceiverInformationMsg.ToneControl(
                                 ToneCommandMsg.TREBLE_KEY, -DCP_TON_MAX[i], DCP_TON_MAX[i], 1));
             }
+        }
+
+        // Radio Preset
+        if (dcpMsg.startsWith(DCP_COMMAND_PRESET))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND_PRESET.length()).trim();
+            if (par.length() > 2)
+            {
+                try
+                {
+                    final int num = Integer.parseInt(par.substring(0, 2));
+                    final String name = par.substring(2).trim();
+                    if (Utils.isInteger(name))
+                    {
+                        final float f = (float) Integer.parseInt(name) / 100.0f;
+                        final DecimalFormat df = Utils.getDecimalFormat("0.00");
+                        return new DcpReceiverInformationMsg(
+                                new ReceiverInformationMsg.Preset(
+                                        num, /*band FM*/ 1, df.format(f), ""));
+                    }
+                    else
+                    {
+                        return new DcpReceiverInformationMsg(
+                                new ReceiverInformationMsg.Preset(
+                                        num, /*band DAB*/ 2, "0", name));
+                    }
+                }
+                catch (Exception nfe)
+                {
+                    // nothing to do
+                }
+            }
+            Logging.info(DcpReceiverInformationMsg.class, "DCP preset invalid: " + par);
         }
 
         return null;

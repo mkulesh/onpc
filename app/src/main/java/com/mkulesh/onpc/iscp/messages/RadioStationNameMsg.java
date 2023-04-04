@@ -18,23 +18,74 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
- * DAB Station Name (UTF-8)
+ * DAB/FM Station Name (UTF-8)
  */
 public class RadioStationNameMsg extends ISCPMessage
 {
     public final static String CODE = "DSN";
 
+    private final DcpTunerModeMsg.TunerMode dcpTunerMode;
+
     RadioStationNameMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
+        // For ISCP, station name is only available for DAB
+        this.dcpTunerMode = DcpTunerModeMsg.TunerMode.DAB;
+    }
+
+    RadioStationNameMsg(String name, @NonNull DcpTunerModeMsg.TunerMode dcpTunerMode)
+    {
+        super(-1, name);
+        this.dcpTunerMode = dcpTunerMode;
     }
 
     @NonNull
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "]";
+        return CODE + "[" + data
+                + "; MODE=" + dcpTunerMode
+                + "]";
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND_FM = "TFANNAME";
+    private final static String DCP_COMMAND_DAB = "DA";
+    private final static String DCP_COMMAND_DAB_EXT = "STN";
+
+    @Nullable
+    public static RadioStationNameMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        if (dcpMsg.startsWith(DCP_COMMAND_FM))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND_FM.length()).trim();
+            return new RadioStationNameMsg(par, DcpTunerModeMsg.TunerMode.FM);
+        }
+        if (dcpMsg.startsWith(DCP_COMMAND_DAB + DCP_COMMAND_DAB_EXT))
+        {
+            final String par = dcpMsg.substring((DCP_COMMAND_DAB + DCP_COMMAND_DAB_EXT).length()).trim();
+            return new RadioStationNameMsg(par, DcpTunerModeMsg.TunerMode.DAB);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        final String fmReq = DCP_COMMAND_FM + DCP_MSG_REQ;
+        final String dabReq = DCP_COMMAND_DAB + " " + DCP_MSG_REQ;
+        return fmReq + DCP_MSG_SEP + dabReq;
+    }
+
+    @NonNull
+    public DcpTunerModeMsg.TunerMode getDcpTunerMode()
+    {
+        return dcpTunerMode;
     }
 }
