@@ -26,12 +26,13 @@ import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 class MockupState extends State
 {
     MockupState(int zone)
     {
-        super("192.168.1.10", 60128, zone);
+        super(Utils.ProtoType.ISCP, "192.168.1.10", 60128, zone);
         Logging.info(this, "Used mockup state");
 
         //Common

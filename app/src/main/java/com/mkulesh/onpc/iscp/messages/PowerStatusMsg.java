@@ -18,6 +18,7 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * System Power Command
@@ -36,17 +37,26 @@ public class PowerStatusMsg extends ZonedMessage
      */
     public enum PowerStatus implements StringParameterIf
     {
-        STB("00"), ON("01"), ALL_STB("ALL");
-        final String code;
+        STB("00", "OFF"),
+        ON("01", "ON"),
+        ALL_STB("ALL", "STANDBY");
 
-        PowerStatus(String code)
+        final String code, dcpCode;
+
+        PowerStatus(String code, String dcpCode)
         {
             this.code = code;
+            this.dcpCode = dcpCode;
         }
 
         public String getCode()
         {
             return code;
+        }
+
+        public String getDcpCode()
+        {
+            return dcpCode;
         }
     }
 
@@ -88,5 +98,45 @@ public class PowerStatusMsg extends ZonedMessage
     public EISCPMessage getCmdMsg()
     {
         return new EISCPMessage(getZoneCommand(), powerStatus.getCode());
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String[] DCP_COMMANDS = new String[]{ "ZM", "Z2", "Z3" };
+
+    @Nullable
+    public static PowerStatusMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        for (int i = 0; i < DCP_COMMANDS.length; i++)
+        {
+            if (dcpMsg.startsWith(DCP_COMMANDS[i]))
+            {
+                final String par = dcpMsg.substring(DCP_COMMANDS[i].length()).trim();
+                for (PowerStatus status : PowerStatus.values())
+                {
+                    if (par.equalsIgnoreCase(status.getDcpCode()))
+                    {
+                        return new PowerStatusMsg(i, status);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (powerStatus == PowerStatus.ALL_STB)
+        {
+            return "PW" + powerStatus.getDcpCode();
+        }
+        else if (zoneIndex < DCP_COMMANDS.length)
+        {
+            return DCP_COMMANDS[zoneIndex] + (isQuery ? DCP_MSG_REQ : powerStatus.getDcpCode());
+        }
+        return null;
     }
 }

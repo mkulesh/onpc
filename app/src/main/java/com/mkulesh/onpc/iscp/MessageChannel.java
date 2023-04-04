@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +43,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
     private final static long CONNECTION_TIMEOUT = 5000;
     final static int QUEUE_SIZE = 4 * 1024;
     private final static int SOCKET_BUFFER = 4 * 1024;
+    private final static int DCP_PORT = 23;
 
     // thread implementation
     private final AtomicBoolean threadCancelled = new AtomicBoolean();
@@ -62,6 +64,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
     private byte[] packetJoinBuffer = null;
     private int messageId = 0;
     private final Set<String> allowedMessages = new HashSet<>();
+    private final DCPMessage dcpMessage = new DCPMessage();
 
     MessageChannel(final ConnectionState connectionState, final BlockingQueue<ISCPMessage> inputQueue)
     {
@@ -117,6 +120,11 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         allowedMessages.add(code);
     }
 
+    Utils.ProtoType getProtoType()
+    {
+        return port == DCP_PORT ? Utils.ProtoType.DCP : Utils.ProtoType.ISCP;
+    }
+
     @Override
     public void run()
     {
@@ -165,13 +173,22 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
 
                 // process output messages
                 EISCPMessage m = outputQueue.poll();
-                if (m != null)
+                if (m != null && getProtoType() == Utils.ProtoType.ISCP)
                 {
                     final byte[] bytes = m.getBytes();
                     if (bytes != null)
                     {
                         final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
                         Logging.info(this, ">> sending: " + m + " to " + getHostAndPort());
+                        socket.write(messageBuffer);
+                    }
+                }
+                if (m != null && getProtoType() == Utils.ProtoType.DCP)
+                {
+                    final ArrayList<byte[]> toSend = dcpMessage.convertOutputMsg(m, getHostAndPort());
+                    for (byte[] bytes : toSend)
+                    {
+                        final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
                         socket.write(messageBuffer);
                     }
                 }
@@ -271,7 +288,8 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         int remaining = bytes.length;
         while (remaining > 0)
         {
-            remaining = processIscpData(bytes, remaining);
+            remaining = getProtoType() == Utils.ProtoType.ISCP ?
+                    processIscpData(bytes, remaining) : processDcpData(bytes);
             if (remaining < 0)
             {
                 // An error, nothing to process
@@ -357,6 +375,56 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
             {
                 Logging.info(this, "<< error: ignored: " + e.getLocalizedMessage() + ": " + raw);
             }
+        }
+        return remaining;
+    }
+
+    private int processDcpData(byte[] bytes)
+    {
+        int expectedSize = -1;
+        for (int i = 0; i < bytes.length; i++)
+        {
+            if (bytes[i] == DCPMessage.CR)
+            {
+                expectedSize = i;
+                break;
+            }
+        }
+        if (expectedSize <= 0)
+        {
+            final String logMsg = new String(bytes, Utils.UTF_8);
+            Logging.info(this, "<< DCP warning: end of message not found: " + logMsg);
+            if (logMsg.startsWith("OPTPN"))
+            {
+                // A corner case: OPTPN has some time no end of message symbol
+                expectedSize = logMsg.length();
+            }
+            else
+            {
+                packetJoinBuffer = bytes;
+                return -1;
+            }
+        }
+
+        final byte[] stringBytes = expectedSize + 1 == bytes.length ?
+                bytes : Utils.catBuffer(bytes, 0, expectedSize);
+
+        final String dcpMsg = new String(stringBytes, Utils.UTF_8).trim();
+        final int remaining = Math.max(0, bytes.length - expectedSize - 1);
+
+        final ArrayList<ISCPMessage> messages = dcpMessage.convertInputMsg(dcpMsg);
+
+        Logging.info(this, "<< new DCP message " + dcpMsg
+                + " from " + getHostAndPort()
+                + ", size=" + dcpMsg.length()
+                + "B, remaining=" + remaining + "B"
+                + (messages.isEmpty() ? " -> Ignored" :
+                    ( " -> " + (messages.size() == 1 ? messages.get(0) : messages.size() + "msg"))));
+
+        for (ISCPMessage m : messages)
+        {
+            m.setHostAndPort(this);
+            inputQueue.add(m);
         }
         return remaining;
     }

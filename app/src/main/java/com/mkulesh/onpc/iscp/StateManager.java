@@ -72,6 +72,7 @@ import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,7 +163,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             throw new Exception("Cannot connect to server");
         }
 
-        state = new State(messageChannel.getHost(), messageChannel.getPort(), zone);
+        state = new State(messageChannel.getProtoType(), messageChannel.getHost(), messageChannel.getPort(), zone);
 
         // In LTE mode, always use BMP images instead of links since direct links
         // can be not available
@@ -309,7 +310,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
                 try
                 {
-                    changed = processIscpMessage(msg);
+                    changed = messageChannel.getProtoType() == Utils.ProtoType.ISCP ?
+                            processIscpMessage(msg) : processDcpMessage(msg);
                     for (MessageScriptIf script : messageScripts)
                     {
                         if (script.isValid())
@@ -561,6 +563,24 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             {
                 Logging.info(this, "SUE policy is not accepted");
             }
+        }
+
+        return true;
+    }
+
+    private boolean processDcpMessage(ISCPMessage msg)
+    {
+        final State.ChangeType changed = state.update(msg);
+
+        if (changed != State.ChangeType.NONE)
+        {
+            eventChanges.add(changed);
+        }
+
+        // no further message handling, if power off
+        if (!state.isOn())
+        {
+            return changed != State.ChangeType.NONE;
         }
 
         return true;

@@ -17,15 +17,12 @@ package com.mkulesh.onpc.iscp;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 
 public class EISCPMessage
 {
-    private static final Charset UTF_8 = Charset.forName("UTF-8");
-
     private final static String MSG_START = "ISCP";
     private final static String INVALID_MSG = "INVALID";
     public final static int CR = 0x0D;
@@ -223,7 +220,7 @@ public class EISCPMessage
                     actualLength++;
                 }
                 final byte[] stringBytes = Utils.catBuffer(bytes, startIndex + headerSize, actualLength);
-                return new String(stringBytes, UTF_8);
+                return new String(stringBytes, Utils.UTF_8);
             }
         }
         catch (Exception e)
@@ -235,7 +232,7 @@ public class EISCPMessage
 
     byte[] getBytes()
     {
-        byte[] parametersBin = parameters.getBytes(UTF_8);
+        byte[] parametersBin = parameters.getBytes(Utils.UTF_8);
         int dSize = 2 + code.length() + parametersBin.length + 1;
 
         if (headerSize + dSize < MIN_MSG_LENGTH)
@@ -276,5 +273,10 @@ public class EISCPMessage
         // End char
         bytes[21 + parametersBin.length] = (byte) LF;
         return bytes;
+    }
+
+    public boolean isQuery()
+    {
+        return getParameters().equalsIgnoreCase(EISCPMessage.QUERY);
     }
 }

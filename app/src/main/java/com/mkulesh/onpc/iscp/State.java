@@ -103,6 +103,7 @@ public class State implements ConnectionIf
     }
 
     // connected host (ConnectionIf)
+    public final Utils.ProtoType protoType;
     private final String host;
     private final int port;
 
@@ -221,8 +222,9 @@ public class State implements ConnectionIf
     private static final ReceiverInformationMsg.ToneControl DEFAULT_TREBLE_CONTROL =
             new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
 
-    State(final String host, int port, int activeZone)
+    State(final Utils.ProtoType protoType, final String host, int port, int activeZone)
     {
+        this.protoType = protoType;
         this.host = host;
         this.port = port;
         this.activeZone = activeZone;

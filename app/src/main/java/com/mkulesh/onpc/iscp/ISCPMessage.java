@@ -18,6 +18,7 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class ISCPMessage implements ConnectionIf
 {
@@ -215,4 +216,17 @@ public class ISCPMessage implements ConnectionIf
         }
         return str.toString();
     }
+
+    /*
+     * Denon control protocol
+     */
+    protected final static String DCP_MSG_SEP = "==>>";
+    protected final static String DCP_MSG_REQ = "?";
+
+    @Nullable
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return null;
+    }
+
 }

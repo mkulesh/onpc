@@ -38,6 +38,7 @@ public class Configuration
 {
     public static final boolean ENABLE_MOCKUP = false;
 
+    static final String PROTO_TYPE = "proto_type";
     private static final String SERVER_NAME = "server_name";
     private static final String SERVER_PORT = "server_port";
 
@@ -149,6 +150,8 @@ public class Configuration
         SharedPreferences.Editor prefEditor = preferences.edit();
 
         Logging.info(this, "Save receiver information");
+        Logging.info(this, "    Network protocol: " + state.protoType.name());
+        prefEditor.putString(PROTO_TYPE, state.protoType.name());
         final String model = state.getModel();
         Logging.info(this, "    Model: " + model);
         if (!model.isEmpty())
