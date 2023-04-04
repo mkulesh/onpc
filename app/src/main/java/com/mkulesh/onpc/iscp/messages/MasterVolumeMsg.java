@@ -75,7 +75,7 @@ public class MasterVolumeMsg extends ZonedMessage
         }
     }
 
-    private final Command command;
+    private Command command;
     private int volumeLevel = NO_LEVEL;
 
     MasterVolumeMsg(EISCPMessage raw) throws Exception
@@ -84,12 +84,12 @@ public class MasterVolumeMsg extends ZonedMessage
         try
         {
             volumeLevel = Integer.parseInt(data, 16);
+            command = null;
         }
         catch (Exception e)
         {
-            // nothing to do
+            command = (Command) searchParameter(data, Command.values(), Command.UP);
         }
-        command = null;
     }
 
     public MasterVolumeMsg(int zoneIndex, Command level)

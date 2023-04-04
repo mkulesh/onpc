@@ -76,6 +76,12 @@ public class SetupOperationCommandMsg extends ISCPMessage
 
     private final Command command;
 
+    SetupOperationCommandMsg(EISCPMessage raw) throws Exception
+    {
+        super(raw);
+        this.command = (Command) searchParameter(data, Command.values(), Command.HOME);
+    }
+
     public SetupOperationCommandMsg(final String command)
     {
         super(0, null);

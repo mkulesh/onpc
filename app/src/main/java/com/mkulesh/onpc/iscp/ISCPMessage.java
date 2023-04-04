@@ -17,13 +17,10 @@ package com.mkulesh.onpc.iscp;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
-import java.nio.charset.Charset;
-
 import androidx.annotation.NonNull;
 
 public class ISCPMessage implements ConnectionIf
 {
-    protected static final Charset UTF_8 = Charset.forName("UTF-8");
     protected final static String PAR_SEP = "/";
     protected final static String COMMA_SEP = ",";
 
@@ -184,7 +181,7 @@ public class ISCPMessage implements ConnectionIf
         }
         for (StringParameterIf t : values)
         {
-            if (t.getCode().toUpperCase().equals(code.toUpperCase()))
+            if (t.getCode().equalsIgnoreCase(code))
             {
                 return t;
             }

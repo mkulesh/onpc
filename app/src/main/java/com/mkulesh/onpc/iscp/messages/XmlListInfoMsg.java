@@ -100,7 +100,7 @@ public class XmlListInfoMsg extends ISCPMessage
     public void parseXml(final List<XmlListItemMsg> items, final int numberOfLayers) throws Exception
     {
         items.clear();
-        InputStream stream = new ByteArrayInputStream(rawXml.getBytes(UTF_8));
+        InputStream stream = new ByteArrayInputStream(rawXml.getBytes(Utils.UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document doc = builder.parse(stream);

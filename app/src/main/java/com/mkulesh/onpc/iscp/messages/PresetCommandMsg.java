@@ -78,11 +78,11 @@ public class PresetCommandMsg extends ZonedMessage
     PresetCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw, ZONE_COMMANDS);
-        command = null;
+        command = (Command) searchParameter(data, Command.values(), null);
         presetConfig = null;
         try
         {
-            preset = Integer.parseInt(data, 16);
+            preset = command == null ? Integer.parseInt(data, 16) : NO_PRESET;
         }
         catch (Exception e)
         {
@@ -94,7 +94,7 @@ public class PresetCommandMsg extends ZonedMessage
     {
         super(0, null, zoneIndex);
         this.command = (Command) searchParameter(command, Command.values(), null);
-        presetConfig = null;
+        this.presetConfig = null;
         this.preset = NO_PRESET;
     }
 

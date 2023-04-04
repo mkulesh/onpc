@@ -22,11 +22,11 @@ import androidx.annotation.NonNull;
 /*
  * DAB Station Name (UTF-8)
  */
-public class DabStationNameMsg extends ISCPMessage
+public class RadioStationNameMsg extends ISCPMessage
 {
     public final static String CODE = "DSN";
 
-    DabStationNameMsg(EISCPMessage raw) throws Exception
+    RadioStationNameMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
     }

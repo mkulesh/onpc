@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.config.CfgAppSettings;
+import com.mkulesh.onpc.config.CfgAudioControl;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
@@ -315,11 +316,12 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
 
         // fast selector for listening mode
         listeningModeLayout.setVisibility(View.VISIBLE);
+        final CfgAudioControl ac = activity.getConfiguration().audioControl;
         if (listeningModeLayout.getChildCount() == 1)
         {
             final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
             l.removeAllViews();
-            for (ListeningModeMsg.Mode m : activity.getConfiguration().audioControl.getSortedListeningModes(true, null))
+            for (ListeningModeMsg.Mode m : ac.getSortedListeningModes(true, null))
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
                 final AppCompatButton b = createButton(
@@ -441,9 +443,9 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             {
                 final ReceiverInformationMsg.Preset preset = state.searchPreset();
                 final String text = preset != null ? preset.displayedString(false)
-                        : (state.inputType == InputSelectorMsg.InputType.DAB ? state.dabName : "");
+                        : (state.isDab() ? state.stationName : "");
                 title.setText(text);
-                format.setText(state.getFrequencyInfo(activity));
+                format.setText(String.format(" %s", state.getFrequencyInfo(activity)));
             }
             else
             {
@@ -479,7 +481,8 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
 
         // buttons
         final ArrayList<String> selectedListeningModes = new ArrayList<>();
-        for (ListeningModeMsg.Mode m : activity.getConfiguration().audioControl.getSortedListeningModes(false, state.listeningMode))
+        final CfgAudioControl ac = activity.getConfiguration().audioControl;
+        for (ListeningModeMsg.Mode m : ac.getSortedListeningModes(false, state.listeningMode))
         {
             selectedListeningModes.add(m.getCode());
         }
@@ -490,8 +493,8 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             if (b.getTag() instanceof AudioMutingMsg.Status)
             {
                 setButtonSelected(b, state.audioMuting == AudioMutingMsg.Status.ON);
-                final AudioMutingMsg.Status cmd = (AudioMutingMsg.Status) (b.getTag());
-                prepareButtonListeners(b, new AudioMutingMsg(state.getActiveZone(), cmd));
+                prepareButtonListeners(b, new AudioMutingMsg(
+                        state.getActiveZone(), AudioMutingMsg.toggle(state.audioMuting)));
             }
             else if (b.getTag() instanceof MasterVolumeMsg.Command)
             {

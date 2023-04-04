@@ -108,4 +108,9 @@ public class AudioMutingMsg extends ZonedMessage
     {
         return false;
     }
+
+    public static Status toggle(Status s)
+    {
+        return (s == Status.OFF) ? Status.ON : Status.OFF;
+    }
 }

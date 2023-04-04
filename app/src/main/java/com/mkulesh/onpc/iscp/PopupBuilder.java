@@ -83,7 +83,7 @@ public class PopupBuilder
     public AlertDialog build(final CustomPopupMsg pMsg) throws Exception
     {
         CustomPopupMsg.UiType uiType = null;
-        final Document document = xmlToDocument(pMsg.getXml().getBytes(ISCPMessage.UTF_8));
+        final Document document = xmlToDocument(pMsg.getXml().getBytes(Utils.UTF_8));
 
         final Element popup = Utils.getElement(document, "popup");
         if (popup == null)

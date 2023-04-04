@@ -163,7 +163,7 @@ public class MultiroomDeviceInformationMsg extends ISCPMessage
         properties.clear();
         zones.clear();
 
-        InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
+        InputStream stream = new ByteArrayInputStream(data.getBytes(Utils.UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document doc = builder.parse(stream);

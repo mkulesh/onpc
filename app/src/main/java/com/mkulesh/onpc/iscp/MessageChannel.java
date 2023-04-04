@@ -271,76 +271,11 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         int remaining = bytes.length;
         while (remaining > 0)
         {
-            final int startIndex = EISCPMessage.getMsgStartIndex(bytes);
-            if (startIndex < 0)
+            remaining = processIscpData(bytes, remaining);
+            if (remaining < 0)
             {
-                Logging.info(this, "<< error: message start marker not found. " + remaining + "B ignored");
+                // An error, nothing to process
                 return;
-            }
-            else if (startIndex > 0)
-            {
-                Logging.info(this, "<< error: unexpected position of message start: " + startIndex + ", remaining=" + remaining + "B");
-            }
-
-            // convert header and data sizes
-            int hSize, dSize;
-            try
-            {
-                hSize = EISCPMessage.getHeaderSize(bytes, startIndex);
-                dSize = EISCPMessage.getDataSize(bytes, startIndex);
-            }
-            catch (Exception e)
-            {
-                Logging.info(this, "<< error: invalid expected size: " + e.getLocalizedMessage());
-                packetJoinBuffer = null;
-                return;
-            }
-
-            // inspect expected size
-            final int expectedSize = hSize + dSize;
-            if (hSize < 0 || dSize < 0 || expectedSize > remaining)
-            {
-                packetJoinBuffer = bytes;
-                return;
-            }
-
-            // try to convert raw message. In case of any errors, skip expectedSize
-            EISCPMessage raw = null;
-            try
-            {
-                messageId++;
-                raw = new EISCPMessage(messageId, bytes, startIndex, hSize, dSize);
-            }
-            catch (Exception e)
-            {
-                remaining = Math.max(0, bytes.length - expectedSize);
-                Logging.info(this, "<< error: invalid raw message: " + e.getLocalizedMessage() + ", remaining=" + remaining + "B");
-            }
-
-            if (raw != null)
-            {
-                remaining = Math.max(0, bytes.length - raw.getMsgSize());
-                try
-                {
-                    final boolean ignored = !allowedMessages.isEmpty() && !allowedMessages.contains(raw.getCode());
-                    if (!ignored)
-                    {
-                        if (!"NTM".equals(raw.getCode()))
-                        {
-                            Logging.info(this, "<< new message " + raw.getCode()
-                                    + " from " + getHostAndPort()
-                                    + ", size=" + raw.getMsgSize()
-                                    + "B, remaining=" + remaining + "B");
-                        }
-                        ISCPMessage msg = MessageFactory.create(raw);
-                        msg.setHostAndPort(this);
-                        inputQueue.add(msg);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Logging.info(this, "<< error: ignored: " + e.getLocalizedMessage() + ": " + raw);
-                }
             }
 
             if (remaining > 0)
@@ -348,6 +283,82 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
                 bytes = Utils.catBuffer(bytes, bytes.length - remaining, remaining);
             }
         }
+    }
+
+    private int processIscpData(byte[] bytes, int remaining)
+    {
+        final int startIndex = EISCPMessage.getMsgStartIndex(bytes);
+        if (startIndex < 0)
+        {
+            Logging.info(this, "<< error: message start marker not found. " + remaining + "B ignored");
+            return -1;
+        }
+        else if (startIndex > 0)
+        {
+            Logging.info(this, "<< error: unexpected position of message start: " + startIndex + ", remaining=" + remaining + "B");
+        }
+
+        // convert header and data sizes
+        int hSize, dSize;
+        try
+        {
+            hSize = EISCPMessage.getHeaderSize(bytes, startIndex);
+            dSize = EISCPMessage.getDataSize(bytes, startIndex);
+        }
+        catch (Exception e)
+        {
+            Logging.info(this, "<< error: invalid expected size: " + e.getLocalizedMessage());
+            packetJoinBuffer = null;
+            return -1;
+        }
+
+        // inspect expected size
+        final int expectedSize = hSize + dSize;
+        if (hSize < 0 || dSize < 0 || expectedSize > remaining)
+        {
+            packetJoinBuffer = bytes;
+            return -1;
+        }
+
+        // try to convert raw message. In case of any errors, skip expectedSize
+        EISCPMessage raw = null;
+        try
+        {
+            messageId++;
+            raw = new EISCPMessage(messageId, bytes, startIndex, hSize, dSize);
+        }
+        catch (Exception e)
+        {
+            remaining = Math.max(0, bytes.length - expectedSize);
+            Logging.info(this, "<< error: invalid raw message: " + e.getLocalizedMessage() + ", remaining=" + remaining + "B");
+        }
+
+        if (raw != null)
+        {
+            remaining = Math.max(0, bytes.length - raw.getMsgSize());
+            try
+            {
+                final boolean ignored = !allowedMessages.isEmpty() && !allowedMessages.contains(raw.getCode());
+                if (!ignored)
+                {
+                    if (!"NTM".equals(raw.getCode()))
+                    {
+                        Logging.info(this, "<< new message " + raw.getCode()
+                                + " from " + getHostAndPort()
+                                + ", size=" + raw.getMsgSize()
+                                + "B, remaining=" + remaining + "B");
+                    }
+                    ISCPMessage msg = MessageFactory.create(raw);
+                    msg.setHostAndPort(this);
+                    inputQueue.add(msg);
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.info(this, "<< error: ignored: " + e.getLocalizedMessage() + ": " + raw);
+            }
+        }
+        return remaining;
     }
 
     public void sendMessage(EISCPMessage eiscpMessage)

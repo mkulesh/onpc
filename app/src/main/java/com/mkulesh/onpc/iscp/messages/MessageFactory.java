@@ -102,8 +102,8 @@ public class MessageFactory
             return new PresetCommandMsg(raw);
         case PresetMemoryMsg.CODE:
             return new PresetMemoryMsg(raw);
-        case DabStationNameMsg.CODE:
-            return new DabStationNameMsg(raw);
+        case RadioStationNameMsg.CODE:
+            return new RadioStationNameMsg(raw);
         case TuningCommandMsg.CODE:
         case TuningCommandMsg.ZONE2_CODE:
         case TuningCommandMsg.ZONE3_CODE:
@@ -153,6 +153,8 @@ public class MessageFactory
             return new AudioInformationMsg(raw);
         case VideoInformationMsg.CODE:
             return new VideoInformationMsg(raw);
+        case SetupOperationCommandMsg.CODE:
+            return new SetupOperationCommandMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

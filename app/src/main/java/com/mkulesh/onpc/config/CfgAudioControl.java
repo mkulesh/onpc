@@ -30,11 +30,11 @@ public class CfgAudioControl
 {
     static final String SOUND_CONTROL = "sound_control";
     private static final String FORCE_AUDIO_CONTROL = "force_audio_control";
-    static final String SELECTED_LISTENING_MODES = "selected_listening_modes";
+    private static final String SELECTED_LISTENING_MODES = "selected_listening_modes";
     private static final String MASTER_VOLUME_MAX = "master_volume_max";
     private static final String VOLUME_KEYS = "volume_keys";
 
-    static final ListeningModeMsg.Mode[] DEFAULT_LISTENING_MODES = new ListeningModeMsg.Mode[]{
+    private static final ListeningModeMsg.Mode[] ISCP_LISTENING_MODES = new ListeningModeMsg.Mode[]{
             ListeningModeMsg.Mode.MODE_0F, // MONO
             ListeningModeMsg.Mode.MODE_00, // STEREO
             ListeningModeMsg.Mode.MODE_01, // DIRECT
@@ -108,15 +108,16 @@ public class CfgAudioControl
     {
         final ArrayList<ListeningModeMsg.Mode> result = new ArrayList<>();
         final ArrayList<String> defItems = new ArrayList<>();
-        for (ListeningModeMsg.Mode i : CfgAudioControl.DEFAULT_LISTENING_MODES)
+        for (ListeningModeMsg.Mode i : getListeningModes())
         {
             defItems.add(i.getCode());
         }
-        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, SELECTED_LISTENING_MODES, defItems))
+        final String par = getSelectedListeningModePar();
+        for (CheckableItem sp : CheckableItem.readFromPreference(preferences, par, defItems))
         {
             final boolean visible = allItems || sp.checked ||
                     (activeItem != null && activeItem.getCode().equals(sp.code));
-            for (ListeningModeMsg.Mode i : CfgAudioControl.DEFAULT_LISTENING_MODES)
+            for (ListeningModeMsg.Mode i : getListeningModes())
             {
                 if (visible && i.getCode().equals(sp.code))
                 {
@@ -130,5 +131,16 @@ public class CfgAudioControl
     public boolean isVolumeKeys()
     {
         return preferences.getBoolean(VOLUME_KEYS, false);
+    }
+
+    public static ListeningModeMsg.Mode[] getListeningModes()
+    {
+        return ISCP_LISTENING_MODES;
+    }
+
+    public static String getSelectedListeningModePar()
+    {
+        String par = SELECTED_LISTENING_MODES;
+        return par;
     }
 }

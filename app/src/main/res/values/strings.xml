@@ -421,12 +421,18 @@
     <string name="medialist_filter">Filter items</string>
 
     <!-- Input selectors -->
-    <string name="input_selector_video1">VCR/DVR</string>
-    <string name="input_selector_video2">CBL/SAT</string>
-    <string name="input_selector_video3">GAME</string>
-    <string name="input_selector_video4">AUX</string>
-    <string name="input_selector_video5">AUX2</string>
-    <string name="input_selector_video6">PC</string>
+    <string name="input_selector_vcr_dvr">VCR/DVR</string>
+    <string name="input_selector_cbl_sat">CBL/SAT</string>
+    <string name="input_selector_game">GAME</string>
+    <string name="input_selector_aux">AUX</string>
+    <string name="input_selector_aux1">AUX1</string>
+    <string name="input_selector_aux2">AUX2</string>
+    <string name="input_selector_aux3">AUX3</string>
+    <string name="input_selector_aux4">AUX4</string>
+    <string name="input_selector_aux5">AUX5</string>
+    <string name="input_selector_aux6">AUX6</string>
+    <string name="input_selector_aux7">AUX7</string>
+    <string name="input_selector_pc">PC</string>
     <string name="input_selector_video7">VIDEO 7</string>
     <string name="input_selector_extra1">EXTRA 1</string>
     <string name="input_selector_extra2">EXTRA 2</string>
@@ -436,7 +442,7 @@
     <string name="input_selector_tape1">TAPE</string>
     <string name="input_selector_tape2">TAPE 2</string>
     <string name="input_selector_phono">PHONO</string>
-    <string name="input_selector_tv_cd">CD</string>
+    <string name="input_selector_cd">CD</string>
     <string name="input_selector_fm">FM</string>
     <string name="input_selector_am">AM</string>
     <string name="input_selector_tuner">TUNER</string>

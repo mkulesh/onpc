@@ -27,7 +27,7 @@ import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
-import com.mkulesh.onpc.iscp.messages.DabStationNameMsg;
+import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -309,7 +309,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
                 try
                 {
-                    changed = processMessage(msg);
+                    changed = processIscpMessage(msg);
                     for (MessageScriptIf script : messageScripts)
                     {
                         if (script.isValid())
@@ -378,7 +378,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         stateListener.onDeviceDisconnected();
     }
 
-    private boolean processMessage(@NonNull ISCPMessage msg)
+    private boolean processIscpMessage(@NonNull ISCPMessage msg)
     {
         // skip time message, is necessary
         if (msg instanceof TimeInfoMsg && skipNextTimeMsg.get() > 0)
@@ -490,7 +490,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     // RadioState
                     PresetCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
                     TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()],
-                    DabStationNameMsg.CODE
+                    RadioStationNameMsg.CODE
             };
             sendQueries(playStateQueries, "requesting play state...");
             sendQueries(avInfoQueries, "requesting audio/video info...");

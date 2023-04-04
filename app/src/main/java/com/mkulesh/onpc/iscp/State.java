@@ -27,7 +27,7 @@ import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
-import com.mkulesh.onpc.iscp.messages.DabStationNameMsg;
+import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -171,7 +171,7 @@ public class State implements ConnectionIf
     public List<ReceiverInformationMsg.Preset> presetList = new ArrayList<>();
     public int preset = PresetCommandMsg.NO_PRESET;
     private String frequency = "";
-    public String dabName = "";
+    public String stationName = "";
 
     // Playback
     public PlayStatusMsg.PlayStatus playStatus = PlayStatusMsg.PlayStatus.STOP;
@@ -320,7 +320,7 @@ public class State implements ConnectionIf
     public String getModel()
     {
         final String m = deviceProperties.get("model");
-        return m == null ? "" : m;
+        return m == null ? getHostAndPort() : m;
     }
 
     @NonNull
@@ -349,8 +349,8 @@ public class State implements ConnectionIf
         }
         // fallback to model from ReceiverInformationMsg
         {
-            final String name = deviceProperties.get("model");
-            if (name != null)
+            final String name = getModel();
+            if (!name.isEmpty())
             {
                 return name;
             }
@@ -371,7 +371,7 @@ public class State implements ConnectionIf
                     // #265 Add new input selector "SOURCE":
                     // "SOURCE" input not allowed for main zone
                     final int zones = it == InputSelectorMsg.InputType.SOURCE ?
-                            ReceiverInformationMsg.EXT_ZONES : ReceiverInformationMsg.ALL_ZONE;
+                            ReceiverInformationMsg.EXT_ZONES : ReceiverInformationMsg.ALL_ZONES;
                     final ReceiverInformationMsg.Selector s = new ReceiverInformationMsg.Selector(
                             it.getCode(), context.getString(it.getDescriptionId()),
                             zones, it.getCode(), false);
@@ -615,9 +615,9 @@ public class State implements ConnectionIf
         {
             return isCommonChange(process((TuningCommandMsg) msg));
         }
-        if (msg instanceof DabStationNameMsg)
+        if (msg instanceof RadioStationNameMsg)
         {
-            return isCommonChange(process((DabStationNameMsg) msg));
+            return isCommonChange(process((RadioStationNameMsg) msg));
         }
 
         // Playback
@@ -858,13 +858,18 @@ public class State implements ConnectionIf
     {
         final boolean changed = !msg.getFrequency().equals(frequency);
         frequency = msg.getFrequency();
+        if (!isDab())
+        {
+            // For ISCP, station name is only available for DAB
+            stationName = "";
+        }
         return changed;
     }
 
-    private boolean process(DabStationNameMsg msg)
+    private boolean process(RadioStationNameMsg msg)
     {
-        final boolean changed = !msg.getData().equals(dabName);
-        dabName = msg.getData();
+        final boolean changed = !msg.getData().equals(stationName);
+        stationName = isDab() ? msg.getData() : "";
         return changed;
     }
 
@@ -1352,11 +1357,19 @@ public class State implements ConnectionIf
         return null;
     }
 
+    public boolean isFm()
+    {
+        return inputType == InputSelectorMsg.InputType.FM;
+    }
+
+    public boolean isDab()
+    {
+        return inputType == InputSelectorMsg.InputType.DAB;
+    }
+
     public boolean isRadioInput()
     {
-        return inputType == InputSelectorMsg.InputType.FM
-                || inputType == InputSelectorMsg.InputType.AM
-                || inputType == InputSelectorMsg.InputType.DAB;
+        return isFm() || isDab() || inputType == InputSelectorMsg.InputType.AM;
     }
 
     public int nextEmptyPreset()
@@ -1368,7 +1381,7 @@ public class State implements ConnectionIf
                 return p.getId();
             }
         }
-        return 0xFF;
+        return presetList.size() + 1;
     }
 
     /**
@@ -1490,7 +1503,7 @@ public class State implements ConnectionIf
         {
             return dashedString;
         }
-        if (inputType != InputSelectorMsg.InputType.FM)
+        if (!isFm())
         {
             return frequency;
         }
@@ -1603,7 +1616,7 @@ public class State implements ConnectionIf
 
     public boolean isCdInput()
     {
-        return (inputType == InputSelectorMsg.InputType.TV_CD) &&
+        return (inputType == InputSelectorMsg.InputType.CD) &&
                 (isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                         isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
     }

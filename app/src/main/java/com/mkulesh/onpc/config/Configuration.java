@@ -148,8 +148,10 @@ public class Configuration
     {
         SharedPreferences.Editor prefEditor = preferences.edit();
 
-        final String model = state.deviceProperties.get("model");
-        if (model != null)
+        Logging.info(this, "Save receiver information");
+        final String model = state.getModel();
+        Logging.info(this, "    Model: " + model);
+        if (!model.isEmpty())
         {
             prefEditor.putString(MODEL, model);
         }
@@ -164,7 +166,7 @@ public class Configuration
                 }
                 str.append(p);
             }
-            Logging.info(this, "Network services: " + str);
+            Logging.info(this, "    Network services: " + str);
             prefEditor.putString(NETWORK_SERVICES, str.toString());
         }
         List<ReceiverInformationMsg.Selector> deviceSelectors = state.cloneDeviceSelectors();
@@ -180,7 +182,7 @@ public class Configuration
                 str.append(d.getId());
                 prefEditor.putString(DEVICE_SELECTORS + "_" + d.getId(), d.getName());
             }
-            Logging.info(this, "Device selectors: " + str);
+            Logging.info(this, "    Device selectors: " + str);
             prefEditor.putString(DEVICE_SELECTORS, str.toString());
         }
 

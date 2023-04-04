@@ -484,9 +484,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             // or active playback mode
             for (ReceiverInformationMsg.Preset p : state.presetList)
             {
-                if ((state.inputType == InputSelectorMsg.InputType.FM && p.isFm())
-                        || (state.inputType == InputSelectorMsg.InputType.AM && p.isAm())
-                        || (state.inputType == InputSelectorMsg.InputType.DAB && p.isDab()))
+                if ((state.isFm() && p.isFm())
+                        || (state.isDab() && p.isDab())
+                        || (state.inputType == InputSelectorMsg.InputType.AM && p.isAm()))
                 {
                     final boolean isPlaying = (p.getId() == state.preset);
                     newItems.add(new PresetCommandMsg(

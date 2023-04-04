@@ -63,6 +63,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 public class Utils
 {
+    public static final Charset UTF_8 = Charset.forName("UTF-8");
+
     public static byte[] catBuffer(byte[] bytes, int offset, int length)
     {
         final byte[] newBytes = new byte[length];

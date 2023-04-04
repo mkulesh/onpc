@@ -35,6 +35,8 @@ public class ToneCommandMsg extends ZonedMessage
 
     public final static int NO_LEVEL = 0xFF;
 
+    private final boolean tonJoined;
+
     public final static String BASS_KEY = "Bass";
     private final static Character BASS_MARKER = 'B';
     private int bassLevel = NO_LEVEL;
@@ -46,6 +48,7 @@ public class ToneCommandMsg extends ZonedMessage
     ToneCommandMsg(EISCPMessage raw) throws Exception
     {
         super(raw, ZONE_COMMANDS);
+        tonJoined = true;
         for (int i = 0; i < data.length(); i++)
         {
             if (data.charAt(i) == BASS_MARKER && data.length() > i + 2)
@@ -98,6 +101,7 @@ public class ToneCommandMsg extends ZonedMessage
     public ToneCommandMsg(int zoneIndex, int bass, int treble)
     {
         super(0, null, zoneIndex);
+        tonJoined = false;
         this.bassLevel = bass;
         this.trebleLevel = treble;
     }
@@ -106,6 +110,11 @@ public class ToneCommandMsg extends ZonedMessage
     public String getZoneCommand()
     {
         return ZONE_COMMANDS[zoneIndex];
+    }
+
+    public boolean isTonJoined()
+    {
+        return tonJoined;
     }
 
     public int getBassLevel()

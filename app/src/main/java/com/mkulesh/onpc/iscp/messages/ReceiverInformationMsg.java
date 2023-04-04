@@ -46,7 +46,7 @@ public class ReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "NRI";
     public final static int DEFAULT_ACTIVE_ZONE = 0;
-    public final static int ALL_ZONE = 0xFF;
+    public final static int ALL_ZONES = 0xFF;
     public final static int EXT_ZONES = 14; // 1110 - all zones except main
 
     public static class NetworkService
@@ -165,7 +165,9 @@ public class ReceiverInformationMsg extends ISCPMessage
         @Override
         public String toString()
         {
-            return id + ": " + name + ", volumeStep=" + volumeStep;
+            return id + ": " + name +
+                    ", volumeStep=" + volumeStep
+                    + ", volMax=" + volMax;
         }
     }
 
@@ -368,7 +370,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             return e.hasAttribute("min") && e.hasAttribute("max") && e.hasAttribute("step");
         }
 
-        String getId()
+        public String getId()
         {
             return id;
         }
@@ -481,7 +483,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         presetList.clear();
         controlList.clear();
         toneControls.clear();
-        InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
+        InputStream stream = new ByteArrayInputStream(data.getBytes(Utils.UTF_8));
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document doc = builder.parse(stream);

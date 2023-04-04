@@ -83,7 +83,7 @@ public class TuningCommandMsg extends ZonedMessage
     {
         super(0, null, zoneIndex);
         this.command = (Command) searchParameter(command, Command.values(), null);
-        frequency = "";
+        this.frequency = "";
     }
 
     @Override

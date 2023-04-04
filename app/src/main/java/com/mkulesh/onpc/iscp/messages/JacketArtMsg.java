@@ -200,7 +200,7 @@ public class JacketArtMsg extends ISCPMessage
         int length = 0;
         while (true)
         {
-            String str = new String(buffer, length, buffer.length - length, UTF_8);
+            String str = new String(buffer, length, buffer.length - length, Utils.UTF_8);
             final int lf = str.indexOf(EISCPMessage.LF);
             if (str.startsWith("Content-") && lf > 0)
             {
