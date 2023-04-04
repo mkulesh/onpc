@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
 {
     public static final int SETTINGS_ACTIVITY_REQID = 256;
     private static final String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.AUTO_POWER";
+    private static final String SHORTCUT_ALL_STANDBY = "com.mkulesh.onpc.ALL_STANDBY";
 
     private Configuration configuration;
     private Toolbar toolbar;
@@ -435,7 +436,20 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     public boolean connectToDevice(final String device, final int port, final boolean connectToAnyInErrorCase)
     {
         // Parse and use input intent
-        final boolean autoPower = SHORTCUT_AUTO_POWER.equals(intentData);
+        AutoPower.AutoPowerMode powerMode = null;
+        if (configuration.isAutoPower())
+        {
+            powerMode = AutoPower.AutoPowerMode.POWER_ON;
+        }
+        if (SHORTCUT_AUTO_POWER.equals(intentData))
+        {
+            powerMode = AutoPower.AutoPowerMode.POWER_ON;
+        }
+        else if (SHORTCUT_ALL_STANDBY.equals(intentData))
+        {
+            powerMode = AutoPower.AutoPowerMode.ALL_STANDBY;
+        }
+
         intentData = null;
 
         stateHolder.release(false, "reconnect");
@@ -445,9 +459,9 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         try
         {
             final ArrayList<MessageScriptIf> messageScripts = new ArrayList<>();
-            if (configuration.isAutoPower() || autoPower)
+            if (powerMode != null)
             {
-                messageScripts.add(new AutoPower());
+                messageScripts.add(new AutoPower(powerMode));
             }
             messageScripts.add(new RequestListeningMode());
             if (messageScript != null)

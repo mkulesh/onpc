@@ -87,7 +87,8 @@
     <string name="menu_latest_logging">Ostatnie logowanie</string>
     <string name="menu_switch_off_group">Wyłączyć wszystkie urządzenia w grupie?</string>
 
-    <!-- Shortcuts -->
+    <!-- Shortcuts and widgets -->
+    <string name="shortcut_widget_name">Skróty</string>
     <string name="shortcut_power_on">Zasilanie włączone</string>
 
     <!-- Application settings -->

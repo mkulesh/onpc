@@ -39,7 +39,8 @@ public class PowerStatusMsg extends ZonedMessage
     {
         STB("00", "OFF"),
         ON("01", "ON"),
-        ALL_STB("ALL", "STANDBY");
+        ALL_STB("ALL", "STANDBY"),
+        NONE("N/A", "N/A");
 
         final String code, dcpCode;
 
@@ -60,7 +61,7 @@ public class PowerStatusMsg extends ZonedMessage
         }
     }
 
-    private PowerStatus powerStatus = PowerStatus.STB;
+    private PowerStatus powerStatus = PowerStatus.NONE;
 
     PowerStatusMsg(EISCPMessage raw) throws Exception
     {

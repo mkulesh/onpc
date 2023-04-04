@@ -17,6 +17,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.utils.Logging;
 
 import androidx.annotation.NonNull;
@@ -26,7 +27,27 @@ import androidx.annotation.NonNull;
  **/
 public class AutoPower implements MessageScriptIf
 {
+    public enum AutoPowerMode
+    {
+        POWER_ON,
+        ALL_STANDBY
+    }
+
+    enum AllStandbyStep
+    {
+        NONE,
+        ALL_STB_SEND,
+        STB_SEND
+    }
+
+    private final AutoPowerMode autoPowerMode;
     private boolean done = false;
+    AllStandbyStep allStandbyStep = AllStandbyStep.NONE;
+
+    public AutoPower(final AutoPowerMode autoPowerMode)
+    {
+        this.autoPowerMode = autoPowerMode;
+    }
 
     @Override
     public boolean isValid()
@@ -43,19 +64,65 @@ public class AutoPower implements MessageScriptIf
     @Override
     public void start(@NonNull final State state, @NonNull MessageChannel channel)
     {
-        Logging.info(this, "started script");
+        Logging.info(this, "started script: " + autoPowerMode);
+        done = false;
+        allStandbyStep = AllStandbyStep.NONE;
     }
 
     @Override
     public void processMessage(@NonNull ISCPMessage msg, @NonNull final State state, @NonNull MessageChannel channel)
     {
-        if (!state.isOn() && msg instanceof PowerStatusMsg && !done)
+        // Auto power-on once at first PowerStatusMsg
+        if (msg instanceof PowerStatusMsg && !done)
         {
-            Logging.info(this, "request auto-power on startup");
-            // Auto power-on once at first PowerStatusMsg
-            PowerStatusMsg cmd = new PowerStatusMsg(state.getActiveZone(), PowerStatusMsg.PowerStatus.ON);
-            channel.sendMessage(cmd.getCmdMsg());
-            done = true;
+            final PowerStatusMsg pwrMsg = (PowerStatusMsg) msg;
+            if (autoPowerMode == AutoPowerMode.POWER_ON && !state.isOn())
+            {
+                Logging.info(this, "request auto-power on startup");
+                final PowerStatusMsg cmd = new PowerStatusMsg(state.getActiveZone(), PowerStatusMsg.PowerStatus.ON);
+                channel.sendMessage(cmd.getCmdMsg());
+                done = true;
+            }
+            else if (autoPowerMode == AutoPowerMode.ALL_STANDBY)
+            {
+                switch (allStandbyStep)
+                {
+                case NONE:
+                {
+                    Logging.info(this, "request all-standby on startup");
+                    final PowerStatusMsg cmd = new PowerStatusMsg(
+                            ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, PowerStatusMsg.PowerStatus.ALL_STB);
+                    channel.sendMessage(cmd.getCmdMsg());
+                    allStandbyStep = AllStandbyStep.ALL_STB_SEND;
+                    break;
+                }
+                case ALL_STB_SEND:
+                {
+                    if (pwrMsg.getPowerStatus() == PowerStatusMsg.PowerStatus.STB ||
+                            pwrMsg.getPowerStatus() == PowerStatusMsg.PowerStatus.ALL_STB)
+                    {
+                        done = true;
+                    }
+                    else
+                    {
+                        Logging.info(this, "request standby on startup");
+                        final PowerStatusMsg cmd = new PowerStatusMsg(
+                                ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, PowerStatusMsg.PowerStatus.STB);
+                        channel.sendMessage(cmd.getCmdMsg());
+                        allStandbyStep = AllStandbyStep.STB_SEND;
+                    }
+                    break;
+                }
+                case STB_SEND:
+                    done = true;
+                    break;
+                }
+                if (done)
+                {
+                    Logging.info(this, "close app after all-standby on startup");
+                    System.exit(0);
+                }
+            }
         }
     }
 }

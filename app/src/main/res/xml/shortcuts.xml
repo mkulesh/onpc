@@ -20,6 +20,18 @@
         <intent
             android:action="com.mkulesh.onpc.AUTO_POWER"
             android:targetPackage="com.mkulesh.onpc"
-            android:targetClass="com.mkulesh.onpc.MainActivity" />
+            android:targetClass="com.mkulesh.onpc.MainActivity"
+            />
+    </shortcut>
+    <shortcut
+        android:shortcutId="all_standby"
+        android:icon="@drawable/drawer_all_standby"
+        android:shortcutShortLabel="@string/drawer_all_standby"
+        android:shortcutLongLabel="@string/drawer_all_standby">
+        <intent
+            android:action="com.mkulesh.onpc.ALL_STANDBY"
+            android:targetPackage="com.mkulesh.onpc"
+            android:targetClass="com.mkulesh.onpc.MainActivity"
+            />
     </shortcut>
 </shortcuts>
