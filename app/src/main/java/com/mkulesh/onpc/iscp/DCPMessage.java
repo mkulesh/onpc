@@ -16,6 +16,7 @@ package com.mkulesh.onpc.iscp;
 
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
+import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -40,6 +41,10 @@ public class DCPMessage
         addISCPMsg(DcpReceiverInformationMsg.processDcpMessage(dcpMsg));
         addISCPMsg(PowerStatusMsg.processDcpMessage(dcpMsg));
         addISCPMsg(InputSelectorMsg.processDcpMessage(dcpMsg));
+
+        // Tone control
+        addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
+
         return messages;
     }
 

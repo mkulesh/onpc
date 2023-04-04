@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -56,6 +57,27 @@ public class CfgAudioControl
             ListeningModeMsg.Mode.MODE_0E, // Game-Sports
             ListeningModeMsg.Mode.MODE_82, // DTS NEURAL:X
             ListeningModeMsg.Mode.MODE_17  // DTS Virtual:X
+    };
+
+    private static final ListeningModeMsg.Mode[] DCP_LISTENING_MODES = new ListeningModeMsg.Mode[]{
+            ListeningModeMsg.Mode.DCP_DIRECT,
+            ListeningModeMsg.Mode.DCP_PURE_DIRECT,
+            ListeningModeMsg.Mode.DCP_STEREO,
+            ListeningModeMsg.Mode.DCP_AUTO,
+            ListeningModeMsg.Mode.DCP_DOLBY_DIGITAL,
+            ListeningModeMsg.Mode.DCP_DTS_SURROUND,
+            ListeningModeMsg.Mode.DCP_AURO3D,
+            ListeningModeMsg.Mode.DCP_AURO2DSURR,
+            ListeningModeMsg.Mode.DCP_MCH_STEREO,
+            ListeningModeMsg.Mode.DCP_WIDE_SCREEN,
+            ListeningModeMsg.Mode.DCP_SUPER_STADIUM,
+            ListeningModeMsg.Mode.DCP_ROCK_ARENA,
+            ListeningModeMsg.Mode.DCP_JAZZ_CLUB,
+            ListeningModeMsg.Mode.DCP_CLASSIC_CONCERT,
+            ListeningModeMsg.Mode.DCP_MONO_MOVIE,
+            ListeningModeMsg.Mode.DCP_MATRIX,
+            ListeningModeMsg.Mode.DCP_VIDEO_GAME,
+            ListeningModeMsg.Mode.DCP_VIRTUAL
     };
 
     private SharedPreferences preferences;
@@ -104,20 +126,21 @@ public class CfgAudioControl
     @NonNull
     public ArrayList<ListeningModeMsg.Mode> getSortedListeningModes(
             boolean allItems,
-            @Nullable ListeningModeMsg.Mode activeItem)
+            @Nullable ListeningModeMsg.Mode activeItem,
+            @NonNull Utils.ProtoType protoType)
     {
         final ArrayList<ListeningModeMsg.Mode> result = new ArrayList<>();
         final ArrayList<String> defItems = new ArrayList<>();
-        for (ListeningModeMsg.Mode i : getListeningModes())
+        for (ListeningModeMsg.Mode i : getListeningModes(protoType))
         {
             defItems.add(i.getCode());
         }
-        final String par = getSelectedListeningModePar();
+        final String par = getSelectedListeningModePar(protoType);
         for (CheckableItem sp : CheckableItem.readFromPreference(preferences, par, defItems))
         {
             final boolean visible = allItems || sp.checked ||
                     (activeItem != null && activeItem.getCode().equals(sp.code));
-            for (ListeningModeMsg.Mode i : getListeningModes())
+            for (ListeningModeMsg.Mode i : getListeningModes(protoType))
             {
                 if (visible && i.getCode().equals(sp.code))
                 {
@@ -133,14 +156,18 @@ public class CfgAudioControl
         return preferences.getBoolean(VOLUME_KEYS, false);
     }
 
-    public static ListeningModeMsg.Mode[] getListeningModes()
+    public static ListeningModeMsg.Mode[] getListeningModes(@NonNull Utils.ProtoType protoType)
     {
-        return ISCP_LISTENING_MODES;
+        return protoType == Utils.ProtoType.ISCP ? ISCP_LISTENING_MODES : DCP_LISTENING_MODES;
     }
 
-    public static String getSelectedListeningModePar()
+    public static String getSelectedListeningModePar(@NonNull Utils.ProtoType protoType)
     {
         String par = SELECTED_LISTENING_MODES;
+        if (protoType == Utils.ProtoType.DCP)
+        {
+            par += "_DCP";
+        }
         return par;
     }
 }

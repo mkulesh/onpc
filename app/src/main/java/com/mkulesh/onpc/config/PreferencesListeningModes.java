@@ -20,9 +20,12 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 public class PreferencesListeningModes extends DraggableListActivity
 {
@@ -30,15 +33,17 @@ public class PreferencesListeningModes extends DraggableListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        prepareList(CfgAudioControl.getSelectedListeningModePar());
-        prepareSelectors();
+        Utils.ProtoType protoType = getProtoType();
+        Logging.info(this, "Listening mode for: " + protoType);
+        prepareList(CfgAudioControl.getSelectedListeningModePar(protoType));
+        prepareSelectors(protoType);
         setTitle(R.string.pref_listening_modes);
     }
 
-    private void prepareSelectors()
+    private void prepareSelectors(final Utils.ProtoType protoType)
     {
         final ArrayList<String> defItems = new ArrayList<>();
-        for (ListeningModeMsg.Mode i : CfgAudioControl.getListeningModes())
+        for (ListeningModeMsg.Mode i : CfgAudioControl.getListeningModes(protoType))
         {
             defItems.add(i.getCode());
         }
@@ -66,5 +71,19 @@ public class PreferencesListeningModes extends DraggableListActivity
         }
 
         setItems(targetItems, checkedItems);
+    }
+
+    @NonNull
+    private Utils.ProtoType getProtoType()
+    {
+        final String protoType = preferences.getString(Configuration.PROTO_TYPE, "NONE");
+        for (Utils.ProtoType p : Utils.ProtoType.values())
+        {
+            if (p.name().equalsIgnoreCase(protoType))
+            {
+                return p;
+            }
+        }
+        return Utils.ProtoType.ISCP;
     }
 }

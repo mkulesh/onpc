@@ -290,7 +290,8 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         }
     }
 
-    private void prepareDeviceSoundButtons(final State.SoundControlType soundControl)
+    private void prepareDeviceSoundButtons(final State.SoundControlType soundControl,
+                                           @NonNull Utils.ProtoType protoType)
     {
         clearSoundVolumeButtons();
         soundControlLayout.setVisibility(View.VISIBLE);
@@ -321,7 +322,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         {
             final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
             l.removeAllViews();
-            for (ListeningModeMsg.Mode m : ac.getSortedListeningModes(true, null))
+            for (ListeningModeMsg.Mode m : ac.getSortedListeningModes(true, null, protoType))
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
                 final AppCompatButton b = createButton(
@@ -425,7 +426,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         case DEVICE_BUTTONS:
         case DEVICE_SLIDER:
         case DEVICE_BTN_SLIDER:
-            prepareDeviceSoundButtons(soundControl);
+            prepareDeviceSoundButtons(soundControl, state.protoType);
             break;
         default:
             clearSoundVolumeButtons();
@@ -482,7 +483,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         // buttons
         final ArrayList<String> selectedListeningModes = new ArrayList<>();
         final CfgAudioControl ac = activity.getConfiguration().audioControl;
-        for (ListeningModeMsg.Mode m : ac.getSortedListeningModes(false, state.listeningMode))
+        for (ListeningModeMsg.Mode m : ac.getSortedListeningModes(false, state.listeningMode, state.protoType))
         {
             selectedListeningModes.add(m.getCode());
         }

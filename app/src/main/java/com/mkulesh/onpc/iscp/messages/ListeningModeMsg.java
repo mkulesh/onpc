@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -31,6 +32,7 @@ public class ListeningModeMsg extends ISCPMessage
 
     public enum Mode implements StringParameterIf
     {
+        // Integra
         MODE_00("00", R.string.listening_mode_mode_00),
         MODE_01("01", R.string.listening_mode_mode_01, true),
         MODE_02("02", R.string.listening_mode_mode_02),
@@ -100,6 +102,27 @@ public class ListeningModeMsg extends ISCPMessage
         MODE_A6("A6", R.string.listening_mode_mode_a6),
         MODE_A7("A7", R.string.listening_mode_mode_a7),
         MODE_FF("FF", R.string.listening_mode_mode_ff),
+
+        // Denon
+        DCP_DIRECT("DIRECT", R.string.listening_mode_mode_01, true),
+        DCP_PURE_DIRECT("PURE DIRECT", R.string.listening_mode_pure_direct, true),
+        DCP_STEREO("STEREO", R.string.listening_mode_mode_00),
+        DCP_AUTO("AUTO", R.string.listening_mode_auto),
+        DCP_DOLBY_DIGITAL("DOLBY DIGITAL", R.string.listening_mode_mode_40),
+        DCP_DTS_SURROUND("DTS SURROUND", R.string.listening_mode_dts_surround),
+        DCP_AURO3D("AURO3D", R.string.listening_mode_auro3d),
+        DCP_AURO2DSURR("AURO2DSURR", R.string.listening_mode_auro2d_surr),
+        DCP_MCH_STEREO("MCH STEREO", R.string.listening_mode_mch_stereo),
+        DCP_WIDE_SCREEN("WIDE SCREEN", R.string.listening_mode_wide_screen),
+        DCP_SUPER_STADIUM("SUPER STADIUM", R.string.listening_mode_super_stadium),
+        DCP_ROCK_ARENA("ROCK ARENA", R.string.listening_mode_rock_arena),
+        DCP_JAZZ_CLUB("JAZZ CLUB", R.string.listening_mode_jazz_club),
+        DCP_CLASSIC_CONCERT("CLASSIC CONCERT", R.string.listening_mode_classic_concert),
+        DCP_MONO_MOVIE("MONO MOVIE", R.string.listening_mode_mono_movie),
+        DCP_MATRIX("MATRIX", R.string.listening_mode_matrix),
+        DCP_VIDEO_GAME("VIDEO GAME", R.string.listening_mode_video_game),
+        DCP_VIRTUAL("VIRTUAL", R.string.listening_mode_vitrual),
+
         UP("UP", R.string.listening_mode_up, R.drawable.cmd_right),
         DOWN("DOWN", R.string.listening_mode_down, R.drawable.cmd_left);
 
@@ -198,5 +221,34 @@ public class ListeningModeMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    public final static String DCP_COMMAND = "MS";
+
+    @Nullable
+    public static ListeningModeMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        if (dcpMsg.startsWith(DCP_COMMAND))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
+            for (ListeningModeMsg.Mode mode : ListeningModeMsg.Mode.values())
+            {
+                if (par.equalsIgnoreCase(mode.getCode()))
+                {
+                    return new ListeningModeMsg(mode);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ : mode.getCode());
     }
 }

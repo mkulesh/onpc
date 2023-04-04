@@ -588,6 +588,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             final String[] playStateQueries = new String[]{
                     // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    // SoundControlState
+                    ListeningModeMsg.CODE,
             };
             sendQueries(playStateQueries, "DCP: requesting play state...");
         }

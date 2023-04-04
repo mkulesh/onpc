@@ -692,6 +692,23 @@
     <string name="listening_mode_game" translatable="false">GAME</string>
     <string name="listening_mode_stereo" translatable="false">STEREO</string>
     <string name="listening_mode_thx" translatable="false">THX</string>
+
+    <string name="listening_mode_pure_direct" translatable="false">Pure Direct</string>
+    <string name="listening_mode_auto" translatable="false">Auto</string>
+    <string name="listening_mode_dts_surround" translatable="false">DTS Surround</string>
+    <string name="listening_mode_auro3d" translatable="false">Auro 3D</string>
+    <string name="listening_mode_auro2d_surr" translatable="false">Auro 2D SURR</string>
+    <string name="listening_mode_mch_stereo" translatable="false">MCH Stereo</string>
+    <string name="listening_mode_wide_screen" translatable="false">Wide Screen</string>
+    <string name="listening_mode_super_stadium" translatable="false">Super Stadium</string>
+    <string name="listening_mode_rock_arena" translatable="false">Rock Arena</string>
+    <string name="listening_mode_jazz_club" translatable="false">Jazz Club</string>
+    <string name="listening_mode_classic_concert" translatable="false">Classic Concert</string>
+    <string name="listening_mode_mono_movie" translatable="false">Mono Movie</string>
+    <string name="listening_mode_matrix" translatable="false">Matrix</string>
+    <string name="listening_mode_video_game" translatable="false">Video Game</string>
+    <string name="listening_mode_vitrual" translatable="false">Virtual</string>
+
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
     <string name="listening_mode_down">Sets listening mode wrap-around down</string>
 
