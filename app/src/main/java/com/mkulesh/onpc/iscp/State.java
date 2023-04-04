@@ -28,6 +28,7 @@ import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
+import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -115,6 +116,7 @@ public class State implements ConnectionIf
     private final int activeZone;
     private List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     private final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
+    private final List<ReceiverInformationMsg.Selector> dcpExtSelectors = new ArrayList<>();
     private Set<String> controlList = new HashSet<>();
     private HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
@@ -368,6 +370,10 @@ public class State implements ConnectionIf
             deviceSelectors.clear();
             for (InputSelectorMsg.InputType it : InputSelectorMsg.InputType.values())
             {
+                if (protoType != it.getProtoType())
+                {
+                    continue;
+                }
                 if (it != InputSelectorMsg.InputType.NONE)
                 {
                     // #265 Add new input selector "SOURCE":
@@ -380,6 +386,22 @@ public class State implements ConnectionIf
                     deviceSelectors.add(s);
                 }
             }
+        }
+        // Denon extended selectors (NET + SOURCE)
+        {
+            dcpExtSelectors.clear();
+            dcpExtSelectors.add(new ReceiverInformationMsg.Selector(
+                    InputSelectorMsg.InputType.DCP_SOURCE.getCode(),
+                    context.getString(InputSelectorMsg.InputType.DCP_SOURCE.getDescriptionId()),
+                    ReceiverInformationMsg.EXT_ZONES, "", false));
+            dcpExtSelectors.add(new ReceiverInformationMsg.Selector(
+                    InputSelectorMsg.InputType.DCP_NET.getCode(),
+                    context.getString(InputSelectorMsg.InputType.DCP_NET.getDescriptionId()),
+                    ReceiverInformationMsg.ALL_ZONES, "", false));
+            dcpExtSelectors.add(new ReceiverInformationMsg.Selector(
+                    InputSelectorMsg.InputType.DCP_TUNER.getCode(),
+                    context.getString(InputSelectorMsg.InputType.DCP_TUNER.getDescriptionId()),
+                    ReceiverInformationMsg.MAIN_ZONE, "", false));
         }
         // Add default bass and treble limits
         toneControls.clear();
@@ -672,6 +694,12 @@ public class State implements ConnectionIf
         if (msg instanceof VideoInformationMsg)
         {
             return isCommonChange(process((VideoInformationMsg) msg));
+        }
+
+        // Denon-specific messages
+        if (msg instanceof DcpReceiverInformationMsg)
+        {
+            return process((DcpReceiverInformationMsg) msg) ? ChangeType.RECEIVER_INFO : ChangeType.NONE;
         }
 
         return ChangeType.NONE;
@@ -1657,5 +1685,40 @@ public class State implements ConnectionIf
         avInfoVideoInput = msg.videoInput;
         avInfoVideoOutput = msg.videoOutput;
         return changed;
+    }
+
+    // Denon-specific messages
+    private boolean firstDcpSelector = true;
+
+    private boolean process(DcpReceiverInformationMsg msg)
+    {
+        // Input Selector
+        if (msg.getSelector() != null)
+        {
+            if (DcpReceiverInformationMsg.DCP_COMMAND_INPUT_SEL_END.equalsIgnoreCase(msg.getSelector().getId()))
+            {
+                firstDcpSelector = true;
+            }
+            else synchronized (deviceSelectors)
+            {
+                if (firstDcpSelector)
+                {
+                    deviceSelectors.clear();
+                    for (ReceiverInformationMsg.Selector s : dcpExtSelectors)
+                    {
+                        if (s.isActiveForZone(activeZone))
+                        {
+                            deviceSelectors.add(s);
+                        }
+                    }
+                    firstDcpSelector = false;
+                }
+                if (msg.getSelector().isActiveForZone(activeZone))
+                {
+                    deviceSelectors.add(msg.getSelector());
+                }
+            }
+        }
+        return false;
     }
 }

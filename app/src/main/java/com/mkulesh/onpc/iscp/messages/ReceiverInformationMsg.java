@@ -38,6 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Gets the Receiver Information Status
@@ -46,6 +47,7 @@ public class ReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "NRI";
     public final static int DEFAULT_ACTIVE_ZONE = 0;
+    public final static int MAIN_ZONE = 0x1;
     public final static int ALL_ZONES = 0xFF;
     public final static int EXT_ZONES = 14; // 1110 - all zones except main
 
@@ -632,5 +634,15 @@ public class ReceiverInformationMsg extends ISCPMessage
         }
 
         stream.close();
+    }
+
+    /*
+     * Denon control protocol
+     */
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return "SSFUN ?";
     }
 }

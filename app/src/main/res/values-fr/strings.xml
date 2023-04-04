@@ -404,6 +404,9 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
     <string name="input_selector_source">SOURCE</string>
+    <string name="input_selector_dvd">DVD</string>
+    <string name="input_selector_bd">BD</string>
+    <string name="input_selector_mplayer">MEDIA PLAYER</string>
 
     <!-- Services -->
     <string name="service_music_server">Music Server (DLNA)</string>

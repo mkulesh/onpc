@@ -583,6 +583,15 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             return changed != State.ChangeType.NONE;
         }
 
+        if (msg instanceof PowerStatusMsg && changed != State.ChangeType.NONE)
+        {
+            final String[] playStateQueries = new String[]{
+                    // PlaybackState
+                    InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
+            };
+            sendQueries(playStateQueries, "DCP: requesting play state...");
+        }
+
         return true;
     }
 

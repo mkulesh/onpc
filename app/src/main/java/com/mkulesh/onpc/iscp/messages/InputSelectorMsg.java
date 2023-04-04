@@ -17,9 +17,11 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -36,6 +38,7 @@ public class InputSelectorMsg extends ZonedMessage
 
     public enum InputType implements StringParameterIf
     {
+        // Integra
         VIDEO1("00", R.string.input_selector_vcr_dvr, R.drawable.media_item_vhs),
         VIDEO2("01", R.string.input_selector_cbl_sat, R.drawable.media_item_sat),
         VIDEO3("02", R.string.input_selector_game, R.drawable.media_item_game),
@@ -77,6 +80,28 @@ public class InputSelectorMsg extends ZonedMessage
         HDMI_6("56", R.string.input_selector_hdmi_6, R.drawable.media_item_hdmi),
         HDMI_7("57", R.string.input_selector_hdmi_7, R.drawable.media_item_hdmi),
         SOURCE("80", R.string.input_selector_source),
+
+        // Denon
+        DCP_PHONO("PHONO", R.string.input_selector_phono, R.drawable.media_item_phono),
+        DCP_CD("CD", R.string.input_selector_cd, R.drawable.media_item_disc_player),
+        DCP_DVD("DVD", R.string.input_selector_dvd, R.drawable.media_item_disc_player),
+        DCP_BD("BD", R.string.input_selector_bd, R.drawable.media_item_disc_player),
+        DCP_TV("TV", R.string.input_selector_tv, R.drawable.media_item_tv),
+        DCP_SAT_CBL("SAT/CBL", R.string.input_selector_cbl_sat, R.drawable.media_item_sat),
+        DCP_MPLAY("MPLAY", R.string.input_selector_mplayer, R.drawable.media_item_mplayer),
+        DCP_GAME("GAME", R.string.input_selector_game, R.drawable.media_item_game),
+        DCP_TUNER("TUNER", R.string.input_selector_tuner, R.drawable.media_item_radio),
+        DCP_AUX1("AUX1", R.string.input_selector_aux1, R.drawable.media_item_rca),
+        DCP_AUX2("AUX2", R.string.input_selector_aux2, R.drawable.media_item_rca),
+        DCP_AUX3("AUX3", R.string.input_selector_aux3, R.drawable.media_item_rca),
+        DCP_AUX4("AUX4", R.string.input_selector_aux4, R.drawable.media_item_rca),
+        DCP_AUX5("AUX5", R.string.input_selector_aux5, R.drawable.media_item_rca),
+        DCP_AUX6("AUX6", R.string.input_selector_aux6, R.drawable.media_item_rca),
+        DCP_AUX7("AUX7", R.string.input_selector_aux7, R.drawable.media_item_rca),
+        DCP_NET("NET", R.string.input_selector_net, R.drawable.media_item_net),
+        DCP_BT("BT", R.string.input_selector_bluetooth, R.drawable.media_item_bluetooth),
+        DCP_SOURCE("SOURCE", R.string.input_selector_source),
+
         NONE("XX", -1);
 
         final String code;
@@ -112,6 +137,11 @@ public class InputSelectorMsg extends ZonedMessage
             this.descriptionId = descriptionId;
             this.imageId = R.drawable.media_item_unknown;
             this.mediaList = false;
+        }
+
+        public Utils.ProtoType getProtoType()
+        {
+            return name().startsWith("DCP_") ? Utils.ProtoType.DCP : Utils.ProtoType.ISCP;
         }
 
         public String getCode()
@@ -178,4 +208,39 @@ public class InputSelectorMsg extends ZonedMessage
         return new EISCPMessage(getZoneCommand(), inputType.getCode());
     }
 
+    /*
+     * Denon control protocol
+     */
+    public final static String[] DCP_COMMANDS = new String[]{ "SI", "Z2", "Z3" };
+
+    @Nullable
+    public static InputSelectorMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        for (int i = 0; i < DCP_COMMANDS.length; i++)
+        {
+            if (dcpMsg.startsWith(DCP_COMMANDS[i]))
+            {
+                final String par = dcpMsg.substring(DCP_COMMANDS[i].length()).trim();
+                for (InputSelectorMsg.InputType input : InputSelectorMsg.InputType.values())
+                {
+                    if (par.equalsIgnoreCase(input.getCode()))
+                    {
+                        return new InputSelectorMsg(i, input.getCode());
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (zoneIndex < DCP_COMMANDS.length)
+        {
+            return DCP_COMMANDS[zoneIndex] + (isQuery ? DCP_MSG_REQ : inputType.getCode());
+        }
+        return null;
+    }
 }
