@@ -27,6 +27,8 @@ import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
+import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
@@ -215,6 +217,10 @@ public class State implements ConnectionIf
     public String avInfoAudioOutput = "";
     public String avInfoVideoInput = "";
     public String avInfoVideoOutput = "";
+
+    // Denon settings
+    public DcpEcoModeMsg.Status dcpEcoMode = DcpEcoModeMsg.Status.NONE;
+    public DcpAudioRestorerMsg.Status dcpAudioRestorer = DcpAudioRestorerMsg.Status.NONE;
 
     // Popup
     public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
@@ -712,6 +718,14 @@ public class State implements ConnectionIf
         if (msg instanceof DcpTunerModeMsg)
         {
             return process((DcpTunerModeMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+        }
+        if (msg instanceof DcpEcoModeMsg)
+        {
+            return isCommonChange(process((DcpEcoModeMsg) msg));
+        }
+        if (msg instanceof DcpAudioRestorerMsg)
+        {
+            return isCommonChange(process((DcpAudioRestorerMsg) msg));
         }
 
         return ChangeType.NONE;
@@ -1838,6 +1852,20 @@ public class State implements ConnectionIf
     {
         final boolean changed = dcpTunerMode != msg.getTunerMode();
         dcpTunerMode = msg.getTunerMode();
+        return changed;
+    }
+
+    private boolean process(DcpEcoModeMsg msg)
+    {
+        final boolean changed = dcpEcoMode != msg.getStatus();
+        dcpEcoMode = msg.getStatus();
+        return changed;
+    }
+
+    private boolean process(DcpAudioRestorerMsg msg)
+    {
+        final boolean changed = dcpAudioRestorer != msg.getStatus();
+        dcpAudioRestorer = msg.getStatus();
         return changed;
     }
 }

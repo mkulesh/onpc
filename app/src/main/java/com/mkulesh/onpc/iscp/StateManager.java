@@ -27,6 +27,8 @@ import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
+import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
@@ -591,13 +593,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             final String[] playStateQueries = new String[]{
                     // PlaybackState
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
-                    // DeviceSettingsState
-                    DimmerLevelMsg.CODE,
                     // SoundControlState
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
                     MasterVolumeMsg.ZONE_COMMANDS[state.getActiveZone()],
                     toneCommand,
                     ListeningModeMsg.CODE,
+                    // DeviceSettingsState
+                    DimmerLevelMsg.CODE,
+                    SleepSetCommandMsg.CODE,
+                    DcpEcoModeMsg.CODE,
+                    DcpAudioRestorerMsg.CODE
             };
             sendQueries(playStateQueries, "DCP: requesting play state...");
         }

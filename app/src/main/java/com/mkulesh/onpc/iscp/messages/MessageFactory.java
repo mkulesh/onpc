@@ -157,6 +157,10 @@ public class MessageFactory
             return new SetupOperationCommandMsg(raw);
         case DcpTunerModeMsg.CODE:
             return new DcpTunerModeMsg(raw);
+        case DcpEcoModeMsg.CODE:
+            return new DcpEcoModeMsg(raw);
+        case DcpAudioRestorerMsg.CODE:
+            return new DcpAudioRestorerMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

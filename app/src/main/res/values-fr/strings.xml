@@ -500,6 +500,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="device_two_way_switch_none">N/A</string>
     <string name="device_two_way_switch_off">Arrêt</string>
     <string name="device_two_way_switch_on">Marche</string>
+    <string name="device_two_way_switch_auto">Auto</string>
     <string name="device_two_way_switch_toggle">Changer</string>
 
     <!-- Two-way switches -->
@@ -553,6 +554,17 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+
+    <!-- DCP ECO mode -->
+    <string name="device_dcp_eco_mode">Mode écologique</string>
+
+    <!-- DCP audio restorer -->
+    <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_none">N/A</string>
+    <string name="device_dcp_audio_restorer_off">Arrêt</string>
+    <string name="device_dcp_audio_restorer_low">Faible</string>
+    <string name="device_dcp_audio_restorer_medium">Moyen</string>
+    <string name="device_dcp_audio_restorer_high">Haute</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Changer mode d\'écoute</string>

@@ -29,6 +29,8 @@ import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.FirmwareUpdateMsg;
@@ -136,6 +138,8 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.google_cast_analytics_toggle, null);
         prepareImageButton(R.id.late_night_command_toggle, new LateNightCommandMsg(LateNightCommandMsg.Status.UP));
         prepareImageButton(R.id.network_standby_toggle, null);
+        prepareImageButton(R.id.dcp_eco_mode_toggle, null);
+        prepareImageButton(R.id.dcp_audio_restorer_toggle, null);
 
         updateContent();
         return rootView;
@@ -174,7 +178,9 @@ public class DeviceFragment extends BaseFragment
                     R.id.speaker_ab_layout,
                     R.id.google_cast_analytics_layout,
                     R.id.late_night_command_layout,
-                    R.id.network_standby_layout
+                    R.id.network_standby_layout,
+                    R.id.dcp_eco_mode_layout,
+                    R.id.dcp_audio_restorer_layout
             };
             for (int layoutId : settingsLayout)
             {
@@ -327,7 +333,7 @@ public class DeviceFragment extends BaseFragment
                     state.sleepTime + " " + getStringValue(R.string.device_sleep_time_minutes);
             prepareSettingPanel(state, state.sleepTime != SleepSetCommandMsg.NOT_APPLICABLE,
                     R.id.sleep_time_layout, description,
-                    new SleepSetCommandMsg(SleepSetCommandMsg.toggle(state.sleepTime)));
+                    new SleepSetCommandMsg(SleepSetCommandMsg.toggle(state.sleepTime, state.protoType)));
         }
 
         // Speaker A/B (For Main zone and Zone 2 only)
@@ -398,6 +404,16 @@ public class DeviceFragment extends BaseFragment
             final AppCompatImageButton b = rootView.findViewById(R.id.network_standby_toggle);
             prepareButtonListeners(b, null, this::onNetworkStandByToggle);
         }
+
+        // DCP ECO mode
+        prepareSettingPanel(state, state.dcpEcoMode != DcpEcoModeMsg.Status.NONE,
+                R.id.dcp_eco_mode_layout, state.dcpEcoMode.getDescriptionId(),
+                new DcpEcoModeMsg(DcpEcoModeMsg.toggle(state.dcpEcoMode)));
+
+        // DCP audio restorer
+        prepareSettingPanel(state, state.dcpAudioRestorer != DcpAudioRestorerMsg.Status.NONE,
+                R.id.dcp_audio_restorer_layout, state.dcpAudioRestorer.getDescriptionId(),
+                new DcpAudioRestorerMsg(DcpAudioRestorerMsg.toggle(state.dcpAudioRestorer)));
     }
 
     private void onNetworkStandByToggle()

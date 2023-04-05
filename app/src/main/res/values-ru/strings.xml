@@ -501,6 +501,7 @@
     <string name="device_two_way_switch_none">Нет</string>
     <string name="device_two_way_switch_off">Выкл</string>
     <string name="device_two_way_switch_on">Вкл</string>
+    <string name="device_two_way_switch_auto">Авто</string>
     <string name="device_two_way_switch_toggle">Изменить</string>
 
     <!-- Two-way switches -->
@@ -554,6 +555,17 @@
     <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>
     <string name="privacy_policy_google">Подтвердить лицензию Google Cast</string>
     <string name="privacy_policy_sue">Подтвердить соглашение SUE-Privacy</string>
+
+    <!-- DCP ECO mode -->
+    <string name="device_dcp_eco_mode">Режим экономии</string>
+
+    <!-- DCP audio restorer -->
+    <string name="device_dcp_audio_restorer">Режим \"Restorer\"</string>
+    <string name="device_dcp_audio_restorer_none">N/A</string>
+    <string name="device_dcp_audio_restorer_off">Выкл</string>
+    <string name="device_dcp_audio_restorer_low">Низкий</string>
+    <string name="device_dcp_audio_restorer_medium">Средний</string>
+    <string name="device_dcp_audio_restorer_high">Высокий</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Следующий звуковой профиль</string>

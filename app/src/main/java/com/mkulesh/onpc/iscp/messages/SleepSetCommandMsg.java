@@ -14,10 +14,14 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Sleep Set Command
@@ -74,9 +78,42 @@ public class SleepSetCommandMsg extends ISCPMessage
         return false;
     }
 
-    public static int toggle(int sleepTime)
+    public static int toggle(int sleepTime, Utils.ProtoType protoType)
     {
+        final int max = protoType == Utils.ProtoType.ISCP ? 90 : 120;
         final int res = 15 * ((int) ((float) sleepTime / 15.0) + 1);
-        return res > 90 ? 0 : res;
+        return res > max ? 0 : res;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND = "SLP";
+
+    @Nullable
+    public static SleepSetCommandMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        if (dcpMsg.startsWith(DCP_COMMAND))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
+            try
+            {
+                return new SleepSetCommandMsg("OFF".equals(par) ? SLEEP_OFF : Integer.parseInt(par));
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ :
+                sleepTime == SLEEP_OFF ? "OFF" : String.format("%03d", sleepTime));
     }
 }

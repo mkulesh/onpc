@@ -15,6 +15,8 @@
 package com.mkulesh.onpc.iscp;
 
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
+import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
@@ -25,6 +27,7 @@ import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -64,6 +67,9 @@ public class DCPMessage
 
         // Settings
         addISCPMsg(DimmerLevelMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(SleepSetCommandMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DcpEcoModeMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DcpAudioRestorerMsg.processDcpMessage(dcpMsg));
 
         return messages;
     }

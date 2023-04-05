@@ -500,6 +500,7 @@
     <string name="device_two_way_switch_none">N/A</string>
     <string name="device_two_way_switch_off">Aus</string>
     <string name="device_two_way_switch_on">An</string>
+    <string name="device_two_way_switch_auto">Auto</string>
     <string name="device_two_way_switch_toggle">Wechseln</string>
 
     <!-- Two-way switches -->
@@ -553,6 +554,17 @@
     <string name="privacy_policy_onkyo">Onkyo Datenschutzerklärung zustimmen</string>
     <string name="privacy_policy_google">Google Cast Lizenz zustimmen</string>
     <string name="privacy_policy_sue">SUE - Datenschutzerklärung zustimmen</string>
+
+    <!-- DCP ECO mode -->
+    <string name="device_dcp_eco_mode">Energiesparmodus</string>
+
+    <!-- DCP audio restorer -->
+    <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_none">N/A</string>
+    <string name="device_dcp_audio_restorer_off">Aus</string>
+    <string name="device_dcp_audio_restorer_low">Niedrig</string>
+    <string name="device_dcp_audio_restorer_medium">Mittel</string>
+    <string name="device_dcp_audio_restorer_high">Hoch</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Klangprofile durchwechseln</string>
