@@ -1595,20 +1595,26 @@ public class State implements ConnectionIf
         {
             return dashedString;
         }
-        if (!isFm())
+        if (isFm())
         {
-            return frequency;
+            try
+            {
+                final float f = (float) Integer.parseInt(frequency) / 100.0f;
+                final DecimalFormat df = Utils.getDecimalFormat("0.00 MHz");
+                return df.format(f);
+            }
+            catch (Exception e)
+            {
+                return dashedString;
+            }
         }
-        try
+        if (isDab())
         {
-            final float f = (float) Integer.parseInt(frequency) / 100.0f;
-            final DecimalFormat df = Utils.getDecimalFormat("0.00 MHz");
-            return df.format(f);
+            final String freq1 = !frequency.contains(":") && frequency.length() > 2 ?
+                frequency.substring(0,2) + ":" + frequency.substring(2) : frequency;
+            return !freq1.isEmpty() && !freq1.contains("MHz") ? freq1 + "MHz" : freq1;
         }
-        catch (Exception e)
-        {
-            return dashedString;
-        }
+        return frequency;
     }
 
     public ReceiverInformationMsg.NetworkService getNetworkService()

@@ -550,6 +550,16 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             }
         }
 
+        // #276 DAB channel frequency is some time invalid: an additional request
+        // is necessary for NS-6170 in order to receive DAB frequency.
+        if (msg instanceof RadioStationNameMsg)
+        {
+            final String[] tunerStatusQueries = new String[]{
+                    TuningCommandMsg.ZONE_COMMANDS[state.getActiveZone()]
+            };
+            sendQueries(tunerStatusQueries, "requesting radio frequency...");
+        }
+
         // check privacy policy but do not accept it automatically
         if (msg instanceof PrivacyPolicyStatusMsg)
         {
