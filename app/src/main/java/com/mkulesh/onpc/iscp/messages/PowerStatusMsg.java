@@ -35,7 +35,7 @@ public class PowerStatusMsg extends ZonedMessage
     /*
      * Play Status: "00": System Standby, "01":  System On, "ALL": All Zone(including Main Zone) Standby
      */
-    public enum PowerStatus implements StringParameterIf
+    public enum PowerStatus implements DcpStringParameterIf
     {
         STB("00", "OFF"),
         ON("01", "ON"),
@@ -55,6 +55,7 @@ public class PowerStatusMsg extends ZonedMessage
             return code;
         }
 
+        @NonNull
         public String getDcpCode()
         {
             return dcpCode;
@@ -111,16 +112,10 @@ public class PowerStatusMsg extends ZonedMessage
     {
         for (int i = 0; i < DCP_COMMANDS.length; i++)
         {
-            if (dcpMsg.startsWith(DCP_COMMANDS[i]))
+            final PowerStatus s = (PowerStatus) searchDcpParameter(DCP_COMMANDS[i], dcpMsg, PowerStatus.values());
+            if (s != null)
             {
-                final String par = dcpMsg.substring(DCP_COMMANDS[i].length()).trim();
-                for (PowerStatus status : PowerStatus.values())
-                {
-                    if (par.equalsIgnoreCase(status.getDcpCode()))
-                    {
-                        return new PowerStatusMsg(i, status);
-                    }
-                }
+                return new PowerStatusMsg(i, s);
             }
         }
         return null;

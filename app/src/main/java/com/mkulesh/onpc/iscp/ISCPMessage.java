@@ -229,4 +229,28 @@ public class ISCPMessage implements ConnectionIf
         return null;
     }
 
+    public interface DcpStringParameterIf extends StringParameterIf
+    {
+        @NonNull
+        String getDcpCode();
+    }
+
+    @Nullable
+    public static DcpStringParameterIf searchDcpParameter(@NonNull final String dcpCommand,
+                                                          @NonNull final String dcpMsg,
+                                                          @NonNull final DcpStringParameterIf[] values)
+    {
+        if (dcpMsg.startsWith(dcpCommand))
+        {
+            final String par = dcpMsg.substring(dcpCommand.length()).trim();
+            for (DcpStringParameterIf t : values)
+            {
+                if (t.getDcpCode().equalsIgnoreCase(par))
+                {
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
 }

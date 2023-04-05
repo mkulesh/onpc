@@ -34,7 +34,7 @@ public class AudioMutingMsg extends ZonedMessage
 
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
-    public enum Status implements StringParameterIf
+    public enum Status implements DcpStringParameterIf
     {
         NONE("N/A", "N/A", R.string.audio_muting_none),
         OFF("00", "OFF", R.string.audio_muting_off),
@@ -58,6 +58,7 @@ public class AudioMutingMsg extends ZonedMessage
             return code;
         }
 
+        @NonNull
         public String getDcpCode()
         {
             return dcpCode;
@@ -131,16 +132,10 @@ public class AudioMutingMsg extends ZonedMessage
     {
         for (int i = 0; i < DCP_COMMANDS.length; i++)
         {
-            if (dcpMsg.startsWith(DCP_COMMANDS[i]))
+            final Status s = (Status) searchDcpParameter(DCP_COMMANDS[i], dcpMsg, Status.values());
+            if (s != null)
             {
-                final String par = dcpMsg.substring(DCP_COMMANDS[i].length()).trim();
-                for (Status status : Status.values())
-                {
-                    if (par.equalsIgnoreCase(status.getDcpCode()))
-                    {
-                        return new AudioMutingMsg(i, status);
-                    }
-                }
+                return new AudioMutingMsg(i, s);
             }
         }
         return null;

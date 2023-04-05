@@ -31,7 +31,7 @@ public class DcpTunerModeMsg extends ISCPMessage
     public final static String CODE = "D02";
     private final static String DCP_COMMAND = "TMAN";
 
-    public enum TunerMode implements StringParameterIf
+    public enum TunerMode implements DcpStringParameterIf
     {
         NONE("N/A", R.string.dashed_string, R.drawable.media_item_unknown),
         FM("FM", R.string.input_selector_fm, R.drawable.media_item_radio_fm),
@@ -53,6 +53,12 @@ public class DcpTunerModeMsg extends ISCPMessage
         }
 
         public String getCode()
+        {
+            return code;
+        }
+
+        @NonNull
+        public String getDcpCode()
         {
             return code;
         }
@@ -111,22 +117,14 @@ public class DcpTunerModeMsg extends ISCPMessage
     @Nullable
     public static DcpTunerModeMsg processDcpMessage(@NonNull String dcpMsg)
     {
-        if (dcpMsg.startsWith(DCP_COMMAND))
-        {
-            final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
-            final TunerMode mode = (TunerMode) searchParameter(par, TunerMode.values(), TunerMode.NONE);
-            if (mode != TunerMode.NONE)
-            {
-                return new DcpTunerModeMsg(mode);
-            }
-        }
-        return null;
+        final TunerMode s = (TunerMode) searchDcpParameter(DCP_COMMAND, dcpMsg, TunerMode.values());
+        return s != null ? new DcpTunerModeMsg(s) : null;
     }
 
     @Nullable
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ : tunerMode.getCode());
+        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ : tunerMode.getDcpCode());
     }
 }

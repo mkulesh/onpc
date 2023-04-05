@@ -43,7 +43,7 @@ public class MasterVolumeMsg extends ZonedMessage
     public static final int MAX_VOLUME_1_STEP = 0x64;
 
     @SuppressWarnings("unused")
-    public enum Command implements StringParameterIf
+    public enum Command implements DcpStringParameterIf
     {
         UP("UP", R.string.master_volume_up, R.drawable.volume_amp_up),
         DOWN("DOWN", R.string.master_volume_down, R.drawable.volume_amp_down),
@@ -70,6 +70,7 @@ public class MasterVolumeMsg extends ZonedMessage
             return toString();
         }
 
+        @NonNull
         public String getDcpCode()
         {
             return dcpCode;

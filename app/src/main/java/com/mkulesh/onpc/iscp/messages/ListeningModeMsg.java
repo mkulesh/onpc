@@ -30,7 +30,7 @@ public class ListeningModeMsg extends ISCPMessage
 {
     public final static String CODE = "LMD";
 
-    public enum Mode implements StringParameterIf
+    public enum Mode implements DcpStringParameterIf
     {
         // Integra
         MODE_00("00", R.string.listening_mode_mode_00),
@@ -167,6 +167,12 @@ public class ListeningModeMsg extends ISCPMessage
             return code;
         }
 
+        @NonNull
+        public String getDcpCode()
+        {
+            return code;
+        }
+
         @StringRes
         public int getDescriptionId()
         {
@@ -226,29 +232,19 @@ public class ListeningModeMsg extends ISCPMessage
     /*
      * Denon control protocol
      */
-    public final static String DCP_COMMAND = "MS";
+    private final static String DCP_COMMAND = "MS";
 
     @Nullable
     public static ListeningModeMsg processDcpMessage(@NonNull String dcpMsg)
     {
-        if (dcpMsg.startsWith(DCP_COMMAND))
-        {
-            final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
-            for (ListeningModeMsg.Mode mode : ListeningModeMsg.Mode.values())
-            {
-                if (par.equalsIgnoreCase(mode.getCode()))
-                {
-                    return new ListeningModeMsg(mode);
-                }
-            }
-        }
-        return null;
+        final Mode s = (Mode) searchDcpParameter(DCP_COMMAND, dcpMsg, Mode.values());
+        return s != null ? new ListeningModeMsg(s) : null;
     }
 
     @Nullable
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ : mode.getCode());
+        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ : mode.getDcpCode());
     }
 }

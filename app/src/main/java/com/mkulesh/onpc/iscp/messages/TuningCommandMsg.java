@@ -36,7 +36,7 @@ public class TuningCommandMsg extends ZonedMessage
 
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
-    public enum Command implements StringParameterIf
+    public enum Command implements DcpStringParameterIf
     {
         UP(R.string.tuning_command_up, R.drawable.cmd_fast_forward),
         DOWN(R.string.tuning_command_down, R.drawable.cmd_fast_backward);
@@ -54,6 +54,12 @@ public class TuningCommandMsg extends ZonedMessage
         }
 
         public String getCode()
+        {
+            return toString();
+        }
+
+        @NonNull
+        public String getDcpCode()
         {
             return toString();
         }
@@ -171,7 +177,7 @@ public class TuningCommandMsg extends ZonedMessage
         if (zoneIndex == ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE)
         {
             // Only available for main zone
-            return DCP_COMMAND_FM + (isQuery ? DCP_MSG_REQ : (command != null ? command.name() : null));
+            return DCP_COMMAND_FM + (isQuery ? DCP_MSG_REQ : (command != null ? command.getDcpCode() : null));
         }
         return null;
     }

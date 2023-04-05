@@ -36,7 +36,7 @@ public class InputSelectorMsg extends ZonedMessage
 
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
-    public enum InputType implements StringParameterIf
+    public enum InputType implements DcpStringParameterIf
     {
         // Integra
         VIDEO1("00", R.string.input_selector_vcr_dvr, R.drawable.media_item_vhs),
@@ -149,6 +149,12 @@ public class InputSelectorMsg extends ZonedMessage
             return code;
         }
 
+        @NonNull
+        public String getDcpCode()
+        {
+            return code;
+        }
+
         @StringRes
         public int getDescriptionId()
         {
@@ -211,23 +217,17 @@ public class InputSelectorMsg extends ZonedMessage
     /*
      * Denon control protocol
      */
-    public final static String[] DCP_COMMANDS = new String[]{ "SI", "Z2", "Z3" };
+    private final static String[] DCP_COMMANDS = new String[]{ "SI", "Z2", "Z3" };
 
     @Nullable
     public static InputSelectorMsg processDcpMessage(@NonNull String dcpMsg)
     {
         for (int i = 0; i < DCP_COMMANDS.length; i++)
         {
-            if (dcpMsg.startsWith(DCP_COMMANDS[i]))
+            final InputType s = (InputType) searchDcpParameter(DCP_COMMANDS[i], dcpMsg, InputType.values());
+            if (s != null)
             {
-                final String par = dcpMsg.substring(DCP_COMMANDS[i].length()).trim();
-                for (InputSelectorMsg.InputType input : InputSelectorMsg.InputType.values())
-                {
-                    if (par.equalsIgnoreCase(input.getCode()))
-                    {
-                        return new InputSelectorMsg(i, input.getCode());
-                    }
-                }
+                return new InputSelectorMsg(i, s.getCode());
             }
         }
         return null;
@@ -239,7 +239,7 @@ public class InputSelectorMsg extends ZonedMessage
     {
         if (zoneIndex < DCP_COMMANDS.length)
         {
-            return DCP_COMMANDS[zoneIndex] + (isQuery ? DCP_MSG_REQ : inputType.getCode());
+            return DCP_COMMANDS[zoneIndex] + (isQuery ? DCP_MSG_REQ : inputType.getDcpCode());
         }
         return null;
     }

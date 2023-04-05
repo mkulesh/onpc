@@ -30,7 +30,7 @@ public class SetupOperationCommandMsg extends ISCPMessage
 {
     public final static String CODE = "OSD";
 
-    public enum Command implements StringParameterIf
+    public enum Command implements DcpStringParameterIf
     {
         MENU("MENU", "MEN ON", R.string.cmd_description_setup, R.drawable.cmd_setup),
         UP("UP", "CUP", R.string.cmd_description_up, R.drawable.cmd_up),
@@ -63,6 +63,7 @@ public class SetupOperationCommandMsg extends ISCPMessage
             return code;
         }
 
+        @NonNull
         public String getDcpCode()
         {
             return dcpCode;
@@ -129,10 +130,6 @@ public class SetupOperationCommandMsg extends ISCPMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        if (command != null && !isQuery)
-        {
-            return DCP_COMMAND + command.getDcpCode();
-        }
-        return null;
+        return (command != null && !isQuery) ? DCP_COMMAND + command.getDcpCode() : null;
     }
 }

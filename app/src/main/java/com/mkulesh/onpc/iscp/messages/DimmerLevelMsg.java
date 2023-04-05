@@ -29,7 +29,7 @@ public class DimmerLevelMsg extends ISCPMessage
 {
     public final static String CODE = "DIM";
 
-    public enum Level implements StringParameterIf
+    public enum Level implements DcpStringParameterIf
     {
         NONE("N/A", "N/A",R.string.device_dimmer_level_none),
         BRIGHT("00", "BRI", R.string.device_dimmer_level_bright),
@@ -56,6 +56,7 @@ public class DimmerLevelMsg extends ISCPMessage
             return code;
         }
 
+        @NonNull
         public String getDcpCode()
         {
             return dcpCode;
@@ -114,25 +115,15 @@ public class DimmerLevelMsg extends ISCPMessage
     @Nullable
     public static DimmerLevelMsg processDcpMessage(@NonNull String dcpMsg)
     {
-        if (dcpMsg.startsWith(DCP_COMMAND))
-        {
-            final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
-            for (Level level : Level.values())
-            {
-                if (par.equalsIgnoreCase(level.getDcpCode()))
-                {
-                    return new DimmerLevelMsg(level);
-                }
-            }
-        }
-        return null;
+        final Level s = (Level) searchDcpParameter(DCP_COMMAND, dcpMsg, Level.values());
+        return s != null ? new DimmerLevelMsg(s) : null;
     }
 
     @Nullable
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        // A space is needed for "DIM ?" command
+        // A space is needed for this command
         return DCP_COMMAND + " " + (isQuery ? DCP_MSG_REQ : level.getDcpCode());
     }
 }

@@ -40,7 +40,7 @@ public class PresetCommandMsg extends ZonedMessage
 
     public final static int NO_PRESET = -1;
 
-    public enum Command implements StringParameterIf
+    public enum Command implements DcpStringParameterIf
     {
         UP(R.string.preset_command_up, R.drawable.cmd_right),
         DOWN(R.string.preset_command_down, R.drawable.cmd_left);
@@ -58,6 +58,12 @@ public class PresetCommandMsg extends ZonedMessage
         }
 
         public String getCode()
+        {
+            return toString();
+        }
+
+        @NonNull
+        public String getDcpCode()
         {
             return toString();
         }
@@ -203,7 +209,7 @@ public class PresetCommandMsg extends ZonedMessage
         {
             // Only available for main zone
             return DCP_COMMAND + (isQuery ? DCP_MSG_REQ :
-                    (command != null ? command.name() : String.format("%02d", preset)));
+                    (command != null ? command.getDcpCode() : String.format("%02d", preset)));
         }
         return null;
     }
