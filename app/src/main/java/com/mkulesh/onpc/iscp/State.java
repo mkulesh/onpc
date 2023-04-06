@@ -1796,8 +1796,9 @@ public class State implements ConnectionIf
         // List of zones
         if (!msg.getZones().isEmpty())
         {
-            boolean changed = zones.size() != msg.getZones().size();
-            for (int i = 0; i < Math.min(zones.size(), msg.getZones().size()); i++)
+            final int maxZones = isReceiverInformation() ? zones.size() : msg.getZones().size();
+            boolean changed = zones.size() != maxZones;
+            for (int i = 0; i < Math.min(zones.size(), maxZones); i++)
             {
                 if (!zones.get(i).equals(msg.getZones().get(i)))
                 {
@@ -1807,7 +1808,11 @@ public class State implements ConnectionIf
             }
             if (changed)
             {
-                zones = msg.getZones();
+                zones.clear();
+                for (int i = 0; i < maxZones; i++)
+                {
+                    zones.add(msg.getZones().get(i));
+                }
                 for (ReceiverInformationMsg.Zone s : zones)
                 {
                     Logging.info(this, "    DCP Zone " + s);

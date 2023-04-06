@@ -264,22 +264,14 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     {
         Logging.info(this, "started: " + this);
 
-        messageChannel.sendMessage(
-                new EISCPMessage(JacketArtMsg.CODE,
-                        useBmpImages ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
-
-        final String[] powerStateQueries = new String[]{
-                ReceiverInformationMsg.CODE,
-                MultiroomDeviceInformationMsg.CODE,
-                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
-                FriendlyNameMsg.CODE,
-                FirmwareUpdateMsg.CODE,
-                GoogleCastVersionMsg.CODE,
-                PrivacyPolicyStatusMsg.CODE,
-                ListeningModeMsg.CODE
-        };
-
-        sendQueries(powerStateQueries, "requesting power state...");
+        if (state.protoType == Utils.ProtoType.ISCP)
+        {
+            requestInitialIscpState();
+        }
+        else
+        {
+            requestInitialDcpState();
+        }
 
         final BlockingQueue<Timer> timerQueue = new ArrayBlockingQueue<>(1, true);
         skipNextTimeMsg.set(0);
@@ -374,6 +366,43 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         Logging.info(this, "stopped: " + this);
         stateListener.onManagerStopped();
         return null;
+    }
+
+    private void requestInitialIscpState()
+    {
+        messageChannel.sendMessage(
+                new EISCPMessage(JacketArtMsg.CODE,
+                        useBmpImages ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
+
+        final String[] powerStateQueries = new String[]{
+                ReceiverInformationMsg.CODE,
+                MultiroomDeviceInformationMsg.CODE,
+                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
+                FriendlyNameMsg.CODE,
+                FirmwareUpdateMsg.CODE,
+                GoogleCastVersionMsg.CODE,
+                PrivacyPolicyStatusMsg.CODE,
+                ListeningModeMsg.CODE
+        };
+        sendQueries(powerStateQueries, "requesting power state...");
+    }
+
+    private void requestInitialDcpState()
+    {
+        try
+        {
+            inputQueue.add(new ReceiverInformationMsg(messageChannel.getHost()));
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "Cannot load DCP receiver information: " + ex.getLocalizedMessage());
+        }
+        final String[] powerStateQueries = new String[]{
+                ReceiverInformationMsg.CODE,
+                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
+                ListeningModeMsg.CODE
+        };
+        sendQueries(powerStateQueries, "requesting DCP power state...");
     }
 
     @Override
@@ -596,7 +625,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             return changed != State.ChangeType.NONE;
         }
 
-        if (msg instanceof PowerStatusMsg && changed != State.ChangeType.NONE)
+        // no further message handling, if no changes are detected
+        if (changed == State.ChangeType.NONE)
+        {
+            return false;
+        }
+
+        if (msg instanceof PowerStatusMsg)
         {
             final String toneCommand = state.getActiveZone() < ToneCommandMsg.ZONE_COMMANDS.length ?
                     ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
@@ -617,7 +652,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             sendQueries(playStateQueries, "DCP: requesting play state...");
         }
 
-        if (msg instanceof InputSelectorMsg && changed != State.ChangeType.NONE)
+        if (msg instanceof InputSelectorMsg)
         {
             if (((InputSelectorMsg)msg).getInputType() == InputSelectorMsg.InputType.DCP_TUNER)
             {

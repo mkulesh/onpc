@@ -23,10 +23,7 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.zip.GZIPInputStream;
 
 import androidx.annotation.NonNull;
 
@@ -160,60 +157,22 @@ public class JacketArtMsg extends ISCPMessage
     public Bitmap loadFromUrl()
     {
         Bitmap cover = null;
-        try
+        final byte[] bytes = Utils.getUrlData(url);
+        if (bytes != null)
         {
-            Logging.info(this, "loading image from URL: " + url.toString());
-
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.setRequestProperty("Accept-Encoding", "gzip");
-            InputStream inputStream;
-            if ("gzip".equals(urlConnection.getContentEncoding()))
-            {
-                inputStream = new GZIPInputStream(urlConnection.getInputStream());
-            }
-            else
-            {
-                inputStream = urlConnection.getInputStream();
-            }
-            byte[] bytes = Utils.streamToByteArray(inputStream);
-            final int offset = getUrlHeaderLength(bytes);
+            final int offset = Utils.getUrlHeaderLength(bytes);
             final int length = bytes.length - offset;
             if (length > 0)
             {
-                Logging.info(this, "Cover image size length=" + length);
+                Logging.info(this, "Cover image size=" + length);
                 cover = BitmapFactory.decodeByteArray(bytes, offset, length);
+                if (cover == null)
+                {
+                    Logging.info(this, "can not open image: BitmapFactory.decodeByteArray error");
+                }
             }
-        }
-        catch (Exception e)
-        {
-            Logging.info(this, "can not open image: " + e.getLocalizedMessage());
-        }
-        if (cover == null)
-        {
-            Logging.info(this, "can not open image: BitmapFactory.decodeStream error");
         }
         return cover;
-    }
-
-    private int getUrlHeaderLength(byte[] buffer)
-    {
-        int length = 0;
-        while (true)
-        {
-            String str = new String(buffer, length, buffer.length - length, Utils.UTF_8);
-            final int lf = str.indexOf(EISCPMessage.LF);
-            if (str.startsWith("Content-") && lf > 0)
-            {
-                length += lf;
-                while (buffer[length] == EISCPMessage.LF || buffer[length] == EISCPMessage.CR)
-                {
-                    length++;
-                }
-                continue;
-            }
-            break;
-        }
-        return length;
     }
 
     public Bitmap loadFromBuffer(ByteArrayOutputStream coverBuffer)

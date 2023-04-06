@@ -26,6 +26,7 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -427,7 +428,8 @@ public class ReceiverInformationMsg extends ISCPMessage
         }
     }
 
-    private String deviceId;
+    private final Utils.ProtoType protoType;
+    private String deviceId = "";
     private final HashMap<String, String> deviceProperties = new HashMap<>();
     private final HashMap<String, NetworkService> networkServices = new HashMap<>();
     private final List<Zone> zones = new ArrayList<>();
@@ -439,7 +441,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     public ReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
-        deviceId = "";
+        protoType = Utils.ProtoType.ISCP;
     }
 
     @NonNull
@@ -516,6 +518,58 @@ public class ReceiverInformationMsg extends ISCPMessage
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document doc = builder.parse(stream);
+
+        if (protoType == Utils.ProtoType.ISCP)
+        {
+            parseIscpXml(doc);
+        }
+        else
+        {
+            parseDcpXml(doc);
+        }
+
+        if (showInfo)
+        {
+            Logging.info(this, "    deviceId=" + deviceId);
+            for (Map.Entry<String, String> p : deviceProperties.entrySet())
+            {
+                Logging.info(this, "    Property: " + p.getKey() + "=" + p.getValue());
+            }
+            for (NetworkService s : networkServices.values())
+            {
+                Logging.info(this, "    Service " + s.toString());
+            }
+            for (Zone s : zones)
+            {
+                Logging.info(this, "    Zone " + s.toString());
+            }
+            for (Selector s : deviceSelectors)
+            {
+                Logging.info(this, "    Selector " + s.toString());
+            }
+            for (Preset p : presetList)
+            {
+                Logging.info(this, "    Preset " + p.toString());
+            }
+            for (String s : controlList)
+            {
+                Logging.info(this, "    Control: " + s);
+            }
+            for (ToneControl s : toneControls.values())
+            {
+                Logging.info(this, "    Tone control " + s.toString());
+            }
+        }
+        else
+        {
+            Logging.info(this, "receiver information parsed");
+        }
+
+        stream.close();
+    }
+
+    private void parseIscpXml(final Document doc)
+    {
         for (Node object = doc.getDocumentElement(); object != null; object = object.getNextSibling())
         {
             if (object instanceof Element)
@@ -622,50 +676,136 @@ public class ReceiverInformationMsg extends ISCPMessage
                 }
             }
         }
-
-        if (showInfo)
-        {
-            Logging.info(this, "    deviceId=" + deviceId);
-            for (Map.Entry<String, String> p : deviceProperties.entrySet())
-            {
-                Logging.info(this, "    Property: " + p.getKey() + "=" + p.getValue());
-            }
-            for (NetworkService s : networkServices.values())
-            {
-                Logging.info(this, "    Service " + s.toString());
-            }
-            for (Zone s : zones)
-            {
-                Logging.info(this, "    Zone " + s.toString());
-            }
-            for (Selector s : deviceSelectors)
-            {
-                Logging.info(this, "    Selector " + s.toString());
-            }
-            for (Preset p : presetList)
-            {
-                Logging.info(this, "    Preset " + p.toString());
-            }
-            for (String s : controlList)
-            {
-                Logging.info(this, "    Control: " + s);
-            }
-            for (ToneControl s : toneControls.values())
-            {
-                Logging.info(this, "    Tone control " + s.toString());
-            }
-        }
-        else
-        {
-            Logging.info(this, "receiver information parsed");
-        }
-
-        stream.close();
     }
 
     /*
      * Denon control protocol
      */
+    public ReceiverInformationMsg(final String host) throws Exception
+    {
+        super(0, getDcpXmlData(host));
+        protoType = Utils.ProtoType.DCP;
+        if (data != null)
+        {
+            Logging.info(this, "DCP Receiver information from " + host);
+        }
+    }
+
+    private static String getDcpXmlData(final String host) throws Exception
+    {
+        final byte[] bytes = Utils.getUrlData(new URL(getDcpGoformUrl(host, "Deviceinfo.xml")));
+        if (bytes != null)
+        {
+            final int offset = Utils.getUrlHeaderLength(bytes);
+            final int length = bytes.length - offset;
+            if (length > 0)
+            {
+                String s = new String(Utils.catBuffer(bytes, offset, length), Utils.UTF_8);
+                s = s.replaceAll("\n", "");
+                return s;
+            }
+        }
+        return null;
+    }
+
+    private void parseDcpXml(final Document doc)
+    {
+        for (Node object = doc.getDocumentElement(); object != null; object = object.getNextSibling())
+        {
+            if (object instanceof Element)
+            {
+                final Element deviceInfo = (Element) object;
+                if (!"Device_Info".equalsIgnoreCase(deviceInfo.getTagName()))
+                {
+                    continue;
+                }
+
+                for (Node prop = deviceInfo.getFirstChild(); prop != null; prop = prop.getNextSibling())
+                {
+                    if (!(prop instanceof Element))
+                    {
+                        continue;
+                    }
+                    final Element en = (Element) prop;
+                    if (en.getChildNodes().getLength() == 1)
+                    {
+                        parseDcpDeviceProperties(en);
+                    }
+                    else if ("DeviceZoneCapabilities".equalsIgnoreCase(en.getTagName()))
+                    {
+                        parseDcpZoneCapabilities(en);
+                    }
+                }
+            }
+        }
+    }
+
+    private void parseDcpDeviceProperties(Element en)
+    {
+        final Map<String, String> dcpPropName = new HashMap<>();
+        dcpPropName.put("BrandCode", "brand");
+        dcpPropName.put("CategoryName", "category");
+        dcpPropName.put("ManualModelName", "friendlyname");
+        dcpPropName.put("ModelName", "model");
+        dcpPropName.put("MacAddress", "macaddress");
+
+        final String iscpPropName = dcpPropName.get(en.getTagName());
+        if (iscpPropName != null)
+        {
+            String val = en.getChildNodes().item(0).getNodeValue();
+            if ("model".equalsIgnoreCase(iscpPropName))
+            {
+                deviceId = val;
+            }
+            if ("brand".equalsIgnoreCase(iscpPropName))
+            {
+                val = val.equals("0") ? "Denon" : "Marantz";
+            }
+            deviceProperties.put(iscpPropName, val);
+        }
+    }
+
+    private void parseDcpZoneCapabilities(Element zoneCapabilities)
+    {
+        final List<Element> zones = Utils.getElements(zoneCapabilities, "Zone");
+        final List<Element> volumes = Utils.getElements(zoneCapabilities, "Volume");
+        if (zones.size() == volumes.size() && zones.size() == 1)
+        {
+            String no = null;
+            String maxVolume = null;
+            String step = null;
+            if (zones.get(0).getFirstChild() instanceof Element)
+            {
+                no = ((Element) zones.get(0).getFirstChild()).getChildNodes().item(0).getNodeValue();
+            }
+            for (Node prop = volumes.get(0).getFirstChild(); prop != null; prop = prop.getNextSibling())
+            {
+                if (!(prop instanceof Element))
+                {
+                    continue;
+                }
+                final Element en = (Element) prop;
+                String val = en.getChildNodes().item(0).getNodeValue();
+                if ("MaxValue".equalsIgnoreCase(en.getTagName()))
+                {
+                    maxVolume = val;
+                }
+                if ("StepValue".equalsIgnoreCase(en.getTagName()))
+                {
+                    step = val;
+                }
+            }
+            if (no != null && maxVolume != null && step != null)
+            {
+                final int noInt = Integer.parseInt(no) + 1;
+                final String name = noInt == 1 ? "Main" : "Zone" + noInt;
+                final int stepInt = (int) Float.parseFloat(step);
+                final int maxVolumeInt = (int) Float.parseFloat(maxVolume);
+                this.zones.add(new Zone(String.valueOf(noInt), name, stepInt, maxVolumeInt));
+            }
+        }
+    }
+
     @Nullable
     @Override
     public String buildDcpMsg(boolean isQuery)

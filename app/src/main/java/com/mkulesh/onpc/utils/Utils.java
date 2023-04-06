@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.EISCPMessage;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -43,11 +44,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -122,7 +126,7 @@ public class Utils
     {
         try
         {
-            InputStream stream = new ByteArrayInputStream(data.getBytes(Charset.forName("UTF-8")));
+            InputStream stream = new ByteArrayInputStream(data.getBytes(UTF_8));
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet
             factory.setExpandEntityReferences(false);
@@ -476,5 +480,51 @@ public class Utils
         {
             return false;
         }
+    }
+
+    public static byte[] getUrlData(URL url)
+    {
+        try
+        {
+            Logging.info(url, "loading data from URL: " + url.toString());
+            URLConnection urlConnection = url.openConnection();
+            urlConnection.setRequestProperty("Accept-Encoding", "gzip");
+            InputStream inputStream;
+            if ("gzip".equals(urlConnection.getContentEncoding()))
+            {
+                inputStream = new GZIPInputStream(urlConnection.getInputStream());
+            }
+            else
+            {
+                inputStream = urlConnection.getInputStream();
+            }
+            return streamToByteArray(inputStream);
+        }
+        catch (Exception e)
+        {
+            Logging.info(url, "can not open URL: " + e.getLocalizedMessage());
+            return null;
+        }
+    }
+
+    public static int getUrlHeaderLength(byte[] buffer)
+    {
+        int length = 0;
+        while (true)
+        {
+            String str = new String(buffer, length, buffer.length - length, UTF_8);
+            final int lf = str.indexOf(EISCPMessage.LF);
+            if (str.startsWith("Content-") && lf > 0)
+            {
+                length += lf;
+                while (buffer[length] == EISCPMessage.LF || buffer[length] == EISCPMessage.CR)
+                {
+                    length++;
+                }
+                continue;
+            }
+            break;
+        }
+        return length;
     }
 }
