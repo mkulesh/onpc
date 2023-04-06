@@ -549,7 +549,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 sendQueries(avInfoQueries, "requesting audio/video info...");
                 // Some devices (like TX-8150) does not proved cover image;
                 // we shall specially request it:
-                if (state.getModel().equals("TX-8150"))
+                if (state.getModel().equals("TX-8150") || state.serviceType == ServiceType.SPOTIFY)
                 {
                     messageChannel.sendMessage(
                             new EISCPMessage(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
