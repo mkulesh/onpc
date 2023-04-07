@@ -710,31 +710,22 @@ public class ReceiverInformationMsg extends ISCPMessage
 
     private void parseDcpXml(final Document doc)
     {
-        for (Node object = doc.getDocumentElement(); object != null; object = object.getNextSibling())
+        final Element deviceInfo = Utils.getElement(doc, "Device_Info");
+        if (deviceInfo != null)
         {
-            if (object instanceof Element)
+            for (Element en : Utils.getElements(deviceInfo, null))
             {
-                final Element deviceInfo = (Element) object;
-                if (!"Device_Info".equalsIgnoreCase(deviceInfo.getTagName()))
+                if (en.getChildNodes().getLength() == 1)
                 {
-                    continue;
+                    parseDcpDeviceProperties(en);
                 }
-
-                for (Node prop = deviceInfo.getFirstChild(); prop != null; prop = prop.getNextSibling())
+                else if ("DeviceZoneCapabilities".equalsIgnoreCase(en.getTagName()))
                 {
-                    if (!(prop instanceof Element))
-                    {
-                        continue;
-                    }
-                    final Element en = (Element) prop;
-                    if (en.getChildNodes().getLength() == 1)
-                    {
-                        parseDcpDeviceProperties(en);
-                    }
-                    else if ("DeviceZoneCapabilities".equalsIgnoreCase(en.getTagName()))
-                    {
-                        parseDcpZoneCapabilities(en);
-                    }
+                    parseDcpZoneCapabilities(en);
+                }
+                else if ("DeviceCapabilities".equalsIgnoreCase(en.getTagName()))
+                {
+                    parseDeviceCapabilities(en);
                 }
             }
         }
@@ -753,6 +744,10 @@ public class ReceiverInformationMsg extends ISCPMessage
         if (iscpPropName != null)
         {
             String val = en.getChildNodes().item(0).getNodeValue();
+            if (val == null)
+            {
+                return;
+            }
             if ("model".equalsIgnoreCase(iscpPropName))
             {
                 deviceId = val;
@@ -771,30 +766,9 @@ public class ReceiverInformationMsg extends ISCPMessage
         final List<Element> volumes = Utils.getElements(zoneCapabilities, "Volume");
         if (zones.size() == volumes.size() && zones.size() == 1)
         {
-            String no = null;
-            String maxVolume = null;
-            String step = null;
-            if (zones.get(0).getFirstChild() instanceof Element)
-            {
-                no = ((Element) zones.get(0).getFirstChild()).getChildNodes().item(0).getNodeValue();
-            }
-            for (Node prop = volumes.get(0).getFirstChild(); prop != null; prop = prop.getNextSibling())
-            {
-                if (!(prop instanceof Element))
-                {
-                    continue;
-                }
-                final Element en = (Element) prop;
-                String val = en.getChildNodes().item(0).getNodeValue();
-                if ("MaxValue".equalsIgnoreCase(en.getTagName()))
-                {
-                    maxVolume = val;
-                }
-                if ("StepValue".equalsIgnoreCase(en.getTagName()))
-                {
-                    step = val;
-                }
-            }
+            String no = Utils.getFirstElementValue(zones.get(0), "No", null);
+            String maxVolume = Utils.getFirstElementValue(volumes.get(0), "MaxValue", null);
+            String step = Utils.getFirstElementValue(volumes.get(0), "StepValue", null);
             if (no != null && maxVolume != null && step != null)
             {
                 final int noInt = Integer.parseInt(no) + 1;
@@ -802,6 +776,25 @@ public class ReceiverInformationMsg extends ISCPMessage
                 final int stepInt = (int) Float.parseFloat(step);
                 final int maxVolumeInt = (int) Float.parseFloat(maxVolume);
                 this.zones.add(new Zone(String.valueOf(noInt), name, stepInt, maxVolumeInt));
+            }
+        }
+    }
+
+    private void parseDeviceCapabilities(Element deviceCapabilities)
+    {
+        // Buttons for RC tab
+        controlList.add("Setup");
+        controlList.add("Quick");
+        // Denon-specific capabilities
+        final List<Element> caps = Utils.getElements(deviceCapabilities, "Setup");
+        if (!caps.isEmpty())
+        {
+            for (Element cap : Utils.getElements(caps.get(0), null))
+            {
+                if ("1".equals(Utils.getFirstElementValue(cap, "Control", "0")))
+                {
+                    controlList.add(cap.getTagName());
+                }
             }
         }
     }

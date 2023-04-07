@@ -59,6 +59,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
@@ -196,6 +197,23 @@ public class Utils
             catch (NumberFormatException ex)
             {
                 return defValue;
+            }
+        }
+        return defValue;
+    }
+
+    @Nullable
+    public static String getFirstElementValue(@NonNull Element element, @NonNull String tag, @Nullable String defValue)
+    {
+        for (Node node = element.getFirstChild(); node != null; node = node.getNextSibling())
+        {
+            if (node instanceof Element)
+            {
+                final Element en = (Element) node;
+                if (tag.equalsIgnoreCase(en.getTagName()))
+                {
+                    return en.getChildNodes().item(0).getNodeValue();
+                }
             }
         }
         return defValue;
