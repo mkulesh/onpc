@@ -389,13 +389,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private void requestInitialDcpState()
     {
-        try
+        if (!requestDcpReceiverInfo("8080"))
         {
-            inputQueue.add(new ReceiverInformationMsg(messageChannel.getHost()));
-        }
-        catch (Exception ex)
-        {
-            Logging.info(this, "Cannot load DCP receiver information: " + ex.getLocalizedMessage());
+            // Fallback to the port 80 for older models
+            requestDcpReceiverInfo("80");
         }
         final String[] powerStateQueries = new String[]{
                 ReceiverInformationMsg.CODE,
@@ -403,6 +400,20 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 ListeningModeMsg.CODE
         };
         sendQueries(powerStateQueries, "requesting DCP power state...");
+    }
+
+    private boolean requestDcpReceiverInfo(final String port)
+    {
+        try
+        {
+            inputQueue.add(new ReceiverInformationMsg(messageChannel.getHost(), port));
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "Cannot load DCP receiver information: " + ex.getLocalizedMessage());
+        }
+        return false;
     }
 
     @Override

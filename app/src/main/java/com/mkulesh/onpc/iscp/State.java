@@ -1769,6 +1769,7 @@ public class State implements ConnectionIf
         // Input Selector
         if (msg.getSelector() != null)
         {
+            boolean changed = false;
             if (DcpReceiverInformationMsg.DCP_COMMAND_INPUT_SEL_END.equalsIgnoreCase(msg.getSelector().getId()))
             {
                 firstDcpSelector = true;
@@ -1777,6 +1778,7 @@ public class State implements ConnectionIf
             {
                 if (firstDcpSelector)
                 {
+                    changed = true;
                     deviceSelectors.clear();
                     for (ReceiverInformationMsg.Selector s : dcpExtSelectors)
                     {
@@ -1787,11 +1789,22 @@ public class State implements ConnectionIf
                     }
                     firstDcpSelector = false;
                 }
-                if (msg.getSelector().isActiveForZone(activeZone))
+                boolean exists = false;
+                for (ReceiverInformationMsg.Selector s : deviceSelectors)
                 {
+                    if (s.getId().equals(msg.getSelector().getId()))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists && msg.getSelector().isActiveForZone(activeZone))
+                {
+                    changed = true;
                     deviceSelectors.add(msg.getSelector());
                 }
             }
+            return changed;
         }
         // List of zones
         if (!msg.getZones().isEmpty())

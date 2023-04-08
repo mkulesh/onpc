@@ -254,9 +254,9 @@ public class ISCPMessage implements ConnectionIf
         return null;
     }
 
-    protected static String getDcpGoformUrl(String host, String s)
+    protected static String getDcpGoformUrl(final String host, final String port, final String s)
     {
-        return "http://" + host + ":8080/goform/" + s;
+        return "http://" + host + ":" + port + "/goform/" + s;
     }
 
 }
