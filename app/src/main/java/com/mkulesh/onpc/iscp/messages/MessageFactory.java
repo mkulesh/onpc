@@ -155,6 +155,9 @@ public class MessageFactory
             return new VideoInformationMsg(raw);
         case SetupOperationCommandMsg.CODE:
             return new SetupOperationCommandMsg(raw);
+        // Denon control protocol
+        case DcpReceiverInformationMsg.CODE:
+            return new DcpReceiverInformationMsg(raw);
         case DcpTunerModeMsg.CODE:
             return new DcpTunerModeMsg(raw);
         case DcpEcoModeMsg.CODE:

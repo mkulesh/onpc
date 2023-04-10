@@ -29,6 +29,7 @@ import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
+import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
@@ -389,17 +390,21 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private void requestInitialDcpState()
     {
-        if (!requestDcpReceiverInfo("8080"))
+        if (requestDcpReceiverInfo("8080"))
         {
-            // Fallback to the port 80 for older models
-            requestDcpReceiverInfo("80");
+            return;
         }
-        final String[] powerStateQueries = new String[]{
-                ReceiverInformationMsg.CODE,
-                PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
-                ListeningModeMsg.CODE
-        };
-        sendQueries(powerStateQueries, "requesting DCP power state...");
+        // Fallback to the port 80 for older models
+        if (!requestDcpReceiverInfo("80"))
+        {
+            // request DcpReceiverInformationMsg here since no ReceiverInformation exists
+            // otherwise it will be requested when ReceiverInformation is processed
+            final String[] powerStateQueries = new String[]{
+                    DcpReceiverInformationMsg.CODE,
+                    PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
+            };
+            sendQueries(powerStateQueries, "requesting DCP default state...");
+        }
     }
 
     private boolean requestDcpReceiverInfo(final String port)
@@ -628,6 +633,15 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         if (changed != State.ChangeType.NONE)
         {
             eventChanges.add(changed);
+        }
+
+        if (msg instanceof ReceiverInformationMsg)
+        {
+            final String[] powerStateQueries = new String[]{
+                    DcpReceiverInformationMsg.CODE,
+                    PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
+            };
+            sendQueries(powerStateQueries, "requesting DCP power state...");
         }
 
         // no further message handling, if power off

@@ -48,7 +48,6 @@ public class ReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "NRI";
     public final static int DEFAULT_ACTIVE_ZONE = 0;
-    public final static int MAIN_ZONE = 0x1;
     public final static int ALL_ZONES = 0xFF;
     public final static int EXT_ZONES = 14; // 1110 - all zones except main
 
@@ -208,6 +207,24 @@ public class ReceiverInformationMsg extends ISCPMessage
             this.zone = zone;
             this.iconId = iconId;
             this.addToQueue = addToQueue;
+        }
+
+        public Selector(final Selector old, final String name)
+        {
+            this.id = old.id;
+            this.name = name;
+            this.zone = old.zone;
+            this.iconId = old.iconId;
+            this.addToQueue = old.addToQueue;
+        }
+
+        public Selector(final Selector old, final int zone)
+        {
+            this.id = old.id;
+            this.name = old.name;
+            this.zone = zone;
+            this.iconId = old.iconId;
+            this.addToQueue = old.addToQueue;
         }
 
         public String getId()
@@ -733,14 +750,14 @@ public class ReceiverInformationMsg extends ISCPMessage
 
     private void parseDcpDeviceProperties(Element en)
     {
-        final Map<String, String> dcpPropName = new HashMap<>();
-        dcpPropName.put("BrandCode", "brand");
-        dcpPropName.put("CategoryName", "category");
-        dcpPropName.put("ManualModelName", "friendlyname");
-        dcpPropName.put("ModelName", "model");
-        dcpPropName.put("MacAddress", "macaddress");
+        final Map<String, String> propNameMap = new HashMap<>();
+        propNameMap.put("BrandCode", "brand");
+        propNameMap.put("CategoryName", "category");
+        propNameMap.put("ManualModelName", "friendlyname");
+        propNameMap.put("ModelName", "model");
+        propNameMap.put("MacAddress", "macaddress");
 
-        final String iscpPropName = dcpPropName.get(en.getTagName());
+        final String iscpPropName = propNameMap.get(en.getTagName());
         if (iscpPropName != null)
         {
             String val = en.getChildNodes().item(0).getNodeValue();
@@ -764,7 +781,12 @@ public class ReceiverInformationMsg extends ISCPMessage
     {
         final List<Element> zones = Utils.getElements(zoneCapabilities, "Zone");
         final List<Element> volumes = Utils.getElements(zoneCapabilities, "Volume");
-        if (zones.size() == volumes.size() && zones.size() == 1)
+        final List<Element> input = Utils.getElements(zoneCapabilities, "InputSource");
+        if (zones.size() != 1)
+        {
+            return;
+        }
+        if (zones.size() == volumes.size())
         {
             String no = Utils.getFirstElementValue(zones.get(0), "No", null);
             String maxVolume = Utils.getFirstElementValue(volumes.get(0), "MaxValue", null);
@@ -777,6 +799,84 @@ public class ReceiverInformationMsg extends ISCPMessage
                 final int maxVolumeInt = (int) Float.parseFloat(maxVolume);
                 this.zones.add(new Zone(String.valueOf(noInt), name, stepInt, maxVolumeInt));
             }
+        }
+        if (zones.size() == input.size())
+        {
+            String no = Utils.getFirstElementValue(zones.get(0), "No", null);
+            final String ctrl = Utils.getFirstElementValue(input.get(0), "Control", "0");
+            final List<Element> list = Utils.getElements(input.get(0), "List");
+            if (no != null && ctrl != null && ctrl.equals("1") && list.size() == 1)
+            {
+                final List<Element> sources = Utils.getElements(list.get(0), "Source");
+                for (Element source : sources)
+                {
+                    parceDcpInput(Integer.parseInt(no),
+                            Utils.getFirstElementValue(source, "FuncName", null),
+                            Utils.getFirstElementValue(source, "DefaultName", null),
+                            Utils.getFirstElementValue(source, "IconId", ""));
+                }
+            }
+        }
+    }
+
+    private void parceDcpInput(int zone, @Nullable String name, @Nullable String defName, @Nullable String iconId)
+    {
+        if (name == null || iconId == null)
+        {
+            return;
+        }
+        final Map<String, InputSelectorMsg.InputType> funcNameMap = new HashMap<>();
+        funcNameMap.put("PHONO", InputSelectorMsg.InputType.DCP_PHONO);
+        funcNameMap.put("CD", InputSelectorMsg.InputType.DCP_CD);
+        funcNameMap.put("DVD", InputSelectorMsg.InputType.DCP_DVD);
+        funcNameMap.put("BLU-RAY", InputSelectorMsg.InputType.DCP_BD);
+        funcNameMap.put("TV AUDIO", InputSelectorMsg.InputType.DCP_TV);
+        funcNameMap.put("CBL/SAT", InputSelectorMsg.InputType.DCP_SAT_CBL);
+        funcNameMap.put("MEDIA PLAYER", InputSelectorMsg.InputType.DCP_MPLAY);
+        funcNameMap.put("GAME", InputSelectorMsg.InputType.DCP_GAME);
+        funcNameMap.put("TUNER", InputSelectorMsg.InputType.DCP_TUNER);
+        funcNameMap.put("AUX1", InputSelectorMsg.InputType.DCP_AUX1);
+        funcNameMap.put("AUX2", InputSelectorMsg.InputType.DCP_AUX2);
+        funcNameMap.put("AUX3", InputSelectorMsg.InputType.DCP_AUX3);
+        funcNameMap.put("AUX4", InputSelectorMsg.InputType.DCP_AUX4);
+        funcNameMap.put("AUX5", InputSelectorMsg.InputType.DCP_AUX5);
+        funcNameMap.put("AUX6", InputSelectorMsg.InputType.DCP_AUX6);
+        funcNameMap.put("AUX7", InputSelectorMsg.InputType.DCP_AUX7);
+        funcNameMap.put("NETWORK", InputSelectorMsg.InputType.DCP_NET);
+        funcNameMap.put("BLUETOOTH", InputSelectorMsg.InputType.DCP_BT);
+        funcNameMap.put("SOURCE", InputSelectorMsg.InputType.DCP_SOURCE);
+        final InputSelectorMsg.InputType inputType = funcNameMap.get(name.toUpperCase());
+        if (inputType != null)
+        {
+            Selector oldSelector = null;
+            for (Selector s : this.deviceSelectors)
+            {
+                if (s.getId().equalsIgnoreCase(inputType.getCode()))
+                {
+                    oldSelector = s;
+                }
+            }
+            Selector newSelector;
+            if (oldSelector == null)
+            {
+                // Add new selector
+                newSelector = new Selector(
+                        inputType.getCode(),
+                        defName != null ? defName : name,
+                        (int) Math.pow(2, zone), iconId, false);
+            }
+            else
+            {
+                // Update zone of the existing selector
+                newSelector = new Selector(
+                        oldSelector, oldSelector.zone + (int) Math.pow(2, zone));
+                this.deviceSelectors.remove(oldSelector);
+            }
+            this.deviceSelectors.add(newSelector);
+        }
+        else
+        {
+            Logging.info(this, "Input source " + name + " for zone " + zone + " is not implemented");
         }
     }
 
@@ -797,12 +897,5 @@ public class ReceiverInformationMsg extends ISCPMessage
                 }
             }
         }
-    }
-
-    @Nullable
-    @Override
-    public String buildDcpMsg(boolean isQuery)
-    {
-        return "SSFUN ?" + DCP_MSG_SEP + "OPTPN ?";
     }
 }

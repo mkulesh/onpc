@@ -119,7 +119,6 @@ public class State implements ConnectionIf
     private final int activeZone;
     private List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     private final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
-    private final List<ReceiverInformationMsg.Selector> dcpExtSelectors = new ArrayList<>();
     private Set<String> controlList = new HashSet<>();
     private HashMap<String, ReceiverInformationMsg.ToneControl> toneControls = new HashMap<>();
 
@@ -394,22 +393,6 @@ public class State implements ConnectionIf
                     deviceSelectors.add(s);
                 }
             }
-        }
-        // Denon extended selectors (NET + SOURCE)
-        {
-            dcpExtSelectors.clear();
-            dcpExtSelectors.add(new ReceiverInformationMsg.Selector(
-                    InputSelectorMsg.InputType.DCP_SOURCE.getCode(),
-                    context.getString(InputSelectorMsg.InputType.DCP_SOURCE.getDescriptionId()),
-                    ReceiverInformationMsg.EXT_ZONES, "", false));
-            dcpExtSelectors.add(new ReceiverInformationMsg.Selector(
-                    InputSelectorMsg.InputType.DCP_NET.getCode(),
-                    context.getString(InputSelectorMsg.InputType.DCP_NET.getDescriptionId()),
-                    ReceiverInformationMsg.ALL_ZONES, "", false));
-            dcpExtSelectors.add(new ReceiverInformationMsg.Selector(
-                    InputSelectorMsg.InputType.DCP_TUNER.getCode(),
-                    context.getString(InputSelectorMsg.InputType.DCP_TUNER.getDescriptionId()),
-                    ReceiverInformationMsg.MAIN_ZONE, "", false));
         }
         // Add default bass and treble limits
         toneControls.clear();
@@ -1762,8 +1745,6 @@ public class State implements ConnectionIf
     }
 
     // Denon-specific messages
-    private boolean firstDcpSelector = true;
-
     private boolean process(DcpReceiverInformationMsg msg)
     {
         // Input Selector
@@ -1772,36 +1753,32 @@ public class State implements ConnectionIf
             boolean changed = false;
             if (DcpReceiverInformationMsg.DCP_COMMAND_INPUT_SEL_END.equalsIgnoreCase(msg.getSelector().getId()))
             {
-                firstDcpSelector = true;
+                return false;
             }
             else synchronized (deviceSelectors)
             {
-                if (firstDcpSelector)
-                {
-                    changed = true;
-                    deviceSelectors.clear();
-                    for (ReceiverInformationMsg.Selector s : dcpExtSelectors)
-                    {
-                        if (s.isActiveForZone(activeZone))
-                        {
-                            deviceSelectors.add(s);
-                        }
-                    }
-                    firstDcpSelector = false;
-                }
-                boolean exists = false;
+                ReceiverInformationMsg.Selector oldSelector = null;
                 for (ReceiverInformationMsg.Selector s : deviceSelectors)
                 {
                     if (s.getId().equals(msg.getSelector().getId()))
                     {
-                        exists = true;
+                        oldSelector = s;
                         break;
                     }
                 }
-                if (!exists && msg.getSelector().isActiveForZone(activeZone))
+                if (oldSelector == null)
                 {
+                    Logging.info(this, "    Received friendly name for not configured selector. Ignored.");
+                }
+                else
+                {
+                    final ReceiverInformationMsg.Selector newSelector =
+                            new ReceiverInformationMsg.Selector(
+                                    oldSelector, msg.getSelector().getName());
+                    Logging.info(this, "    Update selector " + newSelector);
+                    deviceSelectors.remove(oldSelector);
+                    deviceSelectors.add(newSelector);
                     changed = true;
-                    deviceSelectors.add(msg.getSelector());
                 }
             }
             return changed;

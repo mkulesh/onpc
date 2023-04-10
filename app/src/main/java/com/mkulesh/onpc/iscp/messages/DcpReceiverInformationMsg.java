@@ -14,6 +14,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -57,6 +58,11 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     private ReceiverInformationMsg.ToneControl toneControl;
 
     private ReceiverInformationMsg.Preset preset;
+
+    DcpReceiverInformationMsg(EISCPMessage raw) throws Exception
+    {
+        super(raw);
+    }
 
     public DcpReceiverInformationMsg(final ReceiverInformationMsg.Selector selector)
     {
@@ -237,5 +243,12 @@ public class DcpReceiverInformationMsg extends ISCPMessage
             Logging.info(DcpReceiverInformationMsg.class, "Unable to parse max. volume level " + par);
             return null;
         }
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return DCP_COMMAND_INPUT_SEL + " ?" + DCP_MSG_SEP + DCP_COMMAND_PRESET + " ?";
     }
 }
