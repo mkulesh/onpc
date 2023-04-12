@@ -447,10 +447,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 final TextView album = rootView.findViewById(R.id.tv_album);
                 album.setText(presetInfo);
                 final String stationInfo = state.isDab() || state.isFm() ? state.stationName : "";
-                if (!stationInfo.equals(presetInfo))
-                {
-                    title.setText(stationInfo);
-                }
+                title.setText(!stationInfo.equals(presetInfo) ? stationInfo : "");
                 format.setText(String.format(" %s", state.getFrequencyInfo(activity)));
             }
             else
