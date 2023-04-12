@@ -131,6 +131,10 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         Logging.info(this, "started " + getHostAndPort() + ":" + this);
 
         ByteBuffer buffer = ByteBuffer.allocate(SOCKET_BUFFER);
+        Long lastSendTime = null;
+        final long DCP_SEND_DELAY = 75; // Send the COMMAND in 50ms or more intervals.
+        final ArrayList<byte[]> dcpOutputBuffer = new ArrayList<>();
+
         while (true)
         {
             try
@@ -172,10 +176,10 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
                 }
 
                 // process output messages
-                EISCPMessage m = outputQueue.poll();
-                if (m != null && getProtoType() == Utils.ProtoType.ISCP)
+                if (getProtoType() == Utils.ProtoType.ISCP)
                 {
-                    final byte[] bytes = m.getBytes();
+                    final EISCPMessage m = outputQueue.poll();
+                    final byte[] bytes = m != null ? m.getBytes() : null;
                     if (bytes != null)
                     {
                         final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
@@ -183,13 +187,24 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
                         socket.write(messageBuffer);
                     }
                 }
-                if (m != null && getProtoType() == Utils.ProtoType.DCP)
+                if (getProtoType() == Utils.ProtoType.DCP)
                 {
-                    final ArrayList<byte[]> toSend = dcpMessage.convertOutputMsg(m, getHostAndPort());
-                    for (byte[] bytes : toSend)
+                    // DCP documentation: Send the COMMAND in 50ms or more intervals.
+                    long currTime = Calendar.getInstance().getTimeInMillis();
+                    if (lastSendTime == null || currTime - lastSendTime >= DCP_SEND_DELAY)
                     {
-                        final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
-                        socket.write(messageBuffer);
+                        if (!dcpOutputBuffer.isEmpty())
+                        {
+                            final byte[] bytes = dcpOutputBuffer.remove(0);
+                            final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
+                            socket.write(messageBuffer);
+                            lastSendTime = currTime;
+                        }
+                        else
+                        {
+                            final EISCPMessage m = outputQueue.poll();
+                            dcpOutputBuffer.addAll(dcpMessage.convertOutputMsg(m, getHostAndPort()));
+                        }
                     }
                 }
             }

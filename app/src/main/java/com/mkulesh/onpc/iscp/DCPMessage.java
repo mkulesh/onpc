@@ -75,9 +75,13 @@ public class DCPMessage
     }
 
     @NonNull
-    public ArrayList<byte[]> convertOutputMsg(EISCPMessage raw, final String dest)
+    public ArrayList<byte[]> convertOutputMsg(@Nullable EISCPMessage raw, final String dest)
     {
         ArrayList<byte[]> retValue = new ArrayList<>();
+        if (raw == null)
+        {
+            return retValue;
+        }
         try
         {
             final String toSend = MessageFactory.create(raw).buildDcpMsg(raw.isQuery());
