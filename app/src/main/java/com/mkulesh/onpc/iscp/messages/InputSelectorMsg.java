@@ -19,6 +19,9 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -218,6 +221,12 @@ public class InputSelectorMsg extends ZonedMessage
      * Denon control protocol
      */
     private final static String[] DCP_COMMANDS = new String[]{ "SI", "Z2", "Z3" };
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Arrays.asList(DCP_COMMANDS));
+    }
 
     @Nullable
     public static InputSelectorMsg processDcpMessage(@NonNull String dcpMsg)

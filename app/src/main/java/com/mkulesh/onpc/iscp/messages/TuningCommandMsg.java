@@ -19,6 +19,9 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -150,6 +153,12 @@ public class TuningCommandMsg extends ZonedMessage
      */
     private final static String DCP_COMMAND_FM = "TFAN";
     private final static String DCP_COMMAND_DAB = "DAFRQ";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Arrays.asList(DCP_COMMAND_FM, DCP_COMMAND_DAB));
+    }
 
     @Nullable
     public static TuningCommandMsg processDcpMessage(@NonNull String dcpMsg)

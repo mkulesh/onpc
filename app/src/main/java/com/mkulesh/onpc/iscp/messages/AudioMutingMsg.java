@@ -18,6 +18,9 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -126,6 +129,12 @@ public class AudioMutingMsg extends ZonedMessage
      * Denon control protocol
      */
     private final static String[] DCP_COMMANDS = new String[]{ "MU", "Z2MU", "Z3MU" };
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Arrays.asList(DCP_COMMANDS));
+    }
 
     @Nullable
     public static AudioMutingMsg processDcpMessage(@NonNull String dcpMsg)

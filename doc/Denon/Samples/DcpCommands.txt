@@ -34,6 +34,8 @@ SSSOD END from 192.168.1.82:23, size=9B, remaining=10B -> Ignored
 // Main zone volume limit
 SSVCTZMALIM 060
 
+// Firmware version
+SSINFFRM ?
 
 // TUNER presets
 OPTPN ?

@@ -34,6 +34,8 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,12 +45,37 @@ public class DCPMessage
     public final static int CR = 0x0D;
 
     private final ArrayList<ISCPMessage> messages = new ArrayList<>();
+    private final Set<String> acceptedCodes = new HashSet<>();
 
-    @NonNull
-    public ArrayList<ISCPMessage> convertInputMsg(@NonNull String dcpMsg)
+    public void prepare()
     {
-        messages.clear();
+        acceptedCodes.addAll(DcpReceiverInformationMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(PowerStatusMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(InputSelectorMsg.getAcceptedDcpCodes());
 
+        // Tone control
+        acceptedCodes.addAll(MasterVolumeMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(ToneCommandMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(AudioMutingMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(ListeningModeMsg.getAcceptedDcpCodes());
+
+        // Tuner
+        acceptedCodes.addAll(DcpTunerModeMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(TuningCommandMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(RadioStationNameMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(PresetCommandMsg.getAcceptedDcpCodes());
+
+        // Settings
+        acceptedCodes.addAll(DimmerLevelMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(SleepSetCommandMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(DcpEcoModeMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(DcpAudioRestorerMsg.getAcceptedDcpCodes());
+
+        Logging.info(this, "Accepted DCP codes: " + acceptedCodes);
+    }
+
+    private void convertSingleMsg(@NonNull String dcpMsg)
+    {
         addISCPMsg(DcpReceiverInformationMsg.processDcpMessage(dcpMsg));
         addISCPMsg(PowerStatusMsg.processDcpMessage(dcpMsg));
         addISCPMsg(InputSelectorMsg.processDcpMessage(dcpMsg));
@@ -70,7 +97,47 @@ public class DCPMessage
         addISCPMsg(SleepSetCommandMsg.processDcpMessage(dcpMsg));
         addISCPMsg(DcpEcoModeMsg.processDcpMessage(dcpMsg));
         addISCPMsg(DcpAudioRestorerMsg.processDcpMessage(dcpMsg));
+    }
 
+    @NonNull
+    public ArrayList<ISCPMessage> convertInputMsg(@NonNull String dcpMsg)
+    {
+        messages.clear();
+
+        // Process corner case: OPTPN has some time no end of message symbol
+        // and, therefore, some messages can be joined in one string.
+        // We need to split it before processing
+        int startIndex = dcpMsg.length();
+        while (true)
+        {
+            int maxIndex = 0;
+            for (String code : acceptedCodes)
+            {
+                maxIndex = Math.max(maxIndex, dcpMsg.lastIndexOf(code, startIndex));
+            }
+
+            if (maxIndex > 0)
+            {
+                Logging.info(this, "DCP warning: detected message in the middle: " + dcpMsg + ", start index=" + maxIndex);
+                final String first = dcpMsg.substring(0, maxIndex);
+                final String second = dcpMsg.substring(maxIndex);
+                final int oldSize = messages.size();
+                convertSingleMsg(second);
+                if (oldSize != messages.size())
+                {
+                    dcpMsg = first;
+                    Logging.info(this, "DCP warning: split DCP message: " + first + "/" + second);
+                }
+                else
+                {
+                    startIndex = maxIndex - 1;
+                }
+                continue;
+            }
+            break;
+        }
+
+        convertSingleMsg(dcpMsg);
         return messages;
     }
 
@@ -113,7 +180,14 @@ public class DCPMessage
     {
         if (msg != null)
         {
-            messages.add(msg);
+            if (messages.isEmpty())
+            {
+                messages.add(msg);
+            }
+            else
+            {
+                messages.add(0, msg);
+            }
         }
     }
 }

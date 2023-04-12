@@ -17,6 +17,9 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -57,6 +60,12 @@ public class RadioStationNameMsg extends ISCPMessage
     private final static String DCP_COMMAND_FM = "TFANNAME";
     private final static String DCP_COMMAND_DAB = "DA";
     private final static String DCP_COMMAND_DAB_EXT = "STN";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Arrays.asList(DCP_COMMAND_FM, DCP_COMMAND_DAB + DCP_COMMAND_DAB_EXT));
+    }
 
     @Nullable
     public static RadioStationNameMsg processDcpMessage(@NonNull String dcpMsg)

@@ -21,6 +21,9 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 import com.mkulesh.onpc.utils.Logging;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -174,6 +177,12 @@ public class PresetCommandMsg extends ZonedMessage
      */
     private final static String DCP_COMMAND = "TPAN";
     private final static String DCP_COMMAND_OFF = "OFF";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Collections.singletonList(DCP_COMMAND));
+    }
 
     public static PresetCommandMsg processDcpMessage(@NonNull String dcpMsg)
     {

@@ -17,6 +17,9 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -106,6 +109,12 @@ public class PowerStatusMsg extends ZonedMessage
      * Denon control protocol
      */
     private final static String[] DCP_COMMANDS = new String[]{ "ZM", "Z2", "Z3" };
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Arrays.asList(DCP_COMMANDS));
+    }
 
     @Nullable
     public static PowerStatusMsg processDcpMessage(@NonNull String dcpMsg)

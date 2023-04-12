@@ -18,6 +18,9 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -29,6 +32,12 @@ public class DcpEcoModeMsg extends ISCPMessage
 {
     public final static String CODE = "D03";
     private final static String DCP_COMMAND = "ECO";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Collections.singletonList(DCP_COMMAND));
+    }
 
     public enum Status implements DcpStringParameterIf
     {

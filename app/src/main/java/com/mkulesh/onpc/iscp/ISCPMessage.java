@@ -17,6 +17,8 @@ package com.mkulesh.onpc.iscp;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -222,6 +224,12 @@ public class ISCPMessage implements ConnectionIf
      */
     protected final static String DCP_MSG_SEP = "==>>";
     protected final static String DCP_MSG_REQ = "?";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>();
+    }
 
     @Nullable
     public String buildDcpMsg(boolean isQuery)

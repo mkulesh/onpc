@@ -18,6 +18,9 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -233,6 +236,12 @@ public class ListeningModeMsg extends ISCPMessage
      * Denon control protocol
      */
     private final static String DCP_COMMAND = "MS";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Collections.singletonList(DCP_COMMAND));
+    }
 
     @Nullable
     public static ListeningModeMsg processDcpMessage(@NonNull String dcpMsg)

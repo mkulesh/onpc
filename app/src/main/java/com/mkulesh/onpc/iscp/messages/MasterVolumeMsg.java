@@ -21,6 +21,8 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -166,6 +168,12 @@ public class MasterVolumeMsg extends ZonedMessage
      * Denon control protocol
      */
     private final static String[] DCP_COMMANDS = new String[]{ "MV", "Z2", "Z3" };
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Arrays.asList(DCP_COMMANDS));
+    }
 
     public static MasterVolumeMsg processDcpMessage(@NonNull String dcpMsg)
     {

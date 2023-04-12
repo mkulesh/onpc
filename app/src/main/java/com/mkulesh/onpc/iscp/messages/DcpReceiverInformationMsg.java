@@ -21,6 +21,7 @@ import com.mkulesh.onpc.utils.Utils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,16 @@ public class DcpReceiverInformationMsg extends ISCPMessage
 
     // Radio presets
     public final static String DCP_COMMAND_PRESET = "OPTPN";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        final ArrayList<String> out = new ArrayList<>(Arrays.asList(
+                DCP_COMMAND_INPUT_SEL, DCP_COMMAND_MAXVOL, DCP_COMMAND_ALIMIT, DCP_COMMAND_PRESET));
+        out.addAll(Arrays.asList(DCP_COMMANDS_BASS));
+        out.addAll(Arrays.asList(DCP_COMMANDS_TREBLE));
+        return out;
+    }
 
     private ReceiverInformationMsg.Selector selector = null;
     private int maxVolume = NO_LEVEL;

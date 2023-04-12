@@ -18,6 +18,7 @@ import android.os.StrictMode;
 import android.widget.Toast;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.utils.AppTask;
@@ -131,9 +132,15 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         Logging.info(this, "started " + getHostAndPort() + ":" + this);
 
         ByteBuffer buffer = ByteBuffer.allocate(SOCKET_BUFFER);
+
+        // Denon control protocol
         Long lastSendTime = null;
         final long DCP_SEND_DELAY = 75; // Send the COMMAND in 50ms or more intervals.
         final ArrayList<byte[]> dcpOutputBuffer = new ArrayList<>();
+        if (getProtoType() == Utils.ProtoType.DCP)
+        {
+            dcpMessage.prepare();
+        }
 
         while (true)
         {
@@ -409,7 +416,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         {
             final String logMsg = new String(bytes, Utils.UTF_8);
             Logging.info(this, "<< DCP warning: end of message not found: " + logMsg);
-            if (logMsg.startsWith("OPTPN"))
+            if (logMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMAND_PRESET))
             {
                 // A corner case: OPTPN has some time no end of message symbol
                 expectedSize = logMsg.length();
