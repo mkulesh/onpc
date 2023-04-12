@@ -86,6 +86,16 @@ public class BroadcastResponseMsg extends ISCPMessage
         // all other fields still be null
     }
 
+    public BroadcastResponseMsg(@NonNull final String host, final int port,
+                                @NonNull final String model)
+    {
+        super(0, null);
+        this.host = host;
+        this.port = port;
+        this.model = model;
+        // all other fields still be null
+    }
+
     @NonNull
     @Override
     public String toString()

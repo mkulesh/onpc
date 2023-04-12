@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 {
     public final static int ISCP_PORT = 60128;
+    public final static int DCP_PORT = 1900;
     private final static int TIMEOUT = 3000;
 
     // Connection state
@@ -110,24 +111,24 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
         try
         {
-            final InetAddress target = InetAddress.getByName("255.255.255.255");
-
-            final DatagramSocket socket = new DatagramSocket(null);
-            socket.setReuseAddress(true);
-            socket.setBroadcast(true);
-            socket.setSoTimeout(500);
-            socket.bind(new InetSocketAddress(ISCP_PORT));
+            final DatagramSocket iscpSocket = prepareSocket(ISCP_PORT);
+            final DatagramSocket dcpSocket = prepareSocket(DCP_PORT);
 
             while (!isStopped())
             {
-                request(socket, target, models[modelId]);
+                requestIscp(iscpSocket, models[modelId]);
                 modelId++;
                 if (modelId > 1)
                 {
                     modelId = 0;
                 }
+                if (modelId == 0)
+                {
+                    requestDcp(dcpSocket);
+                }
             }
-            socket.close();
+            iscpSocket.close();
+            dcpSocket.close();
         }
         catch (Exception e)
         {
@@ -136,6 +137,16 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
         Logging.info(this, "stopped");
         return null;
+    }
+
+    private DatagramSocket prepareSocket(int port) throws Exception
+    {
+        final DatagramSocket s = new DatagramSocket(null);
+        s.setReuseAddress(true);
+        s.setBroadcast(true);
+        s.setSoTimeout(500);
+        s.bind(new InetSocketAddress(port));
+        return s;
     }
 
     private EISCPMessage convertResponse(byte[] response)
@@ -158,13 +169,14 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
     }
 
-    private void request(DatagramSocket socket, final InetAddress target, final Character modelCategoryId)
+    private void requestIscp(DatagramSocket socket, final Character modelCategoryId)
     {
         final EISCPMessage m = new EISCPMessage(modelCategoryId, "ECN", "QSTN");
         final byte[] bytes = m.getBytes();
 
         try
         {
+            final InetAddress target = InetAddress.getByName("255.255.255.255");
             final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
             socket.send(p);
             Logging.info(this, "message " + m + " for category '"
@@ -209,6 +221,68 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 if (responseMessage.isValidConnection())
                 {
                     publishProgress(responseMessage);
+                }
+            }
+            catch (Exception e)
+            {
+                // nothing to do
+            }
+        }
+    }
+
+    private void requestDcp(DatagramSocket socket)
+    {
+        final String host = "239.255.255.250";
+        final String schema = "schemas-denon-com:device";
+        final String request =
+            "M-SEARCH * HTTP/1.1\r\n" +
+            "HOST: " + host + ":" + DCP_PORT + "\r\n" +
+            "MAN: \"ssdp:discover\"\r\n" +
+            "MX: 10\r\n" +
+            "ST: urn:" + schema + ":ACT-Denon:1\r\n\r\n";
+        final byte[] bytes = request.getBytes();
+
+        try
+        {
+            final InetAddress target = InetAddress.getByName(host);
+            final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, DCP_PORT);
+            socket.send(p);
+            Logging.info(this, "message M-SEARCH for category send to " + target + ", wait response for " + TIMEOUT + "ms");
+        }
+        catch (Exception e)
+        {
+            Logging.info(BroadcastSearch.this, "  -> can not send request: " + e);
+        }
+
+        final long startTime = Calendar.getInstance().getTimeInMillis();
+        final byte[] response = new byte[1024];
+        while (Calendar.getInstance().getTimeInMillis() < startTime + TIMEOUT)
+        {
+            if (isStopped())
+            {
+                break;
+            }
+
+            try
+            {
+                Arrays.fill(response, (byte) 0);
+                final DatagramPacket p2 = new DatagramPacket(response, response.length);
+                socket.receive(p2);
+                if (p2.getAddress() == null || p2.getAddress().getHostAddress() == null)
+                {
+                    continue;
+                }
+
+                final String responseStr = new String(response);
+                if (responseStr.contains(schema))
+                {
+                    Logging.info(this, "M-SEARCH response from " + p2.getAddress() + ": " + schema);
+                    final BroadcastResponseMsg responseMessage =
+                            new BroadcastResponseMsg(p2.getAddress().getHostAddress(), 23, "Denon-Heos AVR");
+                    if (responseMessage.isValidConnection())
+                    {
+                        publishProgress(responseMessage);
+                    }
                 }
             }
             catch (Exception e)
