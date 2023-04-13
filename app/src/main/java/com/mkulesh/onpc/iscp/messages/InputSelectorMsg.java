@@ -155,7 +155,7 @@ public class InputSelectorMsg extends ZonedMessage
         @NonNull
         public String getDcpCode()
         {
-            return code;
+            return name().startsWith("DCP_") ? code : "XX";
         }
 
         @StringRes
@@ -231,10 +231,11 @@ public class InputSelectorMsg extends ZonedMessage
     @Nullable
     public static InputSelectorMsg processDcpMessage(@NonNull String dcpMsg)
     {
+        // Only loop over DCP inputs due to conflicts with zone audio volume event
         for (int i = 0; i < DCP_COMMANDS.length; i++)
         {
             final InputType s = (InputType) searchDcpParameter(DCP_COMMANDS[i], dcpMsg, InputType.values());
-            if (s != null)
+            if (s != null && s != InputType.NONE)
             {
                 return new InputSelectorMsg(i, s.getCode());
             }

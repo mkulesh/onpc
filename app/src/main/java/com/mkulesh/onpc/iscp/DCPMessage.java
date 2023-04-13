@@ -27,6 +27,7 @@ import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
+import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
@@ -44,11 +45,14 @@ public class DCPMessage
 {
     public final static int CR = 0x0D;
 
+    private int zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
     private final ArrayList<ISCPMessage> messages = new ArrayList<>();
     private final Set<String> acceptedCodes = new HashSet<>();
 
-    public void prepare()
+    public void prepare(int zone)
     {
+        this.zone = zone;
+
         acceptedCodes.addAll(DcpReceiverInformationMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(PowerStatusMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(InputSelectorMsg.getAcceptedDcpCodes());
@@ -88,9 +92,9 @@ public class DCPMessage
 
         // Tuner
         addISCPMsg(DcpTunerModeMsg.processDcpMessage(dcpMsg));
-        addISCPMsg(TuningCommandMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(TuningCommandMsg.processDcpMessage(dcpMsg, zone));
         addISCPMsg(RadioStationNameMsg.processDcpMessage(dcpMsg));
-        addISCPMsg(PresetCommandMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(PresetCommandMsg.processDcpMessage(dcpMsg, zone));
 
         // Settings
         addISCPMsg(DimmerLevelMsg.processDcpMessage(dcpMsg));
@@ -104,9 +108,21 @@ public class DCPMessage
     {
         messages.clear();
 
-        // Process corner case: OPTPN has some time no end of message symbol
-        // and, therefore, some messages can be joined in one string.
-        // We need to split it before processing
+        if (dcpMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMAND_PRESET))
+        {
+            // Process corner case: OPTPN has some time no end of message symbol
+            // and, therefore, some messages can be joined in one string.
+            // We need to split it before processing
+            dcpMsg = splitJoinedMessages(dcpMsg);
+        }
+
+        convertSingleMsg(dcpMsg);
+        return messages;
+    }
+
+    @NonNull
+    private String splitJoinedMessages(@NonNull String dcpMsg)
+    {
         int startIndex = dcpMsg.length();
         while (true)
         {
@@ -136,9 +152,7 @@ public class DCPMessage
             }
             break;
         }
-
-        convertSingleMsg(dcpMsg);
-        return messages;
+        return dcpMsg;
     }
 
     @NonNull

@@ -161,7 +161,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         this.connectionState = connectionState;
         this.stateListener = stateListener;
 
-        messageChannel = new MessageChannel(connectionState, inputQueue);
+        messageChannel = new MessageChannel(zone, connectionState, inputQueue);
         if (!messageChannel.connectToServer(host, port))
         {
             throw new Exception("Cannot connect to server");
@@ -228,7 +228,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         this.connectionState = connectionState;
         this.stateListener = stateListener;
 
-        messageChannel = new MessageChannel(connectionState, inputQueue);
+        messageChannel = new MessageChannel(zone, connectionState, inputQueue);
         state = new MockupState(zone);
         useBmpImages = false;
         setPlaybackMode(false);
@@ -851,7 +851,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 continue;
             }
             Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort());
-            final MessageChannel m = new MessageChannel(connectionState, inputQueue);
+            final MessageChannel m = new MessageChannel(
+                    ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, connectionState, inputQueue);
             for (String code : multiroomQueries)
             {
                 m.addAllowedMessage(code);

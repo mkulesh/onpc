@@ -100,9 +100,9 @@ public class TuningCommandMsg extends ZonedMessage
         this.dcpTunerMode = DcpTunerModeMsg.TunerMode.NONE;
     }
 
-    public TuningCommandMsg(final String frequency, @NonNull DcpTunerModeMsg.TunerMode dcpTunerMode)
+    public TuningCommandMsg(int zone, String frequency, @NonNull DcpTunerModeMsg.TunerMode dcpTunerMode)
     {
-        super(0, null, ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE);
+        super(0, null, zone);
         this.command = null;
         this.frequency = String.valueOf(frequency);
         this.dcpTunerMode = dcpTunerMode;
@@ -161,20 +161,20 @@ public class TuningCommandMsg extends ZonedMessage
     }
 
     @Nullable
-    public static TuningCommandMsg processDcpMessage(@NonNull String dcpMsg)
+    public static TuningCommandMsg processDcpMessage(@NonNull String dcpMsg, int zone)
     {
         if (dcpMsg.startsWith(DCP_COMMAND_FM))
         {
             final String par = dcpMsg.substring(DCP_COMMAND_FM.length()).trim();
             if (Utils.isInteger(par))
             {
-                return new TuningCommandMsg(par, DcpTunerModeMsg.TunerMode.FM);
+                return new TuningCommandMsg(zone, par, DcpTunerModeMsg.TunerMode.FM);
             }
         }
         if (dcpMsg.startsWith(DCP_COMMAND_DAB))
         {
             final String par = dcpMsg.substring(DCP_COMMAND_DAB.length()).trim();
-            return new TuningCommandMsg(par, DcpTunerModeMsg.TunerMode.DAB);
+            return new TuningCommandMsg(zone, par, DcpTunerModeMsg.TunerMode.DAB);
         }
         return null;
     }

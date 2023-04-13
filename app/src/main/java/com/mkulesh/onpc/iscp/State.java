@@ -1783,26 +1783,20 @@ public class State implements ConnectionIf
             }
             return changed;
         }
-        // List of zones
-        if (!msg.getZones().isEmpty())
+        // Max. volume
+        if (msg.getMaxVolumeZone() != null)
         {
-            final int maxZones = isReceiverInformation() ? zones.size() : msg.getZones().size();
-            boolean changed = zones.size() != maxZones;
-            for (int i = 0; i < Math.min(zones.size(), maxZones); i++)
+            boolean changed = false;
+            for (int i = 0; i < zones.size(); i++)
             {
-                if (!zones.get(i).equals(msg.getZones().get(i)))
+                if (zones.get(i).getVolMax() != msg.getMaxVolumeZone().getVolMax())
                 {
+                    zones.get(i).setVolMax(msg.getMaxVolumeZone().getVolMax());
                     changed = true;
-                    break;
                 }
             }
             if (changed)
             {
-                zones.clear();
-                for (int i = 0; i < maxZones; i++)
-                {
-                    zones.add(msg.getZones().get(i));
-                }
                 for (ReceiverInformationMsg.Zone s : zones)
                 {
                     Logging.info(this, "    DCP Zone " + s);

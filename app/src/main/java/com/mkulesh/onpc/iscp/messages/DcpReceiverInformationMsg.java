@@ -22,7 +22,6 @@ import com.mkulesh.onpc.utils.Utils;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,8 +32,6 @@ import androidx.annotation.Nullable;
 public class DcpReceiverInformationMsg extends ISCPMessage
 {
     public final static String CODE = "D01";
-
-    public final static int NO_LEVEL = -1;
 
     // Input selectors
     public final static String DCP_COMMAND_INPUT_SEL = "SSFUN";
@@ -63,12 +60,9 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     }
 
     private ReceiverInformationMsg.Selector selector = null;
-    private int maxVolume = NO_LEVEL;
-    private final List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
-
-    private ReceiverInformationMsg.ToneControl toneControl;
-
-    private ReceiverInformationMsg.Preset preset;
+    private ReceiverInformationMsg.Zone maxVolumeZone = null;
+    private ReceiverInformationMsg.ToneControl toneControl = null;
+    private ReceiverInformationMsg.Preset preset = null;
 
     DcpReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
@@ -81,11 +75,10 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         this.selector = selector;
     }
 
-    public DcpReceiverInformationMsg(int maxVolume, final List<ReceiverInformationMsg.Zone> zones)
+    public DcpReceiverInformationMsg(ReceiverInformationMsg.Zone zone)
     {
         super(-1, "");
-        this.maxVolume = maxVolume;
-        this.zones.addAll(zones);
+        maxVolumeZone = zone;
     }
 
     public DcpReceiverInformationMsg(final ReceiverInformationMsg.ToneControl toneControl)
@@ -105,9 +98,9 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         return selector;
     }
 
-    public List<ReceiverInformationMsg.Zone> getZones()
+    public ReceiverInformationMsg.Zone getMaxVolumeZone()
     {
-        return zones;
+        return maxVolumeZone;
     }
 
     public ReceiverInformationMsg.ToneControl getToneControl()
@@ -126,7 +119,7 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     {
         return "DCP receiver configuration: " +
                 (selector != null ? "Selector=" + selector + " " : "") +
-                (maxVolume != NO_LEVEL ? "MaxVol=" + maxVolume + " " : "") +
+                (maxVolumeZone != null ? "MaxVol=" + maxVolumeZone.volMax + " " : "") +
                 (toneControl != null ? "ToneCtrl=" + toneControl + " " : "") +
                 (preset != null ? "Preset=" + preset + " " : "");
     }
@@ -242,12 +235,9 @@ public class DcpReceiverInformationMsg extends ISCPMessage
             {
                 maxVolume = maxVolume / 10;
             }
-            // Add 3 zones with volume step 0.5 and max volume received in the message
-            List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
-            zones.add(new ReceiverInformationMsg.Zone("1", "Main", 0, maxVolume));
-            zones.add(new ReceiverInformationMsg.Zone("2", "Zone2", 0, maxVolume));
-            zones.add(new ReceiverInformationMsg.Zone("3", "Zone3", 0, maxVolume));
-            return new DcpReceiverInformationMsg(maxVolume, zones);
+            // Create a zone with max volume received in the message
+            return new DcpReceiverInformationMsg(new ReceiverInformationMsg.Zone(
+                    "", "", 0, maxVolume));
         }
         catch (Exception e)
         {

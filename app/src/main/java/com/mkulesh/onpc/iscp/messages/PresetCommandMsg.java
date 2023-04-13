@@ -173,7 +173,7 @@ public class PresetCommandMsg extends ZonedMessage
     }
 
     /*
-     * Denon control protocol
+     * Denon control protocol. The same message is used for both zones.
      */
     private final static String DCP_COMMAND = "TPAN";
     private final static String DCP_COMMAND_OFF = "OFF";
@@ -184,21 +184,19 @@ public class PresetCommandMsg extends ZonedMessage
         return new ArrayList<>(Collections.singletonList(DCP_COMMAND));
     }
 
-    public static PresetCommandMsg processDcpMessage(@NonNull String dcpMsg)
+    public static PresetCommandMsg processDcpMessage(@NonNull String dcpMsg, int zone)
     {
         if (dcpMsg.startsWith(DCP_COMMAND))
         {
             final String par = dcpMsg.substring(DCP_COMMAND.length()).trim();
             if (par.equalsIgnoreCase(DCP_COMMAND_OFF))
             {
-                return new PresetCommandMsg(
-                        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, null, NO_PRESET);
+                return new PresetCommandMsg(zone, null, NO_PRESET);
             }
             try
             {
                 final int preset = Integer.parseInt(par);
-                return new PresetCommandMsg(
-                        ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, null, preset);
+                return new PresetCommandMsg(zone, null, preset);
             }
             catch (Exception e)
             {
@@ -214,13 +212,8 @@ public class PresetCommandMsg extends ZonedMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        if (zoneIndex == ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE)
-        {
-            // Only available for main zone
-            return DCP_COMMAND + (isQuery ? DCP_MSG_REQ :
-                    (command != null ? command.getDcpCode() : String.format("%02d", preset)));
-        }
-        return null;
+        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ :
+                (command != null ? command.getDcpCode() : String.format("%02d", preset)));
     }
 
 }

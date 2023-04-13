@@ -185,11 +185,9 @@ public class MasterVolumeMsg extends ZonedMessage
                 try
                 {
                     float volumeLevel = Integer.parseInt(par);
-                    if (par.length() > 2)
-                    {
-                        volumeLevel = volumeLevel / 10;
-                    }
-                    return new MasterVolumeMsg(i, (int) (2.0 * volumeLevel));
+                    int volumeLevelInt = i == 0 ?
+                            scaleValueMainZone(volumeLevel, par) : scaleValueExtZone(volumeLevel);
+                    return new MasterVolumeMsg(i, volumeLevelInt);
                 }
                 catch (Exception e)
                 {
@@ -217,11 +215,7 @@ public class MasterVolumeMsg extends ZonedMessage
             }
             else if (volumeLevel != NO_LEVEL)
             {
-                final float f = 10.0f * ((float) volumeLevel / 2.0f);
-                final DecimalFormat df = Utils.getDecimalFormat("000");
-                final String fullStr = df.format(f);
-                final String par = fullStr.endsWith("0") ? fullStr.substring(0, 2) :
-                        (fullStr.endsWith("5") ? fullStr : "");
+                final String par = zoneIndex == 0 ? getValueMainZone() : getValueExtZone();
                 if (!par.isEmpty())
                 {
                     return DCP_COMMANDS[zoneIndex] + par;
@@ -229,5 +223,34 @@ public class MasterVolumeMsg extends ZonedMessage
             }
         }
         return null;
+    }
+
+    private static int scaleValueMainZone(float volumeLevel, String par)
+    {
+        if (par.length() > 2)
+        {
+            volumeLevel = volumeLevel / 10;
+        }
+        return (int) (2.0 * volumeLevel);
+    }
+
+    private String getValueMainZone()
+    {
+        final float f = 10.0f * ((float) volumeLevel / 2.0f);
+        final DecimalFormat df = Utils.getDecimalFormat("000");
+        final String fullStr = df.format(f);
+        return fullStr.endsWith("0") ? fullStr.substring(0, 2) : (fullStr.endsWith("5") ? fullStr : "");
+    }
+
+    private static int scaleValueExtZone(float volumeLevel)
+    {
+        return (int) volumeLevel;
+    }
+
+    private String getValueExtZone()
+    {
+        final float f = (float) volumeLevel;
+        final DecimalFormat df = Utils.getDecimalFormat("00");
+        return df.format(f);
     }
 }

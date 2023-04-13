@@ -50,6 +50,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
     private final AtomicBoolean threadCancelled = new AtomicBoolean();
 
     // connection state
+    private final int zone;
     private final ConnectionState connectionState;
     private SocketChannel socket = null;
 
@@ -67,9 +68,10 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
     private final Set<String> allowedMessages = new HashSet<>();
     private final DCPMessage dcpMessage = new DCPMessage();
 
-    MessageChannel(final ConnectionState connectionState, final BlockingQueue<ISCPMessage> inputQueue)
+    MessageChannel(final int zone, final ConnectionState connectionState, final BlockingQueue<ISCPMessage> inputQueue)
     {
         super(false);
+        this.zone = zone;
         this.connectionState = connectionState;
         this.inputQueue = inputQueue;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -139,7 +141,7 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         final ArrayList<byte[]> dcpOutputBuffer = new ArrayList<>();
         if (getProtoType() == Utils.ProtoType.DCP)
         {
-            dcpMessage.prepare();
+            dcpMessage.prepare(zone);
         }
 
         while (true)

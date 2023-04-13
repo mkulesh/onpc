@@ -129,7 +129,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         final String id;
         final String name;
         final int volumeStep;
-        final int volMax;
+        int volMax;
 
         Zone(Element e)
         {
@@ -153,6 +153,10 @@ public class ReceiverInformationMsg extends ISCPMessage
             return name;
         }
 
+        /*
+         * Step = 0: scaled by 2
+         * Step = 1: use not scaled
+         */
         public int getVolumeStep()
         {
             return volumeStep;
@@ -161,6 +165,11 @@ public class ReceiverInformationMsg extends ISCPMessage
         public int getVolMax()
         {
             return volMax;
+        }
+
+        public void setVolMax(int volMax)
+        {
+            this.volMax = volMax;
         }
 
         @NonNull
@@ -795,7 +804,9 @@ public class ReceiverInformationMsg extends ISCPMessage
             {
                 final int noInt = Integer.parseInt(no) + 1;
                 final String name = noInt == 1 ? "Main" : "Zone" + noInt;
-                final int stepInt = (int) Float.parseFloat(step);
+                // Volume for zone 1 is ***:00 to 98 -> scale can be 0
+                // Volume for zone 2/3 is **:00 to 98 -> scale shall be 1
+                final int stepInt = noInt == 1 ? (int) Float.parseFloat(step) : 1;
                 final int maxVolumeInt = (int) Float.parseFloat(maxVolume);
                 this.zones.add(new Zone(String.valueOf(noInt), name, stepInt, maxVolumeInt));
             }
