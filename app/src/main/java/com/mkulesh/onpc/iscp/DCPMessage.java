@@ -17,6 +17,7 @@ package com.mkulesh.onpc.iscp;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
+import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
@@ -74,6 +75,7 @@ public class DCPMessage
         acceptedCodes.addAll(SleepSetCommandMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(DcpEcoModeMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(DcpAudioRestorerMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(HdmiCecMsg.getAcceptedDcpCodes());
 
         Logging.info(this, "Accepted DCP codes: " + acceptedCodes);
     }
@@ -101,6 +103,7 @@ public class DCPMessage
         addISCPMsg(SleepSetCommandMsg.processDcpMessage(dcpMsg));
         addISCPMsg(DcpEcoModeMsg.processDcpMessage(dcpMsg));
         addISCPMsg(DcpAudioRestorerMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(HdmiCecMsg.processDcpMessage(dcpMsg));
     }
 
     @NonNull

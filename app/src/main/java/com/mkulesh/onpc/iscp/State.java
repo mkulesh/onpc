@@ -696,7 +696,7 @@ public class State implements ConnectionIf
         // Denon-specific messages
         if (msg instanceof DcpReceiverInformationMsg)
         {
-            return process((DcpReceiverInformationMsg) msg) ? ChangeType.RECEIVER_INFO : ChangeType.NONE;
+            return process((DcpReceiverInformationMsg) msg);
         }
         if (msg instanceof DcpTunerModeMsg)
         {
@@ -1745,17 +1745,13 @@ public class State implements ConnectionIf
     }
 
     // Denon-specific messages
-    private boolean process(DcpReceiverInformationMsg msg)
+    private ChangeType process(DcpReceiverInformationMsg msg)
     {
         // Input Selector
-        if (msg.getSelector() != null)
+        if (msg.updateType == DcpReceiverInformationMsg.UpdateType.SELECTOR && msg.getSelector() != null)
         {
-            boolean changed = false;
-            if (DcpReceiverInformationMsg.DCP_COMMAND_INPUT_SEL_END.equalsIgnoreCase(msg.getSelector().getId()))
-            {
-                return false;
-            }
-            else synchronized (deviceSelectors)
+            ChangeType changed = ChangeType.NONE;
+            synchronized (deviceSelectors)
             {
                 ReceiverInformationMsg.Selector oldSelector = null;
                 for (ReceiverInformationMsg.Selector s : deviceSelectors)
@@ -1775,46 +1771,44 @@ public class State implements ConnectionIf
                     final ReceiverInformationMsg.Selector newSelector =
                             new ReceiverInformationMsg.Selector(
                                     oldSelector, msg.getSelector().getName());
-                    Logging.info(this, "    Update selector " + newSelector);
+                    Logging.info(this, "    DCP selector " + newSelector);
                     deviceSelectors.remove(oldSelector);
                     deviceSelectors.add(newSelector);
-                    changed = true;
+                    changed = ChangeType.MEDIA_ITEMS;
                 }
             }
             return changed;
         }
+
         // Max. volume
-        if (msg.getMaxVolumeZone() != null)
+        if (msg.updateType == DcpReceiverInformationMsg.UpdateType.MAX_VOLUME && msg.getMaxVolumeZone() != null)
         {
-            boolean changed = false;
+            ChangeType changed = ChangeType.NONE;
             for (int i = 0; i < zones.size(); i++)
             {
                 if (zones.get(i).getVolMax() != msg.getMaxVolumeZone().getVolMax())
                 {
                     zones.get(i).setVolMax(msg.getMaxVolumeZone().getVolMax());
-                    changed = true;
-                }
-            }
-            if (changed)
-            {
-                for (ReceiverInformationMsg.Zone s : zones)
-                {
-                    Logging.info(this, "    DCP Zone " + s);
+                    Logging.info(this, "    DCP zone " + zones.get(i));
+                    changed = ChangeType.COMMON;
                 }
             }
             return changed;
         }
+
         // Tone control
         final ReceiverInformationMsg.ToneControl toneControl = msg.getToneControl();
-        if (toneControl != null)
+        if (msg.updateType == DcpReceiverInformationMsg.UpdateType.TONE_CONTROL && toneControl != null)
         {
             boolean changed = !toneControl.equals(toneControls.get(toneControl.getId()));
             toneControls.put(toneControl.getId(), toneControl);
-            return changed;
+            Logging.info(this, "    DCP tone control " + toneControl);
+            return changed ? ChangeType.COMMON : ChangeType.NONE;
         }
+
         // Radio presets
         final ReceiverInformationMsg.Preset preset = msg.getPreset();
-        if (preset != null)
+        if (msg.updateType == DcpReceiverInformationMsg.UpdateType.PRESET && preset != null)
         {
             boolean changed = false;
             int oldPresetIdx = -1;
@@ -1838,9 +1832,18 @@ public class State implements ConnectionIf
                 presetList.add(preset);
                 Logging.info(this, "    DCP Preset " + preset);
             }
-            return changed;
+            return changed ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
-        return false;
+
+        // Firmware version
+        if (msg.updateType == DcpReceiverInformationMsg.UpdateType.FIRMWARE_VER && msg.getFirmwareVer() != null)
+        {
+            deviceProperties.put("firmwareversion", msg.getFirmwareVer());
+            Logging.info(this, "    DCP firmware " + msg.getFirmwareVer());
+            return ChangeType.COMMON;
+        }
+
+        return ChangeType.NONE;
     }
 
     private boolean process(DcpTunerModeMsg msg)

@@ -131,7 +131,7 @@ public class DeviceFragment extends BaseFragment
         prepareImageButton(R.id.device_digital_filter_toggle, new DigitalFilterMsg(DigitalFilterMsg.Filter.TOGGLE));
         prepareImageButton(R.id.music_optimizer_toggle, new MusicOptimizerMsg(MusicOptimizerMsg.Status.TOGGLE));
         prepareImageButton(R.id.device_auto_power_toggle, new AutoPowerMsg(AutoPowerMsg.Status.TOGGLE));
-        prepareImageButton(R.id.hdmi_cec_toggle, new HdmiCecMsg(HdmiCecMsg.Status.TOGGLE));
+        prepareImageButton(R.id.hdmi_cec_toggle, null);
         prepareImageButton(R.id.phase_matching_bass_toggle, new PhaseMatchingBassMsg(PhaseMatchingBassMsg.Status.TOGGLE));
         prepareImageButton(R.id.sleep_time_toggle, null);
         prepareImageButton(R.id.speaker_ab_command_toggle, null);
@@ -268,6 +268,18 @@ public class DeviceFragment extends BaseFragment
         {
             rootView.findViewById(layoutId).setVisibility(isFnValid || isRiValid ? View.VISIBLE : View.GONE);
         }
+
+        if (state != null)
+        {
+            hidePlatformSpecificParameters(state.protoType);
+        }
+    }
+
+    private void hidePlatformSpecificParameters(Utils.ProtoType protoType)
+    {
+        final int vis = protoType == Utils.ProtoType.ISCP ? View.VISIBLE : View.GONE;
+        ((LinearLayout)(rootView.findViewById(R.id.device_year).getParent())).setVisibility(vis);
+        ((LinearLayout)(rootView.findViewById(R.id.google_cast_version).getParent())).setVisibility(vis);
     }
 
     private void onFirmwareUpdateButton()
@@ -320,7 +332,8 @@ public class DeviceFragment extends BaseFragment
 
         // HDMI CEC
         prepareSettingPanel(state, state.hdmiCec != HdmiCecMsg.Status.NONE,
-                R.id.hdmi_cec_layout, state.hdmiCec.getDescriptionId(), null);
+                R.id.hdmi_cec_layout, state.hdmiCec.getDescriptionId(),
+                new HdmiCecMsg(HdmiCecMsg.toggle(state.hdmiCec, state.protoType)));
 
         // Phase Matching Bass Command
         prepareSettingPanel(state, state.phaseMatchingBass != PhaseMatchingBassMsg.Status.NONE,

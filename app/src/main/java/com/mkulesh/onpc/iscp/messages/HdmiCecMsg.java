@@ -17,8 +17,13 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -28,7 +33,7 @@ public class HdmiCecMsg extends ISCPMessage
 {
     public final static String CODE = "CEC";
 
-    public enum Status implements StringParameterIf
+    public enum Status implements DcpStringParameterIf
     {
         NONE("N/A", R.string.device_two_way_switch_none),
         OFF("00", R.string.device_two_way_switch_off),
@@ -49,6 +54,12 @@ public class HdmiCecMsg extends ISCPMessage
         public String getCode()
         {
             return code;
+        }
+
+        @NonNull
+        public String getDcpCode()
+        {
+            return name();
         }
 
         @StringRes
@@ -94,5 +105,40 @@ public class HdmiCecMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    public static Status toggle(Status s, Utils.ProtoType proto)
+    {
+        return proto == Utils.ProtoType.ISCP ? Status.TOGGLE :
+                ((s == Status.OFF) ? Status.ON : Status.OFF);
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String DCP_COMMAND = "SSHOS";
+    private final static String DCP_COMMAND_EXT = "CON";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Collections.singletonList(DCP_COMMAND));
+    }
+
+    @Nullable
+    public static HdmiCecMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        final Status s = (Status) searchDcpParameter(
+                DCP_COMMAND + DCP_COMMAND_EXT, dcpMsg, Status.values());
+        return s != null ? new HdmiCecMsg(s) : null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        // A space is needed for this command
+        return DCP_COMMAND +  (isQuery ? (" " + DCP_MSG_REQ) :
+                DCP_COMMAND_EXT + " " + status.getDcpCode());
     }
 }

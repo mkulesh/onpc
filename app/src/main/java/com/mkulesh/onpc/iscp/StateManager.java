@@ -672,9 +672,23 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     DimmerLevelMsg.CODE,
                     SleepSetCommandMsg.CODE,
                     DcpEcoModeMsg.CODE,
-                    DcpAudioRestorerMsg.CODE
+                    DcpAudioRestorerMsg.CODE,
+                    HdmiCecMsg.CODE
             };
-            sendQueries(playStateQueries, "DCP: requesting play state...");
+
+            // After transmitting a power on COMMAND（PWON, the next COMMAND
+            // shall be transmitted at least 1 second later
+            final int REQUEST_DELAY = 1500;
+            final Timer t = new Timer();
+            t.schedule(new java.util.TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    sendQueries(playStateQueries,
+                            "DCP: requesting play state with delay " + REQUEST_DELAY + "ms...");
+                }
+            }, REQUEST_DELAY);
         }
 
         if (msg instanceof InputSelectorMsg)

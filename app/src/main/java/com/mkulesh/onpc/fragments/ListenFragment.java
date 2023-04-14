@@ -497,7 +497,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             {
                 setButtonSelected(b, state.audioMuting == AudioMutingMsg.Status.ON);
                 prepareButtonListeners(b, new AudioMutingMsg(
-                        state.getActiveZone(), AudioMutingMsg.toggle(state.audioMuting)));
+                        state.getActiveZone(), AudioMutingMsg.toggle(state.audioMuting, state.protoType)));
             }
             else if (b.getTag() instanceof MasterVolumeMsg.Command)
             {

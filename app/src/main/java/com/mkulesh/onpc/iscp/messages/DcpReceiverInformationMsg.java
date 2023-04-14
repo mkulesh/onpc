@@ -35,7 +35,7 @@ public class DcpReceiverInformationMsg extends ISCPMessage
 
     // Input selectors
     public final static String DCP_COMMAND_INPUT_SEL = "SSFUN";
-    public final static String DCP_COMMAND_INPUT_SEL_END = "END";
+    private final static String DCP_COMMAND_END = "END";
 
     // Max. Volume
     public final static String DCP_COMMAND_MAXVOL = "MVMAX";
@@ -49,48 +49,76 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     // Radio presets
     public final static String DCP_COMMAND_PRESET = "OPTPN";
 
+    // Firmware
+    public final static String DCP_COMMAND_FIRMWARE_VER = "SSINFFRM";
+
     @NonNull
     public static ArrayList<String> getAcceptedDcpCodes()
     {
         final ArrayList<String> out = new ArrayList<>(Arrays.asList(
-                DCP_COMMAND_INPUT_SEL, DCP_COMMAND_MAXVOL, DCP_COMMAND_ALIMIT, DCP_COMMAND_PRESET));
+                DCP_COMMAND_INPUT_SEL, DCP_COMMAND_MAXVOL, DCP_COMMAND_ALIMIT,
+                DCP_COMMAND_PRESET, DCP_COMMAND_FIRMWARE_VER));
         out.addAll(Arrays.asList(DCP_COMMANDS_BASS));
         out.addAll(Arrays.asList(DCP_COMMANDS_TREBLE));
         return out;
     }
 
+    public enum UpdateType
+    {
+        NONE,
+        SELECTOR,
+        MAX_VOLUME,
+        TONE_CONTROL,
+        PRESET,
+        FIRMWARE_VER
+    }
+
+    public final UpdateType updateType;
     private ReceiverInformationMsg.Selector selector = null;
     private ReceiverInformationMsg.Zone maxVolumeZone = null;
     private ReceiverInformationMsg.ToneControl toneControl = null;
     private ReceiverInformationMsg.Preset preset = null;
+    private String firmwareVer = null;
 
     DcpReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
+        this.updateType = UpdateType.NONE;
     }
 
     public DcpReceiverInformationMsg(final ReceiverInformationMsg.Selector selector)
     {
         super(-1, "");
+        this.updateType = UpdateType.SELECTOR;
         this.selector = selector;
     }
 
     public DcpReceiverInformationMsg(ReceiverInformationMsg.Zone zone)
     {
         super(-1, "");
+        this.updateType = UpdateType.MAX_VOLUME;
         maxVolumeZone = zone;
     }
 
     public DcpReceiverInformationMsg(final ReceiverInformationMsg.ToneControl toneControl)
     {
         super(-1, "");
+        this.updateType = UpdateType.TONE_CONTROL;
         this.toneControl = toneControl;
     }
 
     public DcpReceiverInformationMsg(final ReceiverInformationMsg.Preset preset)
     {
         super(-1, "");
+        this.updateType = UpdateType.PRESET;
         this.preset = preset;
+    }
+
+    public DcpReceiverInformationMsg(final UpdateType type, final String par)
+    {
+        super(-1, "");
+        this.updateType = type;
+        this.firmwareVer = par;
     }
 
     public ReceiverInformationMsg.Selector getSelector()
@@ -113,6 +141,11 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         return preset;
     }
 
+    public String getFirmwareVer()
+    {
+        return firmwareVer;
+    }
+
     @NonNull
     @Override
     public String toString()
@@ -121,7 +154,8 @@ public class DcpReceiverInformationMsg extends ISCPMessage
                 (selector != null ? "Selector=" + selector + " " : "") +
                 (maxVolumeZone != null ? "MaxVol=" + maxVolumeZone.volMax + " " : "") +
                 (toneControl != null ? "ToneCtrl=" + toneControl + " " : "") +
-                (preset != null ? "Preset=" + preset + " " : "");
+                (preset != null ? "Preset=" + preset + " " : "") +
+                (firmwareVer != null ? "Firmware=" + firmwareVer + " " : "");
     }
 
     @Nullable
@@ -131,12 +165,9 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         if (dcpMsg.startsWith(DCP_COMMAND_INPUT_SEL))
         {
             final String par = dcpMsg.substring(DCP_COMMAND_INPUT_SEL.length()).trim();
-            if (DCP_COMMAND_INPUT_SEL_END.equalsIgnoreCase(par))
+            if (DCP_COMMAND_END.equalsIgnoreCase(par))
             {
-                // End of list
-                return new DcpReceiverInformationMsg(
-                        new ReceiverInformationMsg.Selector(
-                                DCP_COMMAND_INPUT_SEL_END, DCP_COMMAND_INPUT_SEL_END, 0xFF, "", false));
+                return null;
             }
             final int sepIdx = par.indexOf(' ');
             if (sepIdx < 0)
@@ -223,6 +254,16 @@ public class DcpReceiverInformationMsg extends ISCPMessage
             Logging.info(DcpReceiverInformationMsg.class, "DCP preset invalid: " + par);
         }
 
+        // Firmware version
+        if (dcpMsg.startsWith(DCP_COMMAND_FIRMWARE_VER))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND_FIRMWARE_VER.length()).trim();
+            if (!DCP_COMMAND_END.equalsIgnoreCase(par))
+            {
+                return new DcpReceiverInformationMsg(UpdateType.FIRMWARE_VER, par);
+            }
+        }
+
         return null;
     }
 
@@ -250,6 +291,8 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        return DCP_COMMAND_INPUT_SEL + " ?" + DCP_MSG_SEP + DCP_COMMAND_PRESET + " ?";
+        return DCP_COMMAND_INPUT_SEL + " ?" + DCP_MSG_SEP
+                + DCP_COMMAND_PRESET + " ?" + DCP_MSG_SEP
+                + DCP_COMMAND_FIRMWARE_VER + " ?";
     }
 }
