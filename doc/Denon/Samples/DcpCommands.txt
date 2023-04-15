@@ -45,6 +45,10 @@ OPTPN02         008910 from 192.168.1.82:23, size=22B, remaining=161B -> Ignored
 OPTPN55         009010 from 192.168.1.82:23, size=22B, remaining=0B -> Ignored
 OPTPN56         009010 from 192.168.1.82:23, size=22B, remaining=0B -> Ignored
 
+http://192.168.1.82:8080/goform/formiPhoneAppTunerPreset.xml <- list of presets
+http://192.168.1.82:8080/goform/formiPhoneAppTuner.xml?1+PRESETCALL26 <- select preset
+<tx><cmd id="1">SetTunerPresetMemory</cmd><presetno>27</presetno></tx> <- memorize preset
+
 // Some Settings
 SSALS ?
 SSALSSET ON
