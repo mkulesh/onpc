@@ -27,6 +27,7 @@ import com.mkulesh.onpc.utils.Utils;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
@@ -44,7 +45,10 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
     private final static long CONNECTION_TIMEOUT = 5000;
     final static int QUEUE_SIZE = 4 * 1024;
     private final static int SOCKET_BUFFER = 4 * 1024;
+
+    // Denon control protocol
     private final static int DCP_PORT = 23;
+    private final static String DCP_GOFORM_PORT = "8080"; // goform protocol port
 
     // thread implementation
     private final AtomicBoolean threadCancelled = new AtomicBoolean();
@@ -205,8 +209,16 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
                         if (!dcpOutputBuffer.isEmpty())
                         {
                             final byte[] bytes = dcpOutputBuffer.remove(0);
-                            final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
-                            socket.write(messageBuffer);
+                            final String rawCmd = new String(bytes);
+                            if (rawCmd.startsWith("formiPhoneApp"))
+                            {
+                                sendDcpGoformRequest(rawCmd);
+                            }
+                            else
+                            {
+                                final ByteBuffer messageBuffer = ByteBuffer.wrap(bytes);
+                                socket.write(messageBuffer);
+                            }
                             lastSendTime = currTime;
                         }
                         else
@@ -235,6 +247,21 @@ public class MessageChannel extends AppTask implements Runnable, ConnectionIf
         super.stop();
         Logging.info(this, "stopped " + getHostAndPort() + ":" + this);
         inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
+    }
+
+    private void sendDcpGoformRequest(final String rawCmd)
+    {
+        final String shortCmd = rawCmd.replace(" ", "%20");
+        try
+        {
+            final String fullCmd = ISCPMessage.getDcpGoformUrl(host, DCP_GOFORM_PORT, shortCmd);
+            Logging.info(this, "DCP GOFORM request: " + fullCmd);
+            Utils.getUrlData(new URL(fullCmd), false);
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "DCP GOFORM err: " + ex.getLocalizedMessage());
+        }
     }
 
     boolean connectToServer(@NonNull String host, int port)

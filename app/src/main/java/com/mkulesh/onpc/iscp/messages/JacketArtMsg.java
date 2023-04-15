@@ -157,7 +157,7 @@ public class JacketArtMsg extends ISCPMessage
     public Bitmap loadFromUrl()
     {
         Bitmap cover = null;
-        final byte[] bytes = Utils.getUrlData(url);
+        final byte[] bytes = Utils.getUrlData(url, true);
         if (bytes != null)
         {
             final int offset = Utils.getUrlHeaderLength(bytes);

@@ -500,11 +500,14 @@ public class Utils
         }
     }
 
-    public static byte[] getUrlData(URL url)
+    public static byte[] getUrlData(URL url, boolean info)
     {
         try
         {
-            Logging.info(url, "loading data from URL: " + url.toString());
+            if (info)
+            {
+                Logging.info(url, "loading data from URL: " + url.toString());
+            }
             URLConnection urlConnection = url.openConnection();
             urlConnection.setRequestProperty("Accept-Encoding", "gzip");
             InputStream inputStream;

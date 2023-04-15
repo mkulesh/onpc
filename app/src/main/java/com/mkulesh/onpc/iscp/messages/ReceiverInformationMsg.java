@@ -719,7 +719,7 @@ public class ReceiverInformationMsg extends ISCPMessage
 
     private static String getDcpXmlData(final String host, final String port) throws Exception
     {
-        final byte[] bytes = Utils.getUrlData(new URL(getDcpGoformUrl(host, port, "Deviceinfo.xml")));
+        final byte[] bytes = Utils.getUrlData(new URL(getDcpGoformUrl(host, port, "Deviceinfo.xml")), true);
         if (bytes != null)
         {
             final int offset = Utils.getUrlHeaderLength(bytes);
@@ -734,25 +734,26 @@ public class ReceiverInformationMsg extends ISCPMessage
         throw new Exception("DCP receiver information not available");
     }
 
-    private void parseDcpXml(final Document doc)
+    private void parseDcpXml(final Document doc) throws Exception
     {
         final Element deviceInfo = Utils.getElement(doc, "Device_Info");
-        if (deviceInfo != null)
+        if (deviceInfo == null)
         {
-            for (Element en : Utils.getElements(deviceInfo, null))
+            throw new Exception("Device_Info section is not found");
+        }
+        for (Element en : Utils.getElements(deviceInfo, null))
+        {
+            if (en.getChildNodes().getLength() == 1)
             {
-                if (en.getChildNodes().getLength() == 1)
-                {
-                    parseDcpDeviceProperties(en);
-                }
-                else if ("DeviceZoneCapabilities".equalsIgnoreCase(en.getTagName()))
-                {
-                    parseDcpZoneCapabilities(en);
-                }
-                else if ("DeviceCapabilities".equalsIgnoreCase(en.getTagName()))
-                {
-                    parseDeviceCapabilities(en);
-                }
+                parseDcpDeviceProperties(en);
+            }
+            else if ("DeviceZoneCapabilities".equalsIgnoreCase(en.getTagName()))
+            {
+                parseDcpZoneCapabilities(en);
+            }
+            else if ("DeviceCapabilities".equalsIgnoreCase(en.getTagName()))
+            {
+                parseDeviceCapabilities(en);
             }
         }
     }
