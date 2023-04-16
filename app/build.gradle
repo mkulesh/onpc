@@ -41,4 +41,5 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
 
     implementation 'org.apache.commons:commons-text:1.9'
+    implementation 'com.jayway.jsonpath:json-path:2.8.0'
 }

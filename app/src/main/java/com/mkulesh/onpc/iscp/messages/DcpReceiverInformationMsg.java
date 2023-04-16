@@ -291,7 +291,8 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        return DCP_COMMAND_INPUT_SEL + " ?" + DCP_MSG_SEP
+        return "heos://system/register_for_change_events?enable=on" + DCP_MSG_SEP
+                + DCP_COMMAND_INPUT_SEL + " ?" + DCP_MSG_SEP
                 + DCP_COMMAND_PRESET + " ?" + DCP_MSG_SEP
                 + DCP_COMMAND_FIRMWARE_VER + " ?";
     }
