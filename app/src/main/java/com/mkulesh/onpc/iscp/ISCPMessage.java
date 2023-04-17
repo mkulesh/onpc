@@ -18,6 +18,8 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -224,6 +226,7 @@ public class ISCPMessage implements ConnectionIf
      */
     protected final static String DCP_MSG_SEP = "==>>";
     protected final static String DCP_MSG_REQ = "?";
+    public final static String DCP_HEOS_PID = "{$PLAYER_PID}";
 
     @NonNull
     public static ArrayList<String> getAcceptedDcpCodes()
@@ -262,9 +265,43 @@ public class ISCPMessage implements ConnectionIf
         return null;
     }
 
+    public interface DcpCharParameterIf extends CharParameterIf
+    {
+        @NonNull
+        String getDcpCode();
+    }
+
+    @Nullable
+    public static DcpCharParameterIf searchDcpParameter(@Nullable final String par,
+                                                        @NonNull final DcpCharParameterIf[] values)
+    {
+        for (DcpCharParameterIf t : values)
+        {
+            if (t.getDcpCode().equalsIgnoreCase(par))
+            {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public static Map<String, String> parseHeosMessage(final String heosMsg)
+    {
+        final Map<String, String> retValue = new HashMap<>();
+        final String[] heosTokens = heosMsg.split("&");
+        for (String token : heosTokens)
+        {
+            final String[] parTokens = token.split("=");
+            if (parTokens.length == 2)
+            {
+                retValue.put(parTokens[0], parTokens[1]);
+            }
+        }
+        return retValue;
+    }
+
     protected static String getDcpGoformUrl(final String host, final String port, final String s)
     {
         return "http://" + host + ":" + port + "/goform/" + s;
     }
-
 }

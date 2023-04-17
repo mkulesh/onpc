@@ -14,10 +14,15 @@
 
 package com.mkulesh.onpc.iscp;
 
+import com.jayway.jsonpath.JsonPath;
+import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
+import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
+import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
+import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
@@ -30,6 +35,8 @@ import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
+import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
+import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
 import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
@@ -80,7 +87,7 @@ public class DCPMessage
         Logging.info(this, "Accepted DCP codes: " + acceptedCodes);
     }
 
-    private void convertSingleMsg(@NonNull String dcpMsg)
+    private void convertDcpMsg(@NonNull String dcpMsg)
     {
         addISCPMsg(DcpReceiverInformationMsg.processDcpMessage(dcpMsg));
         addISCPMsg(PowerStatusMsg.processDcpMessage(dcpMsg));
@@ -106,20 +113,46 @@ public class DCPMessage
         addISCPMsg(HdmiCecMsg.processDcpMessage(dcpMsg));
     }
 
+    private void convertHeosMsg(@NonNull String heosMsg, @Nullable Integer pid)
+    {
+        try
+        {
+            final String cmd = JsonPath.read(heosMsg, "$.heos.command");
+
+            // Playback
+            addISCPMsg(ArtistNameMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(AlbumNameMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(TitleNameMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(JacketArtMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(TimeInfoMsg.processHeosMessage(cmd, heosMsg, pid));
+            addISCPMsg(PlayStatusMsg.processHeosMessage(cmd, heosMsg, pid));
+         }
+        catch (Exception ex)
+        {
+            Logging.info(this, "DCP HEOS error: " + ex.getLocalizedMessage());
+        }
+    }
+
     @NonNull
-    public ArrayList<ISCPMessage> convertInputMsg(@NonNull String dcpMsg)
+    public ArrayList<ISCPMessage> convertInputMsg(@NonNull String dcpMsg, @Nullable Integer pid)
     {
         messages.clear();
 
-        if (dcpMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMAND_PRESET))
+        if (dcpMsg.startsWith(MessageChannelDcp.DCP_HEOS_RESPONSE))
         {
-            // Process corner case: OPTPN has some time no end of message symbol
-            // and, therefore, some messages can be joined in one string.
-            // We need to split it before processing
-            dcpMsg = splitJoinedMessages(dcpMsg);
+            convertHeosMsg(dcpMsg, pid);
         }
-
-        convertSingleMsg(dcpMsg);
+        else
+        {
+            if (dcpMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMAND_PRESET))
+            {
+                // Process corner case: OPTPN has some time no end of message symbol
+                // and, therefore, some messages can be joined in one string.
+                // We need to split it before processing
+                dcpMsg = splitJoinedMessages(dcpMsg);
+            }
+            convertDcpMsg(dcpMsg);
+        }
         return messages;
     }
 
@@ -141,7 +174,7 @@ public class DCPMessage
                 final String first = dcpMsg.substring(0, maxIndex);
                 final String second = dcpMsg.substring(maxIndex);
                 final int oldSize = messages.size();
-                convertSingleMsg(second);
+                convertDcpMsg(second);
                 if (oldSize != messages.size())
                 {
                     dcpMsg = first;

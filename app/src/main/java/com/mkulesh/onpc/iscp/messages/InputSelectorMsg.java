@@ -101,7 +101,7 @@ public class InputSelectorMsg extends ZonedMessage
         DCP_AUX5("AUX5", R.string.input_selector_aux5, R.drawable.media_item_rca),
         DCP_AUX6("AUX6", R.string.input_selector_aux6, R.drawable.media_item_rca),
         DCP_AUX7("AUX7", R.string.input_selector_aux7, R.drawable.media_item_rca),
-        DCP_NET("NET", R.string.input_selector_net, R.drawable.media_item_net),
+        DCP_NET("NET", R.string.input_selector_net, R.drawable.media_item_net, true),
         DCP_BT("BT", R.string.input_selector_bluetooth, R.drawable.media_item_bluetooth),
         DCP_SOURCE("SOURCE", R.string.input_selector_source),
 

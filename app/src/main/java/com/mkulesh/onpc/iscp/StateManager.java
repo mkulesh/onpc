@@ -321,6 +321,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 catch (Exception e)
                 {
                     Logging.info(this, "cannot process message: " + e.getLocalizedMessage());
+                    for (StackTraceElement el : e.getStackTrace())
+                    {
+                        Logging.info(this, el.toString());
+                    }
                 }
 
                 if (msg instanceof BroadcastResponseMsg && deviceList != null)
@@ -630,6 +634,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private boolean processDcpMessage(ISCPMessage msg)
     {
+        final PlayStatusMsg.PlayStatus playStatus = state.playStatus;
         final State.ChangeType changed = state.update(msg);
 
         if (changed != State.ChangeType.NONE)
@@ -639,7 +644,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof ReceiverInformationMsg)
         {
+            // In order to reduce waiting time for track info, request track information first
             final String[] powerStateQueries = new String[]{
+                    TitleNameMsg.CODE,
                     DcpReceiverInformationMsg.CODE,
                     PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
             };
@@ -664,6 +671,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     ToneCommandMsg.ZONE_COMMANDS[state.getActiveZone()] : null;
             final String[] playStateQueries = new String[]{
                     // PlaybackState
+                    PlayStatusMsg.CODE,
                     InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
                     // SoundControlState
                     AudioMutingMsg.ZONE_COMMANDS[state.getActiveZone()],
@@ -712,6 +720,14 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     RadioStationNameMsg.CODE
             };
             sendQueries(tunerStatusQueries, "DCP: requesting radio playback state...");
+        }
+
+        if (msg instanceof PlayStatusMsg && playStatus != state.playStatus && state.isPlaying())
+        {
+            final String[] tunerStatusQueries = new String[]{
+                    TitleNameMsg.CODE
+            };
+            sendQueries(tunerStatusQueries, "DCP: requesting track state...");
         }
 
         return true;

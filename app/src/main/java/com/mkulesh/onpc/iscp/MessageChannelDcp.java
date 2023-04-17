@@ -19,6 +19,7 @@ import android.os.StrictMode;
 import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
 import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,7 +45,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
     // HEOS protocol
     private final static int DCP_HEOS_PORT = 1255;
     private final static String DCP_HEOS_REQUEST = "heos://";
-    private final static String DCP_HEOS_RESPONSE = "{\"heos\":";
+    final static String DCP_HEOS_RESPONSE = "{\"heos\":";
 
     private final static int CR = 0x0D;
     private final static int LF = 0x0A;
@@ -236,11 +238,19 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         }
     }
 
-    private void sendDcpHeosRequest(final String msg)
+    private void sendDcpHeosRequest(@NonNull String msg)
     {
         if (heosSocket.getSocket() == null)
         {
             return;
+        }
+        if (msg.contains(ISCPMessage.DCP_HEOS_PID))
+        {
+            if (heosPid == null)
+            {
+                return;
+            }
+            msg = msg.replace(ISCPMessage.DCP_HEOS_PID, Integer.toString(heosPid));
         }
         Logging.info(this, ">> DCP HEOS sending: " + msg + " to " + heosSocket.getHostAndPort());
         final byte[] bytes = new byte[msg.length() + 2];
@@ -331,17 +341,26 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         final String dcpMsg = new String(stringBytes, Utils.UTF_8).trim();
         final int remaining = Math.max(0, bytes.length - expectedSize - 1);
 
-        final ArrayList<ISCPMessage> messages = dcpMessage.convertInputMsg(dcpMsg);
-        Logging.info(this, "<< new DCP message " + dcpMsg
-                + " from " + onpcSocket.getHostAndPort()
-                + ", size=" + dcpMsg.length()
-                + "B, remaining=" + remaining + "B"
-                + (messages.isEmpty() ? " -> Ignored" :
-                (" -> " + (messages.size() == 1 ? messages.get(0) : messages.size() + "msg"))));
-
+        boolean processed = false;
         if (dcpMsg.startsWith(DCP_HEOS_RESPONSE))
         {
-            processHeosPid(dcpMsg);
+            processed = processHeosMsg(dcpMsg);
+        }
+
+        final ArrayList<ISCPMessage> messages = dcpMessage.convertInputMsg(dcpMsg, heosPid);
+        final boolean logIgnored = messages.size() == 1 && messages.get(0) instanceof TimeInfoMsg;
+
+        if (!logIgnored)
+        {
+            final String resStr = processed ? " -> Processed" :
+                    (messages.isEmpty() ? " -> Ignored" :
+                            (messages.size() == 1 ? " -> " + messages.get(0) :
+                                    " -> " + messages.size() + "msg"));
+            Logging.info(this, "<< new DCP message " + dcpMsg
+                    + " from " + onpcSocket.getHostAndPort()
+                    + ", size=" + dcpMsg.length()
+                    + "B, remaining=" + remaining + "B"
+                    + resStr);
         }
 
         for (ISCPMessage m : messages)
@@ -352,25 +371,40 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         return remaining;
     }
 
-    private void processHeosPid(String dcpMsg)
+    private boolean processHeosMsg(String heosMsg)
     {
-        if (heosPid != null)
-        {
-            return;
-        }
         try
         {
-            if ("player/get_players".equals(JsonPath.read(dcpMsg, "$.heos.command")) &&
-                    "success".equals(JsonPath.read(dcpMsg, "$.heos.result")))
+            final String cmd = JsonPath.read(heosMsg, "$.heos.command");
+            // Device PID
+            if (heosPid == null)
             {
-                heosPid = JsonPath.read(dcpMsg, "$.payload[0].pid");
-                Logging.info(this, "DCP HEOS PID received: " + heosPid);
+                if ("player/get_players".equals(cmd) &&
+                        "success".equals(JsonPath.read(heosMsg, "$.heos.result")))
+                {
+                    heosPid = JsonPath.read(heosMsg, "$.payload[0].pid");
+                    Logging.info(this, "DCP HEOS PID received: " + heosPid);
+                    return true;
+                }
+            }
+            // Events
+            if (heosPid != null && "event/player_now_playing_changed".equals(cmd))
+            {
+                final Map<String, String> tokens =
+                        ISCPMessage.parseHeosMessage(JsonPath.read(heosMsg, "$.heos.message"));
+                final String pidStr = tokens.get("pid");
+                if (pidStr != null && heosPid.equals(Integer.valueOf(pidStr)))
+                {
+                    sendDcpHeosRequest("heos://player/get_now_playing_media?pid=" + heosPid);
+                    return true;
+                }
             }
         }
         catch (Exception ex)
         {
             Logging.info(this, "DCP HEOS error: " + ex.getLocalizedMessage());
         }
+        return false;
     }
 
     @Override

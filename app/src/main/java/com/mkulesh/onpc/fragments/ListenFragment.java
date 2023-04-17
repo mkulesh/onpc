@@ -663,6 +663,13 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 final CdPlayerOperationCommandMsg msg = new CdPlayerOperationCommandMsg(ccdCommand);
                 prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
             }
+            else if (state.protoType == Utils.ProtoType.DCP)
+            {
+                final OperationCommandMsg.Command netCommand = (OperationCommandMsg.Command)
+                        ISCPMessage.searchParameter(opCommand, OperationCommandMsg.Command.values(), null);
+                final OperationCommandMsg msg = new OperationCommandMsg(netCommand);
+                prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
+            }
             else
             {
                 final OperationCommandMsg.Command netCommand = (OperationCommandMsg.Command)
@@ -695,13 +702,15 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             setButtonEnabled(b, true);
         }
 
-        btnRepeat.setImageResource(state.repeatStatus.getImageId());
         if (state.repeatStatus == PlayStatusMsg.RepeatStatus.DISABLE)
         {
             setButtonEnabled(btnRepeat, false);
         }
         else
         {
+            final OperationCommandMsg msg = new OperationCommandMsg(
+                    OperationCommandMsg.toggleRepeat(state.protoType, state.repeatStatus));
+            prepareButton(btnRepeat, msg, state.repeatStatus.getImageId(), msg.getCommand().getDescriptionId());
             setButtonEnabled(btnRepeat, true);
             setButtonSelected(btnRepeat, state.repeatStatus != PlayStatusMsg.RepeatStatus.OFF);
         }
@@ -712,6 +721,9 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         }
         else
         {
+            final OperationCommandMsg msg = new OperationCommandMsg(
+                    OperationCommandMsg.toggleShuffle(state.protoType, state.shuffleStatus));
+            prepareButton(btnRandom, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
             setButtonEnabled(btnRandom, true);
             setButtonSelected(btnRandom, state.shuffleStatus != PlayStatusMsg.ShuffleStatus.OFF);
         }

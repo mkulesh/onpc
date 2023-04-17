@@ -17,9 +17,11 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
+import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -33,7 +35,6 @@ public class OperationCommandMsg extends ZonedMessage
     private final static String ZONE4_CODE = "NT4";
 
     private final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
-
 
     public enum Command implements StringParameterIf
     {
@@ -83,7 +84,16 @@ public class OperationCommandMsg extends ZonedMessage
         MEMORY("MEMORY", R.string.cmd_description_memory),
         F1("F1", R.string.cmd_description_f1, R.drawable.feed_like),
         F2("F2", R.string.cmd_description_f2, R.drawable.feed_dont_like),
-        SORT("SORT", R.string.cmd_description_sort, R.drawable.cmd_sort);
+        SORT("SORT", R.string.cmd_description_sort, R.drawable.cmd_sort),
+
+        /*
+         * Denon control protocol
+         */
+        DCP_REPEAT_ALL("DCP_REPEAT_ALL", R.string.cmd_description_repeat, R.drawable.repeat_all),
+        DCP_REPEAT_ONE("DCP_REPEAT_ONE", R.string.cmd_description_repeat, R.drawable.repeat_all),
+        DCP_REPEAT_OFF("DCP_REPEAT_OFF", R.string.cmd_description_repeat, R.drawable.repeat_all),
+        DCP_SHUFFLE_ON("DCP_SHUFFLE_ON", R.string.cmd_description_random, R.drawable.cmd_random),
+        DCP_SHUFFLE_OFF("DCP_SHUFFLE_OFF", R.string.cmd_description_random, R.drawable.cmd_random);
 
         final String code;
 
@@ -131,6 +141,12 @@ public class OperationCommandMsg extends ZonedMessage
     }
 
     private final Command command;
+
+    OperationCommandMsg(EISCPMessage raw) throws Exception
+    {
+        super(raw, ZONE_COMMANDS);
+        this.command = (Command) searchParameter(data, Command.values(), null);
+    }
 
     public OperationCommandMsg(int zoneIndex, final String command)
     {
@@ -182,6 +198,70 @@ public class OperationCommandMsg extends ZonedMessage
             return false;
         default:
             return true;
+        }
+    }
+
+    /*
+     * Denon control protocol
+     * - Set Play State Command: heos://player/set_play_state?pid=player_id&state=play_state
+     * - Play Next Command: heos://player/play_next?pid=player_id
+     * - Play Previous Command: heos://player/play_previous?pid=player_id
+     * - Set Play Mode Command: heos://player/set_play_mode?pid='player_id'&repeat=on_all_or_on_one_or_off&shuffle=on_or_off
+     */
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        switch (command)
+        {
+        case PLAY: case PAUSE: case STOP:
+            return "heos://player/set_play_state?pid=" + DCP_HEOS_PID +
+                    "&state=" + command.name().toLowerCase();
+        case TRDN:
+            return "heos://player/play_previous?pid=" + DCP_HEOS_PID;
+        case TRUP:
+            return "heos://player/play_next?pid=" + DCP_HEOS_PID;
+        case DCP_REPEAT_ALL:
+            return "heos://player/set_play_mode?pid=" + DCP_HEOS_PID + "&repeat=on_all";
+        case DCP_REPEAT_ONE:
+            return "heos://player/set_play_mode?pid=" + DCP_HEOS_PID + "&repeat=on_one";
+        case DCP_REPEAT_OFF:
+            return "heos://player/set_play_mode?pid=" + DCP_HEOS_PID + "&repeat=off";
+        case DCP_SHUFFLE_ON:
+            return "heos://player/set_play_mode?pid=" + DCP_HEOS_PID + "&shuffle=on";
+        case DCP_SHUFFLE_OFF:
+            return "heos://player/set_play_mode?pid=" + DCP_HEOS_PID + "&shuffle=off";
+        }
+        return null;
+    }
+
+    public static Command toggleRepeat(Utils.ProtoType protoType, PlayStatusMsg.RepeatStatus repeatStatus)
+    {
+        if (protoType == Utils.ProtoType.ISCP)
+        {
+            return Command.REPEAT;
+        }
+        else
+        {
+            switch (repeatStatus)
+            {
+            case OFF: return Command.DCP_REPEAT_ALL;
+            case ALL: return Command.DCP_REPEAT_ONE;
+            default: return Command.DCP_REPEAT_OFF;
+            }
+        }
+    }
+
+    public static Command toggleShuffle(Utils.ProtoType protoType, PlayStatusMsg.ShuffleStatus shuffleStatus)
+    {
+        if (protoType == Utils.ProtoType.ISCP)
+        {
+            return Command.RANDOM;
+        }
+        else
+        {
+            return shuffleStatus == PlayStatusMsg.ShuffleStatus.OFF ?
+                    Command.DCP_SHUFFLE_ON : Command.DCP_SHUFFLE_OFF;
         }
     }
 }

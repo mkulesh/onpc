@@ -17,6 +17,7 @@ package com.mkulesh.onpc.iscp.messages;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
@@ -26,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * NET/USB Jacket Art (When Jacket Art is available and Output for Network Control Only)
@@ -108,8 +110,14 @@ public class JacketArtMsg extends ISCPMessage
                 // nothing to do;
                 break;
             }
-
         }
+    }
+
+    JacketArtMsg(final String url) throws Exception
+    {
+        super(0, CODE);
+        this.imageType = ImageType.URL;
+        this.url = new URL(url);
     }
 
     public ImageType getImageType()
@@ -125,6 +133,11 @@ public class JacketArtMsg extends ISCPMessage
     public byte[] getRawData()
     {
         return rawData;
+    }
+
+    public URL getUrl()
+    {
+        return url;
     }
 
     @NonNull
@@ -200,5 +213,21 @@ public class JacketArtMsg extends ISCPMessage
             Logging.info(this, "can not open image");
         }
         return cover;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String HEOS_COMMAND = "player/get_now_playing_media";
+
+    @Nullable
+    public static JacketArtMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg) throws Exception
+    {
+        if (HEOS_COMMAND.equals(command))
+        {
+            final String name = JsonPath.read(heosMsg, "$.payload.image_url");
+            return new JacketArtMsg(name);
+        }
+        return null;
     }
 }

@@ -41,7 +41,7 @@ public class RadioStationNameMsg extends ISCPMessage
 
     RadioStationNameMsg(String name, @NonNull DcpTunerModeMsg.TunerMode dcpTunerMode)
     {
-        super(-1, name);
+        super(0, name);
         this.dcpTunerMode = dcpTunerMode;
     }
 

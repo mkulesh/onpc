@@ -14,10 +14,12 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * NET/USB Album Name (variable-length, 64 ASCII letters max)
@@ -31,10 +33,31 @@ public class AlbumNameMsg extends ISCPMessage
         super(raw);
     }
 
+    AlbumNameMsg(final String name)
+    {
+        super(0, name);
+    }
+
     @NonNull
     @Override
     public String toString()
     {
         return CODE + "[" + data + "]";
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String HEOS_COMMAND = "player/get_now_playing_media";
+
+    @Nullable
+    public static AlbumNameMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg)
+    {
+        if (HEOS_COMMAND.equals(command))
+        {
+            final String name = JsonPath.read(heosMsg, "$.payload.album");
+            return new AlbumNameMsg(name);
+        }
+        return null;
     }
 }

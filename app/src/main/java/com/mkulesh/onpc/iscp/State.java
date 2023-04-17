@@ -77,6 +77,7 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -168,6 +169,7 @@ public class State implements ConnectionIf
 
     // Track info (default values are set in clearTrackInfo method)
     public Bitmap cover;
+    private URL coverUrl = null;
     public String album, artist, title, currentTime, maxTime, fileFormat;
     Integer currentTrack = null, maxTrack = null;
     private ByteArrayOutputStream coverBuffer = null;
@@ -1039,8 +1041,14 @@ public class State implements ConnectionIf
     {
         if (msg.getImageType() == JacketArtMsg.ImageType.URL)
         {
+            if (protoType == Utils.ProtoType.DCP && coverUrl != null && coverUrl.equals(msg.getUrl()))
+            {
+                Logging.info(msg, "Cover image already loaded, reload skipped");
+                return false;
+            }
             Logging.info(msg, "<< " + msg);
             cover = msg.loadFromUrl();
+            coverUrl = msg.getUrl();
             return true;
         }
         else if (msg.getRawData() != null)
@@ -1133,13 +1141,37 @@ public class State implements ConnectionIf
 
     private boolean process(PlayStatusMsg msg)
     {
-        final boolean changed = msg.getPlayStatus() != playStatus
-                || msg.getRepeatStatus() != repeatStatus
-                || msg.getShuffleStatus() != shuffleStatus;
-        playStatus = msg.getPlayStatus();
-        repeatStatus = msg.getRepeatStatus();
-        shuffleStatus = msg.getShuffleStatus();
-        return changed;
+        boolean changed;
+        switch (msg.getUpdateType())
+        {
+        case ALL:
+            changed = msg.getPlayStatus() != playStatus
+                    || msg.getRepeatStatus() != repeatStatus
+                    || msg.getShuffleStatus() != shuffleStatus;
+            playStatus = msg.getPlayStatus();
+            repeatStatus = msg.getRepeatStatus();
+            shuffleStatus = msg.getShuffleStatus();
+            return changed;
+        case PLAY_STATE:
+            changed = msg.getPlayStatus() != playStatus;
+            playStatus = msg.getPlayStatus();
+            return changed;
+        case PLAY_MODE:
+            changed = msg.getRepeatStatus() != repeatStatus
+                    || msg.getShuffleStatus() != shuffleStatus;
+            repeatStatus = msg.getRepeatStatus();
+            shuffleStatus = msg.getShuffleStatus();
+            return changed;
+        case REPEAT:
+            changed = msg.getRepeatStatus() != repeatStatus;
+            repeatStatus = msg.getRepeatStatus();
+            return changed;
+        case SHUFFLE:
+            changed = msg.getShuffleStatus() != shuffleStatus;
+            shuffleStatus = msg.getShuffleStatus();
+            return changed;
+        }
+        return false;
     }
 
     private boolean process(MenuStatusMsg msg)

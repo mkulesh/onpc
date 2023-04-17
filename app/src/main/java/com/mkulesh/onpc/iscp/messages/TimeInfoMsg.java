@@ -14,10 +14,17 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
+
+import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.utils.Utils;
+
+import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * NET/USB Time Info
@@ -45,6 +52,13 @@ public class TimeInfoMsg extends ISCPMessage
         maxTime = pars[1];
     }
 
+    TimeInfoMsg(String currentTime, String maxTime)
+    {
+        super(0, null);
+        this.currentTime = currentTime;
+        this.maxTime = maxTime;
+    }
+
     public String getCurrentTime()
     {
         return (currentTime == null || currentTime.isEmpty()) ? INVALID_TIME : currentTime;
@@ -60,5 +74,39 @@ public class TimeInfoMsg extends ISCPMessage
     public String toString()
     {
         return CODE + "[" + currentTime + "; " + maxTime + "]";
+    }
+
+    /*
+     * Denon control protocol
+     * - Player Now Playing Progress
+     * {
+     * "heos": {
+     *     "command": " event/player_now_playing_progress",
+     *     "message": "pid=player_id&cur_pos=position_ms&duration=duration_ms"
+     *     }
+     * }
+     */
+    private final static String HEOS_COMMAND = "event/player_now_playing_progress";
+
+    @Nullable
+    @SuppressLint("SimpleDateFormat")
+    public static TimeInfoMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg, @Nullable Integer pid)
+    {
+        if (HEOS_COMMAND.equals(command))
+        {
+            final Map<String, String> tokens =
+                    ISCPMessage.parseHeosMessage(JsonPath.read(heosMsg, "$.heos.message"));
+            final String pidStr = tokens.get("pid");
+            final String curPosStr = tokens.get("cur_pos");
+            final String durationStr = tokens.get("duration");
+            if (pidStr != null && pid != null && pid.equals(Integer.valueOf(pidStr)) &&
+                    curPosStr != null && durationStr != null)
+            {
+                return new TimeInfoMsg(
+                        Utils.millisToTime(Integer.parseInt(curPosStr)),
+                        Utils.millisToTime(Integer.parseInt(durationStr)));
+            }
+        }
+        return null;
     }
 }

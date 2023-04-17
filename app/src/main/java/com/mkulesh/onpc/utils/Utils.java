@@ -386,6 +386,16 @@ public class Utils
         }
     }
 
+    @SuppressLint("DefaultLocale")
+    public static String millisToTime(int millis)
+    {
+        final int inpSec = millis / 1000;
+        final int hours = inpSec / 3600;
+        final int minutes = (inpSec - hours * 3600) / 60;
+        final int seconds = inpSec - hours * 3600 - minutes * 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
     /**
      * Procedure checks whether the hard keyboard is available
      */
