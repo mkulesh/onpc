@@ -29,6 +29,7 @@ import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
@@ -142,8 +143,6 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     public final static OperationCommandMsg LIST_MSG =
             new OperationCommandMsg(OperationCommandMsg.Command.LIST);
-    public final static OperationCommandMsg RETURN_MSG =
-            new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
 
     // MessageScript processor
     private final ArrayList<MessageScriptIf> messageScripts;
@@ -656,6 +655,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         // no further message handling, if power off
         if (!state.isOn())
         {
+            state.inputType = InputSelectorMsg.InputType.NONE;
             return changed != State.ChangeType.NONE;
         }
 
@@ -683,7 +683,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     SleepSetCommandMsg.CODE,
                     DcpEcoModeMsg.CODE,
                     DcpAudioRestorerMsg.CODE,
-                    HdmiCecMsg.CODE
+                    HdmiCecMsg.CODE,
+                    // repeat InputSelectorMsg since the first request is sometime ignored
+                    InputSelectorMsg.ZONE_COMMANDS[state.getActiveZone()],
             };
 
             // After transmitting a power on COMMAND（PWON, the next COMMAND
@@ -709,6 +711,24 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                         DcpTunerModeMsg.CODE
                 };
                 sendQueries(tunerStatusQueries, "DCP: requesting tuner state...");
+            }
+            else if (((InputSelectorMsg)msg).getInputType() == InputSelectorMsg.InputType.DCP_NET)
+            {
+                state.setDcpNetTopLayer();
+            }
+        }
+
+        if (msg instanceof DcpMediaContainerMsg)
+        {
+            final DcpMediaContainerMsg mc = (DcpMediaContainerMsg) msg;
+            final int currItems = mc.getStart() + mc.getItems().size();
+            if (currItems < mc.getCount() && mc.getCid().equals(state.mediaListCid))
+            {
+                Logging.info(this, "Requesting DCP media list: currItems=" + currItems + ", count=" + mc.getCount());
+                final DcpMediaContainerMsg newMc = new DcpMediaContainerMsg(mc);
+                newMc.setAid("");
+                newMc.setStart(currItems);
+                sendMessage(newMc);
             }
         }
 
@@ -859,6 +879,22 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             messageChannel.sendMessage(LIST_MSG.getCmdMsg());
         }
+    }
+
+    public void sendDcpMediaCmd(DcpMediaContainerMsg mc, int aid)
+    {
+        final DcpMediaContainerMsg mc1 = new DcpMediaContainerMsg(mc);
+        mc1.setAid(Integer.toString(aid));
+        messageChannel.sendMessage(mc1.getCmdMsg());
+    }
+
+    public ISCPMessage getReturnMessage()
+    {
+        if (state.protoType == Utils.ProtoType.DCP && state.dcpMediaPath.size() > 1)
+        {
+            return state.dcpMediaPath.get(state.dcpMediaPath.size() - 2);
+        }
+        return new OperationCommandMsg(OperationCommandMsg.Command.RETURN);
     }
 
     public void inform(BroadcastResponseMsg message)

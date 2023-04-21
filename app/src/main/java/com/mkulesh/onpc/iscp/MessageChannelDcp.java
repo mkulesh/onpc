@@ -314,10 +314,10 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         if (expectedSize <= 0)
         {
             final String logMsg = new String(bytes, Utils.UTF_8);
-            Logging.info(this, "<< DCP warning: end of message not found: " + logMsg);
             if (logMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMAND_PRESET))
             {
                 // A corner case: OPTPN has some time no end of message symbol
+                Logging.info(this, "<< DCP warning: end of message not found: " + logMsg);
                 expectedSize = logMsg.length();
             }
             else
@@ -379,8 +379,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
             // Device PID
             if (heosPid == null)
             {
-                if ("player/get_players".equals(cmd) &&
-                        "success".equals(JsonPath.read(heosMsg, "$.heos.result")))
+                if ("player/get_players".equals(cmd))
                 {
                     heosPid = JsonPath.read(heosMsg, "$.payload[0].pid");
                     Logging.info(this, "DCP HEOS PID received: " + heosPid);

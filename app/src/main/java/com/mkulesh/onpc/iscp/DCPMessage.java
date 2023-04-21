@@ -20,6 +20,7 @@ import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
 import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
@@ -44,6 +45,7 @@ import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -117,19 +119,42 @@ public class DCPMessage
     {
         try
         {
+            final String result = JsonPath.read(heosMsg, "$.heos.result");
+            if (!"success".equals(result))
+            {
+                final Map<String, String> tokens =
+                        ISCPMessage.parseHeosMessage(JsonPath.read(heosMsg, "$.heos.message"));
+                Logging.info(this, "DCP HEOS message ignored due to wrong result: " + tokens);
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            // nothing to do
+        }
+
+        try
+        {
             final String cmd = JsonPath.read(heosMsg, "$.heos.command");
+            final Map<String, String> tokens =
+                    ISCPMessage.parseHeosMessage(JsonPath.read(heosMsg, "$.heos.message"));
+
+            addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(cmd, heosMsg));
 
             // Playback
             addISCPMsg(ArtistNameMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(AlbumNameMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(TitleNameMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(JacketArtMsg.processHeosMessage(cmd, heosMsg));
-            addISCPMsg(TimeInfoMsg.processHeosMessage(cmd, heosMsg, pid));
-            addISCPMsg(PlayStatusMsg.processHeosMessage(cmd, heosMsg, pid));
+            addISCPMsg(TimeInfoMsg.processHeosMessage(cmd, heosMsg, tokens, pid));
+            addISCPMsg(PlayStatusMsg.processHeosMessage(cmd, heosMsg, tokens, pid));
+
+            // Media list
+            addISCPMsg(DcpMediaContainerMsg.processHeosMessage(cmd, heosMsg, tokens));
          }
         catch (Exception ex)
         {
-            Logging.info(this, "DCP HEOS error: " + ex.getLocalizedMessage());
+            Logging.info(this, "DCP HEOS error: " + ex.getLocalizedMessage() + ", message=" + heosMsg);
         }
     }
 

@@ -43,6 +43,14 @@
     <item
         android:id="@+id/playlist_track_menu"
         android:title="@string/cmd_track_menu" />
+
+    <item
+        android:id="@+id/cmd_dcp_replace_and_play"
+        android:title="@string/playlist_replace_and_play" />
+    <item
+        android:id="@+id/cmd_dcp_add_to_end"
+        android:title="@string/playlist_add" />
+
     <item
         android:id="@+id/cmd_playback_mode"
         android:title="@string/medialist_playback_mode" />

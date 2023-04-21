@@ -18,6 +18,7 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Select Network Service directly only when NET selector is selected.
@@ -27,6 +28,13 @@ public class NetworkServiceMsg extends ISCPMessage
     public final static String CODE = "NSV";
 
     private final ServiceType service;
+
+    NetworkServiceMsg(EISCPMessage raw) throws Exception
+    {
+        super(raw);
+        final String cd = data.substring(0, data.length() - 1);
+        this.service = (ServiceType) searchDcpParameter(cd, ServiceType.values());
+    }
 
     public NetworkServiceMsg(@NonNull final ServiceType service)
     {
@@ -69,12 +77,28 @@ public class NetworkServiceMsg extends ISCPMessage
     {
         for (ServiceType t : ServiceType.values())
         {
-            if (t.getName().toUpperCase().equals(name.toUpperCase()))
+            if (t.getName().equalsIgnoreCase(name))
             {
                 return t;
             }
         }
         return ServiceType.UNKNOWN;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String HEOS_COMMAND = "heos://browse/browse";
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (service != null)
+        {
+            return "heos://" + HEOS_COMMAND + "?sid=" + service.getDcpCode().substring(2);
+        }
+        return null;
     }
 }
 

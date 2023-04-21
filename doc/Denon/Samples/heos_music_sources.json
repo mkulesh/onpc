@@ -1,0 +1,86 @@
+{
+  "heos": {
+    "command": "browse/get_music_sources",
+    "result": "success",
+    "message": ""
+  },
+  "payload": [
+    {
+      "name": "Amazon",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/amazon.png",
+      "type": "music_service",
+      "sid": 13,
+      "available": "false"
+    },
+    {
+      "name": "Deezer",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/deezer.png",
+      "type": "music_service",
+      "sid": 5,
+      "available": "false"
+    },
+    {
+      "name": "Napster",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/napster.png",
+      "type": "music_service",
+      "sid": 6,
+      "available": "false"
+    },
+    {
+      "name": "SoundCloud",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/soundcloud.png",
+      "type": "music_service",
+      "sid": 9,
+      "available": "false"
+    },
+    {
+      "name": "Tidal",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/tidal.png",
+      "type": "music_service",
+      "sid": 10,
+      "available": "false"
+    },
+    {
+      "name": "TuneIn",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/tunein.png",
+      "type": "music_service",
+      "sid": 3,
+      "available": "false"
+    },
+    {
+      "name": "Local Music",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/musicsource_logo_servers.png",
+      "type": "heos_server",
+      "sid": 1024,
+      "available": "true"
+    },
+    {
+      "name": "Playlists",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/musicsource_logo_playlists.png",
+      "type": "heos_service",
+      "sid": 1025,
+      "available": "true"
+    },
+    {
+      "name": "History",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/musicsource_logo_history.png",
+      "type": "heos_service",
+      "sid": 1026,
+      "available": "true"
+    },
+    {
+      "name": "AUX Input",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/musicsource_logo_aux.png",
+      "type": "heos_service",
+      "sid": 1027,
+      "available": "true"
+    },
+    {
+      "name": "Favorites",
+      "image_url": "https://production.ws.skyegloup.com:443/media/images/service/logos/musicsource_logo_favorites.png",
+      "type": "heos_service",
+      "sid": 1028,
+      "available": "true"
+    }
+  ]
+}

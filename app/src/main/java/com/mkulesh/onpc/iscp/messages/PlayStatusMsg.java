@@ -270,7 +270,8 @@ public class PlayStatusMsg extends ISCPMessage
     private final static String HEOS_COMMAND_MODE = "player/get_play_mode";
 
     @Nullable
-    public static PlayStatusMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg, @Nullable Integer pid)
+    public static PlayStatusMsg processHeosMessage(@NonNull final String command,
+        @NonNull final String heosMsg, @NonNull final Map<String, String> tokens, @Nullable Integer pid)
     {
         if (HEOS_EVENT_STATE.equals(command) ||
                 HEOS_EVENT_REPEAT.equals(command) ||
@@ -278,8 +279,6 @@ public class PlayStatusMsg extends ISCPMessage
                 HEOS_COMMAND_STATE.equals(command) ||
                 HEOS_COMMAND_MODE.equals(command))
         {
-            final Map<String, String> tokens =
-                    ISCPMessage.parseHeosMessage(JsonPath.read(heosMsg, "$.heos.message"));
             final String pidStr = tokens.get("pid");
             if (pidStr != null && pid != null && pid.equals(Integer.valueOf(pidStr)))
             {

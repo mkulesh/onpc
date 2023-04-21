@@ -29,6 +29,7 @@ import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
@@ -85,6 +86,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.annotation.DrawableRes;
@@ -116,7 +118,7 @@ public class State implements ConnectionIf
     public String receiverInformation = "";
     String friendlyName = null;
     public Map<String, String> deviceProperties = new HashMap<>();
-    public HashMap<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
+    public Map<String, ReceiverInformationMsg.NetworkService> networkServices = new TreeMap<>();
     private final int activeZone;
     private List<ReceiverInformationMsg.Zone> zones = new ArrayList<>();
     private final List<ReceiverInformationMsg.Selector> deviceSelectors = new ArrayList<>();
@@ -222,6 +224,8 @@ public class State implements ConnectionIf
     // Denon settings
     public DcpEcoModeMsg.Status dcpEcoMode = DcpEcoModeMsg.Status.NONE;
     public DcpAudioRestorerMsg.Status dcpAudioRestorer = DcpAudioRestorerMsg.Status.NONE;
+    public final List<DcpMediaContainerMsg> dcpMediaPath = new ArrayList<>();
+    public String mediaListCid = "";
 
     // Popup
     public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
@@ -711,6 +715,10 @@ public class State implements ConnectionIf
         if (msg instanceof DcpAudioRestorerMsg)
         {
             return isCommonChange(process((DcpAudioRestorerMsg) msg));
+        }
+        if (msg instanceof DcpMediaContainerMsg)
+        {
+            return process((DcpMediaContainerMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
 
         return ChangeType.NONE;
@@ -1372,16 +1380,7 @@ public class State implements ConnectionIf
                 // into serviceItems list by any NET ListInfoMsg (is ReceiverInformationMsg exists)
                 if (!networkServices.isEmpty())
                 {
-                    serviceItems.clear();
-                    for (final String code : networkServices.keySet())
-                    {
-                        final ServiceType service =
-                                (ServiceType) ISCPMessage.searchParameter(code, ServiceType.values(), ServiceType.UNKNOWN);
-                        if (service != ServiceType.UNKNOWN)
-                        {
-                            serviceItems.add(new NetworkServiceMsg(service));
-                        }
-                    }
+                    createServiceItems();
                 }
                 else // fallback: parse listData from ListInfoMsg
                 {
@@ -1415,7 +1414,7 @@ public class State implements ConnectionIf
                 final ListInfoMsg cmdMessage = new ListInfoMsg(msg.getLineInfo(), msg.getListedData());
                 final XmlListItemMsg nsMsg = new XmlListItemMsg(
                         msg.getLineInfo(), 0, msg.getListedData(),
-                        XmlListItemMsg.Icon.UNKNOWN, true, cmdMessage.getCmdMsg());
+                        XmlListItemMsg.Icon.UNKNOWN, true, cmdMessage);
                 if (nsMsg.getMessageId() < mediaItems.size())
                 {
                     mediaItems.set(nsMsg.getMessageId(), nsMsg);
@@ -1437,6 +1436,20 @@ public class State implements ConnectionIf
             return false;
         }
         return false;
+    }
+
+    public void createServiceItems()
+    {
+        serviceItems.clear();
+        for (final String code : networkServices.keySet())
+        {
+            final ServiceType service =
+                    (ServiceType) ISCPMessage.searchParameter(code, ServiceType.values(), ServiceType.UNKNOWN);
+            if (service != ServiceType.UNKNOWN)
+            {
+                serviceItems.add(new NetworkServiceMsg(service));
+            }
+        }
     }
 
     private boolean process(CustomPopupMsg msg)
@@ -1516,6 +1529,11 @@ public class State implements ConnectionIf
         }
         if (!isPlaybackMode())
         {
+            if (protoType == Utils.ProtoType.DCP &&
+                    inputType == InputSelectorMsg.InputType.DCP_NET)
+            {
+                return layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP;
+            }
             if (serviceType == ServiceType.NET &&
                     layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP)
             {
@@ -1867,6 +1885,24 @@ public class State implements ConnectionIf
             return changed ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
 
+        // Network services
+        if (msg.updateType == DcpReceiverInformationMsg.UpdateType.NETWORK_SERVICES)
+        {
+            if (networkServices.isEmpty())
+            {
+                Logging.info(this, "    Updating network services: " + networkServices.size());
+                networkServices = msg.getNetworkServices();
+                return ChangeType.RECEIVER_INFO;
+            }
+            else
+            {
+                Logging.info(this, "    Set network top layer: " + networkServices.size());
+                clearItems();
+                setDcpNetTopLayer();
+                return ChangeType.MEDIA_ITEMS;
+            }
+        }
+
         // Firmware version
         if (msg.updateType == DcpReceiverInformationMsg.UpdateType.FIRMWARE_VER && msg.getFirmwareVer() != null)
         {
@@ -1897,5 +1933,53 @@ public class State implements ConnectionIf
         final boolean changed = dcpAudioRestorer != msg.getStatus();
         dcpAudioRestorer = msg.getStatus();
         return changed;
+    }
+
+    private boolean process(DcpMediaContainerMsg msg)
+    {
+        synchronized (mediaItems)
+        {
+            // Media items
+            if (msg.getStart() == 0)
+            {
+                mediaItems.clear();
+                // Media path
+                final List<DcpMediaContainerMsg> tmpPath = new ArrayList<>();
+                for (DcpMediaContainerMsg pe : dcpMediaPath)
+                {
+                    if (pe.keyEqual(msg))
+                    {
+                        break;
+                    }
+                    tmpPath.add(pe);
+                }
+                tmpPath.add(new DcpMediaContainerMsg(msg));
+                dcpMediaPath.clear();
+                dcpMediaPath.addAll(tmpPath);
+                Logging.info(this, "Dcp media path: " + dcpMediaPath);
+                // Info
+                layerInfo = msg.getLayerInfo();
+                mediaListCid = msg.getCid();
+            }
+            else if (!msg.getCid().equals(mediaListCid))
+            {
+                return false;
+            }
+            mediaItems.addAll(msg.getItems());
+            numberOfItems = mediaItems.size();
+            return true;
+        }
+    }
+
+    public void setDcpNetTopLayer()
+    {
+        layerInfo = ListTitleInfoMsg.LayerInfo.NET_TOP;
+        synchronized (mediaItems)
+        {
+            mediaItems.clear();
+        }
+        createServiceItems();
+        numberOfItems = serviceItems.size();
+        dcpMediaPath.clear();
     }
 }

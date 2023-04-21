@@ -90,12 +90,11 @@ public class TimeInfoMsg extends ISCPMessage
 
     @Nullable
     @SuppressLint("SimpleDateFormat")
-    public static TimeInfoMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg, @Nullable Integer pid)
+    public static TimeInfoMsg processHeosMessage(@NonNull final String command,
+        @NonNull final String heosMsg, @NonNull final Map<String, String> tokens, @Nullable Integer pid)
     {
         if (HEOS_COMMAND.equals(command))
         {
-            final Map<String, String> tokens =
-                    ISCPMessage.parseHeosMessage(JsonPath.read(heosMsg, "$.heos.message"));
             final String pidStr = tokens.get("pid");
             final String curPosStr = tokens.get("cur_pos");
             final String durationStr = tokens.get("duration");

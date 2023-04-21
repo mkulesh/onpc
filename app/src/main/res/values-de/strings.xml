@@ -444,6 +444,11 @@
     <string name="service_play_fi">Play-Fi</string>
     <string name="service_net">Netzwerk</string>
     <string name="service_bluetooth">Bluetooth</string>
+    <string name="service_playlist">Play List</string>
+    <string name="service_soundcloud">Soundcloud</string>
+    <string name="service_local_music">Local Music</string>
+    <string name="service_history">History</string>
+    <string name="service_aux_input">AUX Input</string>
 
     <string name="playlist_options">Abspielliste</string>
     <string name="playlist_add">Hinzufügen</string>

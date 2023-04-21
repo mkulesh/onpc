@@ -207,6 +207,7 @@ public class OperationCommandMsg extends ZonedMessage
      * - Play Next Command: heos://player/play_next?pid=player_id
      * - Play Previous Command: heos://player/play_previous?pid=player_id
      * - Set Play Mode Command: heos://player/set_play_mode?pid='player_id'&repeat=on_all_or_on_one_or_off&shuffle=on_or_off
+     * - Get Music Sources Command: heos://browse/get_music_sources
      */
     @Nullable
     @Override
@@ -231,6 +232,9 @@ public class OperationCommandMsg extends ZonedMessage
             return "heos://player/set_play_mode?pid=" + DCP_HEOS_PID + "&shuffle=on";
         case DCP_SHUFFLE_OFF:
             return "heos://player/set_play_mode?pid=" + DCP_HEOS_PID + "&shuffle=off";
+        case TOP:
+        case RETURN:
+            return "heos://browse/get_music_sources";
         }
         return null;
     }

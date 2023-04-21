@@ -62,7 +62,7 @@ class PopupManager
                     {
                         if (activity.isConnected())
                         {
-                            activity.getStateManager().sendMessage(StateManager.RETURN_MSG);
+                            activity.getStateManager().sendMessage(activity.getStateManager().getReturnMessage());
                         }
                         d.dismiss();
                     })

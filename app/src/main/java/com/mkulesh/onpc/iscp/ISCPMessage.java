@@ -254,12 +254,20 @@ public class ISCPMessage implements ConnectionIf
         if (dcpMsg.startsWith(dcpCommand))
         {
             final String par = dcpMsg.substring(dcpCommand.length()).trim();
-            for (DcpStringParameterIf t : values)
+            return searchDcpParameter(par, values);
+        }
+        return null;
+    }
+
+    @Nullable
+    public static DcpStringParameterIf searchDcpParameter(@Nullable final String par,
+                                                          @NonNull final DcpStringParameterIf[] values)
+    {
+        for (DcpStringParameterIf t : values)
+        {
+            if (t.getDcpCode().equalsIgnoreCase(par))
             {
-                if (t.getDcpCode().equalsIgnoreCase(par))
-                {
-                    return t;
-                }
+                return t;
             }
         }
         return null;

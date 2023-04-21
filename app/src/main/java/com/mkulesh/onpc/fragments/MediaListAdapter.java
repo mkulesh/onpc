@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
@@ -126,6 +127,12 @@ final class MediaListAdapter extends ArrayAdapter<ISCPMessage>
             Utils.setImageViewColorAttr(mediaFragment.activity, icon,
                     isPlaying ? R.attr.colorAccent : R.attr.colorButtonDisabled);
             tvTitle.setText(msg.getTunerMode().getDescriptionId());
+        }
+        else if (item instanceof DcpMediaContainerMsg)
+        {
+            icon.setImageResource(OperationCommandMsg.Command.RETURN.getImageId());
+            Utils.setImageViewColorAttr(mediaFragment.activity, icon, android.R.attr.textColor);
+            tvTitle.setText(OperationCommandMsg.Command.RETURN.getDescriptionId());
         }
 
         return convertView;

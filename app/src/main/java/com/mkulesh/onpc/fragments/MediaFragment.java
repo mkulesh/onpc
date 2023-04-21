@@ -33,6 +33,7 @@ import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
+import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
@@ -91,7 +92,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 if (!activity.getStateManager().getState().isTopLayer())
                 {
-                    activity.getStateManager().sendMessage(StateManager.RETURN_MSG);
+                    activity.getStateManager().sendMessage(activity.getStateManager().getReturnMessage());
                 }
             }
         });
@@ -189,6 +190,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.cmd_playback_mode).setVisible(isPlaying && !state.isPlaybackMode());
 
                     menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
+
+                    if (selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg)
+                    {
+                        final DcpMediaContainerMsg mc = (DcpMediaContainerMsg) selectedItem.getCmdMessage();
+                        menu.findItem(R.id.cmd_dcp_replace_and_play).setVisible(mc.isContainer() && mc.isPlayable());
+                        menu.findItem(R.id.cmd_dcp_add_to_end).setVisible(mc.isContainer() && mc.isPlayable());
+                    }
                 }
                 else if (item instanceof PresetCommandMsg)
                 {
@@ -213,6 +221,8 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final State state = activity.getStateManager().getState();
             final int idx = selectedItem.getMessageId();
             final String title = selectedItem.getTitle();
+            final DcpMediaContainerMsg dcpCmd = (selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg) ?
+                    (DcpMediaContainerMsg) selectedItem.getCmdMessage() : null;
             Logging.info(this, "Context menu '" + item.getTitle() + "'; " + selectedItem);
             selectedItem = null;
             switch (item.getItemId())
@@ -263,6 +273,18 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 return true;
             case R.id.cmd_shortcut_create:
                 addShortcut(state, title, title);
+                return true;
+            case R.id.cmd_dcp_replace_and_play:
+                if (dcpCmd != null)
+                {
+                    activity.getStateManager().sendDcpMediaCmd(dcpCmd, 4 /* replace and play */);
+                }
+                return true;
+            case R.id.cmd_dcp_add_to_end:
+                if (dcpCmd != null)
+                {
+                    activity.getStateManager().sendDcpMediaCmd(dcpCmd, 3 /* add to end */);
+                }
                 return true;
             }
         }
@@ -473,6 +495,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.clearChoices();
         listView.invalidate();
         final List<XmlListItemMsg> mediaItems = state.cloneMediaItems();
+        if (state.protoType == Utils.ProtoType.DCP && !state.isTopLayer() && mediaItems.isEmpty())
+        {
+            mediaItems.add(new XmlListItemMsg(0,0,
+                    getString(R.string.medialist_no_items), XmlListItemMsg.Icon.UNKNOWN,
+                    false, null));
+        }
+
         final List<NetworkServiceMsg> serviceItems = state.cloneServiceItems();
 
         ArrayList<ISCPMessage> newItems = new ArrayList<>();
@@ -548,7 +577,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         // Add "Return" button if necessary
         if (!state.isTopLayer() && !activity.getConfiguration().isBackAsReturn())
         {
-            newItems.add(0, StateManager.RETURN_MSG);
+            newItems.add(0, activity.getStateManager().getReturnMessage());
         }
 
         // Add "Playback" indication if necessary
@@ -638,7 +667,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             }
             if (state.numberOfItems > 0)
             {
-                title.append(" | ").append(activity.getResources().getString(R.string.medialist_items)).append(": ");
+                if (title.length() > 0)
+                {
+                    title.append(" | ");
+                }
+                title.append(activity.getResources().getString(R.string.medialist_items)).append(": ");
                 if (filteredItems != state.numberOfItems)
                 {
                     title.append(filteredItems).append("/");
@@ -648,8 +681,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else
         {
-            title.append(state.titleBar).append(" | ").append(
-                    activity.getResources().getString(R.string.medialist_no_items));
+            title.append(state.titleBar);
+            if (title.length() > 0)
+            {
+                title.append(" | ");
+            }
+            title.append(activity.getResources().getString(R.string.medialist_no_items));
         }
         setTitleLayout(true);
         titleBar.setTag("VISIBLE");
@@ -672,7 +709,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         moveFrom = -1;
         mediaFilter.setVisibility(false, true);
         updateTitle(stateManager.getState(), true);
-        stateManager.sendMessage(StateManager.RETURN_MSG);
+        stateManager.sendMessage(activity.getStateManager().getReturnMessage());
         return true;
     }
 

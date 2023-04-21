@@ -14,6 +14,7 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
@@ -22,6 +23,9 @@ import com.mkulesh.onpc.utils.Utils;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +56,9 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     // Firmware
     public final static String DCP_COMMAND_FIRMWARE_VER = "SSINFFRM";
 
+    // Get Music Sources Command: heos://browse/get_music_sources
+    private final static String HEOS_COMMAND_NET = "browse/get_music_sources";
+
     @NonNull
     public static ArrayList<String> getAcceptedDcpCodes()
     {
@@ -70,6 +77,7 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         MAX_VOLUME,
         TONE_CONTROL,
         PRESET,
+        NETWORK_SERVICES,
         FIRMWARE_VER
     }
 
@@ -78,6 +86,7 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     private ReceiverInformationMsg.Zone maxVolumeZone = null;
     private ReceiverInformationMsg.ToneControl toneControl = null;
     private ReceiverInformationMsg.Preset preset = null;
+    private Map<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
     private String firmwareVer = null;
 
     DcpReceiverInformationMsg(EISCPMessage raw) throws Exception
@@ -86,32 +95,39 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         this.updateType = UpdateType.NONE;
     }
 
-    public DcpReceiverInformationMsg(final ReceiverInformationMsg.Selector selector)
+    public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.Selector selector)
     {
         super(-1, "");
         this.updateType = UpdateType.SELECTOR;
         this.selector = selector;
     }
 
-    public DcpReceiverInformationMsg(ReceiverInformationMsg.Zone zone)
+    public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.Zone zone)
     {
         super(-1, "");
         this.updateType = UpdateType.MAX_VOLUME;
         maxVolumeZone = zone;
     }
 
-    public DcpReceiverInformationMsg(final ReceiverInformationMsg.ToneControl toneControl)
+    public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.ToneControl toneControl)
     {
         super(-1, "");
         this.updateType = UpdateType.TONE_CONTROL;
         this.toneControl = toneControl;
     }
 
-    public DcpReceiverInformationMsg(final ReceiverInformationMsg.Preset preset)
+    public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.Preset preset)
     {
         super(-1, "");
         this.updateType = UpdateType.PRESET;
         this.preset = preset;
+    }
+
+    public DcpReceiverInformationMsg(final Map<String, ReceiverInformationMsg.NetworkService> networkServices)
+    {
+        super(-1, "");
+        this.updateType = UpdateType.NETWORK_SERVICES;
+        this.networkServices = networkServices;
     }
 
     public DcpReceiverInformationMsg(final UpdateType type, final String par)
@@ -141,6 +157,11 @@ public class DcpReceiverInformationMsg extends ISCPMessage
         return preset;
     }
 
+    public Map<String, ReceiverInformationMsg.NetworkService> getNetworkServices()
+    {
+        return networkServices;
+    }
+
     public String getFirmwareVer()
     {
         return firmwareVer;
@@ -155,6 +176,7 @@ public class DcpReceiverInformationMsg extends ISCPMessage
                 (maxVolumeZone != null ? "MaxVol=" + maxVolumeZone.volMax + " " : "") +
                 (toneControl != null ? "ToneCtrl=" + toneControl + " " : "") +
                 (preset != null ? "Preset=" + preset + " " : "") +
+                (!networkServices.isEmpty() ? "NetworkServices=" + networkServices.size() + " " : "") +
                 (firmwareVer != null ? "Firmware=" + firmwareVer + " " : "");
     }
 
@@ -288,10 +310,44 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     }
 
     @Nullable
+    public static DcpReceiverInformationMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg)
+    {
+        if (HEOS_COMMAND_NET.equals(command))
+        {
+            final List<String> names = JsonPath.read(heosMsg, "$.payload[*].name");
+            final List<Integer> sids = JsonPath.read(heosMsg, "$.payload[*].sid");
+            if (names.size() != sids.size())
+            {
+                Logging.info(DcpReceiverInformationMsg.class, "Inconsistent size of manes and sids");
+                return null;
+            }
+            final Map<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
+            for (int i = 0; i < names.size(); i++)
+            {
+                final String id = "HS" + sids.get(i);
+                final ServiceType s = (ServiceType) searchParameter(id, ServiceType.values(), null);
+                if (s == null)
+                {
+                    Logging.info(DcpReceiverInformationMsg.class, "Service " + names.get(i) + " is not supported");
+                    continue;
+                }
+                networkServices.put(id, new ReceiverInformationMsg.NetworkService(
+                        id, names.get(i), ReceiverInformationMsg.ALL_ZONES, false, false));
+            }
+            if (!networkServices.isEmpty())
+            {
+                return new DcpReceiverInformationMsg(networkServices);
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
         return "heos://system/register_for_change_events?enable=on" + DCP_MSG_SEP
+                + "heos://" + HEOS_COMMAND_NET + DCP_MSG_SEP
                 + DCP_COMMAND_INPUT_SEL + " ?" + DCP_MSG_SEP
                 + DCP_COMMAND_PRESET + " ?" + DCP_MSG_SEP
                 + DCP_COMMAND_FIRMWARE_VER + " ?";

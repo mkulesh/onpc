@@ -18,6 +18,7 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 /*
@@ -33,8 +34,9 @@ import androidx.annotation.StringRes;
  * "F0": USB/USB(Front), "F1: USB(Rear), "F2":Internet Radio
  * "F3":NET, "F4":Bluetooth
  */
-public enum ServiceType implements ISCPMessage.StringParameterIf
+public enum ServiceType implements ISCPMessage.DcpStringParameterIf
 {
+    // Integra
     // Note: some names are device-specific, see comments
     // We use the names when ListInfoMsg is processed as a fallback is no ReceiverInformationMsg
     // exists for given device
@@ -46,7 +48,7 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     PANDORA("04", "Pandora Internet Radio", R.string.service_pandora, R.drawable.media_item_pandora), // TX-NR616
     RHAPSODY("05", "Rhapsody", R.string.service_rhapsody), // TX-NR616
     LAST_FM("06", "Last.fm Internet Radio", R.string.service_last, R.drawable.media_item_lastfm), // TX-8050, TX-NR616
-    NAPSTER("07", "Napster", R.string.service_napster),
+    NAPSTER("07", "Napster", R.string.service_napster, R.drawable.media_item_napster),
     SLACKER("08", "Slacker Personal Radio", R.string.service_slacker), // TX-NR616
     MEDIAFLY("09", "Mediafly", R.string.service_mediafly),
     SPOTIFY("0A", "Spotify", R.string.service_spotify, R.drawable.media_item_spotify), // TX-NR616
@@ -73,7 +75,25 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     USB_REAR("F1", "USB(Rear)", R.string.service_usb_rear, R.drawable.media_item_usb),
     INTERNET_RADIO("F2", "Internet radio", R.string.service_internet_radio, R.drawable.media_item_radio_digital),
     NET("F3", "NET", R.string.service_net, R.drawable.media_item_net),
-    BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth, R.drawable.media_item_bluetooth);
+    BLUETOOTH("F4", "Bluetooth", R.string.service_bluetooth, R.drawable.media_item_bluetooth),
+
+    // Denon
+    DCP_PANDORA("HS1", "Pandora", R.string.service_pandora, R.drawable.media_item_pandora),
+    DCP_RHAPSODY("HS2", "Rhapsody", R.string.service_rhapsody),
+    DCP_TUNEIN("HS3", "TuneIn", R.string.service_tunein_radio, R.drawable.media_item_tunein),
+    DCP_SPOTIFY("HS4", "Spotify", R.string.service_spotify, R.drawable.media_item_spotify),
+    DCP_DEEZER("HS5", "Deezer", R.string.service_deezer, R.drawable.media_item_deezer),
+    DCP_NAPSTER("HS6", "Napster", R.string.service_napster, R.drawable.media_item_napster),
+    DCP_IHEARTRADIO("HS7", "iHeartRadio", R.string.service_iheartradio),
+    DCP_SIRIUSXM("HS8", "Sirius XM", R.string.service_siriusxm),
+    DCP_SOUNDCLOUD("HS9", "Soundcloud", R.string.service_soundcloud, R.drawable.media_item_soundcloud),
+    DCP_TIDAL("HS10", "Tidal", R.string.service_tidal, R.drawable.media_item_tidal),
+    DCP_AMAZON_MUSIC("HS13", "Amazon Music", R.string.service_amazon_music, R.drawable.media_item_amazon),
+    DCP_LOCAL("HS1024", "Local Music", R.string.service_local_music, R.drawable.media_item_folder),
+    DCP_PLAYLIST("HS1025", "Playlists", R.string.service_playlist, R.drawable.media_item_playqueue),
+    DCP_HISTORY("HS1026", "History", R.string.service_history, R.drawable.media_item_history),
+    DCP_AUX("HS1027", "AUX Input", R.string.service_aux_input, R.drawable.media_item_aux),
+    DCP_FAVORITE("HS1028", "Favorites", R.string.service_favorite, R.drawable.media_item_favorite);
 
     private final String code;
     private final String name;
@@ -103,6 +123,13 @@ public enum ServiceType implements ISCPMessage.StringParameterIf
     public String getCode()
     {
         return code;
+    }
+
+    @NonNull
+    @Override
+    public String getDcpCode()
+    {
+        return code.startsWith("HS") ? code : "N/A";
     }
 
     public String getName()

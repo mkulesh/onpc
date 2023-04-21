@@ -33,7 +33,8 @@ public class XmlListItemMsg extends ISCPMessage
         FOLDER("29", R.drawable.media_item_folder),
         MUSIC("2d", R.drawable.media_item_music),
         SEARCH("2F", R.drawable.media_item_search),
-        PLAY("36", R.drawable.media_item_play);
+        PLAY("36", R.drawable.media_item_play),
+        FOLDER_PLAY("HS01", R.drawable.media_item_folder_play);
         final String code;
 
         @DrawableRes
@@ -63,7 +64,7 @@ public class XmlListItemMsg extends ISCPMessage
     private final String iconId;
     private final Icon icon;
     private final boolean selectable;
-    private final EISCPMessage cmdMessage;
+    private final ISCPMessage cmdMessage;
 
     XmlListItemMsg(final int id, final int numberOfLayers, final Element src)
     {
@@ -78,7 +79,7 @@ public class XmlListItemMsg extends ISCPMessage
     }
 
     public XmlListItemMsg(final int id, final int numberOfLayers, final String title,
-                          final Icon icon, final boolean selectable, final EISCPMessage cmdMessage)
+                          final Icon icon, final boolean selectable, final ISCPMessage cmdMessage)
     {
         super(id, null);
         this.numberOfLayers = numberOfLayers;
@@ -129,7 +130,7 @@ public class XmlListItemMsg extends ISCPMessage
     {
         if (cmdMessage != null)
         {
-            return cmdMessage;
+            return cmdMessage.getCmdMsg();
         }
         else
         {
@@ -137,5 +138,10 @@ public class XmlListItemMsg extends ISCPMessage
                     String.format("%04x", getMessageId()) + "----";
             return new EISCPMessage("NLA", param);
         }
+    }
+
+    public ISCPMessage getCmdMessage()
+    {
+        return cmdMessage;
     }
 }
