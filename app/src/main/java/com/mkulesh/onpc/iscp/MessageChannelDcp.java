@@ -17,6 +17,7 @@ package com.mkulesh.onpc.iscp;
 import android.os.StrictMode;
 
 import com.jayway.jsonpath.JsonPath;
+import com.mkulesh.onpc.iscp.messages.DCPMessageFactory;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
@@ -45,7 +46,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
     // HEOS protocol
     private final static int DCP_HEOS_PORT = 1255;
     private final static String DCP_HEOS_REQUEST = "heos://";
-    final static String DCP_HEOS_RESPONSE = "{\"heos\":";
+    public final static String DCP_HEOS_RESPONSE = "{\"heos\":";
 
     private final static int CR = 0x0D;
     private final static int LF = 0x0A;
@@ -63,7 +64,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
     private final BlockingQueue<ISCPMessage> inputQueue;
 
     // message handling
-    private final DCPMessage dcpMessage = new DCPMessage();
+    private final DCPMessageFactory dcpMessageFactory = new DCPMessageFactory();
     private Integer heosPid = null;
 
     MessageChannelDcp(final int zone, final ConnectionState connectionState, final BlockingQueue<ISCPMessage> inputQueue)
@@ -73,7 +74,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         this.inputQueue = inputQueue;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        dcpMessage.prepare(zone);
+        dcpMessageFactory.prepare(zone);
     }
 
     public void start()
@@ -198,7 +199,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
                     else
                     {
                         final EISCPMessage m = outputQueue.poll();
-                        dcpOutputBuffer.addAll(dcpMessage.convertOutputMsg(m, getHost()));
+                        dcpOutputBuffer.addAll(dcpMessageFactory.convertOutputMsg(m, getHost()));
                     }
                 }
             }
@@ -347,7 +348,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
             processed = processHeosMsg(dcpMsg);
         }
 
-        final ArrayList<ISCPMessage> messages = dcpMessage.convertInputMsg(dcpMsg, heosPid);
+        final ArrayList<ISCPMessage> messages = dcpMessageFactory.convertInputMsg(dcpMsg, heosPid);
         final boolean logIgnored = messages.size() == 1 && messages.get(0) instanceof TimeInfoMsg;
 
         if (!logIgnored)

@@ -224,7 +224,7 @@ public class ISCPMessage implements ConnectionIf
     /*
      * Denon control protocol
      */
-    protected final static String DCP_MSG_SEP = "==>>";
+    public final static String DCP_MSG_SEP = "==>>";
     protected final static String DCP_MSG_REQ = "?";
     public final static String DCP_HEOS_PID = "{$PLAYER_PID}";
 

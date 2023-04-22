@@ -12,34 +12,12 @@
  * Public License along with this program.
  */
 
-package com.mkulesh.onpc.iscp;
+package com.mkulesh.onpc.iscp.messages;
 
 import com.jayway.jsonpath.JsonPath;
-import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
-import com.mkulesh.onpc.iscp.messages.ArtistNameMsg;
-import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
-import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
-import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
-import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
-import com.mkulesh.onpc.iscp.messages.HdmiCecMsg;
-import com.mkulesh.onpc.iscp.messages.JacketArtMsg;
-import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
-import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
-import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
-import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
-import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
-import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
-import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
-import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
-import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
-import com.mkulesh.onpc.iscp.messages.MessageFactory;
-import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
-import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
-import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
-import com.mkulesh.onpc.iscp.messages.TimeInfoMsg;
-import com.mkulesh.onpc.iscp.messages.TitleNameMsg;
-import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
-import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
+import com.mkulesh.onpc.iscp.EISCPMessage;
+import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.iscp.MessageChannelDcp;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -51,7 +29,7 @@ import java.util.Set;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class DCPMessage
+public class DCPMessageFactory
 {
     public final static int CR = 0x0D;
 
@@ -226,7 +204,7 @@ public class DCPMessage
         }
         try
         {
-            final String toSend = MessageFactory.create(raw).buildDcpMsg(raw.isQuery());
+            final String toSend = createISCPMessage(raw).buildDcpMsg(raw.isQuery());
             if (toSend == null)
             {
                 return retValue;
@@ -265,4 +243,88 @@ public class DCPMessage
             }
         }
     }
+
+    private ISCPMessage createISCPMessage(EISCPMessage raw) throws Exception
+    {
+        switch (raw.getCode().toUpperCase())
+        {
+        case PowerStatusMsg.CODE:
+        case PowerStatusMsg.ZONE2_CODE:
+        case PowerStatusMsg.ZONE3_CODE:
+        case PowerStatusMsg.ZONE4_CODE:
+            return new PowerStatusMsg(raw);
+        case InputSelectorMsg.CODE:
+        case InputSelectorMsg.ZONE2_CODE:
+        case InputSelectorMsg.ZONE3_CODE:
+        case InputSelectorMsg.ZONE4_CODE:
+            return new InputSelectorMsg(raw);
+        case TimeInfoMsg.CODE:
+            return new TimeInfoMsg(raw);
+        case JacketArtMsg.CODE:
+            return new JacketArtMsg(raw);
+        case TitleNameMsg.CODE:
+            return new TitleNameMsg(raw);
+        case AlbumNameMsg.CODE:
+            return new AlbumNameMsg(raw);
+        case ArtistNameMsg.CODE:
+            return new ArtistNameMsg(raw);
+        case PlayStatusMsg.CODE:
+        case PlayStatusMsg.CD_CODE:
+            return new PlayStatusMsg(raw);
+        case DimmerLevelMsg.CODE:
+            return new DimmerLevelMsg(raw);
+        case AudioMutingMsg.CODE:
+        case AudioMutingMsg.ZONE2_CODE:
+        case AudioMutingMsg.ZONE3_CODE:
+        case AudioMutingMsg.ZONE4_CODE:
+            return new AudioMutingMsg(raw);
+        case MasterVolumeMsg.CODE:
+        case MasterVolumeMsg.ZONE2_CODE:
+        case MasterVolumeMsg.ZONE3_CODE:
+        case MasterVolumeMsg.ZONE4_CODE:
+            return new MasterVolumeMsg(raw);
+        case ToneCommandMsg.CODE:
+        case ToneCommandMsg.ZONE2_CODE:
+        case ToneCommandMsg.ZONE3_CODE:
+            return new ToneCommandMsg(raw);
+        case PresetCommandMsg.CODE:
+        case PresetCommandMsg.ZONE2_CODE:
+        case PresetCommandMsg.ZONE3_CODE:
+        case PresetCommandMsg.ZONE4_CODE:
+            return new PresetCommandMsg(raw);
+        case RadioStationNameMsg.CODE:
+            return new RadioStationNameMsg(raw);
+        case TuningCommandMsg.CODE:
+        case TuningCommandMsg.ZONE2_CODE:
+        case TuningCommandMsg.ZONE3_CODE:
+        case TuningCommandMsg.ZONE4_CODE:
+            return new TuningCommandMsg(raw);
+        case ListeningModeMsg.CODE:
+            return new ListeningModeMsg(raw);
+        case HdmiCecMsg.CODE:
+            return new HdmiCecMsg(raw);
+        case SleepSetCommandMsg.CODE:
+            return new SleepSetCommandMsg(raw);
+        // Denon control protocol
+        case OperationCommandMsg.CODE:
+            return new OperationCommandMsg(raw);
+        case SetupOperationCommandMsg.CODE:
+            return new SetupOperationCommandMsg(raw);
+        case NetworkServiceMsg.CODE:
+            return new NetworkServiceMsg(raw);
+        case DcpReceiverInformationMsg.CODE:
+            return new DcpReceiverInformationMsg(raw);
+        case DcpTunerModeMsg.CODE:
+            return new DcpTunerModeMsg(raw);
+        case DcpEcoModeMsg.CODE:
+            return new DcpEcoModeMsg(raw);
+        case DcpAudioRestorerMsg.CODE:
+            return new DcpAudioRestorerMsg(raw);
+        case DcpMediaContainerMsg.CODE:
+            return new DcpMediaContainerMsg(raw);
+        default:
+            throw new Exception("No factory method for message " + raw.getCode());
+        }
+    }
+
 }
