@@ -194,8 +194,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     if (selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg)
                     {
                         final DcpMediaContainerMsg mc = (DcpMediaContainerMsg) selectedItem.getCmdMessage();
-                        menu.findItem(R.id.cmd_dcp_replace_and_play).setVisible(mc.isContainer() && mc.isPlayable());
-                        menu.findItem(R.id.cmd_dcp_add_to_end).setVisible(mc.isContainer() && mc.isPlayable());
+                        menu.findItem(R.id.cmd_dcp_replace_and_play).setVisible(
+                                mc.isContainer() && mc.isPlayable());
+                        menu.findItem(R.id.cmd_dcp_add_to_end).setVisible(
+                                (mc.isContainer() || mc.isSong()) && mc.isPlayable());
                     }
                 }
                 else if (item instanceof PresetCommandMsg)

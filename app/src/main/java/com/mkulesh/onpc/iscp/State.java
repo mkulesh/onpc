@@ -30,6 +30,7 @@ import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
@@ -226,6 +227,7 @@ public class State implements ConnectionIf
     public DcpAudioRestorerMsg.Status dcpAudioRestorer = DcpAudioRestorerMsg.Status.NONE;
     public final List<DcpMediaContainerMsg> dcpMediaPath = new ArrayList<>();
     public String mediaListCid = "";
+    public String mediaListMid = "";
 
     // Popup
     public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
@@ -719,6 +721,10 @@ public class State implements ConnectionIf
         if (msg instanceof DcpMediaContainerMsg)
         {
             return process((DcpMediaContainerMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+        }
+        if (msg instanceof DcpMediaItemMsg)
+        {
+            return process((DcpMediaItemMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
 
         return ChangeType.NONE;
@@ -1967,6 +1973,7 @@ public class State implements ConnectionIf
             }
             mediaItems.addAll(msg.getItems());
             numberOfItems = mediaItems.size();
+            setDcpPlayingItem();
             return true;
         }
     }
@@ -1981,5 +1988,38 @@ public class State implements ConnectionIf
         createServiceItems();
         numberOfItems = serviceItems.size();
         dcpMediaPath.clear();
+    }
+
+    private boolean process(DcpMediaItemMsg msg)
+    {
+        ServiceType si = (ServiceType) ISCPMessage.searchDcpParameter(
+                "HS" + msg.getSid(), ServiceType.values(), ServiceType.UNKNOWN);
+        final boolean changed = !msg.getData().equals(mediaListMid) || si != serviceIcon;
+        mediaListMid = msg.getData();
+        serviceIcon = si;
+        if (changed)
+        {
+            synchronized (mediaItems)
+            {
+                setDcpPlayingItem();
+            }
+        }
+        return changed;
+    }
+
+    private void setDcpPlayingItem()
+    {
+        for (XmlListItemMsg msg : mediaItems)
+        {
+            if (msg.getCmdMessage() instanceof DcpMediaContainerMsg)
+            {
+                final DcpMediaContainerMsg mc = (DcpMediaContainerMsg) msg.getCmdMessage();
+                if (!mc.isContainer() && mc.isPlayable() && !mediaListMid.isEmpty())
+                {
+                    msg.setIcon(mediaListMid.equals(mc.getMid()) ?
+                            XmlListItemMsg.Icon.PLAY : XmlListItemMsg.Icon.MUSIC);
+                }
+            }
+        }
     }
 }

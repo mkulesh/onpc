@@ -254,14 +254,15 @@ public class ISCPMessage implements ConnectionIf
         if (dcpMsg.startsWith(dcpCommand))
         {
             final String par = dcpMsg.substring(dcpCommand.length()).trim();
-            return searchDcpParameter(par, values);
+            return searchDcpParameter(par, values, null);
         }
         return null;
     }
 
     @Nullable
     public static DcpStringParameterIf searchDcpParameter(@Nullable final String par,
-                                                          @NonNull final DcpStringParameterIf[] values)
+                                                          @NonNull final DcpStringParameterIf[] values,
+                                                          DcpStringParameterIf defValue)
     {
         for (DcpStringParameterIf t : values)
         {
@@ -270,7 +271,7 @@ public class ISCPMessage implements ConnectionIf
                 return t;
             }
         }
-        return null;
+        return defValue;
     }
 
     public interface DcpCharParameterIf extends CharParameterIf

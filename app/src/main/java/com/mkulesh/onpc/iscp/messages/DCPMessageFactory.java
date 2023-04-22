@@ -129,7 +129,8 @@ public class DCPMessageFactory
 
             // Media list
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(cmd, heosMsg, tokens));
-         }
+            addISCPMsg(DcpMediaItemMsg.processHeosMessage(cmd, heosMsg));
+        }
         catch (Exception ex)
         {
             Logging.info(this, "DCP HEOS error: " + ex.getLocalizedMessage() + ", message=" + heosMsg);
@@ -322,6 +323,8 @@ public class DCPMessageFactory
             return new DcpAudioRestorerMsg(raw);
         case DcpMediaContainerMsg.CODE:
             return new DcpMediaContainerMsg(raw);
+        case DcpMediaItemMsg.CODE:
+            return new DcpMediaItemMsg(raw);
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }

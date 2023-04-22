@@ -22,27 +22,37 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /*
- * NET/USB Title Name (variable-length, 64 ASCII letters max)
+ * Denon control protocol - media item
+ * Get Now Playing Media Command: heos://player/get_now_playing_media?pid=player_id
  */
-public class TitleNameMsg extends ISCPMessage
+public class DcpMediaItemMsg extends ISCPMessage
 {
-    public final static String CODE = "NTI";
+    public final static String CODE = "D06";
 
-    TitleNameMsg(EISCPMessage raw) throws Exception
+    private final int sid;
+
+    DcpMediaItemMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
+        sid = -1;
     }
 
-    TitleNameMsg(final String name)
+    DcpMediaItemMsg(final String mid, final int sid)
     {
-        super(0, name);
+        super(0, mid);
+        this.sid = sid;
+    }
+
+    public int getSid()
+    {
+        return sid;
     }
 
     @NonNull
     @Override
     public String toString()
     {
-        return CODE + "[" + data + "]";
+        return CODE + "[" + data + ", SID=" + sid + "]";
     }
 
     /*
@@ -51,12 +61,24 @@ public class TitleNameMsg extends ISCPMessage
     private final static String HEOS_COMMAND = "player/get_now_playing_media";
 
     @Nullable
-    public static TitleNameMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg)
+    public static DcpMediaItemMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg)
     {
         if (HEOS_COMMAND.equals(command))
         {
-            final String name = JsonPath.read(heosMsg, "$.payload.song");
-            return new TitleNameMsg(name);
+            final String mid = JsonPath.read(heosMsg, "$.payload.mid");
+            final int sid = JsonPath.read(heosMsg, "$.payload.sid");
+            return new DcpMediaItemMsg(mid, sid);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (isQuery)
+        {
+            return "heos://" + HEOS_COMMAND + "?pid=" + DCP_HEOS_PID;
         }
         return null;
     }

@@ -29,6 +29,9 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/*
+ * Denon control protocol - media container
+ */
 public class DcpMediaContainerMsg extends ISCPMessage
 {
     public final static String CODE = "D05";
@@ -147,6 +150,11 @@ public class DcpMediaContainerMsg extends ISCPMessage
         return cid;
     }
 
+    public String getMid()
+    {
+        return mid;
+    }
+
     public boolean isContainer()
     {
         return container;
@@ -185,6 +193,11 @@ public class DcpMediaContainerMsg extends ISCPMessage
     public List<XmlListItemMsg> getItems()
     {
         return items;
+    }
+
+    public boolean isSong()
+    {
+        return "song".equals(type);
     }
 
     @NonNull
@@ -252,15 +265,26 @@ public class DcpMediaContainerMsg extends ISCPMessage
             {
                 final DcpMediaContainerMsg itemMsg =
                         new DcpMediaContainerMsg(heosMsg, i, parentMsg.sid, parentMsg.cid);
-                final XmlListItemMsg.Icon icon = itemMsg.playable && itemMsg.container ?
-                        XmlListItemMsg.Icon.FOLDER_PLAY :
-                        itemMsg.playable ? XmlListItemMsg.Icon.MUSIC : XmlListItemMsg.Icon.FOLDER;
+                if (itemMsg.isSong())
+                {
+                    itemMsg.setAid("4");
+                }
                 final XmlListItemMsg xmlItem = new XmlListItemMsg(
                         i,
                         parentMsg.layerInfo == ListTitleInfoMsg.LayerInfo.SERVICE_TOP ? 0 : 1,
                         itemMsg.name,
-                        icon,
+                        XmlListItemMsg.Icon.UNKNOWN,
                         true, itemMsg);
+                if (itemMsg.container)
+                {
+                    xmlItem.setIcon(itemMsg.playable ?
+                            XmlListItemMsg.Icon.FOLDER_PLAY : XmlListItemMsg.Icon.FOLDER);
+                }
+                else
+                {
+                    xmlItem.setIcon(itemMsg.playable ?
+                            XmlListItemMsg.Icon.MUSIC : XmlListItemMsg.Icon.UNKNOWN);
+                }
                 parentMsg.items.add(xmlItem);
             }
             return parentMsg;
@@ -307,15 +331,16 @@ public class DcpMediaContainerMsg extends ISCPMessage
                                 DCP_HEOS_PID, parentSid, mid);
                     }
                 }
-                if ("song".equals(type) && !parentSid.isEmpty() && !parentCid.isEmpty())
+                if (isSong() && !parentSid.isEmpty() && !parentCid.isEmpty())
                 {
-                    return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&mid=%s&aid=4",
-                            DCP_HEOS_PID, parentSid, parentCid, mid);
+                    return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&mid=%s&aid=%s",
+                            DCP_HEOS_PID, parentSid, parentCid, mid, aid);
                 }
             }
         }
         return null;
     }
+
     @NonNull
     private static String nonNull(@Nullable final String inp)
     {

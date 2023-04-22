@@ -33,7 +33,7 @@ public class NetworkServiceMsg extends ISCPMessage
     {
         super(raw);
         final String cd = data.substring(0, data.length() - 1);
-        this.service = (ServiceType) searchDcpParameter(cd, ServiceType.values());
+        this.service = (ServiceType) searchDcpParameter(cd, ServiceType.values(), ServiceType.UNKNOWN);
     }
 
     public NetworkServiceMsg(@NonNull final ServiceType service)

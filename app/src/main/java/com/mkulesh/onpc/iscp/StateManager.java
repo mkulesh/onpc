@@ -30,6 +30,7 @@ import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
@@ -645,7 +646,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             // In order to reduce waiting time for track info, request track information first
             final String[] powerStateQueries = new String[]{
-                    TitleNameMsg.CODE,
+                    DcpMediaItemMsg.CODE,
                     DcpReceiverInformationMsg.CODE,
                     PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
             };
@@ -744,10 +745,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof PlayStatusMsg && playStatus != state.playStatus && state.isPlaying())
         {
-            final String[] tunerStatusQueries = new String[]{
-                    TitleNameMsg.CODE
+            final String[] trackStatusQueries = new String[]{
+                    DcpMediaItemMsg.CODE
             };
-            sendQueries(tunerStatusQueries, "DCP: requesting track state...");
+            sendQueries(trackStatusQueries, "DCP: requesting track state...");
         }
 
         return true;

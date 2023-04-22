@@ -62,7 +62,7 @@ public class XmlListItemMsg extends ISCPMessage
     private final String title;
     private final String iconType;
     private final String iconId;
-    private final Icon icon;
+    private Icon icon;
     private final boolean selectable;
     private final ISCPMessage cmdMessage;
 
@@ -99,6 +99,11 @@ public class XmlListItemMsg extends ISCPMessage
     public Icon getIcon()
     {
         return icon;
+    }
+
+    public void setIcon(Icon icon)
+    {
+        this.icon = icon;
     }
 
     public String getTitle()
