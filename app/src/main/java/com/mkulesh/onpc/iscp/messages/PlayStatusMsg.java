@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
@@ -270,8 +269,7 @@ public class PlayStatusMsg extends ISCPMessage
     private final static String HEOS_COMMAND_MODE = "player/get_play_mode";
 
     @Nullable
-    public static PlayStatusMsg processHeosMessage(@NonNull final String command,
-        @NonNull final String heosMsg, @NonNull final Map<String, String> tokens, @Nullable Integer pid)
+    public static PlayStatusMsg processHeosMessage(@NonNull final String command, @NonNull final Map<String, String> tokens)
     {
         if (HEOS_EVENT_STATE.equals(command) ||
                 HEOS_EVENT_REPEAT.equals(command) ||
@@ -279,41 +277,37 @@ public class PlayStatusMsg extends ISCPMessage
                 HEOS_COMMAND_STATE.equals(command) ||
                 HEOS_COMMAND_MODE.equals(command))
         {
-            final String pidStr = tokens.get("pid");
-            if (pidStr != null && pid != null && pid.equals(Integer.valueOf(pidStr)))
+            if (HEOS_EVENT_STATE.equals(command) || HEOS_COMMAND_STATE.equals(command))
             {
-                if (HEOS_EVENT_STATE.equals(command) || HEOS_COMMAND_STATE.equals(command))
+                final PlayStatus s = (PlayStatus) searchDcpParameter(tokens.get("state"), PlayStatus.values());
+                if (s != null)
                 {
-                    final PlayStatus s = (PlayStatus) searchDcpParameter(tokens.get("state"), PlayStatus.values());
-                    if (s != null)
-                    {
-                        return new PlayStatusMsg(s);
-                    }
+                    return new PlayStatusMsg(s);
                 }
-                if (HEOS_COMMAND_MODE.equals(command))
+            }
+            if (HEOS_COMMAND_MODE.equals(command))
+            {
+                final RepeatStatus r = (RepeatStatus) searchDcpParameter(tokens.get("repeat"), RepeatStatus.values());
+                final ShuffleStatus s = (ShuffleStatus) searchDcpParameter(tokens.get("shuffle"), ShuffleStatus.values());
+                if (r != null && s != null)
                 {
-                    final RepeatStatus r = (RepeatStatus) searchDcpParameter(tokens.get("repeat"), RepeatStatus.values());
-                    final ShuffleStatus s = (ShuffleStatus) searchDcpParameter(tokens.get("shuffle"), ShuffleStatus.values());
-                    if (r != null && s != null)
-                    {
-                        return new PlayStatusMsg(r, s);
-                    }
+                    return new PlayStatusMsg(r, s);
                 }
-                if (HEOS_EVENT_REPEAT.equals(command))
+            }
+            if (HEOS_EVENT_REPEAT.equals(command))
+            {
+                final RepeatStatus r = (RepeatStatus) searchDcpParameter(tokens.get("repeat"), RepeatStatus.values());
+                if (r != null)
                 {
-                    final RepeatStatus r = (RepeatStatus) searchDcpParameter(tokens.get("repeat"), RepeatStatus.values());
-                    if (r != null)
-                    {
-                        return new PlayStatusMsg(r);
-                    }
+                    return new PlayStatusMsg(r);
                 }
-                if (HEOS_EVENT_SHUFFLE.equals(command))
+            }
+            if (HEOS_EVENT_SHUFFLE.equals(command))
+            {
+                final ShuffleStatus s = (ShuffleStatus) searchDcpParameter(tokens.get("shuffle"), ShuffleStatus.values());
+                if (s != null)
                 {
-                    final ShuffleStatus s = (ShuffleStatus) searchDcpParameter(tokens.get("shuffle"), ShuffleStatus.values());
-                    if (s != null)
-                    {
-                        return new PlayStatusMsg(s);
-                    }
+                    return new PlayStatusMsg(s);
                 }
             }
         }

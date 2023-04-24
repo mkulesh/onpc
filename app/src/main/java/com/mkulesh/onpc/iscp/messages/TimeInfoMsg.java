@@ -16,7 +16,6 @@ package com.mkulesh.onpc.iscp.messages;
 
 import android.annotation.SuppressLint;
 
-import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Utils;
@@ -90,16 +89,13 @@ public class TimeInfoMsg extends ISCPMessage
 
     @Nullable
     @SuppressLint("SimpleDateFormat")
-    public static TimeInfoMsg processHeosMessage(@NonNull final String command,
-        @NonNull final String heosMsg, @NonNull final Map<String, String> tokens, @Nullable Integer pid)
+    public static TimeInfoMsg processHeosMessage(@NonNull final String command, @NonNull final Map<String, String> tokens)
     {
         if (HEOS_COMMAND.equals(command))
         {
-            final String pidStr = tokens.get("pid");
             final String curPosStr = tokens.get("cur_pos");
             final String durationStr = tokens.get("duration");
-            if (pidStr != null && pid != null && pid.equals(Integer.valueOf(pidStr)) &&
-                    curPosStr != null && durationStr != null)
+            if (curPosStr != null && durationStr != null)
             {
                 return new TimeInfoMsg(
                         Utils.millisToTime(Integer.parseInt(curPosStr)),

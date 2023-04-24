@@ -116,16 +116,23 @@ public class DCPMessageFactory
             final String cmd = JsonPath.read(heosMsg, "$.heos.command");
             final Map<String, String> tokens =
                     ISCPMessage.parseHeosMessage(JsonPath.read(heosMsg, "$.heos.message"));
+            final String pidStr = tokens.get("pid");
+            if (pidStr != null && pid != null && !pid.equals(Integer.valueOf(pidStr)))
+            {
+                Logging.info(this, "Received DCP HEOS message for different device. Ignored");
+                return;
+            }
 
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(CustomPopupMsg.processHeosMessage(cmd, tokens));
 
             // Playback
             addISCPMsg(ArtistNameMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(AlbumNameMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(TitleNameMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(JacketArtMsg.processHeosMessage(cmd, heosMsg));
-            addISCPMsg(TimeInfoMsg.processHeosMessage(cmd, heosMsg, tokens, pid));
-            addISCPMsg(PlayStatusMsg.processHeosMessage(cmd, heosMsg, tokens, pid));
+            addISCPMsg(TimeInfoMsg.processHeosMessage(cmd, tokens));
+            addISCPMsg(PlayStatusMsg.processHeosMessage(cmd, tokens));
 
             // Media list
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(cmd, heosMsg, tokens));

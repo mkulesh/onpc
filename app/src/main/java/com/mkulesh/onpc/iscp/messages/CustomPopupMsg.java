@@ -17,7 +17,10 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * NET Custom Popup Message (for Network Control Only)
@@ -82,5 +85,27 @@ public class CustomPopupMsg extends ISCPMessage
     public EISCPMessage getCmdMsg()
     {
         return new EISCPMessage(CODE, data);
+    }
+
+    /*
+     * Denon control protocol - Player Playback Error
+     */
+    private final static String HEOS_COMMAND = "event/player_playback_error";
+
+    @Nullable
+    public static CustomPopupMsg processHeosMessage(@NonNull final String command, @NonNull final Map<String, String> tokens)
+    {
+        if (HEOS_COMMAND.equals(command))
+        {
+            final String error = tokens.get("error");
+            if (error != null)
+            {
+                final String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+                        "<popup title=\"Error\">" +
+                        "<label title=\"\"><line text=\"" + error + "\"/></label></popup>";
+                return new CustomPopupMsg(UiType.XML, xml);
+            }
+        }
+        return null;
     }
 }
