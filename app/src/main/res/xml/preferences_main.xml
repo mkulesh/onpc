@@ -139,7 +139,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_category_advanced_options">
+    <PreferenceCategory android:key="category_advanced" android:title="@string/pref_category_advanced_options">
 
         <SwitchPreferenceCompat
             app:icon="@drawable/pref_keep_screen_on"

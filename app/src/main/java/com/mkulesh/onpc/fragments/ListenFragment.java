@@ -587,8 +587,16 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         final AppCompatImageButton btn = rootView.findViewById(R.id.btn_input_selector);
         prepareButton(btn, imageId, R.string.av_info_dialog);
         btn.setVisibility(visible ? View.VISIBLE : View.GONE);
-        setButtonEnabled(btn, state != null);
-        prepareButtonListeners(btn, null, () -> showAvInfoDialog(state));
+        if (state != null && state.protoType == Utils.ProtoType.ISCP)
+        {
+            setButtonEnabled(btn, true);
+            prepareButtonListeners(btn, null, () -> showAvInfoDialog(state));
+        }
+        else
+        {
+            setButtonEnabled(btn, false);
+            prepareButtonListeners(btn, null, null);
+        }
     }
 
     private void showAvInfoDialog(@Nullable final State state)
@@ -756,7 +764,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
      */
     private void updateMultiroomGroupBtn(AppCompatImageButton b, @Nullable final State state)
     {
-        if (state != null && activity.isMultiroomAvailable())
+        if (state != null && state.protoType == Utils.ProtoType.ISCP && activity.isMultiroomAvailable())
         {
             b.setVisibility(View.VISIBLE);
             setButtonEnabled(b, true);

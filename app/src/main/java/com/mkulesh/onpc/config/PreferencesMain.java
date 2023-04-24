@@ -16,12 +16,17 @@ package com.mkulesh.onpc.config;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.utils.Utils;
 
 import androidx.preference.ListPreference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 
 public class PreferencesMain extends AppCompatPreferenceActivity
 {
@@ -45,6 +50,26 @@ public class PreferencesMain extends AppCompatPreferenceActivity
             prepareListPreference(findPreference(CfgAppSettings.APP_LANGUAGE), getActivity());
             prepareListPreference(findPreference(CfgAudioControl.SOUND_CONTROL), null);
             tintIcons(getPreferenceScreen().getContext(), getPreferenceScreen());
+            hidePreferences();
+        }
+
+        private void hidePreferences()
+        {
+            final PreferenceScreen screen = getPreferenceScreen();
+            final SharedPreferences preferences =
+                    PreferenceManager.getDefaultSharedPreferences(screen.getContext());
+            final Utils.ProtoType protoType = Configuration.getProtoType(preferences);
+            if (protoType == Utils.ProtoType.DCP)
+            {
+                screen.removePreference(findPreference(CfgAppSettings.REMOTE_INTERFACE_AMP));
+                screen.removePreference(findPreference(CfgAppSettings.REMOTE_INTERFACE_CD));
+                final PreferenceCategory adv = (PreferenceCategory) findPreference("category_advanced");
+                if (adv != null)
+                {
+                    adv.removePreference(findPreference(Configuration.ADVANCED_QUEUE));
+                    adv.removePreference(findPreference(Configuration.KEEP_PLAYBACK_MODE));
+                }
+            }
         }
     }
 

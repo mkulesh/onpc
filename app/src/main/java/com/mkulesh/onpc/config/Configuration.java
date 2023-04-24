@@ -26,6 +26,7 @@ import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +56,8 @@ public class Configuration
 
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
     private static final String BACK_AS_RETURN = "back_as_return";
-    private static final String ADVANCED_QUEUE = "advanced_queue";
-    private static final String KEEP_PLAYBACK_MODE = "keep_playback_mode";
+    static final String ADVANCED_QUEUE = "advanced_queue";
+    static final String KEEP_PLAYBACK_MODE = "keep_playback_mode";
     private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
 
@@ -299,5 +300,19 @@ public class Configuration
     public boolean isDeveloperMode()
     {
         return preferences.getBoolean(DEVELOPER_MODE, false);
+    }
+
+    @NonNull
+    public static Utils.ProtoType getProtoType(final SharedPreferences preferences)
+    {
+        final String protoType = preferences.getString(Configuration.PROTO_TYPE, "NONE");
+        for (Utils.ProtoType p : Utils.ProtoType.values())
+        {
+            if (p.name().equalsIgnoreCase(protoType))
+            {
+                return p;
+            }
+        }
+        return Utils.ProtoType.ISCP;
     }
 }

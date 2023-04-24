@@ -20,6 +20,7 @@ import android.content.res.TypedArray;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -46,20 +47,33 @@ public class CfgAppSettings
     // Tabs
     public enum Tabs
     {
-        LISTEN,
-        MEDIA,
-        SHORTCUTS,
-        DEVICE,
-        RC,
-        RI,
+        LISTEN(true, true),
+        MEDIA(true, true),
+        SHORTCUTS(true, false),
+        DEVICE(true, true),
+        RC(true, true),
+        RI(true, false);
+
+        final boolean isIscp, isDcp;
+
+        Tabs(final boolean isIscp, final boolean isDcp)
+        {
+            this.isIscp = isIscp;
+            this.isDcp = isDcp;
+        }
+
+        public boolean isVisible (Utils.ProtoType pt)
+        {
+            return (pt == Utils.ProtoType.ISCP && isIscp) || (pt == Utils.ProtoType.DCP && isDcp);
+        }
     }
 
     static final String VISIBLE_TABS = "visible_tabs";
     private static final String OPENED_TAB_NAME = "opened_tab_name";
 
     // RI
-    private static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
-    private static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
+    static final String REMOTE_INTERFACE_AMP = "remote_interface_amp";
+    static final String REMOTE_INTERFACE_CD = "remote_interface_cd";
 
     private SharedPreferences preferences;
 
@@ -125,10 +139,15 @@ public class CfgAppSettings
             defItems.add(i.name());
         }
 
+        final Utils.ProtoType protoType = Configuration.getProtoType(preferences);
         for (CheckableItem sp : CheckableItem.readFromPreference(preferences, VISIBLE_TABS, defItems))
         {
             for (CfgAppSettings.Tabs i : CfgAppSettings.Tabs.values())
             {
+                if (!i.isVisible(protoType))
+                {
+                    continue;
+                }
                 if (sp.checked && i.name().equals(sp.code))
                 {
                     result.add(i);

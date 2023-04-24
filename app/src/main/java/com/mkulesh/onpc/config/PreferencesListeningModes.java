@@ -25,15 +25,13 @@ import com.mkulesh.onpc.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
 public class PreferencesListeningModes extends DraggableListActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Utils.ProtoType protoType = getProtoType();
+        Utils.ProtoType protoType = Configuration.getProtoType(preferences);
         Logging.info(this, "Listening mode for: " + protoType);
         prepareList(CfgAudioControl.getSelectedListeningModePar(protoType));
         prepareSelectors(protoType);
@@ -71,19 +69,5 @@ public class PreferencesListeningModes extends DraggableListActivity
         }
 
         setItems(targetItems, checkedItems);
-    }
-
-    @NonNull
-    private Utils.ProtoType getProtoType()
-    {
-        final String protoType = preferences.getString(Configuration.PROTO_TYPE, "NONE");
-        for (Utils.ProtoType p : Utils.ProtoType.values())
-        {
-            if (p.name().equalsIgnoreCase(protoType))
-            {
-                return p;
-            }
-        }
-        return Utils.ProtoType.ISCP;
     }
 }

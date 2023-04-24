@@ -18,6 +18,7 @@ import android.os.Bundle;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.utils.Logging;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class PreferencesVisibleTabs extends DraggableListActivity
             defItems.add(i.name());
         }
 
+        final Utils.ProtoType protoType = Configuration.getProtoType(preferences);
         final List<CheckableItem> targetItems = new ArrayList<>();
         final List<String> checkedItems = new ArrayList<>();
         for (CheckableItem sp : CheckableItem.readFromPreference(preferences, adapter.getParameter(), defItems))
@@ -48,6 +50,10 @@ public class PreferencesVisibleTabs extends DraggableListActivity
             try
             {
                 final CfgAppSettings.Tabs item = CfgAppSettings.Tabs.valueOf(sp.code);
+                if (!item.isVisible(protoType))
+                {
+                    continue;
+                }
                 if (sp.checked)
                 {
                     checkedItems.add(item.name());
