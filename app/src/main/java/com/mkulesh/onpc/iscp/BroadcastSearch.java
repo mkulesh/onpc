@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 {
     public final static int ISCP_PORT = 60128;
-    public final static int DCP_PORT = 1900;
+    private final static int DCP_PORT = 1900; // UDP port of HEOS protocol
     private final static int TIMEOUT = 3000;
 
     // Connection state

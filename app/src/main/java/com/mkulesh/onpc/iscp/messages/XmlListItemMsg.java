@@ -34,7 +34,8 @@ public class XmlListItemMsg extends ISCPMessage
         MUSIC("2d", R.drawable.media_item_music),
         SEARCH("2F", R.drawable.media_item_search),
         PLAY("36", R.drawable.media_item_play),
-        FOLDER_PLAY("HS01", R.drawable.media_item_folder_play);
+        FOLDER_PLAY("HS01", R.drawable.media_item_folder_play),
+        HEOS_SERVER("HS02", R.drawable.media_item_media_server);
         final String code;
 
         @DrawableRes

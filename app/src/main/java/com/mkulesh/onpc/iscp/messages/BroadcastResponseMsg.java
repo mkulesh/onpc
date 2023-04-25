@@ -16,6 +16,7 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+import com.mkulesh.onpc.utils.Utils;
 
 import java.net.InetAddress;
 
@@ -35,6 +36,7 @@ import androidx.annotation.Nullable;
  */
 public class BroadcastResponseMsg extends ISCPMessage
 {
+    public final static int DCP_PORT = 23;
     private final static String CODE = "ECN";
 
     private String model = null;
@@ -102,6 +104,7 @@ public class BroadcastResponseMsg extends ISCPMessage
     {
         return CODE + "[" + data
                 + "; HOST=" + getHostAndPort()
+                + "; " + getProtoType()
                 + (model != null ? "; MODEL=" + model : "")
                 + (destinationArea != null ? "; DST=" + destinationArea : "")
                 + (identifier != null ? "; ID=" + identifier : "")
@@ -125,5 +128,10 @@ public class BroadcastResponseMsg extends ISCPMessage
     public String getAlias()
     {
         return alias;
+    }
+
+    public Utils.ProtoType getProtoType()
+    {
+        return port == DCP_PORT ? Utils.ProtoType.DCP : Utils.ProtoType.ISCP;
     }
 }

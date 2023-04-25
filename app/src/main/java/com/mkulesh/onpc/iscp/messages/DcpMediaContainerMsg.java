@@ -165,6 +165,11 @@ public class DcpMediaContainerMsg extends ISCPMessage
         return playable;
     }
 
+    public String getType()
+    {
+        return type;
+    }
+
     public int getStart()
     {
         return start;

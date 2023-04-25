@@ -31,7 +31,6 @@ import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
-import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
@@ -61,6 +60,7 @@ import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
+import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
@@ -2014,7 +2014,11 @@ public class State implements ConnectionIf
             if (msg.getCmdMessage() instanceof DcpMediaContainerMsg)
             {
                 final DcpMediaContainerMsg mc = (DcpMediaContainerMsg) msg.getCmdMessage();
-                if (!mc.isContainer() && mc.isPlayable() && !mediaListMid.isEmpty())
+                if (mc.getType().equals("heos_server"))
+                {
+                    msg.setIcon(XmlListItemMsg.Icon.HEOS_SERVER);
+                }
+                else if (!mc.isContainer() && mc.isPlayable() && !mediaListMid.isEmpty())
                 {
                     msg.setIcon(mediaListMid.equals(mc.getMid()) ?
                             XmlListItemMsg.Icon.PLAY : XmlListItemMsg.Icon.MUSIC);

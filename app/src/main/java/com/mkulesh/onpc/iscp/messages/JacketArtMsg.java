@@ -226,7 +226,10 @@ public class JacketArtMsg extends ISCPMessage
         if (HEOS_COMMAND.equals(command))
         {
             final String name = JsonPath.read(heosMsg, "$.payload.image_url");
-            return new JacketArtMsg(name);
+            if (name != null && !name.isEmpty())
+            {
+                return new JacketArtMsg(name);
+            }
         }
         return null;
     }

@@ -16,7 +16,6 @@ package com.mkulesh.onpc.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -455,7 +454,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 title.setText(state.title);
                 format.setText(state.fileFormat);
             }
-            format.setClickable(true);
+            format.setClickable(state.protoType == Utils.ProtoType.ISCP);
             format.setOnClickListener((v) -> showAvInfoDialog(state));
         }
 
@@ -535,8 +534,6 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             }
         }
 
-        updateListeningModeLayout();
-
         // Track and playback menu
         if (state.isRadioInput())
         {
@@ -587,21 +584,19 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         final AppCompatImageButton btn = rootView.findViewById(R.id.btn_input_selector);
         prepareButton(btn, imageId, R.string.av_info_dialog);
         btn.setVisibility(visible ? View.VISIBLE : View.GONE);
-        if (state != null && state.protoType == Utils.ProtoType.ISCP)
-        {
-            setButtonEnabled(btn, true);
-            prepareButtonListeners(btn, null, () -> showAvInfoDialog(state));
-        }
-        else
-        {
-            setButtonEnabled(btn, false);
-            prepareButtonListeners(btn, null, null);
-        }
+        setButtonEnabled(btn, state != null && state.protoType == Utils.ProtoType.ISCP);
+        prepareButtonListeners(btn, null, () -> showAvInfoDialog(state));
     }
 
     private void showAvInfoDialog(@Nullable final State state)
     {
         if (state == null)
+        {
+            return;
+        }
+
+        if (state.avInfoAudioInput.isEmpty() && state.avInfoAudioOutput.isEmpty() &&
+                state.avInfoVideoInput.isEmpty() && state.avInfoVideoOutput.isEmpty())
         {
             return;
         }
@@ -740,24 +735,6 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         setButtonEnabled(btnNext, state.isPlaying());
         setButtonEnabled(btnPausePlay, state.isOn());
     }
-
-    private void updateListeningModeLayout()
-    {
-        listeningModeLayout.requestLayout();
-        if (listeningModeLayout.getChildCount() == 1)
-        {
-            final LinearLayout l = (LinearLayout) listeningModeLayout.getChildAt(0);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-            if (l.getMeasuredWidth() < listeningModeLayout.getMeasuredWidth())
-            {
-                params.gravity = Gravity.CENTER;
-            }
-            l.setLayoutParams(params);
-            l.requestLayout();
-        }
-    }
-
 
     /*
      * Multiroom control

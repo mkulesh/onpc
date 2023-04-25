@@ -53,6 +53,10 @@ class MultiroomManager
         final List<BroadcastResponseMsg> devices = new ArrayList<>();
         for (BroadcastResponseMsg message : activity.getDeviceList().getDevices())
         {
+            if (message.getProtoType() == Utils.ProtoType.DCP)
+            {
+                continue;
+            }
             if (message.getIdentifier().equals(activity.myDeviceId()))
             {
                 devices.add(0, message);

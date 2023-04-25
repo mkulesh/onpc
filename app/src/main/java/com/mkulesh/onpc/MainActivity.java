@@ -430,6 +430,23 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         if (connectToDevice(response.getHost(), response.getPort(), false))
         {
             configuration.saveDevice(response.getHost(), response.getPort());
+            updateTabs();
+        }
+    }
+
+    private void updateTabs()
+    {
+        // Update tabs since tabs depend on the protocol
+        final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
+        pagerAdapter = new MainPagerAdapter(this, getSupportFragmentManager(), configuration);
+        viewPager.setAdapter(pagerAdapter);
+        try
+        {
+            setOpenedTab(f.getTabName());
+        }
+        catch (Exception ex)
+        {
+            // nothing to do
         }
     }
 

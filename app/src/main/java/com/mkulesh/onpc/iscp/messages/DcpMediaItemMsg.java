@@ -65,7 +65,16 @@ public class DcpMediaItemMsg extends ISCPMessage
     {
         if (HEOS_COMMAND.equals(command))
         {
-            final String mid = JsonPath.read(heosMsg, "$.payload.mid");
+            final String type = JsonPath.read(heosMsg, "$.payload.type");
+            final String mid;
+            if ("station".equals(type))
+            {
+                mid = JsonPath.read(heosMsg, "$.payload.album_id");
+            }
+            else
+            {
+                mid = JsonPath.read(heosMsg, "$.payload.mid");
+            }
             final int sid = JsonPath.read(heosMsg, "$.payload.sid");
             return new DcpMediaItemMsg(mid, sid);
         }

@@ -26,7 +26,6 @@ import com.mkulesh.onpc.MainActivity;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.PopupBuilder;
 import com.mkulesh.onpc.iscp.State;
-import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
