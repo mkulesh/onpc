@@ -19,7 +19,6 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannelDcp;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,8 +30,6 @@ import androidx.annotation.Nullable;
 
 public class DCPMessageFactory
 {
-    public final static int CR = 0x0D;
-
     private int zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
     private final ArrayList<ISCPMessage> messages = new ArrayList<>();
     private final Set<String> acceptedCodes = new HashSet<>();
@@ -203,9 +200,9 @@ public class DCPMessageFactory
     }
 
     @NonNull
-    public ArrayList<byte[]> convertOutputMsg(@Nullable EISCPMessage raw, final String dest)
+    public ArrayList<String> convertOutputMsg(@Nullable EISCPMessage raw, final String dest)
     {
-        ArrayList<byte[]> retValue = new ArrayList<>();
+        ArrayList<String> retValue = new ArrayList<>();
         if (raw == null)
         {
             return retValue;
@@ -222,17 +219,14 @@ public class DCPMessageFactory
             for (String msg : messages)
             {
                 Logging.info(this, ">> DCP sending: " + raw + " => " + msg + " to " + dest);
-                final byte[] bytes = new byte[msg.length() + 1];
-                byte[] msgBin = msg.getBytes(Utils.UTF_8);
-                System.arraycopy(msgBin, 0, bytes, 0, msgBin.length);
-                bytes[msgBin.length] = (byte) CR;
-                retValue.add(bytes);
+                retValue.add(msg);
             }
 
             return retValue;
         }
         catch (Exception e)
         {
+            Logging.info(this, ">> DCP sending error: " + e.getLocalizedMessage());
             return retValue;
         }
     }

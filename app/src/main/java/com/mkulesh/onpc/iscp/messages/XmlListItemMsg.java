@@ -57,11 +57,15 @@ public class XmlListItemMsg extends ISCPMessage
         {
             return imageId;
         }
+
+        public boolean isSong() {
+            return this == PLAY || this == MUSIC;
+        }
     }
 
     private final int numberOfLayers;
     private final String title;
-    private final String iconType;
+    private String iconType;
     private final String iconId;
     private Icon icon;
     private final boolean selectable;
@@ -110,6 +114,16 @@ public class XmlListItemMsg extends ISCPMessage
     public String getTitle()
     {
         return title;
+    }
+
+    public void setIconType(String iconType)
+    {
+        this.iconType = iconType;
+    }
+
+    public String getIconType()
+    {
+        return iconType;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

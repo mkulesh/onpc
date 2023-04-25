@@ -272,7 +272,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
                         new DcpMediaContainerMsg(heosMsg, i, parentMsg.sid, parentMsg.cid);
                 if (itemMsg.isSong())
                 {
-                    itemMsg.setAid("4");
+                    itemMsg.setAid("1");
                 }
                 final XmlListItemMsg xmlItem = new XmlListItemMsg(
                         i,
@@ -282,11 +282,14 @@ public class DcpMediaContainerMsg extends ISCPMessage
                         true, itemMsg);
                 if (itemMsg.container)
                 {
+                    xmlItem.setIconType(itemMsg.name.equals("All") ? "01" :
+                            itemMsg.name.equals("Browse Folders") ? "99" : "50");
                     xmlItem.setIcon(itemMsg.playable ?
                             XmlListItemMsg.Icon.FOLDER_PLAY : XmlListItemMsg.Icon.FOLDER);
                 }
                 else
                 {
+                    xmlItem.setIconType("75");
                     xmlItem.setIcon(itemMsg.playable ?
                             XmlListItemMsg.Icon.MUSIC : XmlListItemMsg.Icon.UNKNOWN);
                 }

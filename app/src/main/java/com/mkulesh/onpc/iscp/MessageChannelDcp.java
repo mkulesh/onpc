@@ -137,7 +137,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         // Output data processing
         Long lastSendTime = null;
         final long DCP_SEND_DELAY = 75; // Send the COMMAND in 50ms or more intervals.
-        final ArrayList<byte[]> dcpOutputBuffer = new ArrayList<>();
+        final ArrayList<String> dcpOutputBuffer = new ArrayList<>();
 
         while (true)
         {
@@ -180,8 +180,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
                 {
                     if (!dcpOutputBuffer.isEmpty())
                     {
-                        final byte[] bytes = dcpOutputBuffer.remove(0);
-                        final String rawCmd = new String(bytes);
+                        final String rawCmd = dcpOutputBuffer.remove(0);
                         if (rawCmd.startsWith(DCP_GOFORM_REQUEST))
                         {
                             sendDcpGoformRequest(rawCmd);
@@ -192,7 +191,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
                         }
                         else
                         {
-                            dcpSocket.getSocket().write(ByteBuffer.wrap(bytes));
+                            sendDcpRawMsg(rawCmd);
                         }
                         lastSendTime = currTime;
                     }
@@ -253,19 +252,35 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
             }
             msg = msg.replace(ISCPMessage.DCP_HEOS_PID, Integer.toString(heosPid));
         }
-        Logging.info(this, ">> DCP HEOS sending: " + msg + " to " + heosSocket.getHostAndPort());
-        final byte[] bytes = new byte[msg.length() + 2];
-        byte[] msgBin = msg.getBytes(Utils.UTF_8);
-        System.arraycopy(msgBin, 0, bytes, 0, msgBin.length);
-        bytes[msgBin.length] = (byte) CR;
-        bytes[msgBin.length + 1] = (byte) LF;
         try
         {
+            Logging.info(this, ">> DCP HEOS sending: " + msg + " to " + heosSocket.getHostAndPort());
+            byte[] msgBin = msg.getBytes(Utils.UTF_8);
+            final byte[] bytes = new byte[msgBin.length + 2];
+            System.arraycopy(msgBin, 0, bytes, 0, msgBin.length);
+            bytes[msgBin.length] = (byte) CR;
+            bytes[msgBin.length + 1] = (byte) LF;
             heosSocket.getSocket().write(ByteBuffer.wrap(bytes));
         }
         catch (Exception ex)
         {
             Logging.info(this, "DCP HEOS error: " + ex.getLocalizedMessage());
+        }
+    }
+
+    private void sendDcpRawMsg(String msg)
+    {
+        try
+        {
+            byte[] msgBin = msg.getBytes(Utils.UTF_8);
+            final byte[] bytes = new byte[msgBin.length + 1];
+            System.arraycopy(msgBin, 0, bytes, 0, msgBin.length);
+            bytes[msgBin.length] = (byte) CR;
+            dcpSocket.getSocket().write(ByteBuffer.wrap(bytes));
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "DCP error: " + ex.getLocalizedMessage());
         }
     }
 

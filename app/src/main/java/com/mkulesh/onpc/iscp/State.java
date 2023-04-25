@@ -82,6 +82,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1972,6 +1973,16 @@ public class State implements ConnectionIf
                 return false;
             }
             mediaItems.addAll(msg.getItems());
+            Collections.sort(mediaItems, (lhs, rhs) -> {
+                int val = lhs.getIconType().compareTo(rhs.getIconType());
+                if (val == 0)
+                {
+                    return lhs.getIcon().isSong() && rhs.getIcon().isSong() ?
+                            Integer.compare(lhs.getMessageId(), rhs.getMessageId()) :
+                            lhs.getTitle().compareTo(rhs.getTitle());
+                }
+                return val;
+            });
             numberOfItems = mediaItems.size();
             setDcpPlayingItem();
             return true;

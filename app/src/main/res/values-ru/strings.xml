@@ -448,7 +448,7 @@
     <string name="service_playlist">Плейлисты</string>
     <string name="service_soundcloud">Soundcloud</string>
     <string name="service_local_music">Музыка на устройстве</string>
-    <string name="service_history">Исторя</string>
+    <string name="service_history">История</string>
     <string name="service_aux_input">AV Входы</string>
 
     <string name="playlist_options">Очередь воспроизведения</string>
