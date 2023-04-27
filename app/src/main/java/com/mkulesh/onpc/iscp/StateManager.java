@@ -31,8 +31,10 @@ import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
+import com.mkulesh.onpc.iscp.messages.DcpPlayQueueChangeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -651,6 +653,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
             };
             sendQueries(powerStateQueries, "requesting DCP power state...");
+        }
+
+        if (msg instanceof DcpPlayQueueChangeMsg && state.isOn() && state.serviceType == ServiceType.DCP_PLAYQUEUE)
+        {
+            Logging.info(this, "DCP: requesting queue state...");
+            sendMessage(new NetworkServiceMsg(state.serviceType));
         }
 
         // no further message handling, if power off

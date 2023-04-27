@@ -93,7 +93,8 @@ public enum ServiceType implements ISCPMessage.DcpStringParameterIf
     DCP_PLAYLIST("HS1025", "Playlists", R.string.service_playlist, R.drawable.media_item_playqueue),
     DCP_HISTORY("HS1026", "History", R.string.service_history, R.drawable.media_item_history),
     DCP_AUX("HS1027", "AUX Input", R.string.service_aux_input, R.drawable.media_item_aux),
-    DCP_FAVORITE("HS1028", "Favorites", R.string.service_favorite, R.drawable.media_item_favorite);
+    DCP_FAVORITE("HS1028", "Favorites", R.string.service_favorite, R.drawable.media_item_favorite),
+    DCP_PLAYQUEUE("HS9999", "Play Queue", R.string.service_playqueue, R.drawable.media_item_playqueue);
 
     private final String code;
     private final String name;

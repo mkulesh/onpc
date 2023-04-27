@@ -1965,6 +1965,8 @@ public class State implements ConnectionIf
                 dcpMediaPath.addAll(tmpPath);
                 Logging.info(this, "Dcp media path: " + dcpMediaPath);
                 // Info
+                serviceType = (ServiceType) ISCPMessage.searchDcpParameter(
+                        "HS" + msg.getSid(), ServiceType.values(), ServiceType.UNKNOWN);
                 layerInfo = msg.getLayerInfo();
                 mediaListCid = msg.getCid();
             }

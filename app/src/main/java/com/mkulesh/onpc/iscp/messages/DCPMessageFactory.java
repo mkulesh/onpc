@@ -134,6 +134,9 @@ public class DCPMessageFactory
             // Media list
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(cmd, heosMsg, tokens));
             addISCPMsg(DcpMediaItemMsg.processHeosMessage(cmd, heosMsg));
+
+            // Queue processing
+            addISCPMsg(DcpPlayQueueChangeMsg.processHeosMessage(cmd));
         }
         catch (Exception ex)
         {
@@ -307,6 +310,10 @@ public class DCPMessageFactory
             return new HdmiCecMsg(raw);
         case SleepSetCommandMsg.CODE:
             return new SleepSetCommandMsg(raw);
+        case PlayQueueRemoveMsg.CODE:
+            return new PlayQueueRemoveMsg(raw);
+        case PlayQueueReorderMsg.CODE:
+            return new PlayQueueReorderMsg(raw);
         // Denon control protocol
         case OperationCommandMsg.CODE:
             return new OperationCommandMsg(raw);

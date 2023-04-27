@@ -336,6 +336,9 @@ public class DcpReceiverInformationMsg extends ISCPMessage
             }
             if (!networkServices.isEmpty())
             {
+                final ServiceType s = ServiceType.DCP_PLAYQUEUE;
+                networkServices.put(s.getCode(), new ReceiverInformationMsg.NetworkService(
+                        s.getCode(), s.getName(), ReceiverInformationMsg.ALL_ZONES, false, false));
                 return new DcpReceiverInformationMsg(networkServices);
             }
         }

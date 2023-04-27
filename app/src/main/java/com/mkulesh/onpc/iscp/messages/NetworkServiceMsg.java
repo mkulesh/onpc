@@ -94,6 +94,10 @@ public class NetworkServiceMsg extends ISCPMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
+        if (service == ServiceType.DCP_PLAYQUEUE)
+        {
+            return "heos://player/get_queue?pid=" + DCP_HEOS_PID + "&range=0,9999";
+        }
         if (service != null)
         {
             return "heos://" + HEOS_COMMAND + "?sid=" + service.getDcpCode().substring(2);

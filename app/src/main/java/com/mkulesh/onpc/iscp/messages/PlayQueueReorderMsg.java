@@ -14,17 +14,20 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Reorder PlayQueue List (from Network Control Only)
  */
 public class PlayQueueReorderMsg extends ISCPMessage
 {
-    private final static String CODE = "PQO";
+    final static String CODE = "PQO";
 
     // The Index number in the PlayQueue of the item to be moved
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )  .
@@ -33,6 +36,13 @@ public class PlayQueueReorderMsg extends ISCPMessage
     // The Index number in the PlayQueue of destination.
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )
     private final int targetIndex;
+
+    PlayQueueReorderMsg(EISCPMessage raw) throws Exception
+    {
+        super(raw);
+        itemIndex = Integer.parseInt(data.substring(0, 4), 16);
+        targetIndex = Integer.parseInt(data.substring(4), 16);
+    }
 
     public PlayQueueReorderMsg(final int itemIndex, final int targetIndex)
     {
@@ -54,5 +64,17 @@ public class PlayQueueReorderMsg extends ISCPMessage
         final String param = String.format("%04x", itemIndex) +
                 String.format("%04x", targetIndex);
         return new EISCPMessage(CODE, param);
+    }
+
+    /*
+     * Denon control protocol
+     */
+    @SuppressLint("DefaultLocale")
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return String.format("heos://player/move_queue_item?pid=%s&sqid=%d&dqid=%d",
+                DCP_HEOS_PID, itemIndex, targetIndex);
     }
 }

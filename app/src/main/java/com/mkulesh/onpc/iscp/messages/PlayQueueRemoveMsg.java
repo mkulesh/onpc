@@ -14,23 +14,33 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import android.annotation.SuppressLint;
+
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Remove from PlayQueue List (from Network Control Only)
  */
 public class PlayQueueRemoveMsg extends ISCPMessage
 {
-    private final static String CODE = "PQR";
+    final static String CODE = "PQR";
 
     // Remove Type: 0:Specify Line, (1:ALL)
     private final int type;
 
     // The Index number in the PlayQueue of the item to delete(0000-FFFF : 1st to 65536th Item [4 HEX digits] )
     private final int itemIndex;
+
+    PlayQueueRemoveMsg(EISCPMessage raw) throws Exception
+    {
+        super(raw);
+        type = Integer.parseInt(data.substring(0, 1), 10);
+        itemIndex = Integer.parseInt(data.substring(1), 16);
+    }
 
     public PlayQueueRemoveMsg(final int type, final int itemIndex)
     {
@@ -51,5 +61,23 @@ public class PlayQueueRemoveMsg extends ISCPMessage
     {
         final String param = type + String.format("%04x", itemIndex);
         return new EISCPMessage(CODE, param);
+    }
+
+    /*
+     * Denon control protocol
+     */
+    @SuppressLint("DefaultLocale")
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        switch (type)
+        {
+        case 0:
+            return String.format("heos://player/remove_from_queue?pid=%s&qid=%d", DCP_HEOS_PID, itemIndex);
+        case 1:
+            return String.format("heos://player/clear_queue?pid=%s", DCP_HEOS_PID);
+        }
+        return null;
     }
 }

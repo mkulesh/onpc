@@ -165,10 +165,17 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     final MenuInflater inflater = activity.getMenuInflater();
                     inflater.inflate(R.menu.playlist_context_menu, menu);
 
-                    final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE;
+                    final boolean isDcpItem = selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg;
+                    final boolean isDcpPlayable = isDcpItem &&
+                            ((DcpMediaContainerMsg) selectedItem.getCmdMessage()).isPlayable();
+
+                    final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE ||
+                            (isDcpItem && state.serviceType == ServiceType.DCP_PLAYQUEUE);
                     final boolean addToQueue = selector.isAddToQueue() ||
-                            (networkService != null && networkService.isAddToQueue());
-                    final boolean isAdvQueue = activity.getConfiguration().isAdvancedQueue();
+                            (networkService != null && networkService.isAddToQueue()) ||
+                            isDcpPlayable;
+                    final boolean isAdvQueue = activity.getConfiguration().isAdvancedQueue() ||
+                            isDcpPlayable;
 
                     if (isQueue || addToQueue)
                     {
@@ -191,13 +198,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
                     menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
 
-                    if (selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg)
+                    if (isDcpItem)
                     {
-                        final DcpMediaContainerMsg mc = (DcpMediaContainerMsg) selectedItem.getCmdMessage();
-                        final boolean isDcpQueue = (mc.isContainer() || mc.isSong()) && mc.isPlayable();
-                        menu.findItem(R.id.cmd_dcp_replace_and_play).setVisible(isDcpQueue);
-                        menu.findItem(R.id.cmd_dcp_add_to_end).setVisible(isDcpQueue);
+                        menu.findItem(R.id.playlist_menu_replace).setVisible(false);
+                        menu.findItem(R.id.playlist_track_menu).setVisible(false);
                         menu.findItem(R.id.cmd_playback_mode).setVisible(false);
+                        menu.findItem(R.id.playlist_track_menu).setVisible(false);
+                        menu.findItem(R.id.cmd_shortcut_create).setVisible(false);
                     }
                 }
                 else if (item instanceof PresetCommandMsg)
@@ -230,18 +237,39 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             switch (item.getItemId())
             {
             case R.id.playlist_menu_add:
-                activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 2), false);
+                if (dcpCmd != null)
+                {
+                    activity.getStateManager().sendDcpMediaCmd(dcpCmd, 3 /* add to end */);
+                }
+                else
+                {
+                    activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 2), false);
+                }
                 return true;
             case R.id.playlist_menu_add_and_play:
-                activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 0), false);
+                if (dcpCmd != null)
+                {
+                    activity.getStateManager().sendDcpMediaCmd(dcpCmd, 1 /* play now */);
+                }
+                else
+                {
+                    activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 0), false);
+                }
                 return true;
             case R.id.playlist_menu_replace:
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(1, 0), false);
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 2), false);
                 return true;
             case R.id.playlist_menu_replace_and_play:
-                activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(1, 0), false);
-                activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 0), false);
+                if (dcpCmd != null)
+                {
+                    activity.getStateManager().sendDcpMediaCmd(dcpCmd, 4 /* replace and play */);
+                }
+                else
+                {
+                    activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(1, 0), false);
+                    activity.getStateManager().sendPlayQueueMsg(new PlayQueueAddMsg(idx, 0), false);
+                }
                 return true;
             case R.id.playlist_menu_remove:
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(0, idx), false);
@@ -275,18 +303,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 return true;
             case R.id.cmd_shortcut_create:
                 addShortcut(state, title, title);
-                return true;
-            case R.id.cmd_dcp_replace_and_play:
-                if (dcpCmd != null)
-                {
-                    activity.getStateManager().sendDcpMediaCmd(dcpCmd, 4 /* replace and play */);
-                }
-                return true;
-            case R.id.cmd_dcp_add_to_end:
-                if (dcpCmd != null)
-                {
-                    activity.getStateManager().sendDcpMediaCmd(dcpCmd, 3 /* add to end */);
-                }
                 return true;
             }
         }
