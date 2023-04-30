@@ -69,7 +69,7 @@ public class XmlListItemMsg extends ISCPMessage
     private final String iconId;
     private Icon icon;
     private final boolean selectable;
-    private final ISCPMessage cmdMessage;
+    private ISCPMessage cmdMessage;
 
     XmlListItemMsg(final int id, final int numberOfLayers, final Element src)
     {
@@ -143,6 +143,11 @@ public class XmlListItemMsg extends ISCPMessage
                 + "; SELECTABLE=" + selectable
                 + "; CMD=" + cmdMessage
                 + "]";
+    }
+
+    public void setCmdMessage(ISCPMessage cmdMessage)
+    {
+        this.cmdMessage = cmdMessage;
     }
 
     @Override

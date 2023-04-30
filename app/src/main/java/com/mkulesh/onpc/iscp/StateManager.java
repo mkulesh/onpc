@@ -31,7 +31,7 @@ import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
-import com.mkulesh.onpc.iscp.messages.DcpPlayQueueChangeMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaEventMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
@@ -655,10 +655,20 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             sendQueries(powerStateQueries, "requesting DCP power state...");
         }
 
-        if (msg instanceof DcpPlayQueueChangeMsg && state.isOn() && state.serviceType == ServiceType.DCP_PLAYQUEUE)
+        if (msg instanceof DcpMediaEventMsg)
         {
-            Logging.info(this, "DCP: requesting queue state...");
-            sendMessage(new NetworkServiceMsg(state.serviceType));
+            if (msg.getData().equals(DcpMediaEventMsg.HEOS_EVENT_QUEUE) &&
+                    state.isOn() && state.serviceType == ServiceType.DCP_PLAYQUEUE)
+            {
+                Logging.info(this, "DCP: requesting queue state...");
+                sendMessage(new NetworkServiceMsg(state.serviceType));
+            }
+            if (msg.getData().equals(DcpMediaEventMsg.HEOS_EVENT_SERVICEOPT) &&
+                    state.isOn() && !state.dcpMediaPath.isEmpty())
+            {
+                Logging.info(this, "DCP: requesting media list...");
+                sendMessage(state.dcpMediaPath.get(state.dcpMediaPath.size() - 1));
+            }
         }
 
         // no further message handling, if power off

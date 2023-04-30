@@ -229,6 +229,7 @@ public class State implements ConnectionIf
     public final List<DcpMediaContainerMsg> dcpMediaPath = new ArrayList<>();
     public String mediaListCid = "";
     public String mediaListMid = "";
+    private final List<XmlListItemMsg> dcpTrackMenuItems = new ArrayList<>();
 
     // Popup
     public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
@@ -1987,7 +1988,35 @@ public class State implements ConnectionIf
             });
             numberOfItems = mediaItems.size();
             setDcpPlayingItem();
-            return true;
+        }
+        synchronized (dcpTrackMenuItems)
+        {
+            dcpTrackMenuItems.clear();
+            dcpTrackMenuItems.addAll(msg.getOptions());
+            for (XmlListItemMsg m : dcpTrackMenuItems)
+            {
+                Logging.info(this, "DCP menu: " + m.toString());
+            }
+        }
+        return true;
+    }
+
+    public List<XmlListItemMsg> cloneDcpTrackMenuItems(final DcpMediaContainerMsg dcpItem)
+    {
+        synchronized (dcpTrackMenuItems)
+        {
+            List<XmlListItemMsg> retValue = new ArrayList<>(dcpTrackMenuItems);
+            if (dcpItem != null)
+            {
+                for (XmlListItemMsg msg : retValue)
+                {
+                    final DcpMediaContainerMsg newItem = new DcpMediaContainerMsg(dcpItem);
+                    newItem.setAid(DcpMediaContainerMsg.HEOS_SET_SERVICE_OPTION);
+                    newItem.setStart(msg.messageId);
+                    msg.setCmdMessage(newItem);
+                }
+            }
+            return retValue;
         }
     }
 

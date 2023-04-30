@@ -27,6 +27,7 @@ import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.PopupBuilder;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListItemMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
@@ -41,6 +42,17 @@ class PopupManager
     private AlertDialog trackMenuDialog = null;
     private LinearLayout trackMenuGroup = null;
     private AlertDialog popupDialog = null;
+    private final DcpMediaContainerMsg dcpItem;
+
+    public PopupManager()
+    {
+        this.dcpItem = null;
+    }
+
+    public PopupManager(DcpMediaContainerMsg dcpItem)
+    {
+        this.dcpItem = dcpItem;
+    }
 
     void showTrackMenuDialog(@NonNull final MainActivity activity, @NonNull final State state)
     {
@@ -59,7 +71,7 @@ class PopupManager
                     .setView(frameView)
                     .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (d, which) ->
                     {
-                        if (activity.isConnected())
+                        if (activity.isConnected() && state.protoType == Utils.ProtoType.ISCP)
                         {
                             activity.getStateManager().sendMessage(activity.getStateManager().getReturnMessage());
                         }
@@ -93,7 +105,8 @@ class PopupManager
                                       @NonNull LinearLayout trackMenuGroup)
     {
         trackMenuGroup.removeAllViews();
-        final List<XmlListItemMsg> menuItems = state.cloneMediaItems();
+        final List<XmlListItemMsg> menuItems = state.protoType == Utils.ProtoType.ISCP ?
+                state.cloneMediaItems() : state.cloneDcpTrackMenuItems(dcpItem);
         for (final XmlListItemMsg msg : menuItems)
         {
             if (msg.getTitle() == null || msg.getTitle().isEmpty())

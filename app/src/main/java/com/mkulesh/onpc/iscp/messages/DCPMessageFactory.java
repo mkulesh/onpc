@@ -119,6 +119,10 @@ public class DCPMessageFactory
                 Logging.info(this, "Received DCP HEOS message for different device. Ignored");
                 return;
             }
+            if (tokens.get("command under process") != null)
+            {
+                return;
+            }
 
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(CustomPopupMsg.processHeosMessage(cmd, tokens));
@@ -136,7 +140,7 @@ public class DCPMessageFactory
             addISCPMsg(DcpMediaItemMsg.processHeosMessage(cmd, heosMsg));
 
             // Queue processing
-            addISCPMsg(DcpPlayQueueChangeMsg.processHeosMessage(cmd));
+            addISCPMsg(DcpMediaEventMsg.processHeosMessage(cmd));
         }
         catch (Exception ex)
         {

@@ -201,9 +201,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     if (isDcpItem)
                     {
                         menu.findItem(R.id.playlist_menu_replace).setVisible(false);
-                        menu.findItem(R.id.playlist_track_menu).setVisible(false);
+                        menu.findItem(R.id.playlist_track_menu).setVisible(
+                                !state.cloneDcpTrackMenuItems(null).isEmpty());
                         menu.findItem(R.id.cmd_playback_mode).setVisible(false);
-                        menu.findItem(R.id.playlist_track_menu).setVisible(false);
                         menu.findItem(R.id.cmd_shortcut_create).setVisible(false);
                     }
                 }
@@ -275,7 +275,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(0, idx), false);
                 return true;
             case R.id.playlist_menu_remove_all:
-                if (activity.getConfiguration().isAdvancedQueue())
+                if (dcpCmd != null || activity.getConfiguration().isAdvancedQueue())
                 {
                     activity.getStateManager().sendPlayQueueMsg(new PlayQueueRemoveMsg(1, 0), false);
                 }
@@ -296,7 +296,15 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
                 return true;
             case R.id.playlist_track_menu:
-                activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
+                if (dcpCmd != null)
+                {
+                    final PopupManager popupManager = new PopupManager(dcpCmd);
+                    popupManager.showTrackMenuDialog(activity, state);
+                }
+                else
+                {
+                    activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
+                }
                 return true;
             case R.id.cmd_playback_mode:
                 activity.getStateManager().sendMessage(StateManager.LIST_MSG);

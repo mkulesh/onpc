@@ -22,7 +22,10 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
+import net.minidev.json.JSONArray;
+
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,10 +61,12 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
     private ListTitleInfoMsg.LayerInfo layerInfo = null;
     private final List<XmlListItemMsg> items = new ArrayList<>();
+    private final List<XmlListItemMsg> options = new ArrayList<>();
 
     private final static String HEOS_RESP_BROWSE_SERV = "heos/browse";
     private final static String HEOS_RESP_BROWSE_CONT = "browse/browse";
     private final static String HEOS_RESP_BROWSE_QUEUE = "player/get_queue";
+    public final static String HEOS_SET_SERVICE_OPTION = "browse/set_service_option";
 
     DcpMediaContainerMsg(EISCPMessage raw) throws Exception
     {
@@ -79,6 +84,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
         }
         this.container = YES.equalsIgnoreCase(getElement(data, "$.item.container"));
         this.playable = YES.equalsIgnoreCase(getElement(data, "$.item.playable"));
+        this.name = getElement(data, "$.item.name");
         this.aid = getElement(data, "$.item.aid");
         this.qid = getElement(data, "$.item.qid");
     }
@@ -128,39 +134,39 @@ public class DcpMediaContainerMsg extends ISCPMessage
                 ListTitleInfoMsg.LayerInfo.SERVICE_TOP : ListTitleInfoMsg.LayerInfo.UNDER_2ND_LAYER;
     }
 
-    public DcpMediaContainerMsg(@NonNull String heosMsg, int i, final String parentSid, final String parentCid)
+    public DcpMediaContainerMsg(@NonNull Map<String, Object> heosMsg, final String parentSid, final String parentCid)
     {
         super(0, CODE);
-        this.sid = getElement(heosMsg, "$.payload[" + i +"].sid");
+        this.sid = getElement(heosMsg, "sid");
         this.parentSid = parentSid;
-        this.cid = getElement(heosMsg, "$.payload[" + i +"].cid");
+        this.cid = getElement(heosMsg, "cid");
         this.parentCid = parentCid;
-        this.mid = getElement(heosMsg, "$.payload[" + i +"].mid");
-        this.type = getElement(heosMsg, "$.payload[" + i +"].type");
-        this.container = YES.equalsIgnoreCase(getElement(heosMsg, "$.payload[" + i +"].container"));
-        this.playable = YES.equalsIgnoreCase(getElement(heosMsg, "$.payload[" + i +"].playable"));
-        this.name = getNameElement(getElement(heosMsg, "$.payload[" + i +"].name"));
-        this.artist = getNameElement(getElement(heosMsg, "$.payload[" + i +"].artist"));
-        this.album = getNameElement(getElement(heosMsg, "$.payload[" + i +"].album"));
-        this.imageUrl = getElement(heosMsg, "$.payload[" + i +"].image_url");
+        this.mid = getElement(heosMsg, "mid");
+        this.type = getElement(heosMsg, "type");
+        this.container = YES.equalsIgnoreCase(getElement(heosMsg, "container"));
+        this.playable = YES.equalsIgnoreCase(getElement(heosMsg, "playable"));
+        this.name = getNameElement(getElement(heosMsg, "name"));
+        this.artist = getNameElement(getElement(heosMsg, "artist"));
+        this.album = getNameElement(getElement(heosMsg, "album"));
+        this.imageUrl = getElement(heosMsg, "image_url");
     }
 
-    public DcpMediaContainerMsg(@NonNull String heosMsg, int i, String psid)
+    public DcpMediaContainerMsg(@NonNull Map<String, Object> heosMsg, String psid)
     {
         super(0, CODE);
         this.sid = "";
         this.parentSid = psid;
         this.cid = "";
         this.parentCid = "";
-        this.mid = getElement(heosMsg, "$.payload[" + i +"].mid");
+        this.mid = getElement(heosMsg, "mid");
         this.type = "song";
         this.container = false;
         this.playable = true;
-        this.artist = getNameElement(getElement(heosMsg, "$.payload[" + i +"].artist"));
-        this.name = this.artist + " - " + getNameElement(getElement(heosMsg, "$.payload[" + i +"].song"));
-        this.album = getNameElement(getElement(heosMsg, "$.payload[" + i +"].album"));
-        this.imageUrl = getElement(heosMsg, "$.payload[" + i +"].image_url");
-        this.qid = getElement(heosMsg, "$.payload[" + i +"].qid");
+        this.artist = getElement(heosMsg, "artist");
+        this.name = this.artist + " - " + getElement(heosMsg, "song");
+        this.album = getElement(heosMsg, "album");
+        this.imageUrl = getElement(heosMsg, "image_url");
+        this.qid = getElement(heosMsg, "qid");
     }
 
     public boolean keyEqual(@NonNull DcpMediaContainerMsg msg)
@@ -233,6 +239,11 @@ public class DcpMediaContainerMsg extends ISCPMessage
         return "song".equals(type);
     }
 
+    public List<XmlListItemMsg> getOptions()
+    {
+        return options;
+    }
+
     @NonNull
     @Override
     public String toString()
@@ -253,8 +264,9 @@ public class DcpMediaContainerMsg extends ISCPMessage
                 + (artist.isEmpty() ? EMPTY : "; ARTIST=" + artist)
                 + (album.isEmpty() ? EMPTY : "; ALBUM=" + album)
                 + (imageUrl.isEmpty() ? EMPTY : "; IMG=" + imageUrl)
-                + (items.isEmpty() ? EMPTY : "; ITEMS=" + items.size())
                 + (layerInfo == null ? EMPTY : "; LAYER=" + layerInfo)
+                + (items.isEmpty() ? EMPTY : "; ITEMS=" + items.size())
+                + (options.isEmpty() ? EMPTY : "; OPTIONS=" + options.size())
                 + "]";
     }
 
@@ -270,6 +282,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
         addJsonParameter(sb, "type", type, true);
         addJsonParameter(sb, "container", container ? "yes": "no", true);
         addJsonParameter(sb, "playable", playable  ? "yes" : "no", true);
+        addJsonParameter(sb, "name", name, true);
         addJsonParameter(sb, "start", String.valueOf(start), true);
         addJsonParameter(sb, "aid", aid, true);
         addJsonParameter(sb, "qid", qid, false);
@@ -294,35 +307,15 @@ public class DcpMediaContainerMsg extends ISCPMessage
         if (HEOS_RESP_BROWSE_SERV.equals(command) || HEOS_RESP_BROWSE_CONT.equals(command))
         {
             final DcpMediaContainerMsg parentMsg = new DcpMediaContainerMsg(tokens);
-            final List<String> names = JsonPath.read(heosMsg, "$.payload[*].name");
-            for (int i = 0; i < names.size(); i++)
+            readMediaItems(parentMsg, heosMsg);
+            try
             {
-                final DcpMediaContainerMsg itemMsg =
-                        new DcpMediaContainerMsg(heosMsg, i, parentMsg.sid, parentMsg.cid);
-                if (itemMsg.isSong())
-                {
-                    itemMsg.setAid("1");
-                }
-                final XmlListItemMsg xmlItem = new XmlListItemMsg(
-                        i + parentMsg.start,
-                        parentMsg.layerInfo == ListTitleInfoMsg.LayerInfo.SERVICE_TOP ? 0 : 1,
-                        itemMsg.name,
-                        XmlListItemMsg.Icon.UNKNOWN,
-                        true, itemMsg);
-                if (itemMsg.container)
-                {
-                    xmlItem.setIconType(itemMsg.name.equals("All") ? "01" :
-                            itemMsg.name.equals("Browse Folders") ? "99" : "50");
-                    xmlItem.setIcon(itemMsg.playable ?
-                            XmlListItemMsg.Icon.FOLDER_PLAY : XmlListItemMsg.Icon.FOLDER);
-                }
-                else
-                {
-                    xmlItem.setIconType("75");
-                    xmlItem.setIcon(itemMsg.playable ?
-                            XmlListItemMsg.Icon.MUSIC : XmlListItemMsg.Icon.UNKNOWN);
-                }
-                parentMsg.items.add(xmlItem);
+                // options are optional
+                readOptions(parentMsg, heosMsg);
+            }
+            catch (Exception ex)
+            {
+                // nothing to do
             }
             return parentMsg;
         }
@@ -334,23 +327,94 @@ public class DcpMediaContainerMsg extends ISCPMessage
                 tokens.put("sid", PLAYQUEUE_SID);
             }
             final DcpMediaContainerMsg parentMsg = new DcpMediaContainerMsg(tokens);
-            final List<String> names = JsonPath.read(heosMsg, "$.payload[*].qid");
-            for (int i = 0; i < names.size(); i++)
-            {
-                final DcpMediaContainerMsg itemMsg = new DcpMediaContainerMsg(heosMsg, i, PLAYQUEUE_SID);
-                final XmlListItemMsg xmlItem = new XmlListItemMsg(
-                        Integer.parseInt(itemMsg.qid),
-                        0,
-                        itemMsg.name,
-                        XmlListItemMsg.Icon.MUSIC,
-                        true, itemMsg);
-                xmlItem.setIconType("75");
-                parentMsg.items.add(xmlItem);
-            }
+            readPlayQueueItems(parentMsg, heosMsg);
             return parentMsg;
         }
 
         return null;
+    }
+
+    private static void readMediaItems(DcpMediaContainerMsg parentMsg, String heosMsg)
+    {
+        final JSONArray payload = JsonPath.parse(heosMsg).read("$.payload");
+        for (int i = 0; i < payload.size(); i++)
+        {
+            @SuppressWarnings("unchecked")
+            final DcpMediaContainerMsg itemMsg = new DcpMediaContainerMsg(
+                    (LinkedHashMap<String, Object>) payload.get(i),
+                    parentMsg.sid, parentMsg.cid);
+            if (itemMsg.isSong())
+            {
+                itemMsg.setAid("1");
+            }
+            final XmlListItemMsg xmlItem = new XmlListItemMsg(
+                    i + parentMsg.start,
+                    parentMsg.layerInfo == ListTitleInfoMsg.LayerInfo.SERVICE_TOP ? 0 : 1,
+                    itemMsg.name,
+                    XmlListItemMsg.Icon.UNKNOWN,
+                    true, itemMsg);
+            if (itemMsg.container)
+            {
+                xmlItem.setIconType(itemMsg.name.equals("All") ? "01" :
+                        itemMsg.name.equals("Browse Folders") ? "99" : "50");
+                xmlItem.setIcon(itemMsg.playable ?
+                        XmlListItemMsg.Icon.FOLDER_PLAY : XmlListItemMsg.Icon.FOLDER);
+            }
+            else
+            {
+                xmlItem.setIconType("75");
+                xmlItem.setIcon(itemMsg.playable ?
+                        XmlListItemMsg.Icon.MUSIC : XmlListItemMsg.Icon.UNKNOWN);
+            }
+            parentMsg.items.add(xmlItem);
+        }
+    }
+
+    private static void readPlayQueueItems(DcpMediaContainerMsg parentMsg, String heosMsg)
+    {
+        final JSONArray payload = JsonPath.parse(heosMsg).read("$.payload");
+        for (int i = 0; i < payload.size(); i++)
+        {
+            @SuppressWarnings("unchecked")
+            final DcpMediaContainerMsg itemMsg = new DcpMediaContainerMsg(
+                    (LinkedHashMap<String, Object>) payload.get(i),
+                    PLAYQUEUE_SID);
+            final XmlListItemMsg xmlItem = new XmlListItemMsg(
+                    Integer.parseInt(itemMsg.qid),
+                    0,
+                    itemMsg.name,
+                    XmlListItemMsg.Icon.MUSIC,
+                    true, itemMsg);
+            xmlItem.setIconType("75");
+            parentMsg.items.add(xmlItem);
+        }
+    }
+
+    private static void readOptions(final DcpMediaContainerMsg parentMsg, String heosMsg)
+    {
+        final List<Map<String, JSONArray>> options = JsonPath.parse(heosMsg).read("$.options[*]");
+        final JSONArray browse = options.isEmpty() ? null : options.get(0).get("browse");
+        if (browse == null)
+        {
+            return;
+        }
+        for (int i = 0; i < browse.size(); i++)
+        {
+            @SuppressWarnings("unchecked")
+            final LinkedHashMap<String, Object> item = (LinkedHashMap<String, Object>) browse.get(i);
+            final int id = Integer.parseInt(getElement(item, "id"));
+            if (id > 20)
+            {
+                continue;
+            }
+            final XmlListItemMsg xmlItem = new XmlListItemMsg(
+                    id,
+                    0,
+                    getElement(item, "name"),
+                    XmlListItemMsg.Icon.UNKNOWN,
+                    true, null);
+            parentMsg.options.add(xmlItem);
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -358,7 +422,19 @@ public class DcpMediaContainerMsg extends ISCPMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        if (container)
+        if (aid.startsWith(HEOS_SET_SERVICE_OPTION))
+        {
+            switch (start)
+            {
+            case 19: // Add station to HEOS Favorites
+                return String.format("heos://browse/set_service_option?sid=%s&option=19&mid=%s&name=%s",
+                        parentSid, mid, name);
+            case 20: // Remove from HEOS Favorites
+                return String.format("heos://browse/set_service_option?option=20&mid=%s",
+                        mid);
+            }
+        }
+        else if (container)
         {
             if (playable && !parentSid.isEmpty() && !parentCid.isEmpty() && !aid.isEmpty())
             {
@@ -421,6 +497,24 @@ public class DcpMediaContainerMsg extends ISCPMessage
     }
 
     @NonNull
+    private static String getElement(Map<String, Object> payload, String name)
+    {
+        final Object obj = payload.get(name);
+        if (obj != null)
+        {
+            if (obj instanceof Integer)
+            {
+                return Integer.toString((Integer) obj);
+            }
+            if (obj instanceof String)
+            {
+                return (String) obj;
+            }
+            Logging.info(payload, "DCP HEOS error: Cannot read element " + name + ": object type unknown: " + obj);        }
+        return EMPTY;
+    }
+
+    @NonNull
     private static String getElement(@NonNull final String heosMsg, @NonNull final String path)
     {
         try
@@ -434,7 +528,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
             {
                 return (String) obj;
             }
-            Logging.info(heosMsg, "Cannot read path " + path + ": object type unknown" + obj);
+            Logging.info(heosMsg, "DCP HEOS error: Cannot read path " + path + ": object type unknown: " + obj);
             return EMPTY;
         }
         catch (Exception ex)

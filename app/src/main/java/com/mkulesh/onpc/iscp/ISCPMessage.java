@@ -305,6 +305,10 @@ public class ISCPMessage implements ConnectionIf
             {
                 retValue.put(parTokens[0], parTokens[1]);
             }
+            else if (parTokens.length == 1)
+            {
+                retValue.put(parTokens[0], "");
+            }
         }
         return retValue;
     }

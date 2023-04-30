@@ -29,11 +29,11 @@ import androidx.annotation.Nullable;
  *   }
  * }
  */
-public class DcpPlayQueueChangeMsg extends ISCPMessage
+public class DcpMediaEventMsg extends ISCPMessage
 {
     public final static String CODE = "D07";
 
-    DcpPlayQueueChangeMsg(final String event)
+    DcpMediaEventMsg(final String event)
     {
         super(0, event);
     }
@@ -48,14 +48,15 @@ public class DcpPlayQueueChangeMsg extends ISCPMessage
     /*
      * Denon control protocol
      */
-    private final static String HEOS_COMMAND = "event/player_queue_changed";
+    public final static String HEOS_EVENT_QUEUE = "event/player_queue_changed";
+    public final static String HEOS_EVENT_SERVICEOPT = "browse/set_service_option";
 
     @Nullable
-    public static DcpPlayQueueChangeMsg processHeosMessage(@NonNull final String command)
+    public static DcpMediaEventMsg processHeosMessage(@NonNull final String command)
     {
-        if (HEOS_COMMAND.equals(command))
+        if (HEOS_EVENT_QUEUE.equals(command) || HEOS_EVENT_SERVICEOPT.equals(command))
         {
-            return new DcpPlayQueueChangeMsg(command);
+            return new DcpMediaEventMsg(command);
         }
         return null;
     }
