@@ -2039,6 +2039,7 @@ public class State implements ConnectionIf
         final boolean changed = !msg.getData().equals(mediaListMid) || si != serviceIcon;
         mediaListMid = msg.getData();
         serviceIcon = si;
+        timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
         if (changed)
         {
             synchronized (mediaItems)

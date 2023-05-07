@@ -535,7 +535,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             }
         }
 
-        // Track menu
+        // Track menu and playback buttons
         if (state.protoType == Utils.ProtoType.ISCP || state.isRadioInput())
         {
             prepareButton(btnTrackMenu, null, R.drawable.cmd_track_menu, R.string.cmd_track_menu);
@@ -562,6 +562,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                     ServiceType.DCP_PLAYQUEUE.getDescriptionId());
             btnTrackMenu.setVisibility(View.VISIBLE);
             setButtonEnabled(btnTrackMenu, true);
+            updatePlaybackButtons(state);
             prepareButtonListeners(btnTrackMenu, null, () ->
             {
                 activity.getStateManager().sendMessage(new NetworkServiceMsg(ServiceType.DCP_PLAYQUEUE));
