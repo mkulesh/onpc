@@ -1619,7 +1619,7 @@ public class State implements ConnectionIf
             str.append("/");
             str.append(!presetList.isEmpty() ? Integer.toString(presetList.size()) : dashedString);
         }
-        else
+        else if (protoType == Utils.ProtoType.ISCP)
         {
             str.append(currentTrack != null ? Integer.toString(currentTrack) : dashedString);
             str.append("/");

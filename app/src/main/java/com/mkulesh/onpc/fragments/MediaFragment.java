@@ -687,6 +687,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 title.append(selector.getName());
             }
+            else if (state.titleBar.isEmpty() && state.serviceType != null && state.serviceType != ServiceType.UNKNOWN)
+            {
+                title.append(getString(state.serviceType.getDescriptionId()));
+            }
             else
             {
                 title.append(state.titleBar);

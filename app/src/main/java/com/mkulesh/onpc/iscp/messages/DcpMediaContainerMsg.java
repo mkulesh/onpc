@@ -403,14 +403,11 @@ public class DcpMediaContainerMsg extends ISCPMessage
             @SuppressWarnings("unchecked")
             final LinkedHashMap<String, Object> item = (LinkedHashMap<String, Object>) browse.get(i);
             final int id = Integer.parseInt(getElement(item, "id"));
-            if (id > 20)
-            {
-                continue;
-            }
+            final String name = (id == 21) ? "Play All" : getElement(item, "name");
             final XmlListItemMsg xmlItem = new XmlListItemMsg(
                     id,
                     0,
-                    getElement(item, "name"),
+                    name,
                     XmlListItemMsg.Icon.UNKNOWN,
                     true, null);
             parentMsg.options.add(xmlItem);
@@ -432,6 +429,9 @@ public class DcpMediaContainerMsg extends ISCPMessage
             case 20: // Remove from HEOS Favorites
                 return String.format("heos://browse/set_service_option?option=20&mid=%s",
                         mid);
+            case 21: // Play all
+                return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&aid=4",
+                        DCP_HEOS_PID, parentSid, parentCid);
             }
         }
         else if (container)

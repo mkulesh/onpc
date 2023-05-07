@@ -42,6 +42,7 @@ import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomChannelSettingMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
@@ -534,24 +535,42 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             }
         }
 
-        // Track and playback menu
-        if (state.isRadioInput())
+        // Track menu
+        if (state.protoType == Utils.ProtoType.ISCP || state.isRadioInput())
         {
-            updatePresetButtons();
-            prepareButtonListeners(btnTrackMenu, null, () -> showPresetMemoryDialog(state));
-        }
-        else
-        {
-            updatePlaybackButtons(state);
-            prepareButtonListeners(btnTrackMenu, null, () ->
-                    activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false));
-        }
-
-        {
+            prepareButton(btnTrackMenu, null, R.drawable.cmd_track_menu, R.string.cmd_track_menu);
             final boolean isTrackMenu = state.isRadioInput() ||
                     (state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE && state.isPlaying());
             btnTrackMenu.setVisibility(View.VISIBLE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
+            if (state.isRadioInput())
+            {
+                updatePresetButtons();
+                prepareButtonListeners(btnTrackMenu, null, () -> showPresetMemoryDialog(state));
+            }
+            else
+            {
+                updatePlaybackButtons(state);
+                prepareButtonListeners(btnTrackMenu, null, () ->
+                        activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false));
+            }
+        }
+        else if (state.protoType == Utils.ProtoType.DCP && state.inputType == InputSelectorMsg.InputType.DCP_NET)
+        {
+            prepareButton(btnTrackMenu, null,
+                    ServiceType.DCP_PLAYQUEUE.getImageId(),
+                    ServiceType.DCP_PLAYQUEUE.getDescriptionId());
+            btnTrackMenu.setVisibility(View.VISIBLE);
+            setButtonEnabled(btnTrackMenu, true);
+            prepareButtonListeners(btnTrackMenu, null, () ->
+            {
+                activity.getStateManager().sendMessage(new NetworkServiceMsg(ServiceType.DCP_PLAYQUEUE));
+                activity.setOpenedTab(CfgAppSettings.Tabs.MEDIA);
+            });
+        }
+        else
+        {
+            btnTrackMenu.setVisibility(View.GONE);
         }
 
         if (state.isMenuMode() && !state.isMediaEmpty())
