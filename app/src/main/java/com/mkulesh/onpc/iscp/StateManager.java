@@ -30,12 +30,10 @@ import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
-import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaEventMsg;
+import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
-import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
-import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
 import com.mkulesh.onpc.iscp.messages.DirectCommandMsg;
@@ -56,6 +54,7 @@ import com.mkulesh.onpc.iscp.messages.MasterVolumeMsg;
 import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
 import com.mkulesh.onpc.iscp.messages.MusicOptimizerMsg;
+import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkStandByMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PhaseMatchingBassMsg;
@@ -64,6 +63,7 @@ import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PresetMemoryMsg;
 import com.mkulesh.onpc.iscp.messages.PrivacyPolicyStatusMsg;
+import com.mkulesh.onpc.iscp.messages.RadioStationNameMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
@@ -724,14 +724,14 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof InputSelectorMsg)
         {
-            if (((InputSelectorMsg)msg).getInputType() == InputSelectorMsg.InputType.DCP_TUNER)
+            if (((InputSelectorMsg) msg).getInputType() == InputSelectorMsg.InputType.DCP_TUNER)
             {
                 final String[] tunerStatusQueries = new String[]{
                         DcpTunerModeMsg.CODE
                 };
                 sendQueries(tunerStatusQueries, "DCP: requesting tuner state...");
             }
-            else if (((InputSelectorMsg)msg).getInputType() == InputSelectorMsg.InputType.DCP_NET)
+            else if (((InputSelectorMsg) msg).getInputType() == InputSelectorMsg.InputType.DCP_NET)
             {
                 state.setDcpNetTopLayer();
             }

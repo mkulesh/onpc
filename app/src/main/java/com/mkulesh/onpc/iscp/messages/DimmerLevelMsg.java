@@ -34,7 +34,7 @@ public class DimmerLevelMsg extends ISCPMessage
 
     public enum Level implements DcpStringParameterIf
     {
-        NONE("N/A", "N/A",R.string.device_dimmer_level_none),
+        NONE("N/A", "N/A", R.string.device_dimmer_level_none),
         BRIGHT("00", "BRI", R.string.device_dimmer_level_bright),
         DIM("01", "DIM", R.string.device_dimmer_level_dim),
         DARK("02", "DAR", R.string.device_dimmer_level_dark),

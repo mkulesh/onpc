@@ -138,7 +138,7 @@ public class HdmiCecMsg extends ISCPMessage
     public String buildDcpMsg(boolean isQuery)
     {
         // A space is needed for this command
-        return DCP_COMMAND +  (isQuery ? (" " + DCP_MSG_REQ) :
+        return DCP_COMMAND + (isQuery ? (" " + DCP_MSG_REQ) :
                 DCP_COMMAND_EXT + " " + status.getDcpCode());
     }
 }

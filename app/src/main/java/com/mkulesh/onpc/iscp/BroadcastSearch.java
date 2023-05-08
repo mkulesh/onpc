@@ -235,11 +235,11 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         final String host = "239.255.255.250";
         final String schema = "schemas-denon-com:device";
         final String request =
-            "M-SEARCH * HTTP/1.1\r\n" +
-            "HOST: " + host + ":" + DCP_PORT + "\r\n" +
-            "MAN: \"ssdp:discover\"\r\n" +
-            "MX: 10\r\n" +
-            "ST: urn:" + schema + ":ACT-Denon:1\r\n\r\n";
+                "M-SEARCH * HTTP/1.1\r\n" +
+                        "HOST: " + host + ":" + DCP_PORT + "\r\n" +
+                        "MAN: \"ssdp:discover\"\r\n" +
+                        "MX: 10\r\n" +
+                        "ST: urn:" + schema + ":ACT-Denon:1\r\n\r\n";
         final byte[] bytes = request.getBytes();
 
         try

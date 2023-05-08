@@ -280,8 +280,8 @@ public class DcpMediaContainerMsg extends ISCPMessage
         addJsonParameter(sb, "parentCid", parentCid, true);
         addJsonParameter(sb, "mid", mid, true);
         addJsonParameter(sb, "type", type, true);
-        addJsonParameter(sb, "container", container ? "yes": "no", true);
-        addJsonParameter(sb, "playable", playable  ? "yes" : "no", true);
+        addJsonParameter(sb, "container", container ? "yes" : "no", true);
+        addJsonParameter(sb, "playable", playable ? "yes" : "no", true);
         addJsonParameter(sb, "name", name, true);
         addJsonParameter(sb, "start", String.valueOf(start), true);
         addJsonParameter(sb, "aid", aid, true);
@@ -302,7 +302,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
     @Nullable
     public static DcpMediaContainerMsg processHeosMessage(@NonNull final String command,
-        @NonNull final String heosMsg, @NonNull final Map<String, String> tokens)
+                                                          @NonNull final String heosMsg, @NonNull final Map<String, String> tokens)
     {
         if (HEOS_RESP_BROWSE_SERV.equals(command) || HEOS_RESP_BROWSE_CONT.equals(command))
         {
@@ -510,7 +510,8 @@ public class DcpMediaContainerMsg extends ISCPMessage
             {
                 return (String) obj;
             }
-            Logging.info(payload, "DCP HEOS error: Cannot read element " + name + ": object type unknown: " + obj);        }
+            Logging.info(payload, "DCP HEOS error: Cannot read element " + name + ": object type unknown: " + obj);
+        }
         return EMPTY;
     }
 

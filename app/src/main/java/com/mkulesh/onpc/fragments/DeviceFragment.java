@@ -278,8 +278,8 @@ public class DeviceFragment extends BaseFragment
     private void hidePlatformSpecificParameters(Utils.ProtoType protoType)
     {
         final int vis = protoType == Utils.ProtoType.ISCP ? View.VISIBLE : View.GONE;
-        ((LinearLayout)(rootView.findViewById(R.id.device_year).getParent())).setVisibility(vis);
-        ((LinearLayout)(rootView.findViewById(R.id.google_cast_version).getParent())).setVisibility(vis);
+        ((LinearLayout) (rootView.findViewById(R.id.device_year).getParent())).setVisibility(vis);
+        ((LinearLayout) (rootView.findViewById(R.id.google_cast_version).getParent())).setVisibility(vis);
     }
 
     private void onFirmwareUpdateButton()

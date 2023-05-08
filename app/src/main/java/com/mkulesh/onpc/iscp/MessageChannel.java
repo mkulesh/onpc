@@ -24,10 +24,16 @@ public interface MessageChannel extends ConnectionIf
     int QUEUE_SIZE = 4 * 1024;
 
     void start();
+
     void stop();
+
     boolean isActive();
+
     void addAllowedMessage(final String code);
+
     Utils.ProtoType getProtoType();
+
     boolean connectToServer(@NonNull String host, int port);
+
     void sendMessage(EISCPMessage eiscpMessage);
 }

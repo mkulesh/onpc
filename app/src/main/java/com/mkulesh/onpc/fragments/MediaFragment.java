@@ -525,7 +525,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         final List<XmlListItemMsg> mediaItems = state.cloneMediaItems();
         if (state.protoType == Utils.ProtoType.DCP && !state.isTopLayer() && mediaItems.isEmpty())
         {
-            mediaItems.add(new XmlListItemMsg(0,0,
+            mediaItems.add(new XmlListItemMsg(0, 0,
                     getString(R.string.medialist_no_items), XmlListItemMsg.Icon.UNKNOWN,
                     false, null));
         }

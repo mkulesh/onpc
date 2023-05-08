@@ -63,7 +63,8 @@ public abstract class AppCompatPreferenceActivity extends AppCompatActivity
         // See https://stackoverflow.com/questions/55265834/change-locale-not-work-after-migrate-to-androidx:
         // There is an issue in new app compat libraries related to night mode that is causing to
         // override the configuration on android 21 to 25. This can be fixed as follows
-        if (overrideConfiguration != null) {
+        if (overrideConfiguration != null)
+        {
             int uiMode = overrideConfiguration.uiMode;
             overrideConfiguration.setTo(getBaseContext().getResources().getConfiguration());
             overrideConfiguration.uiMode = uiMode;

@@ -62,7 +62,7 @@ public class CfgAppSettings
             this.isDcp = isDcp;
         }
 
-        public boolean isVisible (Utils.ProtoType pt)
+        public boolean isVisible(Utils.ProtoType pt)
         {
             return (pt == Utils.ProtoType.ISCP && isIscp) || (pt == Utils.ProtoType.DCP && isDcp);
         }

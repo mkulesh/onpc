@@ -58,7 +58,8 @@ public class XmlListItemMsg extends ISCPMessage
             return imageId;
         }
 
-        public boolean isSong() {
+        public boolean isSong()
+        {
             return this == PLAY || this == MUSIC;
         }
     }

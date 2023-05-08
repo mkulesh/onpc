@@ -1652,7 +1652,7 @@ public class State implements ConnectionIf
         if (isDab())
         {
             final String freq1 = !frequency.contains(":") && frequency.length() > 2 ?
-                frequency.substring(0,2) + ":" + frequency.substring(2) : frequency;
+                    frequency.substring(0, 2) + ":" + frequency.substring(2) : frequency;
             return !freq1.isEmpty() && !freq1.contains("MHz") ? freq1 + "MHz" : freq1;
         }
         return frequency;

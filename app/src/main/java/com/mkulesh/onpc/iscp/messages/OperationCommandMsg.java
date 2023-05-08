@@ -215,7 +215,9 @@ public class OperationCommandMsg extends ZonedMessage
     {
         switch (command)
         {
-        case PLAY: case PAUSE: case STOP:
+        case PLAY:
+        case PAUSE:
+        case STOP:
             return "heos://player/set_play_state?pid=" + DCP_HEOS_PID +
                     "&state=" + command.name().toLowerCase();
         case TRDN:
@@ -249,9 +251,12 @@ public class OperationCommandMsg extends ZonedMessage
         {
             switch (repeatStatus)
             {
-            case OFF: return Command.DCP_REPEAT_ALL;
-            case ALL: return Command.DCP_REPEAT_ONE;
-            default: return Command.DCP_REPEAT_OFF;
+            case OFF:
+                return Command.DCP_REPEAT_ALL;
+            case ALL:
+                return Command.DCP_REPEAT_ONE;
+            default:
+                return Command.DCP_REPEAT_OFF;
             }
         }
     }

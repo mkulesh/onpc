@@ -322,7 +322,7 @@ public class PlayStatusMsg extends ISCPMessage
         {
             return "heos://" + HEOS_COMMAND_STATE + "?pid=" + DCP_HEOS_PID +
                     DCP_MSG_SEP +
-                   "heos://" + HEOS_COMMAND_MODE + "?pid=" + DCP_HEOS_PID;
+                    "heos://" + HEOS_COMMAND_MODE + "?pid=" + DCP_HEOS_PID;
         }
         return null;
     }
