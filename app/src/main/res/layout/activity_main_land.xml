@@ -40,9 +40,10 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/activity_tab_height_land"
-                app:tabMode="fixed"
+                android:layout_gravity="center"
+                app:tabMode="scrollable"
                 app:tabGravity="fill" />
 
         </com.google.android.material.appbar.AppBarLayout>
