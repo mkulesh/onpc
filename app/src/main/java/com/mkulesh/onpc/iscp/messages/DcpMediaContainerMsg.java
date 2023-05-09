@@ -42,6 +42,13 @@ public class DcpMediaContainerMsg extends ISCPMessage
     private final static String YES = "yes";
     private final static String PLAYQUEUE_SID = "9999";
 
+    public final static int SO_ADD_TO_HEOS = 19;
+    public final static int SO_REMOVE_FROM_HEOS = 20;
+    public final static int SO_CONTAINER = 21;
+    public final static int SO_ADD_AND_PLAY_ALL = 201;
+    public final static int SO_ADD_ALL = 203;
+    public final static int SO_REPLACE_AND_PLAY_ALL = 204;
+
     private final String sid;
     private final String parentSid;
     private final String cid;
@@ -403,14 +410,21 @@ public class DcpMediaContainerMsg extends ISCPMessage
             @SuppressWarnings("unchecked")
             final LinkedHashMap<String, Object> item = (LinkedHashMap<String, Object>) browse.get(i);
             final int id = Integer.parseInt(getElement(item, "id"));
-            final String name = (id == 21) ? "Play All" : getElement(item, "name");
-            final XmlListItemMsg xmlItem = new XmlListItemMsg(
-                    id,
-                    0,
-                    name,
-                    XmlListItemMsg.Icon.UNKNOWN,
-                    true, null);
-            parentMsg.options.add(xmlItem);
+            final String name = getElement(item, "name");
+            if (id == SO_CONTAINER)
+            {
+                parentMsg.options.add(new XmlListItemMsg(SO_ADD_ALL, 0, name,
+                        XmlListItemMsg.Icon.FOLDER_PLAY, true, null));
+                parentMsg.options.add(new XmlListItemMsg(SO_ADD_AND_PLAY_ALL, 0, name,
+                        XmlListItemMsg.Icon.FOLDER_PLAY, true, null));
+                parentMsg.options.add(new XmlListItemMsg(SO_REPLACE_AND_PLAY_ALL, 0, name,
+                        XmlListItemMsg.Icon.FOLDER_PLAY, true, null));
+            }
+            else
+            {
+                parentMsg.options.add(new XmlListItemMsg(id, 0, name,
+                        XmlListItemMsg.Icon.UNKNOWN, true, null));
+            }
         }
     }
 
@@ -423,13 +437,19 @@ public class DcpMediaContainerMsg extends ISCPMessage
         {
             switch (start)
             {
-            case 19: // Add station to HEOS Favorites
+            case SO_ADD_TO_HEOS: // Add station to HEOS Favorites
                 return String.format("heos://browse/set_service_option?sid=%s&option=19&mid=%s&name=%s",
                         parentSid, mid, name);
-            case 20: // Remove from HEOS Favorites
+            case SO_REMOVE_FROM_HEOS: // Remove from HEOS Favorites
                 return String.format("heos://browse/set_service_option?option=20&mid=%s",
                         mid);
-            case 21: // Play all
+            case SO_ADD_AND_PLAY_ALL: // Add and play
+                return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&aid=1",
+                        DCP_HEOS_PID, parentSid, parentCid);
+            case SO_ADD_ALL: // Add
+                return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&aid=3",
+                        DCP_HEOS_PID, parentSid, parentCid);
+            case SO_REPLACE_AND_PLAY_ALL: // Replace and play
                 return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&aid=4",
                         DCP_HEOS_PID, parentSid, parentCid);
             }

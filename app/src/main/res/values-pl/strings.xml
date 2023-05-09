@@ -459,6 +459,13 @@
     <string name="playlist_move_from">Przenieś z</string>
     <string name="playlist_move_to">Przenieś do</string>
 
+    <!-- DCP service options -->
+    <string name="playlist_add_all">Dodać wszystko</string>
+    <string name="playlist_add_and_play_all">Dodaj i zagraj we wszystko</string>
+    <string name="playlist_replace_and_play_all">Wymień i zagraj we wszystko</string>
+    <string name="playlist_add_to_heos_favourites">Dodaj do ulubionych HEOS</string>
+    <string name="playlist_remove_from_heos_favourites">Usuń z Ulubionych HEOS</string>
+
     <!-- Device tab -->
     <string name="device_friendly_name">Nazwa</string>
     <string name="device_change_friendly_name">Zmień nazwę</string>

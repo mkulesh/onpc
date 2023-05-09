@@ -460,6 +460,13 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
     <string name="playlist_move_from">Déplacer depuis</string>
     <string name="playlist_move_to">Déplacer vers</string>
 
+    <!-- DCP service options -->
+    <string name="playlist_add_all">Tout ajouter</string>
+    <string name="playlist_add_and_play_all">Ajouter et jouer tous</string>
+    <string name="playlist_replace_and_play_all">Remplacez et jouez tous</string>
+    <string name="playlist_add_to_heos_favourites">Ajouter aux favoris HEOS</string>
+    <string name="playlist_remove_from_heos_favourites">Supprimer des favoris HEOS</string>
+
     <!-- Device tab -->
     <string name="device_friendly_name">Nom personnalisé</string>
     <string name="device_change_friendly_name">Changer le nom personnalisé</string>

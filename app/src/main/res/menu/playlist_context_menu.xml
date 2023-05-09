@@ -16,37 +16,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AlwaysShowAction">
 
-    <item
-        android:id="@+id/playlist_menu_replace_and_play"
-        android:title="@string/playlist_replace_and_play" />
-    <item
-        android:id="@+id/playlist_menu_add"
-        android:title="@string/playlist_add" />
-    <item
-        android:id="@+id/playlist_menu_replace"
-        android:title="@string/playlist_replace" />
-    <item
-        android:id="@+id/playlist_menu_add_and_play"
-        android:title="@string/playlist_add_and_play" />
-    <item
-        android:id="@+id/playlist_menu_remove"
-        android:title="@string/playlist_remove" />
-    <item
-        android:id="@+id/playlist_menu_remove_all"
-        android:title="@string/playlist_remove_all" />
-    <item
-        android:id="@+id/playlist_menu_move_from"
-        android:title="@string/playlist_move_from" />
-    <item
-        android:id="@+id/playlist_menu_move_to"
-        android:title="@string/playlist_move_to" />
-    <item
-        android:id="@+id/playlist_track_menu"
-        android:title="@string/cmd_track_menu" />
-    <item
-        android:id="@+id/cmd_playback_mode"
-        android:title="@string/medialist_playback_mode" />
-    <item
-        android:id="@+id/cmd_shortcut_create"
-        android:title="@string/favorite_shortcut_create" />
+    <group android:id="@+id/playlist_menu" android:enabled="true">
+        <item
+            android:id="@+id/playlist_menu_replace_and_play"
+            android:title="@string/playlist_replace_and_play" />
+        <item
+            android:id="@+id/playlist_menu_add"
+            android:title="@string/playlist_add" />
+        <item
+            android:id="@+id/playlist_menu_replace"
+            android:title="@string/playlist_replace" />
+        <item
+            android:id="@+id/playlist_menu_add_and_play"
+            android:title="@string/playlist_add_and_play" />
+        <item
+            android:id="@+id/playlist_menu_remove"
+            android:title="@string/playlist_remove" />
+        <item
+            android:id="@+id/playlist_menu_remove_all"
+            android:title="@string/playlist_remove_all" />
+        <item
+            android:id="@+id/playlist_menu_move_from"
+            android:title="@string/playlist_move_from" />
+        <item
+            android:id="@+id/playlist_menu_move_to"
+            android:title="@string/playlist_move_to" />
+    </group>
+
+    <group android:id="@+id/track_menu_menu" android:enabled="true">
+        <item
+            android:id="@+id/playlist_track_menu"
+            android:title="@string/cmd_track_menu" />
+        <item
+            android:id="@+id/cmd_playback_mode"
+            android:title="@string/medialist_playback_mode" />
+        <item
+            android:id="@+id/cmd_shortcut_create"
+            android:title="@string/favorite_shortcut_create" />
+    </group>
+
+    <group android:id="@+id/playlist_menu_dcp" android:enabled="true">
+        <item
+            android:id="@+id/playlist_menu_replace_and_play_all"
+            android:title="@string/playlist_replace_and_play_all" />
+        <item
+            android:id="@+id/playlist_menu_add_all"
+            android:title="@string/playlist_add_all" />
+        <item
+            android:id="@+id/playlist_menu_add_and_play_all"
+            android:title="@string/playlist_add_and_play_all" />
+        <item
+            android:id="@+id/playlist_menu_add_to_heos_favourites"
+            android:title="@string/playlist_add_to_heos_favourites" />
+        <item
+            android:id="@+id/playlist_menu_remove_from_heos_favourites"
+            android:title="@string/playlist_remove_from_heos_favourites" />
+    </group>
+
 </menu>

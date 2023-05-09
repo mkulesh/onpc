@@ -474,6 +474,7 @@ public class State implements ConnectionIf
     private void clearTrackInfo()
     {
         cover = null;
+        coverUrl = null;
         album = "";
         artist = "";
         title = "";

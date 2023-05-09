@@ -524,6 +524,13 @@
     <string name="playlist_move_from">Move from</string>
     <string name="playlist_move_to">Move to</string>
 
+    <!-- DCP service options -->
+    <string name="playlist_add_all">Add all</string>
+    <string name="playlist_add_and_play_all">Add and play all</string>
+    <string name="playlist_replace_and_play_all">Replace and play all</string>
+    <string name="playlist_add_to_heos_favourites">Add to HEOS Favorites</string>
+    <string name="playlist_remove_from_heos_favourites">Remove from HEOS Favorites</string>
+
     <!-- Device tab -->
     <string name="device_friendly_name">Friendly name</string>
     <string name="device_change_friendly_name">Change friendly name</string>

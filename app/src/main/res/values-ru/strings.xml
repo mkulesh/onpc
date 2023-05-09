@@ -461,6 +461,13 @@
     <string name="playlist_move_from">Вырезать</string>
     <string name="playlist_move_to">Вставить</string>
 
+    <!-- DCP service options -->
+    <string name="playlist_add_all">Добавить все</string>
+    <string name="playlist_add_and_play_all">Добавить и воспроизвести все</string>
+    <string name="playlist_replace_and_play_all">Заменить и воспроизвести все</string>
+    <string name="playlist_add_to_heos_favourites">Добавить в Любимые HEOS</string>
+    <string name="playlist_remove_from_heos_favourites">Удалить из Любимых HEOS</string>
+
     <!-- Device tab -->
     <string name="device_friendly_name">Удобное название</string>
     <string name="device_change_friendly_name">Изменить удобное название</string>

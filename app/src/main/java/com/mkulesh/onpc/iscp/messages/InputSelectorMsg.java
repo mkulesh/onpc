@@ -82,7 +82,7 @@ public class InputSelectorMsg extends ZonedMessage
         HDMI_5("55", R.string.input_selector_hdmi_5, R.drawable.media_item_hdmi),
         HDMI_6("56", R.string.input_selector_hdmi_6, R.drawable.media_item_hdmi),
         HDMI_7("57", R.string.input_selector_hdmi_7, R.drawable.media_item_hdmi),
-        SOURCE("80", R.string.input_selector_source),
+        SOURCE("80", R.string.input_selector_source, R.drawable.media_item_source),
 
         // Denon
         DCP_PHONO("PHONO", R.string.input_selector_phono, R.drawable.media_item_phono),
@@ -103,7 +103,7 @@ public class InputSelectorMsg extends ZonedMessage
         DCP_AUX7("AUX7", R.string.input_selector_aux7, R.drawable.media_item_rca),
         DCP_NET("NET", R.string.input_selector_net, R.drawable.media_item_net, true),
         DCP_BT("BT", R.string.input_selector_bluetooth, R.drawable.media_item_bluetooth),
-        DCP_SOURCE("SOURCE", R.string.input_selector_source),
+        DCP_SOURCE("SOURCE", R.string.input_selector_source, R.drawable.media_item_source),
 
         NONE("XX", -1);
 

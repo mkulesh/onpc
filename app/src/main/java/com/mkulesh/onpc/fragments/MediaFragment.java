@@ -59,6 +59,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.view.MenuCompat;
 
 public class MediaFragment extends BaseFragment implements AdapterView.OnItemClickListener
 {
@@ -164,6 +165,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     selectedItem = (XmlListItemMsg) item;
                     final MenuInflater inflater = activity.getMenuInflater();
                     inflater.inflate(R.menu.playlist_context_menu, menu);
+                    MenuCompat.setGroupDividerEnabled(menu, true);
 
                     final boolean isDcpItem = selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg;
                     final boolean isDcpPlayable = isDcpItem &&
@@ -200,13 +202,30 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
                     menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
 
+                    // DCP menu
+                    menu.findItem(R.id.playlist_menu_add_to_heos_favourites).setVisible(isDcpItem);
+                    menu.findItem(R.id.playlist_menu_remove_from_heos_favourites).setVisible(isDcpItem);
+                    menu.findItem(R.id.playlist_menu_replace_and_play_all).setVisible(isDcpItem);
+                    menu.findItem(R.id.playlist_menu_add_all).setVisible(isDcpItem);
+                    menu.findItem(R.id.playlist_menu_add_and_play_all).setVisible(isDcpItem);
                     if (isDcpItem)
                     {
                         menu.findItem(R.id.playlist_menu_replace).setVisible(false);
-                        menu.findItem(R.id.playlist_track_menu).setVisible(
-                                !state.cloneDcpTrackMenuItems(null).isEmpty());
+                        menu.findItem(R.id.playlist_track_menu).setVisible(false);
                         menu.findItem(R.id.cmd_playback_mode).setVisible(false);
                         menu.findItem(R.id.cmd_shortcut_create).setVisible(false);
+
+                        final List<XmlListItemMsg> menuItems = state.cloneDcpTrackMenuItems(null);
+                        menu.findItem(R.id.playlist_menu_add_to_heos_favourites).setVisible(
+                                findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_TO_HEOS) != null);
+                        menu.findItem(R.id.playlist_menu_remove_from_heos_favourites).setVisible(
+                                findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REMOVE_FROM_HEOS) != null);
+                        menu.findItem(R.id.playlist_menu_replace_and_play_all).setVisible(
+                                findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REPLACE_AND_PLAY_ALL) != null);
+                        menu.findItem(R.id.playlist_menu_add_all).setVisible(
+                                findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_ALL) != null);
+                        menu.findItem(R.id.playlist_menu_add_and_play_all).setVisible(
+                                findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL) != null);
                     }
                 }
                 else if (item instanceof PresetCommandMsg)
@@ -298,15 +317,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
                 return true;
             case R.id.playlist_track_menu:
-                if (dcpCmd != null)
-                {
-                    final PopupManager popupManager = new PopupManager(dcpCmd);
-                    popupManager.showTrackMenuDialog(activity, state);
-                }
-                else
-                {
-                    activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
-                }
+                activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false);
                 return true;
             case R.id.cmd_playback_mode:
                 activity.getStateManager().sendMessage(StateManager.LIST_MSG);
@@ -314,6 +325,16 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             case R.id.cmd_shortcut_create:
                 addShortcut(state, title, title);
                 return true;
+            case R.id.playlist_menu_add_to_heos_favourites:
+                return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_TO_HEOS);
+            case R.id.playlist_menu_remove_from_heos_favourites:
+                return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_REMOVE_FROM_HEOS);
+            case R.id.playlist_menu_replace_and_play_all:
+                return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_REPLACE_AND_PLAY_ALL);
+            case R.id.playlist_menu_add_all:
+                return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_ALL);
+            case R.id.playlist_menu_add_and_play_all:
+                return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL);
             }
         }
         else if (selectedStation != null && activity.isConnected() && item.getItemId() == R.id.cmd_shortcut_create)
@@ -325,6 +346,30 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+    @Nullable
+    private XmlListItemMsg findDcpMenuItem(@NonNull List<XmlListItemMsg> menuItems, int id)
+    {
+        for (XmlListItemMsg item : menuItems)
+        {
+            if (item.getMessageId() == id)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    private boolean callDcpMenuItem(DcpMediaContainerMsg dcpCmd, int id)
+    {
+        final List<XmlListItemMsg> menuItems = activity.getStateManager().getState().cloneDcpTrackMenuItems(dcpCmd);
+        final XmlListItemMsg item = findDcpMenuItem(menuItems, id);
+        if (item != null)
+        {
+            activity.getStateManager().sendMessage(item);
+        }
+        return true;
     }
 
     private void addShortcut(final @NonNull State state, final String item, final String alias)

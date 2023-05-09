@@ -734,6 +734,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             else if (((InputSelectorMsg) msg).getInputType() == InputSelectorMsg.InputType.DCP_NET)
             {
                 state.setDcpNetTopLayer();
+                final String[] playStatusQueries = new String[]{
+                        DcpMediaItemMsg.CODE,
+                        PlayStatusMsg.CODE
+                };
+                sendQueries(playStatusQueries, "DCP: requesting play state...");
             }
         }
 
