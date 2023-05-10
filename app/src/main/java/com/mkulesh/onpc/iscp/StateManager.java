@@ -649,6 +649,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             // In order to reduce waiting time for track info, request track information first
             final String[] powerStateQueries = new String[]{
                     DcpMediaItemMsg.CODE,
+                    FirmwareUpdateMsg.CODE,
                     DcpReceiverInformationMsg.CODE,
                     PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
             };

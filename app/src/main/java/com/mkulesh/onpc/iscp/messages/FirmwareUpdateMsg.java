@@ -14,11 +14,13 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 /*
@@ -28,31 +30,38 @@ public class FirmwareUpdateMsg extends ISCPMessage
 {
     public final static String CODE = "UPD";
 
-    public enum Status implements StringParameterIf
+    public enum Status implements DcpStringParameterIf
     {
-        NONE("N/A", R.string.device_firmware_none),
-        ACTUAL("FF", R.string.device_firmware_actual),
-        NEW_VERSION("00", R.string.device_firmware_new_version),
-        NEW_VERSION_NORMAL("01", R.string.device_firmware_new_version),
-        NEW_VERSION_FORCE("02", R.string.device_firmware_new_version),
-        UPDATE_STARTED("Dxx-xx", R.string.device_firmware_update_started),
-        UPDATE_COMPLETE("CMP", R.string.device_firmware_update_complete),
-        NET("NET", R.string.device_firmware_net);
+        NONE("N/A", "N/A", R.string.device_firmware_none),
+        ACTUAL("FF", "update_none", R.string.device_firmware_actual),
+        NEW_VERSION("00", "update_exist", R.string.device_firmware_new_version),
+        NEW_VERSION_NORMAL("01", "N/A", R.string.device_firmware_new_version),
+        NEW_VERSION_FORCE("02", "N/A", R.string.device_firmware_new_version),
+        UPDATE_STARTED("Dxx-xx", "N/A", R.string.device_firmware_update_started),
+        UPDATE_COMPLETE("CMP", "N/A", R.string.device_firmware_update_complete),
+        NET("NET", "N/A", R.string.device_firmware_net);
 
-        final String code;
+        final String code, dcpCode;
 
         @StringRes
         final int descriptionId;
 
-        Status(final String code, @StringRes final int descriptionId)
+        Status(final String code, final String dcpCode, @StringRes final int descriptionId)
         {
             this.code = code;
+            this.dcpCode = dcpCode;
             this.descriptionId = descriptionId;
         }
 
         public String getCode()
         {
             return code;
+        }
+
+        @NonNull
+        public String getDcpCode()
+        {
+            return dcpCode;
         }
 
         @StringRes
@@ -98,5 +107,36 @@ public class FirmwareUpdateMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    private final static String HEOS_COMMAND = "player/check_update";
+
+    @Nullable
+    public static FirmwareUpdateMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg)
+    {
+        if (HEOS_COMMAND.equals(command))
+        {
+            final Status s = (Status) searchDcpParameter(
+                    JsonPath.read(heosMsg, "$.payload.update"), Status.values(), null);
+            if (s != null)
+            {
+                return new FirmwareUpdateMsg(s);
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        if (isQuery)
+        {
+            return "heos://" + HEOS_COMMAND + "?pid=" + DCP_HEOS_PID;
+        }
+        return null;
     }
 }

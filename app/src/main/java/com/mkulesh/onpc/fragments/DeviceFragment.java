@@ -231,6 +231,7 @@ public class DeviceFragment extends BaseFragment
             ((TextView) rootView.findViewById(R.id.device_model)).setText(state.getModel());
             ((TextView) rootView.findViewById(R.id.device_year)).setText(state.deviceProperties.get("year"));
             // Firmware version
+            if (state.deviceProperties.get("firmwareversion") != null)
             {
                 StringBuilder version = new StringBuilder();
                 version.append(state.deviceProperties.get("firmwareversion"));
@@ -246,7 +247,7 @@ public class DeviceFragment extends BaseFragment
                 {
                     version.append(", ").append(getStringValue(state.firmwareStatus.getDescriptionId()));
                 }
-                if (isValidVersions)
+                if (isValidVersions && state.protoType == Utils.ProtoType.ISCP)
                 {
                     // Update button
                     final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);

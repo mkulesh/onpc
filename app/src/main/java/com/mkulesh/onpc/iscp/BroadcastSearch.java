@@ -107,24 +107,28 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                 + ", wifi=" + connectionState.isWifi());
 
         final Character[] models = new Character[]{ 'x', 'p' };
-        int modelId = 0;
 
         try
         {
             final DatagramSocket iscpSocket = prepareSocket(ISCP_PORT);
             final DatagramSocket dcpSocket = prepareSocket(DCP_PORT);
+            final byte[] response = new byte[1024];
 
             while (!isStopped())
             {
-                requestIscp(iscpSocket, models[modelId]);
-                modelId++;
-                if (modelId > 1)
+                requestIscp(iscpSocket, models[0]);
+                requestIscp(iscpSocket, models[1]);
+                requestDcp(dcpSocket);
+
+                final long startTime = Calendar.getInstance().getTimeInMillis();
+                while (Calendar.getInstance().getTimeInMillis() < startTime + TIMEOUT)
                 {
-                    modelId = 0;
-                }
-                if (modelId == 0)
-                {
-                    requestDcp(dcpSocket);
+                    if (isStopped())
+                    {
+                        break;
+                    }
+                    getIscpResponce(iscpSocket, response);
+                    getDcpResponce(dcpSocket, response);
                 }
             }
             iscpSocket.close();
@@ -186,47 +190,40 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         {
             Logging.info(BroadcastSearch.this, "  -> can not send request: " + e);
         }
+    }
 
-        final long startTime = Calendar.getInstance().getTimeInMillis();
-        final byte[] response = new byte[512];
-        while (Calendar.getInstance().getTimeInMillis() < startTime + TIMEOUT)
+    private void getIscpResponce(final DatagramSocket socket, final byte[] response)
+    {
+        try
         {
-            if (isStopped())
+            Arrays.fill(response, (byte) 0);
+            final DatagramPacket p2 = new DatagramPacket(response, response.length);
+            socket.receive(p2);
+            if (p2.getAddress() == null)
             {
-                break;
+                return;
             }
 
-            try
+            final EISCPMessage msg = convertResponse(response);
+            if (msg == null || msg.getParameters() == null)
             {
-                Arrays.fill(response, (byte) 0);
-                final DatagramPacket p2 = new DatagramPacket(response, response.length);
-                socket.receive(p2);
-                if (p2.getAddress() == null)
-                {
-                    continue;
-                }
-
-                final EISCPMessage msg = convertResponse(response);
-                if (msg == null || msg.getParameters() == null)
-                {
-                    continue;
-                }
-
-                if (msg.getParameters().equals("QSTN"))
-                {
-                    continue;
-                }
-
-                final BroadcastResponseMsg responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
-                if (responseMessage.isValidConnection())
-                {
-                    publishProgress(responseMessage);
-                }
+                return;
             }
-            catch (Exception e)
+
+            if (msg.getParameters().equals("QSTN"))
             {
-                // nothing to do
+                return;
             }
+
+            final BroadcastResponseMsg responseMessage = new BroadcastResponseMsg(p2.getAddress(), msg);
+            if (responseMessage.isValidConnection())
+            {
+                publishProgress(responseMessage);
+            }
+        }
+        catch (Exception e)
+        {
+            // nothing to do
         }
     }
 
@@ -253,42 +250,35 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         {
             Logging.info(BroadcastSearch.this, "  -> can not send request: " + e);
         }
+    }
 
-        final long startTime = Calendar.getInstance().getTimeInMillis();
-        final byte[] response = new byte[1024];
-        while (Calendar.getInstance().getTimeInMillis() < startTime + TIMEOUT)
+    private void getDcpResponce(DatagramSocket socket, final byte[] response)
+    {
+        final String schema = "schemas-denon-com:device";
+        try
         {
-            if (isStopped())
+            Arrays.fill(response, (byte) 0);
+            final DatagramPacket p2 = new DatagramPacket(response, response.length);
+            socket.receive(p2);
+            if (p2.getAddress() == null || p2.getAddress().getHostAddress() == null)
             {
-                break;
+                return;
             }
 
-            try
+            final String responseStr = new String(response);
+            if (responseStr.contains(schema))
             {
-                Arrays.fill(response, (byte) 0);
-                final DatagramPacket p2 = new DatagramPacket(response, response.length);
-                socket.receive(p2);
-                if (p2.getAddress() == null || p2.getAddress().getHostAddress() == null)
+                final BroadcastResponseMsg responseMessage =
+                        new BroadcastResponseMsg(p2.getAddress().getHostAddress(), 23, "Denon-Heos AVR");
+                if (responseMessage.isValidConnection())
                 {
-                    continue;
-                }
-
-                final String responseStr = new String(response);
-                if (responseStr.contains(schema))
-                {
-                    Logging.info(this, "M-SEARCH response from " + p2.getAddress() + ": " + schema);
-                    final BroadcastResponseMsg responseMessage =
-                            new BroadcastResponseMsg(p2.getAddress().getHostAddress(), 23, "Denon-Heos AVR");
-                    if (responseMessage.isValidConnection())
-                    {
-                        publishProgress(responseMessage);
-                    }
+                    publishProgress(responseMessage);
                 }
             }
-            catch (Exception e)
-            {
-                // nothing to do
-            }
+        }
+        catch (Exception e)
+        {
+            // nothing to do
         }
     }
 

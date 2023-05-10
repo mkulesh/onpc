@@ -124,6 +124,7 @@ public class DCPMessageFactory
                 return;
             }
 
+            addISCPMsg(FirmwareUpdateMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(CustomPopupMsg.processHeosMessage(cmd, tokens));
 
@@ -318,6 +319,8 @@ public class DCPMessageFactory
             return new PlayQueueRemoveMsg(raw);
         case PlayQueueReorderMsg.CODE:
             return new PlayQueueReorderMsg(raw);
+        case FirmwareUpdateMsg.CODE:
+            return new FirmwareUpdateMsg(raw);
         // Denon control protocol
         case OperationCommandMsg.CODE:
             return new OperationCommandMsg(raw);
