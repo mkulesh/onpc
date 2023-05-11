@@ -15,11 +15,8 @@ curl -X POST -H "Content-Type: text/xml" \
     -d '{"body": "<?xml version="1.0" encoding="utf-8"?><tx><cmd id="3"><name>GetSoundMode</name><list><param name="movie"></param><param name="music"></param><param name="game"></param><param name="pure"></param></list></cmd></tx>"}' \
     http://192.168.1.82:8080/goform/AppCommand0300.xml
 
-echo ----- GetSoundMode:
+echo ----- SetTunerPresetMemory:
 curl -X POST -H "Content-Type: text/xml" \
-    -d '{"body": "<?xml version="1.0" encoding="utf-8"?><tx><cmd id="3"><name>GetSoundMode</name><list><param name="movie"></param><param name="music"></param><param name="game"></param><param name="pure"></param></list></cmd></tx>"}' \
-    http://192.168.1.82:8080/goform/AppCommand0300.xml
+    -d '{"body": "<?xml version="1.0" encoding="utf-8"?><tx><cmd id="1">SetTunerPresetMemory</cmd><presetno>32</presetno></tx>"}' \
+    http://192.168.1.82:8080/goform/AppCommand.xml
 
-
-echo ----- Deviceinfo:
-curl http://192.168.1.82:8080/goform/Deviceinfo.xml

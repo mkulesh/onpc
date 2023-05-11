@@ -407,8 +407,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         {
             // request DcpReceiverInformationMsg here since no ReceiverInformation exists
             // otherwise it will be requested when ReceiverInformation is processed
+            sendMessage(new DcpReceiverInformationMsg(DcpReceiverInformationMsg.QueryType.FULL));
             final String[] powerStateQueries = new String[]{
-                    DcpReceiverInformationMsg.CODE,
                     PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
             };
             sendQueries(powerStateQueries, "requesting DCP default state...");
@@ -646,11 +646,19 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         if (msg instanceof ReceiverInformationMsg)
         {
+            final ReceiverInformationMsg ri = (ReceiverInformationMsg) msg;
+            if (ri.getPresetList().isEmpty())
+            {
+                sendMessage(new DcpReceiverInformationMsg(DcpReceiverInformationMsg.QueryType.FULL));
+            }
+            else
+            {
+                sendMessage(new DcpReceiverInformationMsg(DcpReceiverInformationMsg.QueryType.SHORT));
+            }
             // In order to reduce waiting time for track info, request track information first
             final String[] powerStateQueries = new String[]{
                     DcpMediaItemMsg.CODE,
                     FirmwareUpdateMsg.CODE,
-                    DcpReceiverInformationMsg.CODE,
                     PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
             };
             sendQueries(powerStateQueries, "requesting DCP power state...");

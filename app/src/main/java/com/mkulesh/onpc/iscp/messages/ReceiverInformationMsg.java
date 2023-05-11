@@ -27,6 +27,7 @@ import org.w3c.dom.Node;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -283,15 +284,29 @@ public class ReceiverInformationMsg extends ISCPMessage
         final String freq;
         final String name;
 
-        Preset(Element e)
+        Preset(Element e, Utils.ProtoType protoType)
         {
-            id = Integer.parseInt(e.getAttribute("id"), 16);
-            band = Integer.parseInt(e.getAttribute("band"));
-            freq = e.getAttribute("freq");
-            name = e.getAttribute("name").trim();
+            if (protoType == Utils.ProtoType.ISCP)
+            {
+                // <preset id="08" band="1" freq="97.30" name="" />
+                id = Integer.parseInt(e.getAttribute("id"), 16);
+                band = Integer.parseInt(e.getAttribute("band"));
+                freq = e.getAttribute("freq");
+                name = e.getAttribute("name").trim();
+            }
+            else
+            {
+                // <value index="1" skip="OFF" table="01" band="FM" param=" 008830"/>
+                final DecimalFormat df = Utils.getDecimalFormat("0.00");
+                final String par = e.getAttribute("param").trim();
+                final boolean freqValid = Utils.isInteger(par);
+                id = Integer.parseInt(e.getAttribute("index"));
+                band = "FM".equalsIgnoreCase(e.getAttribute("band")) ? 1 : 2;
+                freq = band == 1 && freqValid ? df.format((float) Integer.parseInt(par) / 100.0f) : "0";
+                name = band == 1 ? "" : par;
+            }
         }
 
-        @SuppressWarnings("unused")
         public Preset(final int id, final int band, final String freq, final String name)
         {
             this.id = id;
@@ -344,7 +359,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         @Override
         public String toString()
         {
-            return id + ": " + name + ", band=" + band + ", freq=" + freq;
+            return id + ": band=" + band + ", freq=" + freq + ", name=" + name;
         }
 
         @NonNull
@@ -388,7 +403,6 @@ public class ReceiverInformationMsg extends ISCPMessage
                     freq.equals(other.freq) &&
                     name.equals(other.name);
         }
-
     }
 
     public static class ToneControl
@@ -455,6 +469,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     }
 
     private final Utils.ProtoType protoType;
+    private final String dcpPresetData;
     private String deviceId = "";
     private final HashMap<String, String> deviceProperties = new HashMap<>();
     private final HashMap<String, NetworkService> networkServices = new HashMap<>();
@@ -468,6 +483,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     {
         super(raw);
         protoType = Utils.ProtoType.ISCP;
+        dcpPresetData = "";
     }
 
     @NonNull
@@ -676,7 +692,7 @@ public class ReceiverInformationMsg extends ISCPMessage
                                 final String name = element.getAttribute("name");
                                 if (id != null && band != null && name != null)
                                 {
-                                    presetList.add(new Preset(element));
+                                    presetList.add(new Preset(element, Utils.ProtoType.ISCP));
                                 }
                             }
                         }
@@ -711,9 +727,11 @@ public class ReceiverInformationMsg extends ISCPMessage
     {
         super(0, getDcpXmlData(host, port));
         protoType = Utils.ProtoType.DCP;
+        dcpPresetData = getDcpPresetData(host, port);
         if (data != null)
         {
-            Logging.info(this, "DCP Receiver information from " + host + ":" + port);
+            Logging.info(this, "DCP Receiver information from " + host + ":" + port +
+                    (dcpPresetData != null ? ", presets available" : ", presets not available"));
         }
     }
 
@@ -732,6 +750,30 @@ public class ReceiverInformationMsg extends ISCPMessage
             }
         }
         throw new Exception("DCP receiver information not available");
+    }
+
+    private String getDcpPresetData(String host, String port)
+    {
+        try
+        {
+            final byte[] bytes = Utils.getUrlData(new URL(getDcpGoformUrl(host, port, "formiPhoneAppTunerPreset.xml")), true);
+            if (bytes != null)
+            {
+                final int offset = Utils.getUrlHeaderLength(bytes);
+                final int length = bytes.length - offset;
+                if (length > 0)
+                {
+                    String s = new String(Utils.catBuffer(bytes, offset, length), Utils.UTF_8);
+                    s = s.replaceAll("\n", "");
+                    return s;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Nothing to do
+        }
+        return null;
     }
 
     private void parseDcpXml(final Document doc) throws Exception
@@ -753,8 +795,16 @@ public class ReceiverInformationMsg extends ISCPMessage
             }
             else if ("DeviceCapabilities".equalsIgnoreCase(en.getTagName()))
             {
-                parseDeviceCapabilities(en);
+                parseDcpDeviceCapabilities(en);
             }
+        }
+        try
+        {
+            parseDcpPresets(dcpPresetData);
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "Cannot parse DCP presets: " + ex.getLocalizedMessage());
         }
     }
 
@@ -892,7 +942,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         }
     }
 
-    private void parseDeviceCapabilities(Element deviceCapabilities)
+    private void parseDcpDeviceCapabilities(Element deviceCapabilities)
     {
         // Buttons for RC tab
         controlList.add("Setup");
@@ -906,6 +956,32 @@ public class ReceiverInformationMsg extends ISCPMessage
                 if ("1".equals(Utils.getFirstElementValue(cap, "Control", "0")))
                 {
                     controlList.add(cap.getTagName());
+                }
+            }
+        }
+    }
+
+    private void parseDcpPresets(String dcpPresetData) throws Exception
+    {
+        InputStream stream = new ByteArrayInputStream(dcpPresetData.getBytes(Utils.UTF_8));
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilder builder = factory.newDocumentBuilder();
+        final Document doc = builder.parse(stream);
+
+        final Element presetListItem = Utils.getElement(doc, "item");
+        if (presetListItem == null)
+        {
+            throw new Exception("item section is not found");
+        }
+        for (Element pl : Utils.getElements(presetListItem, "PresetLists"))
+        {
+            for (Element v : Utils.getElements(pl, "value"))
+            {
+                // <value index="1" skip="OFF" table="01" band="FM" param=" 008830"/>
+                if ("OFF".equalsIgnoreCase(v.getAttribute("skip")) &&
+                        !"OFF".equalsIgnoreCase(v.getAttribute("table")))
+                {
+                    presetList.add(new Preset(v, Utils.ProtoType.DCP));
                 }
             }
         }

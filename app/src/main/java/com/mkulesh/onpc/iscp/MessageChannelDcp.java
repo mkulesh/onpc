@@ -26,7 +26,10 @@ import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +44,8 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
 {
     // goform protocol
     private final static String DCP_GOFORM_PORT = "8080";
-    private final static String DCP_GOFORM_REQUEST = "formiPhoneApp";
+    private final static String DCP_FORM_IPHONE_APP = "formiPhoneApp";
+    private final static String DCP_APP_COMMAND = "<cmd id=\"1\">";
 
     // HEOS protocol
     private final static int DCP_HEOS_PORT = 1255;
@@ -181,9 +185,13 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
                     if (!dcpOutputBuffer.isEmpty())
                     {
                         final String rawCmd = dcpOutputBuffer.remove(0);
-                        if (rawCmd.startsWith(DCP_GOFORM_REQUEST))
+                        if (rawCmd.startsWith(DCP_FORM_IPHONE_APP))
                         {
-                            sendDcpGoformRequest(rawCmd);
+                            sendDcpFormIphoneApp(rawCmd);
+                        }
+                        else if (rawCmd.startsWith(DCP_APP_COMMAND))
+                        {
+                            sendDcpAppCommand(rawCmd);
                         }
                         else if (rawCmd.startsWith(DCP_HEOS_REQUEST))
                         {
@@ -223,18 +231,44 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         inputQueue.add(new OperationCommandMsg(OperationCommandMsg.Command.DOWN));
     }
 
-    private void sendDcpGoformRequest(final String rawCmd)
+    private void sendDcpFormIphoneApp(final String rawCmd)
     {
         final String shortCmd = rawCmd.replace(" ", "%20");
         try
         {
             final String fullCmd = ISCPMessage.getDcpGoformUrl(getHost(), DCP_GOFORM_PORT, shortCmd);
-            Logging.info(this, "DCP GOFORM request: " + fullCmd);
+            Logging.info(this, "DCP formiPhoneApp request: " + fullCmd);
             Utils.getUrlData(new URL(fullCmd), false);
         }
         catch (Exception ex)
         {
-            Logging.info(this, "DCP GOFORM error: " + ex.getLocalizedMessage());
+            Logging.info(this, "DCP formiPhoneApp error: " + ex.getLocalizedMessage());
+        }
+    }
+
+    private void sendDcpAppCommand(String rawCmd)
+    {
+        try
+        {
+            final String json = "{\"body\": \"" + ISCPMessage.getDcpAppCommand(rawCmd) + "\"}";
+            final byte[] out = json.getBytes(Utils.UTF_8);
+
+            final URL url = new URL(ISCPMessage.getDcpGoformUrl(getHost(), DCP_GOFORM_PORT, "AppCommand.xml"));
+            final URLConnection con = url.openConnection();
+            final HttpURLConnection http = (HttpURLConnection) con;
+            http.setRequestMethod("POST");
+            http.setDoOutput(true);
+            http.setFixedLengthStreamingMode(out.length);
+            http.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
+            http.connect();
+            OutputStream os = http.getOutputStream();
+            os.write(out);
+            os.flush();
+            Logging.info(this, "DCP AppCommand POST request: " + url + json);
+        }
+        catch (Exception ex)
+        {
+            Logging.info(this, "DCP AppCommand error: " + ex.getLocalizedMessage());
         }
     }
 

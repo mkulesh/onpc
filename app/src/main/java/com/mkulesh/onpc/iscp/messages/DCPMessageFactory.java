@@ -53,6 +53,7 @@ public class DCPMessageFactory
         acceptedCodes.addAll(TuningCommandMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(RadioStationNameMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(PresetCommandMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(PresetMemoryMsg.getAcceptedDcpCodes());
 
         // Settings
         acceptedCodes.addAll(DimmerLevelMsg.getAcceptedDcpCodes());
@@ -81,6 +82,7 @@ public class DCPMessageFactory
         addISCPMsg(TuningCommandMsg.processDcpMessage(dcpMsg, zone));
         addISCPMsg(RadioStationNameMsg.processDcpMessage(dcpMsg));
         addISCPMsg(PresetCommandMsg.processDcpMessage(dcpMsg, zone));
+        addISCPMsg(PresetMemoryMsg.processDcpMessage(dcpMsg));
 
         // Settings
         addISCPMsg(DimmerLevelMsg.processDcpMessage(dcpMsg));
@@ -304,6 +306,8 @@ public class DCPMessageFactory
             return new PresetCommandMsg(raw);
         case RadioStationNameMsg.CODE:
             return new RadioStationNameMsg(raw);
+        case PresetMemoryMsg.CODE:
+            return new PresetMemoryMsg(raw);
         case TuningCommandMsg.CODE:
         case TuningCommandMsg.ZONE2_CODE:
         case TuningCommandMsg.ZONE3_CODE:

@@ -317,4 +317,9 @@ public class ISCPMessage implements ConnectionIf
     {
         return "http://" + host + ":" + port + "/goform/" + s;
     }
+
+    protected static String getDcpAppCommand(final String s)
+    {
+        return "<?xml version=\"1.0\" encoding=\"utf-8\"?><tx>" + s + "</tx>";
+    }
 }

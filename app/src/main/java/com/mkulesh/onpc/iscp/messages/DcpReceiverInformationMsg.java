@@ -89,10 +89,41 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     private Map<String, ReceiverInformationMsg.NetworkService> networkServices = new HashMap<>();
     private String firmwareVer = null;
 
+    // Query interface
+    public enum QueryType implements StringParameterIf
+    {
+        NONE,
+        FULL,
+        SHORT;
+
+        @Override
+        public String getCode()
+        {
+            return name();
+        }
+    }
+
+    private QueryType queryType = QueryType.NONE;
+
+    public DcpReceiverInformationMsg(QueryType q)
+    {
+        super(-1, "");
+        this.updateType = UpdateType.NONE;
+        this.queryType = q;
+    }
+
+    @Override
+    public EISCPMessage getCmdMsg()
+    {
+        return new EISCPMessage(CODE, queryType.getCode());
+    }
+
+    // Data message interface
     DcpReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
         this.updateType = UpdateType.NONE;
+        this.queryType = (QueryType) searchParameter(data, QueryType.values(), QueryType.NONE);
     }
 
     public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.Selector selector)
@@ -172,6 +203,8 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     public String toString()
     {
         return "DCP receiver configuration: " +
+                (updateType != UpdateType.NONE ? "UpdateType=" + updateType + " " : "") +
+                (queryType != QueryType.NONE ? "Query=" + queryType + " " : "") +
                 (selector != null ? "Selector=" + selector + " " : "") +
                 (maxVolumeZone != null ? "MaxVol=" + maxVolumeZone.volMax + " " : "") +
                 (toneControl != null ? "ToneCtrl=" + toneControl + " " : "") +
@@ -349,10 +382,15 @@ public class DcpReceiverInformationMsg extends ISCPMessage
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        return "heos://system/register_for_change_events?enable=on" + DCP_MSG_SEP
-                + "heos://" + HEOS_COMMAND_NET + DCP_MSG_SEP
-                + DCP_COMMAND_INPUT_SEL + " ?" + DCP_MSG_SEP
-                + DCP_COMMAND_PRESET + " ?" + DCP_MSG_SEP
-                + DCP_COMMAND_FIRMWARE_VER + " ?";
+        final StringBuilder res = new StringBuilder();
+        res.append("heos://system/register_for_change_events?enable=on");
+        res.append(DCP_MSG_SEP + "heos://" + HEOS_COMMAND_NET);
+        res.append(DCP_MSG_SEP + DCP_COMMAND_INPUT_SEL + " ?");
+        res.append(DCP_MSG_SEP + DCP_COMMAND_FIRMWARE_VER + " ?");
+        if (queryType == QueryType.FULL)
+        {
+            res.append(DCP_MSG_SEP + DCP_COMMAND_PRESET + " ?");
+        }
+        return res.toString();
     }
 }

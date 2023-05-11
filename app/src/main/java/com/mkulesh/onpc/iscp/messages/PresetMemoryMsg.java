@@ -19,6 +19,9 @@ import android.annotation.SuppressLint;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -74,13 +77,37 @@ public class PresetMemoryMsg extends ISCPMessage
     /*
      * Denon control protocol
      */
-    private final static String DCP_COMMAND = "TPANMEM";
+    private final static String DCP_COMMAND_STATUS = "OPTPSTUNER";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Collections.singletonList(DCP_COMMAND_STATUS));
+    }
+
+    @Nullable
+    public static PresetMemoryMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        if (dcpMsg.startsWith(DCP_COMMAND_STATUS))
+        {
+            final String par = dcpMsg.substring(DCP_COMMAND_STATUS.length()).trim();
+            final String[] pars = par.split(" ");
+            if (pars.length > 1)
+            {
+                return new PresetMemoryMsg(Integer.parseInt(pars[0]));
+            }
+        }
+        return null;
+    }
 
     @SuppressLint("DefaultLocale")
     @Nullable
     @Override
     public String buildDcpMsg(boolean isQuery)
     {
-        return DCP_COMMAND + (isQuery ? DCP_MSG_REQ : String.format("%02d", preset));
+        // For some reason, TPANMEM does not work for DAB stations:
+        // return "TPANMEM" + (isQuery ? DCP_MSG_REQ : String.format("%02d", preset));
+        // Use APP_COMMAND instead:
+        return String.format("<cmd id=\"1\">SetTunerPresetMemory</cmd><presetno>%d</presetno>", preset);
     }
 }
