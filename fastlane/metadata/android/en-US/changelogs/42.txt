@@ -1,0 +1,7 @@
+• Initial version of the Denon Communication protocol that allows to control Denon/Marantz AVR
+• Expanded App-Icon-Menu by additional commands
+• Fixed a bug: DAB channel frequency is some time invalid
+• Fixed a bug: Album cover is missing for Spotify on VSX-LX302
+• Fixed a bug: Missing or invalid context menu items
+• Adapted for Android 13
+• Fixed F-Droid build
