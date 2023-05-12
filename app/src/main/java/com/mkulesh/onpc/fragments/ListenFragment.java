@@ -539,8 +539,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         if (state.protoType == Utils.ProtoType.ISCP || state.isRadioInput())
         {
             prepareButton(btnTrackMenu, null, R.drawable.cmd_track_menu, R.string.cmd_track_menu);
-            final boolean isTrackMenu = state.isRadioInput() ||
-                    (state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE && state.isPlaying());
+            final boolean isTrackMenu = state.isRadioInput() || state.isTrackMenuActive();
             btnTrackMenu.setVisibility(View.VISIBLE);
             setButtonEnabled(btnTrackMenu, isTrackMenu);
             if (state.isRadioInput())

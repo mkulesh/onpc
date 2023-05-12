@@ -190,7 +190,7 @@ public class State implements ConnectionIf
     public PlayStatusMsg.RepeatStatus repeatStatus = PlayStatusMsg.RepeatStatus.OFF;
     public PlayStatusMsg.ShuffleStatus shuffleStatus = PlayStatusMsg.ShuffleStatus.OFF;
     public MenuStatusMsg.TimeSeek timeSeek = MenuStatusMsg.TimeSeek.ENABLE;
-    public MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
+    private MenuStatusMsg.TrackMenu trackMenu = MenuStatusMsg.TrackMenu.ENABLE;
     public MenuStatusMsg.Feed positiveFeed = MenuStatusMsg.Feed.DISABLE;
     public MenuStatusMsg.Feed negativeFeed = MenuStatusMsg.Feed.DISABLE;
     public ServiceType serviceIcon = ServiceType.UNKNOWN; // service that is currently playing
@@ -335,6 +335,11 @@ public class State implements ConnectionIf
     public boolean isMenuMode()
     {
         return uiType == ListTitleInfoMsg.UIType.MENU || uiType == ListTitleInfoMsg.UIType.MENU_LIST;
+    }
+
+    public boolean isTrackMenuActive()
+    {
+        return trackMenu == MenuStatusMsg.TrackMenu.ENABLE && isPlaying();
     }
 
     @NonNull
@@ -1770,7 +1775,7 @@ public class State implements ConnectionIf
     public boolean isShortcutPossible()
     {
         final boolean isMediaList = numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
-        return !SKIP_XML_MESSAGES && (isMediaList || isRadioInput());
+        return !SKIP_XML_MESSAGES && (isMediaList || isSimpleInput());
     }
 
     public boolean isPathItemsConsistent()

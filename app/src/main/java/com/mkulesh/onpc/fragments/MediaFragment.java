@@ -36,7 +36,6 @@ import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
-import com.mkulesh.onpc.iscp.messages.MenuStatusMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayQueueAddMsg;
@@ -183,19 +182,25 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     {
                         menu.setHeaderTitle(R.string.playlist_options);
                     }
-                    menu.findItem(R.id.playlist_menu_add).setVisible(!isQueue && addToQueue);
-                    menu.findItem(R.id.playlist_menu_add_and_play).setVisible(!isQueue && addToQueue);
-                    menu.findItem(R.id.playlist_menu_replace).setVisible(!isQueue && addToQueue && isAdvQueue);
-                    menu.findItem(R.id.playlist_menu_replace_and_play).setVisible(!isQueue && addToQueue && isAdvQueue);
-                    menu.findItem(R.id.playlist_menu_remove).setVisible(isQueue);
-                    menu.findItem(R.id.playlist_menu_remove_all).setVisible(isQueue);
-                    menu.findItem(R.id.playlist_menu_move_from).setVisible(isQueue);
+                    menu.findItem(R.id.playlist_menu_add).setVisible(
+                            !isQueue && addToQueue && !state.isPlaybackMode());
+                    menu.findItem(R.id.playlist_menu_add_and_play).setVisible(
+                            !isQueue && addToQueue && !state.isPlaybackMode());
+                    menu.findItem(R.id.playlist_menu_replace).setVisible(
+                            !isQueue && addToQueue && isAdvQueue && !state.isPlaybackMode());
+                    menu.findItem(R.id.playlist_menu_replace_and_play).setVisible(
+                            !isQueue && addToQueue && isAdvQueue && !state.isPlaybackMode());
+                    menu.findItem(R.id.playlist_menu_remove).setVisible(
+                            isQueue && !state.isPlaybackMode());
+                    menu.findItem(R.id.playlist_menu_remove_all).setVisible(
+                            isQueue && !state.isPlaybackMode());
+                    menu.findItem(R.id.playlist_menu_move_from).setVisible(
+                            isQueue && !state.isPlaybackMode());
                     menu.findItem(R.id.playlist_menu_move_to).setVisible(
-                            isQueue && isMoveToValid(selectedItem.getMessageId()));
+                            isQueue && isMoveToValid(selectedItem.getMessageId()) && !state.isPlaybackMode());
 
-                    final boolean isTrackMenu = !state.isRadioInput() &&
-                            state.trackMenu == MenuStatusMsg.TrackMenu.ENABLE;
-                    final boolean isPlaying = !state.isRadioInput() &&
+                    final boolean isTrackMenu = state.isTrackMenuActive();
+                    final boolean isPlaying = state.isPlaying() &&
                             selectedItem.getIcon() == XmlListItemMsg.Icon.PLAY;
                     menu.findItem(R.id.playlist_track_menu).setVisible(isTrackMenu && isPlaying && !isQueue);
                     menu.findItem(R.id.cmd_playback_mode).setVisible(isPlaying && !state.isPlaybackMode());
@@ -210,11 +215,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.playlist_menu_add_and_play_all).setVisible(isDcpItem);
                     if (isDcpItem)
                     {
-                        menu.findItem(R.id.playlist_menu_replace).setVisible(false);
-                        menu.findItem(R.id.playlist_track_menu).setVisible(false);
-                        menu.findItem(R.id.cmd_playback_mode).setVisible(false);
-                        menu.findItem(R.id.cmd_shortcut_create).setVisible(false);
-
                         final List<XmlListItemMsg> menuItems = state.cloneDcpTrackMenuItems(null);
                         menu.findItem(R.id.playlist_menu_add_to_heos_favourites).setVisible(
                                 findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_TO_HEOS) != null);
@@ -238,6 +238,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                         menu.getItem(i).setVisible(false);
                     }
                     menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
+                }
+                if (state.protoType == Utils.ProtoType.DCP)
+                {
+                    menu.findItem(R.id.playlist_menu_replace).setVisible(false);
+                    menu.findItem(R.id.playlist_track_menu).setVisible(false);
+                    menu.findItem(R.id.cmd_playback_mode).setVisible(false);
+                    menu.findItem(R.id.cmd_shortcut_create).setVisible(false);
                 }
             }
         }
