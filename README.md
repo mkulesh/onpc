@@ -1,5 +1,6 @@
 [![License](https://img.shields.io/badge/license-GNU_GPLv3-orange.svg)](https://github.com/mkulesh/onpc/blob/master/LICENSE)
 ![Release Status](https://img.shields.io/github/v/release/mkulesh/onpc)
+[![Documentation Dashboard](https://sourcespy.com/shield.svg)](https://sourcespy.com/github/mkuleshonpc/)
 
 # <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Music Controller
 
