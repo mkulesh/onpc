@@ -11,4 +11,4 @@ PRODUCT_NAME = Music Control
 PRODUCT_BUNDLE_IDENTIFIER = com.mkulesh.onpc
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2019-2022 by Mikhail Kulesh. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2019-2023 by Mikhail Kulesh. All rights reserved.
