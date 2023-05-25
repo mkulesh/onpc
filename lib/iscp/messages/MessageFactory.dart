@@ -22,7 +22,7 @@ import "AudioMutingMsg.dart";
 import "AutoPowerMsg.dart";
 import "CenterLevelCommandMsg.dart";
 import "CustomPopupMsg.dart";
-import "DabStationNameMsg.dart";
+import "RadioStationNameMsg.dart";
 import "DeviceNameMsg.dart";
 import "DigitalFilterMsg.dart";
 import "DimmerLevelMsg.dart";
@@ -198,8 +198,8 @@ class MessageFactory
                 return TuningCommandMsg(raw);
             case PresetMemoryMsg.CODE:
                 return PresetMemoryMsg(raw);
-            case DabStationNameMsg.CODE:
-                return DabStationNameMsg(raw);
+            case RadioStationNameMsg.CODE:
+                return RadioStationNameMsg(raw);
 
         // Popups
             case CustomPopupMsg.CODE:

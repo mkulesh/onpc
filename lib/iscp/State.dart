@@ -28,7 +28,7 @@ import "messages/AutoPowerMsg.dart";
 import "messages/CdPlayerOperationCommandMsg.dart";
 import "messages/CenterLevelCommandMsg.dart";
 import "messages/CustomPopupMsg.dart";
-import "messages/DabStationNameMsg.dart";
+import "messages/RadioStationNameMsg.dart";
 import "messages/DeviceNameMsg.dart";
 import "messages/DigitalFilterMsg.dart";
 import "messages/DirectCommandMsg.dart";
@@ -449,9 +449,9 @@ class State
         {
             return _isChange(TuningCommandMsg.CODE, _radioState.processTuningCommand(msg));
         }
-        if (msg is DabStationNameMsg)
+        if (msg is RadioStationNameMsg)
         {
-            return _isChange(DabStationNameMsg.CODE, _radioState.processDabStationName(msg));
+            return _isChange(RadioStationNameMsg.CODE, _radioState.processDabStationName(msg));
         }
 
         // Popup

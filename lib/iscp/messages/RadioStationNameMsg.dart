@@ -16,11 +16,11 @@ import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
 /*
- * DAB Station Name (UTF-8)
+ * DAB/FM Station Name (UTF-8)
  */
-class DabStationNameMsg extends ISCPMessage
+class RadioStationNameMsg extends ISCPMessage
 {
     static const String CODE = "DSN";
 
-    DabStationNameMsg(EISCPMessage raw) : super(CODE, raw);
+    RadioStationNameMsg(EISCPMessage raw) : super(CODE, raw);
 }

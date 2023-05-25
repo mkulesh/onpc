@@ -15,7 +15,7 @@
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
 import "../ISCPMessage.dart";
-import "../messages/DabStationNameMsg.dart";
+import "../messages/RadioStationNameMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/PresetCommandMsg.dart";
 import "../messages/TuningCommandMsg.dart";
@@ -51,7 +51,7 @@ class RadioState
         return [
             PresetCommandMsg.ZONE_COMMANDS[zone],
             TuningCommandMsg.ZONE_COMMANDS[zone],
-            DabStationNameMsg.CODE
+            RadioStationNameMsg.CODE
         ];
     }
 
@@ -76,7 +76,7 @@ class RadioState
         return changed;
     }
 
-    bool processDabStationName(DabStationNameMsg msg)
+    bool processDabStationName(RadioStationNameMsg msg)
     {
         final bool changed = msg.getData != _dabName;
         _dabName = msg.getData;
