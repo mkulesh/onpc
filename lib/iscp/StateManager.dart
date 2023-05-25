@@ -27,6 +27,8 @@ import "../utils/CompatUtils.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
 import "MessageChannel.dart";
+import "MessageChannelIscp.dart";
+import "OnpcSocket.dart";
 import "State.dart";
 import "messages/AmpOperationCommandMsg.dart";
 import "messages/AudioMutingMsg.dart";
@@ -180,7 +182,7 @@ class StateManager
 
     StateManager(List<BroadcastResponseMsg> _favorites)
     {
-        _messageChannel = MessageChannel(_onConnected, _onNewEISCPMessage, _onDisconnected);
+        _messageChannel = MessageChannelIscp(_onConnected, _onNewEISCPMessage, _onDisconnected);
         _state.trackState.coverDownloadFinished = _onProcessFinished;
         _state.multiroomState.favorites = _favorites;
     }
@@ -778,7 +780,7 @@ class StateManager
         if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
         {
             Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort);
-            final MessageChannel m = MessageChannel(_onMultiroomDeviceConnected, _onNewEISCPMessage, _onMultiroomDeviceDisconnected);
+            final MessageChannel m = MessageChannelIscp(_onMultiroomDeviceConnected, _onNewEISCPMessage, _onMultiroomDeviceDisconnected);
             _multiroomChannels[msg.getHostAndPort] = m;
             MultiroomState.MESSAGE_SCOPE.forEach((code) => m.addAllowedMessage(code));
             m.start(msg.getHost, msg.getPort);

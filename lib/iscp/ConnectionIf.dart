@@ -11,8 +11,13 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 import "../utils/Convert.dart";
+
+enum ProtoType
+{
+    ISCP, // Integra Serial Communication Protocol (TCP:60128)
+    DCP   // Denon Control Protocol (TCP:23)
+}
 
 mixin ConnectionIf
 {
