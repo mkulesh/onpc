@@ -368,12 +368,18 @@ Enjoy!""</string>
     <string name="medialist_filter">Filtruj elementy</string>
 
     <!-- Input selectors -->
-    <string name="input_selector_video1">VCR/DVR</string>
-    <string name="input_selector_video2">CBL/SAT</string>
-    <string name="input_selector_video3">GAME</string>
-    <string name="input_selector_video4">AUX</string>
-    <string name="input_selector_video5">AUX2</string>
-    <string name="input_selector_video6">PC</string>
+    <string name="input_selector_vcr_dvr">VCR/DVR</string>
+    <string name="input_selector_cbl_sat">CBL/SAT</string>
+    <string name="input_selector_game">GAME</string>
+    <string name="input_selector_aux">AUX</string>
+    <string name="input_selector_aux1">AUX1</string>
+    <string name="input_selector_aux2">AUX2</string>
+    <string name="input_selector_aux3">AUX3</string>
+    <string name="input_selector_aux4">AUX4</string>
+    <string name="input_selector_aux5">AUX5</string>
+    <string name="input_selector_aux6">AUX6</string>
+    <string name="input_selector_aux7">AUX7</string>
+    <string name="input_selector_pc">PC</string>
     <string name="input_selector_video7">VIDEO 7</string>
     <string name="input_selector_extra1">EXTRA 1</string>
     <string name="input_selector_extra2">EXTRA 2</string>
@@ -383,7 +389,7 @@ Enjoy!""</string>
     <string name="input_selector_tape1">TAPE</string>
     <string name="input_selector_tape2">TAPE 2</string>
     <string name="input_selector_phono">PHONO</string>
-    <string name="input_selector_tv_cd">CD</string>
+    <string name="input_selector_cd">CD</string>
     <string name="input_selector_fm">FM</string>
     <string name="input_selector_am">AM</string>
     <string name="input_selector_tuner">TUNER</string>
@@ -409,6 +415,9 @@ Enjoy!""</string>
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
     <string name="input_selector_source">SOURCE</string>
+    <string name="input_selector_dvd">DVD</string>
+    <string name="input_selector_bd">BD</string>
+    <string name="input_selector_mplayer">MEDIA PLAYER</string>
 
     <!-- Services -->
     <string name="service_music_server">Music Server (DLNA)</string>
@@ -445,6 +454,11 @@ Enjoy!""</string>
     <string name="service_play_fi">Play-Fi</string>
     <string name="service_net">Network</string>
     <string name="service_bluetooth">Bluetooth</string>
+    <string name="service_playlist">Play List</string>
+    <string name="service_soundcloud">Soundcloud</string>
+    <string name="service_local_music">Local Music</string>
+    <string name="service_history">History</string>
+    <string name="service_aux_input">AUX Input</string>
 
     <string name="playlist_options">Kolejka odtwarzania</string>
     <string name="playlist_add">Dodaj</string>
@@ -455,6 +469,13 @@ Enjoy!""</string>
     <string name="playlist_remove_all">Usuń wszystko</string>
     <string name="playlist_move_from">Przenieś z</string>
     <string name="playlist_move_to">Przenieś do</string>
+
+    <!-- DCP service options -->
+    <string name="playlist_add_all">Dodać wszystko</string>
+    <string name="playlist_add_and_play_all">Dodaj i zagraj we wszystko</string>
+    <string name="playlist_replace_and_play_all">Wymień i zagraj we wszystko</string>
+    <string name="playlist_add_to_heos_favourites">Dodaj do ulubionych HEOS</string>
+    <string name="playlist_remove_from_heos_favourites">Usuń z Ulubionych HEOS</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Nazwa</string>
@@ -501,6 +522,7 @@ Enjoy!""</string>
     <string name="device_two_way_switch_none">N/A</string>
     <string name="device_two_way_switch_off">Off</string>
     <string name="device_two_way_switch_on">On</string>
+    <string name="device_two_way_switch_auto">Auto</string>
     <string name="device_two_way_switch_toggle">Przełącznik</string>
 
     <!-- Two-way switches -->
@@ -554,6 +576,17 @@ Enjoy!""</string>
     <string name="privacy_policy_onkyo">Agree Onkyo Privacy Policy</string>
     <string name="privacy_policy_google">Agree Google Cast License</string>
     <string name="privacy_policy_sue">Agree SUE - Privacy Policy</string>
+
+    <!-- DCP ECO mode -->
+    <string name="device_dcp_eco_mode">Tryb ekologiczny</string>
+
+    <!-- DCP audio restorer -->
+    <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_none">N/A</string>
+    <string name="device_dcp_audio_restorer_off">Off</string>
+    <string name="device_dcp_audio_restorer_low">Niska</string>
+    <string name="device_dcp_audio_restorer_medium">Średni</string>
+    <string name="device_dcp_audio_restorer_high">Wysoki</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Zmień tryb na następny</string>

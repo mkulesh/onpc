@@ -113,6 +113,21 @@ class Strings
     static const String listening_mode_game = "GAME";
     static const String listening_mode_stereo = "STEREO";
     static const String listening_mode_thx = "THX";
+    static const String listening_mode_pure_direct = "Pure Direct";
+    static const String listening_mode_auto = "Auto";
+    static const String listening_mode_dts_surround = "DTS Surround";
+    static const String listening_mode_auro3d = "Auro 3D";
+    static const String listening_mode_auro2d_surr = "Auro 2D SURR";
+    static const String listening_mode_mch_stereo = "MCH Stereo";
+    static const String listening_mode_wide_screen = "Wide Screen";
+    static const String listening_mode_super_stadium = "Super Stadium";
+    static const String listening_mode_rock_arena = "Rock Arena";
+    static const String listening_mode_jazz_club = "Jazz Club";
+    static const String listening_mode_classic_concert = "Classic Concert";
+    static const String listening_mode_mono_movie = "Mono Movie";
+    static const String listening_mode_matrix = "Matrix";
+    static const String listening_mode_video_game = "Video Game";
+    static const String listening_mode_vitrual = "Virtual";
 
     /* Non-translatable arrays */
 
@@ -719,7 +734,7 @@ Enjoy!"""];
     static const List<String> l_pref_exit_confirm = [
         /*en*/ "Press back button twice for exit",
         /*ru*/ "Для выхода нажмите Назад дважды",
-        /*de*/ "Zweimal zurück zum beenden",
+        /*de*/ "Zweimal zurück zum Beenden",
         /*fr*/ "Bouton retour deux fois pour quitter",
         /*pl*/ "Naciśnij dwukrotnie przycisk Wstecz, aby wyjść"];
     static String get pref_exit_confirm => l_pref_exit_confirm[_language];
@@ -2148,53 +2163,101 @@ Enjoy!"""];
         /*pl*/ "Filtruj elementy"];
     static String get medialist_filter => l_medialist_filter[_language];
 
-    static const List<String> l_input_selector_video1 = [
+    static const List<String> l_input_selector_vcr_dvr = [
         /*en*/ "VCR/DVR",
         /*ru*/ "VCR/DVR",
         /*de*/ "VCR/DVR",
         /*fr*/ "VCR/DVR",
         /*pl*/ "VCR/DVR"];
-    static String get input_selector_video1 => l_input_selector_video1[_language];
+    static String get input_selector_vcr_dvr => l_input_selector_vcr_dvr[_language];
 
-    static const List<String> l_input_selector_video2 = [
+    static const List<String> l_input_selector_cbl_sat = [
         /*en*/ "CBL/SAT",
         /*ru*/ "CBL/SAT",
         /*de*/ "CBL/SAT",
         /*fr*/ "CBL/SAT",
         /*pl*/ "CBL/SAT"];
-    static String get input_selector_video2 => l_input_selector_video2[_language];
+    static String get input_selector_cbl_sat => l_input_selector_cbl_sat[_language];
 
-    static const List<String> l_input_selector_video3 = [
+    static const List<String> l_input_selector_game = [
         /*en*/ "GAME",
         /*ru*/ "GAME",
         /*de*/ "GAME",
         /*fr*/ "GAME",
         /*pl*/ "GAME"];
-    static String get input_selector_video3 => l_input_selector_video3[_language];
+    static String get input_selector_game => l_input_selector_game[_language];
 
-    static const List<String> l_input_selector_video4 = [
+    static const List<String> l_input_selector_aux = [
         /*en*/ "AUX",
         /*ru*/ "AUX",
         /*de*/ "AUX",
         /*fr*/ "AUX",
         /*pl*/ "AUX"];
-    static String get input_selector_video4 => l_input_selector_video4[_language];
+    static String get input_selector_aux => l_input_selector_aux[_language];
 
-    static const List<String> l_input_selector_video5 = [
+    static const List<String> l_input_selector_aux1 = [
+        /*en*/ "AUX1",
+        /*ru*/ "AUX1",
+        /*de*/ "AUX1",
+        /*fr*/ "AUX1",
+        /*pl*/ "AUX1"];
+    static String get input_selector_aux1 => l_input_selector_aux1[_language];
+
+    static const List<String> l_input_selector_aux2 = [
         /*en*/ "AUX2",
         /*ru*/ "AUX2",
         /*de*/ "AUX2",
         /*fr*/ "AUX2",
         /*pl*/ "AUX2"];
-    static String get input_selector_video5 => l_input_selector_video5[_language];
+    static String get input_selector_aux2 => l_input_selector_aux2[_language];
 
-    static const List<String> l_input_selector_video6 = [
+    static const List<String> l_input_selector_aux3 = [
+        /*en*/ "AUX3",
+        /*ru*/ "AUX3",
+        /*de*/ "AUX3",
+        /*fr*/ "AUX3",
+        /*pl*/ "AUX3"];
+    static String get input_selector_aux3 => l_input_selector_aux3[_language];
+
+    static const List<String> l_input_selector_aux4 = [
+        /*en*/ "AUX4",
+        /*ru*/ "AUX4",
+        /*de*/ "AUX4",
+        /*fr*/ "AUX4",
+        /*pl*/ "AUX4"];
+    static String get input_selector_aux4 => l_input_selector_aux4[_language];
+
+    static const List<String> l_input_selector_aux5 = [
+        /*en*/ "AUX5",
+        /*ru*/ "AUX5",
+        /*de*/ "AUX5",
+        /*fr*/ "AUX5",
+        /*pl*/ "AUX5"];
+    static String get input_selector_aux5 => l_input_selector_aux5[_language];
+
+    static const List<String> l_input_selector_aux6 = [
+        /*en*/ "AUX6",
+        /*ru*/ "AUX6",
+        /*de*/ "AUX6",
+        /*fr*/ "AUX6",
+        /*pl*/ "AUX6"];
+    static String get input_selector_aux6 => l_input_selector_aux6[_language];
+
+    static const List<String> l_input_selector_aux7 = [
+        /*en*/ "AUX7",
+        /*ru*/ "AUX7",
+        /*de*/ "AUX7",
+        /*fr*/ "AUX7",
+        /*pl*/ "AUX7"];
+    static String get input_selector_aux7 => l_input_selector_aux7[_language];
+
+    static const List<String> l_input_selector_pc = [
         /*en*/ "PC",
         /*ru*/ "PC",
         /*de*/ "PC",
         /*fr*/ "PC",
         /*pl*/ "PC"];
-    static String get input_selector_video6 => l_input_selector_video6[_language];
+    static String get input_selector_pc => l_input_selector_pc[_language];
 
     static const List<String> l_input_selector_video7 = [
         /*en*/ "VIDEO 7",
@@ -2268,13 +2331,13 @@ Enjoy!"""];
         /*pl*/ "PHONO"];
     static String get input_selector_phono => l_input_selector_phono[_language];
 
-    static const List<String> l_input_selector_tv_cd = [
+    static const List<String> l_input_selector_cd = [
         /*en*/ "CD",
         /*ru*/ "CD",
         /*de*/ "CD",
         /*fr*/ "CD",
         /*pl*/ "CD"];
-    static String get input_selector_tv_cd => l_input_selector_tv_cd[_language];
+    static String get input_selector_cd => l_input_selector_cd[_language];
 
     static const List<String> l_input_selector_fm = [
         /*en*/ "FM",
@@ -2475,6 +2538,30 @@ Enjoy!"""];
         /*fr*/ "SOURCE",
         /*pl*/ "SOURCE"];
     static String get input_selector_source => l_input_selector_source[_language];
+
+    static const List<String> l_input_selector_dvd = [
+        /*en*/ "DVD",
+        /*ru*/ "DVD",
+        /*de*/ "DVD",
+        /*fr*/ "DVD",
+        /*pl*/ "DVD"];
+    static String get input_selector_dvd => l_input_selector_dvd[_language];
+
+    static const List<String> l_input_selector_bd = [
+        /*en*/ "BD",
+        /*ru*/ "BD",
+        /*de*/ "BD",
+        /*fr*/ "BD",
+        /*pl*/ "BD"];
+    static String get input_selector_bd => l_input_selector_bd[_language];
+
+    static const List<String> l_input_selector_mplayer = [
+        /*en*/ "MEDIA PLAYER",
+        /*ru*/ "MEDIA PLAYER",
+        /*de*/ "MEDIA PLAYER",
+        /*fr*/ "MEDIA PLAYER",
+        /*pl*/ "MEDIA PLAYER"];
+    static String get input_selector_mplayer => l_input_selector_mplayer[_language];
 
     static const List<String> l_service_music_server = [
         /*en*/ "Music Server (DLNA)",
@@ -2748,6 +2835,46 @@ Enjoy!"""];
         /*pl*/ "Bluetooth"];
     static String get service_bluetooth => l_service_bluetooth[_language];
 
+    static const List<String> l_service_playlist = [
+        /*en*/ "Play List",
+        /*ru*/ "Плейлисты",
+        /*de*/ "Play List",
+        /*fr*/ "Play List",
+        /*pl*/ "Play List"];
+    static String get service_playlist => l_service_playlist[_language];
+
+    static const List<String> l_service_soundcloud = [
+        /*en*/ "Soundcloud",
+        /*ru*/ "Soundcloud",
+        /*de*/ "Soundcloud",
+        /*fr*/ "Soundcloud",
+        /*pl*/ "Soundcloud"];
+    static String get service_soundcloud => l_service_soundcloud[_language];
+
+    static const List<String> l_service_local_music = [
+        /*en*/ "Local Music",
+        /*ru*/ "Музыка на устройстве",
+        /*de*/ "Local Music",
+        /*fr*/ "Local Music",
+        /*pl*/ "Local Music"];
+    static String get service_local_music => l_service_local_music[_language];
+
+    static const List<String> l_service_history = [
+        /*en*/ "History",
+        /*ru*/ "История",
+        /*de*/ "History",
+        /*fr*/ "History",
+        /*pl*/ "History"];
+    static String get service_history => l_service_history[_language];
+
+    static const List<String> l_service_aux_input = [
+        /*en*/ "AUX Input",
+        /*ru*/ "AV Входы",
+        /*de*/ "AUX Input",
+        /*fr*/ "AUX Input",
+        /*pl*/ "AUX Input"];
+    static String get service_aux_input => l_service_aux_input[_language];
+
     static const List<String> l_playlist_options = [
         /*en*/ "Play queue",
         /*ru*/ "Очередь воспроизведения",
@@ -2819,6 +2946,46 @@ Enjoy!"""];
         /*fr*/ "Déplacer vers",
         /*pl*/ "Przenieś do"];
     static String get playlist_move_to => l_playlist_move_to[_language];
+
+    static const List<String> l_playlist_add_all = [
+        /*en*/ "Add all",
+        /*ru*/ "Добавить все",
+        /*de*/ "Alle hinzufügen",
+        /*fr*/ "Tout ajouter",
+        /*pl*/ "Dodać wszystko"];
+    static String get playlist_add_all => l_playlist_add_all[_language];
+
+    static const List<String> l_playlist_add_and_play_all = [
+        /*en*/ "Add and play all",
+        /*ru*/ "Добавить и воспроизвести все",
+        /*de*/ "Alle hinzufügen und abspielen",
+        /*fr*/ "Ajouter et jouer tous",
+        /*pl*/ "Dodaj i zagraj we wszystko"];
+    static String get playlist_add_and_play_all => l_playlist_add_and_play_all[_language];
+
+    static const List<String> l_playlist_replace_and_play_all = [
+        /*en*/ "Replace and play all",
+        /*ru*/ "Заменить и воспроизвести все",
+        /*de*/ "Alle ersetzen und abspielen",
+        /*fr*/ "Remplacez et jouez tous",
+        /*pl*/ "Wymień i zagraj we wszystko"];
+    static String get playlist_replace_and_play_all => l_playlist_replace_and_play_all[_language];
+
+    static const List<String> l_playlist_add_to_heos_favourites = [
+        /*en*/ "Add to HEOS Favorites",
+        /*ru*/ "Добавить в Любимые HEOS",
+        /*de*/ "Zu HEOS Favoriten hinzufügen",
+        /*fr*/ "Ajouter aux favoris HEOS",
+        /*pl*/ "Dodaj do ulubionych HEOS"];
+    static String get playlist_add_to_heos_favourites => l_playlist_add_to_heos_favourites[_language];
+
+    static const List<String> l_playlist_remove_from_heos_favourites = [
+        /*en*/ "Remove from HEOS Favorites",
+        /*ru*/ "Удалить из Любимых HEOS",
+        /*de*/ "Aus HEOS Favoriten entfernen",
+        /*fr*/ "Supprimer des favoris HEOS",
+        /*pl*/ "Usuń z Ulubionych HEOS"];
+    static String get playlist_remove_from_heos_favourites => l_playlist_remove_from_heos_favourites[_language];
 
     static const List<String> l_device_friendly_name = [
         /*en*/ "Friendly name",
@@ -3107,6 +3274,14 @@ Enjoy!"""];
         /*fr*/ "Marche",
         /*pl*/ "On"];
     static String get device_two_way_switch_on => l_device_two_way_switch_on[_language];
+
+    static const List<String> l_device_two_way_switch_auto = [
+        /*en*/ "Auto",
+        /*ru*/ "Авто",
+        /*de*/ "Auto",
+        /*fr*/ "Auto",
+        /*pl*/ "Auto"];
+    static String get device_two_way_switch_auto => l_device_two_way_switch_auto[_language];
 
     static const List<String> l_device_two_way_switch_toggle = [
         /*en*/ "Toggle",
@@ -3411,6 +3586,62 @@ Enjoy!"""];
         /*fr*/ "Agree SUE - Privacy Policy",
         /*pl*/ "Agree SUE - Privacy Policy"];
     static String get privacy_policy_sue => l_privacy_policy_sue[_language];
+
+    static const List<String> l_device_dcp_eco_mode = [
+        /*en*/ "ECO Mode",
+        /*ru*/ "Режим экономии",
+        /*de*/ "Energiesparmodus",
+        /*fr*/ "Mode écologique",
+        /*pl*/ "Tryb ekologiczny"];
+    static String get device_dcp_eco_mode => l_device_dcp_eco_mode[_language];
+
+    static const List<String> l_device_dcp_audio_restorer = [
+        /*en*/ "Audio Restorer",
+        /*ru*/ "Режим \"Restorer\"",
+        /*de*/ "Audio Restorer",
+        /*fr*/ "Audio Restorer",
+        /*pl*/ "Audio Restorer"];
+    static String get device_dcp_audio_restorer => l_device_dcp_audio_restorer[_language];
+
+    static const List<String> l_device_dcp_audio_restorer_none = [
+        /*en*/ "N/A",
+        /*ru*/ "N/A",
+        /*de*/ "N/A",
+        /*fr*/ "N/A",
+        /*pl*/ "N/A"];
+    static String get device_dcp_audio_restorer_none => l_device_dcp_audio_restorer_none[_language];
+
+    static const List<String> l_device_dcp_audio_restorer_off = [
+        /*en*/ "Off",
+        /*ru*/ "Выкл",
+        /*de*/ "Aus",
+        /*fr*/ "Arrêt",
+        /*pl*/ "Off"];
+    static String get device_dcp_audio_restorer_off => l_device_dcp_audio_restorer_off[_language];
+
+    static const List<String> l_device_dcp_audio_restorer_low = [
+        /*en*/ "Low",
+        /*ru*/ "Низкий",
+        /*de*/ "Niedrig",
+        /*fr*/ "Faible",
+        /*pl*/ "Niska"];
+    static String get device_dcp_audio_restorer_low => l_device_dcp_audio_restorer_low[_language];
+
+    static const List<String> l_device_dcp_audio_restorer_medium = [
+        /*en*/ "Medium",
+        /*ru*/ "Средний",
+        /*de*/ "Mittel",
+        /*fr*/ "Moyen",
+        /*pl*/ "Średni"];
+    static String get device_dcp_audio_restorer_medium => l_device_dcp_audio_restorer_medium[_language];
+
+    static const List<String> l_device_dcp_audio_restorer_high = [
+        /*en*/ "High",
+        /*ru*/ "Высокий",
+        /*de*/ "Hoch",
+        /*fr*/ "Haute",
+        /*pl*/ "Wysoki"];
+    static String get device_dcp_audio_restorer_high => l_device_dcp_audio_restorer_high[_language];
 
     static const List<String> l_listening_mode_up = [
         /*en*/ "Sets listening mode wrap-around up",

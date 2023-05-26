@@ -122,6 +122,18 @@ class Drawables
     static const String media_item_disc_player = BUTTONS_PATH + "media_item_disc_player.svg";
     static const String media_item_toslink = BUTTONS_PATH + "media_item_toslink.svg";
     static const String media_item_filter = BUTTONS_PATH + "media_item_filter.svg";
+    static const String media_item_vhs = BUTTONS_PATH + "media_item_vhs.svg";
+    static const String media_item_sat = BUTTONS_PATH + "media_item_sat.svg";
+    static const String media_item_game = BUTTONS_PATH + "media_item_game.svg";
+    static const String media_item_pc = BUTTONS_PATH + "media_item_pc.svg";
+    static const String media_item_hdmi = BUTTONS_PATH + "media_item_hdmi.svg";
+    static const String media_item_mplayer = BUTTONS_PATH + "media_item_mplayer.svg";
+    static const String media_item_phono = BUTTONS_PATH + "media_item_phono.svg";
+    static const String media_item_rca = BUTTONS_PATH + "media_item_rca.svg";
+    static const String media_item_source = BUTTONS_PATH + "media_item_source.svg";
+    static const String media_item_napster = BUTTONS_PATH + "media_item_napster.svg";
+    static const String media_item_soundcloud = BUTTONS_PATH + "media_item_soundcloud.svg";
+    static const String media_item_history = BUTTONS_PATH + "media_item_history.svg";
 
     static const String pref_app_theme = BUTTONS_PATH + "pref_app_theme.svg";
     static const String pref_widget_theme = BUTTONS_PATH + "pref_widget_theme.svg";

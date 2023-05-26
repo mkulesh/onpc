@@ -32,6 +32,7 @@ import "EnumParameterMsg.dart";
 enum ServiceType
 {
     UNKNOWN,
+    // Integra
     MUSIC_SERVER,
     FAVORITE,
     VTUNER,
@@ -78,6 +79,11 @@ class Services
         EnumItem.code(ServiceType.UNKNOWN, "XX",
             name: "",
             descr: Strings.dashed_string, defValue: true),
+
+        // Integra
+        // Note: some names are device-specific, see comments
+        // We use the names when ListInfoMsg is processed as a fallback is no ReceiverInformationMsg
+        // exists for given device
         EnumItem.code(ServiceType.MUSIC_SERVER, "00",
             name: "DLNA",
             descrList: Strings.l_service_music_server, icon: Drawables.media_item_media_server), // TX-8050
@@ -101,7 +107,7 @@ class Services
             descrList: Strings.l_service_last, icon: Drawables.media_item_lastfm), // TX-8050, TX-NR616
         EnumItem.code(ServiceType.NAPSTER, "07",
             name: "Napster",
-            descrList: Strings.l_service_napster),
+            descrList: Strings.l_service_napster, icon: Drawables.media_item_napster),
         EnumItem.code(ServiceType.SLACKER, "08",
             name: "Slacker Personal Radio",
             descrList: Strings.l_service_slacker), // TX-NR616
@@ -167,8 +173,7 @@ class Services
             descrList: Strings.l_service_flareconnect, icon: Drawables.media_item_flare_connect),
         EnumItem.code(ServiceType.AIRPLAY1, "44",
             name: "Airplay",
-            descrList: Strings.l_service_airplay,
-            icon: Drawables.media_item_airplay), // TX-RZ630 uses code "44" for Airplay instead of "18"
+            descrList: Strings.l_service_airplay, icon: Drawables.media_item_airplay), // TX-RZ630 uses code "44" for Airplay instead of "18"
         EnumItem.code(ServiceType.USB_FRONT, "F0",
             name: "USB(Front)",
             descrList: Strings.l_service_usb_front, icon: Drawables.media_item_usb),

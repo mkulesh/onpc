@@ -365,12 +365,18 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="medialist_filter">Фильтровать список</string>
 
     <!-- Input selectors -->
-    <string name="input_selector_video1">VCR/DVR</string>
-    <string name="input_selector_video2">CBL/SAT</string>
-    <string name="input_selector_video3">GAME</string>
-    <string name="input_selector_video4">AUX</string>
-    <string name="input_selector_video5">AUX2</string>
-    <string name="input_selector_video6">PC</string>
+    <string name="input_selector_vcr_dvr">VCR/DVR</string>
+    <string name="input_selector_cbl_sat">CBL/SAT</string>
+    <string name="input_selector_game">GAME</string>
+    <string name="input_selector_aux">AUX</string>
+    <string name="input_selector_aux1">AUX1</string>
+    <string name="input_selector_aux2">AUX2</string>
+    <string name="input_selector_aux3">AUX3</string>
+    <string name="input_selector_aux4">AUX4</string>
+    <string name="input_selector_aux5">AUX5</string>
+    <string name="input_selector_aux6">AUX6</string>
+    <string name="input_selector_aux7">AUX7</string>
+    <string name="input_selector_pc">PC</string>
     <string name="input_selector_video7">VIDEO 7</string>
     <string name="input_selector_extra1">EXTRA 1</string>
     <string name="input_selector_extra2">EXTRA 2</string>
@@ -380,7 +386,7 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="input_selector_tape1">TAPE</string>
     <string name="input_selector_tape2">TAPE 2</string>
     <string name="input_selector_phono">PHONO</string>
-    <string name="input_selector_tv_cd">CD</string>
+    <string name="input_selector_cd">CD</string>
     <string name="input_selector_fm">FM</string>
     <string name="input_selector_am">AM</string>
     <string name="input_selector_tuner">TUNER</string>
@@ -406,6 +412,9 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="input_selector_hdmi_6">HDMI 6</string>
     <string name="input_selector_hdmi_7">HDMI 7</string>
     <string name="input_selector_source">SOURCE</string>
+    <string name="input_selector_dvd">DVD</string>
+    <string name="input_selector_bd">BD</string>
+    <string name="input_selector_mplayer">MEDIA PLAYER</string>
 
     <!-- Services -->
     <string name="service_music_server">Домашний музыкальный сервер</string>
@@ -442,6 +451,11 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="service_play_fi">Play-Fi</string>
     <string name="service_net">Сеть</string>
     <string name="service_bluetooth">Bluetooth</string>
+    <string name="service_playlist">Плейлисты</string>
+    <string name="service_soundcloud">Soundcloud</string>
+    <string name="service_local_music">Музыка на устройстве</string>
+    <string name="service_history">История</string>
+    <string name="service_aux_input">AV Входы</string>
 
     <string name="playlist_options">Очередь воспроизведения</string>
     <string name="playlist_add">Добавить</string>
@@ -452,6 +466,13 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="playlist_remove_all">Удалить все</string>
     <string name="playlist_move_from">Вырезать</string>
     <string name="playlist_move_to">Вставить</string>
+
+    <!-- DCP service options -->
+    <string name="playlist_add_all">Добавить все</string>
+    <string name="playlist_add_and_play_all">Добавить и воспроизвести все</string>
+    <string name="playlist_replace_and_play_all">Заменить и воспроизвести все</string>
+    <string name="playlist_add_to_heos_favourites">Добавить в Любимые HEOS</string>
+    <string name="playlist_remove_from_heos_favourites">Удалить из Любимых HEOS</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Удобное название</string>
@@ -498,6 +519,7 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="device_two_way_switch_none">Нет</string>
     <string name="device_two_way_switch_off">Выкл</string>
     <string name="device_two_way_switch_on">Вкл</string>
+    <string name="device_two_way_switch_auto">Авто</string>
     <string name="device_two_way_switch_toggle">Изменить</string>
 
     <!-- Two-way switches -->
@@ -551,6 +573,17 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="privacy_policy_onkyo">Подтвердить соглашение Onkyo Privacy</string>
     <string name="privacy_policy_google">Подтвердить лицензию Google Cast</string>
     <string name="privacy_policy_sue">Подтвердить соглашение SUE-Privacy</string>
+
+    <!-- DCP ECO mode -->
+    <string name="device_dcp_eco_mode">Режим экономии</string>
+
+    <!-- DCP audio restorer -->
+    <string name="device_dcp_audio_restorer">Режим \"Restorer\"</string>
+    <string name="device_dcp_audio_restorer_none">N/A</string>
+    <string name="device_dcp_audio_restorer_off">Выкл</string>
+    <string name="device_dcp_audio_restorer_low">Низкий</string>
+    <string name="device_dcp_audio_restorer_medium">Средний</string>
+    <string name="device_dcp_audio_restorer_high">Высокий</string>
 
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Следующий звуковой профиль</string>

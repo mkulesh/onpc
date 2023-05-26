@@ -73,6 +73,8 @@
 
     <!-- Services -->
 
+    <!-- DCP service options -->
+
     <!-- Device tab -->
 
     <!-- Firmware -->
@@ -92,6 +94,10 @@
     <!-- Network Standby Command -->
 
     <!-- Privacy Policy Status -->
+
+    <!-- DCP ECO mode -->
+
+    <!-- DCP audio restorer -->
 
     <!-- Listening Mode Command -->
 
