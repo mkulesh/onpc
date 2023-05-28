@@ -13,13 +13,21 @@
  */
 // @dart=2.9
 import 'dart:collection';
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
 
-import "package:xml/xml.dart" as xml;
+import 'package:sprintf/sprintf.dart';
+import 'package:xml/xml.dart' as xml;
 
 import "../../constants/Drawables.dart";
 import "../../utils/Logging.dart";
+import "../../utils/UrlLoader.dart";
+import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "EnumParameterMsg.dart";
+import "InputSelectorMsg.dart";
 
 class NetworkService
 {
@@ -102,7 +110,12 @@ class Zone
     int get getVolMax
     => _volMax;
 
-    @override
+    void setVolMax(int value)
+    {
+        _volMax = value;
+    }
+
+  @override
     String toString()
     => _id + ": " + _name + ", volumeStep=" + _volumeStep.toString() + ", volMax=" + _volMax.toString();
 }
@@ -127,11 +140,32 @@ class Selector
 
     Selector(this._id, this._name, this._zone, this._iconId, this._addToQueue);
 
+    Selector.rename(final Selector old, final String name)
+    {
+        _id = old._id;
+        _name = name;
+        _zone = old._zone;
+        _iconId = old._iconId;
+        _addToQueue = old._addToQueue;
+    }
+
+    Selector.updZone(final Selector old, final int zone)
+    {
+        _id = old._id;
+        _name = old._name;
+        _zone = zone;
+        _iconId = old._iconId;
+        _addToQueue = old._addToQueue;
+    }
+
     String get getId
     => _id;
 
     String get getName
     => _name;
+
+    int get getZone
+    => _zone;
 
     bool get isAddToQueue
     => _addToQueue;
@@ -166,12 +200,25 @@ class Preset
 
     Preset(this._id, this._band, this._freq, this._name);
 
-    Preset.fromXml(xml.XmlElement e)
+    Preset.fromXml(xml.XmlElement e, ProtoType protoType)
     {
-        _id = ISCPMessage.nonNullInteger(e.getAttribute("id"), 16, 0);
-        _band = ISCPMessage.nonNullInteger(e.getAttribute("band"), 10, 0);
-        _freq = ISCPMessage.nonNullString(e.getAttribute("freq"));
-        _name = ISCPMessage.nonNullString(e.getAttribute("name"));
+        if (protoType == ProtoType.ISCP)
+        {
+            _id = ISCPMessage.nonNullInteger(e.getAttribute("id"), 16, 0);
+            _band = ISCPMessage.nonNullInteger(e.getAttribute("band"), 10, 0);
+            _freq = ISCPMessage.nonNullString(e.getAttribute("freq"));
+            _name = ISCPMessage.nonNullString(e.getAttribute("name"));
+        }
+        else
+        {
+            // <value index="1" skip="OFF" table="01" band="FM" param=" 008830"/>
+            final String par = ISCPMessage.nonNullString(e.getAttribute("param")).trim();
+            final bool freqValid = int.tryParse(par) != null;
+            _id = int.tryParse(e.getAttribute("index"));
+            _band = "FM" == ISCPMessage.nonNullString(e.getAttribute("band")) ? 1 : 2;
+            _freq = _band == 1 && freqValid ? sprintf("%.2f", [int.tryParse(par) / 100.0]) : "0";
+            _name = _band == 1 ? "" : par;
+        }
     }
 
     int get getId
@@ -200,7 +247,7 @@ class Preset
 
     @override
     String toString()
-    => _id.toString() + ": " + _name + ", band=" + _band.toString() + ", freq=" + _freq.toLowerCase();
+    => _id.toString() + ": band=" + _band.toString() + ", freq=" + _freq + ", name=" + _name;
 
     String displayedString({bool withId = true})
     {
@@ -232,6 +279,14 @@ class Preset
             return Drawables.media_item_radio_dab;
         }
         return Drawables.media_item_unknown;
+    }
+
+    bool equals(Preset other)
+    {
+        return other != null &&
+            _band == other._band &&
+            _freq == other._freq &&
+            _name == other._name;
     }
 }
 
@@ -273,15 +328,25 @@ class ToneControl
     @override
     String toString()
     => "min=" + _min.toString() + ", max=" + _max.toString() + ", step=" + _step.toString();
+
+    bool equals(ToneControl other)
+    {
+        return other != null &&
+            _id == other._id &&
+            _min == other._min &&
+            _max == other._max &&
+            _step == other._step;
+    }
 }
 
+typedef OnReceiverInfo = void Function(ReceiverInformationMsg msg);
 
-class ReceiverInformationMsg extends ISCPMessage
+class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
 {
     static const String CODE = "NRI";
 
     static const int DEFAULT_ACTIVE_ZONE = 0;
-    static const int ALL_ZONE = 0xFF;
+    static const int ALL_ZONES = 0xFF;
     static const int EXT_ZONES = 14; // 1110 - all zones except main
 
     String _deviceId;
@@ -292,10 +357,12 @@ class ReceiverInformationMsg extends ISCPMessage
     final List<Preset> _presetList = [];
     final List<String> _controlList = [];
     final Map<String, ToneControl> _toneControls = HashMap<String, ToneControl>();
+    String _dcpPresetData;
 
     ReceiverInformationMsg(EISCPMessage raw) : super(CODE, raw)
     {
-        _parseXml();
+        setProtoType(ProtoType.ISCP);
+        _parseIscpXml();
     }
 
     String get deviceId
@@ -325,7 +392,7 @@ class ReceiverInformationMsg extends ISCPMessage
     Map<String, ToneControl> get toneControls
     => _toneControls;
 
-    void _parseXml()
+    void _parseIscpXml()
     {
         final xml.XmlDocument document = xml.XmlDocument.parse(getData);
 
@@ -400,7 +467,7 @@ class ReceiverInformationMsg extends ISCPMessage
             final String band = element.getAttribute("band");
             if (id != null && band != null)
             {
-                _presetList.add(Preset.fromXml(element));
+                _presetList.add(Preset.fromXml(element, ProtoType.ISCP));
             }
         });
         _presetList.forEach((z)
@@ -425,5 +492,252 @@ class ReceiverInformationMsg extends ISCPMessage
         });
         Logging.info(this, "  controls: " + _controlList.toString());
         Logging.info(this, "  tone controls: " + _toneControls.toString());
+    }
+
+    /*
+     * Denon control protocol - XML-based receiver configuration and presets
+     */
+    static final Map<String, InputSelector> _dcpFuncNameMap = <String, InputSelector>{
+        "PHONO" : InputSelector.DCP_PHONO,
+        "CD" : InputSelector.DCP_CD,
+        "DVD" : InputSelector.DCP_DVD,
+        "BLU-RAY" : InputSelector.DCP_BD,
+        "TV AUDIO" : InputSelector.DCP_TV,
+        "CBL/SAT" : InputSelector.DCP_SAT_CBL,
+        "MEDIA PLAYER" : InputSelector.DCP_MPLAY,
+        "GAME" : InputSelector.DCP_GAME,
+        "TUNER" : InputSelector.DCP_TUNER,
+        "AUX1" : InputSelector.DCP_AUX1,
+        "AUX2" : InputSelector.DCP_AUX2,
+        "AUX3" : InputSelector.DCP_AUX3,
+        "AUX4" : InputSelector.DCP_AUX4,
+        "AUX5" : InputSelector.DCP_AUX5,
+        "AUX6" : InputSelector.DCP_AUX6,
+        "AUX7" : InputSelector.DCP_AUX7,
+        "NETWORK" : InputSelector.DCP_NET,
+        "BLUETOOTH" : InputSelector.DCP_BT,
+        "SOURCE" : InputSelector.DCP_SOURCE
+    };
+
+    ReceiverInformationMsg.dcp(final String receiverData, final String presetData, final String host, final String port) :
+            _dcpPresetData = presetData,
+            super.output(CODE, receiverData)
+    {
+        setProtoType(ProtoType.DCP);
+        Logging.info(this, "DCP Receiver information from " + host + ":" + port +
+            (_dcpPresetData != null ? ", presets available" : ", presets not available"));
+        _parseDcpXml();
+    }
+
+    static void requestDcpReceiverInformation(final String host, OnReceiverInfo onReceiverInfo)
+    {
+        final String port1 = "8080";
+        final String port2 = "80";
+        _requestDcpXml(host, port1, "Deviceinfo.xml").then((ri1)
+        {
+            if (ri1 != null)
+            {
+                _requestDcpXml(host, port1, "formiPhoneAppTunerPreset.xml").then((ps1)
+                {
+                    onReceiverInfo(ReceiverInformationMsg.dcp(ri1, ps1, host, port1));
+                });
+            }
+            else
+            {
+                _requestDcpXml(host, port2, "Deviceinfo.xml").then((ri2)
+                {
+                    if (ri2 != null)
+                    {
+                        _requestDcpXml(host, port2, "formiPhoneAppTunerPreset.xml").then((ps2)
+                        {
+                            onReceiverInfo(ReceiverInformationMsg.dcp(ri2, ps2, host, port2));
+                        });
+                    }
+                    else
+                    {
+                        onReceiverInfo(null);
+                    }
+                });
+            }
+        });
+    }
+
+    static Future<String> _requestDcpXml(final String host, final String port, final String path)
+    {
+        final String url = ISCPMessage.getDcpGoformUrl(host, port, path);
+        return UrlLoader().loadFromUrl(url).then((Uint8List receiverData)
+        {
+            if (receiverData != null)
+            {
+                return utf8.decode(receiverData);
+            }
+            return null;
+        });
+    }
+
+    void _parseDcpXml()
+    {
+        final xml.XmlDocument document = xml.XmlDocument.parse(getData);
+
+        // device properties
+        _deviceId = ISCPMessage.getProperty(document, "ModelName");
+        _deviceProperties["brand"] = ISCPMessage.getProperty(document, "BrandCode") == "0" ? "Denon" : "Marantz";
+        _deviceProperties["category"] = ISCPMessage.getProperty(document, "CategoryName");
+        _deviceProperties["model"] = ISCPMessage.getProperty(document, "ModelName");
+        _deviceProperties["macaddress"] = ISCPMessage.getProperty(document, "MacAddress");
+        _deviceProperties["friendlyname"] = ISCPMessage.getProperty(document, "ManualModelName");
+        Logging.info(this, "  properties: " + _deviceProperties.toString());
+
+        // zones and selectors
+        document.findAllElements("DeviceZoneCapabilities").forEach((e1)
+        => _parseDcpZoneCapabilities(e1));
+        _zones.forEach((z)
+        {
+            Logging.info(this, "  zone: " + z.toString());
+        });
+        _deviceSelectors.forEach((z)
+        {
+            Logging.info(this, "  selector: " + z.toString());
+        });
+
+        // presets
+        if (_dcpPresetData != null)
+        {
+            try
+            {
+                _parseDcpPresets(xml.XmlDocument.parse(_dcpPresetData));
+            }
+            on Exception catch (ex)
+            {
+                Logging.info(this, "  cannot parse presets: " + ex.toString());
+            }
+        }
+        _presetList.forEach((z)
+        {
+            Logging.info(this, "  preset: " + z.toString());
+        });
+
+        // device capabilities
+        document.findAllElements("DeviceCapabilities").forEach((e1)
+        => e1.findAllElements("Setup").forEach((e2)
+        => e2.childElements.forEach((e3)
+        => _parseDcpDeviceCapabilities(e3))));
+        // Buttons for RC tab
+        _controlList.add("Setup");
+        _controlList.add("Quick");
+        Logging.info(this, "  controls: " + _controlList.toString());
+    }
+    
+    void _parseDcpZoneCapabilities(xml.XmlElement zoneCapabilities)
+    {
+        final Iterable<xml.XmlElement> zones = zoneCapabilities.findAllElements("Zone");
+        final Iterable<xml.XmlElement> volumes = zoneCapabilities.findAllElements("Volume");
+        final Iterable<xml.XmlElement> input = zoneCapabilities.findAllElements("InputSource");
+        if (zones.length != 1)
+        {
+            return;
+        }
+
+        if (zones.length == volumes.length)
+        {
+            final String no = ISCPMessage.getElementProperty(zones.first, "No", null);
+            final String maxVolume = ISCPMessage.getElementProperty(volumes.first, "MaxValue", null);
+            final String step = ISCPMessage.getElementProperty(volumes.first, "StepValue", null);
+            if (no != null && int.tryParse(no) != null &&
+                step != null && double.tryParse(step) != null &&
+                maxVolume != null && double.tryParse(maxVolume) != null)
+            {
+                final int noInt = int.tryParse(no) + 1;
+                final String name = noInt == 1 ? "Main" : "Zone" + noInt.toString();
+                // Volume for zone 1 is ***:00 to 98 -> scale can be 0
+                // Volume for zone 2/3 is **:00 to 98 -> scale shall be 1
+                final int stepInt = noInt == 1 ? double.tryParse(step).round() : 1;
+                final int maxVolumeInt = double.tryParse(maxVolume).round();
+                this.zones.add(Zone(noInt.toString(), name, stepInt, maxVolumeInt));
+            }
+        }
+
+        if (zones.length == input.length)
+        {
+            final String no = ISCPMessage.getElementProperty(zones.first, "No", null);
+            final String ctrl = ISCPMessage.getElementProperty(input.first, "Control", "0");
+            final Iterable<xml.XmlElement> list = input.first.findAllElements("List");
+            if (no != null && int.tryParse(no) != null
+                && ctrl != null && ctrl == "1"
+                && list.length == 1)
+            {
+                list.first.findAllElements("Source").forEach((source)
+                {
+                    _parseDcpInput(int.tryParse(no),
+                        ISCPMessage.getElementProperty(source, "FuncName", null),
+                        ISCPMessage.getElementProperty(source, "DefaultName", null),
+                        ISCPMessage.getElementProperty(source, "IconId", ""));
+                });
+            }
+        }
+    }
+
+    void _parseDcpInput(int zone, String name, String defName, String iconId)
+    {
+        if (name == null || iconId == null)
+        {
+            return;
+        }
+        final InputSelector inputSel = _dcpFuncNameMap[name.toUpperCase()];
+        final EnumItem<InputSelector> inputType =
+            inputSel != null ? InputSelectorMsg.ValueEnum.valueByKey(inputSel) : null;
+        if (inputType != null)
+        {
+            Selector oldSelector;
+            for (Selector s in _deviceSelectors)
+            {
+                if (s.getId == inputType.getCode)
+                {
+                    oldSelector = s;
+                }
+            }
+            Selector newSelector;
+            if (oldSelector == null)
+            {
+                // Add new selector
+                newSelector = Selector(
+                    inputType.getCode,
+                    defName != null ? defName : name,
+                    pow(2, zone), iconId, false);
+            }
+            else
+            {
+                // Update zone of the existing selector
+                newSelector = Selector.updZone(oldSelector, oldSelector.getZone + pow(2, zone));
+                _deviceSelectors.remove(oldSelector);
+            }
+            _deviceSelectors.add(newSelector);
+        }
+        else
+        {
+            Logging.info(this, "Input source " + name + " for zone " + zone.toString() + " is not implemented");
+        }
+    }
+
+    void _parseDcpDeviceCapabilities(xml.XmlElement element)
+    {
+        final Iterable<xml.XmlElement> valList = element.findAllElements("Control");
+        final String val = valList.isEmpty ? "0" : valList.first.text;
+        if (val == "1")
+        {
+            _controlList.add(element.name.local);
+        }
+    }
+
+    void _parseDcpPresets(xml.XmlDocument document)
+    {
+        document.findAllElements("value").forEach((v)
+        {
+            // <value index="1" skip="OFF" table="01" band="FM" param=" 008830"/>
+            if ("OFF" == v.getAttribute("skip") && "OFF" != v.getAttribute("table"))
+            {
+                presetList.add(Preset.fromXml(v, ProtoType.DCP));
+            }
+        });
     }
 }

@@ -16,7 +16,9 @@ import 'dart:collection';
 
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../messages/CenterLevelCommandMsg.dart";
+import "../messages/DcpReceiverInformationMsg.dart";
 import "../messages/DeviceNameMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/FirmwareUpdateMsg.dart";
@@ -101,17 +103,27 @@ class ReceiverInformation
         clear();
     }
 
-    List<String> getQueries(int zone)
+    List<String> getQueries(ProtoType protoType, int zone)
     {
-        Logging.info(this, "Requesting data for zone " + zone.toString() + "...");
-        return [
-            ReceiverInformationMsg.CODE,
-            FriendlyNameMsg.CODE,
-            DeviceNameMsg.CODE,
-            PowerStatusMsg.ZONE_COMMANDS[zone],
-            FirmwareUpdateMsg.CODE,
-            GoogleCastVersionMsg.CODE
-        ];
+        Logging.info(this, "Requesting data for " + protoType.toString() + " and zone " + zone.toString() + "...");
+        if (protoType == ProtoType.ISCP)
+        {
+            return [
+                ReceiverInformationMsg.CODE,
+                FriendlyNameMsg.CODE,
+                DeviceNameMsg.CODE,
+                PowerStatusMsg.ZONE_COMMANDS[zone],
+                FirmwareUpdateMsg.CODE,
+                GoogleCastVersionMsg.CODE
+            ];
+        }
+        else
+        {
+            return [
+                PowerStatusMsg.ZONE_COMMANDS[zone],
+                FirmwareUpdateMsg.CODE
+            ];
+        }
     }
 
     void clear()
@@ -130,7 +142,7 @@ class ReceiverInformation
         _googleCastVersion = Strings.dashed_string;
     }
 
-    void createDefaultReceiverInfo()
+    void createDefaultReceiverInfo(ProtoType protoType)
     {
         Logging.info(this, "Created default receiver information");
 
@@ -138,12 +150,15 @@ class ReceiverInformation
         _deviceSelectors.clear();
         InputSelectorMsg.ValueEnum.values.where((e) => e.key != InputSelector.NONE).forEach((it)
         {
-            // #265 Add new input selector "SOURCE":
-            // "SOURCE" input not allowed for the main zone
-            final int zones = it.key == InputSelector.SOURCE ?
-                ReceiverInformationMsg.EXT_ZONES : ReceiverInformationMsg.ALL_ZONE;
-            final Selector s = Selector(it.getCode, it.description, zones, it.getCode, false);
-            _deviceSelectors.add(s);
+            if (protoType == InputSelectorMsg.getProtoType(it.key))
+            {
+                // #265 Add new input selector "SOURCE":
+                // "SOURCE" input not allowed for the main zone
+                final int zones = it.key == InputSelector.SOURCE ?
+                ReceiverInformationMsg.EXT_ZONES : ReceiverInformationMsg.ALL_ZONES;
+                final Selector s = Selector(it.getCode, it.description, zones, it.getCode, false);
+                _deviceSelectors.add(s);
+            }
         });
 
         // Add default bass and treble limits
@@ -157,6 +172,12 @@ class ReceiverInformation
         // Default zones:
         _zones.clear();
         _zones.addAll(ReceiverInformationMsg.defaultZones);
+        // Settings
+        if (protoType == ProtoType.DCP)
+        {
+            _controlList.add("Setup");
+            _controlList.add("Quick");
+        }
     }
 
     bool processReceiverInformation(ReceiverInformationMsg msg)
@@ -298,5 +319,119 @@ class ReceiverInformation
     bool get isFriendlyName
     => _friendlyName != null;
 
+    /*
+     * Denon control protocol
+     */
+    DcpUpdateType processDcpReceiverInformation(DcpReceiverInformationMsg msg)
+    {
+        // Input Selector
+        if (msg.updateType == DcpUpdateType.SELECTOR && msg.getSelector != null)
+        {
+            DcpUpdateType _changed;
+            Selector oldSelector;
+            for (Selector s in _deviceSelectors)
+            {
+                if (s.getId == msg.getSelector.getId)
+                {
+                    oldSelector = s;
+                    break;
+                }
+            }
+            if (oldSelector == null)
+            {
+                Logging.info(this, "    Received friendly name for not configured selector. Ignored.");
+            }
+            else
+            {
+                final Selector newSelector = Selector.rename(oldSelector, msg.getSelector.getName);
+                Logging.info(this, "    DCP selector " + newSelector.toString());
+                _deviceSelectors.remove(oldSelector);
+                _deviceSelectors.add(newSelector);
+                _changed = msg.updateType;
+            }
+            return _changed;
+        }
+
+        // Max. volume
+        if (msg.updateType == DcpUpdateType.MAX_VOLUME && msg.getMaxVolumeZone != null)
+        {
+            DcpUpdateType _changed;
+            for (int i = 0; i < _zones.length; i++)
+            {
+                if (_zones[i].getVolMax != msg.getMaxVolumeZone.getVolMax)
+                {
+                    _zones[i].setVolMax(msg.getMaxVolumeZone.getVolMax);
+                    Logging.info(this, "    DCP zone " + _zones[i].toString());
+                    _changed = msg.updateType;
+                }
+            }
+            return _changed;
+        }
+
+        // Tone control
+        final ToneControl toneControl = msg.getToneControl;
+        if (msg.updateType == DcpUpdateType.TONE_CONTROL && toneControl != null)
+        {
+            final bool _changed = !toneControl.equals(_toneControls[toneControl.getId]);
+            _toneControls[toneControl.getId] = toneControl;
+            Logging.info(this, "    DCP tone control " + toneControl.toString());
+            return _changed ? msg.updateType : null;
+        }
+
+        // Radio presets
+        final Preset preset = msg.getPreset;
+        if (msg.updateType == DcpUpdateType.PRESET && preset != null)
+        {
+            bool _changed = false;
+            int oldPresetIdx = -1;
+            for (int i = 0; i < _presetList.length; i++)
+            {
+                if (_presetList[i].getId == preset.getId)
+                {
+                    oldPresetIdx = i;
+                    break;
+                }
+            }
+            if (oldPresetIdx >= 0)
+            {
+                _changed = !preset.equals(_presetList[oldPresetIdx]);
+                _presetList[oldPresetIdx] = preset;
+                Logging.info(this, "    DCP Preset " + preset.toString());
+            }
+            else if (_presetList.isEmpty || !preset.equals(_presetList[_presetList.length - 1]))
+            {
+                _changed = true;
+                _presetList.add(preset);
+                Logging.info(this, "    DCP Preset " + preset.toString());
+            }
+            return _changed ? msg.updateType : null;
+        }
+
+        // Network services
+        if (msg.updateType == DcpUpdateType.NETWORK_SERVICES)
+        {
+            if (_networkServices.isEmpty)
+            {
+                Logging.info(this, "    Updating network services: " + msg.getNetworkServices.length.toString());
+                _networkServices.clear();
+                _networkServices.addAll(msg.getNetworkServices);
+                return msg.updateType;
+            }
+            else
+            {
+                return DcpUpdateType.NET_TOP;
+            }
+        }
+
+        // Firmware version
+        if (msg.updateType == DcpUpdateType.FIRMWARE_VER && msg.getFirmwareVer != null)
+        {
+            _deviceProperties["firmwareversion"] = msg.getFirmwareVer;
+            Logging.info(this, "    DCP firmware " + msg.getFirmwareVer);
+            return msg.updateType;
+        }
+
+        return null;
+    }
 }
 

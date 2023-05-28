@@ -36,9 +36,9 @@ class PowerStatusMsg extends EnumParameterZonedMsg<PowerStatus>
      * Play Status: "00": System Standby, "01":  System On, "ALL": All Zone(including Main Zone) Standby
      */
     static const ExtEnum<PowerStatus> ValueEnum = ExtEnum<PowerStatus>([
-        EnumItem.code(PowerStatus.STB, "00"),
-        EnumItem.code(PowerStatus.ON, "01"),
-        EnumItem.code(PowerStatus.ALL_STB, "ALL"),
+        EnumItem.code(PowerStatus.STB, "00", dcpCode: "OFF"),
+        EnumItem.code(PowerStatus.ON, "01", dcpCode: "ON"),
+        EnumItem.code(PowerStatus.ALL_STB, "ALL", dcpCode: "STANDBY"),
         EnumItem.code(PowerStatus.NONE, "N/A", defValue: true)
     ]);
 
@@ -46,4 +46,27 @@ class PowerStatusMsg extends EnumParameterZonedMsg<PowerStatus>
 
     PowerStatusMsg.output(int zoneIndex, PowerStatus v) :
             super.output(ZONE_COMMANDS, zoneIndex, v, ValueEnum);
+
+    /*
+     * Denon control protocol
+     */
+    static const List<String> _DCP_COMMANDS = [ "ZM", "Z2", "Z3" ];
+
+    static List<String> getAcceptedDcpCodes()
+    => _DCP_COMMANDS;
+
+    static PowerStatusMsg processDcpMessage(String dcpMsg)
+    {
+        for (int i = 0; i < _DCP_COMMANDS.length; i++)
+        {
+            final EnumItem<PowerStatus> s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
+            return (s != null) ? PowerStatusMsg.output(i, s.key) : null;
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => (getValue.key == PowerStatus.ALL_STB) ?
+        "PW" + getValue.getDcpCode : buildDcpRequest(isQuery, _DCP_COMMANDS);
 }

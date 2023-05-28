@@ -27,7 +27,7 @@ enum ConnectionErrorType
     CONNECTION_CLOSED
 }
 
-typedef OnConnected = void Function(MessageChannel channel);
+typedef OnConnected = void Function(MessageChannel channel, ConnectionIf connection);
 typedef OnDisconnected = void Function(ConnectionErrorType errorType, String result);
 typedef OnRawData = void Function(List<dynamic> data);
 
@@ -78,7 +78,7 @@ class OnpcSocket with ConnectionIf
             {
                 setHost(sock.address.address);
             }
-            _onConnected(_channel);
+            _onConnected(_channel, this);
         }).catchError((dynamic e)
         {
             _state = MessageChannelState.IDLE;

@@ -22,17 +22,20 @@ import "../config/CfgRiCommands.dart";
 import "../iscp/BroadcastSearch.dart";
 import "../iscp/scripts/MessageScript.dart";
 import "../iscp/scripts/MessageScriptIf.dart";
-import "../utils/Logging.dart";
 import "../utils/CompatUtils.dart";
+import "../utils/Logging.dart";
+import "ConnectionIf.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
 import "MessageChannel.dart";
+import "MessageChannelDcp.dart";
 import "MessageChannelIscp.dart";
 import "OnpcSocket.dart";
 import "State.dart";
 import "messages/AmpOperationCommandMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
+import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DisplayModeMsg.dart";
 import "messages/EnumParameterMsg.dart";
 import "messages/InputSelectorMsg.dart";
@@ -182,7 +185,7 @@ class StateManager
 
     StateManager(List<BroadcastResponseMsg> _favorites)
     {
-        _messageChannel = MessageChannelIscp(_onConnected, _onNewEISCPMessage, _onDisconnected);
+        _messageChannel = _createChannel(ConnectionIf.EMPTY_PORT, _onConnected, _onDisconnected);
         _state.trackState.coverDownloadFinished = _onProcessFinished;
         _state.multiroomState.favorites = _favorites;
     }
@@ -201,6 +204,7 @@ class StateManager
         }
         _manualHost = manualHost;
         _manualAlias = manualAlias;
+        _messageChannel = _createChannel(port, _onConnected, _onDisconnected);
         _messageChannel.start(host, port, keepConnection: Platform.isIOS);
     }
 
@@ -235,45 +239,92 @@ class StateManager
     {
         if (_state.changeZone(getId))
         {
-            sendQueries(_state.receiverInformation.getQueries(_state.getActiveZone));
-            // Issue #266: send an additional request for cover art image:
-            _messageChannel.sendMessage(
-                EISCPMessage.output(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
+            if (_messageChannel is MessageChannelDcp)
+            {
+                (_messageChannel as MessageChannelDcp).zone = _state.getActiveZone;
+                _requestInitialDcpState();
+            }
+            else
+            {
+                _requestInitialIscpState(requestCoverLink : false, runScrips : false);
+            }
             triggerStateEvent(ZONE_EVENT);
         }
         return _state.getActiveZone;
     }
 
-    void _onConnected(MessageChannel channel)
+    void _onConnected(MessageChannel channel, ConnectionIf connection)
     {
-        Logging.info(this, "Connected to " + channel.getHostAndPort + " via " + _networkState.toString());
+        Logging.info(this, "Connected to " + connection.getHostAndPort + " via " + _networkState.toString());
 
-        _state.updateConnection(true);
+        _state.updateConnection(true, channel.getProtoType);
         if (_onStateChanged != null)
         {
             _onStateChanged(Set.from([CONNECTION_EVENT]));
         }
 
-        // In CELLULAR mode, always use BMP images instead of links since direct links
-        // can be not available
-        _messageChannel.sendMessage(EISCPMessage.output(JacketArtMsg.CODE,
-            _networkState == NetworkState.CELLULAR ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
-        sendQueries(_state.receiverInformation.getQueries(_state.getActiveZone));
-
-        // initial call os the message scripts
-        for (MessageScriptIf script in _messageScripts)
+        if (_state.protoType == ProtoType.ISCP)
         {
-            if (script.isValid())
-            {
-                script.start(state, _messageChannel);
-            }
+            _requestInitialIscpState(requestCoverLink : true, runScrips : true);
+        }
+        else
+        {
+            _requestInitialDcpState();
         }
 
         // After scripts are started, no need to hold intent host
         _intentHost = null;
     }
 
-    Future<EISCPMessage> _registerMessage(EISCPMessage raw) async
+    void _requestInitialIscpState({bool requestCoverLink = false, bool runScrips = false})
+    {
+        if (requestCoverLink)
+        {
+            // In CELLULAR mode, always use BMP images instead of links since direct links
+            // can be not available
+            _messageChannel.sendMessage(EISCPMessage.output(JacketArtMsg.CODE,
+                _networkState == NetworkState.CELLULAR ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
+        }
+
+        sendQueries(_state.receiverInformation.getQueries(ProtoType.ISCP, _state.getActiveZone));
+        // Issue #266: send an additional request for cover art image:
+        _messageChannel.sendMessage(
+            EISCPMessage.output(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
+
+        // initial call os the message scripts
+        if (runScrips)
+        {
+            for (MessageScriptIf script in _messageScripts)
+            {
+                if (script.isValid())
+                {
+                    script.start(state, _messageChannel);
+                }
+            }
+        }
+    }
+
+    void _requestInitialDcpState()
+    {
+        ReceiverInformationMsg.requestDcpReceiverInformation(_messageChannel.getHost, (ReceiverInformationMsg msg)
+        {
+            if (msg == null)
+            {
+                // request DcpReceiverInformationMsg here since no ReceiverInformation exists
+                // otherwise it will be requested when ReceiverInformation is processed
+                Logging.info(this, "DCP Receiver information not available, requesting default state...");
+                sendMessage(DcpReceiverInformationMsg.output(DcpQueryType.FULL));
+                final List<String> q = [ PowerStatusMsg.ZONE_COMMANDS[_state.getActiveZone] ];
+                sendQueries(q);
+            }
+            else
+            {
+                _onNewDCPMessage(msg, _messageChannel);
+            }
+        });
+    }
+
+    Future<EISCPMessage> _registerEISCPMessage(EISCPMessage raw) async
     {
         // this is a dummy code necessary to transfer the incoming message into
         // the asynchronous scope
@@ -283,7 +334,7 @@ class StateManager
     void _onNewEISCPMessage(EISCPMessage rawMsg, MessageChannel channel)
     {
         // call processing asynchronous after message is registered
-        _registerMessage(rawMsg).then((EISCPMessage raw)
+        _registerEISCPMessage(rawMsg).then((EISCPMessage raw)
         {
             // Here the asynchronous scope begins
             // We do not generate any errors in this scope;
@@ -306,7 +357,7 @@ class StateManager
             {
                 final ISCPMessage msg = MessageFactory.create(raw);
                 msg.setHostAndPort(channel);
-                final String changeCode = _processMessage(msg);
+                final String changeCode = _processIscpMessage(msg);
                 for (MessageScriptIf script in _messageScripts)
                 {
                     if (script.isValid())
@@ -318,7 +369,7 @@ class StateManager
             }
             on Exception catch (e)
             {
-                Logging.info(this, "-> can not proccess message " + raw.toString() + ": " + e.toString());
+                Logging.info(this, "-> can not process message " + raw.toString() + ": " + e.toString());
                 return true;
             }
 
@@ -326,7 +377,7 @@ class StateManager
         });
     }
 
-    String _processMessage(ISCPMessage msg)
+    String _processIscpMessage(ISCPMessage msg)
     {
         if (![TimeInfoMsg.CODE, JacketArtMsg.CODE].contains(msg.getCode))
         {
@@ -505,6 +556,96 @@ class StateManager
         return changed;
     }
 
+    Future<ISCPMessage> _registerISCPMessage(ISCPMessage raw) async
+    {
+        // this is a dummy code necessary to transfer the incoming message into
+        // the asynchronous scope
+        return raw;
+    }
+
+    void _onNewDCPMessage(ISCPMessage rawMsg, MessageChannel channel)
+    {
+        // call processing asynchronous after message is registered
+        _registerISCPMessage(rawMsg).then((ISCPMessage raw)
+        {
+            // Here the asynchronous scope begins
+            // We do not generate any errors in this scope;
+            // i.e the return value is always true
+
+            if (_waitingForData.isNotEmpty && raw.getCode != TimeInfoMsg.CODE)
+            {
+                if (_waitingForData == ANY_DATA || _waitingForData == raw.getCode)
+                {
+                    _waitingForData = "";
+                }
+            }
+
+            try
+            {
+                raw.setHostAndPort(channel);
+                final String changeCode = _processDcpMessage(raw);
+                _onProcessFinished(changeCode != null, changeCode);
+            }
+            on Exception catch (e)
+            {
+                Logging.info(this, "-> can not process message " + raw.toString() + ": " + e.toString());
+                return true;
+            }
+
+            return true;
+        });
+    }
+
+    String _processDcpMessage(ISCPMessage msg)
+    {
+        if (![TimeInfoMsg.CODE, JacketArtMsg.CODE, DcpReceiverInformationMsg.CODE].contains(msg.getCode))
+        {
+            Logging.info(this, "-> processing DCP message: " + msg.toString());
+        }
+
+        if (msg is ZonedMessage && msg.zoneIndex != state.getActiveZone)
+        {
+            Logging.info(this, "message ignored: non active zone " + msg.zoneIndex.toString());
+            return null;
+        }
+
+        final String changed = state.update(msg);
+
+        if (msg is ReceiverInformationMsg)
+        {
+            final ReceiverInformationMsg ri = msg;
+            sendMessage(DcpReceiverInformationMsg.output(
+                ri.presetList.isEmpty ? DcpQueryType.FULL : DcpQueryType.SHORT));
+            sendQueries(_state.receiverInformation.getQueries(ProtoType.DCP, _state.getActiveZone));
+        }
+
+        // no further message handling, if power off
+        if (!state.isOn)
+        {
+            return changed;
+        }
+
+        // no further message handling, if no changes are detected
+        if (changed == null)
+        {
+            return null;
+        }
+
+        if (msg is PowerStatusMsg)
+        {
+            // After transmitting a power on COMMAND（PWON, the next COMMAND
+            // shall be transmitted at least 1 second later
+            final int REQUEST_DELAY = 1500;
+            Timer(Duration(milliseconds: REQUEST_DELAY), ()
+            {
+                Logging.info(this, "DCP: requesting play state with delay " + REQUEST_DELAY.toString() + "ms...");
+                sendQueries(_state.playbackState.getQueries(state.getActiveZone));
+            });
+        }
+
+        return changed;
+    }
+
     void _onProcessFinished(bool changed, String changeCode)
     {
         if (changed)
@@ -534,7 +675,7 @@ class StateManager
         {
             _onConnectionError(result);
         }
-        _onProcessFinished(state.updateConnection(false), CONNECTION_EVENT);
+        _onProcessFinished(state.updateConnection(false, state.protoType), CONNECTION_EVENT);
     }
 
     void _requestListState()
@@ -780,17 +921,17 @@ class StateManager
         if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
         {
             Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort);
-            final MessageChannel m = MessageChannelIscp(_onMultiroomDeviceConnected, _onNewEISCPMessage, _onMultiroomDeviceDisconnected);
+            final MessageChannel m = _createChannel(msg.getPort, _onMultiroomDeviceConnected, _onMultiroomDeviceDisconnected);
             _multiroomChannels[msg.getHostAndPort] = m;
             MultiroomState.MESSAGE_SCOPE.forEach((code) => m.addAllowedMessage(code));
             m.start(msg.getHost, msg.getPort);
         }
     }
 
-    void _onMultiroomDeviceConnected(MessageChannel channel)
+    void _onMultiroomDeviceConnected(MessageChannel channel, ConnectionIf connection)
     {
-        Logging.info(this, "connected to " + channel.getHostAndPort);
-        channel.sendQueries(state.multiroomState.getQueries(channel));
+        Logging.info(this, "connected to " + connection.getHostAndPort);
+        channel.sendQueries(state.multiroomState.getQueries(connection));
     }
 
     void _onMultiroomDeviceDisconnected(ConnectionErrorType errorType, String result)
@@ -875,5 +1016,17 @@ class StateManager
             Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
             activateScript(MessageScript(shortcut.toScript(state.receiverInformation.model, state.mediaListState)));
         }
+    }
+
+    MessageChannel _createChannel(int port, OnConnected _onConnected, OnDisconnected _onDisconnected)
+    {
+        if (port == MessageChannelDcp.DCP_PORT)
+        {
+            final MessageChannelDcp c =
+                MessageChannelDcp(_onConnected, _onNewDCPMessage, _onDisconnected);
+            c.zone = state.getActiveZone;
+            return c;
+        }
+        return MessageChannelIscp(_onConnected, _onNewEISCPMessage, _onDisconnected);
     }
 }

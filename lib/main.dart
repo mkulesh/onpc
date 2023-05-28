@@ -337,6 +337,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                         // startSearch calls multiroomState.updateFavorites
                         _stateManager.startSearch(limited: true);
                     }
+                    setState(() {});
                     break;
                 case StateManager.APPLY_FAVORITE_EVENT:
                     _setActiveTab(AppTabs.MEDIA);

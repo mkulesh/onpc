@@ -18,6 +18,7 @@ import "package:xml/xml.dart" as xml;
 
 import "../constants/Drawables.dart";
 import "../utils/Logging.dart";
+import "ConnectionIf.dart";
 import "ISCPMessage.dart";
 import "messages/AlbumNameMsg.dart";
 import "messages/AllChannelEqMsg.dart";
@@ -28,11 +29,11 @@ import "messages/AutoPowerMsg.dart";
 import "messages/CdPlayerOperationCommandMsg.dart";
 import "messages/CenterLevelCommandMsg.dart";
 import "messages/CustomPopupMsg.dart";
-import "messages/RadioStationNameMsg.dart";
+import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DeviceNameMsg.dart";
 import "messages/DigitalFilterMsg.dart";
-import "messages/DirectCommandMsg.dart";
 import "messages/DimmerLevelMsg.dart";
+import "messages/DirectCommandMsg.dart";
 import "messages/FileFormatMsg.dart";
 import "messages/FirmwareUpdateMsg.dart";
 import "messages/FriendlyNameMsg.dart";
@@ -53,6 +54,7 @@ import "messages/PhaseMatchingBassMsg.dart";
 import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
 import "messages/PresetCommandMsg.dart";
+import "messages/RadioStationNameMsg.dart";
 import "messages/ReceiverInformationMsg.dart";
 import "messages/ServiceType.dart";
 import "messages/SleepSetCommandMsg.dart";
@@ -75,7 +77,7 @@ import "state/ReceiverInformation.dart";
 import "state/SoundControlState.dart";
 import "state/TrackState.dart";
 
-class State
+class State with ProtoTypeMix
 {
     static const bool SKIP_XML_MESSAGES = false;
 
@@ -190,8 +192,9 @@ class State
         _mediaFilterVisible = !_mediaFilterVisible;
     }
 
-    bool updateConnection(bool c)
+    bool updateConnection(bool c, ProtoType p)
     {
+        setProtoType(p);
         final changed = _connected != c;
         _connected = c;
         if (!isConnected)
@@ -200,7 +203,7 @@ class State
         }
         else
         {
-            _receiverInformation.createDefaultReceiverInfo();
+            _receiverInformation.createDefaultReceiverInfo(protoType);
         }
         return changed;
     }
@@ -460,6 +463,19 @@ class State
             return _isChange(CustomPopupMsg.CODE, _processCustomPopup(msg));
         }
 
+        // Denon
+        if (msg is DcpReceiverInformationMsg)
+        {
+            final DcpUpdateType upd = _receiverInformation.processDcpReceiverInformation(msg);
+            if (upd == DcpUpdateType.NET_TOP)
+            {
+                Logging.info(this, "    Set network top layer");
+                // TODO:
+                //_mediaListState.setDcpNetTopLayer();
+            }
+            return _isChange(DcpReceiverInformationMsg.CODE, upd != null);
+        }
+
         return null;
     }
 
@@ -467,7 +483,7 @@ class State
     => _receiverInformation.deviceSelectors.firstWhere((s) => s.getId == mediaListState.inputType.getCode, orElse: () => null);
 
     bool get isCdInput
-    => (mediaListState.inputType.key == InputSelector.TV_CD) &&
+    => (mediaListState.inputType.key == InputSelector.CD) &&
             (_receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                 _receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
 
@@ -483,7 +499,7 @@ class State
         }
         else
         {
-            Logging.info(this, "received a popup with emply content. Ignored.");
+            Logging.info(this, "received a popup with empty content. Ignored.");
         }
         return _popupDocument != null;
     }

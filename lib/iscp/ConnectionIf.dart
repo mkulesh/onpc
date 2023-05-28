@@ -19,6 +19,19 @@ enum ProtoType
     DCP   // Denon Control Protocol (TCP:23)
 }
 
+mixin ProtoTypeMix
+{
+    ProtoType _protoType = ProtoType.ISCP;
+
+    ProtoType get protoType
+    => _protoType;
+
+    void setProtoType(ProtoType p)
+    {
+        _protoType = p;
+    }
+}
+
 mixin ConnectionIf
 {
     // Source host

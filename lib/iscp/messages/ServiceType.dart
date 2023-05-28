@@ -67,7 +67,26 @@ enum ServiceType
     USB_REAR,
     INTERNET_RADIO,
     NET,
-    BLUETOOTH
+    BLUETOOTH,
+
+    // Denon
+    DCP_PANDORA,
+    DCP_RHAPSODY,
+    DCP_TUNEIN,
+    DCP_SPOTIFY,
+    DCP_DEEZER,
+    DCP_NAPSTER,
+    DCP_IHEARTRADIO,
+    DCP_SIRIUSXM,
+    DCP_SOUNDCLOUD,
+    DCP_TIDAL,
+    DCP_AMAZON_MUSIC,
+    DCP_LOCAL,
+    DCP_PLAYLIST,
+    DCP_HISTORY,
+    DCP_AUX,
+    DCP_FAVORITE,
+    DCP_PLAYQUEUE
 }
 
 class Services
@@ -188,6 +207,48 @@ class Services
             descrList: Strings.l_service_net, icon: Drawables.media_item_net),
         EnumItem.code(ServiceType.BLUETOOTH, "F4",
             name: "Bluetooth",
-            descrList: Strings.l_service_bluetooth, icon: Drawables.media_item_bluetooth)
+            descrList: Strings.l_service_bluetooth, icon: Drawables.media_item_bluetooth),
+
+        // Denon
+        EnumItem.code(ServiceType.DCP_PANDORA, "HS1",    name: "Pandora",
+            descrList: Strings.l_service_pandora, icon: Drawables.media_item_pandora),
+        EnumItem.code(ServiceType.DCP_RHAPSODY, "HS2",    name: "Rhapsody",
+            descrList: Strings.l_service_rhapsody),
+        EnumItem.code(ServiceType.DCP_TUNEIN, "HS3",    name: "TuneIn",
+            descrList: Strings.l_service_tunein_radio, icon: Drawables.media_item_tunein),
+        EnumItem.code(ServiceType.DCP_SPOTIFY, "HS4",    name: "Spotify",
+            descrList: Strings.l_service_spotify, icon: Drawables.media_item_spotify),
+        EnumItem.code(ServiceType.DCP_DEEZER, "HS5",    name: "Deezer",
+            descrList: Strings.l_service_deezer, icon: Drawables.media_item_deezer),
+        EnumItem.code(ServiceType.DCP_NAPSTER, "HS6",    name: "Napster",
+            descrList: Strings.l_service_napster, icon: Drawables.media_item_napster),
+        EnumItem.code(ServiceType.DCP_IHEARTRADIO, "HS7",    name: "iHeartRadio",
+            descrList: Strings.l_service_iheartradio),
+        EnumItem.code(ServiceType.DCP_SIRIUSXM, "HS8",    name: "Sirius XM",
+            descrList: Strings.l_service_siriusxm),
+        EnumItem.code(ServiceType.DCP_SOUNDCLOUD, "HS9",    name: "Soundcloud",
+            descrList: Strings.l_service_soundcloud, icon: Drawables.media_item_soundcloud),
+        EnumItem.code(ServiceType.DCP_TIDAL, "HS10",   name: "Tidal",
+            descrList: Strings.l_service_tidal, icon: Drawables.media_item_tidal),
+        EnumItem.code(ServiceType.DCP_AMAZON_MUSIC, "HS13",   name: "Amazon Music",
+            descrList: Strings.l_service_amazon_music, icon: Drawables.media_item_amazon),
+        EnumItem.code(ServiceType.DCP_LOCAL, "HS1024",
+            name: "Local Music",
+            descrList: Strings.l_service_local_music, icon: Drawables.media_item_folder),
+        EnumItem.code(ServiceType.DCP_PLAYLIST, "HS1025",
+            name: "Playlists",
+            descrList: Strings.l_service_playlist, icon: Drawables.media_item_playqueue),
+        EnumItem.code(ServiceType.DCP_HISTORY, "HS1026",
+            name: "History",
+            descrList: Strings.l_service_history, icon: Drawables.media_item_history),
+        EnumItem.code(ServiceType.DCP_AUX, "HS1027",
+            name: "AUX Input",
+            descrList: Strings.l_service_aux_input, icon: Drawables.media_item_aux),
+        EnumItem.code(ServiceType.DCP_FAVORITE, "HS1028",
+            name: "Favorites",
+            descrList: Strings.l_service_favorite, icon: Drawables.media_item_favorite),
+        EnumItem.code(ServiceType.DCP_PLAYQUEUE, "HS9999",
+            name: "Play Queue",
+            descrList: Strings.l_service_playqueue, icon: Drawables.media_item_playqueue)
     ]);
 }

@@ -14,6 +14,8 @@
 // @dart=2.9
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
+import "../../utils/Convert.dart";
+import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
@@ -62,7 +64,28 @@ enum InputSelector
     HDMI_5,
     HDMI_6,
     HDMI_7,
-    SOURCE
+    SOURCE,
+
+    // Denon
+    DCP_PHONO,
+    DCP_CD,
+    DCP_DVD,
+    DCP_BD,
+    DCP_TV,
+    DCP_SAT_CBL,
+    DCP_MPLAY,
+    DCP_GAME,
+    DCP_TUNER,
+    DCP_AUX1,
+    DCP_AUX2,
+    DCP_AUX3,
+    DCP_AUX4,
+    DCP_AUX5,
+    DCP_AUX6,
+    DCP_AUX7,
+    DCP_NET,
+    DCP_BT,
+    DCP_SOURCE
 }
 
 /*
@@ -162,6 +185,46 @@ class InputSelectorMsg extends EnumParameterZonedMsg
         EnumItem.code(InputSelector.HDMI_7, "57",
             descrList: Strings.l_input_selector_hdmi_7, icon: Drawables.media_item_hdmi),
         EnumItem.code(InputSelector.SOURCE, "80",
+            descrList: Strings.l_input_selector_source, icon: Drawables.media_item_source),
+
+        // Denon
+        EnumItem.code(InputSelector.DCP_PHONO, "PHONO",
+            descrList: Strings.l_input_selector_phono, icon: Drawables.media_item_phono),
+        EnumItem.code(InputSelector.DCP_CD, "CD",
+            descrList: Strings.l_input_selector_cd, icon: Drawables.media_item_disc_player),
+        EnumItem.code(InputSelector.DCP_DVD, "DVD",
+            descrList: Strings.l_input_selector_dvd, icon: Drawables.media_item_disc_player),
+        EnumItem.code(InputSelector.DCP_BD, "BD",
+            descrList: Strings.l_input_selector_bd, icon: Drawables.media_item_disc_player),
+        EnumItem.code(InputSelector.DCP_TV, "TV",
+            descrList: Strings.l_input_selector_tv, icon: Drawables.media_item_tv),
+        EnumItem.code(InputSelector.DCP_SAT_CBL, "SAT/CBL",
+            descrList: Strings.l_input_selector_cbl_sat, icon: Drawables.media_item_sat),
+        EnumItem.code(InputSelector.DCP_MPLAY, "MPLAY",
+            descrList: Strings.l_input_selector_mplayer, icon: Drawables.media_item_mplayer),
+        EnumItem.code(InputSelector.DCP_GAME, "GAME",
+            descrList: Strings.l_input_selector_game, icon: Drawables.media_item_game),
+        EnumItem.code(InputSelector.DCP_TUNER, "TUNER",
+            descrList: Strings.l_input_selector_tuner, icon: Drawables.media_item_radio),
+        EnumItem.code(InputSelector.DCP_AUX1, "AUX1",
+            descrList: Strings.l_input_selector_aux1, icon: Drawables.media_item_rca),
+        EnumItem.code(InputSelector.DCP_AUX2, "AUX2",
+            descrList: Strings.l_input_selector_aux2, icon: Drawables.media_item_rca),
+        EnumItem.code(InputSelector.DCP_AUX3, "AUX3",
+            descrList: Strings.l_input_selector_aux3, icon: Drawables.media_item_rca),
+        EnumItem.code(InputSelector.DCP_AUX4, "AUX4",
+            descrList: Strings.l_input_selector_aux4, icon: Drawables.media_item_rca),
+        EnumItem.code(InputSelector.DCP_AUX5, "AUX5",
+            descrList: Strings.l_input_selector_aux5, icon: Drawables.media_item_rca),
+        EnumItem.code(InputSelector.DCP_AUX6, "AUX6",
+            descrList: Strings.l_input_selector_aux6, icon: Drawables.media_item_rca),
+        EnumItem.code(InputSelector.DCP_AUX7, "AUX7",
+            descrList: Strings.l_input_selector_aux7, icon: Drawables.media_item_rca),
+        EnumItem.code(InputSelector.DCP_NET, "NET",
+            descrList: Strings.l_input_selector_net, icon: Drawables.media_item_net, isMediaList: true),
+        EnumItem.code(InputSelector.DCP_BT, "BT",
+            descrList: Strings.l_input_selector_bluetooth, icon: Drawables.media_item_bluetooth),
+        EnumItem.code(InputSelector.DCP_SOURCE, "SOURCE",
             descrList: Strings.l_input_selector_source, icon: Drawables.media_item_source)
     ]);
 
@@ -169,4 +232,32 @@ class InputSelectorMsg extends EnumParameterZonedMsg
 
     InputSelectorMsg.output(int zoneIndex, InputSelector v) :
             super.output(ZONE_COMMANDS, zoneIndex, v, ValueEnum);
+
+    static ProtoType getProtoType(InputSelector item)
+    => Convert.enumToString(item).startsWith("DCP_") ? ProtoType.DCP : ProtoType.ISCP;
+
+    /*
+     * Denon control protocol
+     */
+    static const List<String> _DCP_COMMANDS = [ "SI", "Z2", "Z3" ];
+
+    static List<String> getAcceptedDcpCodes()
+    => _DCP_COMMANDS;
+
+    static InputSelectorMsg processDcpMessage(String dcpMsg)
+    {
+        for (int i = 0; i < _DCP_COMMANDS.length; i++)
+        {
+            final EnumItem<InputSelector> s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
+            if (s != null && getProtoType(s.key) == ProtoType.DCP)
+            {
+                return InputSelectorMsg.output(i, s.key);
+            }
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => buildDcpRequest(isQuery, _DCP_COMMANDS);
 }

@@ -97,6 +97,16 @@ class ISCPMessage with ConnectionIf
         return res;
     }
 
+    static String getElementProperty(xml.XmlElement element, String name, String defValue)
+    {
+        String res = defValue;
+        element.findAllElements(name).forEach((xml.XmlElement e)
+        {
+            res = ISCPMessage.nonNullString(e.text);
+        });
+        return res;
+    }
+
     String getTags(final List<String> pars, int start, int end)
     {
         String str = "";
@@ -112,6 +122,28 @@ class ISCPMessage with ConnectionIf
             }
         }
         return str.toString();
+    }
+
+    /*
+     * Denon control protocol
+     */
+    static const String DCP_MSG_SEP = "==>>";
+    static const String DCP_MSG_REQ = "?";
+    static const String DCP_HEOS_PID = "{PLAYER_PID}";
+
+    String buildDcpMsg(bool isQuery)
+    {
+        return null;
+    }
+
+    static String getDcpGoformUrl(final String host, final String port, final String s)
+    {
+        return "http://" + host + ":" + port + "/goform/" + s;
+    }
+
+    static String getDcpAppCommand(final String s)
+    {
+        return "<?xml version=\"1.0\" encoding=\"utf-8\"?><tx>" + s + "</tx>";
     }
 }
 

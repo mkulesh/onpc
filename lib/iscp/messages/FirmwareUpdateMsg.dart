@@ -13,7 +13,9 @@
  */
 // @dart=2.9
 import "../../constants/Strings.dart";
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
+import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
 enum FirmwareUpdate
@@ -36,21 +38,21 @@ class FirmwareUpdateMsg extends EnumParameterMsg<FirmwareUpdate>
     static const String CODE = "UPD";
 
     static const ExtEnum<FirmwareUpdate> ValueEnum = ExtEnum<FirmwareUpdate>([
-        EnumItem.code(FirmwareUpdate.NONE, "N/A",
+        EnumItem.code(FirmwareUpdate.NONE, "N/A", dcpCode: "N/A",
             descrList: Strings.l_device_firmware_none, defValue: true),
-        EnumItem.code(FirmwareUpdate.ACTUAL, "FF",
+        EnumItem.code(FirmwareUpdate.ACTUAL, "FF", dcpCode: "update_none",
             descrList: Strings.l_device_firmware_actual),
-        EnumItem.code(FirmwareUpdate.NEW_VERSION, "00",
+        EnumItem.code(FirmwareUpdate.NEW_VERSION, "00", dcpCode: "update_exist",
             descrList: Strings.l_device_firmware_new_version),
-        EnumItem.code(FirmwareUpdate.NEW_VERSION_NORMAL, "01",
+        EnumItem.code(FirmwareUpdate.NEW_VERSION_NORMAL, "01", dcpCode: "N/A",
             descrList: Strings.l_device_firmware_new_version),
-        EnumItem.code(FirmwareUpdate.NEW_VERSION_FORCE, "02",
+        EnumItem.code(FirmwareUpdate.NEW_VERSION_FORCE, "02", dcpCode: "N/A",
             descrList: Strings.l_device_firmware_new_version),
-        EnumItem.code(FirmwareUpdate.UPDATE_STARTED, "Dxx-xx",
+        EnumItem.code(FirmwareUpdate.UPDATE_STARTED, "Dxx-xx", dcpCode: "N/A",
             descrList: Strings.l_device_firmware_update_started),
-        EnumItem.code(FirmwareUpdate.UPDATE_COMPLETE, "CMP",
+        EnumItem.code(FirmwareUpdate.UPDATE_COMPLETE, "CMP", dcpCode: "N/A",
             descrList: Strings.l_device_firmware_update_complete),
-        EnumItem.code(FirmwareUpdate.NET, "NET",
+        EnumItem.code(FirmwareUpdate.NET, "NET", dcpCode: "N/A",
             descrList: Strings.l_device_firmware_net)
     ]);
 
@@ -65,5 +67,30 @@ class FirmwareUpdateMsg extends EnumParameterMsg<FirmwareUpdate>
     bool hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    static const String _HEOS_COMMAND = "player/check_update";
+
+    static FirmwareUpdateMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    {
+        if (_HEOS_COMMAND == jsonMsg.command)
+        {
+            final EnumItem<FirmwareUpdate> s = ValueEnum.valueByDcpCode(jsonMsg.getString("payload.update"));
+            return (s != null) ? FirmwareUpdateMsg.output(s.key) : null;
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        if (isQuery)
+        {
+            return "heos://" + _HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID;
+        }
+        return null;
     }
 }

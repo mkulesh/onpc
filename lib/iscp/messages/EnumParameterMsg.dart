@@ -21,6 +21,7 @@ class EnumItem<T>
 {
     final T key;
     final String code;
+    final String dcpCode;
     final String name;
     final String descr;
     final List<String> descrList;
@@ -30,6 +31,7 @@ class EnumItem<T>
     const EnumItem(this.key,
     {
         this.code,
+        this.dcpCode,
         this.name,
         this.descr,
         this.descrList,
@@ -42,6 +44,7 @@ class EnumItem<T>
     // The char constructor uses interprets the given code as case-sensitive string
     const EnumItem.char(this.key, this.code,
     {
+        this.dcpCode,
         this.name,
         this.descr,
         this.descrList,
@@ -54,6 +57,7 @@ class EnumItem<T>
     // This constructor uses interprets the given code as case-insensitive string
     const EnumItem.code(this.key, this.code,
     {
+        this.dcpCode,
         this.name,
         this.descr,
         this.descrList,
@@ -71,6 +75,12 @@ class EnumItem<T>
 
     bool isCodeEqual(String c)
     => upperCase ? (getCode == c.toUpperCase()) : (getCode == c);
+
+    String get getDcpCode
+    => dcpCode == null ? getCode : (upperCase ? dcpCode.toUpperCase() : dcpCode);
+
+    bool isDcpCodeEqual(String c)
+    => upperCase ? (getDcpCode == c.toUpperCase()) : (getDcpCode == c);
 
     bool get isImageValid
     => icon != null;
@@ -97,6 +107,12 @@ class ExtEnum<T>
 
     EnumItem<T> valueByKey(T key)
     => values.firstWhere((e) => e.key == key, orElse: () => defValue);
+
+    EnumItem<T> valueByDcpCode(String code)
+    => values.firstWhere((e) => e.isDcpCodeEqual(code), orElse: () => null);
+
+    EnumItem<T> valueByDcpCommand(String dcpCommand, String dcpMsg)
+    => dcpMsg.startsWith(dcpCommand) ? valueByDcpCode(dcpMsg.substring(dcpCommand.length).trim()) : null;
 }
 
 class EnumParameterMsg<T> extends ISCPMessage
@@ -143,4 +159,13 @@ class EnumParameterZonedMsg<T> extends ZonedMessage
     @override
     String toString()
     => super.toString() + "[VALUE=" + _value.toString() + "]";
+
+    String buildDcpRequest(bool isQuery, final List<String> dcpCommands)
+    {
+        if (zoneIndex < dcpCommands.length)
+        {
+            return dcpCommands[zoneIndex] + (isQuery ? ISCPMessage.DCP_MSG_REQ : getValue.getDcpCode);
+        }
+        return null;
+    }
 }

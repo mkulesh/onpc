@@ -252,4 +252,7 @@ class EISCPMessage
 
         return bytes;
     }
+
+    bool isQuery()
+    => _parameters.toUpperCase() == EISCPMessage.QUERY;
 }

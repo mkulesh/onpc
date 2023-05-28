@@ -61,6 +61,10 @@ class AppBarView extends UpdatableView
         else
         {
             subTitle = state.receiverInformation.getDeviceName(configuration.friendlyNames);
+            if (subTitle.isEmpty)
+            {
+                subTitle = stateManager.getConnection().getHostAndPort;
+            }
             if (state.isExtendedZone)
             {
                 if (subTitle.isNotEmpty)
