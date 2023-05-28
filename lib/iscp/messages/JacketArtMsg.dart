@@ -12,14 +12,11 @@
  * Public License along with this program.
  */
 // @dart=2.9
-import "dart:math";
 import "dart:typed_data";
 
-import "package:collection/collection.dart";
 import "package:flutter/widgets.dart";
-import "package:http/http.dart" as http;
 
-import "../../utils/Logging.dart";
+import "../../utils/UrlLoader.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -141,52 +138,10 @@ class JacketArtMsg extends ISCPMessage
 
     Future<Image> loadFromUrl()
     {
-        return http.get(Uri.parse(url)).then((response)
+        return UrlLoader().loadFromUrl(url).then((Uint8List data)
         {
-            try
-            {
-                final Uint8List r = response.bodyBytes;
-                final int offset = _getUrlHeaderLength(r);
-                final int length = r.length - offset;
-                if (length > 0)
-                {
-                    Logging.info(this, "image size: " + length.toString() + "B");
-                    return Image.memory(Uint8List.view(r.buffer, offset));
-                }
-                else
-                {
-                    Logging.info(this, "empty image");
-                    return null;
-                }
-            }
-            on Exception catch (e)
-            {
-                Logging.info(this, "-> can not proccess image: " + e.toString());
-                return null;
-            }
+            return data != null? Image.memory(data) : null;
         });
-    }
-
-    int _getUrlHeaderLength(Uint8List r)
-    {
-        final List<int> cnt = "Content-".codeUnits;
-        int length = 0;
-        while (true)
-        {
-            final int lf = r.indexOf(EISCPMessage.LF, length);
-            final List<int> start = r.sublist(length, min(length + cnt.length, r.length));
-            if (lf > 0 && IterableEquality().equals(start, cnt))
-            {
-                length = lf;
-                while (length < r.length && (r[length] == EISCPMessage.LF || r[length] == EISCPMessage.CR))
-                {
-                    length++;
-                }
-                continue;
-            }
-            break;
-        }
-        return length;
     }
 
     Image loadFromBuffer(List<int> coverBuffer)
