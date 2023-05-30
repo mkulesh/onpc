@@ -24,6 +24,7 @@ import "../dialogs/AudioControlDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/CenterLevelCommandMsg.dart";
 import "../iscp/messages/DirectCommandMsg.dart";
+import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/SubwooferLevelCommandMsg.dart";
@@ -47,7 +48,8 @@ class AudioControlView extends UpdatableView
         ToneCommandMsg.CODE,
         DirectCommandMsg.CODE,
         SubwooferLevelCommandMsg.CODE,
-        CenterLevelCommandMsg.CODE
+        CenterLevelCommandMsg.CODE,
+        ListeningModeMsg.CODE
     ];
 
     AudioControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -119,9 +121,17 @@ class AudioControlView extends UpdatableView
                     }
                 }));
         }
-        else if (!soundControl.isDirectListeningMode && zone < ToneCommandMsg.ZONE_COMMANDS.length)
+        else if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
         {
-            _addToneControls(controls, soundControl);
+            if (soundControl.isDirectListeningMode)
+            {
+                controls.add(CustomCheckbox(Strings.tone_direct,
+                    value: true, padding: DialogDimens.rowPadding, enabled: false));
+            }
+            else
+            {
+                _addToneControls(controls, soundControl);
+            }
         }
 
         // Subwoofer and Center Level

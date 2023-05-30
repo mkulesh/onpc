@@ -104,6 +104,8 @@ class Zone
     String get getName
     => _name;
 
+    // Step = 0: scaled by 2
+    // Step = 1: use not scaled (as is)
     int get getVolumeStep
     => _volumeStep;
 
@@ -519,6 +521,8 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         "SOURCE" : InputSelector.DCP_SOURCE
     };
 
+    static final List<String> defaultDcpControls = ["LMD Movie/TV", "LMD Music", "LMD Game", "Setup", "Quick"];
+
     ReceiverInformationMsg.dcp(final String receiverData, final String presetData, final String host, final String port) :
             _dcpPresetData = presetData,
             super.output(CODE, receiverData)
@@ -623,8 +627,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         => e2.childElements.forEach((e3)
         => _parseDcpDeviceCapabilities(e3))));
         // Buttons for RC tab
-        _controlList.add("Setup");
-        _controlList.add("Quick");
+        _controlList.addAll(defaultDcpControls);
         Logging.info(this, "  controls: " + _controlList.toString());
     }
     
@@ -651,8 +654,8 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
                 final String name = noInt == 1 ? "Main" : "Zone" + noInt.toString();
                 // Volume for zone 1 is ***:00 to 98 -> scale can be 0
                 // Volume for zone 2/3 is **:00 to 98 -> scale shall be 1
-                final int stepInt = noInt == 1 ? double.tryParse(step).round() : 1;
-                final int maxVolumeInt = double.tryParse(maxVolume).round();
+                final int stepInt = noInt == 1 ? double.tryParse(step).floor() : 1;
+                final int maxVolumeInt = double.tryParse(maxVolume).floor();
                 this.zones.add(Zone(noInt.toString(), name, stepInt, maxVolumeInt));
             }
         }

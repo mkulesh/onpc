@@ -16,10 +16,12 @@ import "package:shared_preferences/shared_preferences.dart";
 
 import "../Platform.dart";
 import "../constants/Version.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "CfgAppSettings.dart";
@@ -75,6 +77,7 @@ class Configuration extends CfgModule
     bool get friendlyNames
     => _friendlyNames;
 
+    static const Pair<String, String> PROTO_TYPE = Pair<String, String>("proto_type", "ISCP");
     static const Pair<String, String> MODEL = Pair<String, String>("model", "NONE");
 
     static const String NETWORK_SERVICES = "network_services";
@@ -186,8 +189,9 @@ class Configuration extends CfgModule
         {
             m = MODEL.item2;
         }
-        Logging.info(this, "Updating configuration for model: " + m);
-        preferences.setString(MODEL.item1, m);
+        Logging.info(this, "Save receiver information");
+        saveStringParameter(PROTO_TYPE, Convert.enumToString(stateManager.state.protoType), prefix: "  ");
+        saveStringParameter(MODEL, m, prefix: "  ");
         if (state.networkServices.isNotEmpty)
         {
             String str = "";
@@ -242,5 +246,13 @@ class Configuration extends CfgModule
                 getStringDef(Configuration.DEVICE_SELECTORS + "_" + item.getCode, defName);
         }
         return defName;
+    }
+
+    ProtoType get protoType
+    {
+        final String protoType = getString(PROTO_TYPE);
+        return ProtoType.values.firstWhere(
+            (p) => Convert.enumToString(p).toUpperCase() == protoType.toUpperCase(),
+            orElse: () => ProtoType.ISCP);
     }
 }

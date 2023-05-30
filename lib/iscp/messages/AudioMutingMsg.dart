@@ -14,6 +14,7 @@
 // @dart=2.9
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
+import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
@@ -40,21 +41,56 @@ class AudioMutingMsg extends EnumParameterZonedMsg<AudioMuting>
     static const ExtEnum<AudioMuting> ValueEnum = ExtEnum<AudioMuting>([
         EnumItem.code(AudioMuting.NONE, "N/A",
             descrList: Strings.l_audio_muting_none, defValue: true),
-        EnumItem.code(AudioMuting.OFF, "00",
+        EnumItem.code(AudioMuting.OFF, "00", dcpCode: "OFF",
             descrList: Strings.l_audio_muting_off),
-        EnumItem.code(AudioMuting.ON, "01",
+        EnumItem.code(AudioMuting.ON, "01", dcpCode: "ON",
             descrList: Strings.l_audio_muting_on),
-        EnumItem.code(AudioMuting.TOGGLE, "TG",
-            descrList: Strings.l_audio_muting_toggle, icon: Drawables.volume_amp_muting)
+        EnumItem.code(AudioMuting.TOGGLE, "TG", dcpCode: "N/A",
+            descrList: Strings.l_audio_muting_toggle,
+            icon: Drawables.volume_amp_muting)
     ]);
+
+    static final EnumItem<AudioMuting> TOGGLE = ValueEnum.valueByKey(AudioMuting.TOGGLE);
 
     AudioMutingMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw, ValueEnum);
 
-    AudioMutingMsg.output(int zoneIndex, AudioMuting v) : super.output(ZONE_COMMANDS, zoneIndex, v, ValueEnum);
+    AudioMutingMsg.toggle(int zoneIndex, EnumItem<AudioMuting> s, ProtoType proto) :
+            super.output(ZONE_COMMANDS, zoneIndex, _toggle(s.key, proto), ValueEnum);
+
+    AudioMutingMsg.dcp(int zoneIndex, AudioMuting v) : super.output(ZONE_COMMANDS, zoneIndex, v, ValueEnum);
 
     @override
     bool hasImpactOnMediaList()
     {
         return false;
     }
+
+    static AudioMuting _toggle(AudioMuting s, ProtoType proto)
+    => (proto == ProtoType.ISCP) ? AudioMuting.TOGGLE :
+        ((s == AudioMuting.OFF) ? AudioMuting.ON : AudioMuting.OFF);
+
+    /*
+     * Denon control protocol
+     */
+    static const List<String> _DCP_COMMANDS = [ "MU", "Z2MU", "Z3MU" ];
+
+    static List<String> getAcceptedDcpCodes()
+    => _DCP_COMMANDS;
+
+    static AudioMutingMsg processDcpMessage(String dcpMsg)
+    {
+        for (int i = 0; i < _DCP_COMMANDS.length; i++)
+        {
+            final EnumItem<AudioMuting> s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
+            if (s != null)
+            {
+                return AudioMutingMsg.dcp(i, s.key);
+            }
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => buildDcpRequest(isQuery, _DCP_COMMANDS);
 }

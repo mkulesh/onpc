@@ -12,8 +12,12 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:sprintf/sprintf.dart';
+
+import "../../utils/Logging.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "DcpReceiverInformationMsg.dart";
 import "EnumParameterMsg.dart";
 
 enum ToneCommand
@@ -41,13 +45,14 @@ class ToneCommandMsg extends ZonedMessage
     static const int NO_LEVEL = 0xFF;
 
     static const ExtEnum<ToneCommand> ValueEnum = ExtEnum<ToneCommand>([
-        EnumItem(ToneCommand.NONE, defValue: true),
-        EnumItem(ToneCommand.BUP),
-        EnumItem(ToneCommand.BDOWN),
-        EnumItem(ToneCommand.TUP),
-        EnumItem(ToneCommand.TDOWN)
+        EnumItem(ToneCommand.NONE, dcpCode: "N/A", defValue: true),
+        EnumItem(ToneCommand.BUP, dcpCode: "UP"),
+        EnumItem(ToneCommand.BDOWN, dcpCode: "DOWN"),
+        EnumItem(ToneCommand.TUP, dcpCode: "UP"),
+        EnumItem(ToneCommand.TDOWN, dcpCode: "DOWN")
     ]);
 
+    final bool _tonJoined;
     EnumItem<ToneCommand> _command;
 
     static const String BASS_KEY = "Bass";
@@ -58,16 +63,16 @@ class ToneCommandMsg extends ZonedMessage
     static const String TREBLE_MARKER = "T";
     int _trebleLevel = NO_LEVEL;
 
-    ToneCommandMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw)
+    ToneCommandMsg(EISCPMessage raw) : _tonJoined = true, super(ZONE_COMMANDS, raw)
     {
-        _command = ValueEnum.defValue;
+        _command = ValueEnum.valueByCode(getData);
         for (int i = 0; i < getData.length; i++)
         {
-            if (getData.substring(i, i + 1) == BASS_MARKER)
+            if (getData != EISCPMessage.QUERY && getData.substring(i, i + 1) == BASS_MARKER)
             {
                 _bassLevel = ISCPMessage.nonNullInteger(getData.substring(i + 1, i + 3), 16, NO_LEVEL);
             }
-            if (getData.substring(i, i + 1) == TREBLE_MARKER)
+            if (getData != EISCPMessage.QUERY && getData.substring(i, i + 1) == TREBLE_MARKER)
             {
                 _trebleLevel = ISCPMessage.nonNullInteger(getData.substring(i + 1, i + 3), 16, NO_LEVEL);
             }
@@ -75,6 +80,7 @@ class ToneCommandMsg extends ZonedMessage
     }
 
     ToneCommandMsg.output(int zoneIndex, ToneCommand v) :
+            _tonJoined = false,
             super.output(ZONE_COMMANDS, zoneIndex, ValueEnum.valueByKey(v).getCode)
     {
         _command = ValueEnum.valueByKey(v);
@@ -83,6 +89,7 @@ class ToneCommandMsg extends ZonedMessage
     }
 
     ToneCommandMsg.value(int zoneIndex, int bass, int treble) :
+            _tonJoined = false,
             super.output(ZONE_COMMANDS, zoneIndex, _getParameterAsString(bass, treble))
     {
         _command = ValueEnum.defValue;
@@ -103,6 +110,9 @@ class ToneCommandMsg extends ZonedMessage
         }
         return par;
     }
+
+    bool get isTonJoined
+    => _tonJoined;
 
     int get getBassLevel
     => _bassLevel;
@@ -130,5 +140,87 @@ class ToneCommandMsg extends ZonedMessage
         }
         final String s = tone < 0 ? "-" : "+";
         return m + s + tone.abs().toRadixString(16).substring(0, 1).toUpperCase();
+    }
+
+    /*
+     * Denon control protocol
+     */
+    static List<String> getAcceptedDcpCodes()
+    => [];
+
+    static ToneCommandMsg processDcpMessage(String dcpMsg)
+    {
+        // Bass
+        for (int i = 0; i < DcpReceiverInformationMsg.DCP_COMMANDS_BASS.length; i++)
+        {
+            if (dcpMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMANDS_BASS[i]))
+            {
+                final String par = dcpMsg.substring(
+                    DcpReceiverInformationMsg.DCP_COMMANDS_BASS[i].length).trim();
+                if (int.tryParse(par) != null)
+                {
+                    final int level = int.tryParse(par) - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
+                    return ToneCommandMsg.value(i, level, NO_LEVEL);
+                }
+                else
+                {
+                    Logging.info(ToneCommandMsg, "Unable to parse bass level " + par);
+                    return null;
+                }
+            }
+        }
+        // Treble
+        for (int i = 0; i < DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE.length; i++)
+        {
+            if (dcpMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[i]))
+            {
+                final String par = dcpMsg.substring(
+                DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[i].length).trim();
+                if (int.tryParse(par) != null)
+                {
+                    final int level = int.tryParse(par) - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
+                    return ToneCommandMsg.value(i, NO_LEVEL, level);
+                }
+                else
+                {
+                    Logging.info(ToneCommandMsg, "Unable to parse treble level " + par);
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        if (isQuery)
+        {
+            final String bassReq = DcpReceiverInformationMsg.DCP_COMMANDS_BASS[zoneIndex] + " " + ISCPMessage.DCP_MSG_REQ;
+            final String trebleReq = DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[zoneIndex] + " " + ISCPMessage.DCP_MSG_REQ;
+            return bassReq + ISCPMessage.DCP_MSG_SEP + trebleReq;
+        }
+
+        switch(_command.key)
+        {
+        case ToneCommand.BUP:
+        case ToneCommand.BDOWN:
+            return DcpReceiverInformationMsg.DCP_COMMANDS_BASS[zoneIndex] + " " + _command.dcpCode;
+        case ToneCommand.TUP:
+        case ToneCommand.TDOWN:
+            return DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[zoneIndex] + " " + _command.dcpCode;
+        default:
+            if (_bassLevel != NO_LEVEL)
+            {
+                final String par = sprintf("%02d", [ _bassLevel + DcpReceiverInformationMsg.DCP_TON_SHIFT[zoneIndex] ]);
+                return DcpReceiverInformationMsg.DCP_COMMANDS_BASS[zoneIndex] + " " + par;
+            }
+            else if (_trebleLevel != NO_LEVEL)
+            {
+                final String par = sprintf("%02d", [ _trebleLevel + DcpReceiverInformationMsg.DCP_TON_SHIFT[zoneIndex] ]);
+                return DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[zoneIndex] + " " + par;
+            }
+        }
+        return null;
     }
 }

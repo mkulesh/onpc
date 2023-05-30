@@ -286,7 +286,7 @@ class StateManager
                 _networkState == NetworkState.CELLULAR ? JacketArtMsg.TYPE_BMP : JacketArtMsg.TYPE_LINK));
         }
 
-        sendQueries(_state.receiverInformation.getQueries(ProtoType.ISCP, _state.getActiveZone));
+        sendQueries(_state.receiverInformation.getQueriesIscp(_state.getActiveZone));
         // Issue #266: send an additional request for cover art image:
         _messageChannel.sendMessage(
             EISCPMessage.output(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
@@ -494,7 +494,7 @@ class StateManager
             // Send this request first
             sendQueries(_state.playbackState.getQueries(state.getActiveZone));
             sendQueries(_state.deviceSettingsState.getQueries(state.getActiveZone));
-            sendQueries(_state.soundControlState.getQueries(state.getActiveZone, state.receiverInformation));
+            sendQueries(_state.soundControlState.getQueriesIscp(state.getActiveZone, state.receiverInformation));
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
             _requestListState();
             return changed;
@@ -616,7 +616,7 @@ class StateManager
             final ReceiverInformationMsg ri = msg;
             sendMessage(DcpReceiverInformationMsg.output(
                 ri.presetList.isEmpty ? DcpQueryType.FULL : DcpQueryType.SHORT));
-            sendQueries(_state.receiverInformation.getQueries(ProtoType.DCP, _state.getActiveZone));
+            sendQueries(_state.receiverInformation.getQueriesDcp(_state.getActiveZone));
         }
 
         // no further message handling, if power off
@@ -640,6 +640,7 @@ class StateManager
             {
                 Logging.info(this, "DCP: requesting play state with delay " + REQUEST_DELAY.toString() + "ms...");
                 sendQueries(_state.playbackState.getQueries(state.getActiveZone));
+                sendQueries(_state.soundControlState.getQueriesDcp(state.getActiveZone, state.receiverInformation));
             });
         }
 
@@ -830,7 +831,8 @@ class StateManager
                 final List<ISCPMessage> cmds = [
                     MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP),
                     MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN),
-                    AudioMutingMsg.output(state.getActiveZone, AudioMuting.TOGGLE)
+                    AudioMutingMsg.toggle(state.getActiveZone,
+                        state.soundControlState.audioMuting, state.protoType)
                 ];
                 return sendMessage(cmds[cmd]);
             }

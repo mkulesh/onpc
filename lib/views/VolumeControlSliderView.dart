@@ -120,10 +120,11 @@ class VolumeControlSliderView extends UpdatableView
 
         // audio muting
         {
-            final AudioMutingMsg cmd = AudioMutingMsg.output(state.getActiveZone, AudioMuting.TOGGLE);
+            final AudioMutingMsg cmd = AudioMutingMsg.toggle(
+                state.getActiveZone, soundControl.audioMuting, state.protoType);
             controls.add(CustomImageButton.normal(
-                cmd.getValue.icon,
-                cmd.getValue.description,
+                AudioMutingMsg.TOGGLE.icon,
+                AudioMutingMsg.TOGGLE.description,
                 onPressed: ()
                 => stateManager.sendMessage(cmd),
                 isEnabled: state.isOn,

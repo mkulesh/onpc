@@ -130,9 +130,9 @@ class SoundControlState
         clear();
     }
 
-    List<String> getQueries(int zone, final ReceiverInformation ri)
+    List<String> getQueriesIscp(int zone, final ReceiverInformation ri)
     {
-        Logging.info(this, "Requesting data for zone " + zone.toString() + "...");
+        Logging.info(this, "Requesting ISCP data for zone " + zone.toString() + "...");
         final List<String> cmd = [
             AudioMutingMsg.ZONE_COMMANDS[zone],
             MasterVolumeMsg.ZONE_COMMANDS[zone],
@@ -152,6 +152,23 @@ class SoundControlState
             // #216 TX-NR646: listening mode information is sometime missing
             // It seems to be AllChannelEq requests stops the receiver to answer ListeningMode request
             cmd.add(AllChannelEqMsg.CODE);
+        }
+
+        return cmd;
+    }
+
+    List<String> getQueriesDcp(int zone, final ReceiverInformation ri)
+    {
+        Logging.info(this, "Requesting DCP data for zone " + zone.toString() + "...");
+        final List<String> cmd = [
+            AudioMutingMsg.ZONE_COMMANDS[zone],
+            MasterVolumeMsg.ZONE_COMMANDS[zone],
+            ListeningModeMsg.CODE,
+        ];
+
+        if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
+        {
+            cmd.add(ToneCommandMsg.ZONE_COMMANDS[zone]);
         }
 
         return cmd;
@@ -194,8 +211,22 @@ class SoundControlState
         final bool changed =
             (msg.getBassLevel != ToneCommandMsg.NO_LEVEL && _bassLevel != msg.getBassLevel) ||
                 (msg.getTrebleLevel != ToneCommandMsg.NO_LEVEL && _trebleLevel != msg.getTrebleLevel);
-        _bassLevel = msg.getBassLevel;
-        _trebleLevel = msg.getTrebleLevel;
+        if (msg.isTonJoined)
+        {
+            _bassLevel = msg.getBassLevel;
+            _trebleLevel = msg.getTrebleLevel;
+        }
+        else
+        {
+            if (msg.getBassLevel != ToneCommandMsg.NO_LEVEL)
+            {
+                _bassLevel = msg.getBassLevel;
+            }
+            if (msg.getTrebleLevel != ToneCommandMsg.NO_LEVEL)
+            {
+                _trebleLevel = msg.getTrebleLevel;
+            }
+        }
         return changed;
     }
 
@@ -264,7 +295,13 @@ class SoundControlState
     }
 
     bool get isDirectListeningMode
-    => _listeningMode != null && [ListeningMode.MODE_01, ListeningMode.MODE_11].contains(_listeningMode.key);
+    => _listeningMode != null &&
+        [
+            ListeningMode.MODE_01,
+            ListeningMode.MODE_11,
+            ListeningMode.MODE_DCP_DIRECT,
+            ListeningMode.MODE_DCP_PURE_DIRECT
+        ].contains(_listeningMode.key);
 
     SoundControlType soundControlType(final String config, Zone zone)
     {

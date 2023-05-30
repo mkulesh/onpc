@@ -12,8 +12,11 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:sprintf/sprintf.dart';
+
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
+import "../../utils/Logging.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -55,7 +58,7 @@ class MasterVolumeMsg extends ZonedMessage
 
     MasterVolumeMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw)
     {
-        _command = ValueEnum.defValue;
+        _command = ValueEnum.valueByCode(getData);
         _volumeLevel = ISCPMessage.nonNullInteger(getData, 16, NO_LEVEL);
     }
 
@@ -88,4 +91,83 @@ class MasterVolumeMsg extends ZonedMessage
     {
         return false;
     }
+
+    /*
+     * Denon control protocol
+     */
+    static const List<String> _DCP_COMMANDS = [ "MV", "Z2", "Z3" ];
+
+    static List<String> getAcceptedDcpCodes()
+    => _DCP_COMMANDS;
+
+    static MasterVolumeMsg processDcpMessage(String dcpMsg)
+    {
+        for (int i = 0; i < _DCP_COMMANDS.length; i++)
+        {
+            if (dcpMsg.startsWith(_DCP_COMMANDS[i]) && !dcpMsg.contains("MAX"))
+            {
+                final String par = dcpMsg.substring(_DCP_COMMANDS[i].length).trim();
+                if (double.tryParse(par) != null)
+                {
+                    final double volumeLevel = double.tryParse(par);
+                    final int volumeLevelInt = i == 0 ?
+                        _scaleValueMainZone(volumeLevel, par) : _scaleValueExtZone(volumeLevel);
+                    return MasterVolumeMsg.value(i, volumeLevelInt);
+                }
+                else
+                {
+                    Logging.info(MasterVolumeMsg, "Unable to parse volume level " + par);
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        if (isQuery)
+        {
+            return _DCP_COMMANDS[0] + ISCPMessage.DCP_MSG_REQ;
+        }
+        else if (zoneIndex < _DCP_COMMANDS.length)
+        {
+            if (_command.key != MasterVolume.NONE)
+            {
+                return _DCP_COMMANDS[zoneIndex] + _command.getDcpCode;
+            }
+            else if (_volumeLevel != NO_LEVEL)
+            {
+                final String par = zoneIndex == 0 ? _getValueMainZone() : _getValueExtZone();
+                if (par.isNotEmpty)
+                {
+                    return _DCP_COMMANDS[zoneIndex] + par;
+                }
+            }
+        }
+        return null;
+    }
+
+    static int _scaleValueMainZone(double volumeLevel, String par)
+    {
+        if (par.length > 2)
+        {
+            volumeLevel = volumeLevel / 10;
+        }
+        return (2.0 * volumeLevel).floor();
+    }
+
+    String _getValueMainZone()
+    {
+        final double f = 10.0 * (_volumeLevel.toDouble() / 2.0);
+        final String fullStr = sprintf("%03d", [ f.floor() ]);
+        return fullStr.endsWith("0") ? fullStr.substring(0, 2) : (fullStr.endsWith("5") ? fullStr : "");
+    }
+
+    static int _scaleValueExtZone(double volumeLevel)
+    => volumeLevel.floor();
+
+    String _getValueExtZone()
+    => sprintf("%02d", [ _volumeLevel ]);
 }

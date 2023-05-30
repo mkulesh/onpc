@@ -16,6 +16,7 @@ import "package:shared_preferences/shared_preferences.dart";
 
 import "../Platform.dart";
 import "../constants/Strings.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
@@ -46,7 +47,7 @@ class CfgAudioControl extends CfgModule
     => _forceAudioControl;
 
     // Selected listening modes
-    static const String SELECTED_LISTENING_MODES = "selected_listening_modes";
+    static const String _SELECTED_LISTENING_MODES = "selected_listening_modes";
 
     // Master volume maximum
     static const Pair<String, int> MASTER_VOLUME_MAX = Pair<String, int>("master_volume_max", 9999);
@@ -61,8 +62,8 @@ class CfgAudioControl extends CfgModule
         saveIntegerParameter(getModelDependentInt(MASTER_VOLUME_MAX), value);
     }
 
-    // Default modes
-    static const List<ListeningMode> DEFAULT_LISTENING_MODES = [
+    // Integra modes
+    static const List<ListeningMode> _ISCP_LISTENING_MODES = [
         ListeningMode.MODE_0F, // MONO
         ListeningMode.MODE_00, // STEREO
         ListeningMode.MODE_01, // DIRECT
@@ -85,6 +86,28 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_05, // Game-Action
         ListeningMode.MODE_06, // Game-Rock
         ListeningMode.MODE_0E  // Game-Sports
+    ];
+
+    // Denon modes
+    static const List<ListeningMode> _DCP_LISTENING_MODES = [
+        ListeningMode.MODE_DCP_DIRECT,
+        ListeningMode.MODE_DCP_PURE_DIRECT,
+        ListeningMode.MODE_DCP_STEREO,
+        ListeningMode.MODE_DCP_AUTO,
+        ListeningMode.MODE_DCP_DOLBY_DIGITAL,
+        ListeningMode.MODE_DCP_DTS_SURROUND,
+        ListeningMode.MODE_DCP_AURO3D,
+        ListeningMode.MODE_DCP_AURO2DSURR,
+        ListeningMode.MODE_DCP_MCH_STEREO,
+        ListeningMode.MODE_DCP_WIDE_SCREEN,
+        ListeningMode.MODE_DCP_SUPER_STADIUM,
+        ListeningMode.MODE_DCP_ROCK_ARENA,
+        ListeningMode.MODE_DCP_JAZZ_CLUB,
+        ListeningMode.MODE_DCP_CLASSIC_CONCERT,
+        ListeningMode.MODE_DCP_MONO_MOVIE,
+        ListeningMode.MODE_DCP_MATRIX,
+        ListeningMode.MODE_DCP_VIDEO_GAME,
+        ListeningMode.MODE_DCP_VIRTUAL
     ];
 
     // Master volume hardware keys
@@ -111,27 +134,41 @@ class CfgAudioControl extends CfgModule
         _masterVolumeMax = getInt(getModelDependentInt(MASTER_VOLUME_MAX), doLog: true);
     }
 
-    List<EnumItem<ListeningMode>> getSortedListeningModes(bool allItems, EnumItem<ListeningMode> activeItem)
+    List<EnumItem<ListeningMode>> getSortedListeningModes(
+        bool allItems, EnumItem<ListeningMode> activeItem, ProtoType protoType)
     {
         final List<EnumItem<ListeningMode>> result = [];
         final List<String> defItems = [];
 
-        DEFAULT_LISTENING_MODES.forEach((m)
+        getListeningModes(protoType).forEach((m)
         => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
 
-        final String par = getModelDependentParameter(SELECTED_LISTENING_MODES);
+        final String par = getModelDependentParameter(getSelectedListeningModePar(protoType));
         for (CheckableItem sp in CheckableItem.readFromPreference(this, par, defItems))
         {
             final bool visible = allItems || sp.checked ||
                 (activeItem.key != ListeningMode.NONE && activeItem.getCode == sp.code);
             ListeningModeMsg.ValueEnum.values.forEach((m)
             {
-                if (visible && m.key != ListeningMode.NONE && m.getCode == sp.code)
+                if (visible && ListeningModeMsg.isMode(m.key) && m.key != ListeningMode.NONE && m.getCode == sp.code)
                 {
                     result.add(m);
                 }
             });
         }
         return result;
+    }
+
+    static List<ListeningMode> getListeningModes(ProtoType protoType)
+    => (protoType == ProtoType.ISCP) ? _ISCP_LISTENING_MODES : _DCP_LISTENING_MODES;
+
+    static String getSelectedListeningModePar(ProtoType protoType)
+    {
+        String par = _SELECTED_LISTENING_MODES;
+        if (protoType == ProtoType.DCP)
+        {
+            par += "_DCP";
+        }
+        return par;
     }
 }

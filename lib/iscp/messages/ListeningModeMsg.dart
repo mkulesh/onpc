@@ -14,12 +14,14 @@
 // @dart=2.9
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
+import "../../utils/Convert.dart";
 import "../EISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
 enum ListeningMode
 {
     NONE,
+    // Integra
     MODE_00,
     MODE_01,
     MODE_02,
@@ -89,6 +91,28 @@ enum ListeningMode
     MODE_A6,
     MODE_A7,
     MODE_FF,
+    
+    // Denon
+    MODE_DCP_DIRECT,
+    MODE_DCP_PURE_DIRECT,
+    MODE_DCP_STEREO,
+    MODE_DCP_AUTO,
+    MODE_DCP_DOLBY_DIGITAL,
+    MODE_DCP_DTS_SURROUND,
+    MODE_DCP_AURO3D,
+    MODE_DCP_AURO2DSURR,
+    MODE_DCP_MCH_STEREO,
+    MODE_DCP_WIDE_SCREEN,
+    MODE_DCP_SUPER_STADIUM,
+    MODE_DCP_ROCK_ARENA,
+    MODE_DCP_JAZZ_CLUB,
+    MODE_DCP_CLASSIC_CONCERT,
+    MODE_DCP_MONO_MOVIE,
+    MODE_DCP_MATRIX,
+    MODE_DCP_VIDEO_GAME,
+    MODE_DCP_VIRTUAL,
+    
+    // Control
     UP,
     DOWN,
     MUSIC,
@@ -108,6 +132,8 @@ class ListeningModeMsg extends EnumParameterMsg<ListeningMode>
     static const ExtEnum<ListeningMode> ValueEnum = ExtEnum<ListeningMode>([
         EnumItem.code(ListeningMode.NONE, "--",
             descr: Strings.dashed_string, defValue: true),
+
+        // Integra
         EnumItem.code(ListeningMode.MODE_00, "00",
             descr: Strings.listening_mode_mode_00),
         EnumItem.code(ListeningMode.MODE_01, "01",
@@ -246,10 +272,50 @@ class ListeningModeMsg extends EnumParameterMsg<ListeningMode>
             descr: Strings.listening_mode_mode_a7),
         EnumItem.code(ListeningMode.MODE_FF, "FF",
             descr: Strings.listening_mode_mode_ff),
-        EnumItem.code(ListeningMode.UP, "UP",
+
+        // Denon
+        EnumItem.code(ListeningMode.MODE_DCP_DIRECT, "DIRECT", 
+            descr: Strings.listening_mode_mode_01),
+        EnumItem.code(ListeningMode.MODE_DCP_PURE_DIRECT, "PURE DIRECT", 
+            descr: Strings.listening_mode_pure_direct),
+        EnumItem.code(ListeningMode.MODE_DCP_STEREO, "STEREO", 
+            descr: Strings.listening_mode_mode_00),
+        EnumItem.code(ListeningMode.MODE_DCP_AUTO, "AUTO", 
+            descr: Strings.listening_mode_auto),
+        EnumItem.code(ListeningMode.MODE_DCP_DOLBY_DIGITAL, "DOLBY DIGITAL", 
+            descr: Strings.listening_mode_mode_40),
+        EnumItem.code(ListeningMode.MODE_DCP_DTS_SURROUND, "DTS SURROUND", 
+            descr: Strings.listening_mode_dts_surround),
+        EnumItem.code(ListeningMode.MODE_DCP_AURO3D, "AURO3D", 
+            descr: Strings.listening_mode_auro3d),
+        EnumItem.code(ListeningMode.MODE_DCP_AURO2DSURR, "AURO2DSURR", 
+            descr: Strings.listening_mode_auro2d_surr),
+        EnumItem.code(ListeningMode.MODE_DCP_MCH_STEREO, "MCH STEREO", 
+            descr: Strings.listening_mode_mch_stereo),
+        EnumItem.code(ListeningMode.MODE_DCP_WIDE_SCREEN, "WIDE SCREEN", 
+            descr: Strings.listening_mode_wide_screen),
+        EnumItem.code(ListeningMode.MODE_DCP_SUPER_STADIUM, "SUPER STADIUM", 
+            descr: Strings.listening_mode_super_stadium),
+        EnumItem.code(ListeningMode.MODE_DCP_ROCK_ARENA, "ROCK ARENA", 
+            descr: Strings.listening_mode_rock_arena),
+        EnumItem.code(ListeningMode.MODE_DCP_JAZZ_CLUB, "JAZZ CLUB", 
+            descr: Strings.listening_mode_jazz_club),
+        EnumItem.code(ListeningMode.MODE_DCP_CLASSIC_CONCERT, "CLASSIC CONCERT", 
+            descr: Strings.listening_mode_classic_concert),
+        EnumItem.code(ListeningMode.MODE_DCP_MONO_MOVIE, "MONO MOVIE", 
+            descr: Strings.listening_mode_mono_movie),
+        EnumItem.code(ListeningMode.MODE_DCP_MATRIX, "MATRIX", 
+            descr: Strings.listening_mode_matrix),
+        EnumItem.code(ListeningMode.MODE_DCP_VIDEO_GAME, "VIDEO GAME", 
+            descr: Strings.listening_mode_video_game),
+        EnumItem.code(ListeningMode.MODE_DCP_VIRTUAL, "VIRTUAL", 
+            descr: Strings.listening_mode_vitrual),
+
+        // Control
+        EnumItem.code(ListeningMode.UP, "UP", dcpCode: "RIGHT",
             descrList: Strings.l_listening_mode_up,
             icon: Drawables.cmd_right),
-        EnumItem.code(ListeningMode.DOWN, "DOWN",
+        EnumItem.code(ListeningMode.DOWN, "DOWN", dcpCode: "LEFT",
             descrList: Strings.l_listening_mode_down,
             icon: Drawables.cmd_left),
         EnumItem.code(ListeningMode.MUSIC, "MUSIC",
@@ -273,4 +339,25 @@ class ListeningModeMsg extends EnumParameterMsg<ListeningMode>
     {
         return false;
     }
+
+    static bool isMode(ListeningMode item)
+    => Convert.enumToString(item).startsWith("MODE_");
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND = "MS";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND ];
+
+    static ListeningModeMsg processDcpMessage(String dcpMsg)
+    {
+        final EnumItem<ListeningMode> s = ValueEnum.valueByDcpCommand(_DCP_COMMAND, dcpMsg);
+        return s != null ? ListeningModeMsg.output(s.key) : null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => buildDcpRequest(isQuery, _DCP_COMMAND);
 }

@@ -49,7 +49,8 @@ class VolumeControlButtonsView extends UpdatableView
         final bool volumeValid = state.isOn && soundControl.volumeLevel != MasterVolumeMsg.NO_LEVEL;
 
         final List<ZonedMessage> cmd = [
-            AudioMutingMsg.output(state.getActiveZone, AudioMuting.TOGGLE),
+            AudioMutingMsg.toggle(
+                state.getActiveZone, soundControl.audioMuting, state.protoType),
             MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN),
             MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP)
         ];
@@ -61,8 +62,8 @@ class VolumeControlButtonsView extends UpdatableView
             bool selected = false;
             if (cmd is AudioMutingMsg)
             {
-                icon = cmd.getValue.icon;
-                description = cmd.getValue.description;
+                icon = AudioMutingMsg.TOGGLE.icon;
+                description = AudioMutingMsg.TOGGLE.description;
                 selected = state.isOn && soundControl.audioMuting.key == AudioMuting.ON;
             }
             else if (cmd is MasterVolumeMsg)

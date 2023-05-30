@@ -103,27 +103,26 @@ class ReceiverInformation
         clear();
     }
 
-    List<String> getQueries(ProtoType protoType, int zone)
+    List<String> getQueriesIscp(int zone)
     {
-        Logging.info(this, "Requesting data for " + protoType.toString() + " and zone " + zone.toString() + "...");
-        if (protoType == ProtoType.ISCP)
-        {
-            return [
-                ReceiverInformationMsg.CODE,
-                FriendlyNameMsg.CODE,
-                DeviceNameMsg.CODE,
-                PowerStatusMsg.ZONE_COMMANDS[zone],
-                FirmwareUpdateMsg.CODE,
-                GoogleCastVersionMsg.CODE
-            ];
-        }
-        else
-        {
-            return [
-                PowerStatusMsg.ZONE_COMMANDS[zone],
-                FirmwareUpdateMsg.CODE
-            ];
-        }
+        Logging.info(this, "Requesting ISCP data for zone " + zone.toString() + "...");
+        return [
+            ReceiverInformationMsg.CODE,
+            FriendlyNameMsg.CODE,
+            DeviceNameMsg.CODE,
+            PowerStatusMsg.ZONE_COMMANDS[zone],
+            FirmwareUpdateMsg.CODE,
+            GoogleCastVersionMsg.CODE
+        ];
+    }
+
+    List<String> getQueriesDcp(int zone)
+    {
+        Logging.info(this, "Requesting DCP data for zone " + zone.toString() + "...");
+        return [
+            PowerStatusMsg.ZONE_COMMANDS[zone],
+            FirmwareUpdateMsg.CODE
+        ];
     }
 
     void clear()
@@ -175,8 +174,7 @@ class ReceiverInformation
         // Settings
         if (protoType == ProtoType.DCP)
         {
-            _controlList.add("Setup");
-            _controlList.add("Quick");
+            _controlList.addAll(ReceiverInformationMsg.defaultDcpControls);
         }
     }
 

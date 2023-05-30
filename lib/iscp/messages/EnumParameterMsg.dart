@@ -136,6 +136,9 @@ class EnumParameterMsg<T> extends ISCPMessage
     @override
     String toString()
     => super.toString() + "[VALUE=" + _value.toString() + "]";
+
+    String buildDcpRequest(bool isQuery, final String dcpCommand, { String sep = "" })
+    => dcpCommand + sep + (isQuery ? ISCPMessage.DCP_MSG_REQ : getValue.getDcpCode);
 }
 
 class EnumParameterZonedMsg<T> extends ZonedMessage

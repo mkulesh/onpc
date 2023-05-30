@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 
 import "../constants/Strings.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../utils/Logging.dart";
@@ -33,7 +34,7 @@ class ListeningModes extends StatefulWidget
     => _ListeningModesState(configuration);
 }
 
-class _ListeningModesState extends State<ListeningModes>
+class _ListeningModesState extends State<ListeningModes> with ProtoTypeMix
 {
     final Configuration _configuration;
     String _parameter;
@@ -41,14 +42,16 @@ class _ListeningModesState extends State<ListeningModes>
 
     _ListeningModesState(this._configuration)
     {
-        _parameter = _configuration.getModelDependentParameter(CfgAudioControl.SELECTED_LISTENING_MODES);
+        setProtoType(_configuration.protoType);
+        _parameter = _configuration.getModelDependentParameter(
+            CfgAudioControl.getSelectedListeningModePar(protoType));
         _createItems();
     }
 
     void _createItems()
     {
         final List<String> defItems = [];
-        CfgAudioControl.DEFAULT_LISTENING_MODES.forEach((m)
+        CfgAudioControl.getListeningModes(protoType).forEach((m)
             => defItems.add(ListeningModeMsg.ValueEnum.valueByKey(m).getCode));
 
         for (CheckableItem sp in CheckableItem.readFromPreference(_configuration, _parameter, defItems))

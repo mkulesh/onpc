@@ -60,7 +60,10 @@ class PowerStatusMsg extends EnumParameterZonedMsg<PowerStatus>
         for (int i = 0; i < _DCP_COMMANDS.length; i++)
         {
             final EnumItem<PowerStatus> s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
-            return (s != null) ? PowerStatusMsg.output(i, s.key) : null;
+            if (s != null)
+            {
+                return PowerStatusMsg.output(i, s.key);
+            }
         }
         return null;
     }

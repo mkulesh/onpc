@@ -50,7 +50,8 @@ class ListeningModeListView extends UpdatableView
         final List<CustomTextButton> buttons = [];
         CustomTextButton selectedButton;
 
-        configuration.audioControl.getSortedListeningModes(false, state.soundControlState.listeningMode).forEach((m)
+        configuration.audioControl.getSortedListeningModes(
+            false, state.soundControlState.listeningMode, state.protoType).forEach((m)
         {
             final ListeningModeMsg cmd = ListeningModeMsg.output(m.key);
             final bool isSelected = state.soundControlState.listeningMode.key == m.key;
