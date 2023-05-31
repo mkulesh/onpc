@@ -108,14 +108,25 @@ class RadioState
         return false;
     }
 
-    String getFrequencyInfo(InputSelector inputType)
+    String getFrequencyInfo(MediaListState ms)
     {
-        if (inputType != InputSelector.FM)
+        final String dashedString = Strings.dashed_string;
+        if (_frequency == null)
         {
-            return frequency;
+            return dashedString;
         }
-        final int freqInt = ISCPMessage.nonNullInteger(frequency, 10, -1);
-        final double freqDbl = freqInt.toDouble() / 100.0;
-        return (freqInt < 0) ? Strings.dashed_string : freqDbl.toStringAsFixed(2) + " MHz";
+        if (ms.isFM)
+        {
+            final int freqInt = ISCPMessage.nonNullInteger(frequency, 10, -1);
+            final double freqDbl = freqInt.toDouble() / 100.0;
+            return (freqInt < 0) ? Strings.dashed_string : freqDbl.toStringAsFixed(2) + " MHz";
+        }
+        if (ms.isDAB)
+        {
+            final String freq1 = !frequency.contains(":") && frequency.length > 2 ?
+            _frequency.substring(0, 2) + ":" + frequency.substring(2) : frequency;
+            return freq1.isNotEmpty && !freq1.contains("MHz") ? freq1 + "MHz" : freq1;
+        }
+        return _frequency;
     }
 }

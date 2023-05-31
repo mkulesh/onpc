@@ -137,7 +137,7 @@ class TrackFileInfoView extends UpdatableView
 
     String _buildFileFormat()
     {
-        return _isRadioInput ? state.radioState.getFrequencyInfo(state.mediaListState.inputType.key) : state.trackState.fileFormat;
+        return _isRadioInput ? state.radioState.getFrequencyInfo(state.mediaListState) : state.trackState.fileFormat;
     }
 
     String _buildTrackInfo()
