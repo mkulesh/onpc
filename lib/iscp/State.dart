@@ -30,6 +30,7 @@ import "messages/CdPlayerOperationCommandMsg.dart";
 import "messages/CenterLevelCommandMsg.dart";
 import "messages/CustomPopupMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
+import "messages/DcpTunerModeMsg.dart";
 import "messages/DeviceNameMsg.dart";
 import "messages/DigitalFilterMsg.dart";
 import "messages/DimmerLevelMsg.dart";
@@ -235,7 +236,7 @@ class State with ProtoTypeMix
                 _receiverInformation.processReceiverInformation(msg));
             if (_mediaListState.isRadioInput)
             {
-                _mediaListState.fillRadioPresets(getActiveZone, _receiverInformation.presetList);
+                _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
             }
             return changed;
         }
@@ -375,7 +376,7 @@ class State with ProtoTypeMix
             final String changed = _isChange(InputSelectorMsg.CODE, _mediaListState.processInputSelector(msg));
             if (_mediaListState.isRadioInput)
             {
-                _mediaListState.fillRadioPresets(getActiveZone, _receiverInformation.presetList);
+                _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
             }
             else if (_mediaListState.isSimpleInput)
             {
@@ -450,11 +451,11 @@ class State with ProtoTypeMix
         }
         if (msg is TuningCommandMsg)
         {
-            return _isChange(TuningCommandMsg.CODE, _radioState.processTuningCommand(msg));
+            return _isChange(TuningCommandMsg.CODE, _radioState.processTuningCommand(msg, _mediaListState));
         }
         if (msg is RadioStationNameMsg)
         {
-            return _isChange(RadioStationNameMsg.CODE, _radioState.processDabStationName(msg));
+            return _isChange(RadioStationNameMsg.CODE, _radioState.processDabStationName(msg, _mediaListState));
         }
 
         // Popup
@@ -474,6 +475,15 @@ class State with ProtoTypeMix
                 //_mediaListState.setDcpNetTopLayer();
             }
             return _isChange(DcpReceiverInformationMsg.CODE, upd != null);
+        }
+        if (msg is DcpTunerModeMsg)
+        {
+            final String changed = _isChange(DcpTunerModeMsg.CODE, _mediaListState.processDcpTunerModeMsg(msg));
+            if (_mediaListState.isRadioInput)
+            {
+                _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
+            }
+            return changed;
         }
 
         return null;
@@ -533,6 +543,12 @@ class State with ProtoTypeMix
         if (serviceIcon == null)
         {
             serviceIcon = mediaListState.inputType.icon;
+            if (mediaListState.inputType.key == InputSelector.DCP_TUNER &&
+                mediaListState.dcpTunerMode.key != DcpTunerMode.NONE)
+            {
+                // Special icon for Denon tuner input
+                serviceIcon = mediaListState.dcpTunerMode.icon;
+            }
         }
         if (serviceIcon == null)
         {

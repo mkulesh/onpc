@@ -12,8 +12,11 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:onpc/utils/Convert.dart';
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "DcpTunerModeMsg.dart";
 
 /*
  * DAB/FM Station Name (UTF-8)
@@ -22,5 +25,56 @@ class RadioStationNameMsg extends ISCPMessage
 {
     static const String CODE = "DSN";
 
-    RadioStationNameMsg(EISCPMessage raw) : super(CODE, raw);
+    DcpTunerMode _dcpTunerMode;
+
+    RadioStationNameMsg(EISCPMessage raw) : super(CODE, raw)
+    {
+        // For ISCP, station name is only available for DAB
+        _dcpTunerMode = DcpTunerMode.DAB;
+    }
+
+    RadioStationNameMsg.output(String name, DcpTunerMode dcpTunerMode) : super.output(CODE, name)
+    {
+        _dcpTunerMode = dcpTunerMode;
+    }
+
+    DcpTunerMode get getDcpTunerMode
+    => _dcpTunerMode;
+
+    @override
+    String toString()
+    => super.toString() + "[MODE=" + Convert.enumToString(_dcpTunerMode.toString()) + "]";
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND_FM = "TFANNAME";
+    static const String _DCP_COMMAND_DAB = "DA";
+    static const String _DCP_COMMAND_DAB_EXT = "STN";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND_FM, _DCP_COMMAND_DAB + _DCP_COMMAND_DAB_EXT];
+
+    static RadioStationNameMsg processDcpMessage(String dcpMsg)
+    {
+        if (dcpMsg.startsWith(_DCP_COMMAND_FM))
+        {
+            final String par = dcpMsg.substring(_DCP_COMMAND_FM.length).trim();
+            return RadioStationNameMsg.output(par, DcpTunerMode.FM);
+        }
+        if (dcpMsg.startsWith(_DCP_COMMAND_DAB + _DCP_COMMAND_DAB_EXT))
+        {
+            final String par = dcpMsg.substring((_DCP_COMMAND_DAB + _DCP_COMMAND_DAB_EXT).length).trim();
+            return RadioStationNameMsg.output(par, DcpTunerMode.DAB);
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        final String fmReq = _DCP_COMMAND_FM + ISCPMessage.DCP_MSG_REQ;
+        final String dabReq = _DCP_COMMAND_DAB + " " + ISCPMessage.DCP_MSG_REQ;
+        return fmReq + ISCPMessage.DCP_MSG_SEP + dabReq;
+    }
 }

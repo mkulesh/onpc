@@ -36,6 +36,7 @@ import "messages/AmpOperationCommandMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
+import "messages/DcpTunerModeMsg.dart";
 import "messages/DisplayModeMsg.dart";
 import "messages/EnumParameterMsg.dart";
 import "messages/InputSelectorMsg.dart";
@@ -642,6 +643,20 @@ class StateManager
                 sendQueries(_state.playbackState.getQueries(state.getActiveZone));
                 sendQueries(_state.soundControlState.getQueriesDcp(state.getActiveZone, state.receiverInformation));
             });
+        }
+
+        if (msg is InputSelectorMsg)
+        {
+            if (msg.getValue.key == InputSelector.DCP_TUNER)
+            {
+                Logging.info(this, "DCP: requesting tuner state...");
+                sendQueries([DcpTunerModeMsg.CODE]);
+            }
+        }
+
+        if (msg is DcpTunerModeMsg)
+        {
+            sendQueries(_state.radioState.getQueries(state.getActiveZone));
         }
 
         return changed;

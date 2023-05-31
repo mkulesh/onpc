@@ -26,6 +26,7 @@ import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../dialogs/PopupManager.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/DcpTunerModeMsg.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ListInfoMsg.dart";
@@ -249,6 +250,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 {
                     return _buildOperationCommandMsg(itemContext, rowMsg);
                 }
+                else if (rowMsg is DcpTunerModeMsg)
+                {
+                    return _buildDcpTunerModeMsg(itemContext, rowMsg);
+                }
                 else
                 {
                     return null;
@@ -398,6 +403,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     Widget _buildOperationCommandMsg(BuildContext context, OperationCommandMsg rowMsg)
     {
         return _buildRow(context, rowMsg.getValue.icon, false, false, rowMsg.getValue.description, rowMsg);
+    }
+
+    Widget _buildDcpTunerModeMsg(BuildContext itemContext, DcpTunerModeMsg rowMsg)
+    {
+        final bool isPlaying = rowMsg.getValue == state.mediaListState.dcpTunerMode;
+        return _buildRow(context, Drawables.media_item_radio, false, isPlaying, rowMsg.getValue.description, rowMsg);
     }
 
     void _onCreateContextMenu(final BuildContext context, final TapPosition position, final ISCPMessage cmd)

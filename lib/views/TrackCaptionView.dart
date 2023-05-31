@@ -97,13 +97,11 @@ class TrackCaptionView extends UpdatableView
     {
         if (_isRadioInput)
         {
-            final Preset preset = state.receiverInformation.getPreset(state.radioState.preset);
-            return preset != null ? preset.displayedString(withId: false) : (state.mediaListState.isDAB ? state.radioState.dabName : "");
+            final String stationInfo = state.mediaListState.isDAB || state.mediaListState.isFM ?
+                state.radioState.stationName : "";
+            return stationInfo != _presetInfo() ? stationInfo : "";
         }
-        else
-        {
-            return state.trackState.title;
-        }
+        return state.trackState.title;
     }
 
     String _buildTrackArtist()
@@ -113,6 +111,12 @@ class TrackCaptionView extends UpdatableView
 
     String _buildTrackAlbum()
     {
-        return _isRadioInput ? "" : state.trackState.album;
+        return _isRadioInput ? _presetInfo() : state.trackState.album;
+    }
+
+    String _presetInfo()
+    {
+        final Preset preset = state.receiverInformation.getPreset(state.radioState.preset);
+        return preset != null ? preset.displayedString(withId: false) : "";
     }
 }

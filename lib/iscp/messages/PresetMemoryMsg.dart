@@ -12,6 +12,8 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:sprintf/sprintf.dart';
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -53,5 +55,36 @@ class PresetMemoryMsg extends ISCPMessage
     bool hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND = "OPTPSTUNER";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND ];
+
+    static PresetMemoryMsg processDcpMessage(String dcpMsg)
+    {
+        if (dcpMsg.startsWith(_DCP_COMMAND))
+        {
+            final String par = dcpMsg.substring(_DCP_COMMAND.length).trim();
+            final List<String> pars = par.split(" ");
+            if (pars.length > 1 && int.tryParse(pars.first) != null)
+            {
+                return PresetMemoryMsg.outputCmd(int.tryParse(pars.first));
+            }
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        // For some reason, TPANMEM does not work for DAB stations:
+        // return "TPANMEM" + (isQuery ? ISCPMessage.DCP_MSG_REQ : String.format("%02d", preset));
+        // Use APP_COMMAND instead:
+        return sprintf("<cmd id=\"1\">SetTunerPresetMemory</cmd><presetno>%d</presetno>",  [ preset ]);
     }
 }

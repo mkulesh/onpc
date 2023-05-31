@@ -17,6 +17,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:http/http.dart' as http;
+
 import "../utils/Logging.dart";
 import "ConnectionIf.dart";
 import "DcpHeosMessage.dart";
@@ -107,6 +109,10 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
             if (msg.startsWith(DCP_HEOS_REQUEST))
             {
                 _sendDcpHeosRequest(msg);
+            }
+            else if (msg.startsWith(DCP_APP_COMMAND))
+            {
+                _sendDcpAppCommand(msg);
             }
             else
             {
@@ -342,5 +348,20 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         {
             Logging.info(this, "DCP error: " + ex.toString());
         }
+    }
+
+    void _sendDcpAppCommand(String msg)
+    {
+        final String url = ISCPMessage.getDcpGoformUrl(getHost, DCP_GOFORM_PORT, "AppCommand.xml");
+        final String json = "{\"body\": \"" + ISCPMessage.getDcpAppCommand(msg) + "\"}";
+        Logging.info(this, ">> DCP AppCommand POST request: " + url + json);
+        http.post(Uri.parse(url), headers: {"Content-Type": "text/xml; charset=UTF-8"}, body: json).then((http.Response value)
+        {
+            final String resp = value != null && value.body != null ? value.body.replaceAll("\n", "") : "";
+            Logging.info(this, "DCP AppCommand POST response: " + resp);
+        }).onError((error, stackTrace)
+        {
+            Logging.info(this, "DCP AppCommand error: " + error);
+        });
     }
 }

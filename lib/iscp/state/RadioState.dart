@@ -15,10 +15,11 @@
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
 import "../ISCPMessage.dart";
-import "../messages/RadioStationNameMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/PresetCommandMsg.dart";
+import "../messages/RadioStationNameMsg.dart";
 import "../messages/TuningCommandMsg.dart";
+import "MediaListState.dart";
 
 class RadioState
 {
@@ -35,10 +36,10 @@ class RadioState
     => _frequency;
 
     // From DabStationNameMsg
-    String _dabName;
+    String _stationName;
 
-    String get dabName
-    => _dabName;
+    String get stationName
+    => _stationName;
 
     RadioState()
     {
@@ -59,7 +60,7 @@ class RadioState
     {
         _preset = PresetCommandMsg.NO_PRESET;
         _frequency = "";
-        _dabName = "";
+        _stationName = "";
     }
 
     bool processPresetCommand(PresetCommandMsg msg)
@@ -69,18 +70,42 @@ class RadioState
         return changed;
     }
 
-    bool processTuningCommand(TuningCommandMsg msg)
+    bool processTuningCommand(TuningCommandMsg msg, MediaListState ms)
     {
         final bool changed = _frequency != msg.getFrequency;
-        _frequency = msg.getFrequency;
-        return changed;
+        if (ms.inputType.key != InputSelector.DCP_TUNER)
+        {
+            _frequency = msg.getFrequency;
+            if (!ms.isDAB)
+            {
+                // For ISCP, station name is only available for DAB
+                _stationName = "";
+            }
+            return changed;
+        }
+        else if (ms.dcpTunerMode.key == msg.getDcpTunerMode)
+        {
+            _frequency = msg.getFrequency;
+            return changed;
+        }
+        return false;
     }
 
-    bool processDabStationName(RadioStationNameMsg msg)
+    bool processDabStationName(RadioStationNameMsg msg, MediaListState ms)
     {
-        final bool changed = msg.getData != _dabName;
-        _dabName = msg.getData;
-        return changed;
+        final bool changed = msg.getData != _stationName;
+        if (ms.inputType.key != InputSelector.DCP_TUNER)
+        {
+            // For ISCP, station name is only available for DAB
+            _stationName = ms.isDAB ? msg.getData : "";
+            return changed;
+        }
+        else if (ms.dcpTunerMode.key == msg.getDcpTunerMode)
+        {
+            _stationName = msg.getData;
+            return changed;
+        }
+        return false;
     }
 
     String getFrequencyInfo(InputSelector inputType)

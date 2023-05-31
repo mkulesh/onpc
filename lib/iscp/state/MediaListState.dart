@@ -13,7 +13,9 @@
  */
 // @dart=2.9
 import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
+import "../messages/DcpTunerModeMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/ListInfoMsg.dart";
@@ -29,10 +31,16 @@ import "ReceiverInformation.dart";
 class MediaListState
 {
     // InputSelectorMsg
-    EnumItem<InputSelector> _inputType;
+    EnumItem<InputSelector> _inputType = InputSelectorMsg.ValueEnum.defValue;
 
     EnumItem<InputSelector> get inputType
     => _inputType;
+
+    // DCP tuner mode
+    EnumItem<DcpTunerMode> _dcpTunerMode = DcpTunerModeMsg.ValueEnum.defValue;
+
+    EnumItem<DcpTunerMode> get dcpTunerMode
+    => _dcpTunerMode;
 
     // ListTitleInfoMsg
     EnumItem<ServiceType> _serviceType;
@@ -99,6 +107,7 @@ class MediaListState
     void clear()
     {
         _inputType = InputSelectorMsg.ValueEnum.defValue;
+        _dcpTunerMode = DcpTunerModeMsg.ValueEnum.defValue;
         _serviceType = Services.ServiceTypeEnum.defValue;
         _layerInfo = null;
         _uiType = null;
@@ -348,17 +357,20 @@ class MediaListState
     => _serviceType.key == ServiceType.NET;
 
     bool get isRadioInput
-    => _inputType != null &&
-        [InputSelector.FM, InputSelector.AM, InputSelector.DAB].contains(_inputType.key);
+    => isFM || isDAB || _inputType.key == InputSelector.AM;
 
     bool get isFM
-    => _inputType != null && _inputType.key == InputSelector.FM;
+    => _inputType.key == InputSelector.FM ||
+       (_inputType.key == InputSelector.DCP_TUNER &&
+           _dcpTunerMode.key == DcpTunerMode.FM);
 
     bool get isDAB
-    => _inputType != null && _inputType.key == InputSelector.DAB;
+    => _inputType.key == InputSelector.DAB ||
+        (_inputType.key == InputSelector.DCP_TUNER &&
+            _dcpTunerMode.key == DcpTunerMode.DAB);
 
     bool get isSimpleInput
-    => _inputType != null && _inputType.key != InputSelector.NONE && !_inputType.isMediaList;
+    => _inputType.key != InputSelector.NONE && !_inputType.isMediaList;
 
     bool get isUsb
     => _serviceType != null &&
@@ -400,14 +412,19 @@ class MediaListState
         return true;
     }
 
-    void fillRadioPresets(int zone, List<Preset> presetList)
+    void fillRadioPresets(int zone, ProtoType protoType, List<Preset> presetList)
     {
         clearItems();
+        if (protoType == ProtoType.DCP)
+        {
+            _mediaItems.add(DcpTunerModeMsg.output(DcpTunerMode.FM));
+            _mediaItems.add(DcpTunerModeMsg.output(DcpTunerMode.DAB));
+        }
         presetList.forEach((p)
         {
-            if ((inputType.key == InputSelector.FM && p.isFm)
-                || (inputType.key == InputSelector.AM && p.isAm)
-                || (inputType.key == InputSelector.DAB && p.isDab))
+            if ((isFM && p.isFm)
+                || (isDAB && p.isDab)
+                || (inputType.key == InputSelector.AM && p.isAm))
             {
                 _mediaItems.add(PresetCommandMsg.outputCfg(zone, p));
             }
@@ -489,5 +506,15 @@ class MediaListState
             _mediaItems.insert(newIndex, old);
             _movedItem = old.getMessageId;
         }
+    }
+
+    /*
+     * Denon control protocol
+     */
+    bool processDcpTunerModeMsg(DcpTunerModeMsg msg)
+    {
+        final bool changed = _dcpTunerMode.key != msg.getValue.key;
+        _dcpTunerMode = msg.getValue;
+        return changed;
     }
 }
