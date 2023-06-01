@@ -3595,6 +3595,14 @@ Enjoy!"""];
         /*pl*/ "Tryb ekologiczny"];
     static String get device_dcp_eco_mode => l_device_dcp_eco_mode[_language];
 
+    static const List<String> l_device_dcp_eco_mode_help = [
+        /*en*/ "This mode can reduce the power consumption and heat generation of this unit when power on. This is done by reducing the power supply line to the power amplifier, in turn the maximum power output.",
+        /*ru*/ "Этот режим может снизить потребляемую мощность и выделение тепла устройства при включенном питании. Это достигается уменьшением линии источника питания до усилителя мощности последовательно с максимальной выходной мощностью.",
+        /*de*/ "Dieser Modus kann die Leistungsaufnahme und Wärmeentwicklung dieses Geräts in eingeschaltetem Zustand verringern. Dies wird durch die Drosselung der Stromversorgung an den Leistungsverstärker bei maximaler Leistungsabgabe erreicht.",
+        /*fr*/ "Ce mode peut réduire la consommation d\'énergie et la production de chaleur de cet appareil lorsqu\'il est sous tension. Ceci est obtenu en réduisant la ligne d\'alimentation de l\'amplificateur de puissance, et par conséquent la puissance maximale de sortie.",
+        /*pl*/ "Ten tryb może zmniejszyć pobór mocy i wytwarzanie ciepła tego urządzenia przy włączonym zasilaniu. Odbywa się to poprzez redukcję zasilania do wzmacniacza mocy, przy jednoczesnej maksymalnej mocy wyjściowej."];
+    static String get device_dcp_eco_mode_help => l_device_dcp_eco_mode_help[_language];
+
     static const List<String> l_device_dcp_audio_restorer = [
         /*en*/ "Audio Restorer",
         /*ru*/ "Режим \"Restorer\"",
@@ -3602,6 +3610,14 @@ Enjoy!"""];
         /*fr*/ "Audio Restorer",
         /*pl*/ "Audio Restorer"];
     static String get device_dcp_audio_restorer => l_device_dcp_audio_restorer[_language];
+
+    static const List<String> l_device_dcp_audio_restorer_help = [
+        /*en*/ "Compressed audio formats such as MP3, WMA (Windows Media Audio) and MPEG-4 AAC reduce the amount of data by eliminating signal components that are hard for the human ear to hear. The \"Restorer\" function generates the signals eliminated upon compression, restoring the sound to conditions near those of the original sound before compression. It also restores the original bass characteristics for a rich and expanded tonal range.",
+        /*ru*/ "Форматы сжатого звука, например, MP3, WMA (Windows Media Audio) и MPEG-4 AAC сокращают объем данных путем устранения компонентов сигнала, которые с трудом воспринимаются человеческим слухом. Режим \"Restorer\" генерирует сигналы, удаленные при компрессии, восстанавливая состояние звукового сигнала, близкое к состоянию исходного звукового сигнала перед сжатием. Он также восстанавливает исходные характеристики басов для насыщенного и расширенного тонального диапазона.",
+        /*de*/ "Komprimierte Audioformate wie z. B. MP3, WMA (Windows Media Audio) und MPEG-4 AAC reduzieren den Datenumfang, indem Signalkomponenten ausgelassen werden, die für das menschliche Ohr kaum wahrnehmbar sind. Die \"Restorer\"-Funktion stellt die Signale, die bei der Komprimierung gelöscht wurden, wieder her, sodass der Klang dem ursprünglichen Klang vor der Komprimierung sehr nahe kommt. Außerdem werden die ursprünglichen Basseigenschaften wiederhergestellt, sodass sich ein reicher und breiter Tonumfang ergibt.",
+        /*fr*/ "Les formats audio compressés, tels que MP3, WMA (Windows Media Audio) et MPEG-4 AAC réduisent la quantité de données en éliminant des composants du signal difficilement audibles pour l\'oreille humaine. La fonction \"Restorer\" génère les signaux éliminés pendant la compression pour restaurer le son le plus proche de celui d\'origine. Elle restaure également les caractéristiques des basses d\'origine pour une plage tonale riche et étendue.",
+        /*pl*/ "Skompresowane formaty audio jak MP3, WMA (Windows Media Audio) oraz MPEG-4 AAC redukują ilość danych poprzez eliminację składowych sygnału w zakresie trudnym do rozpoznawania przez ucho człowieka. Funkcja \"Restorer\" generuje sygnał eliminowany w trakcie kompresji, przywracając sygnałowi brzmienie zbliżone do sygnału oryginalnego. Przywracana jest również oryginalna charakterystyka niskich tonów, pozwalająca uzyskać bogaty i szeroki zakres tonalny."];
+    static String get device_dcp_audio_restorer_help => l_device_dcp_audio_restorer_help[_language];
 
     static const List<String> l_device_dcp_audio_restorer_none = [
         /*en*/ "N/A",

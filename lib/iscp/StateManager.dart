@@ -494,7 +494,7 @@ class StateManager
             // #58: delayed response for InputSelectorMsg was observed:
             // Send this request first
             sendQueries(_state.playbackState.getQueries(state.getActiveZone));
-            sendQueries(_state.deviceSettingsState.getQueries(state.getActiveZone));
+            sendQueries(_state.deviceSettingsState.getQueriesIscp(state.getActiveZone));
             sendQueries(_state.soundControlState.getQueriesIscp(state.getActiveZone, state.receiverInformation));
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
             _requestListState();
@@ -641,6 +641,7 @@ class StateManager
             {
                 Logging.info(this, "DCP: requesting play state with delay " + REQUEST_DELAY.toString() + "ms...");
                 sendQueries(_state.playbackState.getQueries(state.getActiveZone));
+                sendQueries(_state.deviceSettingsState.getQueriesDcp(state.getActiveZone));
                 sendQueries(_state.soundControlState.getQueriesDcp(state.getActiveZone, state.receiverInformation));
             });
         }

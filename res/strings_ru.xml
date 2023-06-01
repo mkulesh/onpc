@@ -576,9 +576,11 @@ Copyright © 2019-2023 by __Михаил Кулеш__
 
     <!-- DCP ECO mode -->
     <string name="device_dcp_eco_mode">Режим экономии</string>
+    <string name="device_dcp_eco_mode_help">Этот режим может снизить потребляемую мощность и выделение тепла устройства при включенном питании. Это достигается уменьшением линии источника питания до усилителя мощности последовательно с максимальной выходной мощностью.</string>
 
     <!-- DCP audio restorer -->
     <string name="device_dcp_audio_restorer">Режим \"Restorer\"</string>
+    <string name="device_dcp_audio_restorer_help">Форматы сжатого звука, например, MP3, WMA (Windows Media Audio) и MPEG-4 AAC сокращают объем данных путем устранения компонентов сигнала, которые с трудом воспринимаются человеческим слухом. Режим \"Restorer\" генерирует сигналы, удаленные при компрессии, восстанавливая состояние звукового сигнала, близкое к состоянию исходного звукового сигнала перед сжатием. Он также восстанавливает исходные характеристики басов для насыщенного и расширенного тонального диапазона.</string>
     <string name="device_dcp_audio_restorer_none">N/A</string>
     <string name="device_dcp_audio_restorer_off">Выкл</string>
     <string name="device_dcp_audio_restorer_low">Низкий</string>

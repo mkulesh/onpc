@@ -37,17 +37,17 @@ class DimmerLevelMsg extends EnumParameterMsg<DimmerLevel>
     static const ExtEnum<DimmerLevel> ValueEnum = ExtEnum<DimmerLevel>([
         EnumItem.code(DimmerLevel.NONE, "N/A",
             descrList: Strings.l_device_dimmer_level_none, defValue: true),
-        EnumItem.code(DimmerLevel.BRIGHT, "00",
+        EnumItem.code(DimmerLevel.BRIGHT, "00", dcpCode: "BRI",
             descrList: Strings.l_device_dimmer_level_bright),
-        EnumItem.code(DimmerLevel.DIM, "01",
+        EnumItem.code(DimmerLevel.DIM, "01", dcpCode: "DIM",
             descrList: Strings.l_device_dimmer_level_dim),
-        EnumItem.code(DimmerLevel.DARK, "02",
+        EnumItem.code(DimmerLevel.DARK, "02", dcpCode: "DAR",
             descrList: Strings.l_device_dimmer_level_dark),
-        EnumItem.code(DimmerLevel.SHUT_OFF, "03",
+        EnumItem.code(DimmerLevel.SHUT_OFF, "03", dcpCode: "N/A",
             descrList: Strings.l_device_dimmer_level_shut_off),
-        EnumItem.code(DimmerLevel.OFF, "08",
+        EnumItem.code(DimmerLevel.OFF, "08", dcpCode: "OFF",
             descrList: Strings.l_device_dimmer_level_off),
-        EnumItem.code(DimmerLevel.TOGGLE, "DIM",
+        EnumItem.code(DimmerLevel.TOGGLE, "DIM", dcpCode: "SEL",
             descrList: Strings.l_device_dimmer_level_toggle)
     ]);
 
@@ -60,4 +60,22 @@ class DimmerLevelMsg extends EnumParameterMsg<DimmerLevel>
     {
         return false;
     }
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND = "DIM";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND ];
+
+    static DimmerLevelMsg processDcpMessage(String dcpMsg)
+    {
+        final EnumItem<DimmerLevel> s = ValueEnum.valueByDcpCommand(_DCP_COMMAND, dcpMsg);
+        return s != null ? DimmerLevelMsg.output(s.key) : null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => buildDcpRequest(isQuery, _DCP_COMMAND, sep: " ");
 }

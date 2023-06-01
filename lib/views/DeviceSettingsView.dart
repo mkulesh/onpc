@@ -19,6 +19,8 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/messages/AutoPowerMsg.dart";
+import "../iscp/messages/DcpAudioRestorerMsg.dart";
+import "../iscp/messages/DcpEcoModeMsg.dart";
 import "../iscp/messages/DigitalFilterMsg.dart";
 import "../iscp/messages/DimmerLevelMsg.dart";
 import "../iscp/messages/GoogleCastAnalyticsMsg.dart";
@@ -62,7 +64,9 @@ class DeviceSettingsView extends UpdatableView
         SpeakerBCommandMsg.CODE,
         GoogleCastAnalyticsMsg.CODE,
         LateNightCommandMsg.CODE,
-        NetworkStandByMsg.CODE
+        NetworkStandByMsg.CODE,
+        DcpEcoModeMsg.CODE,
+        DcpAudioRestorerMsg.CODE
     ];
 
     DeviceSettingsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -142,7 +146,7 @@ class DeviceSettingsView extends UpdatableView
                 Strings.device_hdmi_cec,
                 ds.hdmiCec.description,
                 Strings.device_hdmi_cec_help,
-                HdmiCecMsg.output(HdmiCec.TOGGLE)));
+                HdmiCecMsg.toggle(ds.hdmiCec, state.protoType)));
         }
 
         // Phase Matching Bass Boost function eliminates phase-shift between low- and mid-range
@@ -292,6 +296,26 @@ class DeviceSettingsView extends UpdatableView
                 null, tapHandler: _onNetworkStandBy));
         }
 
+        // DCP ECO mode
+        if (showAll || ds.dcpEcoMode.key != DcpEcoMode.NONE)
+        {
+            rows.add(_buildRow(context,
+                Strings.device_dcp_eco_mode,
+                ds.dcpEcoMode.description,
+                Strings.device_dcp_eco_mode_help,
+                DcpEcoModeMsg.toggle(ds.dcpEcoMode)));
+        }
+
+        // DCP audio restorer
+        if (showAll || ds.dcpAudioRestorer.key != DcpAudioRestorer.NONE)
+        {
+            rows.add(_buildRow(context,
+                Strings.device_dcp_audio_restorer,
+                ds.dcpAudioRestorer.description,
+                Strings.device_dcp_audio_restorer_help,
+                DcpAudioRestorerMsg.toggle(ds.dcpAudioRestorer)));
+        }
+
         final Map<int, TableColumnWidth> columnWidths = Map();
         columnWidths[0] = FractionColumnWidth(0.35);
         columnWidths[1] = FractionColumnWidth(0.65);
@@ -345,6 +369,7 @@ class DeviceSettingsView extends UpdatableView
                 CustomImageButton.small(
                     Drawables.cmd_help,
                     Strings.device_parameter_help,
+                    isEnabled: description != null,
                     onPressed: ()
                     => _onParameterHelpButton(context, title, description),
                     isSelected: false,

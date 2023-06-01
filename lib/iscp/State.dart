@@ -29,6 +29,8 @@ import "messages/AutoPowerMsg.dart";
 import "messages/CdPlayerOperationCommandMsg.dart";
 import "messages/CenterLevelCommandMsg.dart";
 import "messages/CustomPopupMsg.dart";
+import "messages/DcpAudioRestorerMsg.dart";
+import "messages/DcpEcoModeMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
 import "messages/DeviceNameMsg.dart";
@@ -484,6 +486,14 @@ class State with ProtoTypeMix
                 _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
             }
             return changed;
+        }
+        if (msg is DcpEcoModeMsg)
+        {
+            return _isChange(DcpEcoModeMsg.CODE, _deviceSettingsState.processDcpEcoModeMsg(msg));
+        }
+        if (msg is DcpAudioRestorerMsg)
+        {
+            return _isChange(DcpAudioRestorerMsg.CODE, _deviceSettingsState.processDcpAudioRestorerMsg(msg));
         }
 
         return null;

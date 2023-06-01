@@ -12,6 +12,8 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:sprintf/sprintf.dart';
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -59,4 +61,34 @@ class SleepSetCommandMsg extends ISCPMessage
         final int res = 15 * ((sleepTime.toDouble() / 15.0).floor() + 1);
         return res > 90 ? 0 : res;
     }
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND = "SLP";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND ];
+
+    static SleepSetCommandMsg processDcpMessage(String dcpMsg)
+    {
+        if (dcpMsg.startsWith(_DCP_COMMAND))
+        {
+            final String par = dcpMsg.substring(_DCP_COMMAND.length).trim();
+            if ("OFF" == par)
+            {
+                return SleepSetCommandMsg.output(SLEEP_OFF);
+            }
+            else if (int.tryParse(par) != null)
+            {
+                return SleepSetCommandMsg.output(int.tryParse(par));
+            }
+        }
+        return null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => _DCP_COMMAND + (isQuery ? ISCPMessage.DCP_MSG_REQ :
+        sleepTime == SLEEP_OFF ? "OFF" : sprintf("%03d", [sleepTime]));
 }

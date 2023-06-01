@@ -21,7 +21,10 @@ import "../ISCPMessage.dart";
 import "AlbumNameMsg.dart";
 import "ArtistNameMsg.dart";
 import "AudioMutingMsg.dart";
+import "DcpAudioRestorerMsg.dart";
+import "DcpEcoModeMsg.dart";
 import "DcpReceiverInformationMsg.dart";
+import "DcpTunerModeMsg.dart";
 import "DimmerLevelMsg.dart";
 import "FirmwareUpdateMsg.dart";
 import "HdmiCecMsg.dart";
@@ -35,6 +38,7 @@ import "PresetCommandMsg.dart";
 import "PresetMemoryMsg.dart";
 import "RadioStationNameMsg.dart";
 import "ReceiverInformationMsg.dart";
+import "SetupOperationCommandMsg.dart";
 import "SleepSetCommandMsg.dart";
 import "TimeInfoMsg.dart";
 import "TitleNameMsg.dart";
@@ -62,24 +66,24 @@ class DCPMessageFactory
         _acceptedCodes.addAll(InputSelectorMsg.getAcceptedDcpCodes());
 
         // Tone control
-        //_acceptedCodes.addAll(MasterVolumeMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(ToneCommandMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(AudioMutingMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(ListeningModeMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(MasterVolumeMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(ToneCommandMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(AudioMutingMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(ListeningModeMsg.getAcceptedDcpCodes());
 
         // Tuner
-        //_acceptedCodes.addAll(DcpTunerModeMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(TuningCommandMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(RadioStationNameMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(PresetCommandMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(PresetMemoryMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(DcpTunerModeMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(TuningCommandMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(RadioStationNameMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(PresetCommandMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(PresetMemoryMsg.getAcceptedDcpCodes());
 
         // Settings
-        //_acceptedCodes.addAll(DimmerLevelMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(SleepSetCommandMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(DcpEcoModeMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(DcpAudioRestorerMsg.getAcceptedDcpCodes());
-        //_acceptedCodes.addAll(HdmiCecMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(DimmerLevelMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(SleepSetCommandMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(DcpEcoModeMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(DcpAudioRestorerMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(HdmiCecMsg.getAcceptedDcpCodes());
 
         Logging.info(this, "Accepted DCP codes: " + _acceptedCodes.toString());
     }
@@ -91,24 +95,24 @@ class DCPMessageFactory
         addISCPMsg(InputSelectorMsg.processDcpMessage(dcpMsg));
 
         // Tone control
-        //addISCPMsg(MasterVolumeMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(ToneCommandMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(AudioMutingMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(MasterVolumeMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(ToneCommandMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(AudioMutingMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
 
         // Tuner
-        //addISCPMsg(DcpTunerModeMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(TuningCommandMsg.processDcpMessage(dcpMsg, zone));
-        //addISCPMsg(RadioStationNameMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(PresetCommandMsg.processDcpMessage(dcpMsg, zone));
-        //addISCPMsg(PresetMemoryMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DcpTunerModeMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(TuningCommandMsg.processDcpMessage(dcpMsg, _zone));
+        addISCPMsg(RadioStationNameMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(PresetCommandMsg.processDcpMessage(dcpMsg, _zone));
+        addISCPMsg(PresetMemoryMsg.processDcpMessage(dcpMsg));
 
         // Settings
-        //addISCPMsg(DimmerLevelMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(SleepSetCommandMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(DcpEcoModeMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(DcpAudioRestorerMsg.processDcpMessage(dcpMsg));
-        //addISCPMsg(HdmiCecMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DimmerLevelMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(SleepSetCommandMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DcpEcoModeMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DcpAudioRestorerMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(HdmiCecMsg.processDcpMessage(dcpMsg));
     }
 
     void _convertHeosMsg(String heosMsg, int pid, DcpHeosMessage jsonMsg)
@@ -317,18 +321,18 @@ class DCPMessageFactory
         // Denon control protocol
         //case OperationCommandMsg.CODE:
         //    return OperationCommandMsg(raw);
-        //case SetupOperationCommandMsg.CODE:
-        //    return SetupOperationCommandMsg(raw);
+        case SetupOperationCommandMsg.CODE:
+            return SetupOperationCommandMsg(raw);
         //case NetworkServiceMsg.CODE:
         //    return NetworkServiceMsg(raw);
         case DcpReceiverInformationMsg.CODE:
             return DcpReceiverInformationMsg(raw);
-        //case DcpTunerModeMsg.CODE:
-        //    return DcpTunerModeMsg(raw);
-        //case DcpEcoModeMsg.CODE:
-        //    return DcpEcoModeMsg(raw);
-        //case DcpAudioRestorerMsg.CODE:
-        //    return DcpAudioRestorerMsg(raw);
+        case DcpTunerModeMsg.CODE:
+            return DcpTunerModeMsg(raw);
+        case DcpEcoModeMsg.CODE:
+            return DcpEcoModeMsg(raw);
+        case DcpAudioRestorerMsg.CODE:
+            return DcpAudioRestorerMsg(raw);
         //case DcpMediaContainerMsg.CODE:
         //    return DcpMediaContainerMsg(raw);
         //case DcpMediaItemMsg.CODE:

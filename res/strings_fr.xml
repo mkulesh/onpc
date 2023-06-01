@@ -577,9 +577,11 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
 
     <!-- DCP ECO mode -->
     <string name="device_dcp_eco_mode">Mode écologique</string>
+    <string name="device_dcp_eco_mode_help">Ce mode peut réduire la consommation d\'énergie et la production de chaleur de cet appareil lorsqu\'il est sous tension. Ceci est obtenu en réduisant la ligne d\'alimentation de l\'amplificateur de puissance, et par conséquent la puissance maximale de sortie.</string>
 
     <!-- DCP audio restorer -->
     <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_help">Les formats audio compressés, tels que MP3, WMA (Windows Media Audio) et MPEG-4 AAC réduisent la quantité de données en éliminant des composants du signal difficilement audibles pour l\'oreille humaine. La fonction \"Restorer\" génère les signaux éliminés pendant la compression pour restaurer le son le plus proche de celui d\'origine. Elle restaure également les caractéristiques des basses d\'origine pour une plage tonale riche et étendue.</string>
     <string name="device_dcp_audio_restorer_none">N/A</string>
     <string name="device_dcp_audio_restorer_off">Arrêt</string>
     <string name="device_dcp_audio_restorer_low">Faible</string>

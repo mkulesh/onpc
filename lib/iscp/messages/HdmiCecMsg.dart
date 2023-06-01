@@ -13,7 +13,9 @@
  */
 // @dart=2.9
 import "../../constants/Strings.dart";
+import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
+import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
 enum HdmiCec
@@ -34,9 +36,9 @@ class HdmiCecMsg extends EnumParameterMsg<HdmiCec>
     static const ExtEnum<HdmiCec> ValueEnum = ExtEnum<HdmiCec>([
         EnumItem.code(HdmiCec.NONE, "N/A",
             descrList: Strings.l_device_two_way_switch_none, defValue: true),
-        EnumItem.code(HdmiCec.OFF, "00",
+        EnumItem.code(HdmiCec.OFF, "00", dcpCode: "OFF",
             descrList: Strings.l_device_two_way_switch_off),
-        EnumItem.code(HdmiCec.ON, "01",
+        EnumItem.code(HdmiCec.ON, "01", dcpCode: "ON",
             descrList: Strings.l_device_two_way_switch_on),
         EnumItem.code(HdmiCec.TOGGLE, "UP",
             descrList: Strings.l_device_two_way_switch_toggle)
@@ -44,11 +46,38 @@ class HdmiCecMsg extends EnumParameterMsg<HdmiCec>
 
     HdmiCecMsg(EISCPMessage raw) : super(CODE, raw, ValueEnum);
 
-    HdmiCecMsg.output(HdmiCec v) : super.output(CODE, v, ValueEnum);
+    HdmiCecMsg.toggle(EnumItem<HdmiCec> s, ProtoType proto) :
+            super.output(CODE, _toggle(s.key, proto), ValueEnum);
+
+    HdmiCecMsg._dcp(HdmiCec v) : super.output(CODE, v, ValueEnum);
 
     @override
     bool hasImpactOnMediaList()
     {
         return false;
     }
+
+    static HdmiCec _toggle(HdmiCec s, ProtoType proto)
+    => (proto == ProtoType.ISCP) ? HdmiCec.TOGGLE :
+        ((s == HdmiCec.OFF) ? HdmiCec.ON : HdmiCec.OFF);
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND = "SSHOS";
+    static const String _DCP_COMMAND_EXT = "CON";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND ];
+
+    static HdmiCecMsg processDcpMessage(String dcpMsg)
+    {
+        final EnumItem<HdmiCec> s = ValueEnum.valueByDcpCommand(_DCP_COMMAND + _DCP_COMMAND_EXT, dcpMsg);
+        return s != null ? HdmiCecMsg._dcp(s.key) : null;
+    }
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => _DCP_COMMAND + (isQuery ? (" " + ISCPMessage.DCP_MSG_REQ) :
+        _DCP_COMMAND_EXT + " " + getValue.getDcpCode);
 }

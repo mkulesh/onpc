@@ -578,9 +578,11 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
     <!-- DCP ECO mode -->
     <string name="device_dcp_eco_mode">Energiesparmodus</string>
+    <string name="device_dcp_eco_mode_help">Dieser Modus kann die Leistungsaufnahme und Wärmeentwicklung dieses Geräts in eingeschaltetem Zustand verringern. Dies wird durch die Drosselung der Stromversorgung an den Leistungsverstärker bei maximaler Leistungsabgabe erreicht.</string>
 
     <!-- DCP audio restorer -->
     <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_help">Komprimierte Audioformate wie z. B. MP3, WMA (Windows Media Audio) und MPEG-4 AAC reduzieren den Datenumfang, indem Signalkomponenten ausgelassen werden, die für das menschliche Ohr kaum wahrnehmbar sind. Die \"Restorer\"-Funktion stellt die Signale, die bei der Komprimierung gelöscht wurden, wieder her, sodass der Klang dem ursprünglichen Klang vor der Komprimierung sehr nahe kommt. Außerdem werden die ursprünglichen Basseigenschaften wiederhergestellt, sodass sich ein reicher und breiter Tonumfang ergibt.</string>
     <string name="device_dcp_audio_restorer_none">N/A</string>
     <string name="device_dcp_audio_restorer_off">Aus</string>
     <string name="device_dcp_audio_restorer_low">Niedrig</string>

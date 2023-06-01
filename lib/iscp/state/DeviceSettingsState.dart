@@ -14,6 +14,8 @@
 // @dart=2.9
 import "../../utils/Logging.dart";
 import "../messages/AutoPowerMsg.dart";
+import "../messages/DcpAudioRestorerMsg.dart";
+import "../messages/DcpEcoModeMsg.dart";
 import "../messages/DigitalFilterMsg.dart";
 import "../messages/DimmerLevelMsg.dart";
 import "../messages/EnumParameterMsg.dart";
@@ -90,14 +92,25 @@ class DeviceSettingsState
     EnumItem<NetworkStandBy> get networkStandBy
     => _networkStandBy;
 
+    // Denon settings
+    EnumItem<DcpEcoMode> _dcpEcoMode;
+
+    EnumItem<DcpEcoMode> get dcpEcoMode
+    => _dcpEcoMode;
+
+    EnumItem<DcpAudioRestorer> _dcpAudioRestorer;
+
+    EnumItem<DcpAudioRestorer> get dcpAudioRestorer
+    => _dcpAudioRestorer;
+
     DeviceSettingsState()
     {
         clear();
     }
 
-    List<String> getQueries(int zone)
+    List<String> getQueriesIscp(int zone)
     {
-        Logging.info(this, "Requesting data for zone " + zone.toString() + "...");
+        Logging.info(this, "Requesting ISCP data for zone " + zone.toString() + "...");
         return [
             DimmerLevelMsg.CODE,
             DigitalFilterMsg.CODE,
@@ -115,6 +128,18 @@ class DeviceSettingsState
         ];
     }
 
+    List<String> getQueriesDcp(int zone)
+    {
+        Logging.info(this, "Requesting DCP data for zone " + zone.toString() + "...");
+        return [
+            DimmerLevelMsg.CODE,
+            SleepSetCommandMsg.CODE,
+            DcpEcoModeMsg.CODE,
+            DcpAudioRestorerMsg.CODE,
+            HdmiCecMsg.CODE
+        ];
+    }
+
     void clear()
     {
         _dimmerLevel = DimmerLevelMsg.ValueEnum.defValue;
@@ -129,6 +154,8 @@ class DeviceSettingsState
         _googleCastAnalytics = GoogleCastAnalyticsMsg.ValueEnum.defValue;
         _lateNightMode = LateNightCommandMsg.ValueEnum.valueByKey(LateNightMode.NONE);
         _networkStandBy = NetworkStandByMsg.ValueEnum.defValue;
+        _dcpEcoMode = DcpEcoModeMsg.ValueEnum.defValue;
+        _dcpAudioRestorer = DcpAudioRestorerMsg.ValueEnum.defValue;
     }
 
     bool processDimmerLevel(DimmerLevelMsg msg)
@@ -212,6 +239,23 @@ class DeviceSettingsState
     {
         final bool changed = _networkStandBy.key != msg.getValue.key;
         _networkStandBy = msg.getValue;
+        return changed;
+    }
+
+    /*
+     * Denon control protocol
+     */
+    bool processDcpEcoModeMsg(DcpEcoModeMsg msg)
+    {
+        final bool changed = _dcpEcoMode.key != msg.getValue.key;
+        _dcpEcoMode = msg.getValue;
+        return changed;
+    }
+
+    bool processDcpAudioRestorerMsg(DcpAudioRestorerMsg msg)
+    {
+        final bool changed = _dcpAudioRestorer.key != msg.getValue.key;
+        _dcpAudioRestorer = msg.getValue;
         return changed;
     }
 }

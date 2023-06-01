@@ -14,6 +14,7 @@
 // @dart=2.9
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
+import "../EISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
 enum SetupOperationCommand
@@ -40,25 +41,27 @@ class SetupOperationCommandMsg extends EnumParameterMsg<SetupOperationCommand>
     static const ExtEnum<SetupOperationCommand> ValueEnum = ExtEnum<SetupOperationCommand>([
         EnumItem(SetupOperationCommand.UNDEFINED,
             descr: Strings.dashed_string, defValue: true),
-        EnumItem.code(SetupOperationCommand.MENU, "MENU",
+        EnumItem.code(SetupOperationCommand.MENU, "MENU", dcpCode: "MEN ON",
             descrList: Strings.l_cmd_description_setup, icon: Drawables.cmd_setup),
-        EnumItem.code(SetupOperationCommand.UP, "UP",
+        EnumItem.code(SetupOperationCommand.UP, "UP", dcpCode: "CUP",
             descrList: Strings.l_cmd_description_up, icon: Drawables.cmd_up),
-        EnumItem.code(SetupOperationCommand.DOWN, "DOWN",
+        EnumItem.code(SetupOperationCommand.DOWN, "DOWN", dcpCode: "CDN",
             descrList: Strings.l_cmd_description_down, icon: Drawables.cmd_down),
-        EnumItem.code(SetupOperationCommand.RIGHT, "RIGHT",
+        EnumItem.code(SetupOperationCommand.RIGHT, "RIGHT", dcpCode: "CRT",
             descrList: Strings.l_cmd_description_right, icon: Drawables.cmd_right),
-        EnumItem.code(SetupOperationCommand.LEFT, "LEFT",
+        EnumItem.code(SetupOperationCommand.LEFT, "LEFT", dcpCode: "CLT",
             descrList: Strings.l_cmd_description_left, icon: Drawables.cmd_left),
-        EnumItem.code(SetupOperationCommand.ENTER, "ENTER",
+        EnumItem.code(SetupOperationCommand.ENTER, "ENTER", dcpCode: "ENT",
             descrList: Strings.l_cmd_description_select, icon: Drawables.cmd_select),
-        EnumItem.code(SetupOperationCommand.EXIT, "EXIT",
+        EnumItem.code(SetupOperationCommand.EXIT, "EXIT", dcpCode: "RTN",
             descrList: Strings.l_cmd_description_return, icon: Drawables.cmd_return),
-        EnumItem.code(SetupOperationCommand.HOME, "HOME",
+        EnumItem.code(SetupOperationCommand.HOME, "HOME", dcpCode: "N/A",
             descrList: Strings.l_cmd_description_home, icon: Drawables.cmd_home),
-        EnumItem.code(SetupOperationCommand.QUICK, "QUICK",
+        EnumItem.code(SetupOperationCommand.QUICK, "QUICK", dcpCode: "OPT",
             descrList: Strings.l_cmd_description_quick_menu, icon: Drawables.cmd_quick_menu)
     ]);
+
+    SetupOperationCommandMsg(EISCPMessage raw) : super(CODE, raw, ValueEnum);
 
     SetupOperationCommandMsg.output(SetupOperationCommand v) : super.output(CODE, v, ValueEnum);
 
@@ -67,4 +70,13 @@ class SetupOperationCommandMsg extends EnumParameterMsg<SetupOperationCommand>
     {
         return false;
     }
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND = "MN";
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    => buildDcpRequest(isQuery, _DCP_COMMAND);
 }

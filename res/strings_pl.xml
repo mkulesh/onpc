@@ -579,9 +579,11 @@ Enjoy!""</string>
 
     <!-- DCP ECO mode -->
     <string name="device_dcp_eco_mode">Tryb ekologiczny</string>
+    <string name="device_dcp_eco_mode_help">Ten tryb może zmniejszyć pobór mocy i wytwarzanie ciepła tego urządzenia przy włączonym zasilaniu. Odbywa się to poprzez redukcję zasilania do wzmacniacza mocy, przy jednoczesnej maksymalnej mocy wyjściowej.</string>
 
     <!-- DCP audio restorer -->
     <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_help">Skompresowane formaty audio jak MP3, WMA (Windows Media Audio) oraz MPEG-4 AAC redukują ilość danych poprzez eliminację składowych sygnału w zakresie trudnym do rozpoznawania przez ucho człowieka. Funkcja \"Restorer\" generuje sygnał eliminowany w trakcie kompresji, przywracając sygnałowi brzmienie zbliżone do sygnału oryginalnego. Przywracana jest również oryginalna charakterystyka niskich tonów, pozwalająca uzyskać bogaty i szeroki zakres tonalny.</string>
     <string name="device_dcp_audio_restorer_none">N/A</string>
     <string name="device_dcp_audio_restorer_off">Off</string>
     <string name="device_dcp_audio_restorer_low">Niska</string>
