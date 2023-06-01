@@ -100,13 +100,37 @@ class PlaybackState
 
     bool processPlayStatus(PlayStatusMsg msg)
     {
-        final bool changed = _playStatus != msg.getPlayStatus.key
-            || _repeatStatus.key != msg.getRepeatStatus.key
-            || _shuffleStatus != msg.getShuffleStatus.key;
-        _playStatus = msg.getPlayStatus.key;
-        _repeatStatus = msg.getRepeatStatus;
-        _shuffleStatus = msg.getShuffleStatus.key;
-        return changed;
+        bool changed;
+        switch (msg.updateType)
+        {
+            case PlayStatusUpd.ALL:
+                changed = _playStatus != msg.getPlayStatus.key
+                    || _repeatStatus.key != msg.getRepeatStatus.key
+                    || _shuffleStatus != msg.getShuffleStatus.key;
+                _playStatus = msg.getPlayStatus.key;
+                _repeatStatus = msg.getRepeatStatus;
+                _shuffleStatus = msg.getShuffleStatus.key;
+                return changed;
+            case PlayStatusUpd.PLAY_STATE:
+                changed = _playStatus != msg.getPlayStatus.key;
+                _playStatus = msg.getPlayStatus.key;
+                return changed;
+            case PlayStatusUpd.PLAY_MODE:
+                changed = _repeatStatus.key != msg.getRepeatStatus.key
+                    || _shuffleStatus != msg.getShuffleStatus.key;
+                _repeatStatus = msg.getRepeatStatus;
+                _shuffleStatus = msg.getShuffleStatus.key;
+                return changed;
+            case PlayStatusUpd.REPEAT:
+                changed = _repeatStatus.key != msg.getRepeatStatus.key;
+                _repeatStatus = msg.getRepeatStatus;
+                return changed;
+            case PlayStatusUpd.SHUFFLE:
+                changed = _shuffleStatus != msg.getShuffleStatus.key;
+                _shuffleStatus = msg.getShuffleStatus.key;
+                return changed;
+        }
+        return false;
     }
 
     bool processMenuStatus(MenuStatusMsg msg)

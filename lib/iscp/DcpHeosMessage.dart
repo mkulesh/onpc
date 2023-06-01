@@ -53,7 +53,7 @@ class DcpHeosMessage
 
     bool isValid(int pid)
     {
-        if ("success" != _result)
+        if (_result.isNotEmpty && "success" != _result)
         {
             return false;
         }
@@ -86,6 +86,15 @@ class DcpHeosMessage
         final List<String> values = [];
         JsonPath(r"$." + path).read(_jsonMsg).forEach((e) => values.add(e.value.toString()));
         return values;
+    }
+
+    String getCmdProperty(String cmd, String name)
+    => (cmd == _command) ? getString(name) : null;
+
+    String getMsgTag(String name)
+    {
+        final String val = _message[name];
+        return val != null ? val : "";
     }
 
     Map<String, String> _getMessage()

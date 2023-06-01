@@ -14,7 +14,11 @@
 // @dart=2.9
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
+import "../ConnectionIf.dart";
+import "../EISCPMessage.dart";
+import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
+import "PlayStatusMsg.dart";
 
 enum OperationCommand
 {
@@ -64,7 +68,14 @@ enum OperationCommand
     MEMORY,
     F1,
     F2,
-    SORT
+    SORT,
+
+    // Denon
+    DCP_REPEAT_ALL,
+    DCP_REPEAT_ONE,
+    DCP_REPEAT_OFF,
+    DCP_SHUFFLE_ON,
+    DCP_SHUFFLE_OFF
 }
 
 /*
@@ -173,8 +184,23 @@ class OperationCommandMsg extends EnumParameterZonedMsg<OperationCommand>
         EnumItem.code(OperationCommand.F2, "F2",
             descrList: Strings.l_cmd_description_f2, icon: Drawables.feed_dont_like),
         EnumItem.code(OperationCommand.SORT, "SORT",
-            descrList: Strings.l_cmd_description_sort, icon: Drawables.cmd_sort)
+            descrList: Strings.l_cmd_description_sort, icon: Drawables.cmd_sort),
+
+        // Denon control protocol
+        EnumItem.code(OperationCommand.DCP_REPEAT_ALL, "DCP_REPEAT_ALL",
+            descrList: Strings.l_cmd_description_repeat, icon: Drawables.repeat_all),
+        EnumItem.code(OperationCommand.DCP_REPEAT_ONE, "DCP_REPEAT_ONE",
+            descrList: Strings.l_cmd_description_repeat, icon: Drawables.repeat_all),
+        EnumItem.code(OperationCommand.DCP_REPEAT_OFF, "DCP_REPEAT_OFF",
+            descrList: Strings.l_cmd_description_repeat, icon: Drawables.repeat_all),
+        EnumItem.code(OperationCommand.DCP_SHUFFLE_ON, "DCP_SHUFFLE_ON",
+            descrList: Strings.l_cmd_description_random, icon: Drawables.cmd_random),
+        EnumItem.code(OperationCommand.DCP_SHUFFLE_OFF, "DCP_SHUFFLE_OFF",
+            descrList: Strings.l_cmd_description_random, icon: Drawables.cmd_random)
+
     ]);
+
+    OperationCommandMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw, ValueEnum);
 
     OperationCommandMsg.output(int zoneIndex, OperationCommand v) :
             super.output(ZONE_COMMANDS, zoneIndex, v, ValueEnum);
@@ -191,6 +217,79 @@ class OperationCommandMsg extends EnumParameterZonedMsg<OperationCommand>
                 return false;
             default:
                 return true;
+        }
+    }
+
+    static OperationCommand toggleRepeat(ProtoType protoType, RepeatStatus repeatStatus)
+    {
+        if (protoType == ProtoType.ISCP)
+        {
+            return OperationCommand.REPEAT;
+        }
+        else
+        {
+            switch (repeatStatus)
+            {
+                case RepeatStatus.OFF:
+                    return OperationCommand.DCP_REPEAT_ALL;
+                case RepeatStatus.ALL:
+                    return OperationCommand.DCP_REPEAT_ONE;
+                default:
+                    return OperationCommand.DCP_REPEAT_OFF;
+            }
+        }
+    }
+
+    static OperationCommand toggleShuffle(ProtoType protoType, ShuffleStatus shuffleStatus)
+    {
+        if (protoType == ProtoType.ISCP)
+        {
+            return OperationCommand.RANDOM;
+        }
+        else
+        {
+            return shuffleStatus == ShuffleStatus.OFF ?
+            OperationCommand.DCP_SHUFFLE_ON : OperationCommand.DCP_SHUFFLE_OFF;
+        }
+    }
+
+    /*
+     * Denon control protocol
+     * - Set Play State Command: heos://player/set_play_state?pid=player_id&state=play_state
+     * - Play Next Command: heos://player/play_next?pid=player_id
+     * - Play Previous Command: heos://player/play_previous?pid=player_id
+     * - Set Play Mode Command: heos://player/set_play_mode?pid='player_id'&repeat=on_all_or_on_one_or_off&shuffle=on_or_off
+     * - Get Music Sources Command: heos://browse/get_music_sources
+     */
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        switch (getValue.key)
+        {
+            case OperationCommand.PLAY:
+            case OperationCommand.PAUSE:
+            case OperationCommand.STOP:
+                return "heos://player/set_play_state?pid=" + ISCPMessage.DCP_HEOS_PID +
+                    "&state=" + getValue.code.toLowerCase();
+            case OperationCommand.TRDN:
+                return "heos://player/play_previous?pid=" + ISCPMessage.DCP_HEOS_PID;
+            case OperationCommand.TRUP:
+                return "heos://player/play_next?pid=" + ISCPMessage.DCP_HEOS_PID;
+            case OperationCommand.DCP_REPEAT_ALL:
+                return "heos://player/set_play_mode?pid=" + ISCPMessage.DCP_HEOS_PID + "&repeat=on_all";
+            case OperationCommand.DCP_REPEAT_ONE:
+                return "heos://player/set_play_mode?pid=" + ISCPMessage.DCP_HEOS_PID + "&repeat=on_one";
+            case OperationCommand.DCP_REPEAT_OFF:
+                return "heos://player/set_play_mode?pid=" + ISCPMessage.DCP_HEOS_PID + "&repeat=off";
+            case OperationCommand.DCP_SHUFFLE_ON:
+                return "heos://player/set_play_mode?pid=" + ISCPMessage.DCP_HEOS_PID + "&shuffle=on";
+            case OperationCommand.DCP_SHUFFLE_OFF:
+                return "heos://player/set_play_mode?pid=" + ISCPMessage.DCP_HEOS_PID + "&shuffle=off";
+            case OperationCommand.TOP:
+            case OperationCommand.RETURN:
+                return "heos://browse/get_music_sources";
+            default:
+                return null;
         }
     }
 }

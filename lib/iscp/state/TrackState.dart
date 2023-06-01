@@ -15,17 +15,18 @@
 import "package:flutter/widgets.dart";
 
 import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
 import "../messages/AlbumNameMsg.dart";
 import "../messages/ArtistNameMsg.dart";
+import "../messages/AudioInformationMsg.dart";
 import "../messages/FileFormatMsg.dart";
 import "../messages/JacketArtMsg.dart";
 import "../messages/TimeInfoMsg.dart";
 import "../messages/TitleNameMsg.dart";
 import "../messages/TrackInfoMsg.dart";
-import "../messages/XmlListItemMsg.dart";
-import "../messages/AudioInformationMsg.dart";
 import "../messages/VideoInformationMsg.dart";
+import "../messages/XmlListItemMsg.dart";
 
 class TrackState
 {
@@ -92,6 +93,7 @@ class TrackState
     bool get isCoverPending
     => _coverPending;
 
+    String _coverUrl;
     final List<int> _coverBuffer = [];
 
     // Audio/Video information
@@ -146,6 +148,7 @@ class TrackState
         _currentTrack = TrackInfoMsg.INVALID_TRACK;
         _maxTrack = TrackInfoMsg.INVALID_TRACK;
         _cover = null;
+        _coverUrl = null;
         _coverBuffer.clear();
         _coverPending = false;
         _avInfoAudioInput = "";
@@ -198,12 +201,17 @@ class TrackState
         return changed;
     }
 
-    bool processJacketArt(JacketArtMsg msg, bool isOn)
+    bool processJacketArt(ProtoType protoType, JacketArtMsg msg, bool isOn)
     {
         if (msg.getImageType == ImageType.URL)
         {
+            if (protoType == ProtoType.DCP && _coverUrl != null && _coverUrl == msg.url)
+            {
+                Logging.info(msg, "Cover image already loaded, reload skipped");
+                return false;
+            }
             _coverPending = isOn;
-            Logging.info(this, "loading image from URL: " + msg.url);
+            _coverUrl = msg.url;
             msg.loadFromUrl().then((image)
             {
                 _cover = image;
@@ -231,6 +239,7 @@ class TrackState
             {
                 Logging.info(msg, "Cover image size length=" + _coverBuffer.length.toString() + "B");
                 _cover = msg.loadFromBuffer(_coverBuffer);
+                _coverUrl = null;
                 _coverPending = false;
                 _coverBuffer.clear();
                 doReport = true;

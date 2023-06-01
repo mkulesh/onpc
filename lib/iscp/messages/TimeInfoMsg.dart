@@ -12,6 +12,9 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:sprintf/sprintf.dart';
+
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -39,6 +42,12 @@ class TimeInfoMsg extends ISCPMessage
         _maxTime = ISCPMessage.nonNullString(pars[1]);
     }
 
+    TimeInfoMsg._dcp(String currentTime, String maxTime) : super.output(CODE, "")
+    {
+        _currentTime = currentTime;
+        _maxTime = maxTime;
+    }
+
     String get getCurrentTime
     => _currentTime.isEmpty ? INVALID_TIME : _currentTime;
 
@@ -48,4 +57,42 @@ class TimeInfoMsg extends ISCPMessage
     @override
     String toString()
     => super.toString() + "[CURR=" + getCurrentTime + "; MAX=" + getMaxTime + "]";
+
+    /*
+     * Denon control protocol
+     * - Player Now Playing Progress
+     * {
+     * "heos": {
+     *     "command": " event/player_now_playing_progress",
+     *     "message": "pid=player_id&cur_pos=position_ms&duration=duration_ms"
+     *     }
+     * }
+     */
+    static const String _HEOS_COMMAND = "event/player_now_playing_progress";
+
+    static TimeInfoMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    {
+        if (_HEOS_COMMAND == jsonMsg.command)
+        {
+            final String curPosStr = jsonMsg.message["cur_pos"];
+            final String durationStr = jsonMsg.message["duration"];
+            if (curPosStr != null && int.tryParse(curPosStr) != null &&
+                durationStr != null && int.tryParse(durationStr) != null)
+            {
+                return TimeInfoMsg._dcp(
+                    _millisToTime(int.tryParse(curPosStr)),
+                    _millisToTime(int.tryParse(durationStr)));
+            }
+        }
+        return null;
+    }
+
+    static String _millisToTime(int millis)
+    {
+        final int inpSec = (millis / 1000).floor();
+        final int hours = (inpSec / 3600).floor();
+        final int minutes = ((inpSec - hours * 3600) / 60).floor();
+        final int seconds = inpSec - hours * 3600 - minutes * 60;
+        return sprintf("%02d:%02d:%02d", [ hours, minutes, seconds ]);
+    }
 }

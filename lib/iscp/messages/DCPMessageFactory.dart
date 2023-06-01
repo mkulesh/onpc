@@ -23,6 +23,7 @@ import "ArtistNameMsg.dart";
 import "AudioMutingMsg.dart";
 import "DcpAudioRestorerMsg.dart";
 import "DcpEcoModeMsg.dart";
+import "DcpMediaItemMsg.dart";
 import "DcpReceiverInformationMsg.dart";
 import "DcpTunerModeMsg.dart";
 import "DimmerLevelMsg.dart";
@@ -32,6 +33,7 @@ import "InputSelectorMsg.dart";
 import "JacketArtMsg.dart";
 import "ListeningModeMsg.dart";
 import "MasterVolumeMsg.dart";
+import "OperationCommandMsg.dart";
 import "PlayStatusMsg.dart";
 import "PowerStatusMsg.dart";
 import "PresetCommandMsg.dart";
@@ -121,27 +123,26 @@ class DCPMessageFactory
         {
             if (!jsonMsg.isValid(pid))
             {
+                Logging.info(TimeInfoMsg, "HEOS message invalid, ignored: " + jsonMsg.toString());
                 return;
             }
 
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(jsonMsg));
             addISCPMsg(FirmwareUpdateMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(CustomPopupMsg.processHeosMessage(jsonMsg));
 
             // Playback
-            //addISCPMsg(ArtistNameMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(AlbumNameMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(TitleNameMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(JacketArtMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(TimeInfoMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(PlayStatusMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(ArtistNameMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(AlbumNameMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(TitleNameMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(JacketArtMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(TimeInfoMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(PlayStatusMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(DcpMediaItemMsg.processHeosMessage(jsonMsg));
 
             // Media list
-            //addISCPMsg(DcpMediaContainerMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(DcpMediaItemMsg.processHeosMessage(jsonMsg));
-
-            // Queue processing
             //addISCPMsg(DcpMediaEventMsg.processHeosMessage(jsonMsg));
+            //addISCPMsg(DcpMediaContainerMsg.processHeosMessage(jsonMsg));
+            //addISCPMsg(CustomPopupMsg.processHeosMessage(jsonMsg));
         }
         on Exception catch (e)
         {
@@ -319,8 +320,8 @@ class DCPMessageFactory
         case FirmwareUpdateMsg.CODE:
             return FirmwareUpdateMsg(raw);
         // Denon control protocol
-        //case OperationCommandMsg.CODE:
-        //    return OperationCommandMsg(raw);
+        case OperationCommandMsg.CODE:
+            return OperationCommandMsg(raw);
         case SetupOperationCommandMsg.CODE:
             return SetupOperationCommandMsg(raw);
         //case NetworkServiceMsg.CODE:
@@ -335,8 +336,8 @@ class DCPMessageFactory
             return DcpAudioRestorerMsg(raw);
         //case DcpMediaContainerMsg.CODE:
         //    return DcpMediaContainerMsg(raw);
-        //case DcpMediaItemMsg.CODE:
-        //    return DcpMediaItemMsg(raw);
+        case DcpMediaItemMsg.CODE:
+            return DcpMediaItemMsg(raw);
         default:
             throw Exception("No factory method for message " + raw.getCode);
         }

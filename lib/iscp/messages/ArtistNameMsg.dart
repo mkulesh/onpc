@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -23,4 +24,17 @@ class ArtistNameMsg extends ISCPMessage
     static const String CODE = "NAT";
 
     ArtistNameMsg(EISCPMessage raw) : super(CODE, raw);
+
+    ArtistNameMsg._dcp(String name) : super.output(CODE, name);
+
+    /*
+     * Denon control protocol
+     */
+    static const String _HEOS_COMMAND = "player/get_now_playing_media";
+
+    static ArtistNameMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    {
+        final String name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.artist");
+        return name != null ? ArtistNameMsg._dcp(name) : null;
+    }
 }

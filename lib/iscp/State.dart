@@ -351,7 +351,7 @@ class State with ProtoTypeMix
         }
         else if (msg is JacketArtMsg)
         {
-            return _isChange(JacketArtMsg.CODE, _trackState.processJacketArt(msg, isOn));
+            return _isChange(JacketArtMsg.CODE, _trackState.processJacketArt(protoType, msg, isOn));
         }
         else if (msg is AudioInformationMsg)
         {

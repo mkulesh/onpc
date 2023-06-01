@@ -17,6 +17,7 @@ import "dart:typed_data";
 import "package:flutter/widgets.dart";
 
 import "../../utils/UrlLoader.dart";
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -104,6 +105,12 @@ class JacketArtMsg extends ISCPMessage
         }
     }
 
+    JacketArtMsg._dcp(final String url) : super.output(CODE, url)
+    {
+        this.imageType = ImageType.URL;
+        this.url = url;
+    }
+
     ImageType get getImageType
     => imageType;
 
@@ -146,4 +153,15 @@ class JacketArtMsg extends ISCPMessage
 
     Image loadFromBuffer(List<int> coverBuffer)
     => Image.memory(Uint8List.fromList(coverBuffer));
+
+    /*
+     * Denon control protocol
+     */
+    static const String _HEOS_COMMAND = "player/get_now_playing_media";
+
+    static JacketArtMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    {
+        final String name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.image_url");
+        return (name != null && name.isNotEmpty) ? JacketArtMsg._dcp(name) : null;
+    }
 }

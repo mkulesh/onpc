@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -23,4 +24,17 @@ class TitleNameMsg extends ISCPMessage
     static const String CODE = "NTI";
 
     TitleNameMsg(EISCPMessage raw) : super(CODE, raw);
+
+    TitleNameMsg._dcp(String name) : super.output(CODE, name);
+
+    /*
+     * Denon control protocol
+     */
+    static const String _HEOS_COMMAND = "player/get_now_playing_media";
+
+    static TitleNameMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    {
+        final String name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.song");
+        return name != null ? TitleNameMsg._dcp(name) : null;
+    }
 }

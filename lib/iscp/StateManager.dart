@@ -35,6 +35,7 @@ import "State.dart";
 import "messages/AmpOperationCommandMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
+import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
 import "messages/DisplayModeMsg.dart";
@@ -610,6 +611,7 @@ class StateManager
             return null;
         }
 
+        final PlayStatus playStatus = state.playbackState.playStatus;
         final String changed = state.update(msg);
 
         if (msg is ReceiverInformationMsg)
@@ -653,11 +655,23 @@ class StateManager
                 Logging.info(this, "DCP: requesting tuner state...");
                 sendQueries([DcpTunerModeMsg.CODE]);
             }
+            else if (msg.getValue.key == InputSelector.DCP_NET)
+            {
+                // TODO: state.setDcpNetTopLayer();
+                Logging.info(this, "DCP: requesting play state...");
+                sendQueries([DcpMediaItemMsg.CODE, PlayStatusMsg.CODE]);
+            }
         }
 
         if (msg is DcpTunerModeMsg)
         {
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
+        }
+
+        if (msg is PlayStatusMsg && playStatus != state.playbackState.playStatus && state.isPlaying)
+        {
+            Logging.info(this, "DCP: requesting track state...");
+            sendQueries([DcpMediaItemMsg.CODE]);
         }
 
         return changed;
@@ -822,10 +836,20 @@ class StateManager
             // send OperationCommandMsg if current mode is LIST
             sendTrackCmd(state.getActiveZone, key, false);
         }
-        else if (key == OperationCommand.PLAY)
+        else if (state.protoType == ProtoType.ISCP && key == OperationCommand.PLAY)
         {
-            // To start play in normal mode, PAUSE shall be issue instead of PLAY command
+            // For Onkyo only: To start play in normal mode, PAUSE shall be issue instead of PLAY command
             sendMessage(OperationCommandMsg.output(state.getActiveZone, OperationCommand.PAUSE));
+        }
+        else if (key == OperationCommand.REPEAT)
+        {
+            sendMessage(OperationCommandMsg.output(state.getActiveZone,
+                OperationCommandMsg.toggleRepeat(state.protoType, state.playbackState.repeatStatus.key)));
+        }
+        else if (key == OperationCommand.RANDOM)
+        {
+            sendMessage(OperationCommandMsg.output(state.getActiveZone,
+                OperationCommandMsg.toggleShuffle(state.protoType, state.playbackState.shuffleStatus)));
         }
         else
         {
