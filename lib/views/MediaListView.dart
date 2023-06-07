@@ -26,6 +26,8 @@ import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../dialogs/PopupManager.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/DcpMediaContainerMsg.dart";
+import "../iscp/messages/DcpMediaItemMsg.dart";
 import "../iscp/messages/DcpTunerModeMsg.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
@@ -90,7 +92,9 @@ class MediaListView extends StatefulWidget
         ReceiverInformationMsg.CODE,
         TitleNameMsg.CODE,
         XmlListInfoMsg.CODE,
-        PresetCommandMsg.CODE
+        PresetCommandMsg.CODE,
+        DcpMediaContainerMsg.CODE,
+        DcpMediaItemMsg.CODE
     ];
 
     MediaListView({Key key, this.viewContext}) : super(key: key);
@@ -180,7 +184,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         if (state.isOn && ms.layerInfo != null && !ms.isTopLayer()
             && !configuration.backAsReturn && !_returnMessageExists(items))
         {
-            items.insert(0, StateManager.RETURN_MSG);
+            items.insert(0, stateManager.getReturnMessage());
         }
 
         // Add "Playback" indication if necessary
@@ -254,6 +258,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 {
                     return _buildDcpTunerModeMsg(itemContext, rowMsg);
                 }
+                else if (rowMsg is DcpMediaContainerMsg)
+                {
+                    return _buildDcpMediaContainerMsg(itemContext, rowMsg);
+                }
                 else
                 {
                     return null;
@@ -283,7 +291,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             else if (rowMsg is OperationCommandMsg)
             {
                 final Widget row = _buildOperationCommandMsg(context, rowMsg);
-                if (rowMsg == StateManager.RETURN_MSG)
+                if (rowMsg.getValue.key == OperationCommand.RETURN)
                 {
                     header = row;
                 }
@@ -293,6 +301,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     _playQueueIds.add(rowMsg.getMessageId);
                 }
             }
+            // TODO: process DcpMediaContainerMsg as return
         });
 
         return ReorderableListView(
@@ -409,6 +418,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     {
         final bool isPlaying = rowMsg.getValue == state.mediaListState.dcpTunerMode;
         return _buildRow(context, Drawables.media_item_radio, false, isPlaying, rowMsg.getValue.description, rowMsg);
+    }
+
+    Widget _buildDcpMediaContainerMsg(BuildContext itemContext, DcpMediaContainerMsg rowMsg)
+    {
+        final EnumItem<OperationCommand> item = OperationCommandMsg.ValueEnum.valueByKey(OperationCommand.RETURN);
+        return _buildRow(context, item.icon, false, false, item.description, rowMsg);
     }
 
     void _onCreateContextMenu(final BuildContext context, final TapPosition position, final ISCPMessage cmd)
@@ -705,7 +720,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             title = InkWell(
                 child: title,
                 onTap: ()
-                => stateManager.sendMessage(StateManager.RETURN_MSG, waitingForData: true));
+                => stateManager.sendMessage(stateManager.getReturnMessage(), waitingForData: true));
         }
 
         final Widget field = !state.mediaFilterVisible ? title :
@@ -866,5 +881,5 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     }
 
     bool _returnMessageExists(final List<ISCPMessage> items)
-    => items.isNotEmpty && (items.first is OperationCommandMsg);
+    => items.isNotEmpty && (items.first is OperationCommandMsg || items.first is DcpMediaContainerMsg);
 }

@@ -75,7 +75,7 @@ class _TrackMenuDialogState extends State<TrackMenuDialog>
         _viewContext.stateManager.state.mediaListState.clearMenu();
         if (_selectedItem == null && _viewContext.stateManager.state.mediaListState.isMenuMode)
         {
-            _viewContext.stateManager.sendMessage(StateManager.RETURN_MSG);
+            _viewContext.stateManager.sendMessage(_viewContext.stateManager.getReturnMessage());
         }
     }
 }

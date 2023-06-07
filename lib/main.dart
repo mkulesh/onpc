@@ -461,7 +461,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (_isControlActive(AppControl.MEDIA_LIST) && !_viewContext.state.mediaListState.isTopLayer() && _configuration.backAsReturn)
         {
             _stateManager.state.closeMediaFilter();
-            _stateManager.sendMessage(StateManager.RETURN_MSG, waitingForData: true);
+            _stateManager.sendMessage(_stateManager.getReturnMessage(), waitingForData: true);
             return true;
         }
         else if (_configuration.exitConfirm)

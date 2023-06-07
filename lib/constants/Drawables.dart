@@ -134,6 +134,7 @@ class Drawables
     static const String media_item_napster = BUTTONS_PATH + "media_item_napster.svg";
     static const String media_item_soundcloud = BUTTONS_PATH + "media_item_soundcloud.svg";
     static const String media_item_history = BUTTONS_PATH + "media_item_history.svg";
+    static const String media_item_folder_play = BUTTONS_PATH + "media_item_folder_play.svg";
 
     static const String pref_app_theme = BUTTONS_PATH + "pref_app_theme.svg";
     static const String pref_widget_theme = BUTTONS_PATH + "pref_widget_theme.svg";

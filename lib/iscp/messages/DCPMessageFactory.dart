@@ -23,6 +23,7 @@ import "ArtistNameMsg.dart";
 import "AudioMutingMsg.dart";
 import "DcpAudioRestorerMsg.dart";
 import "DcpEcoModeMsg.dart";
+import "DcpMediaContainerMsg.dart";
 import "DcpMediaItemMsg.dart";
 import "DcpReceiverInformationMsg.dart";
 import "DcpTunerModeMsg.dart";
@@ -33,6 +34,7 @@ import "InputSelectorMsg.dart";
 import "JacketArtMsg.dart";
 import "ListeningModeMsg.dart";
 import "MasterVolumeMsg.dart";
+import "NetworkServiceMsg.dart";
 import "OperationCommandMsg.dart";
 import "PlayStatusMsg.dart";
 import "PowerStatusMsg.dart";
@@ -140,8 +142,8 @@ class DCPMessageFactory
             addISCPMsg(DcpMediaItemMsg.processHeosMessage(jsonMsg));
 
             // Media list
+            addISCPMsg(DcpMediaContainerMsg.processHeosMessage(jsonMsg));
             //addISCPMsg(DcpMediaEventMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(DcpMediaContainerMsg.processHeosMessage(jsonMsg));
             //addISCPMsg(CustomPopupMsg.processHeosMessage(jsonMsg));
         }
         on Exception catch (e)
@@ -207,16 +209,18 @@ class DCPMessageFactory
         return dcpMsg;
     }
 
-    List<String> convertOutputMsg(EISCPMessage raw, final String dest)
+    List<String> convertOutputMsg(EISCPMessage raw1, ISCPMessage raw2, final String dest)
     {
         final List<String> retValue = [];
-        if (raw == null)
+        if (raw1 == null && raw2 == null)
         {
             return retValue;
         }
         try
         {
-            final String toSend = createISCPMessage(raw).buildDcpMsg(raw.isQuery());
+            final String toSend = (raw1 != null) ?
+                createISCPMessage(raw1).buildDcpMsg(raw1.isQuery()) :
+                raw2.buildDcpMsg(false);
             if (toSend == null)
             {
                 return retValue;
@@ -324,8 +328,8 @@ class DCPMessageFactory
             return OperationCommandMsg(raw);
         case SetupOperationCommandMsg.CODE:
             return SetupOperationCommandMsg(raw);
-        //case NetworkServiceMsg.CODE:
-        //    return NetworkServiceMsg(raw);
+        case NetworkServiceMsg.CODE:
+            return NetworkServiceMsg(raw);
         case DcpReceiverInformationMsg.CODE:
             return DcpReceiverInformationMsg(raw);
         case DcpTunerModeMsg.CODE:
@@ -334,8 +338,6 @@ class DCPMessageFactory
             return DcpEcoModeMsg(raw);
         case DcpAudioRestorerMsg.CODE:
             return DcpAudioRestorerMsg(raw);
-        //case DcpMediaContainerMsg.CODE:
-        //    return DcpMediaContainerMsg(raw);
         case DcpMediaItemMsg.CODE:
             return DcpMediaItemMsg(raw);
         default:

@@ -88,6 +88,9 @@ class DcpHeosMessage
         return values;
     }
 
+    Iterable<JsonPathMatch> getArray(final String path)
+    => JsonPath(r"$." + path).read(_jsonMsg);
+
     String getCmdProperty(String cmd, String name)
     => (cmd == _command) ? getString(name) : null;
 

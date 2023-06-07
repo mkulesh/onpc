@@ -16,6 +16,7 @@
 import "../utils/Logging.dart";
 import "ConnectionIf.dart";
 import "EISCPMessage.dart";
+import "ISCPMessage.dart";
 import "MessageChannel.dart";
 import "OnpcSocket.dart";
 import "messages/TimeInfoMsg.dart";
@@ -63,6 +64,10 @@ class MessageChannelIscp with ConnectionIf implements MessageChannel
     @override
     void sendMessage(EISCPMessage m)
     => _socket.sendData(m.getBytes(), m.toString());
+
+    @override
+    void sendIscp(ISCPMessage m)
+    => sendMessage(m.getCmdMsg());
 
     @override
     void sendQueries(List<String> queries)

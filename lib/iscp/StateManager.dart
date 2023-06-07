@@ -35,6 +35,7 @@ import "State.dart";
 import "messages/AmpOperationCommandMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
+import "messages/DcpMediaContainerMsg.dart";
 import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
@@ -151,9 +152,6 @@ class StateManager
     // Common List commands
     static final OperationCommandMsg LIST_MSG = OperationCommandMsg.output(
         State.DEFAULT_ACTIVE_ZONE, OperationCommand.LIST);
-
-    static final OperationCommandMsg RETURN_MSG = OperationCommandMsg.output(
-        State.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
 
     static final DisplayModeMsg DISPLAY_MSG = DisplayModeMsg.output(
         DisplayModeMsg.TOGGLE);
@@ -636,6 +634,7 @@ class StateManager
 
         if (msg is PowerStatusMsg)
         {
+            state.mediaListState.clear();
             // After transmitting a power on COMMAND（PWON, the next COMMAND
             // shall be transmitted at least 1 second later
             final int REQUEST_DELAY = 1500;
@@ -657,9 +656,23 @@ class StateManager
             }
             else if (msg.getValue.key == InputSelector.DCP_NET)
             {
-                // TODO: state.setDcpNetTopLayer();
+                state.mediaListState.setDcpNetTopLayer(state.receiverInformation);
                 Logging.info(this, "DCP: requesting play state...");
                 sendQueries([DcpMediaItemMsg.CODE, PlayStatusMsg.CODE]);
+            }
+        }
+
+        if (msg is DcpMediaContainerMsg)
+        {
+            final DcpMediaContainerMsg mc = msg;
+            final int currItems = mc.getStart() + mc.getItems().length;
+            if (currItems < mc.getCount() && mc.getCid() == state.mediaListState.mediaListCid)
+            {
+                Logging.info(this, "Requesting DCP media list: currItems=" + currItems.toString() + ", count=" + mc.getCount().toString());
+                final DcpMediaContainerMsg newMc = DcpMediaContainerMsg.copy(mc);
+                newMc.setAid("");
+                newMc.setStart(currItems);
+                sendMessage(newMc);
             }
         }
 
@@ -755,7 +768,14 @@ class StateManager
         {
             _requestXmlList = true;
         }
-        _messageChannel.sendMessage(msg.getCmdMsg());
+        if (state.mediaListState.getDcpContainerMsg(msg) != null)
+        {
+            _messageChannel.sendIscp(state.mediaListState.getDcpContainerMsg(msg));
+        }
+        else
+        {
+            _messageChannel.sendMessage(msg.getCmdMsg());
+        }
         if (waitingForData || waitingForMsg.isNotEmpty)
         {
             _waitingForData = waitingForMsg.isEmpty ? ANY_DATA : waitingForMsg;
@@ -1070,5 +1090,15 @@ class StateManager
             return c;
         }
         return MessageChannelIscp(_onConnected, _onNewEISCPMessage, _onDisconnected);
+    }
+
+    ISCPMessage getReturnMessage()
+    {
+        final MediaListState ms = state.mediaListState;
+        if (state.protoType == ProtoType.DCP && ms.dcpMediaPath.length > 1)
+        {
+            return ms.dcpMediaPath[ms.dcpMediaPath.length - 2];
+        }
+        return OperationCommandMsg.output(State.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
     }
 }

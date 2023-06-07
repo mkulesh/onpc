@@ -14,6 +14,7 @@
 // @dart=2.9
 import "ConnectionIf.dart";
 import "EISCPMessage.dart";
+import "ISCPMessage.dart";
 
 abstract class MessageChannel with ConnectionIf
 {
@@ -26,6 +27,7 @@ abstract class MessageChannel with ConnectionIf
     void start(String host, int port, {bool keepConnection = false});
 
     void sendMessage(EISCPMessage m);
+    void sendIscp(ISCPMessage m);
 
     void stop();
 

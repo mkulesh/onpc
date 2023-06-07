@@ -31,6 +31,8 @@ import "messages/CenterLevelCommandMsg.dart";
 import "messages/CustomPopupMsg.dart";
 import "messages/DcpAudioRestorerMsg.dart";
 import "messages/DcpEcoModeMsg.dart";
+import "messages/DcpMediaContainerMsg.dart";
+import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
 import "messages/DeviceNameMsg.dart";
@@ -472,9 +474,9 @@ class State with ProtoTypeMix
             final DcpUpdateType upd = _receiverInformation.processDcpReceiverInformation(msg);
             if (upd == DcpUpdateType.NET_TOP)
             {
-                Logging.info(this, "    Set network top layer");
-                // TODO:
-                //_mediaListState.setDcpNetTopLayer();
+                _mediaListState.setDcpNetTopLayer(_receiverInformation);
+                // This event emulates DcpMediaContainerMsg (list of services)
+                return _isChange(DcpMediaContainerMsg.CODE, upd != null);
             }
             return _isChange(DcpReceiverInformationMsg.CODE, upd != null);
         }
@@ -487,6 +489,15 @@ class State with ProtoTypeMix
             }
             return changed;
         }
+        if (msg is DcpMediaContainerMsg)
+        {
+            return _isChange(DcpMediaContainerMsg.CODE, _mediaListState.processDcpMediaContainerMsg(msg));
+        }
+        if (msg is DcpMediaItemMsg)
+        {
+            return _isChange(DcpMediaItemMsg.CODE, _mediaListState.processDcpMediaItemMsg(msg, _playbackState));
+        }
+
         if (msg is DcpEcoModeMsg)
         {
             return _isChange(DcpEcoModeMsg.CODE, _deviceSettingsState.processDcpEcoModeMsg(msg));

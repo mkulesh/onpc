@@ -15,6 +15,8 @@
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "EnumParameterMsg.dart";
+import "ServiceType.dart";
 
 /*
  * Denon control protocol - media item
@@ -29,6 +31,12 @@ class DcpMediaItemMsg extends ISCPMessage
     DcpMediaItemMsg(EISCPMessage raw) : _sid = -1, super(CODE, raw);
 
     DcpMediaItemMsg._dcp(final String mid, final int sid) : _sid = sid, super.output(CODE, mid);
+
+    EnumItem<ServiceType> getServiceType()
+    {
+        final EnumItem<ServiceType> st = Services.ServiceTypeEnum.valueByDcpCode("HS" + _sid.toString());
+        return (st == null) ? Services.ServiceTypeEnum.defValue : st;
+    }
 
     @override
     String toString()

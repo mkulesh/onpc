@@ -64,6 +64,11 @@ class PlaybackState
     EnumItem<ServiceType> get serviceIcon
     => _serviceIcon;
 
+    set serviceIcon(EnumItem<ServiceType> value)
+    {
+        _serviceIcon = value;
+    }
+
     PlaybackState()
     {
         clear();

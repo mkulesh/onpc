@@ -102,24 +102,29 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
 
     @override
     void sendMessage(EISCPMessage raw)
+    => _dcpMessageFactory.convertOutputMsg(raw, null, getHost).forEach((msg)
+        => _processOutMessage(raw, msg));
+
+    @override
+    void sendIscp(ISCPMessage raw)
+    => _dcpMessageFactory.convertOutputMsg(null, raw, getHost).forEach((msg)
+        => _processOutMessage(raw, msg));
+
+    void _processOutMessage(Object raw, String msg)
     {
-        final List<String> messages = _dcpMessageFactory.convertOutputMsg(raw, getHost);
-        messages.forEach((msg)
+        if (msg.startsWith(DCP_HEOS_REQUEST))
         {
-            if (msg.startsWith(DCP_HEOS_REQUEST))
-            {
-                _sendDcpHeosRequest(msg);
-            }
-            else if (msg.startsWith(DCP_APP_COMMAND))
-            {
-                _sendDcpAppCommand(msg);
-            }
-            else
-            {
-                _sendDcpRawMsg(raw, msg);
-            }
-            sleep(const Duration(milliseconds: DCP_SEND_DELAY));
-        });
+            _sendDcpHeosRequest(msg);
+        }
+        else if (msg.startsWith(DCP_APP_COMMAND))
+        {
+            _sendDcpAppCommand(msg);
+        }
+        else
+        {
+            _sendDcpRawMsg(raw, msg);
+        }
+        sleep(const Duration(milliseconds: DCP_SEND_DELAY));
     }
 
     @override
@@ -333,7 +338,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         }
     }
 
-    void _sendDcpRawMsg(EISCPMessage raw, String msg)
+    void _sendDcpRawMsg(Object raw, String msg)
     {
         Logging.info(this, ">> DCP sending: " + raw.toString() + " => " + msg + " to " + _dcpSocket.getHostAndPort);
         try

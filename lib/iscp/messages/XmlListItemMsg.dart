@@ -21,12 +21,16 @@ import "EnumParameterMsg.dart";
 
 enum ListItemIcon
 {
+    // Integra
     UNKNOWN,
     USB,
     FOLDER,
     MUSIC,
     SEARCH,
-    PLAY
+    PLAY,
+    // Denon
+    FOLDER_PLAY,
+    HEOS_SERVER
 }
 
 class XmlListItemMsg extends ISCPMessage
@@ -34,18 +38,22 @@ class XmlListItemMsg extends ISCPMessage
     static const String CODE = "NLA"; // Note: The same code as for XmlListInfoMsg
 
     static const ExtEnum<ListItemIcon> ListItemIconEnum = ExtEnum<ListItemIcon>([
+        // Integra
         EnumItem.code(ListItemIcon.UNKNOWN, "--", icon: Drawables.media_item_unknown, defValue: true),
         EnumItem.code(ListItemIcon.USB, "31", icon: Drawables.media_item_usb),
         EnumItem.code(ListItemIcon.FOLDER, "29", icon: Drawables.media_item_folder),
         EnumItem.code(ListItemIcon.MUSIC, "2d", icon: Drawables.media_item_music),
         EnumItem.code(ListItemIcon.SEARCH, "2F", icon: Drawables.media_item_search),
-        EnumItem.code(ListItemIcon.PLAY, "36", icon: Drawables.media_item_play)
+        EnumItem.code(ListItemIcon.PLAY, "36", icon: Drawables.media_item_play),
+        // Denon
+        EnumItem.code(ListItemIcon.FOLDER_PLAY, "HS01", icon: Drawables.media_item_folder_play),
+        EnumItem.code(ListItemIcon.HEOS_SERVER, "HS02", icon: Drawables.media_item_media_server)
     ]);
 
     String _title, _iconType, _iconId;
     EnumItem<ListItemIcon> _icon;
     bool _selectable;
-    EISCPMessage _cmdMessage;
+    ISCPMessage _cmdMessage;
 
     XmlListItemMsg.output(final int id, final int numberOfLayers, final xml.XmlElement src) :
             super.outputId(id, CODE, _getParameterAsString(id, numberOfLayers))
@@ -59,7 +67,7 @@ class XmlListItemMsg extends ISCPMessage
     }
 
     XmlListItemMsg.details(final int id, final int numberOfLayers, final String title,
-        final String iconType, final ListItemIcon icon, final bool selectable, final EISCPMessage cmdMessage) :
+        final String iconType, final ListItemIcon icon, final bool selectable, final ISCPMessage cmdMessage) :
             super.outputId(id, CODE, _getParameterAsString(id, numberOfLayers))
     {
         _title = title;
@@ -94,8 +102,24 @@ class XmlListItemMsg extends ISCPMessage
     String get iconType
     => _iconType;
 
+    void setIconType(String iconType)
+    {
+        _iconType = iconType;
+    }
+
     EnumItem<ListItemIcon> get getIcon
     => _icon;
+
+    void setIcon(ListItemIcon icon)
+    {
+        _icon = ListItemIconEnum.valueByKey(icon);
+    }
+
+    bool isSong()
+    => _icon.key == ListItemIcon.PLAY || _icon.key == ListItemIcon.MUSIC;
+
+    ISCPMessage get getCmdMessage
+    => _cmdMessage;
 
     bool get isSelectable
     => _selectable;
@@ -114,6 +138,6 @@ class XmlListItemMsg extends ISCPMessage
     @override
     EISCPMessage getCmdMsg()
     {
-        return _cmdMessage == null ? super.getCmdMsg() : _cmdMessage;
+        return _cmdMessage == null ? super.getCmdMsg() : _cmdMessage.getCmdMsg();
     }
 }

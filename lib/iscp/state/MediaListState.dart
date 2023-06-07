@@ -15,6 +15,8 @@
 import "../../utils/Logging.dart";
 import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
+import "../messages/DcpMediaContainerMsg.dart";
+import "../messages/DcpMediaItemMsg.dart";
 import "../messages/DcpTunerModeMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/InputSelectorMsg.dart";
@@ -26,6 +28,7 @@ import "../messages/ReceiverInformationMsg.dart";
 import "../messages/ServiceType.dart";
 import "../messages/XmlListInfoMsg.dart";
 import "../messages/XmlListItemMsg.dart";
+import "PlaybackState.dart";
 import "ReceiverInformation.dart";
 
 class MediaListState
@@ -98,6 +101,20 @@ class MediaListState
     => _pathItems;
 
     final List<String> listInfoItems = [];
+
+    // Denon control protocol
+    final List<DcpMediaContainerMsg> _dcpMediaPath = [];
+
+    List<DcpMediaContainerMsg> get dcpMediaPath
+    => _dcpMediaPath;
+
+    String _mediaListCid = "";
+
+    String get mediaListCid
+    => _mediaListCid;
+
+    String _mediaListMid = "";
+    final List<XmlListItemMsg> _dcpTrackMenuItems = [];
 
     MediaListState()
     {
@@ -267,15 +284,7 @@ class MediaListState
             // into serviceItems list by any NET ListInfoMsg (if ReceiverInformationMsg exists)
             if (networkServices.isNotEmpty)
             {
-                _mediaItems.clear();
-                networkServices.forEach((s)
-                {
-                    final EnumItem<ServiceType> service = Services.ServiceTypeEnum.valueByCode(s.getId);
-                    if (service.key != ServiceType.UNKNOWN)
-                    {
-                        _mediaItems.add(NetworkServiceMsg.output(service.key));
-                    }
-                });
+                _createServiceItems(networkServices);
             }
             else // fallback: parse listData from ListInfoMsg
             {
@@ -303,7 +312,7 @@ class MediaListState
             // ListInfoMsg is used as an alternative command in this case, but the item is stored as XmlListItemMsg
             final ListInfoMsg cmdMessage = ListInfoMsg.output(msg.getLineInfo, msg.getListedData);
             final XmlListItemMsg nsMsg = XmlListItemMsg.details(
-                msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true, cmdMessage.getCmdMsg());
+                msg.getLineInfo, 0, msg.getListedData, "", ListItemIcon.UNKNOWN, true, cmdMessage);
             if (nsMsg.getMessageId < _mediaItems.length)
             {
                 _mediaItems[nsMsg.getMessageId] = nsMsg;
@@ -324,6 +333,19 @@ class MediaListState
             return false;
         }
         return false;
+    }
+
+    void _createServiceItems(final List<NetworkService> networkServices)
+    {
+        _mediaItems.clear();
+        networkServices.forEach((s)
+        {
+            final EnumItem<ServiceType> service = Services.ServiceTypeEnum.valueByCode(s.getId);
+            if (service.key != ServiceType.UNKNOWN)
+            {
+                _mediaItems.add(NetworkServiceMsg.output(service.key));
+            }
+        });
     }
 
     bool get isUiTypeValid
@@ -384,6 +406,10 @@ class MediaListState
         }
         if (!isPlaybackMode)
         {
+            if (_inputType.key == InputSelector.DCP_NET)
+            {
+                return _layerInfo == LayerInfo.NET_TOP;
+            }
             if (_serviceType.key == ServiceType.NET && _layerInfo == LayerInfo.NET_TOP)
             {
                 return true;
@@ -516,5 +542,118 @@ class MediaListState
         final bool changed = _dcpTunerMode.key != msg.getValue.key;
         _dcpTunerMode = msg.getValue;
         return changed;
+    }
+
+    bool processDcpMediaContainerMsg(DcpMediaContainerMsg msg)
+    {
+        // Media items
+        if (msg.getStart() == 0)
+        {
+            clearItems();
+            // Media path
+            final List<DcpMediaContainerMsg> tmpPath = [];
+            for (DcpMediaContainerMsg pe in _dcpMediaPath)
+            {
+                if (pe.keyEqual(msg))
+                {
+                    break;
+                }
+                tmpPath.add(pe);
+            }
+            tmpPath.add(DcpMediaContainerMsg.copy(msg));
+            _dcpMediaPath.clear();
+            _dcpMediaPath.addAll(tmpPath);
+            Logging.info(this, "Dcp media path: " + _dcpMediaPath.toString());
+            // Info
+            _serviceType = msg.getServiceType();
+            _layerInfo = msg.getLayerInfo();
+            _uiType = UIType.LIST;
+            _numberOfLayers = _dcpMediaPath.length;
+            _mediaListCid = msg.getCid();
+        }
+        else if (msg.getCid() != _mediaListCid)
+        {
+            return false;
+        }
+        _mediaItems.addAll(msg.getItems());
+        _mediaItems.sort((ISCPMessage lhs, ISCPMessage rhs)
+        {
+            int val = 0;
+            if (lhs is XmlListItemMsg && rhs is XmlListItemMsg)
+            {
+                val = lhs.iconType.compareTo(rhs.iconType);
+                if (val == 0)
+                {
+                    return lhs.isSong() && rhs.isSong() ?
+                        lhs.getMessageId.compareTo(rhs.getMessageId) :
+                        lhs.getTitle.compareTo(rhs.getTitle);
+                }
+            }
+            return val;
+        });
+        _setDcpPlayingItem();
+
+        // Track menu
+        _dcpTrackMenuItems.clear();
+        _dcpTrackMenuItems.addAll(msg.getOptions());
+        for (XmlListItemMsg m in _dcpTrackMenuItems)
+        {
+            Logging.info(this, "DCP menu: " + m.toString());
+        }
+        return true;
+    }
+
+    bool processDcpMediaItemMsg(DcpMediaItemMsg msg, PlaybackState ps)
+    {
+        final EnumItem<ServiceType> si = msg.getServiceType();
+        final bool changed = msg.getData != _mediaListMid || si != ps.serviceIcon;
+        _mediaListMid = msg.getData;
+        ps.serviceIcon = si;
+        if (changed)
+        {
+            _setDcpPlayingItem();
+        }
+        return changed;
+    }
+
+    DcpMediaContainerMsg getDcpContainerMsg(final ISCPMessage msg)
+    {
+        if (msg is XmlListItemMsg && msg.getCmdMessage != null && msg.getCmdMessage is DcpMediaContainerMsg)
+        {
+            return msg.getCmdMessage;
+        }
+        return msg is DcpMediaContainerMsg ? msg : null;
+    }
+
+    void setDcpNetTopLayer(final ReceiverInformation ri)
+    {
+        Logging.info(this, "DCP: Set network top layer for " + ri.networkServices.length.toString() + " services");
+        _serviceType = Services.ServiceTypeEnum.valueByKey(ServiceType.NET);
+        _layerInfo = LayerInfo.NET_TOP;
+        _uiType = UIType.LIST;
+        _numberOfLayers = 0;
+        _mediaListCid = "";
+        _dcpMediaPath.clear();
+        _createServiceItems(ri.networkServices);
+    }
+
+    void _setDcpPlayingItem()
+    {
+        for (ISCPMessage msg in _mediaItems)
+        {
+            if (msg is XmlListItemMsg && msg.getCmdMessage is DcpMediaContainerMsg)
+            {
+                final DcpMediaContainerMsg mc = msg.getCmdMessage;
+                if (mc.getType() == "heos_server")
+                {
+                    msg.setIcon(ListItemIcon.HEOS_SERVER);
+                }
+                else if (!mc.isContainer() && mc.isPlayable() && _mediaListMid.isNotEmpty)
+                {
+                    msg.setIcon(_mediaListMid == mc.getMid() ?
+                    ListItemIcon.PLAY : ListItemIcon.MUSIC);
+                }
+            }
+        }
     }
 }

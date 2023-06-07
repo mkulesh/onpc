@@ -13,6 +13,7 @@
  */
 // @dart=2.9
 import "../EISCPMessage.dart";
+import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
 import "ServiceType.dart";
 
@@ -22,6 +23,11 @@ import "ServiceType.dart";
 class NetworkServiceMsg extends EnumParameterMsg<ServiceType>
 {
     static const String CODE = "NSV";
+
+    NetworkServiceMsg(EISCPMessage raw) :
+        super.output(CODE,
+            Services.ServiceTypeEnum.valueByCode(raw.getParameters.substring(0, raw.getParameters.length - 1)).key,
+            Services.ServiceTypeEnum);
 
     NetworkServiceMsg.output(ServiceType v) :
             super.output(CODE, v, Services.ServiceTypeEnum);
@@ -38,4 +44,23 @@ class NetworkServiceMsg extends EnumParameterMsg<ServiceType>
     static EnumItem<ServiceType> _searchByName(final String name)
     => Services.ServiceTypeEnum.values.firstWhere((t) => t.name.toUpperCase() == name.toUpperCase(),
         orElse: () => Services.ServiceTypeEnum.defValue);
+
+    /*
+     * Denon control protocol
+     */
+    static const String _HEOS_COMMAND = "heos://browse/browse";
+
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        if (getValue.key == ServiceType.DCP_PLAYQUEUE)
+        {
+            return "heos://player/get_queue?pid=" + ISCPMessage.DCP_HEOS_PID + "&range=0,9999";
+        }
+        if (getValue.key != null)
+        {
+            return "heos://" + _HEOS_COMMAND + "?sid=" + getValue.getDcpCode.substring(2);
+        }
+        return null;
+    }
 }
