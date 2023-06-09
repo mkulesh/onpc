@@ -14,6 +14,7 @@
 // @dart=2.9
 import "package:xml/xml.dart" as xml;
 
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -74,4 +75,25 @@ class CustomPopupMsg extends ISCPMessage
     @override
     String toString()
     => super.toString() + "[" + "; UI=" + _uiType.toString() + "]";
+
+    /*
+     * Denon control protocol - Player Playback Error
+     */
+    static const String _HEOS_COMMAND = "event/player_playback_error";
+
+    static CustomPopupMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    {
+        if (_HEOS_COMMAND == jsonMsg.command)
+        {
+            final String error = jsonMsg.getMsgTag("error");
+            if (error.isNotEmpty)
+            {
+                final String msg = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                    "<popup title=\"Error\"><label title=\"\">"
+                    "<line text=\"" + error + "\"/></label></popup>";
+                return CustomPopupMsg.output(PopupUiType.XML, xml.XmlDocument.parse(msg));
+            }
+        }
+        return null;
+    }
 }

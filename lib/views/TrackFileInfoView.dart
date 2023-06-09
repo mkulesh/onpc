@@ -18,17 +18,22 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/AvInfoDialog.dart";
 import "../dialogs/PresetMemoryDialog.dart";
+import "../iscp/ConnectionIf.dart";
+import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/FileFormatMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ListTitleInfoMsg.dart";
 import "../iscp/messages/MenuStatusMsg.dart";
 import "../iscp/messages/MultiroomDeviceInformationMsg.dart";
+import "../iscp/messages/NetworkServiceMsg.dart";
 import "../iscp/messages/OperationCommandMsg.dart";
 import "../iscp/messages/PlayStatusMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/PresetCommandMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
+import "../iscp/messages/ServiceType.dart";
 import "../iscp/messages/TrackInfoMsg.dart";
 import "../iscp/messages/TuningCommandMsg.dart";
 import "../widgets/CustomImageButton.dart";
@@ -87,31 +92,49 @@ class TrackFileInfoView extends UpdatableView
          }
 
         // Track info
-        final Widget trackInfoBtn = _isRadioInput ?
-        CustomImageButton.small(
-            Drawables.cmd_track_menu,
-            Strings.cmd_preset_memory,
-            onPressed: ()
-            => showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext c)
-                => PresetMemoryDialog(viewContext, state.receiverInformation.nextEmptyPreset())),
-            isEnabled: true)
-            :
-        CustomImageButton.small(
-            Drawables.cmd_track_menu,
-            Strings.cmd_track_menu,
-            onPressed: ()
-            => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false),
-            isEnabled: state.playbackState.isTrackMenuActive);
+        Widget trackInfoBtn;
+        if (_isRadioInput)
+        {
+            trackInfoBtn = CustomImageButton.small(
+                Drawables.cmd_track_menu,
+                Strings.cmd_preset_memory,
+                onPressed: ()
+                => showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext c)
+                    => PresetMemoryDialog(viewContext, state.receiverInformation.nextEmptyPreset())),
+                isEnabled: true);
+        }
+        else if (state.protoType == ProtoType.ISCP)
+        {
+            trackInfoBtn = CustomImageButton.small(
+                Drawables.cmd_track_menu,
+                Strings.cmd_track_menu,
+                onPressed: ()
+                => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.MENU, false),
+                isEnabled: state.playbackState.isTrackMenuActive);
+        }
+        else if (state.protoType == ProtoType.DCP && state.mediaListState.inputType.key == InputSelector.DCP_NET)
+        {
+            final EnumItem<ServiceType> s = Services.ServiceTypeEnum.valueByKey(ServiceType.DCP_PLAYQUEUE);
+            trackInfoBtn = CustomImageButton.small(
+                s.icon, s.description,
+                onPressed: ()
+                {
+                    state.mediaListState.setDcpNetTopLayer(state.receiverInformation);
+                    stateManager.sendMessage(NetworkServiceMsg.output(ServiceType.DCP_PLAYQUEUE));
+                    stateManager.triggerStateEvent(StateManager.OPEN_MEDIA_VIEW);
+                },
+                isEnabled: true);
+        }
 
         final Widget textTrackInfo = Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
                 Expanded(child: CustomTextLabel.small(_buildTrackInfo(), textAlign: TextAlign.right)),
-                trackInfoBtn
+                trackInfoBtn != null ? trackInfoBtn : SizedBox.shrink()
             ]);
 
         // Header row contains file format info, multiroom buttons and track info

@@ -12,6 +12,9 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:sprintf/sprintf.dart';
+
+import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
 /*
@@ -22,21 +25,42 @@ class PlayQueueRemoveMsg extends ISCPMessage
     static const String CODE = "PQR";
 
     // Remove Type: 0:Specify Line, (1:ALL)
-    final int type;
+    int _type;
 
     // The Index number in the PlayQueue of the item to delete(0000-FFFF : 1st to 65536th Item [4 HEX digits] )
-    final int itemIndex;
+    int _itemIndex;
 
-    PlayQueueRemoveMsg.output(this.type, this.itemIndex) :
-            super.output(CODE, _getParameterAsString(type, itemIndex));
+    PlayQueueRemoveMsg(EISCPMessage raw) : super(CODE, raw)
+    {
+        _type = ISCPMessage.nonNullInteger(getData.substring(0, 1), 10, -1);
+        _itemIndex = ISCPMessage.nonNullInteger(getData.substring(1), 16, -1);
+    }
+    
+    PlayQueueRemoveMsg.output(this._type, this._itemIndex) :
+            super.output(CODE, _getParameterAsString(_type, _itemIndex));
 
     static String _getParameterAsString(final int type, final int itemIndex)
-    {
-        return type.toString() +
-            itemIndex.toRadixString(16).padLeft(4, '0');
-    }
+    => type.toString() + itemIndex.toRadixString(16).padLeft(4, '0');
 
     @override
     String toString()
-    => super.toString() + "[TYPE=" + type.toString() + "; INDEX=" + itemIndex.toString() + "]";
+    => super.toString() + "[TYPE=" + _type.toString() + "; INDEX=" + _itemIndex.toString() + "]";
+
+    /*
+     * Denon control protocol
+     */
+    @override
+    String buildDcpMsg(bool isQuery)
+    {
+        switch (_type)
+        {
+            case 0:
+                return sprintf("heos://player/remove_from_queue?pid=%s&qid=%d",
+                    [ ISCPMessage.DCP_HEOS_PID, _itemIndex ]);
+            case 1:
+                return sprintf("heos://player/clear_queue?pid=%s",
+                    [ ISCPMessage.DCP_HEOS_PID ]);
+        }
+        return null;
+    }
 }

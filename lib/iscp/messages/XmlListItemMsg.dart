@@ -121,6 +121,11 @@ class XmlListItemMsg extends ISCPMessage
     ISCPMessage get getCmdMessage
     => _cmdMessage;
 
+    void setCmdMessage(ISCPMessage cmdMessage)
+    {
+        _cmdMessage = cmdMessage;
+    }
+
     bool get isSelectable
     => _selectable;
 

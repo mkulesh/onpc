@@ -36,6 +36,7 @@ import "messages/AmpOperationCommandMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
 import "messages/DcpMediaContainerMsg.dart";
+import "messages/DcpMediaEventMsg.dart";
 import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
@@ -48,6 +49,7 @@ import "messages/ListTitleInfoMsg.dart";
 import "messages/MasterVolumeMsg.dart";
 import "messages/MenuStatusMsg.dart";
 import "messages/MessageFactory.dart";
+import "messages/NetworkServiceMsg.dart";
 import "messages/OperationCommandMsg.dart";
 import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
@@ -77,7 +79,7 @@ enum NetworkState
 class StateManager
 {
     static const String CONNECTION_EVENT = "CONNECT";
-    static const String APPLY_FAVORITE_EVENT = "APPLY_FAVORITE";
+    static const String OPEN_MEDIA_VIEW = "OPEN_MEDIA_VIEW";
     static const String ZONE_EVENT = "ZONE";
     static const String WAITING_FOR_DATA_EVENT = "WAITING_FOR_DATA";
     static const String BROADCAST_SEARCH_EVENT = "BROADCAST_SEARCH";
@@ -626,6 +628,23 @@ class StateManager
             return changed;
         }
 
+        if (msg is DcpMediaEventMsg)
+        {
+            final MediaListState ms = state.mediaListState;
+            if (msg.getData == DcpMediaEventMsg.HEOS_EVENT_QUEUE &&
+                ms.isQueue)
+            {
+                Logging.info(this, "DCP: requesting queue state...");
+                sendMessage(NetworkServiceMsg.output(ms.serviceType.key));
+            }
+            if (msg.getData == DcpMediaEventMsg.HEOS_EVENT_SERVICEOPT &&
+                ms.dcpMediaPath.isNotEmpty)
+            {
+                Logging.info(this, "DCP: requesting media list...");
+                sendMessage(ms.dcpMediaPath[ms.dcpMediaPath.length - 1]);
+            }
+        }
+
         // no further message handling, if no changes are detected
         if (changed == null)
         {
@@ -668,7 +687,8 @@ class StateManager
             final int currItems = mc.getStart() + mc.getItems().length;
             if (currItems < mc.getCount() && mc.getCid() == state.mediaListState.mediaListCid)
             {
-                Logging.info(this, "Requesting DCP media list: currItems=" + currItems.toString() + ", count=" + mc.getCount().toString());
+                Logging.info(this, "Requesting DCP media list: currItems=" + currItems.toString()
+                    + ", count=" + mc.getCount().toString());
                 final DcpMediaContainerMsg newMc = DcpMediaContainerMsg.copy(mc);
                 newMc.setAid("");
                 newMc.setStart(currItems);

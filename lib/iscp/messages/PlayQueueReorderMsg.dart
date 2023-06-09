@@ -12,6 +12,9 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import 'package:sprintf/sprintf.dart';
+
+import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
 /*
@@ -23,22 +26,35 @@ class PlayQueueReorderMsg extends ISCPMessage
 
     // The Index number in the PlayQueue of the item to be moved
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )  .
-    final int itemIndex;
+    int _itemIndex;
 
     // The Index number in the PlayQueue of destination.
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )
-    final int targetIndex;
+    int _targetIndex;
 
-    PlayQueueReorderMsg.output(this.itemIndex, this.targetIndex) :
-            super.output(CODE, _getParameterAsString(itemIndex, targetIndex));
+    PlayQueueReorderMsg(EISCPMessage raw) : super(CODE, raw)
+    {
+        _itemIndex = ISCPMessage.nonNullInteger(getData.substring(0, 4), 16, -1);
+        _targetIndex = ISCPMessage.nonNullInteger(getData.substring(4), 16, -1);
+    }
+
+    PlayQueueReorderMsg.output(this._itemIndex, this._targetIndex) :
+            super.output(CODE, _getParameterAsString(_itemIndex, _targetIndex));
 
     @override
     String toString()
-    => super.toString() + "[INDEX=" + itemIndex.toString() + "; TARGET=" + targetIndex.toString() + "]";
+    => super.toString() + "[INDEX=" + _itemIndex.toString() + "; TARGET=" + _targetIndex.toString() + "]";
 
     static String _getParameterAsString(final int itemIndex, final int targetIndex)
+    => itemIndex.toRadixString(16).padLeft(4, '0') + targetIndex.toRadixString(16).padLeft(4, '0');
+
+    /*
+     * Denon control protocol
+     */
+    @override
+    String buildDcpMsg(bool isQuery)
     {
-        return itemIndex.toRadixString(16).padLeft(4, '0') +
-            targetIndex.toRadixString(16).padLeft(4, '0');
+        return sprintf("heos://player/move_queue_item?pid=%s&sqid=%d&dqid=%d",
+            [ ISCPMessage.DCP_HEOS_PID, _itemIndex, _targetIndex ]);
     }
 }

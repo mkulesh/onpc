@@ -364,7 +364,7 @@ class MediaListState
     => _uiType != null && [UIType.POPUP, UIType.KEYBOARD].contains(_uiType);
 
     bool get isQueue
-    => serviceType.key == ServiceType.PLAYQUEUE;
+    => [ServiceType.PLAYQUEUE, ServiceType.DCP_PLAYQUEUE].contains(serviceType.key);
 
     bool get isTuneIn
     => serviceType.key == ServiceType.TUNEIN_RADIO;
@@ -616,13 +616,13 @@ class MediaListState
         return changed;
     }
 
-    DcpMediaContainerMsg getDcpContainerMsg(final ISCPMessage msg)
+    DcpMediaContainerMsg getDcpContainerMsg(final ISCPMessage msg, {bool allowContainerMsg = true})
     {
         if (msg is XmlListItemMsg && msg.getCmdMessage != null && msg.getCmdMessage is DcpMediaContainerMsg)
         {
             return msg.getCmdMessage;
         }
-        return msg is DcpMediaContainerMsg ? msg : null;
+        return (allowContainerMsg && msg is DcpMediaContainerMsg) ? msg : null;
     }
 
     void setDcpNetTopLayer(final ReceiverInformation ri)
@@ -635,6 +635,22 @@ class MediaListState
         _mediaListCid = "";
         _dcpMediaPath.clear();
         _createServiceItems(ri.networkServices);
+    }
+
+    List<XmlListItemMsg> cloneDcpTrackMenuItems(final DcpMediaContainerMsg dcpItem)
+    {
+        final List<XmlListItemMsg> retValue = List.from(_dcpTrackMenuItems);
+        if (dcpItem != null)
+        {
+            for (XmlListItemMsg msg in retValue)
+            {
+                final DcpMediaContainerMsg newItem = DcpMediaContainerMsg.copy(dcpItem);
+                newItem.setAid(DcpMediaContainerMsg.HEOS_SET_SERVICE_OPTION);
+                newItem.setStart(msg.getMessageId);
+                msg.setCmdMessage(newItem);
+            }
+        }
+        return retValue;
     }
 
     void _setDcpPlayingItem()

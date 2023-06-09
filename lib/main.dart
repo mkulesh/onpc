@@ -339,8 +339,14 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     }
                     setState(() {});
                     break;
-                case StateManager.APPLY_FAVORITE_EVENT:
-                    _setActiveTab(AppTabs.MEDIA);
+                case StateManager.OPEN_MEDIA_VIEW:
+                    final AppTabs tab = AppTabs.values.firstWhere(
+                        (t) => _isControlActive(AppControl.MEDIA_LIST, appTab: t),
+                        orElse: () => null);
+                    if (tab != null)
+                    {
+                        _setActiveTab(tab);
+                    }
                     break;
                 case ReceiverInformationMsg.CODE:
                     if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
@@ -573,10 +579,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
         });
     }
 
-    bool _isControlActive(final AppControl c)
+    bool _isControlActive(final AppControl c, {AppTabs appTab})
     {
         final bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
-        final CfgTabSettings tab = _configuration.appSettings.tabSettings(_getActiveTab());
+        final CfgTabSettings tab = _configuration.appSettings.tabSettings(
+            appTab == null ? _getActiveTab() : appTab);
         return (tab != null) ? tab.isControlActive(c, portrait) : false;
     }
 

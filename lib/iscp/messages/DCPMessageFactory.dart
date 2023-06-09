@@ -21,9 +21,11 @@ import "../ISCPMessage.dart";
 import "AlbumNameMsg.dart";
 import "ArtistNameMsg.dart";
 import "AudioMutingMsg.dart";
+import "CustomPopupMsg.dart";
 import "DcpAudioRestorerMsg.dart";
 import "DcpEcoModeMsg.dart";
 import "DcpMediaContainerMsg.dart";
+import "DcpMediaEventMsg.dart";
 import "DcpMediaItemMsg.dart";
 import "DcpReceiverInformationMsg.dart";
 import "DcpTunerModeMsg.dart";
@@ -36,6 +38,8 @@ import "ListeningModeMsg.dart";
 import "MasterVolumeMsg.dart";
 import "NetworkServiceMsg.dart";
 import "OperationCommandMsg.dart";
+import "PlayQueueRemoveMsg.dart";
+import "PlayQueueReorderMsg.dart";
 import "PlayStatusMsg.dart";
 import "PowerStatusMsg.dart";
 import "PresetCommandMsg.dart";
@@ -125,7 +129,7 @@ class DCPMessageFactory
         {
             if (!jsonMsg.isValid(pid))
             {
-                Logging.info(TimeInfoMsg, "HEOS message invalid, ignored: " + jsonMsg.toString());
+                Logging.info(this, "HEOS message invalid, ignored: " + jsonMsg.toString());
                 return;
             }
 
@@ -143,8 +147,8 @@ class DCPMessageFactory
 
             // Media list
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(DcpMediaEventMsg.processHeosMessage(jsonMsg));
-            //addISCPMsg(CustomPopupMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(DcpMediaEventMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(CustomPopupMsg.processHeosMessage(jsonMsg));
         }
         on Exception catch (e)
         {
@@ -317,10 +321,10 @@ class DCPMessageFactory
             return HdmiCecMsg(raw);
         case SleepSetCommandMsg.CODE:
             return SleepSetCommandMsg(raw);
-        //case PlayQueueRemoveMsg.CODE:
-        //    return PlayQueueRemoveMsg(raw);
-        //case PlayQueueReorderMsg.CODE:
-        //    return PlayQueueReorderMsg(raw);
+        case PlayQueueRemoveMsg.CODE:
+            return PlayQueueRemoveMsg(raw);
+        case PlayQueueReorderMsg.CODE:
+            return PlayQueueReorderMsg(raw);
         case FirmwareUpdateMsg.CODE:
             return FirmwareUpdateMsg(raw);
         // Denon control protocol
@@ -344,5 +348,4 @@ class DCPMessageFactory
             throw Exception("No factory method for message " + raw.getCode);
         }
     }
-
 }

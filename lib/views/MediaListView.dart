@@ -59,6 +59,7 @@ import "UpdatableView.dart";
 
 enum MediaContextMenu
 {
+    // Common commands
     REPLACE_AND_PLAY,
     ADD,
     REPLACE,
@@ -67,7 +68,13 @@ enum MediaContextMenu
     REMOVE_ALL,
     TRACK_MENU,
     PLAYBACK_MODE,
-    ADD_TO_FAVORITES
+    ADD_TO_FAVORITES,
+    // Heos commands
+    SO_ADD_TO_HEOS,
+    SO_REMOVE_FROM_HEOS,
+    SO_REPLACE_AND_PLAY_ALL,
+    SO_ADD_ALL,
+    SO_ADD_AND_PLAY_ALL
 }
 
 class MediaListButtons
@@ -301,7 +308,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     _playQueueIds.add(rowMsg.getMessageId);
                 }
             }
-            // TODO: process DcpMediaContainerMsg as return
         });
 
         return ReorderableListView(
@@ -431,25 +437,40 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final List<PopupMenuItem<MediaContextMenu>> contextMenu = [];
         final Selector selector = state.getActualSelector;
         final NetworkService networkService = state.getNetworkService;
-        final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
-        final bool isQueue = state.mediaListState.isQueue;
+        final DcpMediaContainerMsg dcpCmd = state.mediaListState.getDcpContainerMsg(cmd);
+
         final bool isMediaItem = (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING) || cmd is PresetCommandMsg;
+        final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
+        final bool isDcpItem = dcpCmd != null;
+        final bool isDcpPlayable = dcpCmd != null && dcpCmd.isPlayable();
+        final bool isQueue = state.mediaListState.isQueue;
         final String shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
         final String shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString() : null;
 
         if (isMediaItem && selector != null)
         {
-            Logging.info(this.widget, "Context menu for selector [" + selector.toString() +
-                (networkService != null ? "] and service [" + networkService.toString() + "]" : ""));
-
             final bool addToQueue = selector.isAddToQueue ||
-                (networkService != null && networkService.isAddToQueue);
-            final bool isAdvQueue = configuration.isAdvancedQueue;
+                (networkService != null && networkService.isAddToQueue) ||
+                isDcpPlayable;
+            final bool isAdvQueue = configuration.isAdvancedQueue ||
+                isDcpPlayable;
+
+            Logging.info(this.widget, "Context menu for selector " + selector.toString() +
+                (networkService != null ? " and service " + networkService.toString() : "") +
+                ", isMediaItem=" + isMediaItem.toString() +
+                ", isPlaying=" + isPlaying.toString() +
+                ", isDcpItem=" + isDcpItem.toString() +
+                ", isDcpPlayable=" + isDcpPlayable.toString() +
+                ", isQueue=" + isQueue.toString() +
+                ", addToQueue=" + addToQueue.toString() +
+                ", isAdvQueue=" + isAdvQueue.toString()
+            );
 
             if (isQueue || addToQueue)
             {
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: CustomTextLabel.small(Strings.playlist_options), enabled: false));
+                    child: CustomTextLabel.small(Strings.playlist_options),
+                    height: ButtonDimens.menuButtonSize, enabled: false));
             }
 
             if (!isQueue && addToQueue)
@@ -461,7 +482,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 }
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
                     child: Text(Strings.playlist_add), value: MediaContextMenu.ADD));
-                if (isAdvQueue)
+                if (isAdvQueue && !isDcpItem)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
                         child: Text(Strings.playlist_replace), value: MediaContextMenu.REPLACE));
@@ -469,6 +490,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
                     child: Text(Strings.playlist_add_and_play), value: MediaContextMenu.ADD_AND_PLAY));
             }
+
             if (isQueue)
             {
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
@@ -476,15 +498,61 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
                     child: Text(Strings.playlist_remove_all), value: MediaContextMenu.REMOVE_ALL));
             }
+
+            // DCP options
+            if (isDcpItem)
+            {
+                final List<XmlListItemMsg> menuItems = state.mediaListState.cloneDcpTrackMenuItems(null);
+                final oldLength = contextMenu.length;
+                if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_TO_HEOS) != null)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: Text(Strings.playlist_add_to_heos_favourites), 
+                        value: MediaContextMenu.SO_ADD_TO_HEOS));
+                }
+
+                if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REMOVE_FROM_HEOS) != null)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: Text(Strings.playlist_remove_from_heos_favourites), 
+                        value: MediaContextMenu.SO_REMOVE_FROM_HEOS));
+                }
+
+                if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REPLACE_AND_PLAY_ALL) != null)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: Text(Strings.playlist_replace_and_play_all), 
+                        value: MediaContextMenu.SO_REPLACE_AND_PLAY_ALL));
+                }
+
+                if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_ALL) != null)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: Text(Strings.playlist_add_all), 
+                        value: MediaContextMenu.SO_ADD_ALL));
+                }
+
+                if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL) != null)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: Text(Strings.playlist_add_and_play_all), 
+                        value: MediaContextMenu.SO_ADD_AND_PLAY_ALL));
+                }
+                if (oldLength > 0 && oldLength != contextMenu.length)
+                {
+                    contextMenu.insert(oldLength, PopupMenuItem<MediaContextMenu>(
+                        child: CustomDivider(), height: 1, enabled: false));
+                }
+            }
         }
 
-        if (state.playbackState.isTrackMenuActive && isPlaying && !isQueue)
+        if (state.playbackState.isTrackMenuActive && isPlaying && !isQueue && !isDcpItem)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
                 child: Text(Strings.cmd_track_menu), value: MediaContextMenu.TRACK_MENU));
         }
 
-        if (isMediaItem && isPlaying)
+        if (isMediaItem && isPlaying && !isDcpItem)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
                 child: Text(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
@@ -502,39 +570,62 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 context: context,
                 position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
                 items: contextMenu).then((m)
-            => _onContextItemSelected(context, m, cmd.getMessageId, shortcutItem, shortcutAlias)
+            => _onContextItemSelected(context, m, cmd, shortcutItem, shortcutAlias)
             );
         }
     }
 
-    void _onContextItemSelected(final BuildContext context, final MediaContextMenu m, final int idx, final String shortcutItem, final String shortcutAlias)
+    void _onContextItemSelected(final BuildContext context, final MediaContextMenu m, final ISCPMessage cmd, final String shortcutItem, final String shortcutAlias)
     {
         if (m == null)
         {
             return;
         }
+        final int idx = cmd.getMessageId;
+        final DcpMediaContainerMsg dcpCmd = state.mediaListState.getDcpContainerMsg(cmd);
         Logging.info(this.widget, "selected context menu: " + m.toString() + ", index: " + idx.toString());
         switch (m)
         {
             case MediaContextMenu.REPLACE_AND_PLAY:
-                stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(1, 0), false);
-                stateManager.sendPlayQueueMsg(PlayQueueAddMsg.output(idx, 0), false);
+                if (dcpCmd != null)
+                {
+                    _sendDcpMediaCmd(dcpCmd, 4 /* replace and play */);
+                }
+                else
+                {
+                    stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(1, 0), false);
+                    stateManager.sendPlayQueueMsg(PlayQueueAddMsg.output(idx, 0), false);
+                }
                 break;
             case MediaContextMenu.ADD:
-                stateManager.sendPlayQueueMsg(PlayQueueAddMsg.output(idx, 2), false);
+                if (dcpCmd != null)
+                {
+                    _sendDcpMediaCmd(dcpCmd, 3 /* add to end */);
+                }
+                else
+                {
+                    stateManager.sendPlayQueueMsg(PlayQueueAddMsg.output(idx, 2), false);
+                }
                 break;
             case MediaContextMenu.REPLACE:
                 stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(1, 0), false);
                 stateManager.sendPlayQueueMsg(PlayQueueAddMsg.output(idx, 2), false);
                 break;
             case MediaContextMenu.ADD_AND_PLAY:
-                stateManager.sendPlayQueueMsg(PlayQueueAddMsg.output(idx, 0), false);
+                if (dcpCmd != null)
+                {
+                    _sendDcpMediaCmd(dcpCmd, 1 /* play now */);
+                }
+                else
+                {
+                    stateManager.sendPlayQueueMsg(PlayQueueAddMsg.output(idx, 0), false);
+                }
                 break;
             case MediaContextMenu.REMOVE:
                 stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(0, idx), false);
                 break;
             case MediaContextMenu.REMOVE_ALL:
-                if (configuration.isAdvancedQueue)
+                if (dcpCmd != null || configuration.isAdvancedQueue)
                 {
                     stateManager.sendPlayQueueMsg(PlayQueueRemoveMsg.output(1, 0), false);
                 }
@@ -554,6 +645,21 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 {
                     _addShortcut(context, shortcutItem, shortcutAlias);
                 }
+                break;
+            case MediaContextMenu.SO_ADD_TO_HEOS:
+                _callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_TO_HEOS);
+                break;
+            case MediaContextMenu.SO_REMOVE_FROM_HEOS:
+                _callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_REMOVE_FROM_HEOS);
+                break;
+            case MediaContextMenu.SO_REPLACE_AND_PLAY_ALL:
+                _callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_REPLACE_AND_PLAY_ALL);
+                break;
+            case MediaContextMenu.SO_ADD_ALL:
+                _callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_ALL);
+                break;
+            case MediaContextMenu.SO_ADD_AND_PLAY_ALL:
+                _callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL);
                 break;
         }
     }
@@ -882,4 +988,24 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     bool _returnMessageExists(final List<ISCPMessage> items)
     => items.isNotEmpty && (items.first is OperationCommandMsg || items.first is DcpMediaContainerMsg);
+
+    void _sendDcpMediaCmd(DcpMediaContainerMsg mc, int aid)
+    {
+        final DcpMediaContainerMsg mc1 = DcpMediaContainerMsg.copy(mc);
+        mc1.setAid(aid.toString());
+        stateManager.sendMessage(mc1);
+    }
+
+    XmlListItemMsg _findDcpMenuItem(List<XmlListItemMsg> menuItems, int id)
+    => menuItems.firstWhere((item) => item.getMessageId == id, orElse: () => null);
+
+    void _callDcpMenuItem(DcpMediaContainerMsg dcpCmd, int id)
+    {
+        final List<XmlListItemMsg> menuItems = state.mediaListState.cloneDcpTrackMenuItems(dcpCmd);
+        final XmlListItemMsg item = _findDcpMenuItem(menuItems, id);
+        if (item != null)
+        {
+            stateManager.sendMessage(item);
+        }
+    }
 }

@@ -17,7 +17,6 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
-import "../iscp/StateManager.dart";
 import "../iscp/messages/XmlListItemMsg.dart";
 import "../views/TrackMenuView.dart";
 import "../views/UpdatableView.dart";

@@ -149,7 +149,7 @@ class ShortcutsView extends UpdatableView
         if (state.isConnected)
         {
             stateManager.applyShortcut(s);
-            stateManager.triggerStateEvent(StateManager.APPLY_FAVORITE_EVENT);
+            stateManager.triggerStateEvent(StateManager.OPEN_MEDIA_VIEW);
         }
     }
 }
