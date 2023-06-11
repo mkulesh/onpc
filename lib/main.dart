@@ -39,6 +39,7 @@ import "constants/Dimens.dart";
 import "constants/Strings.dart";
 import "dialogs/DeviceSearchDialog.dart";
 import "dialogs/PopupManager.dart";
+import "iscp/ConnectionIf.dart";
 import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
 import "iscp/messages/OperationCommandMsg.dart";
@@ -315,7 +316,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 case Configuration.CONFIGURATION_EVENT:
                     setState(()
                     {
-                        _configuration.read();
+                        _configuration.read(protoType: _stateManager.protoType);
                         _applyConfiguration(informPlatform: true, updScripts: true);
                     });
                     break;
@@ -334,6 +335,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                                 _stateManager.getConnection(), _stateManager.manualAlias, null);
                         }
                         _configuration.setReceiverInformation(_viewContext.stateManager);
+                        _applyConfiguration(informPlatform: false, updScripts: false);
                         // startSearch calls multiroomState.updateFavorites
                         _stateManager.startSearch(limited: true);
                     }
@@ -546,9 +548,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
             _stateManager.updateScripts(autoPower: _configuration.autoPower);
         }
 
-        if (Platform.isDesktop)
+        _stateManager.usbSerial.dispose();
+        if (Platform.isDesktop && _stateManager.protoType == ProtoType.ISCP)
         {
-            _stateManager.usbSerial.dispose();
             _stateManager.usbSerial.openPort(_configuration.riCommands.usbPort);
         }
     }

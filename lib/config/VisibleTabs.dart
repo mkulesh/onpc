@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 
 import "../constants/Strings.dart";
+import "../iscp/ConnectionIf.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "CfgAppSettings.dart";
@@ -32,7 +33,7 @@ class VisibleTabs extends StatefulWidget
     => _VisibleTabsState(configuration);
 }
 
-class _VisibleTabsState extends State<VisibleTabs>
+class _VisibleTabsState extends State<VisibleTabs> with ProtoTypeMix
 {
     final Configuration _configuration;
     String _parameter;
@@ -40,6 +41,7 @@ class _VisibleTabsState extends State<VisibleTabs>
 
     _VisibleTabsState(this._configuration)
     {
+        setProtoType(_configuration.protoType);
         _parameter = CfgAppSettings.VISIBLE_TABS;
         _createItems();
     }
@@ -52,6 +54,10 @@ class _VisibleTabsState extends State<VisibleTabs>
         {
             for (AppTabs i in AppTabs.values)
             {
+                if (!CfgAppSettings.isTabEnabled(i, protoType))
+                {
+                    continue;
+                }
                 final String code = Convert.enumToString(i);
                 if (code == sp.code)
                 {

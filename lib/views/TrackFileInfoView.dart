@@ -66,17 +66,18 @@ class TrackFileInfoView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
+        final avInfoEnabled = state.isOn && state.protoType == ProtoType.ISCP;
         // File format info
         final String serviceIcon = state.getServiceIcon();
         Widget textFileFormat = Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-                CustomImageButton.small(serviceIcon, Strings.av_info_dialog, isEnabled: state.isOn),
+                CustomImageButton.small(serviceIcon, Strings.av_info_dialog, isEnabled: avInfoEnabled),
                 Expanded(child: CustomTextLabel.small(_buildFileFormat(), textAlign: TextAlign.left))
             ]);
 
-        if (state.isOn)
+        if (avInfoEnabled)
         {
             textFileFormat = InkWell(
                 child: textFileFormat,

@@ -178,7 +178,7 @@ class ReceiverInformation
         }
     }
 
-    bool processReceiverInformation(ReceiverInformationMsg msg)
+    bool processReceiverInformation(ReceiverInformationMsg msg, int activeZone)
     {
         _xml = msg.getData;
 
@@ -192,7 +192,13 @@ class ReceiverInformation
         _zones.addAll(msg.zones);
 
         _deviceSelectors.clear();
-        _deviceSelectors.addAll(msg.deviceSelectors);
+        msg.deviceSelectors.forEach((s)
+        {
+            if (s.isActiveForZone(activeZone))
+            {
+                _deviceSelectors.add(s);
+            }
+        });
 
         _presetList.clear();
         _presetList.addAll(msg.presetList);
@@ -303,7 +309,7 @@ class ReceiverInformation
     => _presetList.firstWhere((p) => p.getId == preset, orElse: () => null);
 
     int nextEmptyPreset()
-    => _presetList.firstWhere((p) => p.isEmpty, orElse: () => Preset(0xFF, 0, "0", "")).getId;
+    => _presetList.firstWhere((p) => p.isEmpty, orElse: () => Preset(presetList.length + 1, 0, "0", "")).getId;
 
     bool isControlExists(final String control)
     => _controlList.isNotEmpty && _controlList.contains(control);

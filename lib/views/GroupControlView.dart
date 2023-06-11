@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/MultiroomChannelSettingMsg.dart";
@@ -57,7 +58,11 @@ class GroupControlView extends UpdatableView
         int maxGroupId = 0;
         state.multiroomState.deviceList.forEach((key, di)
         {
-            if (stateManager.isMasterDevice(di))
+            if (di.responseMsg.protoType == ProtoType.DCP)
+            {
+                // nothing to do
+            }
+            else if (stateManager.isMasterDevice(di))
             {
                 devices.insert(0, di);
             }

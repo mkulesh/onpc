@@ -17,6 +17,7 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/FirmwareUpdateMsg.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
@@ -140,10 +141,13 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             ]));
 
             // Year
-            rows.add(TableRow(children: [
-                _buildRowTitle(Strings.device_year),
-                CustomTextLabel.normal(isData ? ri.year : "")
-            ]));
+            if (state.protoType == ProtoType.ISCP)
+            {
+                rows.add(TableRow(children: [
+                    _buildRowTitle(Strings.device_year),
+                    CustomTextLabel.normal(isData ? ri.year : "")
+                ]));
+            }
 
             // Firmware update status
             Widget firmwareInfo = CustomTextLabel.normal(isData ? ri.firmaware : "");
@@ -193,10 +197,13 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             ]));
 
             // Google cast
-            rows.add(TableRow(children: [
-                _buildRowTitle(Strings.google_cast_version),
-                CustomTextLabel.normal(isData ? ri.googleCastVersion : "")
-            ]));
+            if (state.protoType == ProtoType.ISCP)
+            {
+                rows.add(TableRow(children: [
+                    _buildRowTitle(Strings.google_cast_version),
+                    CustomTextLabel.normal(isData ? ri.googleCastVersion : "")
+                ]));
+            }
         }
 
         final Map<int, TableColumnWidth> columnWidths = Map();

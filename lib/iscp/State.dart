@@ -237,7 +237,7 @@ class State with ProtoTypeMix
         if (!SKIP_XML_MESSAGES && msg is ReceiverInformationMsg)
         {
             final String changed = _isChange(ReceiverInformationMsg.CODE,
-                _receiverInformation.processReceiverInformation(msg));
+                _receiverInformation.processReceiverInformation(msg, getActiveZone));
             if (_mediaListState.isRadioInput)
             {
                 _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);

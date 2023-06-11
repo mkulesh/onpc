@@ -705,7 +705,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
                 // Add new selector
                 newSelector = Selector(
                     inputType.getCode,
-                    defName != null ? defName : name,
+                    defName != null ? defName.toUpperCase() : name.toUpperCase(),
                     pow(2, zone), iconId, false);
             }
             else

@@ -22,6 +22,7 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../dialogs/DropdownPreferenceDialog.dart";
+import "../iscp/ConnectionIf.dart";
 import "../utils/Pair.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
@@ -43,11 +44,14 @@ class PreferencesMain extends StatefulWidget
     => _PreferencesMainState(configuration);
 }
 
-class _PreferencesMainState extends State<PreferencesMain>
+class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
 {
     final Configuration _configuration;
 
-    _PreferencesMainState(this._configuration);
+    _PreferencesMainState(this._configuration)
+    {
+        setProtoType(_configuration.protoType);
+    }
 
     @override
     Widget build(BuildContext context)
@@ -192,7 +196,7 @@ class _PreferencesMainState extends State<PreferencesMain>
                 activity: Activities.activity_keyboard_shortcuts));
         }
 
-        if (Platform.isDesktop)
+        if (Platform.isDesktop && protoType == ProtoType.ISCP)
         {
             final List<String> values = [ "" ];
             final List<String> displayValues = [ Strings.pref_usb_ri_interface_none ];
@@ -229,17 +233,20 @@ class _PreferencesMainState extends State<PreferencesMain>
                 desc: Strings.pref_back_as_return_summary));
         }
 
-        elements.add(_customSwitchPreference(td,
-            Strings.pref_advanced_queue,
-            Configuration.ADVANCED_QUEUE,
-            icon: Drawables.pref_advanced_queue,
-            desc: Strings.pref_advanced_queue_summary));
+        if (protoType == ProtoType.ISCP)
+        {
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_advanced_queue,
+                Configuration.ADVANCED_QUEUE,
+                icon: Drawables.pref_advanced_queue,
+                desc: Strings.pref_advanced_queue_summary));
 
-        elements.add(_customSwitchPreference(td,
-            Strings.pref_keep_playback_mode,
-            Configuration.KEEP_PLAYBACK_MODE,
-            icon: Drawables.cmd_track_menu,
-            desc: Strings.pref_keep_playback_mode_summary));
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_keep_playback_mode,
+                Configuration.KEEP_PLAYBACK_MODE,
+                icon: Drawables.cmd_track_menu,
+                desc: Strings.pref_keep_playback_mode_summary));
+        }
 
         if (Platform.isAndroid)
         {

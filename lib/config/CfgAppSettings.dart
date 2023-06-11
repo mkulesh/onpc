@@ -15,11 +15,12 @@
 import 'dart:ui';
 
 import "package:flutter/material.dart";
-import "package:onpc/constants/Themes.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../Platform.dart";
 import "../constants/Strings.dart";
+import "../constants/Themes.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
@@ -158,6 +159,18 @@ class CfgAppSettings extends CfgModule
     bool get isSingleTab
     => _visibleTabs.length <= 1;
 
+    static bool isTabEnabled(AppTabs t, ProtoType protoType)
+    {
+        switch(t)
+        {
+            case AppTabs.SHORTCUTS:
+            case AppTabs.RI:
+                return protoType == ProtoType.ISCP;
+            default:
+                return true;
+        }
+    }
+
     // Tab settings
     final List<CfgTabSettings> _tabSettings = [];
 
@@ -276,7 +289,7 @@ class CfgAppSettings extends CfgModule
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);
 
     @override
-    void read()
+    void read({ProtoType protoType})
     {
         _theme = getString(THEME, doLog: true);
         _language = getString(LANGUAGE, doLog: true);
@@ -287,7 +300,7 @@ class CfgAppSettings extends CfgModule
         final String sortMode = getString(MEDIA_SORT_MODE, doLog: true);
         _mediaSortMode = MediaSortMode.values.firstWhere((t)
             => Convert.enumToString(t) == sortMode, orElse: () => MediaSortMode.values.first);
-        _readVisibleTabs();
+        _readVisibleTabs(protoType);
         _readControlElements();
         if (Platform.isDesktop)
         {
@@ -306,7 +319,7 @@ class CfgAppSettings extends CfgModule
     @override
     void setReceiverInformation(StateManager stateManager)
     {
-        // empty
+        _readVisibleTabs(stateManager.protoType);
     }
 
     static String getTabName(AppTabs item)
@@ -314,7 +327,7 @@ class CfgAppSettings extends CfgModule
         return item.index < Strings.pref_visible_tabs_names.length ? Strings.pref_visible_tabs_names[item.index].toUpperCase() : "";
     }
 
-    void _readVisibleTabs()
+    void _readVisibleTabs(ProtoType protoType)
     {
         _visibleTabs.clear();
         final List<String> defItems = [];
@@ -323,6 +336,10 @@ class CfgAppSettings extends CfgModule
         {
             for (AppTabs i in AppTabs.values)
             {
+                if (protoType != null && !isTabEnabled(i, protoType))
+                {
+                    continue;
+                }
                 if (sp.checked && Convert.enumToString(i) == sp.code)
                 {
                     _visibleTabs.add(i);

@@ -231,6 +231,9 @@ class StateManager
     bool get isConnected
     => _messageChannel.isConnected;
 
+    ProtoType get protoType
+    => state.protoType;
+    
     DeviceInfo get sourceDevice
     => state.multiroomState.deviceList.values.firstWhere((d) => isSourceHost(d.responseMsg), orElse: () => null);
 
@@ -265,7 +268,7 @@ class StateManager
             _onStateChanged(Set.from([CONNECTION_EVENT]));
         }
 
-        if (_state.protoType == ProtoType.ISCP)
+        if (protoType == ProtoType.ISCP)
         {
             _requestInitialIscpState(requestCoverLink : true, runScrips : true);
         }
@@ -739,7 +742,7 @@ class StateManager
         {
             _onConnectionError(result);
         }
-        _onProcessFinished(state.updateConnection(false, state.protoType), CONNECTION_EVENT);
+        _onProcessFinished(state.updateConnection(false, protoType), CONNECTION_EVENT);
     }
 
     void _requestListState()
@@ -876,7 +879,7 @@ class StateManager
             // send OperationCommandMsg if current mode is LIST
             sendTrackCmd(state.getActiveZone, key, false);
         }
-        else if (state.protoType == ProtoType.ISCP && key == OperationCommand.PLAY)
+        else if (protoType == ProtoType.ISCP && key == OperationCommand.PLAY)
         {
             // For Onkyo only: To start play in normal mode, PAUSE shall be issue instead of PLAY command
             sendMessage(OperationCommandMsg.output(state.getActiveZone, OperationCommand.PAUSE));
@@ -884,12 +887,12 @@ class StateManager
         else if (key == OperationCommand.REPEAT)
         {
             sendMessage(OperationCommandMsg.output(state.getActiveZone,
-                OperationCommandMsg.toggleRepeat(state.protoType, state.playbackState.repeatStatus.key)));
+                OperationCommandMsg.toggleRepeat(protoType, state.playbackState.repeatStatus.key)));
         }
         else if (key == OperationCommand.RANDOM)
         {
             sendMessage(OperationCommandMsg.output(state.getActiveZone,
-                OperationCommandMsg.toggleShuffle(state.protoType, state.playbackState.shuffleStatus)));
+                OperationCommandMsg.toggleShuffle(protoType, state.playbackState.shuffleStatus)));
         }
         else
         {
@@ -912,7 +915,7 @@ class StateManager
                     MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP),
                     MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN),
                     AudioMutingMsg.toggle(state.getActiveZone,
-                        state.soundControlState.audioMuting, state.protoType)
+                        state.soundControlState.audioMuting, protoType)
                 ];
                 return sendMessage(cmds[cmd]);
             }
@@ -1115,7 +1118,7 @@ class StateManager
     ISCPMessage getReturnMessage()
     {
         final MediaListState ms = state.mediaListState;
-        if (state.protoType == ProtoType.DCP && ms.dcpMediaPath.length > 1)
+        if (protoType == ProtoType.DCP && ms.dcpMediaPath.length > 1)
         {
             return ms.dcpMediaPath[ms.dcpMediaPath.length - 2];
         }

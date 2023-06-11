@@ -143,7 +143,7 @@ class Configuration extends CfgModule
     }
 
     @override
-    void read()
+    void read({ProtoType protoType})
     {
         Logging.info(this, "Reading configuration...");
 
@@ -165,7 +165,7 @@ class Configuration extends CfgModule
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
 
         // configuration modules
-        appSettings.read();
+        appSettings.read(protoType: protoType);
         audioControl.read();
         favoriteConnections.read();
         favoriteShortcuts.read();
@@ -190,7 +190,7 @@ class Configuration extends CfgModule
             m = MODEL.item2;
         }
         Logging.info(this, "Save receiver information");
-        saveStringParameter(PROTO_TYPE, Convert.enumToString(stateManager.state.protoType), prefix: "  ");
+        saveStringParameter(PROTO_TYPE, Convert.enumToString(stateManager.protoType), prefix: "  ");
         saveStringParameter(MODEL, m, prefix: "  ");
         if (state.networkServices.isNotEmpty)
         {
