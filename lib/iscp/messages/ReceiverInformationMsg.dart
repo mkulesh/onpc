@@ -535,7 +535,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
 
     static void requestDcpReceiverInformation(final String host, OnReceiverInfo onReceiverInfo)
     {
-        final String port1 = "8080";
+        final String port1 = DCP_HTTP_PORT.toString();
         final String port2 = "80";
         _requestDcpXml(host, port1, "Deviceinfo.xml").then((ri1)
         {

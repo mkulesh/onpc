@@ -13,15 +13,16 @@
  */
 // @dart=2.9
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import "../utils/Logging.dart";
+import "ConnectionIf.dart";
 import "EISCPMessage.dart";
 import "messages/BroadcastResponseMsg.dart";
 
 class BroadcastSearch
 {
-    static const int ISCP_PORT = 60128;
     static const int TIMEOUT = 3;
 
     OnDeviceFound onDeviceFound;
@@ -33,7 +34,6 @@ class BroadcastSearch
     BroadcastSearch(this.onDeviceFound)
     {
         Logging.info(this, "Starting...");
-        final InternetAddress target = InternetAddress("255.255.255.255");
         RawDatagramSocket.bind(InternetAddress.anyIPv4, ISCP_PORT).then((RawDatagramSocket sock)
         {
             _socket = sock;
@@ -47,8 +47,9 @@ class BroadcastSearch
             {
                 if (_socket != null)
                 {
-                    _request(target, _mX, "x");
-                    _request(target, _mP, "p");
+                    _requestIscp(_mX, "x");
+                    _requestIscp(_mP, "p");
+                    _requestDcp();
                 }
                 else
                 {
@@ -70,8 +71,9 @@ class BroadcastSearch
         }
     }
 
-    void _request(final InternetAddress target, final EISCPMessage m, final String modelCategoryId)
+    void _requestIscp(final EISCPMessage m, final String modelCategoryId)
     {
+        final InternetAddress target = InternetAddress("255.255.255.255");
         if (_socket != null)
         {
             final List<int> bytes = m.getBytes();
@@ -79,6 +81,26 @@ class BroadcastSearch
             Logging.info(this, "message " + m.toString()
                 + " for category \'" + modelCategoryId
                 + "\' send to " + target.toString()
+                + ", wait response for " + TIMEOUT.toString() + "s");
+        }
+    }
+
+    void _requestDcp()
+    {
+        final String host = "239.255.255.250";
+        final String schema = "schemas-denon-com:device";
+        final String request =
+            "M-SEARCH * HTTP/1.1\r\n"
+                "HOST: " + host + ":" + DCP_UDP_PORT.toString() + "\r\n"
+                "MAN: \"ssdp:discover\"\r\n"
+                "MX: 10\r\n"
+                "ST: urn:" + schema + ":ACT-Denon:1\r\n\r\n";
+        final InternetAddress target = InternetAddress(host);
+        if (_socket != null)
+        {
+            final List<int> bytes = utf8.encode(request);
+            _socket.send(bytes, target, DCP_UDP_PORT);
+            Logging.info(this, "message M-SEARCH send to " + target.toString()
                 + ", wait response for " + TIMEOUT.toString() + "s");
         }
     }
@@ -100,6 +122,19 @@ class BroadcastSearch
         d.data.forEach((f)
         => buffer.add(f));
 
+        final String response = utf8.decode(buffer);
+        if (response.contains("schemas-denon-com:device"))
+        {
+            _processDcpResponse(d, response);
+        }
+        else
+        {
+            _processIscpResponse(d, buffer);
+        }
+    }
+
+    void _processIscpResponse(final Datagram d, List<int> buffer)
+    {
         // remove unused prefix
         final int startIndex = EISCPMessage.getMsgStartIndex(buffer);
         if (startIndex > 0)
@@ -137,7 +172,18 @@ class BroadcastSearch
         final BroadcastResponseMsg responseMessage = BroadcastResponseMsg(d.address, raw);
         if (onDeviceFound != null && responseMessage.isValidConnection())
         {
-            Logging.info(this, "<< device response " + responseMessage.toString());
+            Logging.info(this, "<< ISCP device response " + responseMessage.toString());
+            onDeviceFound(responseMessage);
+        }
+    }
+
+    void _processDcpResponse(final Datagram d, String response)
+    {
+        final BroadcastResponseMsg responseMessage =
+            BroadcastResponseMsg.dcp(d.address, DCP_PORT, "Denon-Heos AVR");
+        if (onDeviceFound != null && responseMessage.isValidConnection())
+        {
+            Logging.info(this, "<< DCP device response " + responseMessage.toString());
             onDeviceFound(responseMessage);
         }
     }

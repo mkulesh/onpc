@@ -991,7 +991,7 @@ class StateManager
         if (state.multiroomState.processBroadcastResponse(msg))
         {
             triggerStateEvent(BroadcastResponseMsg.CODE);
-            if (_messageChannel.isConnected && isSourceHost(msg))
+            if (msg.protoType == ProtoType.ISCP && _messageChannel.isConnected && isSourceHost(msg))
             {
                 _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel));
             }
@@ -1000,7 +1000,7 @@ class StateManager
         {
             stopSearch();
         }
-        if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
+        if (msg.protoType == ProtoType.ISCP && !isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
         {
             Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort);
             final MessageChannel m = _createChannel(msg.getPort, _onMultiroomDeviceConnected, _onMultiroomDeviceDisconnected);
@@ -1102,7 +1102,7 @@ class StateManager
 
     MessageChannel _createChannel(int port, OnConnected _onConnected, OnDisconnected _onDisconnected)
     {
-        if (port == MessageChannelDcp.DCP_PORT)
+        if (port == DCP_PORT)
         {
             final MessageChannelDcp c =
                 MessageChannelDcp(_onConnected, _onNewDCPMessage, _onDisconnected);

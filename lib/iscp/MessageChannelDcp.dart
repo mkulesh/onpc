@@ -37,16 +37,13 @@ typedef OnNewISCPMessage = void Function(ISCPMessage message, MessageChannel cha
  */
 class MessageChannelDcp with ConnectionIf implements MessageChannel
 {
-    static const int DCP_PORT = 23;
     static const int DCP_SEND_DELAY = 75; // Send the COMMAND in 50ms or more intervals.
 
     // goform protocol
-    static const String DCP_GOFORM_PORT = "8080";
     static const String DCP_FORM_IPHONE_APP = "formiPhoneApp";
     static const String DCP_APP_COMMAND = "<cmd id=\"1\">";
 
     // HEOS protocol
-    static const int DCP_HEOS_PORT = 1255;
     static const String DCP_HEOS_REQUEST = "heos://";
     static const String DCP_HEOS_RESPONSE = "{\"heos\":";
 
@@ -357,7 +354,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
 
     void _sendDcpAppCommand(String msg)
     {
-        final String url = ISCPMessage.getDcpGoformUrl(getHost, DCP_GOFORM_PORT, "AppCommand.xml");
+        final String url = ISCPMessage.getDcpGoformUrl(getHost, DCP_HTTP_PORT.toString(), "AppCommand.xml");
         final String json = "{\"body\": \"" + ISCPMessage.getDcpAppCommand(msg) + "\"}";
         Logging.info(this, ">> DCP AppCommand POST request: " + url + json);
         http.post(Uri.parse(url), headers: {"Content-Type": "text/xml; charset=UTF-8"}, body: json).then((http.Response value)

@@ -14,6 +14,7 @@
 // @dart=2.9
 import 'dart:io';
 
+import "../../utils/Convert.dart";
 import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -32,7 +33,7 @@ import "../ISCPMessage.dart";
 
 typedef OnDeviceFound = void Function(BroadcastResponseMsg msg);
 
-class BroadcastResponseMsg extends ISCPMessage
+class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
 {
     static const String CODE = "ECN";
 
@@ -61,6 +62,7 @@ class BroadcastResponseMsg extends ISCPMessage
         {
             _identifier = _trim(tokens[3]);
         }
+        setProtoType(ProtoType.ISCP);
         // _alias still be null
     }
 
@@ -70,6 +72,7 @@ class BroadcastResponseMsg extends ISCPMessage
         setPort(ISCPMessage.nonNullInteger(port, 10, 0));
         this._identifier = identifier;
         this._alias = alias;
+        setProtoType(getPort == DCP_PORT ? ProtoType.DCP : ProtoType.ISCP);
         // all other fields still be null
     }
 
@@ -78,6 +81,16 @@ class BroadcastResponseMsg extends ISCPMessage
         setHostAndPort(connection);
         this._identifier = identifier;
         this._alias = alias;
+        setProtoType(getPort == DCP_PORT ? ProtoType.DCP : ProtoType.ISCP);
+        // all other fields still be null
+    }
+
+    BroadcastResponseMsg.dcp(InternetAddress hostAddress, final int port, final String model) : super.output(CODE, "")
+    {
+        setHost(hostAddress.address);
+        setPort(port);
+        this._model = model;
+        setProtoType(ProtoType.DCP);
         // all other fields still be null
     }
 
@@ -98,6 +111,7 @@ class BroadcastResponseMsg extends ISCPMessage
     @override
     String toString()
     => super.toString() + "[HOST=" + getHostAndPort
+            + "; " + Convert.enumToString(protoType)
             + (_model != null ? "; MODEL=" + _model : "")
             + (_destinationArea != null ? "; DST=" + _destinationArea : "")
             + (_identifier != null ? "; ID=" + _identifier : "")
