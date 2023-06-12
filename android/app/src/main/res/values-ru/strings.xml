@@ -17,7 +17,7 @@
     <!-- Main view -->
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Улучшенный контроллер для Onkyo и Pioneer: слушайте музыку правильно!</string>
+    <string name="app_description">Улучшенный AVR-контроллер: слушайте музыку правильно!</string>
 
     <!-- Navigation drawer -->
     <string name="drawer_all_standby">Выкл. все зоны</string>

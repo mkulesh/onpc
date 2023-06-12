@@ -17,7 +17,7 @@
     <!-- Main view -->
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Contrôleur optimisé pour Onkyo et Pioneer: Écoutez votre musique correctement!</string>
+    <string name="app_description">Contrôleur AVR amélioré: Ecoutez votre musique correctement!</string>
 
     <!-- Navigation drawer -->
     <string name="drawer_all_standby">Veille de toutes les zones</string>

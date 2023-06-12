@@ -186,11 +186,11 @@ class Strings
     static String get app_short_name => l_app_short_name[_language];
 
     static const List<String> l_app_description = [
-        /*en*/ "Enhanced controller for Onkyo and Pioneer: listen to music properly!",
-        /*ru*/ "Улучшенный контроллер для Onkyo и Pioneer: слушайте музыку правильно!",
-        /*de*/ "Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!",
-        /*fr*/ "Contrôleur optimisé pour Onkyo et Pioneer: Écoutez votre musique correctement!",
-        /*pl*/ "Ulepszony kontroler do urządzeń Onkyo i Pioneer: słuchaj muzyki poprawnie!"];
+        /*en*/ "Enhanced AVR controller: listen to music properly!",
+        /*ru*/ "Улучшенный AVR-контроллер: слушайте музыку правильно!",
+        /*de*/ "Verbesserter AVR-Controller: Musik richtig hören!",
+        /*fr*/ "Contrôleur AVR amélioré: Ecoutez votre musique correctement!",
+        /*pl*/ "Ulepszony kontroler AVR: słuchaj muzyki poprawnie!"];
     static String get app_description => l_app_description[_language];
 
     static const List<String> l_state_not_connected = [
@@ -259,12 +259,14 @@ class Strings
 
     static const List<String> l_about_text = [
         /*en*/ """
-# Enhanced Controller for Onkyo and Pioneer
+# Enhanced AVR Controller
 Listen to music properly!
 
 Copyright © 2019-2023 by __Mikhail Kulesh__
 
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
+This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
+The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
+Its two most popular features are music playback and sound profile management.
 
 ## Links
 
@@ -289,12 +291,14 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
 Enjoy!""",
         /*ru*/ """
-# Улучшенный контроллер для Onkyo и Pioneer
+# Улучшенный AVR-контроллер
 Слушайте музыку правильно!
 
 Copyright © 2019-2023 by __Михаил Кулеш__
 
-Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Pioneer/Integra по локальной сети, используя сетевой протокол "Integra Serial Communication Protocol". Основное предназначение программы - управление воспроизведением и звуковыми профилями.
+Это приложение позволяет удаленно управлять сетевым проигрывателем или сетевым AV-ресивером по локальной сети.
+Приложение поддерживает Onkyo/Pioneer/Integra, выпущенные в апреле 2016 года или позже, и Denon/Marantz со встроенной технологией HEOS.
+Основное предназначение программы - управление воспроизведением и звуковыми профилями.
 
 ## Ссылки
 
@@ -317,12 +321,14 @@ Copyright © 2019-2023 by __Михаил Кулеш__
 * Flutter: [flutter.dev](https://flutter.dev)
 * Flutter packages: [pub.dev/packages](https://pub.dev/packages)""",
         /*de*/ """
-# Verbesserte Fernsteuerung für Onkyo und Pioneer
+# Verbesserter AVR-Controller
 Musik richtig hören!
 
 Copyright © 2019-2023 by __Mikhail Kulesh__
 
-Diese App steuert Onkyo/Pioneer/Integra Netzwerk Abspielgeräte und A/V Receiver über das "Integra Serial Communication Protocol". Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.
+Diese App ermöglicht die Fernsteuerung eines Netzwerkplayers oder eines Netzwerk-A/V-Receivers über das lokale Netzwerk.
+Die App unterstützt Onkyo/Pioneer/Integra, die im April 2016 oder später veröffentlicht wurden, und Denon/Marantz mit integrierter HEOS-Technologie.
+Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.
 
 ## Links
 
@@ -345,12 +351,14 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 * Flutter: [flutter.dev](https://flutter.dev)
 * Flutter packages: [pub.dev/packages](https://pub.dev/packages)""",
         /*fr*/ """
-# Contrôleur optimisé pour Onkyo et Pioneer
+# Contrôleur AVR amélioré
 Ecoutez votre musique correctement!
 
 Copyright © 2019-2023 by __Mikhail Kulesh__
 
-Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol". Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.
+Cette application permet le contrôle à distance d\'un lecteur réseau ou d\'un récepteur réseau A/V via le réseau local.
+L\'application prend en charge Onkyo/Pioneer/Integra sorti en avril 2016 ou plus tard et Denon/Marantz avec la technologie HEOS intégrée.
+Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.
 
 ## Liens
 
@@ -372,12 +380,14 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
 * Flutter packages: [pub.dev/packages](https://pub.dev/packages)
 """,
         /*pl*/ """
-# Enhanced Controller for Onkyo and Pioneer
+# Enhanced AVR Controller
 Listen to music properly!
 
 Copyright © 2019-2023 by __Mikhail Kulesh__
 
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
+This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
+The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
+Its two most popular features are music playback and sound profile management.
 
 ## Links
 

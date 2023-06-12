@@ -19,7 +19,7 @@
     <!-- Main view -->
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo and Pioneer: listen to music properly!</string>
+    <string name="app_description">Enhanced AVR controller: listen to music properly!</string>
 
     <!-- Navigation drawer -->
     <string name="drawer_all_standby">All Zones standby</string>

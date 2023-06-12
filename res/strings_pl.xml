@@ -18,7 +18,7 @@
     <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Ulepszony kontroler do urządzeń Onkyo i Pioneer: słuchaj muzyki poprawnie!</string>
+    <string name="app_description">Ulepszony kontroler AVR: słuchaj muzyki poprawnie!</string>
     <string name="state_not_connected">Nie połączono</string>
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Naciśnij ponownie przycisk wstecz aby wyjść</string>
@@ -29,12 +29,14 @@
     <string name="action_context_desktop">prawy przycisk myszy</string>
 
     <string name="about_text">""
-# Enhanced Controller for Onkyo and Pioneer
+# Enhanced AVR Controller
 Listen to music properly!
 
 Copyright © 2019-2023 by __Mikhail Kulesh__
 
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.
+This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
+The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
+Its two most popular features are music playback and sound profile management.
 
 ## Links
 

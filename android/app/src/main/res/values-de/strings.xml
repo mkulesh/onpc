@@ -17,7 +17,7 @@
     <!-- Main view -->
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Verbesserte Fernsteuerung für Onkyo und Pioneer: Musik richtig hören!</string>
+    <string name="app_description">Verbesserter AVR-Controller: Musik richtig hören!</string>
 
     <!-- Navigation drawer -->
     <string name="drawer_all_standby">Alle Zonen aus</string>
