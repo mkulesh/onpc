@@ -23,6 +23,7 @@ import "../messages/InputSelectorMsg.dart";
 import "../messages/ListInfoMsg.dart";
 import "../messages/ListTitleInfoMsg.dart";
 import "../messages/NetworkServiceMsg.dart";
+import "../messages/OperationCommandMsg.dart";
 import "../messages/PresetCommandMsg.dart";
 import "../messages/ReceiverInformationMsg.dart";
 import "../messages/ServiceType.dart";
@@ -575,6 +576,7 @@ class MediaListState
         {
             return false;
         }
+        _mediaItems.removeWhere((e) => isReturnMsg(e));
         _mediaItems.addAll(msg.getItems());
         _mediaItems.sort((ISCPMessage lhs, ISCPMessage rhs)
         {
@@ -672,4 +674,16 @@ class MediaListState
             }
         }
     }
+
+    ISCPMessage getReturnMessage(ProtoType protoType)
+    {
+        if (protoType == ProtoType.DCP && _dcpMediaPath.length > 1)
+        {
+            return _dcpMediaPath[_dcpMediaPath.length - 2];
+        }
+        return OperationCommandMsg.output(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
+    }
+
+    bool isReturnMsg(ISCPMessage msg)
+    => (msg is OperationCommandMsg || msg is DcpMediaContainerMsg);
 }

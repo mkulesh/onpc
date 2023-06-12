@@ -342,7 +342,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     setState(() {});
                     break;
                 case StateManager.OPEN_MEDIA_VIEW:
-                    final AppTabs tab = AppTabs.values.firstWhere(
+                    final AppTabs tab = _configuration.appSettings.visibleTabs.firstWhere(
                         (t) => _isControlActive(AppControl.MEDIA_LIST, appTab: t),
                         orElse: () => null);
                     if (tab != null)

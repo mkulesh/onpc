@@ -987,7 +987,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     }
 
     bool _returnMessageExists(final List<ISCPMessage> items)
-    => items.isNotEmpty && (items.first is OperationCommandMsg || items.first is DcpMediaContainerMsg);
+    => items.isNotEmpty && state.mediaListState.isReturnMsg(items.first);
 
     void _sendDcpMediaCmd(DcpMediaContainerMsg mc, int aid)
     {

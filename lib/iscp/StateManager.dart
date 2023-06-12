@@ -1128,12 +1128,5 @@ class StateManager
     }
 
     ISCPMessage getReturnMessage()
-    {
-        final MediaListState ms = state.mediaListState;
-        if (protoType == ProtoType.DCP && ms.dcpMediaPath.length > 1)
-        {
-            return ms.dcpMediaPath[ms.dcpMediaPath.length - 2];
-        }
-        return OperationCommandMsg.output(State.DEFAULT_ACTIVE_ZONE, OperationCommand.RETURN);
-    }
+    => state.mediaListState.getReturnMessage(protoType);
 }

@@ -19,6 +19,7 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/JacketArtMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "UpdatableView.dart";
@@ -29,6 +30,7 @@ class TrackCoverView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         PowerStatusMsg.CODE,
         JacketArtMsg.CODE,
+        InputSelectorMsg.CODE
     ];
 
     TrackCoverView(final ViewContext viewContext, { this.flex = 1 }) : super(viewContext, UPDATE_TRIGGERS);

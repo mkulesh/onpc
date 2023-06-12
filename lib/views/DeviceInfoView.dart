@@ -165,7 +165,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             }
 
             final List validVersions = [FirmwareUpdate.ACTUAL, FirmwareUpdate.NEW_VERSION, FirmwareUpdate.NEW_VERSION_NORMAL, FirmwareUpdate.NEW_VERSION_FORCE];
-            if (validVersions.contains(ri.firmwareStatus.key))
+            if (state.protoType == ProtoType.ISCP && validVersions.contains(ri.firmwareStatus.key))
             {
                 firmwareInfo = Row(
                     mainAxisSize: MainAxisSize.max,

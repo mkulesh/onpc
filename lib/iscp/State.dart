@@ -378,14 +378,14 @@ class State with ProtoTypeMix
         if (msg is InputSelectorMsg)
         {
             final String changed = _isChange(InputSelectorMsg.CODE, _mediaListState.processInputSelector(msg));
-            if (_mediaListState.isRadioInput)
-            {
-                _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
-            }
-            else if (_mediaListState.isSimpleInput)
+            if (_mediaListState.isSimpleInput)
             {
                 _trackState.clear();
                 _playbackState.clear();
+            }
+            if (_mediaListState.isRadioInput)
+            {
+                _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
             }
             return changed;
         }
