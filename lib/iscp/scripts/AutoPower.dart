@@ -15,6 +15,7 @@
 import 'package:flutter/services.dart';
 
 import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
 import "../MessageChannel.dart";
 import "../State.dart";
@@ -47,10 +48,8 @@ class AutoPower implements MessageScriptIf
     AutoPower(this.autoPowerMode);
 
     @override
-    bool isValid()
-    {
-        return true;
-    }
+    bool isValid(ProtoType protoType)
+    => true;
 
     @override
     void initialize(final String data)

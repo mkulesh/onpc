@@ -126,8 +126,8 @@ class MessageScript with ConnectionIf implements MessageScriptIf
     }
 
     @override
-    bool isValid()
-    => actions.isNotEmpty;
+    bool isValid(ProtoType protoType)
+    => protoType == ProtoType.ISCP && actions.isNotEmpty;
 
     @override
     void initialize(final String data)

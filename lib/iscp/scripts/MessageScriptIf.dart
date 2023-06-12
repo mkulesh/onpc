@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 // @dart=2.9
+import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
 import "../MessageChannel.dart";
 import "../State.dart";
@@ -21,7 +22,7 @@ abstract class MessageScriptIf
     //
     // Checks whether the script contains valid action to be performed
     //
-    bool isValid();
+    bool isValid(ProtoType protoType);
 
     //
     // This method shall parse the data field in the input intent. After XML data is parsed,

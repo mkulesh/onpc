@@ -164,11 +164,11 @@ class StateManager
     State get state
     => _state;
 
-    // MessageScript processor
-    final List<MessageScriptIf> _messageScripts = [];
-
     // USB-RI interface
     final SerialPortWrapper usbSerial = SerialPortWrapper();
+
+    // MessageScript processor
+    final List<MessageScriptIf> _messageScripts = [];
 
     void clearScripts()
     {
@@ -274,7 +274,7 @@ class StateManager
         }
         else
         {
-            _requestInitialDcpState();
+            _requestInitialDcpState(runScrips : true);
         }
 
         // After scripts are started, no need to hold intent host
@@ -299,20 +299,19 @@ class StateManager
         // initial call os the message scripts
         if (runScrips)
         {
-            for (MessageScriptIf script in _messageScripts)
-            {
-                if (script.isValid())
-                {
-                    script.start(state, _messageChannel);
-                }
-            }
+            _startScripts();
         }
     }
 
-    void _requestInitialDcpState()
+    void _requestInitialDcpState({bool runScrips = false})
     {
         ReceiverInformationMsg.requestDcpReceiverInformation(_messageChannel.getHost, (ReceiverInformationMsg msg)
         {
+            // initial call os the message scripts
+            if (runScrips)
+            {
+                _startScripts();
+            }
             if (msg == null)
             {
                 // request DcpReceiverInformationMsg here since no ReceiverInformation exists
@@ -363,13 +362,7 @@ class StateManager
                 final ISCPMessage msg = MessageFactory.create(raw);
                 msg.setHostAndPort(channel);
                 final String changeCode = _processIscpMessage(msg);
-                for (MessageScriptIf script in _messageScripts)
-                {
-                    if (script.isValid())
-                    {
-                        script.processMessage(msg, state, channel);
-                    }
-                }
+                _processScripts(msg, channel);
                 _onProcessFinished(changeCode != null, changeCode);
             }
             on Exception catch (e)
@@ -589,6 +582,7 @@ class StateManager
             {
                 raw.setHostAndPort(channel);
                 final String changeCode = _processDcpMessage(raw);
+                _processScripts(raw, channel);
                 _onProcessFinished(changeCode != null, changeCode);
             }
             on Exception catch (e)
@@ -1077,17 +1071,35 @@ class StateManager
             addScript(AutoPower(powerMode));
         }
         addScript(RequestListeningMode());
-        if (messageScript != null && messageScript.isValid())
+        if (messageScript != null && messageScript.isValid(protoType))
         {
             addScript(messageScript);
             _intentHost = messageScript;
         }
     }
 
-    void activateScript(final MessageScript script)
+    void _startScripts()
+    => _messageScripts.forEach((script)
+    {
+        if (script.isValid(protoType))
+        {
+            script.start(state, _messageChannel);
+        }
+    });
+
+    void _processScripts(final ISCPMessage msg, MessageChannel channel)
+    => _messageScripts.forEach((script)
+    {
+        if (script.isValid(protoType))
+        {
+            script.processMessage(msg, state, channel);
+        }
+    });
+
+    void _activateScript(final MessageScript script)
     {
         _messageScripts.removeWhere((s) => s is MessageScript);
-        if (script.isValid())
+        if (script.isValid(protoType))
         {
             _messageScripts.add(script);
             script.start(state, _messageChannel);
@@ -1099,7 +1111,7 @@ class StateManager
         if (shortcut != null)
         {
             Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-            activateScript(MessageScript(shortcut.toScript(state.receiverInformation.model, state.mediaListState)));
+            _activateScript(MessageScript(shortcut.toScript(state.receiverInformation.model, state.mediaListState)));
         }
     }
 

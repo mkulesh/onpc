@@ -15,6 +15,7 @@
 import "dart:async";
 
 import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "../MessageChannel.dart";
@@ -38,10 +39,8 @@ class RequestListeningMode implements MessageScriptIf
     Timer listeningModeTimer;
 
     @override
-    bool isValid()
-    {
-        return true;
-    }
+    bool isValid(ProtoType protoType)
+    => protoType == ProtoType.ISCP;
 
     @override
     void initialize(final String data)

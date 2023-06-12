@@ -74,7 +74,8 @@ class DrawerView extends UpdatableView
             drawerItems.add(CustomTextLabel.small(Strings.drawer_group_zone, padding: DrawerDimens.labelPadding));
             state.receiverInformation.zones.forEach((z)
             {
-                final bool active = state.getActiveZoneInfo.getId == z.getId;
+                final bool active = (state.getActiveZoneInfo != null) ?
+                    state.getActiveZoneInfo.getId == z.getId : false;
                 drawerItems.add(_buildDrawerItem(
                     context, Drawables.drawerZone(z.getId), z.getName, isSelected: active,
                     onTabListener: (context)
