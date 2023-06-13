@@ -519,7 +519,9 @@ class StateManager
                 sendQueries(queries);
                 // Some devices (like TX-8150) does not proved cover image;
                 // we shall specially request it:
-                if (state.receiverInformation.model == "TX-8150")
+                // #277: Album cover is also missing for Spotify on VSX-LX302
+                if (state.receiverInformation.model == "TX-8150" ||
+                    state.mediaListState.isSpotify)
                 {
                     _messageChannel.sendMessage(
                         EISCPMessage.output(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
