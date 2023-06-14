@@ -159,7 +159,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _searchDialog = false;
         WidgetsBinding.instance.addObserver(this);
 
-        _onResume(autoPower: _configuration.autoPower).then((value)
+        _onResume().then((value)
         {
             // Prepare platform channel after connection data are processed in order
             // to prevent unnecessary NetworkStateChange handling
@@ -185,7 +185,12 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this.widget, "Application state change: " + state.toString());
         if (state == AppLifecycleState.resumed)
         {
-            _onResume(autoPower: false);
+            if (Platform.isIOS && _stateManager.isConnected)
+            {
+                Logging.info(this.widget, "App resumed, but already connected. Ignore resuming.");
+                return;
+            }
+            _onResume();
         }
         else
         {
@@ -193,13 +198,13 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
     }
 
-    Future<void> _onResume({bool autoPower = false}) async
+    Future<void> _onResume() async
     {
         Logging.info(this.widget, "resuming application");
         await Platform.requestIntent(_methodChannel).then((replay)
         {
             _stateManager.updateScripts(
-                autoPower: autoPower,
+                autoPower: _configuration.autoPower,
                 intent: replay,
                 shortcuts: _configuration.favoriteShortcuts.shortcuts);
         });
