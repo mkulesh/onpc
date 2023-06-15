@@ -18,6 +18,7 @@ import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../iscp/ConnectionIf.dart";
 import "../utils/Convert.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomCheckbox.dart";
@@ -34,8 +35,15 @@ class DeviceConnectDialog extends StatefulWidget
     => _DeviceConnectDialogState();
 }
 
+enum _ModelType
+{
+    INTEGRA,
+    DENON
+}
+
 class _DeviceConnectDialogState extends State<DeviceConnectDialog>
 {
+    _ModelType _modelType;
     final _address = TextEditingController();
     final _port = TextEditingController();
     bool _saveEnabled;
@@ -48,6 +56,8 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
     void initState()
     {
         super.initState();
+        _modelType = viewContext.stateManager.protoType == ProtoType.ISCP ?
+            _ModelType.INTEGRA : _ModelType.DENON;
         _address.text = viewContext.configuration.getDeviceName;
         _port.text = viewContext.configuration.getDevicePort.toString();
         _saveEnabled = false;
@@ -60,6 +70,36 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
         final ThemeData td = viewContext.getThemeData();
 
         final List<Widget> controls = [];
+
+        controls.add(CustomCheckbox(Strings.models_integra,
+            icon: Radio(
+                value: _ModelType.INTEGRA,
+                groupValue: _modelType,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (_ModelType v)
+                {
+                    setState(()
+                    {
+                        _modelType = v;
+                        _port.text = ISCP_PORT.toString();
+                    });
+                })
+        ));
+
+        controls.add(CustomCheckbox(Strings.models_denon,
+            icon: Radio(
+                value: _ModelType.DENON,
+                groupValue: _modelType,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (_ModelType v)
+                {
+                    setState(()
+                    {
+                        _modelType = v;
+                        _port.text = DCP_PORT.toString();
+                    });
+                })
+        ));
 
         controls.add(CustomDialogEditField(_address,
             textLabel: Strings.connect_dialog_address,

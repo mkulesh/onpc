@@ -33,6 +33,8 @@ class Strings
     /* Non-translatable attributes */
 
     static const String dashed_string = "---";
+    static const String models_integra = "Onkyo/Pioneer/Integra";
+    static const String models_denon = "Denon/Marantz";
     static const String drawer_premium_link = "https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus";
     static const String drawer_desktop_link = "https://www.microsoft.com/store/apps/9P9V57CZ8JG3";
     static const String pref_sound_control_default = "device";

@@ -15,6 +15,8 @@
 <resources>
 
     <string name="dashed_string" translatable="false">---</string>
+    <string name="models_integra" translatable="false">Onkyo/Pioneer/Integra</string>
+    <string name="models_denon" translatable="false">Denon/Marantz</string>
 
     <!-- Main view -->
     <string name="app_name">Enhanced Music Controller Lite</string>
