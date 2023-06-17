@@ -400,13 +400,13 @@ class ReceiverInformation
             {
                 _changed = !preset.equals(_presetList[oldPresetIdx]);
                 _presetList[oldPresetIdx] = preset;
-                Logging.info(this, "    DCP Preset " + preset.toString());
+                Logging.info(this, "    DCP Preset updated: " + preset.toString());
             }
             else if (_presetList.isEmpty || !preset.equals(_presetList[_presetList.length - 1]))
             {
                 _changed = true;
                 _presetList.add(preset);
-                Logging.info(this, "    DCP Preset " + preset.toString());
+                Logging.info(this, "    DCP Preset added: " + preset.toString());
             }
             return _changed ? msg.updateType : null;
         }

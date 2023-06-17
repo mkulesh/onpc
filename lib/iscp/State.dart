@@ -478,6 +478,10 @@ class State with ProtoTypeMix
                 // This event emulates DcpMediaContainerMsg (list of services)
                 return _isChange(DcpMediaContainerMsg.CODE, upd != null);
             }
+            if (upd == DcpUpdateType.PRESET && _mediaListState.isRadioInput)
+            {
+                _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
+            }
             return _isChange(DcpReceiverInformationMsg.CODE, upd != null);
         }
         if (msg is DcpTunerModeMsg)
