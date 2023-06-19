@@ -439,10 +439,7 @@ class CfgAppSettings extends CfgModule
         );
         _tabSettings.forEach((c)
         {
-            if (_visibleTabs.contains(c.tab))
-            {
-                c.read();
-            }
+            c.read();
         });
     }
 
