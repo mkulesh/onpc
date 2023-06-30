@@ -1,4 +1,4 @@
-We already know that following Pioneer models are not supported: VSX-529, VSX-830, VSX-924, VSX-1021, VSX-1121, SC-95, N-50, N-50a, N-70A
+Pioneer models before year 2016 are NOT supported, for example: VSX-424, VSX-529, VSX-830, VSX-920K, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, SC-LX79, N-50, N-50a, N-70A
 
 Pioneer has two different versions of the network protocol used for the communication between 
 the receiver and remote app:
