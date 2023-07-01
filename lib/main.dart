@@ -13,6 +13,7 @@
  */
 // @dart=2.9
 import 'dart:async';
+import 'dart:io';
 
 import "package:back_button_interceptor/back_button_interceptor.dart";
 import "package:flutter/foundation.dart";
@@ -20,6 +21,7 @@ import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
 import "package:flutter/scheduler.dart" show timeDilation;
 import "package:flutter/services.dart";
+import "package:onpc/utils/UrlLoader.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "Platform.dart";
@@ -57,6 +59,12 @@ import "views/UpdatableView.dart";
 void main() async
 {
     debugPaintSizeEnabled = Logging.isVisualLayout;
+
+    // Ignore CERTIFICATE_VERIFY_FAILED error for Deezer cover art on older Android
+    if (Platform.isAndroid)
+    {
+        HttpOverrides.global = OncpHttpOverrides();
+    }
 
     // Will slow down animations by this factor
     timeDilation = 1.0;
