@@ -142,15 +142,15 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
 - [Teac AG-D500](https://www.teac-audio.eu/en/products/ag-d500-87821.html)
 ### Denon with build-in HEOS
-- [DRA-800H](https://www.denon.com/de-ch/shop/avreceiver/dra800h)
-- [AVR-S750H](https://www.denon.com/de-ch/shop/avreceiver/avrs750h)
-- [AVR-S760H](https://www.denon.com/de-de/product/av-receivers/avr-s760h/AVRS760H.html)
-- [AVR-X2400H](https://www.denon.com/de-ch/shop/avreceiver/avrx2400h)
-- [AVR-X2600H](https://www.denon.com/de-ch/shop/avreceiver/avrx2600h)
-- [AVR-X3700H](https://www.denon.com/de-ch/shop/avreceiver/avcx3700h)
-- [AVR-X6300H](https://www.denon.com/de-ch/shop/avreceiver/avrx6300h)
+- [Denon DRA-800H](https://www.denon.com/de-ch/shop/avreceiver/dra800h)
+- [Denon AVR-S750H](https://www.denon.com/de-ch/shop/avreceiver/avrs750h)
+- [Denon AVR-S760H](https://www.denon.com/de-de/product/av-receivers/avr-s760h/AVRS760H.html)
+- [Denon AVR-X2400H](https://www.denon.com/de-ch/shop/avreceiver/avrx2400h)
+- [Denon AVR-X2600H](https://www.denon.com/de-ch/shop/avreceiver/avrx2600h)
+- [Denon AVR-X3700H](https://www.denon.com/de-ch/shop/avreceiver/avcx3700h)
+- [Denon AVR-X6300H](https://www.denon.com/de-ch/shop/avreceiver/avrx6300h)
 ### Marantz with build-in HEOS
-- [NR1711](https://www.marantz.com/de-de/product/av-receivers/nr1711)
+- [Marantz NR1711](https://www.marantz.com/de-de/product/av-receivers/nr1711)
 
 ## Documentation
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in 'doc' directory.
