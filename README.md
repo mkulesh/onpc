@@ -1,4 +1,5 @@
 [![Flutter Logo](https://github.com/mkulesh/onpc/blob/onpc-flutter/images/flutter_logo.png)](https://flutter.dev)
+<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/icon.png" align="center" height="48" width="48">
 
 # Enhanced Music Controller
 
@@ -9,9 +10,9 @@ The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon
 Some TEAC models like Teac NT-503 are also supported.
 
 This "Premium" version implements exactly the same receiver control functionality as the free version, but has some additional features:
-- It is available for all desktop systems (Linux, Windows, macOS). 
+- It is available for all desktop systems (Linux, Windows, macOS).
 - The Windows version allows to define global shortcuts for volume and playback control.
-- It allows to rename input channels for older Onkyo/Pioneer models that do not support this feature in the firmware.
+- It allows to rename input channels that do not support this feature in the firmware.
 - It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
 - Android version allows to create home screen widgets.
 
