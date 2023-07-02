@@ -46,7 +46,7 @@ This premium version is developed with Flutter, see [onpc-flutter branch for sou
 This "Premium" version implements exactly the same receiver control functionality as the free version, but has some additional features:
 - It is available for all desktop systems (Linux, Windows, macOS).
 - The Windows version allows to define global shortcuts for volume and playback control.
-- It allows to rename input channels that do not support this feature in the firmware.
+- It allows to rename input channels when this feature is not supported in the firmware.
 - It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
 - Android version allows to create home screen widgets.
 
