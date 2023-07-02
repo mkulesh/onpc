@@ -188,12 +188,12 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses).
 
 ## Screenshots
 * Playback screen in landscape orientation, Dark theme
-  <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/listen.png" align="center">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/listen.png" align="center">
 
 * Audio control in portrait orientation, Light theme
-  <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/audio_control.png" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/audio_control.png" align="center" height="800">
 
 * Media screen, Dark theme
-  <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/media.png" align="center" height="800">
+<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/media.png" align="center" height="800">
 
 For more screenshots, see directory images/screenshots.
