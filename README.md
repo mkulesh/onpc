@@ -23,23 +23,7 @@ This "Premium" version implements exactly the same receiver control functionalit
 * [iOS](https://apps.apple.com/app/id1490166845)
 * [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
 
-## Names
-* Official app name on App Store, Google Play, and MS Store: *Enhanced Music Controller*
-* Technical app name, the short name on the Home Screen, executable name: *Music Control*
-* Short app description: *Enhanced AVR controller: listen to music properly!*
-
-## Screenshots
-* Playback screen in landscape orientation, 12 Inch iPad, Strong Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/iPad-12.9-inch-3gen/listen.png" align="center">
-
-* Audio control in portrait orientation, 5 Inch Android phone, Light theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android-phone/audio_control.png" align="center">
-
-* Media screen in portrait orientation, 7 Inch Android Tablet, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android-7-inch/media.png" align="center" height="800">
-
 ## License
-
 Copyright © 2019-2023 by __Mikhail Kulesh__
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -49,8 +33,22 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
 ## Used Open Source Libraries
-
 * Material Design Icons: [materialdesignicons.com](https://materialdesignicons.com)
 * Material Design Palette: [www.materialpalette.com](https://www.materialpalette.com)
 * Flutter: [flutter.dev](https://flutter.dev)
 * Flutter packages: [pub.dev/packages](https://pub.dev/packages)
+
+## Names
+* Official app name on App Store, Google Play, and MS Store: *Enhanced Music Controller*
+* Technical app name, the short name on the Home Screen, executable name: *Music Control*
+* Short app description: *Enhanced AVR controller: listen to music properly!*
+
+## Screenshots
+* Playback screen in landscape orientation, 12 Inch iPad, Strong Dark theme
+  <img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/iPad-12.9-inch-3gen/listen.png" align="center">
+
+* Audio control in portrait orientation, 5 Inch Android phone, Light theme
+  <img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android-phone/audio_control.png" align="center">
+
+* Media screen in portrait orientation, 7 Inch Android Tablet, Dark theme
+  <img src="https://github.com/mkulesh/onpc/blob/onpc-flutter/images/screenshots/android-7-inch/media.png" align="center" height="800">
