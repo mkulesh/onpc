@@ -2,13 +2,36 @@
 ![Release Status](https://img.shields.io/github/v/release/mkulesh/onpc)
 [![Documentation Dashboard](https://sourcespy.com/shield.svg)](https://sourcespy.com/github/mkuleshonpc/)
 
-# <img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48"> Enhanced Music Controller
+<img src="https://github.com/mkulesh/onpc/blob/master/images/icon.png" align="center" height="48" width="48">
 
-*Enhanced Music Controller for Onkyo and Pioneer: listen to music properly!*
+# Enhanced Music Controller 
 
-This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the "Integra Serial Communication Protocol". Some TEAC models like Teac NT-503 are also supported.
+*Enhanced AVR controller: listen to music properly!*
 
-*Free Android Version*
+This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
+The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
+Some TEAC models like Teac NT-503 are also supported.
+
+The two most popular features of the app are music playback and sound profile management. Other benefits include:
+- Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
+- The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
+- One-click access to music playback actions
+- One-click access to media items using shortcuts for Onkyo or Favourites for Denon
+- Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
+- Full tone control (listening modes, bass, center, treble and subwoofer levels)
+- Enhanced Play Queue support (add, replace, remove, remove all, change playback order)
+- TuneIn Radio, Deezer, Spotify and Tidal streaming (if supported by receiver)
+- DAB / FM / AM (if supported by receiver)
+- Multi-zone support (if supported by receiver)
+- Multi-room support: Allows control of groups of devices attached via FlareConnect (for Onkyo/Pioneer/Integra only). Ability to control FlareConnect without WiFi
+- Control of devices attached via RI (for Onkyo/Pioneer/Integra only)
+- Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
+- Allows control of receivers over an OpenVPN connection (even over a cellular connection)
+- Integration with "Tasker"
+
+## Versions
+
+*Free Android Version (Enhanced Music Controller Lite)*
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
@@ -23,7 +46,7 @@ This premium version is developed with Flutter, see [onpc-flutter branch for sou
 This "Premium" version implements exactly the same receiver control functionality as the free version, but has some additional features:
 - It is available for all desktop systems (Linux, Windows, macOS).
 - The Windows version allows to define global shortcuts for volume and playback control.
-- It allows to rename input channels for older Onkyo/Pioneer models that do not support this feature in the firmware.
+- It allows to rename input channels that do not support this feature in the firmware.
 - It allows to reorder the play queue using drag-and-drop, change the font and buttons size and show/hide/reorder all control elements for all tabs.
 - Android version allows to create home screen widgets.
 
@@ -45,31 +68,12 @@ On Windows:
 Do you want try the last version in development?
 - [TestFlight on iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
 - <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_linux.png" align="center" height="48" width="48"> [Linux (Fedora Workstation)](https://1drv.ms/u/s!At2sh2-YDyGFgTY827qdnu3VsmjC?e=FPjUeB)
- 
-The two most popular features of the app are music playback and sound profile management. Other benefits include:
-- Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
-- The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
-- One-click access to music playback actions
-- One-click access to media items using shortcuts
-- Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
-- Full tone control (listening modes, bass, center, treble and subwoofer levels)
-- Enhanced Play Queue support (add, replace, remove, remove all, change playback order)
-- TuneIn Radio, Deezer, and Tidal streaming (if supported by receiver)
-- DAB / FM / AM (if supported by receiver)
-- Multi-zone support (if supported by receiver)
-- Multi-room support: Allows control of groups of devices attached via FlareConnect (like Wireless Audio System NCP-302)
-- Ability to control FlareConnect without WiFi
-- Control of devices attached via RI
-- Display device details and control device settings such as dimmer level, digital filter, auto power, and sleep timer
-- Allows control of receivers over an OpenVPN connection (even over a cellular connection)
-- Integration with "Tasker"
 
 ## Known Limitations
 - Please note that the app does not support the music streaming from your phone to the network player or the receiver
-- Track time seek is missing in Tidal (that is a limitation of the Onkyo firmware)
-- In order to use Spotify, you need the official Spotify app additionally to this app
-- Amazon Music HD subscription: broadcast in AAC 256 kbps only (that is a limitation of the Onkyo firmware)
-- Pioneer models before year 2016 are NOT supported, for example: VSX-424, VSX-529, VSX-830, VSX-920K, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, SC-LX79, N-50, N-50a, N-70A
+- In order to login into Deezer, Tidal, or Spotify, you need the official Onkyo/Denon app additionally to this app
+- Following Pioneer models before year 2016 are NOT supported, for example: VSX-424, VSX-529, VSX-830, VSX-920K, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, SC-LX79, N-50, N-50a, N-70A
+- Following Denon models are not supported: AVR-X1000, DNP-730AE, Heos Link 2
 - Following models do not support "Play Queue" feature (that is a limitation of the Onkyo firmware): CR-N765, DTR-40.5, HM76, HT-R693, HT-R695, TX-8130, TX-8150, TX-NR626, TX-NR636, TX-NR646, TX-RZ900
 
 ## Supported devices
@@ -137,32 +141,24 @@ This list is based on the user feedback from Google Play and github. Not all fro
 ### Teac
 - [Teac NT-503](http://audio.teac.com/product/nt-503)
 - [Teac AG-D500](https://www.teac-audio.eu/en/products/ag-d500-87821.html)
-
-## Screenshots
-* Playback screen in landscape orientation, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/listen.png" align="center">
-
-* Audio control in portrait orientation, Light theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/audio_control.png" align="center" height="800">
-
-* Media screen, Dark theme
-<img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/media.png" align="center" height="800">
-
-For more screenshots, see directory images/screenshots.
+### Denon with build-in HEOS
+- [DRA-800H](https://www.denon.com/de-ch/shop/avreceiver/dra800h)
+- [AVR-S750H](https://www.denon.com/de-ch/shop/avreceiver/avrs750h)
+- [AVR-S760H](https://www.denon.com/de-de/product/av-receivers/avr-s760h/AVRS760H.html)
+- [AVR-X2400H](https://www.denon.com/de-ch/shop/avreceiver/avrx2400h)
+- [AVR-X2600H](https://www.denon.com/de-ch/shop/avreceiver/avrx2600h)
+- [AVR-X3700H](https://www.denon.com/de-ch/shop/avreceiver/avcx3700h)
+- [AVR-X6300H](https://www.denon.com/de-ch/shop/avreceiver/avrx6300h)
+### Marantz with build-in HEOS
+- [NR1711](https://www.marantz.com/de-de/product/av-receivers/nr1711)
 
 ## Documentation
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in 'doc' directory.
 
 ## Publications:
-
 * [Протокол ISCP/eISCP от Onkyo: управление устройствами Onkyo по сети (in Russian)](https://habr.com/post/427985)
 * [Logo design for Open Music Controller](https://steemit.com/utopian-io/@tebriz/logo-design-for-open-music-controller)
 * [Первое универсальное приложение «Enhanced Controller for Onkyo and Pioneer»(in Russian)](https://stereo.ru/to/b0erb-pervoe-universalnoe-prilozhenie-enhanced-controller-for-onkyo-and-pioneer)
-
-## Used Open Source Libraries
-* Material Design Icons: http://materialdesignicons.com
-* Material Design Palette: https://www.materialpalette.com
-* DragSortListView (drag-and-drop reordering of list items): https://github.com/bauerca/drag-sort-listview
 
 ## Acknowledgement
 * Thank to [Tebriz](https://github.com/tebriz159) for Logo design
@@ -172,7 +168,6 @@ Documents from Onkyo describing the protocol, including lists of supported comma
 * Thank to Andrzej Chabrzyk for Polish translation
 
 ## License
-
 This software is published under the *GNU General Public License, Version 3*
 
 Copyright © 2018-2023 by Mikhail Kulesh, Alexander Gomanyuk
@@ -186,5 +181,19 @@ received a copy of the GNU General Public License along with this program.
 
 If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses).
 
+## Used Open Source Libraries
+* Material Design Icons: http://materialdesignicons.com
+* Material Design Palette: https://www.materialpalette.com
+* DragSortListView (drag-and-drop reordering of list items): https://github.com/bauerca/drag-sort-listview
 
+## Screenshots
+* Playback screen in landscape orientation, Dark theme
+  <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/listen.png" align="center">
 
+* Audio control in portrait orientation, Light theme
+  <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/audio_control.png" align="center" height="800">
+
+* Media screen, Dark theme
+  <img src="https://github.com/mkulesh/onpc/blob/master/images/screenshots/android-phone/media.png" align="center" height="800">
+
+For more screenshots, see directory images/screenshots.
