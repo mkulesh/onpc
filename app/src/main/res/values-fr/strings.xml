@@ -18,7 +18,7 @@
     <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Contrôleur optimisé pour Onkyo et Pioneer: Écoutez votre musique correctement!</string>
+    <string name="app_description">Contrôleur AVR amélioré: Ecoutez votre musique correctement!</string>
     <string name="state_not_connected">Pas de connexion</string>
     <string name="state_standby">Éteint</string>
     <string name="action_exit_confirm">Appuyez sur retour pour quitter</string>
@@ -29,10 +29,11 @@
     <string name="action_context_desktop">bouton droit de la souris</string>
 
     <string name="about_text"><![CDATA[
-    <p>Contrôleur optimisé pour Onkyo et Pioneer: Ecoutez votre musique correctement!</p>
+    <p>Contrôleur AVR amélioré: Ecoutez votre musique correctement!</p>
     <p>Copyright © 2018-2023 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>Cette appli permet le contrôle à distance d\'équipement audio connectée Onkyo/Pioneer/Integra Network Player ou des receivers A/V réseau via "Integra Serial Communication Protocol".
-Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.</p>
+    <p>Cette application permet le contrôle à distance d\'un lecteur réseau ou d\'un récepteur réseau A/V via le réseau local.
+       L\'application prend en charge Onkyo/Pioneer/Integra sorti en avril 2016 ou plus tard et Denon/Marantz avec la technologie HEOS intégrée.
+       Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.</p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
     <h5>Licence</h5>
     <p>Ce programme est à usage gratuit: vous pouvez le distribuer et/ou le modifier celon les termes de GNU
@@ -569,9 +570,11 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
     <!-- DCP ECO mode -->
     <string name="device_dcp_eco_mode">Mode écologique</string>
+    <string name="device_dcp_eco_mode_help">Ce mode peut réduire la consommation d\'énergie et la production de chaleur de cet appareil lorsqu\'il est sous tension. Ceci est obtenu en réduisant la ligne d\'alimentation de l\'amplificateur de puissance, et par conséquent la puissance maximale de sortie.</string>
 
     <!-- DCP audio restorer -->
     <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_help">Les formats audio compressés, tels que MP3, WMA (Windows Media Audio) et MPEG-4 AAC réduisent la quantité de données en éliminant des composants du signal difficilement audibles pour l\'oreille humaine. La fonction \"Restorer\" génère les signaux éliminés pendant la compression pour restaurer le son le plus proche de celui d\'origine. Elle restaure également les caractéristiques des basses d\'origine pour une plage tonale riche et étendue.</string>
     <string name="device_dcp_audio_restorer_none">N/A</string>
     <string name="device_dcp_audio_restorer_off">Arrêt</string>
     <string name="device_dcp_audio_restorer_low">Faible</string>

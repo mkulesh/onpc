@@ -15,12 +15,14 @@
 <resources>
 
     <string name="dashed_string" translatable="false">---</string>
+    <string name="models_integra" translatable="false">Onkyo/Pioneer/Integra</string>
+    <string name="models_denon" translatable="false">Denon/Marantz</string>
 
     <!-- Main view -->
     <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Enhanced controller for Onkyo and Pioneer: listen to music properly!</string>
+    <string name="app_description">Enhanced AVR controller: listen to music properly!</string>
     <string name="state_not_connected">Not connected</string>
     <string name="state_standby">Standby</string>
     <string name="action_exit_confirm">Press back button again to exit</string>
@@ -31,10 +33,11 @@
     <string name="action_context_desktop">right mouse button</string>
 
     <string name="about_text"><![CDATA[
-    <p>Enhanced Music Controller: listen to music properly!</p>
+    <p>Enhanced AVR Controller: listen to music properly!</p>
     <p>Copyright © 2018-2023 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
-    <p>This app allows remote control of an Onkyo/Pioneer/Integra Network Player or a Network A/V Receiver via the
-       "Integra Serial Communication Protocol". Its two most popular features are music playback and sound profile management.</p>
+    <p>This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
+       The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
+       Its two most popular features are music playback and sound profile management.</p>
     <p><a href="https://github.com/mkulesh/onpc">Public repository</a></p>
     <h5>License</h5>
     <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU
@@ -633,9 +636,11 @@
 
     <!-- DCP ECO mode -->
     <string name="device_dcp_eco_mode">ECO Mode</string>
+    <string name="device_dcp_eco_mode_help">This mode can reduce the power consumption and heat generation of this unit when power on. This is done by reducing the power supply line to the power amplifier, in turn the maximum power output.</string>
 
     <!-- DCP audio restorer -->
     <string name="device_dcp_audio_restorer">Audio Restorer</string>
+    <string name="device_dcp_audio_restorer_help">Compressed audio formats such as MP3, WMA (Windows Media Audio) and MPEG-4 AAC reduce the amount of data by eliminating signal components that are hard for the human ear to hear. The \"Restorer\" function generates the signals eliminated upon compression, restoring the sound to conditions near those of the original sound before compression. It also restores the original bass characteristics for a rich and expanded tonal range.</string>
     <string name="device_dcp_audio_restorer_none">N/A</string>
     <string name="device_dcp_audio_restorer_off">Off</string>
     <string name="device_dcp_audio_restorer_low">Low</string>

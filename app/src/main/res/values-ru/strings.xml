@@ -18,7 +18,7 @@
     <string name="app_name">Enhanced Music Controller Lite</string>
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>
-    <string name="app_description">Улучшенный контроллер для Onkyo и Pioneer: слушайте музыку правильно!</string>
+    <string name="app_description">Улучшенный AVR-контроллер: слушайте музыку правильно!</string>
     <string name="state_not_connected">Отсутствует соединение</string>
     <string name="state_standby">Ожидание</string>
     <string name="action_exit_confirm">Для выхода нажмите Назад дважды</string>
@@ -29,10 +29,10 @@
     <string name="action_context_desktop">используя правую клавишу мыши</string>
 
     <string name="about_text"><![CDATA[
-    <p>Улучшенный контроллер для Onkyo и Pioneer: Слушайте музыку правильно!</p>
+    <p>Улучшенный AVR-контроллер: Слушайте музыку правильно!</p>
     <p>Copyright © 2018-2023 by <b>Михаил Кулеш, Александр Гоманюк</b></p>
-    <p>Данная программа позволяет удаленно управлять сетевыми плеерами или ресиверами Onkyo/Pioneer/Integra по
-       локальной сети, используя сетевой протокол "Integra Serial Communication Protocol".
+    <p>Это приложение позволяет удаленно управлять сетевым проигрывателем или сетевым AV-ресивером по локальной сети.
+       Приложение поддерживает Onkyo/Pioneer/Integra, выпущенные в апреле 2016 года или позже, и Denon/Marantz со встроенной технологией HEOS.
        Основное предназначение программы - управление воспроизведением и звуковыми профилями.</p>
     <p><a href="https://github.com/mkulesh/onpc">Репозиторий с исходным кодом</a></p>
     <h5>Лицензия</h5>
@@ -570,9 +570,11 @@
 
     <!-- DCP ECO mode -->
     <string name="device_dcp_eco_mode">Режим экономии</string>
+    <string name="device_dcp_eco_mode_help">Этот режим может снизить потребляемую мощность и выделение тепла устройства при включенном питании. Это достигается уменьшением линии источника питания до усилителя мощности последовательно с максимальной выходной мощностью.</string>
 
     <!-- DCP audio restorer -->
     <string name="device_dcp_audio_restorer">Режим \"Restorer\"</string>
+    <string name="device_dcp_audio_restorer_help">Форматы сжатого звука, например, MP3, WMA (Windows Media Audio) и MPEG-4 AAC сокращают объем данных путем устранения компонентов сигнала, которые с трудом воспринимаются человеческим слухом. Режим \"Restorer\" генерирует сигналы, удаленные при компрессии, восстанавливая состояние звукового сигнала, близкое к состоянию исходного звукового сигнала перед сжатием. Он также восстанавливает исходные характеристики басов для насыщенного и расширенного тонального диапазона.</string>
     <string name="device_dcp_audio_restorer_none">N/A</string>
     <string name="device_dcp_audio_restorer_off">Выкл</string>
     <string name="device_dcp_audio_restorer_low">Низкий</string>
