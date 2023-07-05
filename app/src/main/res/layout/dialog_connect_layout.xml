@@ -33,6 +33,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.AppCompatRadioButton
+                style="@style/PrimaryTextViewStyle"
+                android:id="@+id/connect_models_integra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/models_integra"
+                android:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                style="@style/PrimaryTextViewStyle"
+                android:id="@+id/connect_models_denon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/models_denon"
+                android:checked="false" />
+
             <TextView
                 style="@style/EditFieldCaptionStyle"
                 android:text="@string/connect_dialog_address" />

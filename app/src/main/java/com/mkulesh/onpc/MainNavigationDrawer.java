@@ -163,9 +163,25 @@ class MainNavigationDrawer
     {
         final FrameLayout frameView = new FrameLayout(activity);
         activity.getLayoutInflater().inflate(R.layout.dialog_connect_layout, frameView);
+
         final EditText deviceName = frameView.findViewById(R.id.device_name);
         deviceName.setText(configuration.getDeviceName());
         final EditText devicePort = frameView.findViewById(R.id.device_port);
+
+        final AppCompatRadioButton integraBtn = frameView.findViewById(R.id.connect_models_integra);
+        final AppCompatRadioButton denonBtn = frameView.findViewById(R.id.connect_models_denon);
+        final AppCompatRadioButton[] radioGroup = { integraBtn, denonBtn };
+        for (AppCompatRadioButton r : radioGroup)
+        {
+            r.setOnClickListener((View v) ->
+            {
+                final int p = v == integraBtn ? ConnectionIf.ISCP_PORT : ConnectionIf.DCP_PORT;
+                devicePort.setText(Integer.toString(p));
+                onRadioBtnChange(radioGroup, (AppCompatRadioButton) v);
+            });
+        }
+        onRadioBtnChange(radioGroup, configuration.getDevicePort() == ConnectionIf.ISCP_PORT ?
+                integraBtn : denonBtn);
         devicePort.setText(configuration.getDevicePortAsString());
 
         final EditText deviceFriendlyName = frameView.findViewById(R.id.device_friendly_name);

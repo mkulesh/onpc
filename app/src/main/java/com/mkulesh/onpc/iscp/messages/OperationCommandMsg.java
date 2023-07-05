@@ -30,9 +30,9 @@ import androidx.annotation.StringRes;
 public class OperationCommandMsg extends ZonedMessage
 {
     public final static String CODE = "NTC";
-    private final static String ZONE2_CODE = "NTZ";
-    private final static String ZONE3_CODE = "NT3";
-    private final static String ZONE4_CODE = "NT4";
+    public final static String ZONE2_CODE = "NTZ";
+    public final static String ZONE3_CODE = "NT3";
+    public final static String ZONE4_CODE = "NT4";
 
     private final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 

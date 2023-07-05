@@ -327,6 +327,9 @@ public class DCPMessageFactory
             return new FirmwareUpdateMsg(raw);
         // Denon control protocol
         case OperationCommandMsg.CODE:
+        case OperationCommandMsg.ZONE2_CODE:
+        case OperationCommandMsg.ZONE3_CODE:
+        case OperationCommandMsg.ZONE4_CODE:
             return new OperationCommandMsg(raw);
         case SetupOperationCommandMsg.CODE:
             return new SetupOperationCommandMsg(raw);
