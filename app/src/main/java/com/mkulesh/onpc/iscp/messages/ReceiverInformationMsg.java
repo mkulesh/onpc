@@ -724,7 +724,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     /*
      * Denon control protocol
      */
-    public ReceiverInformationMsg(final String host, final String port) throws Exception
+    public ReceiverInformationMsg(final String host, final int port) throws Exception
     {
         super(0, getDcpXmlData(host, port));
         protoType = ConnectionIf.ProtoType.DCP;
@@ -736,7 +736,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         }
     }
 
-    private static String getDcpXmlData(final String host, final String port) throws Exception
+    private static String getDcpXmlData(final String host, final int port) throws Exception
     {
         final byte[] bytes = Utils.getUrlData(new URL(getDcpGoformUrl(host, port, "Deviceinfo.xml")), true);
         if (bytes != null)
@@ -753,7 +753,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         throw new Exception("DCP receiver information not available");
     }
 
-    private String getDcpPresetData(String host, String port)
+    private String getDcpPresetData(String host, int port)
     {
         try
         {

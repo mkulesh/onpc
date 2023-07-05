@@ -42,13 +42,9 @@ import androidx.annotation.NonNull;
 
 public class MessageChannelDcp extends AppTask implements Runnable, MessageChannel
 {
-    // goform protocol
-    private final static String DCP_GOFORM_PORT = "8080";
     private final static String DCP_FORM_IPHONE_APP = "formiPhoneApp";
     private final static String DCP_APP_COMMAND = "<cmd id=\"1\">";
 
-    // HEOS protocol
-    private final static int DCP_HEOS_PORT = 1255;
     private final static String DCP_HEOS_REQUEST = "heos://";
     public final static String DCP_HEOS_RESPONSE = "{\"heos\":";
 
@@ -236,7 +232,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         final String shortCmd = rawCmd.replace(" ", "%20");
         try
         {
-            final String fullCmd = ISCPMessage.getDcpGoformUrl(getHost(), DCP_GOFORM_PORT, shortCmd);
+            final String fullCmd = ISCPMessage.getDcpGoformUrl(getHost(), DCP_HTTP_PORT, shortCmd);
             Logging.info(this, "DCP formiPhoneApp request: " + fullCmd);
             Utils.getUrlData(new URL(fullCmd), false);
         }
@@ -253,7 +249,7 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
             final String json = "{\"body\": \"" + ISCPMessage.getDcpAppCommand(rawCmd) + "\"}";
             final byte[] out = json.getBytes(Utils.UTF_8);
 
-            final URL url = new URL(ISCPMessage.getDcpGoformUrl(getHost(), DCP_GOFORM_PORT, "AppCommand.xml"));
+            final URL url = new URL(ISCPMessage.getDcpGoformUrl(getHost(), DCP_HTTP_PORT, "AppCommand.xml"));
             final URLConnection con = url.openConnection();
             final HttpURLConnection http = (HttpURLConnection) con;
             http.setRequestMethod("POST");

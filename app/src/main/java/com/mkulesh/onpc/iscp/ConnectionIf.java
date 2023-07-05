@@ -18,6 +18,12 @@ import androidx.annotation.NonNull;
 
 public interface ConnectionIf
 {
+    int ISCP_PORT = 60128; // Onkyo main and UDP port
+    int DCP_PORT = 23; // Denon main port
+    int DCP_UDP_PORT = 1900; // HEOS UDP port
+    int DCP_HEOS_PORT = 1255; // HEOS main port
+    int DCP_HTTP_PORT = 8080; // Denon-HTTP port (receiver info and command API)
+
     enum ProtoType
     {
         ISCP, // Integra Serial Communication Protocol (TCP:60128)

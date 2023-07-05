@@ -36,7 +36,6 @@ import androidx.annotation.Nullable;
  */
 public class BroadcastResponseMsg extends ISCPMessage
 {
-    public final static int DCP_PORT = 23;
     private final static String CODE = "ECN";
 
     private String model = null;

@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
-import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
@@ -196,7 +196,7 @@ class MainNavigationDrawer
                     // Second, fallback to standard port
                     if (devicePort.getText().length() == 0)
                     {
-                        devicePort.setText(Integer.toString(BroadcastSearch.ISCP_PORT));
+                        devicePort.setText(Integer.toString(ConnectionIf.ISCP_PORT));
                     }
                     try
                     {

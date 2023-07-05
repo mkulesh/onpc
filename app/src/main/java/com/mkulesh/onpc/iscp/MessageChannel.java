@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 
 public interface MessageChannel extends ConnectionIf
 {
-    int DCP_PORT = 23;
     int QUEUE_SIZE = 4 * 1024;
 
     void start();

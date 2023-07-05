@@ -31,7 +31,7 @@ class MockupState extends State
 {
     MockupState(int zone)
     {
-        super(ConnectionIf.ProtoType.ISCP, "192.168.1.10", 60128, zone);
+        super(ConnectionIf.ProtoType.ISCP, "192.168.1.10", ConnectionIf.ISCP_PORT, zone);
         Logging.info(this, "Used mockup state");
 
         //Common

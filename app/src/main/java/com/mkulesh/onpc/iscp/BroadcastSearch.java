@@ -30,8 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 {
-    public final static int ISCP_PORT = 60128;
-    private final static int DCP_PORT = 1900; // UDP port of HEOS protocol
     private final static int TIMEOUT = 3000;
 
     // Connection state
@@ -110,8 +108,8 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
 
         try
         {
-            final DatagramSocket iscpSocket = prepareSocket(ISCP_PORT);
-            final DatagramSocket dcpSocket = prepareSocket(DCP_PORT);
+            final DatagramSocket iscpSocket = prepareSocket(ConnectionIf.ISCP_PORT);
+            final DatagramSocket dcpSocket = prepareSocket(ConnectionIf.DCP_UDP_PORT);
             final byte[] response = new byte[1024];
 
             while (!isStopped())
@@ -181,7 +179,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         try
         {
             final InetAddress target = InetAddress.getByName("255.255.255.255");
-            final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ISCP_PORT);
+            final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ConnectionIf.ISCP_PORT);
             socket.send(p);
             Logging.info(this, "message " + m + " for category '"
                     + modelCategoryId + "' send to " + target + ", wait response for " + TIMEOUT + "ms");
@@ -233,7 +231,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         final String schema = "schemas-denon-com:device";
         final String request =
                 "M-SEARCH * HTTP/1.1\r\n" +
-                        "HOST: " + host + ":" + DCP_PORT + "\r\n" +
+                        "HOST: " + host + ":" + ConnectionIf.DCP_UDP_PORT + "\r\n" +
                         "MAN: \"ssdp:discover\"\r\n" +
                         "MX: 10\r\n" +
                         "ST: urn:" + schema + ":ACT-Denon:1\r\n\r\n";
@@ -242,7 +240,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         try
         {
             final InetAddress target = InetAddress.getByName(host);
-            final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, DCP_PORT);
+            final DatagramPacket p = new DatagramPacket(bytes, bytes.length, target, ConnectionIf.DCP_UDP_PORT);
             socket.send(p);
             Logging.info(this, "message M-SEARCH for category send to " + target + ", wait response for " + TIMEOUT + "ms");
         }

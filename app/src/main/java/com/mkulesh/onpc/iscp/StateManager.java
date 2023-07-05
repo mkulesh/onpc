@@ -162,7 +162,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         this.connectionState = connectionState;
         this.stateListener = stateListener;
 
-        messageChannel = port == MessageChannel.DCP_PORT ?
+        messageChannel = port == ConnectionIf.DCP_PORT ?
                 new MessageChannelDcp(zone, connectionState, inputQueue) :
                 new MessageChannelIscp(connectionState, inputQueue);
         if (!messageChannel.connectToServer(host, port))
@@ -397,12 +397,12 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private void requestInitialDcpState()
     {
-        if (requestDcpReceiverInfo("8080"))
+        if (requestDcpReceiverInfo(ConnectionIf.DCP_HTTP_PORT))
         {
             return;
         }
         // Fallback to the port 80 for older models
-        if (!requestDcpReceiverInfo("80"))
+        if (!requestDcpReceiverInfo(80))
         {
             // request DcpReceiverInformationMsg here since no ReceiverInformation exists
             // otherwise it will be requested when ReceiverInformation is processed
@@ -414,7 +414,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    private boolean requestDcpReceiverInfo(final String port)
+    private boolean requestDcpReceiverInfo(final int port)
     {
         try
         {
@@ -951,7 +951,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 continue;
             }
             Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort());
-            final MessageChannel m = msg.getPort() == MessageChannel.DCP_PORT ?
+            final MessageChannel m = msg.getPort() == ConnectionIf.DCP_PORT ?
                     new MessageChannelDcp(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, connectionState, inputQueue) :
                     new MessageChannelIscp(connectionState, inputQueue);
             for (String code : multiroomQueries)

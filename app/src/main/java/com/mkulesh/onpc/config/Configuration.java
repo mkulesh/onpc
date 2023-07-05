@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.mkulesh.onpc.iscp.BroadcastSearch;
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
@@ -76,7 +75,7 @@ public class Configuration
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         deviceName = preferences.getString(Configuration.SERVER_NAME, "");
-        devicePort = preferences.getInt(Configuration.SERVER_PORT, BroadcastSearch.ISCP_PORT);
+        devicePort = preferences.getInt(Configuration.SERVER_PORT, ConnectionIf.ISCP_PORT);
 
         appSettings.setPreferences(preferences);
 

@@ -313,7 +313,7 @@ public class ISCPMessage implements ConnectionIf
         return retValue;
     }
 
-    protected static String getDcpGoformUrl(final String host, final String port, final String s)
+    protected static String getDcpGoformUrl(final String host, final int port, final String s)
     {
         return "http://" + host + ":" + port + "/goform/" + s;
     }
