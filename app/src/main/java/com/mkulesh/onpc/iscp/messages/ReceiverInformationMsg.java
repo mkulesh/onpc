@@ -15,6 +15,7 @@
 package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.utils.Logging;
@@ -284,9 +285,9 @@ public class ReceiverInformationMsg extends ISCPMessage
         final String freq;
         final String name;
 
-        Preset(Element e, Utils.ProtoType protoType)
+        Preset(Element e, ProtoType protoType)
         {
-            if (protoType == Utils.ProtoType.ISCP)
+            if (protoType == ConnectionIf.ProtoType.ISCP)
             {
                 // <preset id="08" band="1" freq="97.30" name="" />
                 id = Integer.parseInt(e.getAttribute("id"), 16);
@@ -468,7 +469,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         }
     }
 
-    private final Utils.ProtoType protoType;
+    private final ProtoType protoType;
     private final String dcpPresetData;
     private String deviceId = "";
     private final HashMap<String, String> deviceProperties = new HashMap<>();
@@ -482,7 +483,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     public ReceiverInformationMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
-        protoType = Utils.ProtoType.ISCP;
+        protoType = ConnectionIf.ProtoType.ISCP;
         dcpPresetData = "";
     }
 
@@ -561,7 +562,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document doc = builder.parse(stream);
 
-        if (protoType == Utils.ProtoType.ISCP)
+        if (protoType == ConnectionIf.ProtoType.ISCP)
         {
             parseIscpXml(doc);
         }
@@ -692,7 +693,7 @@ public class ReceiverInformationMsg extends ISCPMessage
                                 final String name = element.getAttribute("name");
                                 if (id != null && band != null && name != null)
                                 {
-                                    presetList.add(new Preset(element, Utils.ProtoType.ISCP));
+                                    presetList.add(new Preset(element, ConnectionIf.ProtoType.ISCP));
                                 }
                             }
                         }
@@ -726,7 +727,7 @@ public class ReceiverInformationMsg extends ISCPMessage
     public ReceiverInformationMsg(final String host, final String port) throws Exception
     {
         super(0, getDcpXmlData(host, port));
-        protoType = Utils.ProtoType.DCP;
+        protoType = ConnectionIf.ProtoType.DCP;
         dcpPresetData = getDcpPresetData(host, port);
         if (data != null)
         {
@@ -981,7 +982,7 @@ public class ReceiverInformationMsg extends ISCPMessage
                 if ("OFF".equalsIgnoreCase(v.getAttribute("skip")) &&
                         !"OFF".equalsIgnoreCase(v.getAttribute("table")))
                 {
-                    presetList.add(new Preset(v, Utils.ProtoType.DCP));
+                    presetList.add(new Preset(v, ConnectionIf.ProtoType.DCP));
                 }
             }
         }

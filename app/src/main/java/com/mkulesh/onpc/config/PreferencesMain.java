@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.mkulesh.onpc.R;
-import com.mkulesh.onpc.utils.Utils;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceCategory;
@@ -58,8 +58,8 @@ public class PreferencesMain extends AppCompatPreferenceActivity
             final PreferenceScreen screen = getPreferenceScreen();
             final SharedPreferences preferences =
                     PreferenceManager.getDefaultSharedPreferences(screen.getContext());
-            final Utils.ProtoType protoType = Configuration.getProtoType(preferences);
-            if (protoType == Utils.ProtoType.DCP)
+            final ConnectionIf.ProtoType protoType = Configuration.getProtoType(preferences);
+            if (protoType == ConnectionIf.ProtoType.DCP)
             {
                 screen.removePreference(findPreference(CfgAppSettings.REMOTE_INTERFACE_AMP));
                 screen.removePreference(findPreference(CfgAppSettings.REMOTE_INTERFACE_CD));

@@ -19,8 +19,8 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -62,9 +62,9 @@ public class CfgAppSettings
             this.isDcp = isDcp;
         }
 
-        public boolean isVisible(Utils.ProtoType pt)
+        public boolean isVisible(ConnectionIf.ProtoType pt)
         {
-            return (pt == Utils.ProtoType.ISCP && isIscp) || (pt == Utils.ProtoType.DCP && isDcp);
+            return (pt == ConnectionIf.ProtoType.ISCP && isIscp) || (pt == ConnectionIf.ProtoType.DCP && isDcp);
         }
     }
 
@@ -139,7 +139,7 @@ public class CfgAppSettings
             defItems.add(i.name());
         }
 
-        final Utils.ProtoType protoType = Configuration.getProtoType(preferences);
+        final ConnectionIf.ProtoType protoType = Configuration.getProtoType(preferences);
         for (CheckableItem sp : CheckableItem.readFromPreference(preferences, VISIBLE_TABS, defItems))
         {
             for (CfgAppSettings.Tabs i : CfgAppSettings.Tabs.values())

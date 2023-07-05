@@ -80,7 +80,6 @@ import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -269,7 +268,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     {
         Logging.info(this, "started: " + this);
 
-        if (state.protoType == Utils.ProtoType.ISCP)
+        if (state.protoType == ConnectionIf.ProtoType.ISCP)
         {
             requestInitialIscpState();
         }
@@ -310,7 +309,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
                 try
                 {
-                    changed = messageChannel.getProtoType() == Utils.ProtoType.ISCP ?
+                    changed = messageChannel.getProtoType() == ConnectionIf.ProtoType.ISCP ?
                             processIscpMessage(msg) : processDcpMessage(msg);
                     for (MessageScriptIf script : messageScripts)
                     {
@@ -923,7 +922,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     public ISCPMessage getReturnMessage()
     {
-        if (state.protoType == Utils.ProtoType.DCP && state.dcpMediaPath.size() > 1)
+        if (state.protoType == ConnectionIf.ProtoType.DCP && state.dcpMediaPath.size() > 1)
         {
             return state.dcpMediaPath.get(state.dcpMediaPath.size() - 2);
         }

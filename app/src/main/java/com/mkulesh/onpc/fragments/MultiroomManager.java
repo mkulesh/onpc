@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import com.mkulesh.onpc.MainActivity;
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.MultiroomDeviceInformationMsg;
@@ -53,7 +54,7 @@ class MultiroomManager
         final List<BroadcastResponseMsg> devices = new ArrayList<>();
         for (BroadcastResponseMsg message : activity.getDeviceList().getDevices())
         {
-            if (message.getProtoType() == Utils.ProtoType.DCP)
+            if (message.getProtoType() == ConnectionIf.ProtoType.DCP)
             {
                 continue;
             }

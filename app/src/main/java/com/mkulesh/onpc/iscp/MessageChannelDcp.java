@@ -128,9 +128,9 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
     }
 
     @Override
-    public Utils.ProtoType getProtoType()
+    public ProtoType getProtoType()
     {
-        return Utils.ProtoType.DCP;
+        return ConnectionIf.ProtoType.DCP;
     }
 
     @Override

@@ -15,9 +15,9 @@
 package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
-import com.mkulesh.onpc.utils.Utils;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -241,9 +241,9 @@ public class OperationCommandMsg extends ZonedMessage
         return null;
     }
 
-    public static Command toggleRepeat(Utils.ProtoType protoType, PlayStatusMsg.RepeatStatus repeatStatus)
+    public static Command toggleRepeat(ProtoType protoType, PlayStatusMsg.RepeatStatus repeatStatus)
     {
-        if (protoType == Utils.ProtoType.ISCP)
+        if (protoType == ConnectionIf.ProtoType.ISCP)
         {
             return Command.REPEAT;
         }
@@ -261,9 +261,9 @@ public class OperationCommandMsg extends ZonedMessage
         }
     }
 
-    public static Command toggleShuffle(Utils.ProtoType protoType, PlayStatusMsg.ShuffleStatus shuffleStatus)
+    public static Command toggleShuffle(ProtoType protoType, PlayStatusMsg.ShuffleStatus shuffleStatus)
     {
-        if (protoType == Utils.ProtoType.ISCP)
+        if (protoType == ConnectionIf.ProtoType.ISCP)
         {
             return Command.RANDOM;
         }

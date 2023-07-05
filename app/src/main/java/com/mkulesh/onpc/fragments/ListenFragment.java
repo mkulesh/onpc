@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.CfgAudioControl;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
@@ -291,7 +292,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
     }
 
     private void prepareDeviceSoundButtons(final State.SoundControlType soundControl,
-                                           @NonNull Utils.ProtoType protoType)
+                                           @NonNull ConnectionIf.ProtoType protoType)
     {
         clearSoundVolumeButtons();
         soundControlLayout.setVisibility(View.VISIBLE);
@@ -455,7 +456,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 title.setText(state.title);
                 format.setText(state.fileFormat);
             }
-            format.setClickable(state.protoType == Utils.ProtoType.ISCP);
+            format.setClickable(state.protoType == ConnectionIf.ProtoType.ISCP);
             format.setOnClickListener((v) -> showAvInfoDialog(state));
         }
 
@@ -536,7 +537,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         }
 
         // Track menu and playback buttons
-        if (state.protoType == Utils.ProtoType.ISCP || state.isRadioInput())
+        if (state.protoType == ConnectionIf.ProtoType.ISCP || state.isRadioInput())
         {
             prepareButton(btnTrackMenu, null, R.drawable.cmd_track_menu, R.string.cmd_track_menu);
             final boolean isTrackMenu = state.isRadioInput() || state.isTrackMenuActive();
@@ -554,7 +555,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                         activity.getStateManager().sendTrackCmd(OperationCommandMsg.Command.MENU, false));
             }
         }
-        else if (state.protoType == Utils.ProtoType.DCP && state.inputType == InputSelectorMsg.InputType.DCP_NET)
+        else if (state.protoType == ConnectionIf.ProtoType.DCP && state.inputType == InputSelectorMsg.InputType.DCP_NET)
         {
             prepareButton(btnTrackMenu, null,
                     ServiceType.DCP_PLAYQUEUE.getImageId(),
@@ -603,7 +604,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         final AppCompatImageButton btn = rootView.findViewById(R.id.btn_input_selector);
         prepareButton(btn, imageId, R.string.av_info_dialog);
         btn.setVisibility(visible ? View.VISIBLE : View.GONE);
-        setButtonEnabled(btn, state != null && state.protoType == Utils.ProtoType.ISCP);
+        setButtonEnabled(btn, state != null && state.protoType == ConnectionIf.ProtoType.ISCP);
         prepareButtonListeners(btn, null, () -> showAvInfoDialog(state));
     }
 
@@ -685,7 +686,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 final CdPlayerOperationCommandMsg msg = new CdPlayerOperationCommandMsg(ccdCommand);
                 prepareButton(b, msg, msg.getCommand().getImageId(), msg.getCommand().getDescriptionId());
             }
-            else if (state.protoType == Utils.ProtoType.DCP)
+            else if (state.protoType == ConnectionIf.ProtoType.DCP)
             {
                 final OperationCommandMsg.Command netCommand = (OperationCommandMsg.Command)
                         ISCPMessage.searchParameter(opCommand, OperationCommandMsg.Command.values(), null);
@@ -760,7 +761,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
      */
     private void updateMultiroomGroupBtn(AppCompatImageButton b, @Nullable final State state)
     {
-        if (state != null && state.protoType == Utils.ProtoType.ISCP && activity.isMultiroomAvailable())
+        if (state != null && state.protoType == ConnectionIf.ProtoType.ISCP && activity.isMultiroomAvailable())
         {
             b.setVisibility(View.VISIBLE);
             setButtonEnabled(b, true);

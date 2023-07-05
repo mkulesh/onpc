@@ -14,9 +14,9 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.net.InetAddress;
 
@@ -130,8 +130,8 @@ public class BroadcastResponseMsg extends ISCPMessage
         return alias;
     }
 
-    public Utils.ProtoType getProtoType()
+    public ProtoType getProtoType()
     {
-        return port == DCP_PORT ? Utils.ProtoType.DCP : Utils.ProtoType.ISCP;
+        return port == DCP_PORT ? ConnectionIf.ProtoType.DCP : ConnectionIf.ProtoType.ISCP;
     }
 }

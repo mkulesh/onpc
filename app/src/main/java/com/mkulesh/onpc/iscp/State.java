@@ -112,7 +112,7 @@ public class State implements ConnectionIf
     }
 
     // connected host (ConnectionIf)
-    public final Utils.ProtoType protoType;
+    public final ProtoType protoType;
     private final String host;
     private final int port;
 
@@ -241,7 +241,7 @@ public class State implements ConnectionIf
     private static final ReceiverInformationMsg.ToneControl DEFAULT_TREBLE_CONTROL =
             new ReceiverInformationMsg.ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
 
-    State(final Utils.ProtoType protoType, final String host, int port, int activeZone)
+    State(final ProtoType protoType, final String host, int port, int activeZone)
     {
         this.protoType = protoType;
         this.host = host;
@@ -427,7 +427,7 @@ public class State implements ConnectionIf
             trebleLevel = trebleLevel == ToneCommandMsg.NO_LEVEL ? 0 : trebleLevel;
         }
         // Settings
-        if (protoType == Utils.ProtoType.DCP)
+        if (protoType == ConnectionIf.ProtoType.DCP)
         {
             controlList.add("Setup");
             controlList.add("Quick");
@@ -1063,7 +1063,7 @@ public class State implements ConnectionIf
     {
         if (msg.getImageType() == JacketArtMsg.ImageType.URL)
         {
-            if (protoType == Utils.ProtoType.DCP && coverUrl != null && coverUrl.equals(msg.getUrl()))
+            if (protoType == ConnectionIf.ProtoType.DCP && coverUrl != null && coverUrl.equals(msg.getUrl()))
             {
                 Logging.info(msg, "Cover image already loaded, reload skipped");
                 return false;
@@ -1543,7 +1543,7 @@ public class State implements ConnectionIf
         }
         if (!isPlaybackMode())
         {
-            if (protoType == Utils.ProtoType.DCP &&
+            if (protoType == ConnectionIf.ProtoType.DCP &&
                     inputType == InputSelectorMsg.InputType.DCP_NET)
             {
                 return layerInfo == ListTitleInfoMsg.LayerInfo.NET_TOP;
@@ -1625,7 +1625,7 @@ public class State implements ConnectionIf
             str.append("/");
             str.append(!presetList.isEmpty() ? Integer.toString(presetList.size()) : dashedString);
         }
-        else if (protoType == Utils.ProtoType.ISCP)
+        else if (protoType == ConnectionIf.ProtoType.ISCP)
         {
             str.append(currentTrack != null ? Integer.toString(currentTrack) : dashedString);
             str.append("/");

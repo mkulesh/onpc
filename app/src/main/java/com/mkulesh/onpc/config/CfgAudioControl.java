@@ -18,9 +18,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -127,7 +127,7 @@ public class CfgAudioControl
     public ArrayList<ListeningModeMsg.Mode> getSortedListeningModes(
             boolean allItems,
             @Nullable ListeningModeMsg.Mode activeItem,
-            @NonNull Utils.ProtoType protoType)
+            @NonNull ConnectionIf.ProtoType protoType)
     {
         final ArrayList<ListeningModeMsg.Mode> result = new ArrayList<>();
         final ArrayList<String> defItems = new ArrayList<>();
@@ -156,15 +156,15 @@ public class CfgAudioControl
         return preferences.getBoolean(VOLUME_KEYS, false);
     }
 
-    public static ListeningModeMsg.Mode[] getListeningModes(@NonNull Utils.ProtoType protoType)
+    public static ListeningModeMsg.Mode[] getListeningModes(@NonNull ConnectionIf.ProtoType protoType)
     {
-        return protoType == Utils.ProtoType.ISCP ? ISCP_LISTENING_MODES : DCP_LISTENING_MODES;
+        return protoType == ConnectionIf.ProtoType.ISCP ? ISCP_LISTENING_MODES : DCP_LISTENING_MODES;
     }
 
-    public static String getSelectedListeningModePar(@NonNull Utils.ProtoType protoType)
+    public static String getSelectedListeningModePar(@NonNull ConnectionIf.ProtoType protoType)
     {
         String par = SELECTED_LISTENING_MODES;
-        if (protoType == Utils.ProtoType.DCP)
+        if (protoType == ConnectionIf.ProtoType.DCP)
         {
             par += "_DCP";
         }

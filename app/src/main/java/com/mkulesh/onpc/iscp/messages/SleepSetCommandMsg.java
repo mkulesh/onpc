@@ -16,9 +16,9 @@ package com.mkulesh.onpc.iscp.messages;
 
 import android.annotation.SuppressLint;
 
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,9 +81,9 @@ public class SleepSetCommandMsg extends ISCPMessage
         return false;
     }
 
-    public static int toggle(int sleepTime, Utils.ProtoType protoType)
+    public static int toggle(int sleepTime, ProtoType protoType)
     {
-        final int max = protoType == Utils.ProtoType.ISCP ? 90 : 120;
+        final int max = protoType == ConnectionIf.ProtoType.ISCP ? 90 : 120;
         final int res = 15 * ((int) ((float) sleepTime / 15.0) + 1);
         return res > max ? 0 : res;
     }

@@ -20,13 +20,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.mkulesh.onpc.iscp.BroadcastSearch;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -303,16 +303,16 @@ public class Configuration
     }
 
     @NonNull
-    public static Utils.ProtoType getProtoType(final SharedPreferences preferences)
+    public static ConnectionIf.ProtoType getProtoType(final SharedPreferences preferences)
     {
         final String protoType = preferences.getString(Configuration.PROTO_TYPE, "NONE");
-        for (Utils.ProtoType p : Utils.ProtoType.values())
+        for (ConnectionIf.ProtoType p : ConnectionIf.ProtoType.values())
         {
             if (p.name().equalsIgnoreCase(protoType))
             {
                 return p;
             }
         }
-        return Utils.ProtoType.ISCP;
+        return ConnectionIf.ProtoType.ISCP;
     }
 }

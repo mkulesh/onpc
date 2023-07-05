@@ -18,6 +18,12 @@ import androidx.annotation.NonNull;
 
 public interface ConnectionIf
 {
+    enum ProtoType
+    {
+        ISCP, // Integra Serial Communication Protocol (TCP:60128)
+        DCP   // Denon Control Protocol (TCP:23)
+    }
+
     String EMPTY_HOST = "";
     int EMPTY_PORT = -1;
 

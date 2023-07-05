@@ -120,9 +120,9 @@ public class MessageChannelIscp extends AppTask implements Runnable, MessageChan
     }
 
     @Override
-    public Utils.ProtoType getProtoType()
+    public ProtoType getProtoType()
     {
-        return Utils.ProtoType.ISCP;
+        return ConnectionIf.ProtoType.ISCP;
     }
 
     @Override

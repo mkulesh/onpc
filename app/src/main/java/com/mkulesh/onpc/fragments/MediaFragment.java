@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
@@ -239,7 +240,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     }
                     menu.findItem(R.id.cmd_shortcut_create).setVisible(isShortcut);
                 }
-                if (state.protoType == Utils.ProtoType.DCP)
+                if (state.protoType == ConnectionIf.ProtoType.DCP)
                 {
                     menu.findItem(R.id.playlist_menu_replace).setVisible(false);
                     menu.findItem(R.id.playlist_track_menu).setVisible(false);
@@ -575,7 +576,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         listView.clearChoices();
         listView.invalidate();
         final List<XmlListItemMsg> mediaItems = state.cloneMediaItems();
-        if (state.protoType == Utils.ProtoType.DCP && !state.isTopLayer() && mediaItems.isEmpty())
+        if (state.protoType == ConnectionIf.ProtoType.DCP && !state.isTopLayer() && mediaItems.isEmpty())
         {
             mediaItems.add(new XmlListItemMsg(0, 0,
                     getString(R.string.medialist_no_items), XmlListItemMsg.Icon.UNKNOWN,
@@ -590,7 +591,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         if (state.isRadioInput())
         {
             // Add band selectors for Denon
-            if (state.protoType == Utils.ProtoType.DCP)
+            if (state.protoType == ConnectionIf.ProtoType.DCP)
             {
                 for (DcpTunerModeMsg.TunerMode t : DcpTunerModeMsg.TunerMode.values())
                 {

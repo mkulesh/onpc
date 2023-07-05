@@ -14,8 +14,6 @@
 
 package com.mkulesh.onpc.iscp;
 
-import com.mkulesh.onpc.utils.Utils;
-
 import androidx.annotation.NonNull;
 
 public interface MessageChannel extends ConnectionIf
@@ -31,7 +29,7 @@ public interface MessageChannel extends ConnectionIf
 
     void addAllowedMessage(final String code);
 
-    Utils.ProtoType getProtoType();
+    ProtoType getProtoType();
 
     boolean connectToServer(@NonNull String host, int port);
 

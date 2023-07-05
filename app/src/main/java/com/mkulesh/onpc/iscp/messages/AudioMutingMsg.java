@@ -15,9 +15,9 @@
 package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ZonedMessage;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,9 +121,9 @@ public class AudioMutingMsg extends ZonedMessage
         return false;
     }
 
-    public static Status toggle(Status s, Utils.ProtoType proto)
+    public static Status toggle(Status s, ProtoType proto)
     {
-        return proto == Utils.ProtoType.ISCP ? Status.TOGGLE :
+        return proto == ConnectionIf.ProtoType.ISCP ? Status.TOGGLE :
                 ((s == Status.OFF) ? Status.ON : Status.OFF);
     }
 

@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.MainActivity;
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.PopupBuilder;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
@@ -59,7 +60,7 @@ class PopupManager
                     .setView(frameView)
                     .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (d, which) ->
                     {
-                        if (activity.isConnected() && state.protoType == Utils.ProtoType.ISCP)
+                        if (activity.isConnected() && state.protoType == ConnectionIf.ProtoType.ISCP)
                         {
                             activity.getStateManager().sendMessage(activity.getStateManager().getReturnMessage());
                         }

@@ -17,10 +17,10 @@ package com.mkulesh.onpc.config;
 import android.os.Bundle;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,14 @@ public class PreferencesListeningModes extends DraggableListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Utils.ProtoType protoType = Configuration.getProtoType(preferences);
+        ConnectionIf.ProtoType protoType = Configuration.getProtoType(preferences);
         Logging.info(this, "Listening mode for: " + protoType);
         prepareList(CfgAudioControl.getSelectedListeningModePar(protoType));
         prepareSelectors(protoType);
         setTitle(R.string.pref_listening_modes);
     }
 
-    private void prepareSelectors(final Utils.ProtoType protoType)
+    private void prepareSelectors(final ConnectionIf.ProtoType protoType)
     {
         final ArrayList<String> defItems = new ArrayList<>();
         for (ListeningModeMsg.Mode i : CfgAudioControl.getListeningModes(protoType))

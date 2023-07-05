@@ -70,12 +70,6 @@ public class Utils
 {
     public static final Charset UTF_8 = Charset.forName("UTF-8");
 
-    public enum ProtoType
-    {
-        ISCP, // Integra Serial Communication Protocol (TCP:60128)
-        DCP   // Denon Control Protocol (TCP:23)
-    }
-
     public static byte[] catBuffer(byte[] bytes, int offset, int length)
     {
         final byte[] newBytes = new byte[length];

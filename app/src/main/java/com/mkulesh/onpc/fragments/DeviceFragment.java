@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.config.CfgAppSettings;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
@@ -247,7 +248,7 @@ public class DeviceFragment extends BaseFragment
                 {
                     version.append(", ").append(getStringValue(state.firmwareStatus.getDescriptionId()));
                 }
-                if (isValidVersions && state.protoType == Utils.ProtoType.ISCP)
+                if (isValidVersions && state.protoType == ConnectionIf.ProtoType.ISCP)
                 {
                     // Update button
                     final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);
@@ -276,9 +277,9 @@ public class DeviceFragment extends BaseFragment
         }
     }
 
-    private void hidePlatformSpecificParameters(Utils.ProtoType protoType)
+    private void hidePlatformSpecificParameters(ConnectionIf.ProtoType protoType)
     {
-        final int vis = protoType == Utils.ProtoType.ISCP ? View.VISIBLE : View.GONE;
+        final int vis = protoType == ConnectionIf.ProtoType.ISCP ? View.VISIBLE : View.GONE;
         ((LinearLayout) (rootView.findViewById(R.id.device_year).getParent())).setVisibility(vis);
         ((LinearLayout) (rootView.findViewById(R.id.google_cast_version).getParent())).setVisibility(vis);
     }
