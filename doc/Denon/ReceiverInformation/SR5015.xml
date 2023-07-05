@@ -6,9 +6,9 @@
     <BrandCode>1</BrandCode>
     <ProductCategory>01</ProductCategory>
     <CategoryName>AV RECEIVER</CategoryName>
-    <ManualModelName>CINEMA 60</ManualModelName>
+    <ManualModelName>SR5015</ManualModelName>
     <DeliveryCode>02</DeliveryCode>
-    <ModelName>CINEMA 60</ModelName>
+    <ModelName>SR5015</ModelName>
     <MacAddress></MacAddress>
     <UpgradeVersion>00</UpgradeVersion>
     <ReloadDeviceInfo>0</ReloadDeviceInfo>
@@ -22,6 +22,10 @@
                 <IconID>263</IconID>
                 <lists>
                     <ItemType>1</ItemType>
+                    <FuncName>DialogLevel</FuncName>
+                </lists>
+                <lists>
+                    <ItemType>1</ItemType>
                     <FuncName>SubwooferLevel</FuncName>
                 </lists>
                 <lists>
@@ -31,6 +35,10 @@
                 <lists>
                     <ItemType>1</ItemType>
                     <FuncName>Restorer</FuncName>
+                </lists>
+                <lists>
+                    <ItemType>1</ItemType>
+                    <FuncName>AudioDelay</FuncName>
                 </lists>
                 <lists>
                     <ItemType>1</ItemType>
@@ -296,6 +304,19 @@
                     <SetToneControl>1</SetToneControl>
                 </Functions>
             </ToneControl>
+            <DialogLevel>
+                <Control>1</Control>
+                <DispName>Center Level Adjust</DispName>
+                <FuncName>DialogLevel</FuncName>
+                <MinRange>0</MinRange>
+                <MaxRange>48</MaxRange>
+                <DefaultValue>24</DefaultValue>
+                <Step>0.5</Step>
+                <Functions>
+                    <GetDialogLevel>1</GetDialogLevel>
+                    <SetDialogLevel>1</SetDialogLevel>
+                </Functions>
+            </DialogLevel>
             <SubwooferLevel>
                 <Control>1</Control>
                 <DispName>Subwoofer Level Adjust</DispName>
@@ -509,7 +530,7 @@
                 <FuncName>FrontDisplay</FuncName>
                 <Dimmer>
                     <Control>1</Control>
-                    <DispName>Brightness</DispName>
+                    <DispName>Dimmer</DispName>
                     <List>
                         <Value>
                             <DispName>Bright</DispName>
@@ -564,43 +585,49 @@
                     <SetAirPlay ver="1">1</SetAirPlay>
                 </Commands>
             </AirPlay>
-            <Spotify>
+            <PictureMode>
                 <Control>1</Control>
-                <DispName>Spotify Connect</DispName>
-                <FuncName>Spotify</FuncName>
+                <DispName>Picture Mode</DispName>
+                <FuncName>PictureMode</FuncName>
                 <List>
+                    <Value>
+                        <DispName>Standard</DispName>
+                        <CmdNo>1</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>Movie</DispName>
+                        <CmdNo>2</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>Vivid</DispName>
+                        <CmdNo>3</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>Streaming</DispName>
+                        <CmdNo>4</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>ISF Day</DispName>
+                        <CmdNo>5</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>ISF Night</DispName>
+                        <CmdNo>6</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>Custom</DispName>
+                        <CmdNo>7</CmdNo>
+                    </Value>
                     <Value>
                         <DispName>Off</DispName>
                         <CmdNo>0</CmdNo>
                     </Value>
-                    <Value>
-                        <DispName>On</DispName>
-                        <CmdNo>1</CmdNo>
-                    </Value>
                 </List>
-                <Commands>
-                    <GetSpotify ver="1">1</GetSpotify>
-                    <SetSpotify ver="1">1</SetSpotify>
-                </Commands>
-            </Spotify>
-            <HEOSapp>
-                <Control>1</Control>
-                <DispName>HEOS app</DispName>
-                <FuncName>HEOSapp</FuncName>
-                <List>
-                    <Value>
-                        <DispName>Off</DispName>
-                        <CmdNo>0</CmdNo>
-                    </Value>
-                    <Value>
-                        <DispName>On</DispName>
-                        <CmdNo>1</CmdNo>
-                    </Value>
-                </List>
-                <Commands>
-                    <GetHEOSapp ver="1">1</GetHEOSapp>
-                </Commands>
-            </HEOSapp>
+                <Functions>
+                    <GetPictureMode>1</GetPictureMode>
+                    <SetPictureMode>1</SetPictureMode>
+                </Functions>
+            </PictureMode>
             <VideoSelect>
                 <Control>1</Control>
                 <DispName>Video Select</DispName>
@@ -735,28 +762,158 @@
                             <DispName>Movie</DispName>
                             <CmdNo>3</CmdNo>
                         </Value>
-                        <Value>
-                            <DispName>Bypass</DispName>
-                            <CmdNo>4</CmdNo>
-                        </Value>
                     </List>
                 </VideoMode>
-                <HDMIUpscaler>
+                <IpScaler>
                     <Control>1</Control>
-                    <DispName>HDMI Upscaler</DispName>
-                    <FuncName>HDMIUpscaler</FuncName>
+                    <DispName>i/p Scaler</DispName>
+                    <FuncName>IpScaler</FuncName>
                     <List>
                         <Value>
                             <DispName>Off</DispName>
                             <CmdNo>0</CmdNo>
                         </Value>
                         <Value>
+                            <DispName>On</DispName>
+                            <CmdNo>1</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>Analog</DispName>
+                            <CmdNo>2</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>Analog &amp; HDMI</DispName>
+                            <CmdNo>3</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>HDMI</DispName>
+                            <CmdNo>4</CmdNo>
+                        </Value>
+                    </List>
+                </IpScaler>
+                <ResolutionAnalog>
+                    <Control>1</Control>
+                    <DispName>Resolution (analog)</DispName>
+                    <FuncName>ResolutionAnalog</FuncName>
+                    <List>
+                        <Value>
                             <DispName>Auto</DispName>
                             <CmdNo>1</CmdNo>
                         </Value>
+                        <Value>
+                            <DispName>480p/576p</DispName>
+                            <CmdNo>2</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>1080i</DispName>
+                            <CmdNo>3</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>720p</DispName>
+                            <CmdNo>4</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>1080p</DispName>
+                            <CmdNo>5</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>4K</DispName>
+                            <CmdNo>7</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>8K</DispName>
+                            <CmdNo>9</CmdNo>
+                        </Value>
                     </List>
-                </HDMIUpscaler>
+                </ResolutionAnalog>
+                <ResolutionHdmi>
+                    <Control>1</Control>
+                    <DispName>Resolution (HDMI)</DispName>
+                    <FuncName>ResolutionHdmi</FuncName>
+                    <List>
+                        <Value>
+                            <DispName>Auto</DispName>
+                            <CmdNo>1</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>480p/576p</DispName>
+                            <CmdNo>2</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>1080i</DispName>
+                            <CmdNo>3</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>720p</DispName>
+                            <CmdNo>4</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>1080p</DispName>
+                            <CmdNo>5</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>4K</DispName>
+                            <CmdNo>7</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>8K</DispName>
+                            <CmdNo>9</CmdNo>
+                        </Value>
+                    </List>
+                </ResolutionHdmi>
+                <Sharpness>
+                    <Control>1</Control>
+                    <DispName>Sharpness</DispName>
+                    <FuncName>Sharpness</FuncName>
+                    <List>
+                        <Value>
+                            <DispName>Off</DispName>
+                            <CmdNo>0</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>On</DispName>
+                            <CmdNo>1</CmdNo>
+                        </Value>
+                    </List>
+                </Sharpness>
+                <ProgressiveMode>
+                    <Control>1</Control>
+                    <DispName>Progressive Mode</DispName>
+                    <FuncName>ProgressiveMode</FuncName>
+                    <List>
+                        <Value>
+                            <DispName>Auto</DispName>
+                            <CmdNo>1</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>Video</DispName>
+                            <CmdNo>2</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>Video and Film</DispName>
+                            <CmdNo>3</CmdNo>
+                        </Value>
+                    </List>
+                </ProgressiveMode>
+                <AspectRatio>
+                    <Control>1</Control>
+                    <DispName>Aspect Ratio</DispName>
+                    <FuncName>AspectRatio</FuncName>
+                    <List>
+                        <Value>
+                            <DispName>16:9</DispName>
+                            <CmdNo>1</CmdNo>
+                        </Value>
+                        <Value>
+                            <DispName>4:3</DispName>
+                            <CmdNo>2</CmdNo>
+                        </Value>
+                    </List>
+                </AspectRatio>
                 <Commands>
+                    <GetIpScalerList ver="1">1</GetIpScalerList>
+                    <GetResolutionAnalogList ver="1">1</GetResolutionAnalogList>
+                    <GetResolutionHDMIList ver="1">1</GetResolutionHDMIList>
                     <GetOutputSettings ver="2">1</GetOutputSettings>
                     <SetOutputSettings ver="2">1</SetOutputSettings>
                 </Commands>
@@ -1280,33 +1437,6 @@
                     <SetExternalContol ver="1">1</SetExternalContol>
                 </Commands>
             </ExternalContol>
-            <DialogEnhancer>
-                <Control>1</Control>
-                <DispName>Dialog Enhancer</DispName>
-                <FuncName>DialogEnhancer</FuncName>
-                <List>
-                    <Value>
-                        <DispName>High</DispName>
-                        <CmdNo>3</CmdNo>
-                    </Value>
-                    <Value>
-                        <DispName>Medium</DispName>
-                        <CmdNo>2</CmdNo>
-                    </Value>
-                    <Value>
-                        <DispName>Low</DispName>
-                        <CmdNo>1</CmdNo>
-                    </Value>
-                    <Value>
-                        <DispName>Off</DispName>
-                        <CmdNo>0</CmdNo>
-                    </Value>
-                </List>
-                <Commands>
-                    <GetDialogEnhancer ver="1">1</GetDialogEnhancer>
-                    <SetDialogEnhancer ver="1">1</SetDialogEnhancer>
-                </Commands>
-            </DialogEnhancer>
             <SourceRename>
                 <Control>1</Control>
                 <DispName>Source Rename</DispName>
@@ -1533,6 +1663,48 @@
                 <DispName>Auto SetupMenu Off</DispName>
                 <FuncName>AutoSetupMenuOff</FuncName>
             </AutoSetupMenuOff>
+            <DRC>
+                <Control>1</Control>
+                <DispName>DRC</DispName>
+                <FuncName>DRC</FuncName>
+                <List>
+                    <Value>
+                        <DispName>1</DispName>
+                        <CmdNo>1</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>1/2</DispName>
+                        <CmdNo>2</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>OFF</DispName>
+                        <CmdNo>0</CmdNo>
+                    </Value>
+                </List>
+                <Commands>
+                    <GetDRC ver="1">1</GetDRC>
+                    <SetDRC ver="1">1</SetDRC>
+                </Commands>
+            </DRC>
+            <StationOrder>
+                <Control>1</Control>
+                <DispName>Station Order</DispName>
+                <FuncName>StationOrder</FuncName>
+                <List>
+                    <Value>
+                        <DispName>Alphanumeric</DispName>
+                        <CmdNo>1</CmdNo>
+                    </Value>
+                    <Value>
+                        <DispName>Multiplex</DispName>
+                        <CmdNo>2</CmdNo>
+                    </Value>
+                </List>
+                <Commands>
+                    <GetStationOrder ver="1">1</GetStationOrder>
+                    <SetStationOrder ver="1">1</SetStationOrder>
+                </Commands>
+            </StationOrder>
             <SpeakerPreset>
                 <Control>1</Control>
                 <DispName>Speaker Preset</DispName>
@@ -1552,24 +1724,6 @@
                     <SetSpeakerPreset ver="1">1</SetSpeakerPreset>
                 </Commands>
             </SpeakerPreset>
-            <MenuLock>
-                <Control>1</Control>
-                <DispName>Menu Lock</DispName>
-                <FuncName>MenuLock</FuncName>
-                <List>
-                    <Value>
-                        <DispName>Off</DispName>
-                        <CmdNo>0</CmdNo>
-                    </Value>
-                    <Value>
-                        <DispName>On</DispName>
-                        <CmdNo>1</CmdNo>
-                    </Value>
-                </List>
-                <Commands>
-                    <GetMenuLock ver="1">1</GetMenuLock>
-                </Commands>
-            </MenuLock>
         </Setup>
         <Operation>
             <Clock>
@@ -1651,6 +1805,12 @@
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
+                    <IconId>2</IconId>
+                    <DispName>DVD</DispName>
+                    <FuncName>DVD</FuncName>
+                </Shortcut>
+                <Shortcut>
+                    <Category>4</Category>
                     <IconId>1</IconId>
                     <DispName>Blu-ray</DispName>
                     <FuncName>Blu-ray</FuncName>
@@ -1659,17 +1819,17 @@
                     <Category>4</Category>
                     <IconId>8</IconId>
                     <DispName>Game</DispName>
-                    <FuncName>GAME1</FuncName>
+                    <FuncName>GAME</FuncName>
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
-                    <IconId>46</IconId>
+                    <IconId>42</IconId>
                     <DispName>AUX1</DispName>
                     <FuncName>AUX1</FuncName>
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
-                    <IconId>46</IconId>
+                    <IconId>43</IconId>
                     <DispName>AUX2</DispName>
                     <FuncName>AUX2</FuncName>
                 </Shortcut>
@@ -1678,6 +1838,12 @@
                     <IconId>46</IconId>
                     <DispName>Media Player</DispName>
                     <FuncName>Media Player</FuncName>
+                </Shortcut>
+                <Shortcut>
+                    <Category>4</Category>
+                    <IconId>22</IconId>
+                    <DispName>iPod/USB</DispName>
+                    <FuncName>iPod/USB</FuncName>
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
@@ -1785,10 +1951,10 @@
                     <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
-                    <IconId>46</IconId>
-                    <FuncName>Media Player</FuncName>
-                    <DefaultName>Media Player</DefaultName>
-                    <SourcePath>root/Media Player</SourcePath>
+                    <IconId>2</IconId>
+                    <FuncName>DVD</FuncName>
+                    <DefaultName>DVD</DefaultName>
+                    <SourcePath>root/DVD</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
@@ -1802,16 +1968,16 @@
                 </Source>
                 <Source>
                     <IconId>8</IconId>
-                    <FuncName>GAME1</FuncName>
+                    <FuncName>GAME</FuncName>
                     <DefaultName>Game</DefaultName>
-                    <SourcePath>root/GAME1</SourcePath>
+                    <SourcePath>root/GAME</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
-                    <IconId>46</IconId>
+                    <IconId>10</IconId>
                     <FuncName>AUX1</FuncName>
-                    <DefaultName>AUX1</DefaultName>
+                    <DefaultName>AUX</DefaultName>
                     <SourcePath>root/AUX1</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
@@ -1819,16 +1985,16 @@
                 <Source>
                     <IconId>46</IconId>
                     <FuncName>AUX2</FuncName>
-                    <DefaultName>AUX2</DefaultName>
+                    <DefaultName>8K</DefaultName>
                     <SourcePath>root/AUX2</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
-                    <IconId>3</IconId>
-                    <FuncName>TV AUDIO</FuncName>
-                    <DefaultName>TV Audio</DefaultName>
-                    <SourcePath>root/TV AUDIO</SourcePath>
+                    <IconId>46</IconId>
+                    <FuncName>Media Player</FuncName>
+                    <DefaultName>Media Player</DefaultName>
+                    <SourcePath>root/Media Player</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
@@ -1839,14 +2005,6 @@
                     <SourcePath>root/CD</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc>CdOperation</RelatedFunc>
-                </Source>
-                <Source>
-                    <IconId>16</IconId>
-                    <FuncName>PHONO</FuncName>
-                    <DefaultName>Phono</DefaultName>
-                    <SourcePath>root/PHONO</SourcePath>
-                    <GroupNo>3</GroupNo>
-                    <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
                     <IconId>19</IconId>
@@ -1865,10 +2023,26 @@
                     <RelatedFunc>NetUsb</RelatedFunc>
                 </Source>
                 <Source>
+                    <IconId>3</IconId>
+                    <FuncName>TV AUDIO</FuncName>
+                    <DefaultName>TV Audio</DefaultName>
+                    <SourcePath>root/TV AUDIO</SourcePath>
+                    <GroupNo>3</GroupNo>
+                    <RelatedFunc></RelatedFunc>
+                </Source>
+                <Source>
                     <IconId>59</IconId>
                     <FuncName>Bluetooth</FuncName>
                     <DefaultName>Bluetooth</DefaultName>
                     <SourcePath>root/Bluetooth</SourcePath>
+                    <GroupNo>3</GroupNo>
+                    <RelatedFunc></RelatedFunc>
+                </Source>
+                <Source>
+                    <IconId>16</IconId>
+                    <FuncName>PHONO</FuncName>
+                    <DefaultName>Phono</DefaultName>
+                    <SourcePath>root/PHONO</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
@@ -1962,7 +2136,7 @@
                         <Name>FM</Name>
                     </Band>
                     <Band>
-                        <Name>AM</Name>
+                        <Name>DAB</Name>
                     </Band>
                 </BandList>
                 <ModeList>
@@ -2198,6 +2372,12 @@
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
+                    <IconId>2</IconId>
+                    <DispName>DVD</DispName>
+                    <FuncName>DVD</FuncName>
+                </Shortcut>
+                <Shortcut>
+                    <Category>4</Category>
                     <IconId>1</IconId>
                     <DispName>Blu-ray</DispName>
                     <FuncName>Blu-ray</FuncName>
@@ -2206,17 +2386,17 @@
                     <Category>4</Category>
                     <IconId>8</IconId>
                     <DispName>Game</DispName>
-                    <FuncName>GAME1</FuncName>
+                    <FuncName>GAME</FuncName>
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
-                    <IconId>46</IconId>
+                    <IconId>42</IconId>
                     <DispName>AUX1</DispName>
                     <FuncName>AUX1</FuncName>
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
-                    <IconId>46</IconId>
+                    <IconId>43</IconId>
                     <DispName>AUX2</DispName>
                     <FuncName>AUX2</FuncName>
                 </Shortcut>
@@ -2225,6 +2405,12 @@
                     <IconId>46</IconId>
                     <DispName>Media Player</DispName>
                     <FuncName>Media Player</FuncName>
+                </Shortcut>
+                <Shortcut>
+                    <Category>4</Category>
+                    <IconId>22</IconId>
+                    <DispName>iPod/USB</DispName>
+                    <FuncName>iPod/USB</FuncName>
                 </Shortcut>
                 <Shortcut>
                     <Category>4</Category>
@@ -2340,10 +2526,10 @@
                     <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
-                    <IconId>46</IconId>
-                    <FuncName>Media Player</FuncName>
-                    <DefaultName>Media Player</DefaultName>
-                    <SourcePath>root/Media Player</SourcePath>
+                    <IconId>2</IconId>
+                    <FuncName>DVD</FuncName>
+                    <DefaultName>DVD</DefaultName>
+                    <SourcePath>root/DVD</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
@@ -2357,16 +2543,16 @@
                 </Source>
                 <Source>
                     <IconId>8</IconId>
-                    <FuncName>GAME1</FuncName>
+                    <FuncName>GAME</FuncName>
                     <DefaultName>Game</DefaultName>
-                    <SourcePath>root/GAME1</SourcePath>
+                    <SourcePath>root/GAME</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
-                    <IconId>46</IconId>
+                    <IconId>10</IconId>
                     <FuncName>AUX1</FuncName>
-                    <DefaultName>AUX1</DefaultName>
+                    <DefaultName>AUX</DefaultName>
                     <SourcePath>root/AUX1</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
@@ -2374,16 +2560,16 @@
                 <Source>
                     <IconId>46</IconId>
                     <FuncName>AUX2</FuncName>
-                    <DefaultName>AUX2</DefaultName>
+                    <DefaultName>8K</DefaultName>
                     <SourcePath>root/AUX2</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
-                    <IconId>3</IconId>
-                    <FuncName>TV AUDIO</FuncName>
-                    <DefaultName>TV Audio</DefaultName>
-                    <SourcePath>root/TV AUDIO</SourcePath>
+                    <IconId>46</IconId>
+                    <FuncName>Media Player</FuncName>
+                    <DefaultName>Media Player</DefaultName>
+                    <SourcePath>root/Media Player</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
@@ -2394,14 +2580,6 @@
                     <SourcePath>root/CD</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc>CdOperation</RelatedFunc>
-                </Source>
-                <Source>
-                    <IconId>16</IconId>
-                    <FuncName>PHONO</FuncName>
-                    <DefaultName>Phono</DefaultName>
-                    <SourcePath>root/PHONO</SourcePath>
-                    <GroupNo>3</GroupNo>
-                    <RelatedFunc></RelatedFunc>
                 </Source>
                 <Source>
                     <IconId>19</IconId>
@@ -2420,10 +2598,26 @@
                     <RelatedFunc>NetUsb</RelatedFunc>
                 </Source>
                 <Source>
+                    <IconId>3</IconId>
+                    <FuncName>TV AUDIO</FuncName>
+                    <DefaultName>TV Audio</DefaultName>
+                    <SourcePath>root/TV AUDIO</SourcePath>
+                    <GroupNo>3</GroupNo>
+                    <RelatedFunc></RelatedFunc>
+                </Source>
+                <Source>
                     <IconId>59</IconId>
                     <FuncName>Bluetooth</FuncName>
                     <DefaultName>Bluetooth</DefaultName>
                     <SourcePath>root/Bluetooth</SourcePath>
+                    <GroupNo>3</GroupNo>
+                    <RelatedFunc></RelatedFunc>
+                </Source>
+                <Source>
+                    <IconId>16</IconId>
+                    <FuncName>PHONO</FuncName>
+                    <DefaultName>Phono</DefaultName>
+                    <SourcePath>root/PHONO</SourcePath>
                     <GroupNo>3</GroupNo>
                     <RelatedFunc></RelatedFunc>
                 </Source>
@@ -2514,7 +2708,7 @@
                         <Name>FM</Name>
                     </Band>
                     <Band>
-                        <Name>AM</Name>
+                        <Name>DAB</Name>
                     </Band>
                 </BandList>
                 <ModeList>

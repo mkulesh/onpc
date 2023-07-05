@@ -148,9 +148,16 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Denon AVR-X2400H](https://www.denon.com/de-ch/shop/avreceiver/avrx2400h)
 - [Denon AVR-X2600H](https://www.denon.com/de-ch/shop/avreceiver/avrx2600h)
 - [Denon AVR-X3700H](https://www.denon.com/de-ch/shop/avreceiver/avcx3700h)
+- [Denon AVR-X3800H](https://www.denon.com/de-ch/shop/avreceiver/avcx3800h)
+- [Denon AVR-X4300H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x4300h/800218.html)
+- [Denon AVR-X4500H](https://www.denon.com/de-ch/shop/avreceiver/avrx4500h)
 - [Denon AVR-X6300H](https://www.denon.com/de-ch/shop/avreceiver/avrx6300h)
 ### Marantz with build-in HEOS
+- [Marantz NR1200](https://www.marantz.com/de-de/product/av-receivers/nr1200)
+- [Marantz NR1510](https://www.marantz.com/de-de/product/av-receivers/nr1510)
 - [Marantz NR1711](https://www.marantz.com/de-de/product/av-receivers/nr1711)
+- [Marantz SR5015](https://www.marantz.com/de-de/product/av-receivers/sr5015)
+- [Marantz SR6015](https://www.marantz.com/de-de/product/av-receivers/sr6015)
 
 ## Documentation
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in 'doc' directory.
