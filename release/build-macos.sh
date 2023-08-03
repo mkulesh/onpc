@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Note: Additional settings for XCode 14.3.1 / Flutter 2.10.1 are necessary:
+#   https://stackoverflow.com/questions/75574268/missing-file-libarclite-iphoneos-a-xcode-14-3
+#   cd /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/
+#   sudo mkdir arc
+#   cd  arc
+#   sudo git clone https://github.com/kamyarelyasi/Libarclite-Files.git .
+#   sudo chmod +x *
+
 echo Build macOS app...
 
 # Prepare Yaml file
