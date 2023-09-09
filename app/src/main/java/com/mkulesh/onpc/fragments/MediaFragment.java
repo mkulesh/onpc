@@ -656,7 +656,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         final boolean isPlayback = state.isOn() && newItems.isEmpty() && (state.isPlaybackMode() || state.isSimpleInput());
 
         // Add "Return" button if necessary
-        if (!state.isTopLayer() && !activity.getConfiguration().isBackAsReturn())
+        if (activity.isConnected() && !state.isTopLayer() && !activity.getConfiguration().isBackAsReturn())
         {
             newItems.add(0, activity.getStateManager().getReturnMessage());
         }
