@@ -14,6 +14,7 @@
 
 package com.mkulesh.onpc.plus;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,12 +33,9 @@ import android.view.WindowManager;
 
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.plugin.common.MethodChannel;
 
 @SuppressWarnings({"RedundantSuppression"})
@@ -145,7 +143,7 @@ public class MainActivity extends FlutterActivity
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("NewApi")
     static class MyNetworkCallback extends ConnectivityManager.NetworkCallback
     {
         private final MainActivity listener;
@@ -175,9 +173,9 @@ public class MainActivity extends FlutterActivity
     private MethodChannel platformChannel = null;
 
     @Override
-    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine)
+    public void configureFlutterEngine(FlutterEngine flutterEngine)
     {
-        GeneratedPluginRegistrant.registerWith(flutterEngine);
+        super.configureFlutterEngine(flutterEngine);
 
         // read preferences stored in Flutter code
         readPreferences();
@@ -271,7 +269,7 @@ public class MainActivity extends FlutterActivity
     }
 
     @Override
-    protected void onNewIntent(@NonNull Intent intent)
+    protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
         handleIntent(intent);
@@ -289,7 +287,7 @@ public class MainActivity extends FlutterActivity
             {
                 intentData = intent.getAction();
             }
-            setIntent(null);
+            setIntent(new Intent());
         }
     }
 

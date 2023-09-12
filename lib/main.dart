@@ -21,7 +21,6 @@ import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
 import "package:flutter/scheduler.dart" show timeDilation;
 import "package:flutter/services.dart";
-import "package:onpc/utils/UrlLoader.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "Platform.dart";
@@ -50,6 +49,7 @@ import "iscp/messages/TimeInfoMsg.dart";
 import "utils/CompatUtils.dart";
 import "utils/Convert.dart";
 import "utils/Logging.dart";
+import "utils/UrlLoader.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";
 import "views/AppTabView.dart";

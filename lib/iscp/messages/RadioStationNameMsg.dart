@@ -12,8 +12,7 @@
  * Public License along with this program.
  */
 // @dart=2.9
-import 'package:onpc/utils/Convert.dart';
-
+import "../../utils/Convert.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "DcpTunerModeMsg.dart";

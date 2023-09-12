@@ -13,7 +13,8 @@
  */
 // @dart=2.9
 import 'package:flutter/material.dart';
-import 'package:onpc/constants/Dimens.dart';
+
+import "../constants/Dimens.dart";
 
 class SwitchPreference extends StatefulWidget
 {
