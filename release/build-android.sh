@@ -6,10 +6,10 @@ echo Build Android app...
 rm -f ../pubspec.yaml
 ln -s pubspec.yaml_mobile ../pubspec.yaml
 
-# Build with: Flutter version 2.10.1, Dart version 2.15.1
+# Build with: Flutter version 3.7.10, Dart version 2.19.6
 flutter clean
 cd /work/android/flutter
-git checkout 2.10.1
+git checkout 3.7.10
 cd -
 flutter doctor -v
 
