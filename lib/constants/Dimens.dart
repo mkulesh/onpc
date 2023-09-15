@@ -89,7 +89,7 @@ class ActivityDimens
     => DimensTransform.scale(36.0);
 
     static double get progressBarRadius
-    => DimensTransform.scale(6.0);
+    => DimensTransform.scale(8.0);
 
     // Cover image
     static double get _coverImagePadding

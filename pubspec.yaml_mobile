@@ -24,6 +24,8 @@ dependencies:
   url_launcher: ^6.1.2
   google_fonts: ^2.2.0
   json_path: ^0.2.1
+  syncfusion_flutter_sliders: ^23.1.36
+  syncfusion_flutter_charts: ^23.1.36
 
 dev_dependencies:
   flutter_test:

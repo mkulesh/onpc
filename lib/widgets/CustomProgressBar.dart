@@ -13,8 +13,9 @@
  */
 // @dart=2.9
 import 'dart:math';
-
-import "package:flutter/material.dart";
+import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:flutter/material.dart';
 
 import "../constants/Dimens.dart";
 import "CustomTextButton.dart";
@@ -118,23 +119,54 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         final double minV = 0.0;
         final double maxV = widget.maxValueNum.toDouble();
 
-        final Widget slider = SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-                trackShape: CustomTrackShape(),
-                thumbShape: RoundSliderThumbShape(enabledThumbRadius: radius),
-                thumbColor: td.colorScheme.secondary,
-                activeTrackColor: td.colorScheme.secondary,
-                inactiveTrackColor: td.disabledColor.withAlpha(125),
-                activeTickMarkColor: td.disabledColor,
-                inactiveTickMarkColor: td.disabledColor),
-            child: Slider(
-                min: minV,
-                max: maxV,
-                divisions: widget.divisions > 0 ? widget.divisions : null,
-                value: min(max(currValue, minV), maxV),
-                onChangeStart: widget.onChanged != null ? _onChangeStart : null,
-                onChanged: widget.onChanged != null ? _onChanged : null,
-                onChangeEnd: widget.onChanged != null ? _onChangeEnd : null)
+        // #281: Increase Flutter version: CustomProgressBar used in volume
+        // control and time seek on the main screen: drag-and-drop does not work,
+        // but works when CustomProgressBar is placed within the volume control dialog.
+        // Reason: exceptions in the build-in Slider widget.
+        // Solution: Replace Slider by a third-party widget instead of the standard widget.
+        // final Widget slider = SliderTheme(
+        //    data: SliderTheme.of(context).copyWith(
+        //        trackShape: CustomTrackShape(),
+        //        thumbShape: RoundSliderThumbShape(enabledThumbRadius: radius),
+        //        thumbColor: td.colorScheme.secondary,
+        //        activeTrackColor: td.colorScheme.secondary,
+        //        inactiveTrackColor: td.disabledColor.withAlpha(125),
+        //        activeTickMarkColor: td.disabledColor,
+        //        inactiveTickMarkColor: td.disabledColor),
+        //    child: Slider(
+        //        min: minV,
+        //        max: maxV,
+        //        divisions: widget.divisions > 0 ? widget.divisions : null,
+        //        value: min(max(currValue, minV), maxV),
+        //        onChangeStart: widget.onChanged != null ? _onChangeStart : null,
+        //        onChanged: widget.onChanged != null ? _onChanged : null,
+        //        onChangeEnd: widget.onChanged != null ? _onChangeEnd : null)
+        //);
+
+        final Widget slider = SfTheme(
+           data: SfThemeData(sliderThemeData: SfSliderThemeData(
+               thumbColor: td.colorScheme.secondary,
+               thumbRadius: radius,
+               activeTrackColor: td.colorScheme.secondary,
+               inactiveTrackColor: td.disabledColor.withAlpha(125),
+               tickSize: Size(1, 5),
+               )
+           ),
+           child: SfSlider(
+               min: minV,
+               max: maxV,
+               value: min(max(currValue, minV), maxV),
+               interval: widget.divisions > 0 ? (maxV - minV).toDouble() / widget.divisions : null,
+               showTicks: widget.divisions > 0,
+               showLabels: false,
+               enableTooltip: false,
+               showDividers: false,
+               minorTicksPerInterval: 0,
+               onChangeStart: widget.onChanged != null ? _onChangeStart : null,
+               onChanged: widget.onChanged != null ? _onChanged : null,
+               onChangeEnd: widget.onChanged != null ? _onChangeEnd : null,
+               trackShape: CustomTrackShape()
+           )
         );
 
         final Widget sliderBox = Container(
@@ -177,7 +209,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             children: controls);
     }
 
-    void _onChangeStart(double v)
+    void _onChangeStart(dynamic v)
     {
         isSeeking = true;
         setState(()
@@ -187,7 +219,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         });
     }
 
-    void _onChanged(double v)
+    void _onChanged(dynamic v)
     {
         isSeeking = true;
         final int intVal = v.round();
@@ -201,7 +233,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         });
     }
 
-    void _onChangeEnd(double v)
+    void _onChangeEnd(dynamic v)
     {
         isSeeking = false;
         setState(()
@@ -223,21 +255,14 @@ class _CustomProgressBarState extends State<CustomProgressBar>
     }
 }
 
-// See https://github.com/flutter/flutter/issues/37057 for more details
-class CustomTrackShape extends RoundedRectSliderTrackShape
+class CustomTrackShape extends SfTrackShape
 {
     @override
-    Rect getPreferredRect({
-        @required RenderBox parentBox,
-        Offset offset = Offset.zero,
-        @required SliderThemeData sliderTheme,
-        bool isEnabled = false,
-        bool isDiscrete = false,
-    })
+    Rect getPreferredRect(RenderBox parentBox, var themeData, Offset offset, {bool isActive})
     {
-        final double trackHeight = 1.5;
+        final double trackHeight = isActive != null && isActive? 3.0 : 1.5;
         final double trackLeft = offset.dx;
-        final double trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
+        final double trackTop = offset.dy;
         final double trackWidth = parentBox.size.width;
         return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
     }
