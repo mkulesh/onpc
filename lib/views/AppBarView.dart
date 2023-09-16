@@ -121,14 +121,14 @@ class AppBarView extends UpdatableView
                 content: CustomTextLabel.normal(Strings.menu_switch_off_group),
                 actions: <Widget>[
                     TextButton(
-                        child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                        child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.labelLarge),
                         onPressed: ()
                         {
                             Navigator.of(context).pop();
                         }
                     ),
                     TextButton(
-                        child: Text(Strings.action_no.toUpperCase(), style: td.textTheme.button),
+                        child: Text(Strings.action_no.toUpperCase(), style: td.textTheme.labelLarge),
                         onPressed: ()
                         {
                             Navigator.of(context).pop();
@@ -136,7 +136,7 @@ class AppBarView extends UpdatableView
                         }
                     ),
                     TextButton(
-                        child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
+                        child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
                         onPressed: ()
                         {
                             Navigator.of(context).pop();

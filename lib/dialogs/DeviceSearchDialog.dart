@@ -55,7 +55,7 @@ class _DeviceSearchDialogState extends State<DeviceSearchDialog>
             })),
             actions: <Widget>[
                 TextButton(
-                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )

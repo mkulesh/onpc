@@ -137,14 +137,14 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                 child: ListBody(children: controls)),
             actions: <Widget>[
                 TextButton(
-                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();
                     }),
                 TextButton(
                     child: Text(Strings.action_ok.toUpperCase(),
-                        style: _address.text.isEmpty ? td.textTheme.button.copyWith(color: td.disabledColor) : td.textTheme.button
+                        style: _address.text.isEmpty ? td.textTheme.labelLarge.copyWith(color: td.disabledColor) : td.textTheme.labelLarge
                     ),
                     onPressed: _address.text.isEmpty ? null : ()
                     {

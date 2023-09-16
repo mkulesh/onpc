@@ -227,13 +227,13 @@ class CheckableItem
                 isFocused: true),
             actions: <Widget>[
                 TextButton(
-                    child: Text(Strings.action_cancel.toUpperCase(), style: theme.textTheme.button),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: theme.textTheme.labelLarge),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();
                     }),
                 TextButton(
-                    child: Text(Strings.action_ok.toUpperCase(), style: theme.textTheme.button),
+                    child: Text(Strings.action_ok.toUpperCase(), style: theme.textTheme.labelLarge),
                     onPressed: ()
                     {
                         if (item.onRename  != null)

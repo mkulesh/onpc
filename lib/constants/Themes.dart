@@ -98,7 +98,7 @@ class BaseAppTheme
                 // Parameter descriptions in the preference screen
                 bodyText2: mainStyle.copyWith(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
                 // Buttons
-                button: mainStyle.copyWith(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
+                labelLarge: mainStyle.copyWith(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
             ),
 
             textButtonTheme: TextButtonThemeData(

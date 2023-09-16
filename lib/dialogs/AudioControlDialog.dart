@@ -82,7 +82,7 @@ class _AudioControlDialogState extends State<AudioControlDialog>
             insetPadding: DialogDimens.contentPadding,
             actions: <Widget>[
                 TextButton(
-                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     => Navigator.of(context).pop()
                 )

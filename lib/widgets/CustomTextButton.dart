@@ -38,11 +38,11 @@ class CustomTextButton extends StatelessWidget
     {
         final ThemeData td = Theme.of(context);
         final Color color = isEnabled ?
-            (isSelected ? td.colorScheme.secondary : td.textTheme.button.color)
+            (isSelected ? td.colorScheme.secondary : td.textTheme.labelLarge.color)
                 : td.disabledColor;
 
         final Widget result = MaterialButton(
-            child: Text(text, style: td.textTheme.button.copyWith(color: color)),
+            child: Text(text, style: td.textTheme.labelLarge.copyWith(color: color)),
             padding: _getPadding(),
             color: isInDialog ? td.dialogBackgroundColor : td.backgroundColor,
             textColor: color,
@@ -64,7 +64,7 @@ class CustomTextButton extends StatelessWidget
     {
         final ThemeData td = Theme.of(context);
         final Size size = (TextPainter(
-            text: TextSpan(text: text, style: td.textTheme.button),
+            text: TextSpan(text: text, style: td.textTheme.labelLarge),
             maxLines: 1,
             textScaleFactor: MediaQuery.of(context).textScaleFactor,
             textDirection: TextDirection.ltr)

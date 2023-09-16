@@ -262,14 +262,14 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             content: CustomTextLabel.normal(Strings.device_firmware_confirm),
             actions: <Widget>[
                 TextButton(
-                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.button),
+                    child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();
                     }
                 ),
                 TextButton(
-                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.button),
+                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     {
                         Navigator.of(context).pop();

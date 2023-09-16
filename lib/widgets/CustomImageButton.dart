@@ -121,7 +121,7 @@ class CustomImageButton extends StatelessWidget
         {
             result = Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [result, Text(text, style: td.textTheme.button.copyWith(color: color))]
+                children: [result, Text(text, style: td.textTheme.labelLarge.copyWith(color: color))]
             );
 
             if (isEnabled && onPressed != null)
