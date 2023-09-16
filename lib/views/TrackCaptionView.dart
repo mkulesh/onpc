@@ -17,6 +17,7 @@ import "package:flutter/material.dart";
 import "../constants/Strings.dart";
 import "../iscp/messages/AlbumNameMsg.dart";
 import "../iscp/messages/ArtistNameMsg.dart";
+import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/RadioStationNameMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/MenuStatusMsg.dart";
@@ -39,6 +40,7 @@ class TrackCaptionView extends UpdatableView
         AlbumNameMsg.CODE,
         PresetCommandMsg.CODE,
         RadioStationNameMsg.CODE,
+        PowerStatusMsg.CODE
     ];
 
     TrackCaptionView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);

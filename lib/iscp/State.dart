@@ -261,7 +261,7 @@ class State with ProtoTypeMix
             if (changed != null && !isOn)
             {
                 _mediaListState.clearItems();
-                trackState.clear();
+                _trackState.clear();
             }
             return changed;
         }
