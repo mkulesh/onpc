@@ -47,7 +47,7 @@ class CustomTextLabel extends StatelessWidget
     Widget build(BuildContext context)
     {
         final ThemeData td = Theme.of(context);
-        final TextStyle style = size == 1 ? td.textTheme.bodyText2 : td.textTheme.subtitle1;
+        final TextStyle style = size == 1 ? td.textTheme.bodyMedium : td.textTheme.titleMedium;
         final Color c = this.color ?? style.color;
         final w = bold ? FontWeight.w700 : FontWeight.w400;
         if (padding.vertical > 0 || padding.horizontal > 0)

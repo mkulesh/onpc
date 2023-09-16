@@ -200,7 +200,7 @@ class DrawerView extends UpdatableView
                 ),
                 Expanded(child: CustomTextLabel.small(title,
                     color: isSelected ? td.colorScheme.secondary :
-                    (td.brightness == Brightness.dark ? td.bottomAppBarColor : td.textTheme.subtitle1.color))
+                    (td.brightness == Brightness.dark ? td.bottomAppBarTheme.color : td.textTheme.titleMedium.color))
                 )
             ]),
             onTap: ()

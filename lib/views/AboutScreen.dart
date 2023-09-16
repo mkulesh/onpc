@@ -159,7 +159,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     {
         final Widget text = Expanded(flex: 1, child:
             SingleChildScrollView(child: SelectableText(data,
-                style: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color),
+                style: td.textTheme.bodyMedium.copyWith(color: td.textTheme.titleMedium.color),
                 toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
                 showCursor: true))
         );
@@ -188,10 +188,10 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     Widget _buildMarkdownView(final ThemeData td, final String data, final EdgeInsetsGeometry padding)
     {
         final MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(td).copyWith(
-            h1: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
-            h2: td.textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold),
-            p: td.textTheme.bodyText2.copyWith(color: td.textTheme.subtitle1.color),
-            a: td.textTheme.bodyText2.copyWith(color: td.colorScheme.secondary));
+            h1: td.textTheme.titleMedium.copyWith(fontWeight: FontWeight.bold),
+            h2: td.textTheme.titleMedium.copyWith(fontWeight: FontWeight.bold),
+            p: td.textTheme.bodyMedium.copyWith(color: td.textTheme.titleMedium.color),
+            a: td.textTheme.bodyMedium.copyWith(color: td.colorScheme.secondary));
         return Markdown(data: data,
             styleSheet: styleSheet,
             padding: padding,

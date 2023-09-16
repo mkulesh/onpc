@@ -65,15 +65,18 @@ class BaseAppTheme
             primaryColorDark: primaryColorDark,
             canvasColor: brightness == Brightness.dark ? primaryColor : backgroundColor,
             scaffoldBackgroundColor: backgroundColor,
-            bottomAppBarColor: textColorAppBar,
             dividerColor: primaryColor,
             disabledColor: disabledColor,
-            backgroundColor: backgroundColor,
-            toggleableActiveColor: accentColor,
             indicatorColor: accentColor,
             focusColor: focusColor,
 
-            colorScheme: colorScheme,
+            bottomAppBarTheme: BottomAppBarTheme(
+                color: textColorAppBar
+            ),
+
+            colorScheme: colorScheme.copyWith(
+                background: backgroundColor
+            ),
 
             appBarTheme: AppBarTheme(
                 backgroundColor: strong ? backgroundColor : primaryColor,
@@ -90,13 +93,13 @@ class BaseAppTheme
 
             textTheme: TextTheme(
                 // Title in activity and dialogs
-                headline6: mainStyle.copyWith(color: textColor, fontSize: ActivityDimens.titleFontSize),
+                titleLarge: mainStyle.copyWith(color: textColor, fontSize: ActivityDimens.titleFontSize),
                 // Main text in views, dialogs and drawer
                 // Parameter names in the preference screen
-                subtitle1: mainStyle.copyWith(color: textColor, fontSize: ActivityDimens.primaryFontSize, fontWeight: FontWeight.normal),
+                titleMedium: mainStyle.copyWith(color: textColor, fontSize: ActivityDimens.primaryFontSize, fontWeight: FontWeight.normal),
                 // "Disabled" text in views, dialogs and drawer
                 // Parameter descriptions in the preference screen
-                bodyText2: mainStyle.copyWith(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
+                bodyMedium: mainStyle.copyWith(color: disabledColor, fontSize: ActivityDimens.secondaryFontSize),
                 // Buttons
                 labelLarge: mainStyle.copyWith(color: textColor, fontSize: ButtonDimens.textButtonFontSize),
             ),

@@ -35,7 +35,7 @@ class CustomTextField extends StatelessWidget
             controller: text,
             onChanged: onChanged,
             autofocus: isFocused,
-            style: td.textTheme.subtitle1,
+            style: td.textTheme.titleMedium,
             autovalidateMode: AutovalidateMode.disabled,
             readOnly: readOnly,
             autocorrect: false,
