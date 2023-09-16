@@ -226,7 +226,7 @@ class TapPosition
 
     @override
     int get hashCode
-    => hashValues(global, relative);
+    => Object.hash(global, relative);
 }
 
 class PositionedTapController

@@ -160,7 +160,10 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
         final Widget text = Expanded(flex: 1, child:
             SingleChildScrollView(child: SelectableText(data,
                 style: td.textTheme.bodyMedium.copyWith(color: td.textTheme.titleMedium.color),
-                toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
+                contextMenuBuilder: (context, editableTextState)
+                => AdaptiveTextSelectionToolbar.buttonItems(
+                    anchors: editableTextState.contextMenuAnchors,
+                    buttonItems: editableTextState.contextMenuButtonItems),
                 showCursor: true))
         );
 
