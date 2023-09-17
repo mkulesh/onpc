@@ -21,7 +21,7 @@ dependencies:
   back_button_interceptor: ^5.0.0
   sprintf: ^6.0.0
   flutter_markdown: ^0.6.8
-  url_launcher: ^6.1.2
+  url_launcher: ^6.1.11
   google_fonts: ^2.2.0
   flutter_libserialport: ^0.3.0
   window_manager: ^0.1.3

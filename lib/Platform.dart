@@ -49,6 +49,7 @@ class Platform
     static bool get isIOS => io.Platform.isIOS;
     static bool get isWindows => io.Platform.isWindows;
     static bool get isDesktop => (io.Platform.isMacOS || io.Platform.isLinux || io.Platform.isWindows);
+    static bool get isMobile => (io.Platform.isAndroid || io.Platform.isIOS);
 
     // Send a command to platform
     static Future<String> sendPlatformCommand(final MethodChannel _methodChannel, final String cmd)

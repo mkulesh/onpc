@@ -431,6 +431,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="service_slacker">Slacker</string>
     <string name="service_mediafly">Mediafly</string>
     <string name="service_spotify">Spotify</string>
+    <string name="service_spotify_missing_app">L\'application Spotify est introuvable sur l\'appareil</string>
     <string name="service_aupeo">AUPEO!</string>
     <string name="service_radiko">Radiko</string>
     <string name="service_e_onkyo">e-onkyo</string>

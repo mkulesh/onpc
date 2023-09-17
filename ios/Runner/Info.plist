@@ -53,5 +53,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>spotify</string>
+    </array>
 </dict>
 </plist>

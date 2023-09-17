@@ -2663,6 +2663,14 @@ Enjoy!"""];
         /*pl*/ "Spotify"];
     static String get service_spotify => l_service_spotify[_language];
 
+    static const List<String> l_service_spotify_missing_app = [
+        /*en*/ "Spotify app is not found on the device",
+        /*ru*/ "Приложение Spotify не найдено на устройстве",
+        /*de*/ "Die Spotify-App ist auf dem Gerät nicht gefunden",
+        /*fr*/ "L\'application Spotify est introuvable sur l\'appareil",
+        /*pl*/ "Na urządzeniu nie znaleziono aplikacji Spotify"];
+    static String get service_spotify_missing_app => l_service_spotify_missing_app[_language];
+
     static const List<String> l_service_aupeo = [
         /*en*/ "AUPEO!",
         /*ru*/ "AUPEO!",

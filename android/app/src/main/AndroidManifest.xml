@@ -22,8 +22,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Starting from API 30 Android requires package visibility configuration for url_launcher -->
     <queries>
+        <!-- Allow to launch Spotify app -->
+        <package android:name="com.spotify.music" />
+        <!-- Starting from API 30 Android requires package visibility configuration for url_launcher -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />

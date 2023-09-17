@@ -24,6 +24,7 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../dialogs/PopupManager.dart";
+import "../dialogs/UrlLauncher.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/DcpMediaContainerMsg.dart";
@@ -362,12 +363,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     dense: configuration.appSettings.textSize != "huge",
                     leading: iconImg,
                     title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
-                    onTap: ()
-                    {
-                        state.closeMediaFilter();
-                        final rowMsg = (cmd is XmlListItemMsg && cmd.iconType == _PLAYBACK_STRING) ? StateManager.DISPLAY_MSG : cmd;
-                        stateManager.sendMessage(rowMsg, waitingForData: rowMsg != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
-                    }),
+                    onTap: () => _processItemTap(context, cmd, icon)),
                 ),
             onContextMenu: (position)
             => _onCreateContextMenu(context, position, cmd)
@@ -380,6 +376,20 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             return w;
         }
+    }
+
+    void _processItemTap(final BuildContext context, ISCPMessage cmd, final String icon)
+    {
+        if (Platform.isMobile && cmd is NetworkServiceMsg &&
+            [ServiceType.SPOTIFY, ServiceType.DCP_SPOTIFY].contains(cmd.getValue.key))
+        {
+            Logging.info(this.widget, "Selected media item: " + cmd.toString() + " -> launch Spotify app");
+            UrlLauncher.launchURL("spotify://", errorMsg: Strings.service_spotify_missing_app, context: context);
+            return;
+        }
+        state.closeMediaFilter();
+        final rowMsg = (cmd is XmlListItemMsg && cmd.iconType == _PLAYBACK_STRING) ? StateManager.DISPLAY_MSG : cmd;
+        stateManager.sendMessage(rowMsg, waitingForData: rowMsg != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
     }
 
     Widget _buildNetworkServiceRow(final BuildContext context, NetworkServiceMsg rowMsg)

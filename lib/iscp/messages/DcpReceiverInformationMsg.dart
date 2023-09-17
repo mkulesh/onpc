@@ -15,6 +15,7 @@
 
 import 'package:sprintf/sprintf.dart';
 
+import "../../Platform.dart";
 import "../../utils/Convert.dart";
 import "../../utils/Logging.dart";
 import "../DcpHeosMessage.dart";
@@ -333,16 +334,34 @@ class DcpReceiverInformationMsg extends ISCPMessage
             }
             if (networkServices.isNotEmpty)
             {
-                final EnumItem<ServiceType> s = Services.ServiceTypeEnum.valueByKey(ServiceType.DCP_PLAYQUEUE);
-                networkServices.add(NetworkService(
-                        s.code, s.name, ReceiverInformationMsg.ALL_ZONES, false, false));
+                _ensureNetworkService(networkServices, ServiceType.DCP_PLAYQUEUE);
+                if (Platform.isMobile)
+                {
+                    _ensureNetworkService(networkServices, ServiceType.DCP_SPOTIFY);
+                }
                 return DcpReceiverInformationMsg.networkServices(networkServices);
             }
         }
         return null;
     }
 
-    @override
+    static void _ensureNetworkService(final List<NetworkService> nsList, final ServiceType s)
+    {
+        final EnumItem<ServiceType> sEnum = Services.ServiceTypeEnum.valueByKey(s);
+        if (sEnum.key == s)
+        {
+            final bool missing = nsList.firstWhere((ns) => ns.getId == sEnum.getDcpCode, orElse: () => null) == null;
+            if (missing)
+            {
+                final NetworkService ns = NetworkService(
+                    sEnum.code, sEnum.name, ReceiverInformationMsg.ALL_ZONES, false, false);
+                Logging.info(s, "Enforced missing network service " + ns.toString());
+                nsList.add(ns);
+            }
+        }
+    }
+
+@override
     String buildDcpMsg(bool isQuery)
     {
         String res = "";

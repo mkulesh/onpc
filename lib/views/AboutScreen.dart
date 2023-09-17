@@ -15,11 +15,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import "../Platform.dart";
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
+import "../dialogs/UrlLauncher.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomActivityTitle.dart";
@@ -202,17 +202,8 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
             {
                 if (href != null)
                 {
-                    _launchURL(href);
+                    UrlLauncher.launchURL(href);
                 }
             });
-    }
-
-    static void _launchURL(final String url) async
-    {
-        final Uri uri = Uri.parse(url);
-        if (await canLaunchUrl(uri))
-        {
-            await launchUrl(uri);
-        }
     }
 }
