@@ -15,9 +15,13 @@
 import 'dart:io' as io;
 
 import 'package:flutter/services.dart';
-import 'utils/Logging.dart';
 
-import 'iscp/StateManager.dart';
+import 'Logging.dart';
+
+enum NetworkState
+{
+    NONE, CELLULAR, WIFI
+}
 
 class Platform
 {

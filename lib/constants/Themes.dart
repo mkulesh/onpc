@@ -15,7 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import "../Platform.dart";
+import "../utils/Platform.dart";
 import "Dimens.dart";
 import "Strings.dart";
 

@@ -23,7 +23,6 @@ import "package:flutter/scheduler.dart" show timeDilation;
 import "package:flutter/services.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
-import "Platform.dart";
 import "config/CfgAppSettings.dart";
 import "config/CfgTabSettings.dart";
 import "config/Configuration.dart";
@@ -49,6 +48,7 @@ import "iscp/messages/TimeInfoMsg.dart";
 import "utils/CompatUtils.dart";
 import "utils/Convert.dart";
 import "utils/Logging.dart";
+import "utils/Platform.dart";
 import "utils/UrlLoader.dart";
 import "views/AboutScreen.dart";
 import "views/AppBarView.dart";

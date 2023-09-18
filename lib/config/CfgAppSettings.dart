@@ -17,7 +17,6 @@ import 'dart:ui';
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
-import "../Platform.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../iscp/ConnectionIf.dart";
@@ -25,6 +24,7 @@ import "../iscp/StateManager.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "CfgModule.dart";
 import "CfgTabSettings.dart";
 import "CheckableItem.dart";

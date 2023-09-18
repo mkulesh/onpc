@@ -14,13 +14,13 @@
 // @dart=2.9
 import "package:shared_preferences/shared_preferences.dart";
 
-import "../Platform.dart";
 import "../constants/Strings.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "CfgModule.dart";
 import "CheckableItem.dart";
 

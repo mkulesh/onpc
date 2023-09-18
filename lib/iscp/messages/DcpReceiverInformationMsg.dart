@@ -15,9 +15,9 @@
 
 import 'package:sprintf/sprintf.dart';
 
-import "../../Platform.dart";
 import "../../utils/Convert.dart";
 import "../../utils/Logging.dart";
+import "../../utils/Platform.dart";
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";

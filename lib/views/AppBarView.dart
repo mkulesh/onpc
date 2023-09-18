@@ -14,7 +14,6 @@
 // @dart=2.9
 import "package:flutter/material.dart";
 
-import "../Platform.dart";
 import "../config/CfgAppSettings.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
@@ -24,6 +23,7 @@ import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
+import "../utils/Platform.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomDivider.dart";

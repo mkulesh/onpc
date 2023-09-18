@@ -14,7 +14,6 @@
 // @dart=2.9
 import "package:shared_preferences/shared_preferences.dart";
 
-import "../Platform.dart";
 import "../constants/Version.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
@@ -24,6 +23,7 @@ import "../iscp/state/ReceiverInformation.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "CfgAppSettings.dart";
 import "CfgAudioControl.dart";
 import "CfgFavoriteConnections.dart";

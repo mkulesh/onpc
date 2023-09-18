@@ -15,7 +15,6 @@
 import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
 
-import "../Platform.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CheckableItem.dart";
 import "../config/Configuration.dart";
@@ -49,6 +48,7 @@ import "../iscp/messages/XmlListItemMsg.dart";
 import "../iscp/state/MediaListSorter.dart";
 import "../iscp/state/MediaListState.dart";
 import "../utils/Logging.dart";
+import "../utils/Platform.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";

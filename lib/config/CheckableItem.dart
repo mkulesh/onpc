@@ -14,12 +14,12 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 
-import "../Platform.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDialogEditField.dart";

@@ -16,7 +16,6 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:sprintf/sprintf.dart";
 
-import "../Platform.dart";
 import "../config/CfgAppSettings.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../constants/Dimens.dart";
@@ -25,6 +24,7 @@ import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../iscp/StateManager.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomImageButton.dart";

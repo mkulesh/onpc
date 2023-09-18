@@ -16,7 +16,6 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
-import "../Platform.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CfgRiCommands.dart";
 import "../iscp/BroadcastSearch.dart";
@@ -24,6 +23,7 @@ import "../iscp/scripts/MessageScript.dart";
 import "../iscp/scripts/MessageScriptIf.dart";
 import "../utils/CompatUtils.dart";
 import "../utils/Logging.dart";
+import "../utils/Platform.dart";
 import "ConnectionIf.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
@@ -70,11 +70,6 @@ import "state/SoundControlState.dart";
 typedef OnStateChanged = void Function(Set<String> changes);
 typedef OnOutputMessage = void Function(ISCPMessage msg);
 typedef OnConnectionError = void Function(String msg);
-
-enum NetworkState
-{
-    NONE, CELLULAR, WIFI
-}
 
 class StateManager
 {

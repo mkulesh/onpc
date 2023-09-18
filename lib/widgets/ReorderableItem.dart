@@ -14,8 +14,8 @@
 // @dart=2.9
 import "package:flutter/material.dart";
 
-import "../Platform.dart";
 import "../constants/Dimens.dart";
+import "../utils/Platform.dart";
 
 class ReorderableItem extends StatelessWidget
 {

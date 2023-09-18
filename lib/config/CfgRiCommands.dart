@@ -17,13 +17,13 @@ import "package:flutter/services.dart" show rootBundle;
 import "package:shared_preferences/shared_preferences.dart";
 import "package:xml/xml.dart" as xml;
 
+import "../iscp/ISCPMessage.dart";
+import "../iscp/StateManager.dart";
+import "../utils/CompatUtils.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
-import "../utils/CompatUtils.dart";
-import "../Platform.dart";
-import "../iscp/ISCPMessage.dart";
-import "../iscp/StateManager.dart";
+import "../utils/Platform.dart";
 import "CfgModule.dart";
 
 enum RiDeviceType

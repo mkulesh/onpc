@@ -15,7 +15,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
-import "../Platform.dart";
 import "../config/Configuration.dart";
 import "../constants/Activities.dart";
 import "../constants/Dimens.dart";
@@ -30,6 +29,7 @@ import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/MultiroomState.dart";
 import "../utils/Logging.dart";
+import "../utils/Platform.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";

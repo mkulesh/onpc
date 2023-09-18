@@ -15,7 +15,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import "../Platform.dart";
 import "../constants/Activities.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
@@ -24,6 +23,7 @@ import "../constants/Themes.dart";
 import "../dialogs/DropdownPreferenceDialog.dart";
 import "../iscp/ConnectionIf.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/PreferenceTitle.dart";

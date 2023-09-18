@@ -16,12 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import "../Platform.dart";
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../dialogs/UrlLauncher.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
+import "../utils/Platform.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomTextButton.dart";

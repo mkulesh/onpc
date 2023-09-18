@@ -15,8 +15,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import "../Platform.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "CustomTextLabel.dart";
 import "PositionedTapDetector.dart";
 
