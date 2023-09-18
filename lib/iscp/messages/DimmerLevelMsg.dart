@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Strings.dart";
 import "../EISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -69,13 +69,13 @@ class DimmerLevelMsg extends EnumParameterMsg<DimmerLevel>
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND ];
 
-    static DimmerLevelMsg processDcpMessage(String dcpMsg)
+    static DimmerLevelMsg? processDcpMessage(String dcpMsg)
     {
-        final EnumItem<DimmerLevel> s = ValueEnum.valueByDcpCommand(_DCP_COMMAND, dcpMsg);
+        final EnumItem<DimmerLevel>? s = ValueEnum.valueByDcpCommand(_DCP_COMMAND, dcpMsg);
         return s != null ? DimmerLevelMsg.output(s.key) : null;
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => buildDcpRequest(isQuery, _DCP_COMMAND, sep: " ");
 }

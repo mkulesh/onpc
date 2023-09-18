@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../utils/Convert.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -54,7 +54,7 @@ class RadioStationNameMsg extends ISCPMessage
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND_FM, _DCP_COMMAND_DAB + _DCP_COMMAND_DAB_EXT];
 
-    static RadioStationNameMsg processDcpMessage(String dcpMsg)
+    static RadioStationNameMsg? processDcpMessage(String dcpMsg)
     {
         if (dcpMsg.startsWith(_DCP_COMMAND_FM))
         {
@@ -70,7 +70,7 @@ class RadioStationNameMsg extends ISCPMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         final String fmReq = _DCP_COMMAND_FM + ISCPMessage.DCP_MSG_REQ;
         final String dabReq = _DCP_COMMAND_DAB + " " + ISCPMessage.DCP_MSG_REQ;

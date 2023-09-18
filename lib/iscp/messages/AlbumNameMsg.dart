@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -32,9 +32,9 @@ class AlbumNameMsg extends ISCPMessage
      */
     static const String _HEOS_COMMAND = "player/get_now_playing_media";
 
-    static AlbumNameMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static AlbumNameMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
-        final String name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.album");
+        final String? name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.album");
         return name != null ? AlbumNameMsg._dcp(name) : null;
     }
 }

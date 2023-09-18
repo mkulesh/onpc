@@ -77,6 +77,6 @@ class SetupOperationCommandMsg extends EnumParameterMsg<SetupOperationCommand>
     static const String _DCP_COMMAND = "MN";
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => buildDcpRequest(isQuery, _DCP_COMMAND);
 }

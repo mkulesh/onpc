@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
 import "../../utils/Convert.dart";
@@ -244,11 +244,11 @@ class InputSelectorMsg extends EnumParameterZonedMsg
     static List<String> getAcceptedDcpCodes()
     => _DCP_COMMANDS;
 
-    static InputSelectorMsg processDcpMessage(String dcpMsg)
+    static InputSelectorMsg? processDcpMessage(String dcpMsg)
     {
         for (int i = 0; i < _DCP_COMMANDS.length; i++)
         {
-            final EnumItem<InputSelector> s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
+            final EnumItem<InputSelector>? s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
             if (s != null && getProtoType(s.key) == ProtoType.DCP)
             {
                 return InputSelectorMsg.output(i, s.key);
@@ -258,6 +258,6 @@ class InputSelectorMsg extends EnumParameterZonedMsg
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => buildDcpRequest(isQuery, _DCP_COMMANDS);
 }

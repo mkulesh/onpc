@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "EnumParameterMsg.dart";
 
@@ -55,11 +55,11 @@ class PowerStatusMsg extends EnumParameterZonedMsg<PowerStatus>
     static List<String> getAcceptedDcpCodes()
     => _DCP_COMMANDS;
 
-    static PowerStatusMsg processDcpMessage(String dcpMsg)
+    static PowerStatusMsg? processDcpMessage(String dcpMsg)
     {
         for (int i = 0; i < _DCP_COMMANDS.length; i++)
         {
-            final EnumItem<PowerStatus> s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
+            final EnumItem<PowerStatus>? s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
             if (s != null)
             {
                 return PowerStatusMsg.output(i, s.key);
@@ -69,7 +69,7 @@ class PowerStatusMsg extends EnumParameterZonedMsg<PowerStatus>
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => (getValue.key == PowerStatus.ALL_STB) ?
         "PW" + getValue.getDcpCode : buildDcpRequest(isQuery, _DCP_COMMANDS);
 }

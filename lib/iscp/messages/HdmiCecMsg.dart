@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Strings.dart";
 import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
@@ -70,14 +70,14 @@ class HdmiCecMsg extends EnumParameterMsg<HdmiCec>
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND ];
 
-    static HdmiCecMsg processDcpMessage(String dcpMsg)
+    static HdmiCecMsg? processDcpMessage(String dcpMsg)
     {
-        final EnumItem<HdmiCec> s = ValueEnum.valueByDcpCommand(_DCP_COMMAND + _DCP_COMMAND_EXT, dcpMsg);
+        final EnumItem<HdmiCec>? s = ValueEnum.valueByDcpCommand(_DCP_COMMAND + _DCP_COMMAND_EXT, dcpMsg);
         return s != null ? HdmiCecMsg._dcp(s.key) : null;
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => _DCP_COMMAND + (isQuery ? (" " + ISCPMessage.DCP_MSG_REQ) :
         _DCP_COMMAND_EXT + " " + getValue.getDcpCode);
 }

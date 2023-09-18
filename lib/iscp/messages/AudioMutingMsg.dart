@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
 import "../ConnectionIf.dart";
@@ -77,11 +77,11 @@ class AudioMutingMsg extends EnumParameterZonedMsg<AudioMuting>
     static List<String> getAcceptedDcpCodes()
     => _DCP_COMMANDS;
 
-    static AudioMutingMsg processDcpMessage(String dcpMsg)
+    static AudioMutingMsg? processDcpMessage(String dcpMsg)
     {
         for (int i = 0; i < _DCP_COMMANDS.length; i++)
         {
-            final EnumItem<AudioMuting> s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
+            final EnumItem<AudioMuting>? s = ValueEnum.valueByDcpCommand(_DCP_COMMANDS[i], dcpMsg);
             if (s != null)
             {
                 return AudioMutingMsg.dcp(i, s.key);
@@ -91,6 +91,6 @@ class AudioMutingMsg extends EnumParameterZonedMsg<AudioMuting>
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => buildDcpRequest(isQuery, _DCP_COMMANDS);
 }

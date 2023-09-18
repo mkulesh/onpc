@@ -11,7 +11,6 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
 import "../../constants/Strings.dart";
 import "../EISCPMessage.dart";
@@ -58,14 +57,14 @@ class DcpEcoModeMsg extends EnumParameterMsg<DcpEcoMode>
     bool hasImpactOnMediaList()
     => false;
 
-    static DcpEcoModeMsg processDcpMessage(String dcpMsg)
+    static DcpEcoModeMsg? processDcpMessage(String dcpMsg)
     {
-        final EnumItem<DcpEcoMode> s = ValueEnum.valueByDcpCommand(_DCP_COMMAND, dcpMsg);
+        final EnumItem<DcpEcoMode>? s = ValueEnum.valueByDcpCommand(_DCP_COMMAND, dcpMsg);
         return s != null ? DcpEcoModeMsg._dcp(s.key) : null;
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => buildDcpRequest(isQuery, _DCP_COMMAND);
 
     static DcpEcoMode _toggle(DcpEcoMode s)

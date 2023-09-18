@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../DcpHeosMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -34,7 +34,7 @@ class DcpMediaEventMsg extends ISCPMessage
     static const String HEOS_EVENT_QUEUE = "event/player_queue_changed";
     static const String HEOS_EVENT_SERVICEOPT = "browse/set_service_option";
 
-    static DcpMediaEventMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static DcpMediaEventMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
         if (HEOS_EVENT_QUEUE == jsonMsg.command || HEOS_EVENT_SERVICEOPT == jsonMsg.command)
         {

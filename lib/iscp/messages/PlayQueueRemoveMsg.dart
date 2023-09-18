@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../EISCPMessage.dart";
@@ -50,7 +50,7 @@ class PlayQueueRemoveMsg extends ISCPMessage
      * Denon control protocol
      */
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         switch (_type)
         {

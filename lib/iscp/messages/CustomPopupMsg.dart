@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:xml/xml.dart" as xml;
 
 import "../DcpHeosMessage.dart";
@@ -81,7 +81,7 @@ class CustomPopupMsg extends ISCPMessage
      */
     static const String _HEOS_COMMAND = "event/player_playback_error";
 
-    static CustomPopupMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static CustomPopupMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
         if (_HEOS_COMMAND == jsonMsg.command)
         {

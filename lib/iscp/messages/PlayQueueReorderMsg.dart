@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../EISCPMessage.dart";
@@ -52,7 +52,7 @@ class PlayQueueReorderMsg extends ISCPMessage
      * Denon control protocol
      */
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         return sprintf("heos://player/move_queue_item?pid=%s&sqid=%d&dqid=%d",
             [ ISCPMessage.DCP_HEOS_PID, _itemIndex, _targetIndex ]);
