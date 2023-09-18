@@ -26,11 +26,11 @@ class PlayQueueReorderMsg extends ISCPMessage
 
     // The Index number in the PlayQueue of the item to be moved
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )  .
-    int _itemIndex;
+    late int _itemIndex;
 
     // The Index number in the PlayQueue of destination.
     // (0000-FFFF : 1st to 65536th Item [4 HEX digits] )
-    int _targetIndex;
+    late int _targetIndex;
 
     PlayQueueReorderMsg(EISCPMessage raw) : super(CODE, raw)
     {

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -90,7 +90,7 @@ class ListTitleInfoMsg extends ISCPMessage
 {
     static const String CODE = "NLT";
 
-    EnumItem<ServiceType> _serviceType;
+    late EnumItem<ServiceType> _serviceType;
 
     /*
      * UI Type 0 : List, 1 : Menu, 2 : Playback, 3 : Popup, 4 : Keyboard, "5" : Menu List
@@ -104,7 +104,7 @@ class ListTitleInfoMsg extends ISCPMessage
         EnumItem.char(UIType.MENU_LIST, '5')
     ]);
 
-    EnumItem<UIType> _uiType;
+    late EnumItem<UIType> _uiType;
 
     /*
      * Layer Info : 0 : NET TOP, 1 : Service Top,DLNA/USB/iPod Top, 2 : under 2nd Layer
@@ -115,7 +115,7 @@ class ListTitleInfoMsg extends ISCPMessage
         EnumItem.char(LayerInfo.UNDER_2ND_LAYER, '2')
     ]);
 
-    EnumItem<LayerInfo> _layerInfo;
+    late EnumItem<LayerInfo> _layerInfo;
 
     /* Current Cursor Position (HEX 4 letters) */
     int _currentCursorPosition = 0;
@@ -134,7 +134,7 @@ class ListTitleInfoMsg extends ISCPMessage
         EnumItem.char(StartFlag.FIRST, '1')
     ]);
 
-    EnumItem<StartFlag> _startFlag;
+    late EnumItem<StartFlag> _startFlag;
 
     /*
      * Icon on Left of Title Bar
@@ -166,8 +166,8 @@ class ListTitleInfoMsg extends ISCPMessage
         EnumItem.code(LeftIcon.NONE, "FF", defValue: true)
     ]);
 
-    EnumItem<LeftIcon> _leftIcon;
-    EnumItem<ServiceType> _rightIcon;
+    late EnumItem<LeftIcon> _leftIcon;
+    late EnumItem<ServiceType> _rightIcon;
 
     /*
      * ss : Status Info
@@ -194,10 +194,10 @@ class ListTitleInfoMsg extends ISCPMessage
         EnumItem.code(StatusInfo.CANNOT_SKIP, "0E")
     ]);
 
-    EnumItem<StatusInfo> _statusInfo;
+    late EnumItem<StatusInfo> _statusInfo;
 
     /* Character of Title Bar (variable-length, 64 Unicode letters [UTF-8 encoded] max) */
-    String _titleBar;
+    late String _titleBar;
 
     ListTitleInfoMsg(EISCPMessage raw) : super(CODE, raw)
     {

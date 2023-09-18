@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -63,10 +63,10 @@ class ListInfoMsg extends ISCPMessage
         EnumItem.char(InformationType.UNICODE, 'U')
     ]);
 
-    EnumItem<InformationType> _informationType;
+    late EnumItem<InformationType> _informationType;
 
     /* Line Info (0-9 : 1st to 10th Line) */
-    int _lineInfo;
+    late int _lineInfo;
 
     /*
      * Property
@@ -90,7 +90,7 @@ class ListInfoMsg extends ISCPMessage
         EnumItem.char(ListProperty.WHATS_NEW, 'E')
     ]);
 
-    EnumItem<ListProperty> _listProperty;
+    late EnumItem<ListProperty> _listProperty;
 
     /*
      * Update Type (P : Page Infomation Update ( Page Clear or Disable List Info) , C : Cursor Position Update)
@@ -101,9 +101,9 @@ class ListInfoMsg extends ISCPMessage
         EnumItem.char(UpdateType.CURSOR, 'C')
     ]);
 
-    EnumItem<UpdateType> _updateType;
+    late EnumItem<UpdateType> _updateType;
 
-    String _listedData;
+    late String _listedData;
 
     ListInfoMsg(EISCPMessage raw) : super(CODE, raw)
     {

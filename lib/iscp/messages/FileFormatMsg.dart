@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -22,7 +22,7 @@ class FileFormatMsg extends ISCPMessage
 {
     static const String CODE = "NFI";
 
-    String _format, _sampleFrequency, _bitRate;
+    late String _format, _sampleFrequency, _bitRate;
 
     FileFormatMsg(EISCPMessage raw) : super(CODE, raw)
     {

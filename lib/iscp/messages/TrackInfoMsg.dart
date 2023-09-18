@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -26,7 +26,7 @@ class TrackInfoMsg extends ISCPMessage
     /*
      * (Current Track/Total Track Max 9999. If Track is unknown, this response is ----)
      */
-    int _currentTrack, _maxTrack;
+    late int _currentTrack, _maxTrack;
 
     TrackInfoMsg(EISCPMessage raw) : super(CODE, raw)
     {

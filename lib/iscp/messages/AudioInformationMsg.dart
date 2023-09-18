@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -36,7 +36,7 @@ class AudioInformationMsg extends ISCPMessage
      * j...j: Auto Phase Control Phase (Normal/Reverse)
      * k...k: Upmix Mode(No/PL2/PL2X/PL2Z/DolbySurround/Neo6/NeoX/NeuralX/THXS2/ADYDSX)
      */
-    String _audioInput, _audioOutput;
+    late String _audioInput, _audioOutput;
 
     AudioInformationMsg(EISCPMessage raw) : super(CODE, raw)
     {

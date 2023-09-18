@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -39,7 +39,7 @@ class CenterLevelCommandMsg extends ISCPMessage
         EnumItem(CenterLevelCommand.DOWN)
     ]);
 
-    EnumItem<CenterLevelCommand> _command;
+    late EnumItem<CenterLevelCommand> _command;
     int _level = NO_LEVEL;
     int _cmdLength = NO_LEVEL;
 

@@ -25,10 +25,10 @@ class PlayQueueRemoveMsg extends ISCPMessage
     static const String CODE = "PQR";
 
     // Remove Type: 0:Specify Line, (1:ALL)
-    int _type;
+    late int _type;
 
     // The Index number in the PlayQueue of the item to delete(0000-FFFF : 1st to 65536th Item [4 HEX digits] )
-    int _itemIndex;
+    late int _itemIndex;
 
     PlayQueueRemoveMsg(EISCPMessage raw) : super(CODE, raw)
     {

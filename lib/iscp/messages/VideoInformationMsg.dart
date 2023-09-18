@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -34,7 +34,7 @@ class VideoInformationMsg extends ISCPMessage
      * h…h: Color Depth
      * i...i: Picture Mode
      */
-    String _videoInput, _videoOutput;
+    late String _videoInput, _videoOutput;
 
     VideoInformationMsg(EISCPMessage raw) : super(CODE, raw)
     {

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -24,8 +24,8 @@ class MultiroomChannelSettingMsg extends ISCPMessage
 {
     static const String CODE = "MSS";
 
-    int _zone;
-    EnumItem<ChannelType> _channelType;
+    late int _zone;
+    late EnumItem<ChannelType> _channelType;
 
     MultiroomChannelSettingMsg(EISCPMessage raw) : super(CODE, raw)
     {

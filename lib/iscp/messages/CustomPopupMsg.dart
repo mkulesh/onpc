@@ -47,9 +47,8 @@ class CustomPopupMsg extends ISCPMessage
         EnumItem.char(PopupUiType.MENU_LIST, '5')
     ]);
 
-    PopupUiType _uiType;
-
-    xml.XmlDocument _popupDocument;
+    late PopupUiType _uiType;
+    late xml.XmlDocument _popupDocument;
 
     xml.XmlDocument get popupDocument
     => _popupDocument;

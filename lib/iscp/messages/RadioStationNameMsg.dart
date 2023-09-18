@@ -24,7 +24,7 @@ class RadioStationNameMsg extends ISCPMessage
 {
     static const String CODE = "DSN";
 
-    DcpTunerMode _dcpTunerMode;
+    late DcpTunerMode _dcpTunerMode;
 
     RadioStationNameMsg(EISCPMessage raw) : super(CODE, raw)
     {

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:math";
 
 import "../ISCPMessage.dart";
@@ -30,7 +30,7 @@ class TimeSeekMsg extends ISCPMessage
 {
     static const String CODE = "NTS";
 
-    TimeFormat _timeFormat;
+    late TimeFormat _timeFormat;
 
     TimeSeekMsg.output(final String model, final int hours, final int minutes, final int seconds)
         : super.output(CODE, _getParameterAsString(_getTimeFormat(model, hours), hours, minutes, seconds))

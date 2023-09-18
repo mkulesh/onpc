@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -22,7 +22,7 @@ class ListItemInfoMsg extends ISCPMessage
 {
     static const String CODE = "NLU";
 
-    int _index, _number;
+    late int _index, _number;
 
     ListItemInfoMsg(EISCPMessage raw) : super(CODE, raw)
     {

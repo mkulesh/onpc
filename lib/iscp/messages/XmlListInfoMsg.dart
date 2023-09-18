@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:xml/xml.dart" as xml;
 
 import "../EISCPMessage.dart";
@@ -37,9 +37,9 @@ class XmlListInfoMsg extends ISCPMessage
 {
     static const String CODE = "NLA";
 
-    String _responseType;
-    int _sequenceNumber;
-    String _status;
+    late String _responseType;
+    late int _sequenceNumber;
+    late String _status;
 
     /*
      * UI type '0' : List, '1' : Menu, '2' : Playback, '3' : Popup, '4' : Keyboard, "5" : Menu List
@@ -54,7 +54,7 @@ class XmlListInfoMsg extends ISCPMessage
         EnumItem.char(XmlUiType.NONE, '-', defValue: true)
     ]);
 
-    XmlUiType _uiType;
+    late XmlUiType _uiType;
 
     XmlListInfoMsg(EISCPMessage raw) : super(CODE, raw)
     {

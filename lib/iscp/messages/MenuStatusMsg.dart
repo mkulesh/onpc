@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Drawables.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -69,7 +69,7 @@ class MenuStatusMsg extends ISCPMessage
         EnumItem.char(TrackMenu.DISABLE, 'x', defValue: true)
     ]);
 
-    EnumItem<TrackMenu> _trackMenu;
+    late EnumItem<TrackMenu> _trackMenu;
 
     /*
      * Feed: "xx":disable, "01":Like, "02":don't like, "03":Love, "04":Ban,
@@ -92,7 +92,7 @@ class MenuStatusMsg extends ISCPMessage
         EnumItem.code(FeedType.LIKE_AMAZON, "0C", icon: Drawables.feed_like)
     ]);
 
-    EnumItem<FeedType> _positiveFeed, _negativeFeed;
+    late EnumItem<FeedType> _positiveFeed, _negativeFeed;
 
     /*
      * Time Seek "S": Time Seek is enable "x": Time Seek is disable
@@ -102,7 +102,7 @@ class MenuStatusMsg extends ISCPMessage
         EnumItem.char(TimeSeek.DISABLE, 'x', defValue: true)
     ]);
 
-    EnumItem<TimeSeek> _timeSeek;
+    late EnumItem<TimeSeek> _timeSeek;
 
     /*
      * Time Display "1": Elapsed Time/Total Time, "2": Elapsed Time, "x": disable
@@ -113,9 +113,9 @@ class MenuStatusMsg extends ISCPMessage
         EnumItem.char(TimeDisplay.DISABLE, 'x', defValue: true)
     ]);
 
-    EnumItem<TimeDisplay> _timeDisplay;
+    late EnumItem<TimeDisplay> _timeDisplay;
 
-    EnumItem<ServiceType> _serviceIcon;
+    late EnumItem<ServiceType> _serviceIcon;
 
     MenuStatusMsg(EISCPMessage raw) : super(CODE, raw)
     {
