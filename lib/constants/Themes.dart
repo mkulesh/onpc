@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -32,14 +32,14 @@ class BaseAppTheme
     final bool strong;
 
     BaseAppTheme({
-        this.brightness,
-        this.backgroundColor,
-        this.primaryColor,
-        this.primaryColorDark,
-        this.accentColor,
-        this.textColor,
-        this.textColorAppBar,
-        this.disabledColor,
+        required this.brightness,
+        required this.backgroundColor,
+        required this.primaryColor,
+        required this.primaryColorDark,
+        required this.accentColor,
+        required this.textColor,
+        required this.textColorAppBar,
+        required this.disabledColor,
         this.strong = false
     });
 
@@ -106,7 +106,7 @@ class BaseAppTheme
 
             textButtonTheme: TextButtonThemeData(
                 style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                         if (states.contains(MaterialState.focused)) {
                             return focusColor;
                         }

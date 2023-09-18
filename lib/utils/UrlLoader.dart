@@ -11,7 +11,6 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
 import 'dart:io';
 import 'dart:math';
@@ -24,7 +23,7 @@ import 'Logging.dart';
 class OncpHttpOverrides extends HttpOverrides
 {
     @override
-    HttpClient createHttpClient(SecurityContext context)
+    HttpClient createHttpClient(SecurityContext? context)
     {
         // Ignore CERTIFICATE_VERIFY_FAILED error for Deezer cover art on Android
         // https://stackoverflow.com/questions/54285172/how-to-solve-flutter-certificate-verify-failed-error-while-performing-a-post-req
@@ -38,7 +37,7 @@ class UrlLoader
     static const int LF = 0x0A;
     static const int CR = 0x0D;
 
-    Future<Uint8List> loadFromUrl(String url, {bool info = true})
+    Future<Uint8List?> loadFromUrl(String url, {bool info = true})
     {
         if (info)
         {

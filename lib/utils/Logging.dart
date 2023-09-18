@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 class Logging
 {
     static const int DEFAULT_LOG_SIZE = 1000;
@@ -43,7 +43,7 @@ class Logging
     static bool get isRebuildWidgetLog
     => false;
 
-    static void logRebuild(Object o, {final String ext})
+    static void logRebuild(Object o, {final String? ext})
     {
         if (isRebuildWidgetLog)
         {

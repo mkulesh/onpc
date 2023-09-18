@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:io' as io;
 
 import 'package:flutter/services.dart';
@@ -56,7 +56,7 @@ class Platform
     static bool get isMobile => (io.Platform.isAndroid || io.Platform.isIOS);
 
     // Send a command to platform
-    static Future<String> sendPlatformCommand(final MethodChannel _methodChannel, final String cmd)
+    static Future<String?> sendPlatformCommand(final MethodChannel _methodChannel, final String cmd)
     {
         if (isAndroid)
         {
@@ -70,7 +70,7 @@ class Platform
     }
 
     // Network state from host platforms
-    static Future<String> requestNetworkState(final MethodChannel _methodChannel)
+    static Future<String?> requestNetworkState(final MethodChannel _methodChannel)
     {
         if (isAndroid)
         {
@@ -84,7 +84,7 @@ class Platform
 
     static NetworkState parseNetworkState(final String state)
     {
-        final int idx = int.tryParse(state);
+        final int? idx = int.tryParse(state);
         if (idx == null)
         {
             NetworkState.NONE;
@@ -93,7 +93,7 @@ class Platform
     }
 
     // Auto power state from host platforms
-    static Future<String> requestIntent(final MethodChannel _methodChannel)
+    static Future<String?> requestIntent(final MethodChannel _methodChannel)
     {
         if (isAndroid)
         {
