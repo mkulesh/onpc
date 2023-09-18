@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../../constants/Drawables.dart";
@@ -53,7 +53,7 @@ class MasterVolumeMsg extends ZonedMessage
         EnumItem(MasterVolume.DOWN1, descrList: Strings.l_master_volume_down1, icon: Drawables.volume_amp_down)
     ]);
 
-    EnumItem<MasterVolume> _command;
+    late EnumItem<MasterVolume> _command;
     int _volumeLevel = NO_LEVEL;
 
     MasterVolumeMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw)
@@ -100,16 +100,16 @@ class MasterVolumeMsg extends ZonedMessage
     static List<String> getAcceptedDcpCodes()
     => _DCP_COMMANDS;
 
-    static MasterVolumeMsg processDcpMessage(String dcpMsg)
+    static MasterVolumeMsg? processDcpMessage(String dcpMsg)
     {
         for (int i = 0; i < _DCP_COMMANDS.length; i++)
         {
             if (dcpMsg.startsWith(_DCP_COMMANDS[i]) && !dcpMsg.contains("MAX"))
             {
                 final String par = dcpMsg.substring(_DCP_COMMANDS[i].length).trim();
-                if (double.tryParse(par) != null)
+                final double? volumeLevel = double.tryParse(par);
+                if (volumeLevel != null)
                 {
-                    final double volumeLevel = double.tryParse(par);
                     final int volumeLevelInt = i == 0 ?
                         _scaleValueMainZone(volumeLevel, par) : _scaleValueExtZone(volumeLevel);
                     return MasterVolumeMsg.value(i, volumeLevelInt);
@@ -125,7 +125,7 @@ class MasterVolumeMsg extends ZonedMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         if (isQuery)
         {

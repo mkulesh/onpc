@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../EISCPMessage.dart";
@@ -27,7 +27,7 @@ class PresetMemoryMsg extends ISCPMessage
     static const int MAX_NUMBER = 40;
     static const int NO_PRESET = -1;
 
-    int _preset;
+    late int _preset;
 
     PresetMemoryMsg(EISCPMessage raw) : super(CODE, raw)
     {
@@ -65,22 +65,26 @@ class PresetMemoryMsg extends ISCPMessage
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND ];
 
-    static PresetMemoryMsg processDcpMessage(String dcpMsg)
+    static PresetMemoryMsg? processDcpMessage(String dcpMsg)
     {
         if (dcpMsg.startsWith(_DCP_COMMAND))
         {
             final String par = dcpMsg.substring(_DCP_COMMAND.length).trim();
             final List<String> pars = par.split(" ");
-            if (pars.length > 1 && int.tryParse(pars.first) != null)
+            if (pars.length > 1)
             {
-                return PresetMemoryMsg.outputCmd(int.tryParse(pars.first));
+                final int? preset = int.tryParse(pars.first);
+                if (preset != null)
+                {
+                    return PresetMemoryMsg.outputCmd(preset);
+                }
             }
         }
         return null;
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         // For some reason, TPANMEM does not work for DAB stations:
         // return "TPANMEM" + (isQuery ? ISCPMessage.DCP_MSG_REQ : String.format("%02d", preset));

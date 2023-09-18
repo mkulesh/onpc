@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../EISCPMessage.dart";
@@ -26,7 +26,7 @@ class SleepSetCommandMsg extends ISCPMessage
 
     static const int NOT_APPLICABLE = 0xFF;
     static const int SLEEP_OFF = 0x00;
-    int _sleepTime;
+    late int _sleepTime;
 
     SleepSetCommandMsg(EISCPMessage raw) : super(CODE, raw)
     {
@@ -70,7 +70,7 @@ class SleepSetCommandMsg extends ISCPMessage
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND ];
 
-    static SleepSetCommandMsg processDcpMessage(String dcpMsg)
+    static SleepSetCommandMsg? processDcpMessage(String dcpMsg)
     {
         if (dcpMsg.startsWith(_DCP_COMMAND))
         {
@@ -79,16 +79,17 @@ class SleepSetCommandMsg extends ISCPMessage
             {
                 return SleepSetCommandMsg.output(SLEEP_OFF);
             }
-            else if (int.tryParse(par) != null)
+            final int? val = int.tryParse(par);
+            if (val != null)
             {
-                return SleepSetCommandMsg.output(int.tryParse(par));
+                return SleepSetCommandMsg.output(val);
             }
         }
         return null;
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => _DCP_COMMAND + (isQuery ? ISCPMessage.DCP_MSG_REQ :
         sleepTime == SLEEP_OFF ? "OFF" : sprintf("%03d", [sleepTime]));
 }

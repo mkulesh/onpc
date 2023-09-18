@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Strings.dart";
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
@@ -74,18 +74,18 @@ class FirmwareUpdateMsg extends EnumParameterMsg<FirmwareUpdate>
      */
     static const String _HEOS_COMMAND = "player/check_update";
 
-    static FirmwareUpdateMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static FirmwareUpdateMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
         if (_HEOS_COMMAND == jsonMsg.command)
         {
-            final EnumItem<FirmwareUpdate> s = ValueEnum.valueByDcpCode(jsonMsg.getString("payload.update"));
+            final EnumItem<FirmwareUpdate>? s = ValueEnum.valueByDcpCode(jsonMsg.getString("payload.update"));
             return (s != null) ? FirmwareUpdateMsg.output(s.key) : null;
         }
         return null;
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         if (isQuery)
         {

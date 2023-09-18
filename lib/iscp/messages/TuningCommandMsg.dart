@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
 import "../../utils/Convert.dart";
@@ -48,8 +48,8 @@ class TuningCommandMsg extends ZonedMessage
             descrList: Strings.l_tuning_command_down, icon: Drawables.cmd_fast_backward)
     ]);
 
-    EnumItem<TuningCommand> _command;
-    DcpTunerMode _dcpTunerMode;
+    EnumItem<TuningCommand>? _command;
+    late DcpTunerMode _dcpTunerMode;
 
     TuningCommandMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw)
     {
@@ -71,7 +71,7 @@ class TuningCommandMsg extends ZonedMessage
         _dcpTunerMode = dcpTunerMode;
     }
 
-    EnumItem<TuningCommand> get getCommand
+    EnumItem<TuningCommand>? get getCommand
     => _command;
 
     String get getFrequency
@@ -102,7 +102,7 @@ class TuningCommandMsg extends ZonedMessage
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND_FM, _DCP_COMMAND_DAB ];
 
-    static TuningCommandMsg processDcpMessage(String dcpMsg, int zone)
+    static TuningCommandMsg? processDcpMessage(String dcpMsg, int zone)
     {
         if (dcpMsg.startsWith(_DCP_COMMAND_FM))
         {
@@ -121,13 +121,19 @@ class TuningCommandMsg extends ZonedMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         if (zoneIndex == ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE)
         {
             // Only available for main zone
-            return _DCP_COMMAND_FM + (isQuery ? ISCPMessage.DCP_MSG_REQ :
-                (_command != null ? _command.getDcpCode : null));
+            if (isQuery)
+            {
+                return _DCP_COMMAND_FM + ISCPMessage.DCP_MSG_REQ;
+            }
+            else if (_command != null)
+            {
+                return _DCP_COMMAND_FM + _command!.getDcpCode;
+            }
         }
         return null;
     }

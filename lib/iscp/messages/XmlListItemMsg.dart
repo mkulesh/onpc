@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:xml/xml.dart" as xml;
 
 import "../../constants/Drawables.dart";
@@ -50,10 +50,10 @@ class XmlListItemMsg extends ISCPMessage
         EnumItem.code(ListItemIcon.HEOS_SERVER, "HS02", icon: Drawables.media_item_media_server)
     ]);
 
-    String _title, _iconType, _iconId;
-    EnumItem<ListItemIcon> _icon;
-    bool _selectable;
-    ISCPMessage _cmdMessage;
+    late String _title, _iconType, _iconId;
+    late EnumItem<ListItemIcon> _icon;
+    late bool _selectable;
+    ISCPMessage? _cmdMessage;
 
     XmlListItemMsg.output(final int id, final int numberOfLayers, final xml.XmlElement src) :
             super.outputId(id, CODE, _getParameterAsString(id, numberOfLayers))
@@ -118,7 +118,7 @@ class XmlListItemMsg extends ISCPMessage
     bool isSong()
     => _icon.key == ListItemIcon.PLAY || _icon.key == ListItemIcon.MUSIC;
 
-    ISCPMessage get getCmdMessage
+    ISCPMessage? get getCmdMessage
     => _cmdMessage;
 
     void setCmdMessage(ISCPMessage cmdMessage)
@@ -137,12 +137,12 @@ class XmlListItemMsg extends ISCPMessage
             + "; ICON_ID=" + _iconId
             + "; ICON=" + _icon.toString()
             + "; SELECTABLE=" + _selectable.toString()
-            + "; CMD=" + (_cmdMessage == null ? "N/A" : _cmdMessage.toString())
+            + "; CMD=" + (_cmdMessage == null ? "N/A" : _cmdMessage!.toString())
             + "]";
 
     @override
     EISCPMessage getCmdMsg()
     {
-        return _cmdMessage == null ? super.getCmdMsg() : _cmdMessage.getCmdMsg();
+        return _cmdMessage == null ? super.getCmdMsg() : _cmdMessage!.getCmdMsg();
     }
 }

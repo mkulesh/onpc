@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Drawables.dart";
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
@@ -79,7 +79,7 @@ class PlayStatusMsg extends ISCPMessage
         EnumItem.char(PlayStatus.EOF, 'E', defValue: true)
     ]);
 
-    EnumItem<PlayStatus> _playStatus;
+    EnumItem<PlayStatus>? _playStatus;
 
     /*
      * Repeat Status: '-': Off, 'R': All, 'F': Folder, '1': Repeat 1, 'x': disable
@@ -92,7 +92,7 @@ class PlayStatusMsg extends ISCPMessage
         EnumItem.char(RepeatStatus.DISABLE, 'x', dcpCode: "NONE", icon: Drawables.repeat_off, defValue: true)
     ]);
 
-    EnumItem<RepeatStatus> _repeatStatus;
+    EnumItem<RepeatStatus>? _repeatStatus;
 
     /*
      * Shuffle Status: '-': Off, 'S': All , 'A': Album, 'F': Folder, 'x': disable
@@ -105,7 +105,7 @@ class PlayStatusMsg extends ISCPMessage
         EnumItem.char(ShuffleStatus.DISABLE, 'x', dcpCode: "NONE", defValue: true)
     ]);
 
-    EnumItem<ShuffleStatus> _shuffleStatus;
+    EnumItem<ShuffleStatus>? _shuffleStatus;
 
     PlayStatusMsg(EISCPMessage raw) :
             _updateType = PlayStatusUpd.ALL, super(CODE, raw)
@@ -149,13 +149,13 @@ class PlayStatusMsg extends ISCPMessage
         _shuffleStatus = shuffleStatus;
     }
 
-    EnumItem<PlayStatus> get getPlayStatus
+    EnumItem<PlayStatus>? get getPlayStatus
     => _playStatus;
 
-    EnumItem<RepeatStatus> get getRepeatStatus
+    EnumItem<RepeatStatus>? get getRepeatStatus
     => _repeatStatus;
 
-    EnumItem<ShuffleStatus> get getShuffleStatus
+    EnumItem<ShuffleStatus>? get getShuffleStatus
     => _shuffleStatus;
 
     @override
@@ -205,7 +205,7 @@ class PlayStatusMsg extends ISCPMessage
     static const String _HEOS_COMMAND_STATE = "player/get_play_state";
     static const String _HEOS_COMMAND_MODE = "player/get_play_mode";
 
-    static PlayStatusMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static PlayStatusMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
         if (_HEOS_EVENT_STATE == jsonMsg.command ||
             _HEOS_EVENT_REPEAT == jsonMsg.command ||
@@ -215,7 +215,7 @@ class PlayStatusMsg extends ISCPMessage
         {
             if (_HEOS_EVENT_STATE == jsonMsg.command || _HEOS_COMMAND_STATE == jsonMsg.command)
             {
-                final EnumItem<PlayStatus> s = PlayStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("state").toUpperCase());
+                final EnumItem<PlayStatus>? s = PlayStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("state").toUpperCase());
                 if (s != null)
                 {
                     return PlayStatusMsg._dcpPlayStatus(s);
@@ -223,8 +223,8 @@ class PlayStatusMsg extends ISCPMessage
             }
             if (_HEOS_COMMAND_MODE == jsonMsg.command)
             {
-                final EnumItem<RepeatStatus> r = RepeatStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("repeat").toUpperCase());
-                final EnumItem<ShuffleStatus> s = ShuffleStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("shuffle").toUpperCase());
+                final EnumItem<RepeatStatus>? r = RepeatStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("repeat").toUpperCase());
+                final EnumItem<ShuffleStatus>? s = ShuffleStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("shuffle").toUpperCase());
                 if (r != null && s != null)
                 {
                     return PlayStatusMsg._dcpPlayMode(r, s);
@@ -232,7 +232,7 @@ class PlayStatusMsg extends ISCPMessage
             }
             if (_HEOS_EVENT_REPEAT == jsonMsg.command)
             {
-                final EnumItem<RepeatStatus> r = RepeatStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("repeat").toUpperCase());
+                final EnumItem<RepeatStatus>? r = RepeatStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("repeat").toUpperCase());
                 if (r != null)
                 {
                     return PlayStatusMsg._dcpRepeat(r);
@@ -240,7 +240,7 @@ class PlayStatusMsg extends ISCPMessage
             }
             if (_HEOS_EVENT_SHUFFLE == jsonMsg.command)
             {
-                final EnumItem<ShuffleStatus> s = ShuffleStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("shuffle").toUpperCase());
+                final EnumItem<ShuffleStatus>? s = ShuffleStatusEnum.valueByDcpCode(jsonMsg.getMsgTag("shuffle").toUpperCase());
                 if (s != null)
                 {
                     return PlayStatusMsg._dcpShuffle(s);
@@ -251,7 +251,7 @@ class PlayStatusMsg extends ISCPMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         if (isQuery)
         {

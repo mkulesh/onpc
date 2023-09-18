@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "EnumParameterMsg.dart";
@@ -42,7 +42,7 @@ class NetworkServiceMsg extends EnumParameterMsg<ServiceType>
     }
 
     static EnumItem<ServiceType> _searchByName(final String name)
-    => Services.ServiceTypeEnum.values.firstWhere((t) => t.name.toUpperCase() == name.toUpperCase(),
+    => Services.ServiceTypeEnum.values.firstWhere((t) => t.name != null && t.name!.toUpperCase() == name.toUpperCase(),
         orElse: () => Services.ServiceTypeEnum.defValue);
 
     /*
@@ -51,7 +51,7 @@ class NetworkServiceMsg extends EnumParameterMsg<ServiceType>
     static const String _HEOS_COMMAND = "heos://browse/browse";
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         if (getValue.key == ServiceType.DCP_PLAYQUEUE)
         {

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Strings.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -45,7 +45,7 @@ class PrivacyPolicyStatusMsg extends ISCPMessage
     PrivacyPolicyStatusMsg(EISCPMessage raw) : super(CODE, raw);
 
     PrivacyPolicyStatusMsg.output(PrivacyPolicyType key) :
-            super.output(CODE, ValueEnum.valueByKey(key).code);
+            super.output(CODE, ValueEnum.valueByKey(key).getCode);
 
     bool isPolicySet(PrivacyPolicyType s)
     {
@@ -64,7 +64,6 @@ class PrivacyPolicyStatusMsg extends ISCPMessage
             case PrivacyPolicyType.SUE:
                 return getData.substring(2, 3) == '1';
         }
-        return false;
     }
 
     @override

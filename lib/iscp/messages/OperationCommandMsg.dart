@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Drawables.dart";
 import "../../constants/Strings.dart";
 import "../ConnectionIf.dart";
@@ -262,7 +262,7 @@ class OperationCommandMsg extends EnumParameterZonedMsg<OperationCommand>
      * - Get Music Sources Command: heos://browse/get_music_sources
      */
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         switch (getValue.key)
         {
@@ -270,7 +270,7 @@ class OperationCommandMsg extends EnumParameterZonedMsg<OperationCommand>
             case OperationCommand.PAUSE:
             case OperationCommand.STOP:
                 return "heos://player/set_play_state?pid=" + ISCPMessage.DCP_HEOS_PID +
-                    "&state=" + getValue.code.toLowerCase();
+                    "&state=" + getValue.getCode.toLowerCase();
             case OperationCommand.TRDN:
                 return "heos://player/play_previous?pid=" + ISCPMessage.DCP_HEOS_PID;
             case OperationCommand.TRUP:

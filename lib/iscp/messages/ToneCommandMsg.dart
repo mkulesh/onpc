@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../../utils/Logging.dart";
@@ -52,8 +52,8 @@ class ToneCommandMsg extends ZonedMessage
         EnumItem(ToneCommand.TDOWN, dcpCode: "DOWN")
     ]);
 
-    final bool _tonJoined;
-    EnumItem<ToneCommand> _command;
+    late final bool _tonJoined;
+    late EnumItem<ToneCommand> _command;
 
     static const String BASS_KEY = "Bass";
     static const String BASS_MARKER = "B";
@@ -148,7 +148,7 @@ class ToneCommandMsg extends ZonedMessage
     static List<String> getAcceptedDcpCodes()
     => [];
 
-    static ToneCommandMsg processDcpMessage(String dcpMsg)
+    static ToneCommandMsg? processDcpMessage(String dcpMsg)
     {
         // Bass
         for (int i = 0; i < DcpReceiverInformationMsg.DCP_COMMANDS_BASS.length; i++)
@@ -157,9 +157,10 @@ class ToneCommandMsg extends ZonedMessage
             {
                 final String par = dcpMsg.substring(
                     DcpReceiverInformationMsg.DCP_COMMANDS_BASS[i].length).trim();
-                if (int.tryParse(par) != null)
+                final int? value = int.tryParse(par);
+                if (value != null)
                 {
-                    final int level = int.tryParse(par) - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
+                    final int level = value - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
                     return ToneCommandMsg.value(i, level, NO_LEVEL);
                 }
                 else
@@ -176,9 +177,10 @@ class ToneCommandMsg extends ZonedMessage
             {
                 final String par = dcpMsg.substring(
                 DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[i].length).trim();
-                if (int.tryParse(par) != null)
+                final int? value = int.tryParse(par);
+                if (value != null)
                 {
-                    final int level = int.tryParse(par) - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
+                    final int level = value - DcpReceiverInformationMsg.DCP_TON_SHIFT[i];
                     return ToneCommandMsg.value(i, NO_LEVEL, level);
                 }
                 else
@@ -192,7 +194,7 @@ class ToneCommandMsg extends ZonedMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         if (isQuery)
         {
@@ -201,14 +203,18 @@ class ToneCommandMsg extends ZonedMessage
             return bassReq + ISCPMessage.DCP_MSG_SEP + trebleReq;
         }
 
+        if (_command.dcpCode == null)
+        {
+            return null;
+        }
         switch(_command.key)
         {
         case ToneCommand.BUP:
         case ToneCommand.BDOWN:
-            return DcpReceiverInformationMsg.DCP_COMMANDS_BASS[zoneIndex] + " " + _command.dcpCode;
+            return DcpReceiverInformationMsg.DCP_COMMANDS_BASS[zoneIndex] + " " + _command.dcpCode!;
         case ToneCommand.TUP:
         case ToneCommand.TDOWN:
-            return DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[zoneIndex] + " " + _command.dcpCode;
+            return DcpReceiverInformationMsg.DCP_COMMANDS_TREBLE[zoneIndex] + " " + _command.dcpCode!;
         default:
             if (_bassLevel != NO_LEVEL)
             {

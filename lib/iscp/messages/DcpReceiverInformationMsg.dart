@@ -11,9 +11,9 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
 import 'package:sprintf/sprintf.dart';
+import 'package:collection/collection.dart';
 
 import "../../utils/Convert.dart";
 import "../../utils/Logging.dart";
@@ -87,29 +87,29 @@ class DcpReceiverInformationMsg extends ISCPMessage
         return out;
     }
 
-    DcpUpdateType _updateType;
+    late DcpUpdateType _updateType;
 
     DcpUpdateType get updateType
     => _updateType;
 
-    Selector _selector;
+    Selector? _selector;
 
-    Selector get getSelector
+    Selector? get getSelector
     => _selector;
 
-    Zone _maxVolumeZone;
+    Zone? _maxVolumeZone;
 
-    Zone get getMaxVolumeZone
+    Zone? get getMaxVolumeZone
     => _maxVolumeZone;
 
-    ToneControl _toneControl;
+    ToneControl? _toneControl;
 
-    ToneControl get getToneControl
+    ToneControl? get getToneControl
     => _toneControl;
 
-    Preset _preset;
+    Preset? _preset;
 
-    Preset get getPreset
+    Preset? get getPreset
     => _preset;
 
     List<NetworkService> _networkServices = [];
@@ -117,9 +117,9 @@ class DcpReceiverInformationMsg extends ISCPMessage
     List<NetworkService> get getNetworkServices
     => _networkServices;
 
-    String _firmwareVer;
+    String? _firmwareVer;
 
-    String get getFirmwareVer
+    String? get getFirmwareVer
     => _firmwareVer;
 
     // Query interface
@@ -137,7 +137,7 @@ class DcpReceiverInformationMsg extends ISCPMessage
     }
 
     DcpReceiverInformationMsg.output(DcpQueryType q) :
-            super.output(CODE, QueryTypeEnum.valueByKey(q).code)
+            super.output(CODE, QueryTypeEnum.valueByKey(q).getCode)
     {
         _updateType = DcpUpdateType.NONE;
         _queryType = QueryTypeEnum.valueByKey(q);
@@ -186,15 +186,15 @@ class DcpReceiverInformationMsg extends ISCPMessage
         return "DCP receiver configuration: " +
                 (_updateType != DcpUpdateType.NONE ? "UpdateType=" + Convert.enumToString(_updateType) + " " : "") +
                 (_queryType.key != DcpQueryType.NONE ? "Query=" + _queryType.toString() + " " : "") +
-                (_selector != null ? "Selector=" + _selector.toString() + " " : "") +
-                (_maxVolumeZone != null ? "MaxVol=" + _maxVolumeZone.getVolMax.toString() + " " : "") +
-                (_toneControl != null ? "ToneCtrl=" + _toneControl.toString() + " " : "") +
-                (_preset != null ? "Preset=" + _preset.toString() + " " : "") +
+                (_selector != null ? "Selector=" + _selector!.toString() + " " : "") +
+                (_maxVolumeZone != null ? "MaxVol=" + _maxVolumeZone!.getVolMax.toString() + " " : "") +
+                (_toneControl != null ? "ToneCtrl=" + _toneControl!.toString() + " " : "") +
+                (_preset != null ? "Preset=" + _preset!.toString() + " " : "") +
                 (_networkServices.isNotEmpty ? "NetworkServices=" + _networkServices.length.toString() + " " : "") +
-                (_firmwareVer != null ? "Firmware=" + _firmwareVer + " " : "");
+                (_firmwareVer != null ? "Firmware=" + _firmwareVer! + " " : "");
     }
 
-    static DcpReceiverInformationMsg processDcpMessage(String dcpMsg)
+    static DcpReceiverInformationMsg? processDcpMessage(String dcpMsg)
     {
         // Input Selector
         if (dcpMsg.startsWith(DCP_COMMAND_INPUT_SEL))
@@ -290,7 +290,7 @@ class DcpReceiverInformationMsg extends ISCPMessage
         return null;
     }
 
-    static DcpReceiverInformationMsg processMaxVolume(final String par, bool scale)
+    static DcpReceiverInformationMsg? processMaxVolume(final String par, bool scale)
     {
         try
         {
@@ -309,7 +309,7 @@ class DcpReceiverInformationMsg extends ISCPMessage
         }
     }
 
-    static DcpReceiverInformationMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static DcpReceiverInformationMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
         if (HEOS_COMMAND_NET == jsonMsg.command)
         {
@@ -348,13 +348,13 @@ class DcpReceiverInformationMsg extends ISCPMessage
     static void _ensureNetworkService(final List<NetworkService> nsList, final ServiceType s)
     {
         final EnumItem<ServiceType> sEnum = Services.ServiceTypeEnum.valueByKey(s);
-        if (sEnum.key == s)
+        if (sEnum.key == s && sEnum.name != null)
         {
-            final bool missing = nsList.firstWhere((ns) => ns.getId == sEnum.getDcpCode, orElse: () => null) == null;
+            final bool missing = nsList.firstWhereOrNull((ns) => ns.getId == sEnum.getDcpCode) == null;
             if (missing)
             {
                 final NetworkService ns = NetworkService(
-                    sEnum.code, sEnum.name, ReceiverInformationMsg.ALL_ZONES, false, false);
+                    sEnum.getCode, sEnum.name!, ReceiverInformationMsg.ALL_ZONES, false, false);
                 Logging.info(s, "Enforced missing network service " + ns.toString());
                 nsList.add(ns);
             }
@@ -362,7 +362,7 @@ class DcpReceiverInformationMsg extends ISCPMessage
     }
 
 @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         String res = "";
         res += "heos://system/register_for_change_events?enable=on";

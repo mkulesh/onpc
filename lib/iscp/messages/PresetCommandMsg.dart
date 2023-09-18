@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../../constants/Drawables.dart";
@@ -51,9 +51,9 @@ class PresetCommandMsg extends ZonedMessage
             descrList: Strings.l_preset_command_down, icon: Drawables.cmd_left)
     ]);
 
-    EnumItem<PresetCommand> _command;
-    Preset _presetConfig;
-    int _preset;
+    EnumItem<PresetCommand>? _command;
+    Preset? _presetConfig;
+    late int _preset;
 
     PresetCommandMsg(EISCPMessage raw) : super(ZONE_COMMANDS, raw)
     {
@@ -93,10 +93,10 @@ class PresetCommandMsg extends ZonedMessage
         return presetConfig.getId.toRadixString(16).padLeft(2, '0');
     }
 
-    EnumItem<PresetCommand> get getCommand
+    EnumItem<PresetCommand>? get getCommand
     => _command;
 
-    Preset get getPresetConfig
+    Preset? get getPresetConfig
     => _presetConfig;
 
     int get getPreset
@@ -105,8 +105,8 @@ class PresetCommandMsg extends ZonedMessage
     @override
     String toString()
     => super.toString()
-            + "[CMD=" + (_command != null ? _command.toString() : "null")
-            + "; PRS_CFG=" + (_presetConfig != null ? _presetConfig.getName : "null")
+            + "[CMD=" + (_command != null ? _command!.toString() : "null")
+            + "; PRS_CFG=" + (_presetConfig != null ? _presetConfig!.getName : "null")
             + "; PRESET=" + _preset.toString() + "]";
 
     @override
@@ -124,7 +124,7 @@ class PresetCommandMsg extends ZonedMessage
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND ];
 
-    static PresetCommandMsg processDcpMessage(String dcpMsg, int zone)
+    static PresetCommandMsg? processDcpMessage(String dcpMsg, int zone)
     {
         if (dcpMsg.startsWith(_DCP_COMMAND))
         {
@@ -133,9 +133,9 @@ class PresetCommandMsg extends ZonedMessage
             {
                 return PresetCommandMsg.dcp(zone, NO_PRESET);
             }
-            if (int.tryParse(par) != null)
+            final int? preset = int.tryParse(par);
+            if (preset != null)
             {
-                final int preset = int.tryParse(par);
                 return PresetCommandMsg.dcp(zone, preset);
             }
             else
@@ -148,7 +148,7 @@ class PresetCommandMsg extends ZonedMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => _DCP_COMMAND + (isQuery ? ISCPMessage.DCP_MSG_REQ :
-        (_command != null ? _command.getDcpCode : sprintf("%02d", [ _preset ])));
+        (_command != null ? _command!.getDcpCode : sprintf("%02d", [ _preset ])));
 }

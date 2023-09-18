@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -34,7 +34,7 @@ class DcpMediaItemMsg extends ISCPMessage
 
     EnumItem<ServiceType> getServiceType()
     {
-        final EnumItem<ServiceType> st = Services.ServiceTypeEnum.valueByDcpCode("HS" + _sid.toString());
+        final EnumItem<ServiceType>? st = Services.ServiceTypeEnum.valueByDcpCode("HS" + _sid.toString());
         return (st == null) ? Services.ServiceTypeEnum.defValue : st;
     }
 
@@ -47,13 +47,21 @@ class DcpMediaItemMsg extends ISCPMessage
      */
     static const String _HEOS_COMMAND = "player/get_now_playing_media";
 
-    static DcpMediaItemMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static DcpMediaItemMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
         if (_HEOS_COMMAND == jsonMsg.command)
         {
-            final String type = jsonMsg.getString("payload.type");
-            final String mid = ("station" == type) ? 
+            final String? type = jsonMsg.getString("payload.type");
+            if (type == null)
+            {
+                return null;
+            }
+            final String? mid = ("station" == type) ?
                 jsonMsg.getString("payload.album_id") : jsonMsg.getString("payload.mid");
+            if (mid == null)
+            {
+                return null;
+            }
             final int sid = jsonMsg.getInt("payload.sid");
             return DcpMediaItemMsg._dcp(mid, sid);
         }
@@ -61,6 +69,6 @@ class DcpMediaItemMsg extends ISCPMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     => isQuery ? "heos://" + _HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID : null;
 }

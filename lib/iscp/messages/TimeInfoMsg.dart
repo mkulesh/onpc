@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:sprintf/sprintf.dart';
 
 import "../DcpHeosMessage.dart";
@@ -29,7 +29,7 @@ class TimeInfoMsg extends ISCPMessage
     /*
      * (Elapsed time/Track Time Max 99:59:59. If time is unknown, this response is --:--)
      */
-    String _currentTime, _maxTime;
+    late String _currentTime, _maxTime;
 
     TimeInfoMsg(EISCPMessage raw) : super(CODE, raw)
     {
@@ -70,18 +70,20 @@ class TimeInfoMsg extends ISCPMessage
      */
     static const String _HEOS_COMMAND = "event/player_now_playing_progress";
 
-    static TimeInfoMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static TimeInfoMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
         if (_HEOS_COMMAND == jsonMsg.command)
         {
-            final String curPosStr = jsonMsg.message["cur_pos"];
-            final String durationStr = jsonMsg.message["duration"];
-            if (curPosStr != null && int.tryParse(curPosStr) != null &&
-                durationStr != null && int.tryParse(durationStr) != null)
+            final String? curPosStr = jsonMsg.message["cur_pos"];
+            final String? durationStr = jsonMsg.message["duration"];
+            if (curPosStr != null && durationStr != null)
             {
-                return TimeInfoMsg._dcp(
-                    _millisToTime(int.tryParse(curPosStr)),
-                    _millisToTime(int.tryParse(durationStr)));
+                final int? curPos = int.tryParse(curPosStr);
+                final int? duration = int.tryParse(durationStr);
+                if (curPos != null && duration != null)
+                {
+                    return TimeInfoMsg._dcp(_millisToTime(curPos),_millisToTime(duration));
+                }
             }
         }
         return null;

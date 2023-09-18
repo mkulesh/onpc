@@ -11,7 +11,7 @@
  * GNU General License for more details. You should have received a copy of the GNU General
  * License along with this program.
  */
-// @dart=2.9
+
 import 'dart:math';
 
 import "../../utils/Logging.dart";
@@ -213,7 +213,7 @@ class DCPMessageFactory
         return dcpMsg;
     }
 
-    List<String> convertOutputMsg(EISCPMessage raw1, ISCPMessage raw2, final String dest)
+    List<String> convertOutputMsg(EISCPMessage? raw1, ISCPMessage? raw2, final String dest)
     {
         final List<String> retValue = [];
         if (raw1 == null && raw2 == null)
@@ -222,9 +222,9 @@ class DCPMessageFactory
         }
         try
         {
-            final String toSend = (raw1 != null) ?
+            final String? toSend = raw1 != null ?
                 createISCPMessage(raw1).buildDcpMsg(raw1.isQuery()) :
-                raw2.buildDcpMsg(false);
+                (raw2 != null ? raw2.buildDcpMsg(false) : null);
             if (toSend == null)
             {
                 return retValue;
@@ -243,7 +243,7 @@ class DCPMessageFactory
         }
     }
 
-    void addISCPMsg(ISCPMessage msg)
+    void addISCPMsg(ISCPMessage? msg)
     {
         if (msg != null)
         {

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:io';
 
 import "../../utils/Convert.dart";
@@ -37,10 +37,10 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
 {
     static const String CODE = "ECN";
 
-    String _model;
-    String _destinationArea;
-    String _identifier;
-    String _alias;
+    String? _model;
+    String? _destinationArea;
+    String? _identifier;
+    String? _alias;
 
     BroadcastResponseMsg(InternetAddress hostAddress, EISCPMessage raw) : super(CODE, raw)
     {
@@ -112,21 +112,21 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
     String toString()
     => super.toString() + "[HOST=" + getHostAndPort
             + "; " + Convert.enumToString(protoType)
-            + (_model != null ? "; MODEL=" + _model : "")
-            + (_destinationArea != null ? "; DST=" + _destinationArea : "")
-            + (_identifier != null ? "; ID=" + _identifier : "")
-            + (_alias != null ? "; ALIAS=" + _alias : "") + "]";
+            + (_model != null ? "; MODEL=" + _model! : "")
+            + (_destinationArea != null ? "; DST=" + _destinationArea! : "")
+            + (_identifier != null ? "; ID=" + _identifier! : "")
+            + (_alias != null ? "; ALIAS=" + _alias! : "") + "]";
 
     String getDescription()
-    => getHost + "/" + (alias != null ? alias : (_model != null ? _model : "unknown"));
+    => getHost + "/" + (_alias != null ? _alias! : (_model != null ? _model! : "unknown"));
 
     String get getIdentifier
-    => _identifier == null ? "" : _identifier;
+    => _identifier ?? "";
 
-    String get alias
+    String? get alias
     => _alias;
 
-    set alias(String value)
+    set alias(String? value)
     {
         _alias = value;
     }

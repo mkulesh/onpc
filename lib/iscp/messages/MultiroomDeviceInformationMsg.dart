@@ -11,8 +11,9 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:xml/xml.dart" as xml;
+import 'package:collection/collection.dart';
 
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
@@ -47,16 +48,16 @@ class MultiroomZone
         EnumItem.code(RoleType.NONE, "NONE", descrList: Strings.l_multiroom_none, defValue: true)
     ]);
 
-    int _id;
-    int _groupid;
-    EnumItem<ChannelType> _ch;
-    EnumItem<RoleType> _role;
-    String _roomname;
-    String _groupname;
-    int _powerstate;
-    int _iconid;
-    int _color;
-    int _delay;
+    late int _id;
+    late int _groupid;
+    late EnumItem<ChannelType> _ch;
+    late EnumItem<RoleType> _role;
+    late String _roomname;
+    late String _groupname;
+    late int _powerstate;
+    late int _iconid;
+    late int _color;
+    late int _delay;
 
     MultiroomZone.fromXml(xml.XmlElement e)
     {
@@ -132,7 +133,7 @@ class MultiroomDeviceInformationMsg extends ISCPMessage
 
         document.findAllElements("zone").forEach((element)
         {
-            final String id = element.getAttribute("id");
+            final String? id = element.getAttribute("id");
             if (id != null)
             {
                 _zones.add(MultiroomZone.fromXml(element));
@@ -149,25 +150,25 @@ class MultiroomDeviceInformationMsg extends ISCPMessage
 
     String getProperty(final String name)
     {
-        final String prop = _properties[name];
+        final String? prop = _properties[name];
         return prop == null ? "" : prop;
     }
 
     EnumItem<RoleType> getRole(int zone)
     {
-        final MultiroomZone z = _zones.firstWhere((z) => z.id == zone, orElse: () => null);
+        final MultiroomZone? z = _zones.firstWhereOrNull((z) => z.id == zone);
         return z != null ? z.role : MultiroomZone.RoleTypeEnum.defValue;
     }
 
     EnumItem<ChannelType> getChannelType(int zone)
     {
-        final MultiroomZone z = _zones.firstWhere((z) => z.id == zone, orElse: () => null);
+        final MultiroomZone? z = _zones.firstWhereOrNull((z) => z.id == zone);
         return z != null ? z.ch : MultiroomZone.ChannelTypeEnum.defValue;
     }
 
     int getGroupId(int zone)
     {
-        final MultiroomZone z = _zones.firstWhere((z) => z.id == zone, orElse: () => null);
+        final MultiroomZone? z = _zones.firstWhereOrNull((z) => z.id == zone);
         return z != null ? z.groupid : MultiroomZone.NO_GROUP;
     }
 }

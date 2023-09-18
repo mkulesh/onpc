@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../utils/Pair.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -101,7 +101,6 @@ class MultiroomGroupSettingMsg extends ISCPMessage
                 return EISCPMessage.output(CODE, cmd.toString());
             }
         }
-        return null;
     }
 
     @override
