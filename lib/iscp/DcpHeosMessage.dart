@@ -11,7 +11,6 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
 import 'dart:convert';
 
@@ -22,10 +21,10 @@ import 'package:json_path/json_path.dart';
  */
 class DcpHeosMessage
 {
-    dynamic _jsonMsg;
-    String _command;
-    String _result;
-    Map<String, String> _message;
+    late dynamic _jsonMsg;
+    late String _command;
+    late String _result;
+    late Map<String, String> _message;
 
     DcpHeosMessage(String dcpMsg)
     {
@@ -48,16 +47,16 @@ class DcpHeosMessage
     Map<String, String> get message
     => _message;
 
-    static String nonNullString(String s)
+    static String nonNullString(String? s)
     => s == null ? "" : s.trim();
 
-    bool isValid(int pid)
+    bool isValid(int? pid)
     {
         if (_result.isNotEmpty && "success" != _result)
         {
             return false;
         }
-        final String pidStr = message["pid"];
+        final String? pidStr = message["pid"];
         if (pidStr != null && pid != null && pid.toString() != pidStr)
         {
             return false;
@@ -75,7 +74,7 @@ class DcpHeosMessage
         return list.isEmpty ? null : list.first.value;
     }
 
-    String getString(final String path)
+    String? getString(final String path)
     {
         final Iterable<JsonPathMatch> list = JsonPath(r"$." + path).read(_jsonMsg);
         return list.isEmpty ? null : list.first.value.toString();
@@ -91,19 +90,23 @@ class DcpHeosMessage
     Iterable<JsonPathMatch> getArray(final String path)
     => JsonPath(r"$." + path).read(_jsonMsg);
 
-    String getCmdProperty(String cmd, String name)
+    String? getCmdProperty(String cmd, String name)
     => (cmd == _command) ? getString(name) : null;
 
     String getMsgTag(String name)
     {
-        final String val = _message[name];
+        final String? val = _message[name];
         return val != null ? val : "";
     }
 
     Map<String, String> _getMessage()
     {
         final Map<String, String> retValue = Map();
-        final String heosMsg = getString("heos.message");
+        final String? heosMsg = getString("heos.message");
+        if (heosMsg == null)
+        {
+            return retValue;
+        }
         final List<String> heosTokens = heosMsg.split("&");
         for (String token in heosTokens)
         {

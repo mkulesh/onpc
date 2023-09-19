@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:typed_data";
 
 import "package:flutter/widgets.dart";
@@ -58,7 +58,7 @@ class JacketArtMsg extends ISCPMessage
         EnumItem.char(ImageType.NO_IMAGE, 'n', defValue: true)
     ]);
 
-    ImageType imageType;
+    late ImageType imageType;
 
     /*
      * Packet flag 0:Start, 1:Next, 2:End, -:not used
@@ -70,10 +70,9 @@ class JacketArtMsg extends ISCPMessage
         EnumItem.char(PacketFlag.NOT_USED, '-', defValue: true)
     ]);
 
-    PacketFlag packetFlag;
-
-    String url;
-    List<int> rawData;
+    PacketFlag? packetFlag;
+    String? url;
+    List<int>? rawData;
 
     JacketArtMsg(EISCPMessage raw) : super(CODE, raw)
     {
@@ -114,10 +113,10 @@ class JacketArtMsg extends ISCPMessage
     ImageType get getImageType
     => imageType;
 
-    PacketFlag get getPacketFlag
+    PacketFlag? get getPacketFlag
     => packetFlag;
 
-    List<int> get getRawData
+    List<int>? get getRawData
     => rawData;
 
     @override
@@ -126,8 +125,8 @@ class JacketArtMsg extends ISCPMessage
         return CODE + "/" + getMessageId.toString() + "[" + getData.substring(0, 2) + "..."
             + "; TYPE=" + imageType.toString()
             + "; PACKET=" + packetFlag.toString()
-            + "; URL=" + (url == null ? "null" : url)
-            + "; RAW(" + (rawData == null ? "null" : rawData.length.toString()) + ")"
+            + "; URL=" + (url == null ? "null" : url!)
+            + "; RAW(" + (rawData == null ? "null" : rawData!.length.toString()) + ")"
             + "]";
     }
 
@@ -143,9 +142,13 @@ class JacketArtMsg extends ISCPMessage
         return bytes;
     }
 
-    Future<Image> loadFromUrl()
+    Future<Image?> loadFromUrl()
     {
-        return UrlLoader().loadFromUrl(url).then((Uint8List data)
+        if (url == null)
+        {
+            return Future<Image?>.value(null);
+        }
+        return UrlLoader().loadFromUrl(url!).then((Uint8List? data)
         {
             return data != null? Image.memory(data) : null;
         });
@@ -159,9 +162,9 @@ class JacketArtMsg extends ISCPMessage
      */
     static const String _HEOS_COMMAND = "player/get_now_playing_media";
 
-    static JacketArtMsg processHeosMessage(DcpHeosMessage jsonMsg)
+    static JacketArtMsg? processHeosMessage(DcpHeosMessage jsonMsg)
     {
-        final String name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.image_url");
+        final String? name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.image_url");
         return (name != null && name.isNotEmpty) ? JacketArtMsg._dcp(name) : null;
     }
 }

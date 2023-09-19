@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:convert";
 import "dart:math";
 import "dart:typed_data";
@@ -31,11 +31,11 @@ class EISCPMessage
     static const String QUERY = "QSTN";
     static const int LOG_LINE_LENGTH = 160;
 
-    final int _messageId;
-    final int _headerSize, _dataSize, _version;
-    String _modelCategoryId;
-    String _code;
-    String _parameters;
+    late final int _messageId;
+    late final int _headerSize, _dataSize, _version;
+    late String _modelCategoryId;
+    late String _code;
+    late String _parameters;
 
     EISCPMessage.input(this._messageId, List<int> bytes, this._headerSize, this._dataSize) :
             _version = _getVersion(bytes)
@@ -213,7 +213,7 @@ class EISCPMessage
         return INVALID_MSG;
     }
 
-    List<int> getBytes()
+    List<int>? getBytes()
     {
         final List<int> parametersBin = utf8.encode(getParameters);
         final int dSize = 2 + getCode.length + parametersBin.length + 1;

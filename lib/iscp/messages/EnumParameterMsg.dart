@@ -11,7 +11,9 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
+import 'package:collection/collection.dart';
+
 import "../../constants/Strings.dart";
 import "../../utils/Convert.dart";
 import "../EISCPMessage.dart";
@@ -20,12 +22,12 @@ import "../ISCPMessage.dart";
 class EnumItem<T>
 {
     final T key;
-    final String code;
-    final String dcpCode;
-    final String name;
-    final String descr;
-    final List<String> descrList;
-    final String icon;
+    final String? code;
+    final String? dcpCode;
+    final String? name;
+    final String? descr;
+    final List<String>? descrList;
+    final String? icon;
     final bool defValue, isMediaList, upperCase;
 
     const EnumItem(this.key,
@@ -71,13 +73,13 @@ class EnumItem<T>
     => Convert.enumToString(key);
 
     String get getCode
-    => code == null ? getKey : (upperCase ? code.toUpperCase() : code);
+    => code == null ? getKey : (upperCase ? code!.toUpperCase() : code!);
 
     bool isCodeEqual(String c)
     => upperCase ? (getCode == c.toUpperCase()) : (getCode == c);
 
     String get getDcpCode
-    => dcpCode == null ? getCode : (upperCase ? dcpCode.toUpperCase() : dcpCode);
+    => dcpCode == null ? getCode : (upperCase ? dcpCode!.toUpperCase() : dcpCode!);
 
     bool isDcpCodeEqual(String c)
     => upperCase ? (getDcpCode == c.toUpperCase()) : (getDcpCode == c);
@@ -86,7 +88,7 @@ class EnumItem<T>
     => icon != null;
 
     String get description
-    => descr ?? descrList[Strings.language];
+    => descr ?? descrList![Strings.language];
 
     @override
     String toString()
@@ -100,7 +102,7 @@ class ExtEnum<T>
     const ExtEnum(this.values);
 
     EnumItem<T> get defValue
-    => values.firstWhere((e) => e.defValue, orElse: () => null);
+    => values.firstWhere((e) => e.defValue, orElse: () => values.first);
 
     EnumItem<T> valueByCode(String code)
     => values.firstWhere((e) => e.isCodeEqual(code), orElse: () => defValue);
@@ -108,16 +110,16 @@ class ExtEnum<T>
     EnumItem<T> valueByKey(T key)
     => values.firstWhere((e) => e.key == key, orElse: () => defValue);
 
-    EnumItem<T> valueByDcpCode(String code)
-    => values.firstWhere((e) => e.isDcpCodeEqual(code), orElse: () => null);
+    EnumItem<T>? valueByDcpCode(String? code)
+    => code != null? values.firstWhereOrNull((e) => e.isDcpCodeEqual(code)) : null;
 
-    EnumItem<T> valueByDcpCommand(String dcpCommand, String dcpMsg)
+    EnumItem<T>? valueByDcpCommand(String dcpCommand, String dcpMsg)
     => dcpMsg.startsWith(dcpCommand) ? valueByDcpCode(dcpMsg.substring(dcpCommand.length).trim()) : null;
 }
 
 class EnumParameterMsg<T> extends ISCPMessage
 {
-    EnumItem<T> _value;
+    late EnumItem<T> _value;
 
     EnumParameterMsg(String code, EISCPMessage raw, final ExtEnum<T> extEnum) : super(code, raw)
     {
@@ -143,7 +145,7 @@ class EnumParameterMsg<T> extends ISCPMessage
 
 class EnumParameterZonedMsg<T> extends ZonedMessage
 {
-    EnumItem<T> _value;
+    late EnumItem<T> _value;
 
     EnumParameterZonedMsg(List<String> zones, EISCPMessage raw, final ExtEnum<T> extEnum) : super(zones, raw)
     {
@@ -163,7 +165,7 @@ class EnumParameterZonedMsg<T> extends ZonedMessage
     String toString()
     => super.toString() + "[VALUE=" + _value.toString() + "]";
 
-    String buildDcpRequest(bool isQuery, final List<String> dcpCommands)
+    String? buildDcpRequest(bool isQuery, final List<String> dcpCommands)
     {
         if (zoneIndex < dcpCommands.length)
         {

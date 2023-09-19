@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  collection: ^1.17.0
   quiver: ^3.0.1
   xml: ^5.1.1
   flutter_svg: ^0.22.0
@@ -23,7 +24,7 @@ dependencies:
   flutter_markdown: ^0.6.8
   url_launcher: ^6.1.11
   google_fonts: ^2.2.0
-  json_path: ^0.2.1
+  json_path: ^0.4.0
   syncfusion_flutter_sliders: ^23.1.36
   syncfusion_flutter_charts: ^23.1.36
 

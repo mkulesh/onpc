@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
@@ -31,15 +31,15 @@ import "InputSelectorMsg.dart";
 
 class NetworkService
 {
-    String _id;
-    String _name;
-    int _zone;
-    bool _addToQueue;
-    bool _sort;
+    late String _id;
+    late String _name;
+    late int _zone;
+    late bool _addToQueue;
+    late bool _sort;
 
     NetworkService.fromXml(xml.XmlElement e)
     {
-        _id = e.getAttribute("id").toUpperCase();
+        _id = ISCPMessage.nonNullString(e.getAttribute("id")).toUpperCase();
         _name = ISCPMessage.nonNullString(e.getAttribute("name"));
         _zone = ISCPMessage.nonNullInteger(e.getAttribute("zone"), 10, 1);
         _addToQueue = ISCPMessage.nonNullInteger(e.getAttribute("addqueue"), 10, 0) == 1;
@@ -83,14 +83,14 @@ class NetworkService
 
 class Zone
 {
-    String _id;
-    String _name;
-    int _volumeStep;
-    int _volMax;
+    late String _id;
+    late String _name;
+    late int _volumeStep;
+    late int _volMax;
 
     Zone.fromXml(xml.XmlElement e)
     {
-        _id = e.getAttribute("id").toUpperCase();
+        _id = ISCPMessage.nonNullString(e.getAttribute("id")).toUpperCase();
         _name = ISCPMessage.nonNullString(e.getAttribute("name"));
         _volumeStep = ISCPMessage.nonNullInteger(e.getAttribute("volstep"), 10, 0);
         _volMax = ISCPMessage.nonNullInteger(e.getAttribute("volmax"), 10, 0);
@@ -125,15 +125,15 @@ class Zone
 
 class Selector
 {
-    String _id;
-    String _name;
-    int _zone;
-    String _iconId;
-    bool _addToQueue;
+    late String _id;
+    late String _name;
+    late int _zone;
+    late String _iconId;
+    late bool _addToQueue;
 
     Selector.fromXml(xml.XmlElement e)
     {
-        _id = e.getAttribute("id").toUpperCase();
+        _id = ISCPMessage.nonNullString(e.getAttribute("id")).toUpperCase();
         _name = ISCPMessage.nonNullString(e.getAttribute("name"));
         _zone = ISCPMessage.nonNullInteger(e.getAttribute("zone"), 10, 1);
         _iconId = ISCPMessage.nonNullString(e.getAttribute("iconid"));
@@ -195,10 +195,10 @@ class Selector
 
 class Preset
 {
-    int _id;
-    int _band;
-    String _freq;
-    String _name;
+    late int _id;
+    late int _band;
+    late String _freq;
+    late String _name;
 
     Preset(this._id, this._band, this._freq, this._name);
 
@@ -215,10 +215,10 @@ class Preset
         {
             // <value index="1" skip="OFF" table="01" band="FM" param=" 008830"/>
             final String par = ISCPMessage.nonNullString(e.getAttribute("param")).trim();
-            final bool freqValid = int.tryParse(par) != null;
-            _id = int.tryParse(e.getAttribute("index"));
+            final int? pFreq = int.tryParse(par);
+            _id = ISCPMessage.nonNullInteger(e.getAttribute("index"), 10, 0);
             _band = "FM" == ISCPMessage.nonNullString(e.getAttribute("band")) ? 1 : 2;
-            _freq = _band == 1 && freqValid ? sprintf("%.2f", [int.tryParse(par) / 100.0]) : "0";
+            _freq = _band == 1 && pFreq != null ? sprintf("%.2f", [pFreq / 100.0]) : "0";
             _name = _band == 1 ? "" : par;
         }
     }
@@ -283,7 +283,7 @@ class Preset
         return Drawables.media_item_unknown;
     }
 
-    bool equals(Preset other)
+    bool equals(Preset? other)
     {
         return other != null &&
             _band == other._band &&
@@ -295,10 +295,10 @@ class Preset
 
 class ToneControl
 {
-    String _id;
-    int _min;
-    int _max;
-    int _step;
+    late String _id;
+    late int _min;
+    late int _max;
+    late int _step;
 
     ToneControl.fromXml(xml.XmlElement e)
     {
@@ -331,7 +331,7 @@ class ToneControl
     String toString()
     => "min=" + _min.toString() + ", max=" + _max.toString() + ", step=" + _step.toString();
 
-    bool equals(ToneControl other)
+    bool equals(ToneControl? other)
     {
         return other != null &&
             _id == other._id &&
@@ -341,7 +341,7 @@ class ToneControl
     }
 }
 
-typedef OnReceiverInfo = void Function(ReceiverInformationMsg msg);
+typedef OnReceiverInfo = void Function(ReceiverInformationMsg? msg);
 
 class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
 {
@@ -351,7 +351,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     static const int ALL_ZONES = 0xFF;
     static const int EXT_ZONES = 14; // 1110 - all zones except main
 
-    String _deviceId;
+    String? _deviceId;
     final Map<String, String> _deviceProperties = HashMap<String, String>();
     final List<NetworkService> _networkServices = [];
     final List<Zone> _zones = [];
@@ -359,7 +359,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     final List<Preset> _presetList = [];
     final List<String> _controlList = [];
     final Map<String, ToneControl> _toneControls = HashMap<String, ToneControl>();
-    String _dcpPresetData;
+    String? _dcpPresetData;
 
     ReceiverInformationMsg(EISCPMessage raw) : super(CODE, raw)
     {
@@ -367,7 +367,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         _parseIscpXml();
     }
 
-    String get deviceId
+    String? get deviceId
     => _deviceId;
 
     Map<String, String> get deviceProperties
@@ -417,8 +417,8 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         // network services
         document.findAllElements("netservice").forEach((element)
         {
-            final String id = element.getAttribute("id");
-            final String name = element.getAttribute("name");
+            final String? id = element.getAttribute("id");
+            final String? name = element.getAttribute("name");
             final int value = ISCPMessage.nonNullInteger(element.getAttribute("value"), 10, 0);
             if (id != null && name != null && value == 1)
             {
@@ -433,8 +433,8 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         // zones
         document.findAllElements("zone").forEach((element)
         {
-            final String id = element.getAttribute("id");
-            final String name = element.getAttribute("name");
+            final String? id = element.getAttribute("id");
+            final String? name = element.getAttribute("name");
             final int value = ISCPMessage.nonNullInteger(element.getAttribute("value"), 10, 0);
             if (id != null && name != null && value == 1)
             {
@@ -449,8 +449,8 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         // device selectors
         document.findAllElements("selector").forEach((element)
         {
-            final String id = element.getAttribute("id");
-            final String name = element.getAttribute("name");
+            final String? id = element.getAttribute("id");
+            final String? name = element.getAttribute("name");
             final int value = ISCPMessage.nonNullInteger(element.getAttribute("value"), 10, 0);
             if (id != null && name != null && value > 0)
             {
@@ -465,8 +465,8 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         // presets
         document.findAllElements("preset").forEach((element)
         {
-            final String id = element.getAttribute("id");
-            final String band = element.getAttribute("band");
+            final String? id = element.getAttribute("id");
+            final String? band = element.getAttribute("band");
             if (id != null && band != null)
             {
                 _presetList.add(Preset.fromXml(element, ProtoType.ISCP));
@@ -480,7 +480,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         // Control list and Tone controls
         document.findAllElements("control").forEach((element)
         {
-            final String id = element.getAttribute("id");
+            final String? id = element.getAttribute("id");
             final int value = ISCPMessage.nonNullInteger(element.getAttribute("value"), 10, 0);
             if (id != null && value == 1)
             {
@@ -523,7 +523,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
 
     static final List<String> defaultDcpControls = ["LMD Movie/TV", "LMD Music", "LMD Game", "Setup", "Quick"];
 
-    ReceiverInformationMsg.dcp(final String receiverData, final String presetData, final String host, final String port) :
+    ReceiverInformationMsg.dcp(final String receiverData, final String? presetData, final String host, final String port) :
             _dcpPresetData = presetData,
             super.output(CODE, receiverData)
     {
@@ -537,11 +537,11 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     {
         final String port1 = DCP_HTTP_PORT.toString();
         final String port2 = "80";
-        _requestDcpXml(host, port1, "Deviceinfo.xml").then((ri1)
+        _requestDcpXml(host, port1, "Deviceinfo.xml").then((String? ri1)
         {
             if (ri1 != null)
             {
-                _requestDcpXml(host, port1, "formiPhoneAppTunerPreset.xml").then((ps1)
+                _requestDcpXml(host, port1, "formiPhoneAppTunerPreset.xml").then((String? ps1)
                 {
                     onReceiverInfo(ReceiverInformationMsg.dcp(ri1, ps1, host, port1));
                 });
@@ -566,10 +566,10 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         });
     }
 
-    static Future<String> _requestDcpXml(final String host, final String port, final String path)
+    static Future<String?> _requestDcpXml(final String host, final String port, final String path)
     {
         final String url = ISCPMessage.getDcpGoformUrl(host, port, path);
-        return UrlLoader().loadFromUrl(url).then((Uint8List receiverData)
+        return UrlLoader().loadFromUrl(url).then((Uint8List? receiverData)
         {
             if (receiverData != null)
             {
@@ -609,7 +609,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         {
             try
             {
-                _parseDcpPresets(xml.XmlDocument.parse(_dcpPresetData));
+                _parseDcpPresets(xml.XmlDocument.parse(_dcpPresetData!));
             }
             on Exception catch (ex)
             {
@@ -643,29 +643,33 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
 
         if (zones.length == volumes.length)
         {
-            final String no = ISCPMessage.getElementProperty(zones.first, "No", null);
-            final String maxVolume = ISCPMessage.getElementProperty(volumes.first, "MaxValue", null);
-            final String step = ISCPMessage.getElementProperty(volumes.first, "StepValue", null);
-            if (no != null && int.tryParse(no) != null &&
-                step != null && double.tryParse(step) != null &&
-                maxVolume != null && double.tryParse(maxVolume) != null)
+            final String? no = ISCPMessage.getElementProperty(zones.first, "No", null);
+            final String? maxVolume = ISCPMessage.getElementProperty(volumes.first, "MaxValue", null);
+            final String? step = ISCPMessage.getElementProperty(volumes.first, "StepValue", null);
+            if (no != null && step != null && maxVolume != null)
             {
-                final int noInt = int.tryParse(no) + 1;
-                final String name = noInt == 1 ? "Main" : "Zone" + noInt.toString();
-                // Volume for zone 1 is ***:00 to 98 -> scale can be 0
-                // Volume for zone 2/3 is **:00 to 98 -> scale shall be 1
-                final int stepInt = noInt == 1 ? double.tryParse(step).floor() : 1;
-                final int maxVolumeInt = double.tryParse(maxVolume).floor();
-                this.zones.add(Zone(noInt.toString(), name, stepInt, maxVolumeInt));
+                final int? noVal = int.tryParse(no);
+                final double? stepVal = double.tryParse(step);
+                final double? maxVolumeVal = double.tryParse(maxVolume);
+                if (noVal != null && stepVal != null && maxVolumeVal != null)
+                {
+                    final int noInt = noVal + 1;
+                    final String name = noInt == 1 ? "Main" : "Zone" + noInt.toString();
+                    // Volume for zone 1 is ***:00 to 98 -> scale can be 0
+                    // Volume for zone 2/3 is **:00 to 98 -> scale shall be 1
+                    final int stepInt = noInt == 1 ? stepVal.floor() : 1;
+                    final int maxVolumeInt = maxVolumeVal.floor();
+                    this.zones.add(Zone(noInt.toString(), name, stepInt, maxVolumeInt));
+                }
             }
         }
 
         if (zones.length == input.length)
         {
-            final String no = ISCPMessage.getElementProperty(zones.first, "No", null);
-            final String ctrl = ISCPMessage.getElementProperty(input.first, "Control", "0");
+            final String? no = ISCPMessage.getElementProperty(zones.first, "No", null);
+            final String? ctrl = ISCPMessage.getElementProperty(input.first, "Control", "0");
             final Iterable<xml.XmlElement> list = input.first.findAllElements("List");
-            if (no != null && int.tryParse(no) != null
+            if (no != null
                 && ctrl != null && ctrl == "1"
                 && list.length == 1)
             {
@@ -680,18 +684,18 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         }
     }
 
-    void _parseDcpInput(int zone, String name, String defName, String iconId)
+    void _parseDcpInput(int? zone, String? name, String? defName, String? iconId)
     {
-        if (name == null || iconId == null)
+        if (zone == null || name == null || iconId == null)
         {
             return;
         }
-        final InputSelector inputSel = _dcpFuncNameMap[name.toUpperCase()];
-        final EnumItem<InputSelector> inputType =
+        final InputSelector? inputSel = _dcpFuncNameMap[name.toUpperCase()];
+        final EnumItem<InputSelector>? inputType =
             inputSel != null ? InputSelectorMsg.ValueEnum.valueByKey(inputSel) : null;
         if (inputType != null)
         {
-            Selector oldSelector;
+            Selector? oldSelector;
             for (Selector s in _deviceSelectors)
             {
                 if (s.getId == inputType.getCode)
@@ -706,12 +710,12 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
                 newSelector = Selector(
                     inputType.getCode,
                     defName != null ? defName.toUpperCase() : name.toUpperCase(),
-                    pow(2, zone), iconId, false);
+                    pow(2, zone).floor(), iconId, false);
             }
             else
             {
                 // Update zone of the existing selector
-                newSelector = Selector.updZone(oldSelector, oldSelector.getZone + pow(2, zone));
+                newSelector = Selector.updZone(oldSelector, oldSelector.getZone + pow(2, zone).floor());
                 _deviceSelectors.remove(oldSelector);
             }
             _deviceSelectors.add(newSelector);

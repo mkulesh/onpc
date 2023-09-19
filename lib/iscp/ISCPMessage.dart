@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:math';
 
 import "package:xml/xml.dart" as xml;
@@ -72,18 +72,18 @@ class ISCPMessage with ConnectionIf
         return true;
     }
 
-    static String nonNullString(String s)
+    static String nonNullString(String? s)
     {
         return s == null ? "" : s.trim();
     }
 
-    static int nonNullInteger(String s, int r, int def)
+    static int nonNullInteger(String? s, int r, int def)
     {
         if (s == null)
         {
             return def;
         }
-        final int val = int.tryParse(s, radix: r);
+        final int? val = int.tryParse(s, radix: r);
         return val != null ? val : def;
     }
 
@@ -97,9 +97,9 @@ class ISCPMessage with ConnectionIf
         return res;
     }
 
-    static String getElementProperty(xml.XmlElement element, String name, String defValue)
+    static String? getElementProperty(xml.XmlElement element, String name, String? defValue)
     {
-        String res = defValue;
+        String? res = defValue;
         element.findAllElements(name).forEach((xml.XmlElement e)
         {
             res = ISCPMessage.nonNullString(e.text);
@@ -131,7 +131,7 @@ class ISCPMessage with ConnectionIf
     static const String DCP_MSG_REQ = "?";
     static const String DCP_HEOS_PID = "{PLAYER_PID}";
 
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         return null;
     }
@@ -149,8 +149,8 @@ class ISCPMessage with ConnectionIf
 
 class ZonedMessage extends ISCPMessage
 {
-    final List<String> _zoneCommands;
-    int _zoneIndex;
+    late final List<String> _zoneCommands;
+    late int _zoneIndex;
 
     ZonedMessage(this._zoneCommands, EISCPMessage raw) : super(raw.getCode, raw)
     {

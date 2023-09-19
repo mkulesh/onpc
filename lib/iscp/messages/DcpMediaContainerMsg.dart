@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:json_path/json_path.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -40,13 +40,13 @@ class DcpMediaContainerMsg extends ISCPMessage
     static const int SO_ADD_ALL = 203;
     static const int SO_REPLACE_AND_PLAY_ALL = 204;
 
-    String _sid;
-    String _parentSid;
-    String _cid;
-    String _parentCid;
+    late String _sid;
+    late String _parentSid;
+    late String _cid;
+    late String _parentCid;
     String _mid = EMPTY;
     String _type = EMPTY;
-    bool _container;
+    late bool _container;
     bool _playable = false;
     String _name = EMPTY;
     String _artist = EMPTY;
@@ -56,7 +56,7 @@ class DcpMediaContainerMsg extends ISCPMessage
     int _count = 0;
     String _aid = EMPTY;
     String _qid = EMPTY;
-    LayerInfo _layerInfo;
+    LayerInfo? _layerInfo;
     final List<XmlListItemMsg> _items = [];
     final List<XmlListItemMsg> _options = [];
 
@@ -87,7 +87,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         // Do not copy items
     }
 
-    DcpMediaContainerMsg.parent(final DcpHeosMessage jsonMsg, { String defSid }) : super.output(CODE, "")
+    DcpMediaContainerMsg.parent(final DcpHeosMessage jsonMsg, { String? defSid }) : super.output(CODE, "")
     {
         _sid = jsonMsg.getMsgTag("sid");
         if (_sid.isEmpty && defSid != null)
@@ -99,14 +99,14 @@ class DcpMediaContainerMsg extends ISCPMessage
         _parentCid = _cid;
         _container = _cid.isNotEmpty;
         final List<String> rangeStr = jsonMsg.getMsgTag("range").split(",");
-        if (rangeStr.length == 2 && int.tryParse(rangeStr.first) != null)
+        if (rangeStr.length == 2)
         {
-            _start = int.tryParse(rangeStr.first);
+            _start = ISCPMessage.nonNullInteger(rangeStr.first, 10, 0);
         }
         final String countStr = jsonMsg.getMsgTag("count");
-        if (countStr.isNotEmpty && int.tryParse(countStr) != null)
+        if (countStr.isNotEmpty)
         {
-            _count = int.tryParse(countStr);
+            _count = ISCPMessage.nonNullInteger(countStr, 10, 0);
         }
         _layerInfo = _cid.isEmpty ? LayerInfo.SERVICE_TOP : LayerInfo.UNDER_2ND_LAYER;
     }
@@ -152,7 +152,7 @@ class DcpMediaContainerMsg extends ISCPMessage
 
     EnumItem<ServiceType> getServiceType()
     {
-        final EnumItem<ServiceType> st = Services.ServiceTypeEnum.valueByDcpCode("HS" + getSid());
+        final EnumItem<ServiceType>? st = Services.ServiceTypeEnum.valueByDcpCode("HS" + getSid());
         return (st == null) ? Services.ServiceTypeEnum.defValue : st;
     }
 
@@ -187,7 +187,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         _aid = aid;
     }
 
-    LayerInfo getLayerInfo()
+    LayerInfo? getLayerInfo()
     => _layerInfo;
 
     List<XmlListItemMsg> getItems()
@@ -224,7 +224,7 @@ class DcpMediaContainerMsg extends ISCPMessage
             + "]";
     }
 
-    static DcpMediaContainerMsg processHeosMessage(final DcpHeosMessage jsonMsg)
+    static DcpMediaContainerMsg? processHeosMessage(final DcpHeosMessage jsonMsg)
     {
         if (HEOS_RESP_BROWSE_SERV == jsonMsg.command || HEOS_RESP_BROWSE_CONT == jsonMsg.command)
         {
@@ -293,7 +293,7 @@ class DcpMediaContainerMsg extends ISCPMessage
             final Map<String, Object> map = payload.elementAt(i).value;
             final DcpMediaContainerMsg itemMsg = DcpMediaContainerMsg.queue(map, PLAYQUEUE_SID);
             final XmlListItemMsg xmlItem = XmlListItemMsg.details(
-                    int.tryParse(itemMsg._qid),
+                    ISCPMessage.nonNullInteger(itemMsg._qid, 10, i),
                     0,
                     itemMsg._name,
                     EMPTY, ListItemIcon.MUSIC,
@@ -315,7 +315,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         {
             final Map<String, Object> item = browse.elementAt(i);
             Logging.info(DcpMediaContainerMsg, "item: " + item.toString());
-            final int id = int.tryParse(getElement(item, "id"));
+            final int? id = int.tryParse(getElement(item, "id"));
             if (id == null)
             {
                 continue;
@@ -339,7 +339,7 @@ class DcpMediaContainerMsg extends ISCPMessage
     }
 
     @override
-    String buildDcpMsg(bool isQuery)
+    String? buildDcpMsg(bool isQuery)
     {
         if (_aid.startsWith(HEOS_SET_SERVICE_OPTION))
         {
@@ -422,14 +422,14 @@ class DcpMediaContainerMsg extends ISCPMessage
 
     static String getElement(Map<String, Object> payload, String name)
     {
-        final Object obj = payload[name];
+        final Object? obj = payload[name];
         if (obj != null)
         {
             if (obj is int || obj is String)
             {
                 return obj.toString();
             }
-            Logging.info(payload, "DCP HEOS error: Cannot read element " + name + ": object type unknown: " + obj);
+            Logging.info(payload, "DCP HEOS error: Cannot read element " + name + ": object type unknown: " + obj.toString());
         }
         return EMPTY;
     }
