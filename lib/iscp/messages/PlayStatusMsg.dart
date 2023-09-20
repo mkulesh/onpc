@@ -79,7 +79,7 @@ class PlayStatusMsg extends ISCPMessage
         EnumItem.char(PlayStatus.EOF, 'E', defValue: true)
     ]);
 
-    EnumItem<PlayStatus>? _playStatus;
+    EnumItem<PlayStatus> _playStatus = PlayStatusEnum.defValue;
 
     /*
      * Repeat Status: '-': Off, 'R': All, 'F': Folder, '1': Repeat 1, 'x': disable
@@ -92,7 +92,7 @@ class PlayStatusMsg extends ISCPMessage
         EnumItem.char(RepeatStatus.DISABLE, 'x', dcpCode: "NONE", icon: Drawables.repeat_off, defValue: true)
     ]);
 
-    EnumItem<RepeatStatus>? _repeatStatus;
+    EnumItem<RepeatStatus> _repeatStatus = RepeatStatusEnum.defValue;
 
     /*
      * Shuffle Status: '-': Off, 'S': All , 'A': Album, 'F': Folder, 'x': disable
@@ -105,7 +105,7 @@ class PlayStatusMsg extends ISCPMessage
         EnumItem.char(ShuffleStatus.DISABLE, 'x', dcpCode: "NONE", defValue: true)
     ]);
 
-    EnumItem<ShuffleStatus>? _shuffleStatus;
+    EnumItem<ShuffleStatus> _shuffleStatus = ShuffleStatusEnum.defValue;
 
     PlayStatusMsg(EISCPMessage raw) :
             _updateType = PlayStatusUpd.ALL, super(CODE, raw)
@@ -149,13 +149,13 @@ class PlayStatusMsg extends ISCPMessage
         _shuffleStatus = shuffleStatus;
     }
 
-    EnumItem<PlayStatus>? get getPlayStatus
+    EnumItem<PlayStatus> get getPlayStatus
     => _playStatus;
 
-    EnumItem<RepeatStatus>? get getRepeatStatus
+    EnumItem<RepeatStatus> get getRepeatStatus
     => _repeatStatus;
 
-    EnumItem<ShuffleStatus>? get getShuffleStatus
+    EnumItem<ShuffleStatus> get getShuffleStatus
     => _shuffleStatus;
 
     @override

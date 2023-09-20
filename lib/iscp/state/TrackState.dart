@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/widgets.dart";
 
 import "../../utils/Logging.dart";
@@ -30,37 +30,37 @@ import "../messages/XmlListItemMsg.dart";
 
 class TrackState
 {
-    String _album;
+    late String _album;
 
     String get album
     => _album;
 
-    String _artist;
+    late String _artist;
 
     String get artist
     => _artist;
 
-    String _title;
+    late String _title;
 
     String get title
     => _title;
 
-    String _fileFormat;
+    late String _fileFormat;
 
     String get fileFormat
     => _fileFormat;
 
-    String _currentTime;
+    late String _currentTime;
 
     String get currentTime
     => _currentTime;
 
-    String _maxTime;
+    late String _maxTime;
 
     String get maxTime
     => _maxTime;
 
-    int _currentTrack;
+    late int _currentTrack;
 
     int get currentTrack
     => _currentTrack;
@@ -70,49 +70,49 @@ class TrackState
         _currentTime = value;
     }
 
-    int _maxTrack;
+    late int _maxTrack;
 
     int get maxTrack
     => _maxTrack;
 
     // Cover Image
-    OnProcessFinished _coverDownloadFinished;
+    OnProcessFinished? _coverDownloadFinished;
 
     set coverDownloadFinished(OnProcessFinished value)
     {
         _coverDownloadFinished = value;
     }
 
-    Image _cover;
+    Image? _cover;
 
-    Image get cover
+    Image? get cover
     => _cover;
 
-    bool _coverPending;
+    late bool _coverPending;
 
     bool get isCoverPending
     => _coverPending;
 
-    String _coverUrl;
+    String? _coverUrl;
     final List<int> _coverBuffer = [];
 
     // Audio/Video information
-    String _avInfoAudioInput;
+    late String _avInfoAudioInput;
 
     String get avInfoAudioInput
     => _avInfoAudioInput;
 
-    String _avInfoAudioOutput;
+    late String _avInfoAudioOutput;
 
     String get avInfoAudioOutput
     => _avInfoAudioOutput;
 
-    String _avInfoVideoInput;
+    late String _avInfoVideoInput;
 
     String get avInfoVideoInput
     => _avInfoVideoInput;
 
-    String _avInfoVideoOutput;
+    late String _avInfoVideoOutput;
 
     String get avInfoVideoOutput
     => _avInfoVideoOutput;
@@ -203,7 +203,7 @@ class TrackState
 
     bool processJacketArt(ProtoType protoType, JacketArtMsg msg, bool isOn)
     {
-        if (msg.getImageType == ImageType.URL)
+        if (msg.getImageType == ImageType.URL && msg.url != null)
         {
             if (protoType == ProtoType.DCP && _coverUrl != null && _coverUrl == msg.url)
             {
@@ -218,8 +218,8 @@ class TrackState
                 _coverPending = false;
                 if (_coverDownloadFinished != null)
                 {
-                    Logging.info(this, "image loaded: " + msg.url);
-                    _coverDownloadFinished(true, JacketArtMsg.CODE);
+                    Logging.info(this, "image loaded: " + msg.url!);
+                    _coverDownloadFinished!(true, JacketArtMsg.CODE);
                 }
             });
             return true;
@@ -234,7 +234,7 @@ class TrackState
                 _coverBuffer.clear();
                 doReport = true;
             }
-            _coverBuffer.addAll(msg.getRawData);
+            _coverBuffer.addAll(msg.getRawData!);
             if (msg.getPacketFlag == PacketFlag.END)
             {
                 Logging.info(msg, "Cover image size length=" + _coverBuffer.length.toString() + "B");

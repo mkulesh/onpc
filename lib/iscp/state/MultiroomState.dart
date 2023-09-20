@@ -11,7 +11,9 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
+import "package:collection/collection.dart";
+
 import "../../utils/Logging.dart";
 import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
@@ -26,9 +28,9 @@ class DeviceInfo
     final BroadcastResponseMsg responseMsg;
     final bool _favorite;
     int _responses;
-    String _friendlyName;
-    MultiroomDeviceInformationMsg groupMsg;
-    EnumItem<ChannelType> _channelType;
+    String? _friendlyName;
+    MultiroomDeviceInformationMsg? groupMsg;
+    late EnumItem<ChannelType> _channelType;
 
     DeviceInfo(this.responseMsg, this._favorite, this._responses)
     {
@@ -77,19 +79,23 @@ class DeviceInfo
     {
         if (isFavorite && responseMsg.alias != null)
         {
-            return responseMsg.alias;
+            return responseMsg.alias!;
         }
-        final String name = (useFriendlyName) ? _friendlyName : null;
+        final String? name = (useFriendlyName) ? _friendlyName : null;
         return (name != null) ? name : responseMsg.getDescription();
     }
 
     EnumItem<ChannelType> getChannelType(int zone)
     => _channelType.key != MultiroomZone.ChannelTypeEnum.defValue.key ? _channelType :
-        (groupMsg != null ? groupMsg.getChannelType(zone) : MultiroomZone.ChannelTypeEnum.defValue);
+        (groupMsg != null ? groupMsg!.getChannelType(zone) : MultiroomZone.ChannelTypeEnum.defValue);
 
     bool get isMasterDevice
     {
-        final EnumItem<RoleType> roleType = groupMsg.getRole(MultiroomDeviceInformationMsg.DEFAULT_ZONE);
+        if (groupMsg == null)
+        {
+            return false;
+        }
+        final EnumItem<RoleType> roleType = groupMsg!.getRole(MultiroomDeviceInformationMsg.DEFAULT_ZONE);
         return roleType.key == RoleType.SRC;
     }
 }
@@ -111,7 +117,7 @@ class MultiroomState
         _deviceList.removeWhere((key,d) => !d.isFavorite);
     }
 
-    List<BroadcastResponseMsg> _favorites;
+    List<BroadcastResponseMsg> _favorites = [];
 
     set favorites(List<BroadcastResponseMsg> value)
     {
@@ -132,18 +138,18 @@ class MultiroomState
     }
 
     // Update logic
-    String _isChange(String type, bool change)
+    String? _isChange(String type, bool change)
     => change ? type : null;
 
-    String process(ISCPMessage msg)
+    String? process(ISCPMessage msg)
     {
         if (!MESSAGE_SCOPE.contains(msg.getCode))
         {
             return null;
         }
 
-        final DeviceInfo di = _deviceList.values.firstWhere((t)
-            => t.getHostAndPort() == msg.getHostAndPort, orElse: () => null);
+        final DeviceInfo? di = _deviceList.values.firstWhereOrNull((t)
+            => t.getHostAndPort() == msg.getHostAndPort);
         if (di == null)
         {
             Logging.info(this, "<< warning: received " + msg.getCode + " from "
@@ -170,7 +176,7 @@ class MultiroomState
     bool processBroadcastResponse(BroadcastResponseMsg msg)
     {
         final String id = msg.getHostAndPort;
-        DeviceInfo deviceInfo = _deviceList[id];
+        DeviceInfo? deviceInfo = _deviceList[id];
         if (deviceInfo == null)
         {
             deviceInfo = DeviceInfo(msg, false, 1);
@@ -222,7 +228,7 @@ class MultiroomState
         _favorites.forEach((msg)
         {
             final String key = msg.getHostAndPort;
-            final DeviceInfo oldInfo = tmpDevices[key];
+            final DeviceInfo? oldInfo = tmpDevices[key];
             if (oldInfo == null)
             {
                 Logging.info(this, "Add favorite connection " + msg.toString());

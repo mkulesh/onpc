@@ -11,9 +11,10 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:collection';
 
+import "package:collection/collection.dart";
 import "package:xml/xml.dart" as xml;
 
 import "../constants/Drawables.dart";
@@ -120,7 +121,7 @@ class State with ProtoTypeMix
     int get getActiveZone
     => _activeZone;
 
-    Zone get getActiveZoneInfo
+    Zone? get getActiveZoneInfo
     => _activeZone < _receiverInformation.zones.length ? _receiverInformation.zones[_activeZone] : null;
 
     bool get isExtendedZone
@@ -163,9 +164,9 @@ class State with ProtoTypeMix
     => _radioState;
 
     // Popup
-    xml.XmlDocument _popupDocument;
+    xml.XmlDocument? _popupDocument;
 
-    xml.XmlDocument get popupDocument
+    xml.XmlDocument? get popupDocument
     => _popupDocument;
 
     // Multiroom
@@ -175,7 +176,7 @@ class State with ProtoTypeMix
     => _multiroomState;
 
     // Update logic
-    String _isChange(String type, bool change)
+    String? _isChange(String type, bool change)
     => change ? type : null;
 
     // Media list positions
@@ -228,7 +229,7 @@ class State with ProtoTypeMix
         return false;
     }
 
-    String update(ISCPMessage msg)
+    String? update(ISCPMessage msg)
     {
         // Note: Use zone-independent message CODE here
         // instead od zone-dependent msg.getCode
@@ -236,7 +237,7 @@ class State with ProtoTypeMix
         // Receiver info
         if (!SKIP_XML_MESSAGES && msg is ReceiverInformationMsg)
         {
-            final String changed = _isChange(ReceiverInformationMsg.CODE,
+            final String? changed = _isChange(ReceiverInformationMsg.CODE,
                 _receiverInformation.processReceiverInformation(msg, getActiveZone));
             if (_mediaListState.isRadioInput)
             {
@@ -256,7 +257,7 @@ class State with ProtoTypeMix
         }
         else if (msg is PowerStatusMsg)
         {
-            final String changed = _isChange(PowerStatusMsg.CODE,
+            final String? changed = _isChange(PowerStatusMsg.CODE,
                 _receiverInformation.processPowerStatus(msg));
             if (changed != null && !isOn)
             {
@@ -377,7 +378,7 @@ class State with ProtoTypeMix
         // Media list state
         if (msg is InputSelectorMsg)
         {
-            final String changed = _isChange(InputSelectorMsg.CODE, _mediaListState.processInputSelector(msg));
+            final String? changed = _isChange(InputSelectorMsg.CODE, _mediaListState.processInputSelector(msg));
             if (_mediaListState.isSimpleInput)
             {
                 _trackState.clear();
@@ -391,7 +392,7 @@ class State with ProtoTypeMix
         }
         else if (msg is ListTitleInfoMsg)
         {
-            final String changed = _isChange(ListTitleInfoMsg.CODE, _mediaListState.processListTitleInfo(msg));
+            final String? changed = _isChange(ListTitleInfoMsg.CODE, _mediaListState.processListTitleInfo(msg));
             if (!_mediaListState.isPopupMode)
             {
                 _popupDocument = null;
@@ -400,7 +401,7 @@ class State with ProtoTypeMix
         }
         else if (!SKIP_XML_MESSAGES && msg is XmlListInfoMsg)
         {
-            final String changed = _isChange(XmlListInfoMsg.CODE, _mediaListState.processXmlListInfo(msg));
+            final String? changed = _isChange(XmlListInfoMsg.CODE, _mediaListState.processXmlListInfo(msg));
             if (changed != null && _mediaListState.serviceType.key == ServiceType.PLAYQUEUE)
             {
                 // Corner case; receiver does not provide track information for play queue,
@@ -471,7 +472,7 @@ class State with ProtoTypeMix
         // Denon
         if (msg is DcpReceiverInformationMsg)
         {
-            final DcpUpdateType upd = _receiverInformation.processDcpReceiverInformation(msg);
+            final DcpUpdateType? upd = _receiverInformation.processDcpReceiverInformation(msg);
             if (upd == DcpUpdateType.NET_TOP)
             {
                 _mediaListState.setDcpNetTopLayer(_receiverInformation);
@@ -486,7 +487,7 @@ class State with ProtoTypeMix
         }
         if (msg is DcpTunerModeMsg)
         {
-            final String changed = _isChange(DcpTunerModeMsg.CODE, _mediaListState.processDcpTunerModeMsg(msg));
+            final String? changed = _isChange(DcpTunerModeMsg.CODE, _mediaListState.processDcpTunerModeMsg(msg));
             if (_mediaListState.isRadioInput)
             {
                 _mediaListState.fillRadioPresets(getActiveZone, protoType, _receiverInformation.presetList);
@@ -514,15 +515,15 @@ class State with ProtoTypeMix
         return null;
     }
 
-    Selector get getActualSelector
-    => _receiverInformation.deviceSelectors.firstWhere((s) => s.getId == mediaListState.inputType.getCode, orElse: () => null);
+    Selector? get getActualSelector
+    => _receiverInformation.deviceSelectors.firstWhereOrNull((s) => s.getId == mediaListState.inputType.getCode);
 
     bool get isCdInput
     => (mediaListState.inputType.key == InputSelector.CD) &&
             (_receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                 _receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
 
-    NetworkService get getNetworkService
+    NetworkService? get getNetworkService
     => (_mediaListState.serviceType != null) ? _receiverInformation.getNetworkService(_mediaListState.serviceType.getCode) : null;
 
     bool _processCustomPopup(CustomPopupMsg msg)
@@ -541,20 +542,20 @@ class State with ProtoTypeMix
 
     bool isSimplePopupMessage()
     => _popupDocument != null &&
-       _popupDocument.findElements("popup").length == 1 &&
-       _popupDocument.findAllElements("textboxgroup").isEmpty &&
-       _popupDocument.findAllElements("buttongroup").isEmpty &&
-       _popupDocument.findAllElements("label").isNotEmpty;
+       _popupDocument!.findElements("popup").length == 1 &&
+       _popupDocument!.findAllElements("textboxgroup").isEmpty &&
+       _popupDocument!.findAllElements("buttongroup").isEmpty &&
+       _popupDocument!.findAllElements("label").isNotEmpty;
 
-    String retrieveSimplePopupMessage()
+    String? retrieveSimplePopupMessage()
     {
         if (isSimplePopupMessage())
         {
-            final xml.XmlElement popupElement = _popupDocument.findElements("popup").first;
-            String retValue = popupElement.getAttribute("title") + ": ";
+            final xml.XmlElement popupElement = _popupDocument!.findElements("popup").first;
+            String retValue = ISCPMessage.nonNullString(popupElement.getAttribute("title")) + ": ";
             popupElement.findElements("label").forEach((label)
             {
-                label.findElements("line").forEach((line) => retValue += line.getAttribute("text"));
+                label.findElements("line").forEach((line) => retValue += ISCPMessage.nonNullString(line.getAttribute("text")));
             });
             _popupDocument = null;
             return retValue;
@@ -564,7 +565,7 @@ class State with ProtoTypeMix
 
     String getServiceIcon()
     {
-        String serviceIcon = isPlaying? playbackState.serviceIcon.icon : mediaListState.serviceType.icon;
+        String? serviceIcon = isPlaying? playbackState.serviceIcon.icon : mediaListState.serviceType.icon;
         if (serviceIcon == null)
         {
             serviceIcon = mediaListState.inputType.icon;

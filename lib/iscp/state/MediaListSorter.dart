@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../config/CfgAppSettings.dart";
 import "../ISCPMessage.dart";
 import "../messages/PresetCommandMsg.dart";
@@ -31,15 +31,16 @@ class MediaListSorter
         return sortedItems;
     }
 
-    String _getItemName(final ISCPMessage cmd)
-    => cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString() : null;
+    String? _getItemName(final ISCPMessage cmd)
+    => cmd is XmlListItemMsg ? cmd.getTitle :
+        (cmd is PresetCommandMsg && cmd.getPresetConfig != null) ? cmd.getPresetConfig!.displayedString() : null;
 
     List<ISCPMessage> _swapArtistAndAlbum(final List<ISCPMessage> items)
     {
         final List<ISCPMessage> newItems = [];
         items.forEach((a)
         {
-            final String aName = _getItemName(a);
+            final String? aName = _getItemName(a);
             if (a is XmlListItemMsg && aName != null)
             {
                 String newTitle = a.getTitle;
@@ -65,8 +66,8 @@ class MediaListSorter
 
     int _sortByItemName(final ISCPMessage a, final ISCPMessage b)
     {
-        final String aName = _getItemName(a);
-        final String bName = _getItemName(b);
+        final String? aName = _getItemName(a);
+        final String? bName = _getItemName(b);
         return aName != null && bName != null ? aName.compareTo(bName) : 0;
     }
 }

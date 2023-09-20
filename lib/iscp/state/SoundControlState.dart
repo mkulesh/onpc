@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:math";
 
 import "package:sprintf/sprintf.dart";
@@ -41,56 +41,56 @@ enum SoundControlType
 class SoundControlState
 {
     // Audio muting
-    EnumItem<AudioMuting> _audioMuting;
+    late EnumItem<AudioMuting> _audioMuting;
 
     EnumItem<AudioMuting> get audioMuting
     => _audioMuting;
 
     // Master volume
-    int _volumeLevel;
+    late int _volumeLevel;
 
     int get volumeLevel
     => _volumeLevel;
 
     // Tone
-    int _bassLevel;
+    late int _bassLevel;
 
     int get bassLevel
     => _bassLevel;
 
-    int _trebleLevel;
+    late int _trebleLevel;
 
     int get trebleLevel
     => _trebleLevel;
 
-    EnumItem<DirectCommand> _toneDirect;
+    late EnumItem<DirectCommand> _toneDirect;
 
     EnumItem<DirectCommand> get toneDirect
     => _toneDirect;
 
     // Levels
-    int _subwooferLevel;
+    late int _subwooferLevel;
 
     int get subwooferLevel
     => _subwooferLevel;
 
-    int _subwooferCmdLength;
+    late int _subwooferCmdLength;
 
     int get subwooferCmdLength
     => _subwooferCmdLength;
 
-    int _centerLevel;
+    late int _centerLevel;
 
     int get centerLevel
     => _centerLevel;
 
-    int _centerCmdLength;
+    late int _centerCmdLength;
 
     int get centerCmdLength
     => _centerCmdLength;
 
     // Listening mode
-    EnumItem<ListeningMode> _listeningMode;
+    late EnumItem<ListeningMode> _listeningMode;
 
     EnumItem<ListeningMode> get listeningMode
     => _listeningMode;
@@ -282,7 +282,7 @@ class SoundControlState
         return changed;
     }
 
-    static String getVolumeLevelStr(int volumeLevel, Zone zone)
+    static String getVolumeLevelStr(int volumeLevel, Zone? zone)
     {
         if (zone != null && zone.getVolumeStep == 0)
         {
@@ -303,7 +303,7 @@ class SoundControlState
             ListeningMode.MODE_DCP_PURE_DIRECT
         ].contains(_listeningMode.key);
 
-    SoundControlType soundControlType(final String config, Zone zone)
+    SoundControlType soundControlType(final String config, Zone? zone)
     {
         switch (config)
         {
@@ -322,7 +322,7 @@ class SoundControlState
         }
     }
 
-    int getVolumeMax(final Zone zoneInfo)
+    int getVolumeMax(final Zone? zoneInfo)
     {
         final int scale = (zoneInfo != null && zoneInfo.getVolumeStep == 0) ? 2 : 1;
         return (zoneInfo != null && zoneInfo.getVolMax > 0) ?

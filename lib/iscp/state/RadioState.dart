@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
 import "../ISCPMessage.dart";
@@ -24,19 +24,19 @@ import "MediaListState.dart";
 class RadioState
 {
     // from PresetCommandMsg
-    int _preset;
+    late int _preset;
 
     int get preset
     => _preset;
 
     // From TuningCommandMsg
-    String _frequency;
+    late String _frequency;
 
     String get frequency
     => _frequency;
 
     // From DabStationNameMsg
-    String _stationName;
+    late String _stationName;
 
     String get stationName
     => _stationName;
@@ -111,7 +111,7 @@ class RadioState
     String getFrequencyInfo(MediaListState ms)
     {
         final String dashedString = Strings.dashed_string;
-        if (_frequency == null)
+        if (_frequency.isEmpty)
         {
             return dashedString;
         }

@@ -11,8 +11,10 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:collection';
+
+import "package:collection/collection.dart";
 
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
@@ -36,7 +38,7 @@ class ReceiverInformation
     static const String BRAND_PIONEER = "Pioneer";
 
     // From ReceiverInformationMsg
-    String _xml;
+    late String _xml;
 
     String get xml
     => _xml;
@@ -73,23 +75,23 @@ class ReceiverInformation
     => _toneControls;
 
     // From FriendlyNameMsg, DeviceNameMsg
-    String _friendlyName;
-    String _deviceName;
+    String? _friendlyName;
+    late String _deviceName;
 
     // Power status, from PowerStatusMsg
-    PowerStatus _powerStatus;
+    late PowerStatus _powerStatus;
 
     PowerStatus get powerStatus
     => _powerStatus;
 
     // Firmware, from FirmwareUpdateMsg
-    EnumItem<FirmwareUpdate> _firmwareStatus;
+    late EnumItem<FirmwareUpdate> _firmwareStatus;
 
     EnumItem<FirmwareUpdate> get firmwareStatus
     => _firmwareStatus;
 
     // Google cast version, from GoogleCastVersionMsg
-    String _googleCastVersion;
+    late String _googleCastVersion;
 
     String get googleCastVersion
     => _googleCastVersion;
@@ -253,7 +255,7 @@ class ReceiverInformation
 
     String _getProperty(final String prop)
     {
-        final String m = _deviceProperties[prop];
+        final String? m = _deviceProperties[prop];
         return m == null ? "" : m;
     }
 
@@ -284,12 +286,12 @@ class ReceiverInformation
         if (useFriendlyName)
         {
             // name from FriendlyNameMsg (NFN)
-            if (_friendlyName != null && _friendlyName.isNotEmpty)
+            if (_friendlyName != null && _friendlyName!.isNotEmpty)
             {
-                return _friendlyName;
+                return _friendlyName!;
             }
             // fallback to ReceiverInformationMsg
-            final String name = _deviceProperties["friendlyname"];
+            final String? name = _deviceProperties["friendlyname"];
             if (name != null && name.isNotEmpty)
             {
                 return name;
@@ -302,11 +304,11 @@ class ReceiverInformation
     bool get isOn
     => powerStatus == PowerStatus.ON;
 
-    NetworkService getNetworkService(String id)
-    => _networkServices.firstWhere((s) => s.getId == id, orElse: () => null);
+    NetworkService? getNetworkService(String id)
+    => _networkServices.firstWhereOrNull((s) => s.getId == id);
 
-    Preset getPreset(int preset)
-    => _presetList.firstWhere((p) => p.getId == preset, orElse: () => null);
+    Preset? getPreset(int preset)
+    => _presetList.firstWhereOrNull((p) => p.getId == preset);
 
     int nextEmptyPreset()
     => _presetList.firstWhere((p) => p.isEmpty, orElse: () => Preset(presetList.length + 1, 0, "0", "")).getId;
@@ -315,7 +317,7 @@ class ReceiverInformation
     => _controlList.isNotEmpty && _controlList.contains(control);
 
     bool isListeningModeControl()
-    => _controlList.firstWhere((s) => s.startsWith(ListeningModeMsg.CODE), orElse: () => null) != null;
+    => _controlList.firstWhereOrNull((s) => s.startsWith(ListeningModeMsg.CODE)) != null;
 
     bool get isReceiverInformation
     => _xml != null && _xml.isNotEmpty;
@@ -326,16 +328,16 @@ class ReceiverInformation
     /*
      * Denon control protocol
      */
-    DcpUpdateType processDcpReceiverInformation(DcpReceiverInformationMsg msg)
+    DcpUpdateType? processDcpReceiverInformation(DcpReceiverInformationMsg msg)
     {
         // Input Selector
         if (msg.updateType == DcpUpdateType.SELECTOR && msg.getSelector != null)
         {
-            DcpUpdateType _changed;
-            Selector oldSelector;
+            DcpUpdateType? _changed;
+            Selector? oldSelector;
             for (Selector s in _deviceSelectors)
             {
-                if (s.getId == msg.getSelector.getId)
+                if (s.getId == msg.getSelector!.getId)
                 {
                     oldSelector = s;
                     break;
@@ -347,7 +349,7 @@ class ReceiverInformation
             }
             else
             {
-                final Selector newSelector = Selector.rename(oldSelector, msg.getSelector.getName);
+                final Selector newSelector = Selector.rename(oldSelector, msg.getSelector!.getName);
                 Logging.info(this, "    DCP selector " + newSelector.toString());
                 _deviceSelectors.remove(oldSelector);
                 _deviceSelectors.add(newSelector);
@@ -359,12 +361,12 @@ class ReceiverInformation
         // Max. volume
         if (msg.updateType == DcpUpdateType.MAX_VOLUME && msg.getMaxVolumeZone != null)
         {
-            DcpUpdateType _changed;
+            DcpUpdateType? _changed;
             for (int i = 0; i < _zones.length; i++)
             {
-                if (_zones[i].getVolMax != msg.getMaxVolumeZone.getVolMax)
+                if (_zones[i].getVolMax != msg.getMaxVolumeZone!.getVolMax)
                 {
-                    _zones[i].setVolMax(msg.getMaxVolumeZone.getVolMax);
+                    _zones[i].setVolMax(msg.getMaxVolumeZone!.getVolMax);
                     Logging.info(this, "    DCP zone " + _zones[i].toString());
                     _changed = msg.updateType;
                 }
@@ -373,7 +375,7 @@ class ReceiverInformation
         }
 
         // Tone control
-        final ToneControl toneControl = msg.getToneControl;
+        final ToneControl? toneControl = msg.getToneControl;
         if (msg.updateType == DcpUpdateType.TONE_CONTROL && toneControl != null)
         {
             final bool _changed = !toneControl.equals(_toneControls[toneControl.getId]);
@@ -383,7 +385,7 @@ class ReceiverInformation
         }
 
         // Radio presets
-        final Preset preset = msg.getPreset;
+        final Preset? preset = msg.getPreset;
         if (msg.updateType == DcpUpdateType.PRESET && preset != null)
         {
             bool _changed = false;
@@ -430,8 +432,8 @@ class ReceiverInformation
         // Firmware version
         if (msg.updateType == DcpUpdateType.FIRMWARE_VER && msg.getFirmwareVer != null)
         {
-            _deviceProperties["firmwareversion"] = msg.getFirmwareVer;
-            Logging.info(this, "    DCP firmware " + msg.getFirmwareVer);
+            _deviceProperties["firmwareversion"] = msg.getFirmwareVer!;
+            Logging.info(this, "    DCP firmware " + msg.getFirmwareVer!);
             return msg.updateType;
         }
 

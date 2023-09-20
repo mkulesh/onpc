@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../utils/Logging.dart";
 import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
@@ -47,34 +47,34 @@ class MediaListState
     => _dcpTunerMode;
 
     // ListTitleInfoMsg
-    EnumItem<ServiceType> _serviceType;
+    late EnumItem<ServiceType> _serviceType;
 
     EnumItem<ServiceType> get serviceType
     => _serviceType;
 
-    LayerInfo _layerInfo;
+    LayerInfo? _layerInfo;
 
-    LayerInfo get layerInfo
+    LayerInfo? get layerInfo
     => _layerInfo;
 
-    UIType _uiType;
+    UIType? _uiType;
 
-    String _titleBar;
+    late String _titleBar;
 
     String get titleBar
     => _titleBar;
 
-    int _numberOfTitles;
+    late int _numberOfTitles;
 
     int get numberOfTitles
     => _numberOfTitles;
 
-    int _numberOfLayers;
+    late int _numberOfLayers;
 
     int get numberOfLayers
     => _numberOfLayers;
 
-    int _currentCursorPosition;
+    late int _currentCursorPosition;
 
     int get currentCursorPosition
     => _currentCursorPosition;
@@ -151,7 +151,7 @@ class MediaListState
     bool processInputSelector(InputSelectorMsg msg)
     {
         final bool changed = _inputType.key != msg.getValue.key;
-        _inputType = msg.getValue;
+        _inputType = msg.getValue as EnumItem<InputSelector>;
         if (isSimpleInput)
         {
             _serviceType = Services.ServiceTypeEnum.defValue;
@@ -289,9 +289,11 @@ class MediaListState
             }
             else // fallback: parse listData from ListInfoMsg
             {
-                for (NetworkServiceMsg i in _mediaItems)
+                for (ISCPMessage i in _mediaItems)
                 {
-                    if (i.getValue.name.toUpperCase() == msg.getListedData.toUpperCase())
+                    if (i is NetworkServiceMsg &&
+                        i.getValue.name != null &&
+                        i.getValue.name!.toUpperCase() == msg.getListedData.toUpperCase())
                     {
                         return false;
                     }
@@ -621,11 +623,11 @@ class MediaListState
         return changed;
     }
 
-    DcpMediaContainerMsg getDcpContainerMsg(final ISCPMessage msg, {bool allowContainerMsg = true})
+    DcpMediaContainerMsg? getDcpContainerMsg(final ISCPMessage msg, {bool allowContainerMsg = true})
     {
         if (msg is XmlListItemMsg && msg.getCmdMessage != null && msg.getCmdMessage is DcpMediaContainerMsg)
         {
-            return msg.getCmdMessage;
+            return msg.getCmdMessage as DcpMediaContainerMsg;
         }
         return (allowContainerMsg && msg is DcpMediaContainerMsg) ? msg : null;
     }
@@ -642,7 +644,7 @@ class MediaListState
         _createServiceItems(ri.networkServices);
     }
 
-    List<XmlListItemMsg> cloneDcpTrackMenuItems(final DcpMediaContainerMsg dcpItem)
+    List<XmlListItemMsg> cloneDcpTrackMenuItems(final DcpMediaContainerMsg? dcpItem)
     {
         final List<XmlListItemMsg> retValue = List.from(_dcpTrackMenuItems);
         if (dcpItem != null)
@@ -664,7 +666,7 @@ class MediaListState
         {
             if (msg is XmlListItemMsg && msg.getCmdMessage is DcpMediaContainerMsg)
             {
-                final DcpMediaContainerMsg mc = msg.getCmdMessage;
+                final DcpMediaContainerMsg mc = msg.getCmdMessage as DcpMediaContainerMsg;
                 if (mc.getType() == "heos_server")
                 {
                     msg.setIcon(ListItemIcon.HEOS_SERVER);

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../utils/Logging.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/InputSelectorMsg.dart";
@@ -22,44 +22,44 @@ import "../messages/ServiceType.dart";
 class PlaybackState
 {
     // PlayStatusMsg
-    PlayStatus _playStatus;
+    late PlayStatus _playStatus;
 
     PlayStatus get playStatus
     => _playStatus;
 
-    EnumItem<RepeatStatus> _repeatStatus;
+    late EnumItem<RepeatStatus> _repeatStatus;
 
     EnumItem<RepeatStatus> get repeatStatus
     => _repeatStatus;
 
-    ShuffleStatus _shuffleStatus;
+    late ShuffleStatus _shuffleStatus;
 
     ShuffleStatus get shuffleStatus
     => _shuffleStatus;
 
     // MenuStatusMsg
-    TimeSeek _timeSeek;
+    late TimeSeek _timeSeek;
 
     TimeSeek get timeSeek
     => _timeSeek;
 
-    TrackMenu _trackMenu;
+    late TrackMenu _trackMenu;
 
     TrackMenu get trackMenu
     => _trackMenu;
 
-    EnumItem<FeedType> _positiveFeed;
+    late EnumItem<FeedType> _positiveFeed;
 
     EnumItem<FeedType> get positiveFeed
     => _positiveFeed;
 
-    EnumItem<FeedType> _negativeFeed;
+    late EnumItem<FeedType> _negativeFeed;
 
     EnumItem<FeedType> get negativeFeed
     => _negativeFeed;
 
     // service that is currently playing
-    EnumItem<ServiceType> _serviceIcon;
+    late EnumItem<ServiceType> _serviceIcon;
 
     EnumItem<ServiceType> get serviceIcon
     => _serviceIcon;
@@ -135,7 +135,6 @@ class PlaybackState
                 _shuffleStatus = msg.getShuffleStatus.key;
                 return changed;
         }
-        return false;
     }
 
     bool processMenuStatus(MenuStatusMsg msg)

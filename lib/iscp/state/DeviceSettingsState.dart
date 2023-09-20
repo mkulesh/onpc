@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../../utils/Logging.dart";
 import "../messages/AutoPowerMsg.dart";
 import "../messages/DcpAudioRestorerMsg.dart";
@@ -32,73 +32,73 @@ import "../messages/SpeakerBCommandMsg.dart";
 
 class DeviceSettingsState
 {
-    EnumItem<DimmerLevel> _dimmerLevel;
+    late EnumItem<DimmerLevel> _dimmerLevel;
 
     EnumItem<DimmerLevel> get dimmerLevel
     => _dimmerLevel;
 
-    EnumItem<DigitalFilter> _digitalFilter;
+    late EnumItem<DigitalFilter> _digitalFilter;
 
     EnumItem<DigitalFilter> get digitalFilter
     => _digitalFilter;
 
-    EnumItem<MusicOptimizer> _musicOptimizer;
+    late EnumItem<MusicOptimizer> _musicOptimizer;
 
     EnumItem<MusicOptimizer> get musicOptimizer
     => _musicOptimizer;
 
-    EnumItem<AutoPower> _autoPower;
+    late EnumItem<AutoPower> _autoPower;
 
     EnumItem<AutoPower> get autoPower
     => _autoPower;
 
-    EnumItem<HdmiCec> _hdmiCec;
+    late EnumItem<HdmiCec> _hdmiCec;
 
     EnumItem<HdmiCec> get hdmiCec
     => _hdmiCec;
 
-    EnumItem<PhaseMatchingBass> _phaseMatchingBass;
+    late EnumItem<PhaseMatchingBass> _phaseMatchingBass;
 
     EnumItem<PhaseMatchingBass> get phaseMatchingBass
     => _phaseMatchingBass;
 
-    int _sleepTime;
+    late int _sleepTime;
 
     int get sleepTime
     => _sleepTime;
 
-    EnumItem<SpeakerACommand> _speakerA;
+    late EnumItem<SpeakerACommand> _speakerA;
 
     EnumItem<SpeakerACommand> get speakerA
     => _speakerA;
 
-    EnumItem<SpeakerBCommand> _speakerB;
+    late EnumItem<SpeakerBCommand> _speakerB;
 
     EnumItem<SpeakerBCommand> get speakerB
     => _speakerB;
 
-    EnumItem<GoogleCastAnalytics> _googleCastAnalytics;
+    late EnumItem<GoogleCastAnalytics> _googleCastAnalytics;
 
     EnumItem<GoogleCastAnalytics> get googleCastAnalytics
     => _googleCastAnalytics;
 
-    EnumItem<LateNightMode> _lateNightMode;
+    late EnumItem<LateNightMode> _lateNightMode;
 
     EnumItem<LateNightMode> get lateNightMode
     => _lateNightMode;
 
-    EnumItem<NetworkStandBy> _networkStandBy;
+    late EnumItem<NetworkStandBy> _networkStandBy;
 
     EnumItem<NetworkStandBy> get networkStandBy
     => _networkStandBy;
 
     // Denon settings
-    EnumItem<DcpEcoMode> _dcpEcoMode;
+    late EnumItem<DcpEcoMode> _dcpEcoMode;
 
     EnumItem<DcpEcoMode> get dcpEcoMode
     => _dcpEcoMode;
 
-    EnumItem<DcpAudioRestorer> _dcpAudioRestorer;
+    late EnumItem<DcpAudioRestorer> _dcpAudioRestorer;
 
     EnumItem<DcpAudioRestorer> get dcpAudioRestorer
     => _dcpAudioRestorer;
