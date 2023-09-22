@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -25,8 +25,8 @@ class BroadcastSearch
 {
     static const int TIMEOUT = 3;
 
-    OnDeviceFound onDeviceFound;
-    RawDatagramSocket _socket;
+    OnDeviceFound? onDeviceFound;
+    RawDatagramSocket? _socket;
 
     final EISCPMessage _mX = EISCPMessage.outputCat("x", "ECN", "QSTN");
     final EISCPMessage _mP = EISCPMessage.outputCat("p", "ECN", "QSTN");
@@ -37,8 +37,8 @@ class BroadcastSearch
         RawDatagramSocket.bind(InternetAddress.anyIPv4, ISCP_PORT).then((RawDatagramSocket sock)
         {
             _socket = sock;
-            _socket.broadcastEnabled = true;
-            _socket.listen(_onData,
+            _socket!.broadcastEnabled = true;
+            _socket!.listen(_onData,
                 onError: _onError,
                 onDone: _onDone,
                 cancelOnError: false);
@@ -67,7 +67,7 @@ class BroadcastSearch
     {
         if (_socket != null)
         {
-            _socket.close();
+            _socket!.close();
         }
     }
 
@@ -76,8 +76,12 @@ class BroadcastSearch
         final InternetAddress target = InternetAddress("255.255.255.255");
         if (_socket != null)
         {
-            final List<int> bytes = m.getBytes();
-            _socket.send(bytes, target, ISCP_PORT);
+            final List<int>? bytes = m.getBytes();
+            if (bytes == null)
+            {
+                return;
+            }
+            _socket!.send(bytes, target, ISCP_PORT);
             Logging.info(this, "message " + m.toString()
                 + " for category \'" + modelCategoryId
                 + "\' send to " + target.toString()
@@ -99,7 +103,7 @@ class BroadcastSearch
         if (_socket != null)
         {
             final List<int> bytes = utf8.encode(request);
-            _socket.send(bytes, target, DCP_UDP_PORT);
+            _socket!.send(bytes, target, DCP_UDP_PORT);
             Logging.info(this, "message M-SEARCH send to " + target.toString()
                 + ", wait response for " + TIMEOUT.toString() + "s");
         }
@@ -112,7 +116,7 @@ class BroadcastSearch
             return;
         }
 
-        final Datagram d = _socket.receive();
+        final Datagram? d = _socket!.receive();
         if (d == null)
         {
             return;
@@ -173,7 +177,7 @@ class BroadcastSearch
         if (onDeviceFound != null && responseMessage.isValidConnection())
         {
             Logging.info(this, "<< ISCP device response " + responseMessage.toString());
-            onDeviceFound(responseMessage);
+            onDeviceFound!(responseMessage);
         }
     }
 
@@ -184,7 +188,7 @@ class BroadcastSearch
         if (onDeviceFound != null && responseMessage.isValidConnection())
         {
             Logging.info(this, "<< DCP device response " + responseMessage.toString());
-            onDeviceFound(responseMessage);
+            onDeviceFound!(responseMessage);
         }
     }
 

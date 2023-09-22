@@ -11,7 +11,6 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
 import 'dart:convert';
 import 'dart:io';
@@ -55,13 +54,13 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
     final OnNewISCPMessage _onNewISCPMessage;
 
     // connection state
-    OnpcSocket _dcpSocket;
-    OnpcSocket _heosSocket;
+    late OnpcSocket _dcpSocket;
+    late OnpcSocket _heosSocket;
 
     // message handling
     final List<int> _buffer = [];
     final DCPMessageFactory _dcpMessageFactory = DCPMessageFactory();
-    int _heosPid;
+    int? _heosPid;
 
     MessageChannelDcp(this._onConnected, this._onNewISCPMessage, OnDisconnected _onDisconnected)
     {
@@ -161,7 +160,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
     void _onHeosData(List<dynamic> data)
     => _onRawData(data, _heosSocket);
 
-    void _onRawData(List<dynamic> data, final OnpcSocket socket)
+    void _onRawData(List<dynamic>? data, final OnpcSocket socket)
     {
         if (data == null || data.isEmpty)
         {
@@ -241,8 +240,8 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         final int remaining = max(0, bytes.length - expectedSize - 1);
 
         bool processed = false;
-        final int _heosPidPrev = _heosPid;
-        DcpHeosMessage jsonMsg;
+        final int? _heosPidPrev = _heosPid;
+        DcpHeosMessage? jsonMsg;
         if (dcpMsg.startsWith(DCP_HEOS_RESPONSE))
         {
             try
@@ -295,7 +294,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         // Events
         if (_heosPid != null && "event/player_now_playing_changed" == jsonMsg.command)
         {
-            final String pidStr = jsonMsg.message["pid"];
+            final String? pidStr = jsonMsg.message["pid"];
             if (pidStr != null && _heosPid.toString() == pidStr)
             {
                 _sendDcpHeosRequest("heos://player/get_now_playing_media?pid=" + _heosPid.toString());
@@ -361,9 +360,12 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         {
             final String resp = value != null && value.body != null ? value.body.replaceAll("\n", "") : "";
             Logging.info(this, "DCP AppCommand POST response: " + resp);
-        }).onError((error, stackTrace)
+        }).onError((Object? error, stackTrace)
         {
-            Logging.info(this, "DCP AppCommand error: " + error);
+            if (error != null)
+            {
+                Logging.info(this, "DCP AppCommand error: " + error.toString());
+            }
         });
     }
 }

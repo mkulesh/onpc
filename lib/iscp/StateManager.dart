@@ -11,10 +11,12 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
+
+import "package:collection/collection.dart";
 
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CfgRiCommands.dart";
@@ -84,13 +86,13 @@ class StateManager
     static const Duration GUI_UPDATE_DELAY = Duration(milliseconds: 500);
 
     // Broadcast search engine will be created on demand
-    BroadcastSearch _searchEngine;
+    BroadcastSearch? _searchEngine;
 
     bool get isSearching
     => _searchEngine != null;
 
     // Message channel
-    MessageChannel _messageChannel;
+    late MessageChannel _messageChannel;
     final Map<String, MessageChannel> _multiroomChannels = Map();
 
     // keep playback mode
@@ -102,9 +104,9 @@ class StateManager
     }
 
     // Network state
-    NetworkState _networkState;
+    NetworkState? _networkState;
 
-    NetworkState get networkState
+    NetworkState? get networkState
     => _networkState;
 
     bool setNetworkState(NetworkState value)
@@ -119,8 +121,8 @@ class StateManager
     }
 
     // Events
-    OnStateChanged _onStateChanged;
-    OnConnectionError _onConnectionError;
+    OnStateChanged? _onStateChanged;
+    OnConnectionError? _onConnectionError;
     final Set<String> _eventChanges = HashSet<String>();
 
     String _waitingForData = "";
@@ -129,21 +131,21 @@ class StateManager
     => _waitingForData.isNotEmpty;
 
     // Helper attributes used for message processing
-    Timer _updateTimer;
+    Timer? _updateTimer;
     int _skipNextTimeMsg = 0;
     bool _requestXmlList = false;
     bool _requestRIonPreset = false;
     bool _playbackMode = false;
-    ISCPMessage _circlePlayRemoveMsg;
+    ISCPMessage? _circlePlayRemoveMsg;
     int _xmlReqId = 0;
 
     // Device name and alias as manually given by the user
-    String _manualHost, _manualAlias;
+    String? _manualHost, _manualAlias;
 
-    String get manualHost
+    String? get manualHost
     => _manualHost;
 
-    String get manualAlias
+    String? get manualAlias
     => _manualAlias;
 
     // Common List commands
@@ -175,9 +177,9 @@ class StateManager
         _messageScripts.add(script);
     }
 
-    MessageScript _intentHost;
+    MessageScript? _intentHost;
 
-    MessageScript get intentHost
+    MessageScript? get intentHost
     => _intentHost;
 
     StateManager(List<BroadcastResponseMsg> _favorites)
@@ -193,7 +195,7 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
-    void connect(String host, int port, {String manualHost, String manualAlias})
+    void connect(String host, int port, {String? manualHost, String? manualAlias})
     {
         if (isConnected)
         {
@@ -229,8 +231,8 @@ class StateManager
     ProtoType get protoType
     => state.protoType;
     
-    DeviceInfo get sourceDevice
-    => state.multiroomState.deviceList.values.firstWhere((d) => isSourceHost(d.responseMsg), orElse: () => null);
+    DeviceInfo? get sourceDevice
+    => state.multiroomState.deviceList.values.firstWhereOrNull((d) => isSourceHost(d.responseMsg));
 
     bool isSourceHost(final ISCPMessage msg)
     => msg.fromHost(_messageChannel);
@@ -260,7 +262,7 @@ class StateManager
         _state.updateConnection(true, channel.getProtoType);
         if (_onStateChanged != null)
         {
-            _onStateChanged(Set.from([CONNECTION_EVENT]));
+            _onStateChanged!(Set.from([CONNECTION_EVENT]));
         }
 
         if (protoType == ProtoType.ISCP)
@@ -300,7 +302,7 @@ class StateManager
 
     void _requestInitialDcpState({bool runScrips = false})
     {
-        ReceiverInformationMsg.requestDcpReceiverInformation(_messageChannel.getHost, (ReceiverInformationMsg msg)
+        ReceiverInformationMsg.requestDcpReceiverInformation(_messageChannel.getHost, (ReceiverInformationMsg? msg)
         {
             // initial call os the message scripts
             if (runScrips)
@@ -356,7 +358,7 @@ class StateManager
             {
                 final ISCPMessage msg = MessageFactory.create(raw);
                 msg.setHostAndPort(channel);
-                final String changeCode = _processIscpMessage(msg);
+                final String? changeCode = _processIscpMessage(msg);
                 _processScripts(msg, channel);
                 _onProcessFinished(changeCode != null, changeCode);
             }
@@ -370,14 +372,14 @@ class StateManager
         });
     }
 
-    String _processIscpMessage(ISCPMessage msg)
+    String? _processIscpMessage(ISCPMessage msg)
     {
         if (![TimeInfoMsg.CODE, JacketArtMsg.CODE].contains(msg.getCode))
         {
             Logging.info(this, "-> processing message: " + msg.toString());
         }
 
-        final String multiroomChange = state.multiroomState.process(msg);
+        final String? multiroomChange = state.multiroomState.process(msg);
         if (!isSourceHost(msg))
         {
             return multiroomChange;
@@ -403,7 +405,7 @@ class StateManager
         }
 
         final PlayStatus playStatus = state.playbackState.playStatus;
-        final String changed = state.update(msg) ?? multiroomChange;
+        final String? changed = state.update(msg) ?? multiroomChange;
 
         // no further message handling, if power off
         if (!state.isOn)
@@ -538,7 +540,7 @@ class StateManager
             if (_circlePlayRemoveMsg != null && msg.getNumberOfItems > 0)
             {
                 state.mediaListState.popFront(state.mediaListState.numberOfItems - msg.getNumberOfItems);
-                sendPlayQueueMsg(_circlePlayRemoveMsg, true);
+                sendPlayQueueMsg(_circlePlayRemoveMsg!, true);
             }
             else
             {
@@ -578,7 +580,7 @@ class StateManager
             try
             {
                 raw.setHostAndPort(channel);
-                final String changeCode = _processDcpMessage(raw);
+                final String? changeCode = _processDcpMessage(raw);
                 _processScripts(raw, channel);
                 _onProcessFinished(changeCode != null, changeCode);
             }
@@ -592,7 +594,7 @@ class StateManager
         });
     }
 
-    String _processDcpMessage(ISCPMessage msg)
+    String? _processDcpMessage(ISCPMessage msg)
     {
         if (![TimeInfoMsg.CODE, JacketArtMsg.CODE, DcpReceiverInformationMsg.CODE].contains(msg.getCode))
         {
@@ -606,7 +608,7 @@ class StateManager
         }
 
         final PlayStatus playStatus = state.playbackState.playStatus;
-        final String changed = state.update(msg);
+        final String? changed = state.update(msg);
 
         if (msg is ReceiverInformationMsg)
         {
@@ -704,9 +706,9 @@ class StateManager
         return changed;
     }
 
-    void _onProcessFinished(bool changed, String changeCode)
+    void _onProcessFinished(bool changed, String? changeCode)
     {
-        if (changed)
+        if (changed && changeCode != null)
         {
             _eventChanges.add(changeCode);
             if (_updateTimer == null)
@@ -719,7 +721,7 @@ class StateManager
                     _updateTimer = null;
                     if (_onStateChanged != null && changes.isNotEmpty)
                     {
-                        _onStateChanged(changes);
+                        _onStateChanged!(changes);
                     }
                 });
             }
@@ -731,7 +733,7 @@ class StateManager
         Logging.info(this, result);
         if (errorType == ConnectionErrorType.HOST_NOT_AVAILABLE && _onConnectionError != null)
         {
-            _onConnectionError(result);
+            _onConnectionError!(result);
         }
         _onProcessFinished(state.updateConnection(false, protoType), CONNECTION_EVENT);
     }
@@ -782,9 +784,10 @@ class StateManager
         {
             _requestXmlList = true;
         }
-        if (state.mediaListState.getDcpContainerMsg(msg) != null)
+        final DcpMediaContainerMsg? dcpContainerMsg = state.mediaListState.getDcpContainerMsg(msg);
+        if (dcpContainerMsg != null)
         {
-            _messageChannel.sendIscp(state.mediaListState.getDcpContainerMsg(msg));
+            _messageChannel.sendIscp(dcpContainerMsg);
         }
         else
         {
@@ -804,7 +807,7 @@ class StateManager
         _messageChannel.sendMessage(msg.getCmdMsg());
     }
 
-    void sendPlayQueueMsg(ISCPMessage msg, bool repeat)
+    void sendPlayQueueMsg(ISCPMessage? msg, bool repeat)
     {
         if (msg == null)
         {
@@ -847,7 +850,7 @@ class StateManager
         }
     }
 
-    void sendRiMessage<T>(final RiCommand rc, EnumParameterMsg<T> cmd)
+    void sendRiMessage<T>(final RiCommand? rc, EnumParameterMsg<T> cmd)
     {
         if (rc != null)
         {
@@ -931,7 +934,7 @@ class StateManager
         {
             final Set<String> events = Set<String>();
             events.add(event);
-            _onStateChanged(events);
+            _onStateChanged!(events);
         }
     }
 
@@ -974,7 +977,7 @@ class StateManager
         if (_searchEngine != null)
         {
             Logging.info(this, "Stopping device search...");
-            _searchEngine.stop();
+            _searchEngine!.stop();
             _searchEngine = null;
             triggerStateEvent(BROADCAST_SEARCH_EVENT);
         }
@@ -1017,7 +1020,7 @@ class StateManager
 
     bool isMultiroomAvailable()
     {
-        final DeviceInfo di = sourceDevice;
+        final DeviceInfo? di = sourceDevice;
         return _state.multiroomState.deviceList.length > 1 && di != null && di.groupMsg != null;
     }
 
@@ -1027,11 +1030,11 @@ class StateManager
         return isSourceHost(di.responseMsg) || (identifier != null && identifier == di.responseMsg.getIdentifier);
     }
 
-    void updateScripts({bool autoPower = false, final String intent, final List<Shortcut> shortcuts})
+    void updateScripts({bool autoPower = false, final String? intent, final List<Shortcut>? shortcuts})
     {
         clearScripts();
-        MessageScript messageScript;
-        AutoPowerMode powerMode;
+        MessageScript? messageScript;
+        AutoPowerMode? powerMode;
         if (autoPower)
         {
             powerMode = AutoPowerMode.POWER_ON;
@@ -1053,9 +1056,8 @@ class StateManager
                 if (tokens.length > 1)
                 {
                     applyShortcut(
-                        shortcuts.firstWhere(
-                            (s) => s.id == ISCPMessage.nonNullInteger(tokens[1], 10, -1),
-                            orElse: () => null));
+                        shortcuts.firstWhereOrNull(
+                            (s) => s.id == ISCPMessage.nonNullInteger(tokens[1], 10, -1)));
                 }
             }
             else if (intent.contains(MessageScript.SCRIPT_NAME))
@@ -1103,7 +1105,7 @@ class StateManager
         }
     }
 
-    void applyShortcut(final Shortcut shortcut)
+    void applyShortcut(final Shortcut? shortcut)
     {
         if (shortcut != null)
         {

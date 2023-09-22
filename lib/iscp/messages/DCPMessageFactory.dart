@@ -123,7 +123,7 @@ class DCPMessageFactory
         addISCPMsg(HdmiCecMsg.processDcpMessage(dcpMsg));
     }
 
-    void _convertHeosMsg(String heosMsg, int pid, DcpHeosMessage jsonMsg)
+    void _convertHeosMsg(String heosMsg, int? pid, DcpHeosMessage jsonMsg)
     {
         try
         {
@@ -156,7 +156,7 @@ class DCPMessageFactory
         }
     }
 
-    List<ISCPMessage> convertInputMsg(String dcpMsg, int pid, dynamic jsonMsg)
+    List<ISCPMessage> convertInputMsg(String dcpMsg, int? pid, dynamic jsonMsg)
     {
         _messages.clear();
 

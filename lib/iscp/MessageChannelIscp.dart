@@ -11,7 +11,6 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
 import "../utils/Logging.dart";
 import "ConnectionIf.dart";
@@ -29,7 +28,7 @@ class MessageChannelIscp with ConnectionIf implements MessageChannel
     final OnNewEISCPMessage _onNewEISCPMessage;
 
     // connection state
-    OnpcSocket _socket;
+    late OnpcSocket _socket;
 
     // message handling
     final Set<String> _allowedMessages = Set();
@@ -80,7 +79,7 @@ class MessageChannelIscp with ConnectionIf implements MessageChannel
     void stop()
     => _socket.stop();
 
-    void _onData(List<dynamic> data)
+    void _onData(List<dynamic>? data)
     {
         if (data == null || data.isEmpty)
         {

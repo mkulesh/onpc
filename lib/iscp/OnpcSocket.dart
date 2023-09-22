@@ -11,7 +11,7 @@
  * GNU General License for more details. You should have received a copy of the GNU General
  * License along with this program.
  */
-// @dart=2.9
+
 import "dart:io";
 
 import "package:sprintf/sprintf.dart";
@@ -46,7 +46,7 @@ class OnpcSocket with ConnectionIf
     final OnRawData _onData;
 
     // socket
-    Socket _socket;
+    Socket? _socket;
     bool _keepConnection = false;
     MessageChannelState _state = MessageChannelState.IDLE;
 
@@ -69,7 +69,7 @@ class OnpcSocket with ConnectionIf
         Socket.connect(InternetAddress(host), port, timeout: Duration(seconds: 10)).then((Socket sock)
         {
             _socket = sock;
-            _socket.listen(_onData,
+            _socket!.listen(_onData,
                 onError: _onError,
                 onDone: _onDone,
                 cancelOnError: false);
@@ -111,12 +111,12 @@ class OnpcSocket with ConnectionIf
         Logging.info(this, "Communication error: " + error.toString());
     }
 
-    void sendData(List<int> bytes, String msg)
+    void sendData(List<int>? bytes, String msg)
     {
         if (_socket != null && bytes != null)
         {
           Logging.info(this, ">> sending: " + msg + " to " + getHostAndPort);
-          _socket.add(bytes);
+          _socket!.add(bytes);
         }
     }
 
@@ -125,7 +125,7 @@ class OnpcSocket with ConnectionIf
         _keepConnection = false;
         if (_socket != null)
         {
-          _socket.destroy();
+          _socket!.destroy();
         }
     }
 }

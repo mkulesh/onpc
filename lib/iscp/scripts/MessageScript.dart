@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:async';
 
 import "package:xml/xml.dart" as xml;
@@ -44,22 +44,22 @@ class Action
     static final List<String> ACTION_STATES = ["UNSENT", "WAITING", "DONE"];
 
     // command to be sent
-    String cmd;
+    late String cmd;
 
     // parameter used for actions command. Empty string means no parameter is used.
-    String par;
+    late String par;
 
     // Delay in milliseconds used for action WAIT. Zero means no delay.
-    int milliseconds;
+    late int milliseconds;
 
     // the command to wait for. Null if time based (or no) wait is used
-    String wait;
+    late String wait;
 
     // string that must match the acknowledgement message
-    String resp;
+    late String resp;
 
     // string that must appear as a media list item in an NLA message
-    String listitem;
+    late String listitem;
 
     // The attribute that holds the actual state of this action
     ActionState state = ActionState.UNSENT;
@@ -260,7 +260,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
         }
     }
 
-    bool _isResponseMatched(final State state, Action a, final String cmd, final String par)
+    bool _isResponseMatched(final State state, Action a, final String cmd, final String? par)
     {
         if (a.wait == cmd)
         {
@@ -305,7 +305,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
         }
         else
         {
-            EISCPMessage msg;
+            EISCPMessage? msg;
             if (a.cmd == XmlListInfoMsg.CODE)
             {
                 for (ISCPMessage item in state.mediaListState.mediaItems)

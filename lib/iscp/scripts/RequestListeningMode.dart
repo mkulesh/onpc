@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:async";
 
 import "../../utils/Logging.dart";
@@ -36,7 +36,7 @@ class RequestListeningMode implements MessageScriptIf
     static final Duration LISTENING_MODE_DELAY = Duration(milliseconds: 1000);
     static final int MAX_LISTENING_MODE_REQUESTS = 5;
     int listeningModeRequests = 0;
-    Timer listeningModeTimer;
+    Timer? listeningModeTimer;
 
     @override
     bool isValid(ProtoType protoType)
