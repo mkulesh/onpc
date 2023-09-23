@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../constants/Version.dart";
@@ -34,17 +34,17 @@ import "CfgRiCommands.dart";
 class Configuration extends CfgModule
 {
     static const String CONFIGURATION_EVENT = "CONFIG";
-    String appVersion;
+    String appVersion = Version.NAME;
 
     // Connection options
     static const Pair<String, String> SERVER_NAME = Pair<String, String>("server_name", "");
-    String _deviceName;
+    String _deviceName = SERVER_NAME.item2;
 
     String get getDeviceName
     => _deviceName;
 
     static const Pair<String, int> SERVER_PORT = Pair<String, int>("server_port", 60128);
-    int _devicePort;
+    int _devicePort = SERVER_PORT.item2;
 
     int get getDevicePort
     => _devicePort;
@@ -53,7 +53,7 @@ class Configuration extends CfgModule
     => _deviceName.isNotEmpty && _devicePort > 0;
 
     static const Pair<String, int> ACTIVE_ZONE = Pair<String, int>("active_zone", 0);
-    int _activeZone;
+    int _activeZone = ACTIVE_ZONE.item2;
 
     int get activeZone
     => _activeZone;
@@ -66,13 +66,13 @@ class Configuration extends CfgModule
 
     // Device options
     static const Pair<String, bool> AUTO_POWER = Pair<String, bool>("auto_power", false);
-    bool _autoPower;
+    bool _autoPower = AUTO_POWER.item2;
 
     bool get autoPower
     => _autoPower;
 
     static const Pair<String, bool> FRIENDLY_NAMES = Pair<String, bool>("friendly_names", true);
-    bool _friendlyNames;
+    bool _friendlyNames = FRIENDLY_NAMES.item2;
 
     bool get friendlyNames
     => _friendlyNames;
@@ -89,47 +89,47 @@ class Configuration extends CfgModule
 
     // Advanced options
     static const Pair<String, bool> KEEP_SCREEN_ON = Pair<String, bool>("keep_screen_on", false); // For Android only
-    bool _keepScreenOn;
+    bool _keepScreenOn = KEEP_SCREEN_ON.item2;
 
     bool get keepScreenOn
     => _keepScreenOn;
 
     static const Pair<String, bool> BACK_AS_RETURN = Pair<String, bool>("back_as_return", true); // For Android only
-    bool _backAsReturn;
+    bool _backAsReturn = BACK_AS_RETURN.item2;
 
     bool get backAsReturn
     => _backAsReturn;
 
     static const Pair<String, bool> ADVANCED_QUEUE = Pair<String, bool>("advanced_queue", true);
-    bool _advancedQueue;
+    bool _advancedQueue = ADVANCED_QUEUE.item2;
 
     bool get isAdvancedQueue
     => _advancedQueue;
 
     static const Pair<String, bool> KEEP_PLAYBACK_MODE = Pair<String, bool>("keep_playback_mode", false);
-    bool _keepPlaybackMode;
+    bool _keepPlaybackMode = KEEP_PLAYBACK_MODE.item2;
 
     bool get keepPlaybackMode
     => _keepPlaybackMode;
 
     static const Pair<String, bool> EXIT_CONFIRM = Pair<String, bool>("exit_confirm", false);
-    bool _exitConfirm;
+    bool _exitConfirm = EXIT_CONFIRM.item2;
 
     bool get exitConfirm
     => _exitConfirm;
 
     static const Pair<String, bool> DEVELOPER_MODE = Pair<String, bool>("developer_mode", false);
-    bool _developerMode;
+    bool _developerMode = DEVELOPER_MODE.item2;
 
     bool get developerMode
     => _developerMode;
 
     // configuration modules
-    CfgAppSettings appSettings;
-    CfgAudioControl audioControl;
-    CfgFavoriteConnections favoriteConnections;
-    CfgFavoriteShortcuts favoriteShortcuts;
-    CfgRiCommands riCommands;
+    late CfgAppSettings appSettings;
+    late CfgAudioControl audioControl;
+    late CfgFavoriteConnections favoriteConnections;
+    late CfgFavoriteShortcuts favoriteShortcuts;
+    late CfgRiCommands riCommands;
 
     Configuration(final SharedPreferences preferences) : super(preferences)
     {
@@ -143,7 +143,7 @@ class Configuration extends CfgModule
     }
 
     @override
-    void read({ProtoType protoType})
+    void read({ProtoType? protoType})
     {
         Logging.info(this, "Reading configuration...");
 
@@ -227,13 +227,13 @@ class Configuration extends CfgModule
 
     void saveManualDeviceSelector(final EnumItem<InputSelector> item, final String name)
     {
-        final Pair<String, String> par = Pair<String, String>(MANUAL_DEVICE_SELECTORS + "_" + item.code, "");
+        final Pair<String, String> par = Pair<String, String>(MANUAL_DEVICE_SELECTORS + "_" + item.getCode, "");
         saveStringParameter(par, name);
     }
 
     String deviceSelectorName(final EnumItem<InputSelector> item, {bool useFriendlyName = false, String friendlyName = ""})
     {
-        final Pair<String, String> par = Pair<String, String>(MANUAL_DEVICE_SELECTORS + "_" + item.code, "");
+        final Pair<String, String> par = Pair<String, String>(MANUAL_DEVICE_SELECTORS + "_" + item.getCode, "");
         final String manName = getString(par);
         if (manName.isNotEmpty)
         {

@@ -66,7 +66,7 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
         // _alias still be null
     }
 
-    BroadcastResponseMsg.alias(final String host, final String port, final String alias, final String identifier) : super.output(CODE, "")
+    BroadcastResponseMsg.alias(final String host, final String port, final String alias, final String? identifier) : super.output(CODE, "")
     {
         setHost(host);
         setPort(ISCPMessage.nonNullInteger(port, 10, 0));
@@ -76,7 +76,7 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
         // all other fields still be null
     }
 
-    BroadcastResponseMsg.connection(ConnectionIf connection, final String alias, final String identifier) : super.output(CODE, "")
+    BroadcastResponseMsg.connection(ConnectionIf connection, final String alias, final String? identifier) : super.output(CODE, "")
     {
         setHostAndPort(connection);
         this._identifier = identifier;

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "../constants/Strings.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../utils/Convert.dart";
@@ -97,7 +97,7 @@ class CfgTabSettings
     List<AppControl> controlsLandscapeRight;
 
     static final String COLUMN_SEPARATOR = "column_separator";
-    int _columnSeparator;
+    int _columnSeparator = 50;
 
     int get columnSeparator
     => _columnSeparator;
@@ -110,9 +110,9 @@ class CfgTabSettings
 
     CfgTabSettings(this.configuration, this.tab,
     {
-        this.controlsPortrait,
-        this.controlsLandscapeLeft,
-        this.controlsLandscapeRight
+        required this.controlsPortrait,
+        required this.controlsLandscapeLeft,
+        required this.controlsLandscapeRight
     });
 
     void read()
@@ -130,7 +130,7 @@ class CfgTabSettings
     static String getParameterName(final AppTabs tab, final AppControlGroup type)
     => TAB_SETTINGS + "_" + Convert.enumToString(tab).toLowerCase() + "_" + Convert.enumToString(type).toLowerCase();
 
-    List<AppControl> _readVisibleControls(final AppControlGroup type, List<AppControl> defItems)
+    List<AppControl> _readVisibleControls(final AppControlGroup type, List<AppControl>? defItems)
     {
         final List<AppControl> res = [];
         final String par = getParameterName(tab, type);
@@ -148,7 +148,7 @@ class CfgTabSettings
         {
             if (defItems == null)
             {
-                return null;
+                return [];
             }
             res.addAll(defItems);
         }
@@ -159,12 +159,12 @@ class CfgTabSettings
     void createCheckableItems(final List<CheckableItem> _items, final AppControlGroup type, final List<AppControl> actualItems)
     {
         final List<String> defItems = [];
-        CfgTabSettings.ValueEnum.values.forEach((m) => defItems.add(m.code));
+        CfgTabSettings.ValueEnum.values.forEach((m) => defItems.add(m.getCode));
         // Add currently selected controls on the top
         actualItems.forEach((c)
         {
             final EnumItem<AppControl> m = CfgTabSettings.ValueEnum.valueByKey(c);
-            _items.add(CheckableItem(m.code, m.description, true));
+            _items.add(CheckableItem(m.getCode, m.description, true));
         });
         // Add other non-selected controls
         for (CheckableItem sp in CheckableItem.readFromPreference(configuration, getParameterName(tab, type), defItems))
@@ -173,7 +173,7 @@ class CfgTabSettings
             {
                 if (m.code == sp.code && !actualItems.contains(m.key))
                 {
-                    _items.add(CheckableItem(m.code, m.description, false));
+                    _items.add(CheckableItem(m.getCode, m.description, false));
                 }
             });
         }

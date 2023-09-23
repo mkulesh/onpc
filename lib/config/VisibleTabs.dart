@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import "../constants/Strings.dart";
@@ -36,7 +36,7 @@ class VisibleTabs extends StatefulWidget
 class _VisibleTabsState extends State<VisibleTabs> with ProtoTypeMix
 {
     final Configuration _configuration;
-    String _parameter;
+    late String _parameter;
     final List<CheckableItem> _items = [];
 
     _VisibleTabsState(this._configuration)

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:math';
 
 import "package:shared_preferences/shared_preferences.dart";
@@ -32,27 +32,27 @@ class Shortcut
 {
     static String FAVORITE_SHORTCUT_TAG = "favoriteShortcut";
 
-    int _id;
+    late int _id;
 
     int get id
     => _id;
 
-    EnumItem<InputSelector> _input;
+    late EnumItem<InputSelector> _input;
 
     EnumItem<InputSelector> get input
     => _input;
 
-    EnumItem<ServiceType> _service;
+    late EnumItem<ServiceType> _service;
 
     EnumItem<ServiceType> get service
     => _service;
 
-    String _item;
+    late String _item;
 
     String get item
     => _item;
 
-    String _alias;
+    late String _alias;
 
     String get alias
     => _alias;
@@ -91,7 +91,7 @@ class Shortcut
         this._alias = alias;
     }
 
-    void setPathItems(final List<String> path, final EnumItem<ServiceType> service)
+    void setPathItems(final List<String> path, final EnumItem<ServiceType>? service)
     {
         _pathItems.clear();
         for (int i = 1; i < path.length; i++)
@@ -217,7 +217,7 @@ class Shortcut
 
     String getIcon()
     {
-        String icon = service.icon;
+        String? icon = service.icon;
         if (icon == null)
         {
             icon = input.icon;

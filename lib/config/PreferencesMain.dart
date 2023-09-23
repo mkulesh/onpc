@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -276,8 +276,11 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         return Theme(data: td, child: scaffold);
     }
 
-    Widget _customDropdownPreference(final ThemeData td, String name, Pair<String, String> par,
-        {String icon, List<String> values, List<String> displayValues, ValueChanged<String> onChange})
+    Widget _customDropdownPreference(final ThemeData td, String name, Pair<String, String> par, {
+        required String icon,
+        required List<String> values,
+        required List<String> displayValues,
+        required ValueChanged<String> onChange})
     {
         int groupValue = values.indexOf(_configuration.getString(par));
         if (groupValue < 0)
@@ -299,7 +302,9 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         return res;
     }
 
-    Widget _customSwitchPreference(final ThemeData td, String title, Pair<String, bool> par, {String icon, String desc})
+    Widget _customSwitchPreference(final ThemeData td, String title, Pair<String, bool> par, {
+        required String icon,
+        String? desc})
     {
         return SwitchPreference(
             title,
@@ -311,7 +316,9 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         );
     }
 
-    Widget _customPreferenceScreen(final ThemeData td, String name, {String icon, String activity})
+    Widget _customPreferenceScreen(final ThemeData td, String name, {
+        required String icon,
+        required String activity})
     {
         return ListTile(
             leading: _getIcon(td, icon),
@@ -322,7 +329,7 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         );
     }
 
-    Widget _getIcon(final ThemeData td, String icon)
+    Widget? _getIcon(final ThemeData td, String? icon)
     {
         if (icon != null)
         {

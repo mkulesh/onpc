@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../constants/Strings.dart";
@@ -28,7 +28,7 @@ class CfgAudioControl extends CfgModule
 {
     // Sound control
     static const Pair<String, String> SOUND_CONTROL = Pair<String, String>("sound_control", Strings.pref_sound_control_default);
-    String _soundControl;
+    String _soundControl = SOUND_CONTROL.item2;
 
     String get soundControl
     => _soundControl;
@@ -41,7 +41,7 @@ class CfgAudioControl extends CfgModule
 
     // Force audio control
     static const Pair<String, bool> FORCE_AUDIO_CONTROL = Pair<String, bool>("force_audio_control", false);
-    bool _forceAudioControl;
+    bool _forceAudioControl = FORCE_AUDIO_CONTROL.item2;
 
     bool get isForceAudioControl
     => _forceAudioControl;
@@ -51,7 +51,7 @@ class CfgAudioControl extends CfgModule
 
     // Master volume maximum
     static const Pair<String, int> MASTER_VOLUME_MAX = Pair<String, int>("master_volume_max", 9999);
-    int _masterVolumeMax;
+    int _masterVolumeMax = MASTER_VOLUME_MAX.item2;
 
     int get masterVolumeMax
     => _masterVolumeMax;
@@ -112,7 +112,7 @@ class CfgAudioControl extends CfgModule
 
     // Master volume hardware keys
     static const Pair<String, bool> VOLUME_KEYS = Pair<String, bool>("volume_keys", true); // For Android only
-    bool _volumeKeys;
+    bool _volumeKeys = VOLUME_KEYS.item2;
 
     bool get volumeKeys
     => _volumeKeys;

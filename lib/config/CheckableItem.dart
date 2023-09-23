@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import "../constants/Dimens.dart";
@@ -39,7 +39,7 @@ class CheckableItem
     final String code;
     final String text;
     bool checked;
-    final void Function(String name) onRename;
+    final void Function(String name)? onRename;
 
     CheckableItem(this.code, this.text, this.checked, { this.onRename });
 
@@ -132,7 +132,7 @@ class CheckableItem
         return retValue;
     }
 
-    static Widget buildPanel(List<Widget> rows, ReorderCallback onReorder, {final ScrollController scrollController})
+    static Widget buildPanel(List<Widget> rows, ReorderCallback onReorder, {final ScrollController? scrollController})
     {
         final bool primary = scrollController == null;
         return Scrollbar(
@@ -177,14 +177,14 @@ class CheckableItem
     => buildScaffold(context, title, buildPanel(rows, onReorder), configuration);
 
     Widget buildListItem(ValueChanged<bool> _onChanged,
-        { final BuildContext context, final ThemeData theme })
+        { final BuildContext? context, final ThemeData? theme })
     {
-        final bool val = this.checked ?? false;
+        final bool val = this.checked;
 
         final Widget checkBox = Checkbox(
             value: val,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            onChanged: _onChanged
+            onChanged: (bool? v) => _onChanged(v?? false)
         );
 
         Widget listTile = ListTile(
@@ -238,7 +238,7 @@ class CheckableItem
                     {
                         if (item.onRename  != null)
                         {
-                            item.onRename(_alias.text);
+                            item.onRename!(_alias.text);
                         }
                         Navigator.of(context).pop();
                     }),

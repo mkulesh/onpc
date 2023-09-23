@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../iscp/ConnectionIf.dart";
@@ -81,7 +81,7 @@ class CfgFavoriteConnections extends CfgModule
             {
                 final String key = FAVORITE_CONNECTION_ITEM + "_" + i.toString();
                 String val = msg.getHost + FAVORITE_CONNECTION_SEP
-                    + msg.getPort.toString() + FAVORITE_CONNECTION_SEP + msg.alias;
+                    + msg.getPort.toString() + FAVORITE_CONNECTION_SEP + msg.alias!;
                 // identifier is optional
                 if (msg.getIdentifier.isNotEmpty)
                 {
@@ -150,7 +150,7 @@ class CfgFavoriteConnections extends CfgModule
             if (oldMsg.alias != null)
             {
                 final BroadcastResponseMsg newMsg = BroadcastResponseMsg.connection(
-                    oldMsg, oldMsg.alias, identifier);
+                    oldMsg, oldMsg.alias!, identifier);
                 Logging.info(this, "Update favorite connection: " + oldMsg.toString() + " -> " + newMsg.toString());
                 _devices[idx] = newMsg;
                 write();

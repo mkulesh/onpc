@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import "../constants/Strings.dart";
@@ -35,7 +35,7 @@ class NetworkServices extends StatefulWidget
 class _NetworkServicesState extends State<NetworkServices>
 {
     final Configuration _configuration;
-    String _parameter;
+    late String _parameter;
     final List<CheckableItem> _items = [];
 
     _NetworkServicesState(this._configuration)
@@ -46,7 +46,7 @@ class _NetworkServicesState extends State<NetworkServices>
 
     void _createItems()
     {
-        final List<String> defItems = _configuration.getTokens(Configuration.NETWORK_SERVICES);
+        final List<String>? defItems = _configuration.getTokens(Configuration.NETWORK_SERVICES);
         if (defItems == null || defItems.isEmpty)
         {
             return;

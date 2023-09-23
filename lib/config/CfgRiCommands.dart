@@ -11,8 +11,8 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
+import "package:collection/collection.dart";
 import "package:flutter/services.dart" show rootBundle;
 import "package:shared_preferences/shared_preferences.dart";
 import "package:xml/xml.dart" as xml;
@@ -36,8 +36,8 @@ enum RiDeviceType
 
 class RiCommand
 {
-    String code;
-    String hex;
+    late String code;
+    late String hex;
 
     RiCommand.fromXml(xml.XmlNode command)
     {
@@ -48,8 +48,8 @@ class RiCommand
 
 class RiDevice
 {
-    String type;
-    String model;
+    late String type;
+    late String model;
     final List<RiCommand> commands = [];
 
     RiDevice.fromXml(xml.XmlElement device)
@@ -58,7 +58,7 @@ class RiDevice
         model = ISCPMessage.nonNullString(device.getAttribute("model"));
         device.children.forEach((c)
         {
-            if (c.getAttribute("code") != null && c.getAttribute("code").isNotEmpty)
+            if (c.getAttribute("code") != null && c.getAttribute("code")!.isNotEmpty)
             {
                 commands.add(RiCommand.fromXml(c));
             }
@@ -102,7 +102,7 @@ class CfgRiCommands extends CfgModule
 
     // Device images
     static const Pair<String, String> AMP_MODEL = Pair<String, String>("amp_model", "A-9010");
-    String _ampModel;
+    String _ampModel = AMP_MODEL.item2;
 
     String get ampModel
     => _ampModel;
@@ -114,7 +114,7 @@ class CfgRiCommands extends CfgModule
     }
 
     static const Pair<String, String> CD_MODEL = Pair<String, String>("cd_model", "C-7030");
-    String _cdModel;
+    String _cdModel = CD_MODEL.item2;
 
     String get cdModel
     => _cdModel;
@@ -179,13 +179,13 @@ class CfgRiCommands extends CfgModule
         // nothing to do
     }
 
-    RiCommand findCommand(RiDeviceType type, String code)
+    RiCommand? findCommand(RiDeviceType type, String code)
     {
         if (isOn)
         {
             for (RiDevice d in _devices)
             {
-                final RiCommand rc = d.commands.firstWhere((c) => c.code == code, orElse: () => null);
+                final RiCommand? rc = d.commands.firstWhereOrNull((c) => c.code == code);
                 if (d.type == Convert.enumToString(type) && rc != null)
                 {
                     return rc.hex.isNotEmpty ? rc : null;

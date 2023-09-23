@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import "../constants/Strings.dart";
@@ -36,7 +36,7 @@ class DeviceSelectors extends StatefulWidget
 class _DeviceSelectorsState extends State<DeviceSelectors>
 {
     final Configuration _configuration;
-    String _parameter;
+    late String _parameter;
     final List<CheckableItem> _items = [];
 
     _DeviceSelectorsState(this._configuration)
@@ -48,7 +48,7 @@ class _DeviceSelectorsState extends State<DeviceSelectors>
     void _createItems()
     {
         _items.clear();
-        final List<String> defItems = _configuration.getTokens(Configuration.DEVICE_SELECTORS);
+        final List<String>? defItems = _configuration.getTokens(Configuration.DEVICE_SELECTORS);
         if (defItems == null || defItems.isEmpty)
         {
             return;

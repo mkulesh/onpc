@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:ui';
 
 import "package:flutter/material.dart";
@@ -52,7 +52,7 @@ class CfgAppSettings extends CfgModule
 {
     // Theme
     static const Pair<String, String> THEME = Pair<String, String>("theme", Strings.pref_theme_default);
-    String _theme;
+    String _theme = THEME.item2;
 
     String get theme
     => _theme;
@@ -83,7 +83,7 @@ class CfgAppSettings extends CfgModule
 
     // System language
     static const Locale DEFAULT_LOCALE = Locale("en", "US");
-    Locale _systemLocale;
+    Locale _systemLocale = DEFAULT_LOCALE;
 
     set systemLocale(Locale value)
     {
@@ -93,7 +93,7 @@ class CfgAppSettings extends CfgModule
 
     // Language
     static const Pair<String, String> LANGUAGE = Pair<String, String>("language", Strings.pref_language_default);
-    String _language;
+    String _language = LANGUAGE.item2;
 
     String get language
     {
@@ -113,7 +113,7 @@ class CfgAppSettings extends CfgModule
 
     // Text size
     static const Pair<String, String> TEXT_SIZE = Pair<String, String>("text_size", Strings.pref_text_size_default);
-    String _textSize;
+    String _textSize = TEXT_SIZE.item2;
 
     String get textSize
     => _textSize;
@@ -126,7 +126,7 @@ class CfgAppSettings extends CfgModule
 
     // The latest opened tab
     static const Pair<String, String> OPENED_TAB_NAME = Pair<String, String>("opened_tab_name", "LISTEN");
-    AppTabs _openedTab;
+    AppTabs _openedTab = AppTabs.LISTEN;
 
     AppTabs get openedTab
     => _openedTab;
@@ -174,12 +174,12 @@ class CfgAppSettings extends CfgModule
     // Tab settings
     final List<CfgTabSettings> _tabSettings = [];
 
-    CfgTabSettings tabSettings(AppTabs t)
+    CfgTabSettings? tabSettings(AppTabs? t)
     => t != null ? _tabSettings[t.index] : null;
 
     // Media list sort mode
     static const Pair<String, String> MEDIA_SORT_MODE = Pair<String, String>("media_sort_mode", "ITEM_NAME");
-    MediaSortMode _mediaSortMode;
+    MediaSortMode _mediaSortMode = MediaSortMode.ITEM_NAME;
 
     MediaSortMode get mediaSortMode
     => _mediaSortMode;
@@ -192,10 +192,16 @@ class CfgAppSettings extends CfgModule
 
     // Window size and position for desktop app
     static const Pair<String, int> WINDOW_WIDTH = Pair<String, int>("window_width", 350);
+    int _windowWidth = WINDOW_WIDTH.item2;
+
     static const Pair<String, int> WINDOW_HEIGHT = Pair<String, int>("window_height", 720);
+    int _windowHeight = WINDOW_HEIGHT.item2;
+
     static const Pair<String, int> WINDOW_OFFSET_X = Pair<String, int>("window_offset_x", 100);
+    int _windowOffsetX = WINDOW_OFFSET_X.item2;
+
     static const Pair<String, int> WINDOW_OFFSET_Y = Pair<String, int>("window_offset_y", 100);
-    int _windowWidth, _windowHeight, _windowOffsetX, _windowOffsetY;
+    int _windowOffsetY = WINDOW_OFFSET_Y.item2;
 
     Size windowSize()
     => Size(_windowWidth.toDouble(), _windowHeight.toDouble());
@@ -244,7 +250,7 @@ class CfgAppSettings extends CfgModule
     final Map<String, String> _keyboardShortcuts = Map();
 
     String getKeyboardShortcut(final String par)
-    => _keyboardShortcuts.containsKey(par)? _keyboardShortcuts[par] : "";
+    => _keyboardShortcuts.containsKey(par)? _keyboardShortcuts[par]! : "";
 
     void updateKeyboardShortcut(final String par, final String value)
     {
@@ -256,9 +262,9 @@ class CfgAppSettings extends CfgModule
     }
 
     // Capture keyboard shortcuts
-    Pair<String, OnKeyboardShortcut> _captureKeyboardShortcut;
+    Pair<String, OnKeyboardShortcut>? _captureKeyboardShortcut;
 
-    void captureKeyboardShortcut(OnKeyboardShortcut handler, {String parameter = ""})
+    void captureKeyboardShortcut(OnKeyboardShortcut? handler, {String parameter = ""})
     {
         if (handler != null)
         {
@@ -267,19 +273,19 @@ class CfgAppSettings extends CfgModule
         }
         else if (_captureKeyboardShortcut != null)
         {
-            Logging.info(this, "Cancelled keyboard shortcut for " + _captureKeyboardShortcut.item1);
+            Logging.info(this, "Cancelled keyboard shortcut for " + _captureKeyboardShortcut!.item1);
             _captureKeyboardShortcut = null;
         }
     }
 
     bool isWaitingForShortcut(final String par)
-    => _captureKeyboardShortcut != null && _captureKeyboardShortcut.item1 == par;
+    => _captureKeyboardShortcut != null && _captureKeyboardShortcut!.item1 == par;
 
     bool processKeyboardShortcut(final String shortcut)
     {
         if (_captureKeyboardShortcut != null)
         {
-            _captureKeyboardShortcut.item2(_captureKeyboardShortcut.item1, shortcut);
+            _captureKeyboardShortcut!.item2(_captureKeyboardShortcut!.item1, shortcut);
             return true;
         }
         return false;
@@ -289,7 +295,7 @@ class CfgAppSettings extends CfgModule
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);
 
     @override
-    void read({ProtoType protoType})
+    void read({ProtoType? protoType})
     {
         _theme = getString(THEME, doLog: true);
         _language = getString(LANGUAGE, doLog: true);
@@ -327,7 +333,7 @@ class CfgAppSettings extends CfgModule
         return item.index < Strings.pref_visible_tabs_names.length ? Strings.pref_visible_tabs_names[item.index].toUpperCase() : "";
     }
 
-    void _readVisibleTabs(ProtoType protoType)
+    void _readVisibleTabs(ProtoType? protoType)
     {
         _visibleTabs.clear();
         final List<String> defItems = [];

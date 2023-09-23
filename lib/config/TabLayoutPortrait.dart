@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import "../config/CfgTabSettings.dart";
@@ -37,7 +37,7 @@ class _TabLayoutPortraitState extends State<TabLayoutPortrait>
 {
     final Configuration _configuration;
     final CfgTabSettings _tabSettings;
-    String _parameter;
+    late String _parameter;
     final List<CheckableItem> _items = [];
 
     _TabLayoutPortraitState(this._configuration, this._tabSettings)

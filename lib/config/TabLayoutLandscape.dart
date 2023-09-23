@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 
 import "../config/CfgTabSettings.dart";
@@ -42,7 +42,7 @@ class _TabLayoutLandscapeState extends State<TabLayoutLandscape>
     final CfgTabSettings _tabSettings;
     final List<CheckableItem> _itemsLeft = [];
     final List<CheckableItem> _itemsRight = [];
-    ScrollController _scrollControllerLeft, _scrollControllerRight;
+    ScrollController? _scrollControllerLeft, _scrollControllerRight;
 
     _TabLayoutLandscapeState(this._configuration, this._tabSettings)
     {
@@ -61,8 +61,8 @@ class _TabLayoutLandscapeState extends State<TabLayoutLandscape>
     @override
     void dispose()
     {
-        _scrollControllerLeft.dispose();
-        _scrollControllerRight.dispose();
+        _scrollControllerLeft?.dispose();
+        _scrollControllerRight?.dispose();
         super.dispose();
     }
 

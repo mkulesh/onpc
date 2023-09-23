@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:shared_preferences/shared_preferences.dart";
 
 import "../iscp/StateManager.dart";
@@ -34,7 +34,7 @@ abstract class CfgModule
         String val = par.item2;
         try
         {
-            final String v = preferences.getString(par.item1);
+            final String? v = preferences.getString(par.item1);
             val = v != null ? v : par.item2;
         }
         on Exception
@@ -56,7 +56,7 @@ abstract class CfgModule
         int val = par.item2;
         try
         {
-            final int v = preferences.getInt(par.item1);
+            final int? v = preferences.getInt(par.item1);
             val = v != null ? v : par.item2;
         }
         on Exception
@@ -75,7 +75,7 @@ abstract class CfgModule
         bool val = par.item2;
         try
         {
-            final bool v = preferences.getBool(par.item1);
+            final bool? v = preferences.getBool(par.item1);
             val = v != null ? v : par.item2;
         }
         on Exception
@@ -113,9 +113,9 @@ abstract class CfgModule
         await preferences.setBool(par.item1, value);
     }
 
-    List<String> getTokens(final String par)
+    List<String>? getTokens(final String par)
     {
-        final String cfg = preferences.getString(par);
+        final String? cfg = preferences.getString(par);
         return (cfg == null || cfg.isEmpty) ? null : cfg.split(",");
     }
 
