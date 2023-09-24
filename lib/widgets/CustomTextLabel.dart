@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -23,7 +23,7 @@ class CustomTextLabel extends StatelessWidget
     final TextAlign textAlign;
     final int size;
     final bool bold;
-    final Color color;
+    final Color? color;
 
     CustomTextLabel.small(this.description,
     {
@@ -47,8 +47,8 @@ class CustomTextLabel extends StatelessWidget
     Widget build(BuildContext context)
     {
         final ThemeData td = Theme.of(context);
-        final TextStyle style = size == 1 ? td.textTheme.bodyMedium : td.textTheme.titleMedium;
-        final Color c = this.color ?? style.color;
+        final TextStyle style = size == 1 ? td.textTheme.bodyMedium! : td.textTheme.titleMedium!;
+        final Color c = this.color ?? style.color!;
         final w = bold ? FontWeight.w700 : FontWeight.w400;
         if (padding.vertical > 0 || padding.horizontal > 0)
         {

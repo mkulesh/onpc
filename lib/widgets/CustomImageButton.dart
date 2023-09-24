@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
@@ -19,10 +19,12 @@ import "../constants/Dimens.dart";
 
 class CustomImageButton extends StatelessWidget
 {
-    final String icon, description, text;
-    final VoidCallback onPressed;
+    final String icon;
+    final String? description;
+    final String text;
+    final VoidCallback? onPressed;
     final int type;
-    final EdgeInsetsGeometry padding;
+    final EdgeInsetsGeometry? padding;
     final bool isEnabled, isSelected, isMenu;
 
     CustomImageButton.menu(this.icon, this.description,
@@ -74,8 +76,8 @@ class CustomImageButton extends StatelessWidget
     {
         final ThemeData td = Theme.of(context);
         final Color color = isEnabled ?
-            (isSelected ? td.colorScheme.secondary : (isMenu ? td.bottomAppBarTheme.color : td.textTheme.labelLarge.color))
-                : (isMenu ? td.appBarTheme.backgroundColor : td.disabledColor);
+            (isSelected ? td.colorScheme.secondary : (isMenu ? td.bottomAppBarTheme.color! : td.textTheme.labelLarge!.color!))
+                : (isMenu ? td.appBarTheme.backgroundColor! : td.disabledColor);
 
         double _size;
         EdgeInsetsGeometry _padding;
@@ -121,7 +123,7 @@ class CustomImageButton extends StatelessWidget
         {
             result = Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [result, Text(text, style: td.textTheme.labelLarge.copyWith(color: color))]
+                children: [result, Text(text, style: td.textTheme.labelLarge!.copyWith(color: color))]
             );
 
             if (isEnabled && onPressed != null)

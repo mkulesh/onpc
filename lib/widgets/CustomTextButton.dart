@@ -11,16 +11,17 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
 
 class CustomTextButton extends StatelessWidget
 {
-    final String text, description;
-    final VoidCallback onPressed;
-    final EdgeInsetsGeometry padding;
+    final String text;
+    final String? description;
+    final VoidCallback? onPressed;
+    final EdgeInsetsGeometry? padding;
     final bool isEnabled, isSelected, isInDialog;
 
     CustomTextButton(this.text,
@@ -38,11 +39,11 @@ class CustomTextButton extends StatelessWidget
     {
         final ThemeData td = Theme.of(context);
         final Color color = isEnabled ?
-            (isSelected ? td.colorScheme.secondary : td.textTheme.labelLarge.color)
+            (isSelected ? td.colorScheme.secondary : td.textTheme.labelLarge!.color!)
                 : td.disabledColor;
 
         final Widget result = MaterialButton(
-            child: Text(text, style: td.textTheme.labelLarge.copyWith(color: color)),
+            child: Text(text, style: td.textTheme.labelLarge!.copyWith(color: color)),
             padding: _getPadding(),
             color: isInDialog ? td.dialogBackgroundColor : td.colorScheme.background,
             textColor: color,

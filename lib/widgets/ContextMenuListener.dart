@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -23,14 +23,14 @@ import "PositionedTapDetector.dart";
 class ContextMenuListener<T> extends StatelessWidget
 {
     final Widget child;
-    final void Function(TapPosition position) onContextMenu;
-    final String menuName;
-    final List<Pair<String, T>> menuItems;
-    final void Function(BuildContext context, T item) onItemSelected;
+    final void Function(TapPosition position)? onContextMenu;
+    final String? menuName;
+    final List<Pair<String, T>>? menuItems;
+    final void Function(BuildContext context, T item)? onItemSelected;
 
     ContextMenuListener(
-        {Key key,
-        this.child,
+        {Key? key,
+        required this.child,
         this.onContextMenu,
         this.menuName,
         this.menuItems,
@@ -74,11 +74,11 @@ class ContextMenuListener<T> extends StatelessWidget
             if (menuName != null)
             {
                 contextMenu.add(
-                    PopupMenuItem<T>(child: CustomTextLabel.small(menuName), enabled: false));
+                    PopupMenuItem<T>(child: CustomTextLabel.small(menuName!), enabled: false));
             }
             if (menuItems != null)
             {
-                menuItems.forEach((item) =>
+                menuItems!.forEach((item) =>
                     contextMenu.add(PopupMenuItem<T>(child: Text(item.item1), value: item.item2)));
             }
             showMenu(
@@ -88,13 +88,13 @@ class ContextMenuListener<T> extends StatelessWidget
             {
                 if (m != null)
                 {
-                    onItemSelected(context, m);
+                    onItemSelected!(context, m);
                 }
             });
         }
         else if (onContextMenu != null)
         {
-            onContextMenu(position);
+            onContextMenu!(position);
         }
     }
 }

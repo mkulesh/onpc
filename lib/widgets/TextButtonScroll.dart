@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -22,7 +22,7 @@ import 'CustomTextButton.dart';
 class TextButtonScroll extends StatefulWidget
 {
     final List<CustomTextButton> _items;
-    final CustomTextButton _selected;
+    final CustomTextButton? _selected;
     TextButtonScroll(this._items, this._selected);
 
     @override
@@ -32,7 +32,7 @@ class TextButtonScroll extends StatefulWidget
 
 class _TextButtonScrollState extends State<TextButtonScroll>
 {
-    ScrollController _scrollController;
+    ScrollController? _scrollController;
 
     _TextButtonScrollState();
 
@@ -46,7 +46,7 @@ class _TextButtonScrollState extends State<TextButtonScroll>
     @override
     void dispose()
     {
-        _scrollController.dispose();
+        _scrollController?.dispose();
         super.dispose();
     }
 
@@ -84,15 +84,19 @@ class _TextButtonScrollState extends State<TextButtonScroll>
     void _scrollToPosition(double left, double width)
     {
         final double right = left + width;
-        if (_scrollController.hasClients && _scrollController.position != null)
+        if (_scrollController == null)
         {
-            if (left < _scrollController.position.pixels)
+            return;
+        }
+        if (_scrollController!.hasClients && _scrollController!.position != null)
+        {
+            if (left < _scrollController!.position.pixels)
             {
-                _scrollController.jumpTo(left);
+                _scrollController!.jumpTo(left);
             }
-            else if (right > _scrollController.position.pixels + _scrollController.position.viewportDimension)
+            else if (right > _scrollController!.position.pixels + _scrollController!.position.viewportDimension)
             {
-                _scrollController.jumpTo(right - _scrollController.position.viewportDimension);
+                _scrollController!.jumpTo(right - _scrollController!.position.viewportDimension);
             }
         }
     }

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -22,9 +22,9 @@ class CustomCheckbox extends StatelessWidget
     final String textLabel;
     final bool value;
     final EdgeInsetsGeometry padding;
-    final Widget icon;
+    final Widget? icon;
     final bool enabled;
-    final ValueChanged<bool> onChanged;
+    final ValueChanged<bool>? onChanged;
 
     CustomCheckbox(this.textLabel,
     {
@@ -41,7 +41,7 @@ class CustomCheckbox extends StatelessWidget
         final Widget checkBox = Checkbox(
             value: value,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            onChanged: enabled ? onChanged : null
+            onChanged: enabled && onChanged != null? ((bool? v) => onChanged!(v?? false)) : null
         );
 
         final Widget row = Padding(
@@ -52,10 +52,10 @@ class CustomCheckbox extends StatelessWidget
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                     Flexible(child: CustomTextLabel.normal(textLabel)),
-                    icon != null ? icon : checkBox,
+                    icon != null ? icon! : checkBox,
                 ])
         );
 
-        return onChanged != null && enabled ? InkWell(child: row, onTap: () => onChanged(!value)) : row;
+        return onChanged != null && enabled ? InkWell(child: row, onTap: () => onChanged!(!value)) : row;
     }
 }

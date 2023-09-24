@@ -11,13 +11,13 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 class CustomActivityTitle extends StatelessWidget
 {
     final String title;
-    final String subTitle;
+    final String? subTitle;
 
     CustomActivityTitle(this.title, this.subTitle);
 
@@ -27,22 +27,22 @@ class CustomActivityTitle extends StatelessWidget
         final ThemeData td = Theme.of(context);
         final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
-        final double titleSize = isPortrait ? td.textTheme.titleLarge.fontSize : td.textTheme.titleLarge.fontSize - 2;
-        final double subTitleSize = isPortrait ? td.textTheme.titleLarge.fontSize - 4 : td.textTheme.titleLarge.fontSize - 6;
+        final double titleSize = isPortrait ? td.textTheme.titleLarge!.fontSize! : td.textTheme.titleLarge!.fontSize! - 2;
+        final double subTitleSize = isPortrait ? td.textTheme.titleLarge!.fontSize! - 4 : td.textTheme.titleLarge!.fontSize! - 6;
 
         final List<Widget> children = [];
         children.add(Text(title,
-            style: td.textTheme.titleLarge.copyWith(
+            style: td.textTheme.titleLarge!.copyWith(
                 fontSize: titleSize,
                 color: td.bottomAppBarTheme.color)));
 
         if (subTitle != null)
         {
-            children.add(Text(subTitle,
-                style: td.textTheme.titleLarge.copyWith(
+            children.add(Text(subTitle!,
+                style: td.textTheme.titleLarge!.copyWith(
                     fontSize: subTitleSize,
                     fontWeight: FontWeight.normal,
-                    color: td.bottomAppBarTheme.color.withAlpha(175))));
+                    color: td.bottomAppBarTheme.color!.withAlpha(175))));
         }
 
         return children.length == 1 ? children[0] : Column(

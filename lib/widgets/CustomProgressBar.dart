@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:math';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -26,27 +26,27 @@ typedef NewValueCallback = void Function(int);
 
 class CustomProgressBar extends StatefulWidget
 {
-    final String caption;
+    final String? caption;
     final String minValueStr, maxValueStr;
     final int maxValueNum, currValue;
-    final CaptionCallback onCaption;
-    final NewValueCallback onMoving;
-    final NewValueCallback onChanged;
-    final NewValueCallback onUpButton;
-    final NewValueCallback onDownButton;
-    final Widget extendedCmd;
+    final CaptionCallback? onCaption;
+    final NewValueCallback? onMoving;
+    final NewValueCallback? onChanged;
+    final NewValueCallback? onUpButton;
+    final NewValueCallback? onDownButton;
+    final Widget? extendedCmd;
     final int divisions;
     final bool isInDialog;
 
     CustomProgressBar({
         this.caption,
-        this.minValueStr,
-        this.maxValueStr,
-        this.maxValueNum,
-        this.currValue,
+        required this.minValueStr,
+        required this.maxValueStr,
+        required this.maxValueNum,
+        required this.currValue,
         this.onCaption,
         this.onMoving,
-        this.onChanged,
+        required this.onChanged,
         this.onUpButton,
         this.onDownButton,
         this.extendedCmd,
@@ -92,18 +92,18 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             currValue = widget.currValue.toDouble();
         }
 
-        final String extCaption = widget.onCaption != null ? widget.onCaption(currValue) : "";
+        final String extCaption = widget.onCaption != null ? widget.onCaption!(currValue) : "";
         final List<Widget> controls = [];
         if (widget.caption != null)
         {
-            final String caption = widget.caption + ": " + extCaption;
+            final String caption = widget.caption! + ": " + extCaption;
             if (widget.extendedCmd != null)
             {
                 controls.add(Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [CustomTextLabel.small(caption), widget.extendedCmd],
+                    children: [CustomTextLabel.small(caption), widget.extendedCmd!],
                 ));
             }
             else
@@ -182,7 +182,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
                 isInDialog: widget.isInDialog,
                 onPressed: ()
                 {
-                    widget.onDownButton(currValue.round());
+                    widget.onDownButton!(currValue.round());
                 }) :
             CustomTextLabel.small(widget.minValueStr, textAlign: TextAlign.left);
 
@@ -193,7 +193,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
                 isInDialog: widget.isInDialog,
                 onPressed: ()
                 {
-                    widget.onUpButton(currValue.round());
+                    widget.onUpButton!(currValue.round());
                 }) :
             CustomTextLabel.small(widget.maxValueStr, textAlign: TextAlign.right);
 
@@ -225,7 +225,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         final int intVal = v.round();
         if (intVal != _newSeekValue && widget.onMoving != null)
         {
-            widget.onMoving(intVal);
+            widget.onMoving!(intVal);
         }
         setState(()
         {
@@ -246,7 +246,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             {
                 if (widget.onChanged != null && !isSeeking)
                 {
-                    widget.onChanged(_newSeekValue);
+                    widget.onChanged!(_newSeekValue);
                 }
             });
             // requested to use new widget.currValue on next build
@@ -258,7 +258,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
 class CustomTrackShape extends SfTrackShape
 {
     @override
-    Rect getPreferredRect(RenderBox parentBox, var themeData, Offset offset, {bool isActive})
+    Rect getPreferredRect(RenderBox parentBox, var themeData, Offset offset, {bool? isActive})
     {
         final double trackHeight = isActive != null && isActive? 3.0 : 1.5;
         final double trackLeft = offset.dx;

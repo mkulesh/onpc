@@ -11,12 +11,12 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 class CustomDivider extends StatelessWidget
 {
-    final Color color;
+    final Color? color;
     final double height;
     final double thickness;
 

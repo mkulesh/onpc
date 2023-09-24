@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 
@@ -22,10 +22,10 @@ import "CustomTextLabel.dart";
 class CustomDialogEditField extends StatelessWidget
 {
     final TextEditingController controller;
-    final String textLabel;
-    final Widget widgetLabel;
+    final String? textLabel;
+    final Widget? widgetLabel;
     final bool isFocused;
-    final ValueChanged<String> onChanged;
+    final ValueChanged<String>? onChanged;
 
     CustomDialogEditField(this.controller,
     {
@@ -44,7 +44,7 @@ class CustomDialogEditField extends StatelessWidget
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    widgetLabel ?? (textLabel != null ? CustomTextLabel.small(textLabel) : SizedBox.shrink()),
+                    widgetLabel ?? (textLabel != null ? CustomTextLabel.small(textLabel!) : SizedBox.shrink()),
                     CustomTextField(controller, isFocused: isFocused, onChanged: onChanged)
                 ]
             )

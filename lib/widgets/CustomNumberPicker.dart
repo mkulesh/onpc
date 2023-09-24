@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -34,12 +34,12 @@ class CustomNumberPicker extends StatefulWidget
     final int initialValue;
     final int step;
 
-    CustomNumberPicker({Key key,
-        this.onValue,
-        this.initialValue,
-        this.maxValue,
-        this.minValue,
-        this.step})
+    CustomNumberPicker({Key? key,
+        required this.onValue,
+        required this.initialValue,
+        required this.maxValue,
+        required this.minValue,
+        required this.step})
         : super(key: key);
 
     @override
@@ -49,8 +49,8 @@ class CustomNumberPicker extends StatefulWidget
 
 class _CustomNumberPickerState extends State<CustomNumberPicker>
 {
-    int _initialValue;
-    Timer _timer;
+    int _initialValue = 0;
+    Timer? _timer;
 
     @override
     void initState()
@@ -87,14 +87,14 @@ class _CustomNumberPickerState extends State<CustomNumberPicker>
                         {
                             if (_timer != null)
                             {
-                                _timer.cancel();
+                                _timer!.cancel();
                             }
                         },
                         onTapCancel: ()
                         {
                             if (_timer != null)
                             {
-                                _timer.cancel();
+                                _timer!.cancel();
                             }
                         },
                         child: Padding(
@@ -117,14 +117,14 @@ class _CustomNumberPickerState extends State<CustomNumberPicker>
                         {
                             if (_timer != null)
                             {
-                                _timer.cancel();
+                                _timer!.cancel();
                             }
                         },
                         onTapCancel: ()
                         {
                             if (_timer != null)
                             {
-                                _timer.cancel();
+                                _timer!.cancel();
                             }
                         },
                         child: Padding(

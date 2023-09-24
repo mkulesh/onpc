@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
@@ -21,7 +21,7 @@ import "CustomTextLabel.dart";
 class CustomDialogTitle extends StatelessWidget
 {
     final String description;
-    final String icon;
+    final String? icon;
 
     CustomDialogTitle(this.description, this.icon);
 
@@ -35,7 +35,7 @@ class CustomDialogTitle extends StatelessWidget
         {
             children.add(Padding(padding: DialogDimens.iconPadding,
                 child: SvgPicture.asset(
-                    icon,
+                    icon!,
                     width: DialogDimens.iconSize,
                     height: DialogDimens.iconSize,
                     color: td.disabledColor)));

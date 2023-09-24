@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:async';
 import 'dart:math';
 
@@ -20,8 +20,8 @@ import 'package:flutter/widgets.dart';
 class PositionedTapDetector extends StatefulWidget
 {
     PositionedTapDetector({
-        Key key,
-        this.child,
+        Key? key,
+        required this.child,
         this.onTap,
         this.onDoubleTap,
         this.onLongPress,
@@ -34,12 +34,12 @@ class PositionedTapDetector extends StatefulWidget
     static const _DOUBLE_TAP_MAX_OFFSET = 48.0;
 
     final Widget child;
-    final HitTestBehavior behavior;
-    final TapPositionCallback onTap;
-    final TapPositionCallback onDoubleTap;
-    final TapPositionCallback onLongPress;
+    final HitTestBehavior? behavior;
+    final TapPositionCallback? onTap;
+    final TapPositionCallback? onDoubleTap;
+    final TapPositionCallback? onLongPress;
     final Duration doubleTapDelay;
-    final PositionedTapController controller;
+    final PositionedTapController? controller;
 
     @override
     _TapPositionDetectorState createState()
@@ -56,9 +56,9 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
     Sink<TapDownDetails> get _sink
     => _controller.sink;
 
-    PositionedTapController _tapController;
-    TapDownDetails _pendingTap;
-    TapDownDetails _firstTap;
+    PositionedTapController? _tapController;
+    TapDownDetails? _pendingTap;
+    TapDownDetails? _firstTap;
 
     @override
     void initState()
@@ -84,7 +84,7 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
         _tapController?._state = null;
         if (widget.controller != null)
         {
-            widget.controller._state = this;
+            widget.controller!._state = this;
             _tapController = widget.controller;
         }
     }
@@ -93,7 +93,7 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
     {
         if (_firstTap != null && _pendingTap == null)
         {
-            _postCallback(_firstTap, widget.onTap);
+            _postCallback(_firstTap!, widget.onTap);
         }
     }
 
@@ -111,13 +111,13 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
 
     void _handleSecondTap(TapDownDetails secondTap)
     {
-        if (_isDoubleTap(_firstTap, secondTap))
+        if (_isDoubleTap(_firstTap!, secondTap))
         {
             _postCallback(secondTap, widget.onDoubleTap);
         }
         else
         {
-            _postCallback(_firstTap, widget.onTap);
+            _postCallback(_firstTap!, widget.onTap);
             _postCallback(secondTap, widget.onTap);
         }
     }
@@ -138,11 +138,11 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
     {
         if (widget.onDoubleTap == null)
         {
-            _postCallback(_pendingTap, widget.onTap);
+            _postCallback(_pendingTap!, widget.onTap);
         }
         else
         {
-            _sink.add(_pendingTap);
+            _sink.add(_pendingTap!);
         }
         _pendingTap = null;
     }
@@ -151,16 +151,16 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
     {
         if (_firstTap == null)
         {
-            _postCallback(_pendingTap, widget.onLongPress);
+            _postCallback(_pendingTap!, widget.onLongPress);
         }
         else
         {
-            _sink.add(_pendingTap);
+            _sink.add(_pendingTap!);
             _pendingTap = null;
         }
     }
 
-    void _postCallback(TapDownDetails details, TapPositionCallback callback) async
+    void _postCallback(TapDownDetails details, TapPositionCallback? callback) async
     {
         _firstTap = null;
         if (callback != null)
@@ -177,10 +177,10 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
         return TapPosition(global, relative);
     }
 
-    Offset _getWidgetTopLeft()
+    Offset? _getWidgetTopLeft()
     {
         final translation =
-        context?.findRenderObject()?.getTransformTo(null)?.getTranslation();
+        context.findRenderObject()?.getTransformTo(null).getTranslation();
         return translation != null ? Offset(translation.x, translation.y) : null;
     }
 
@@ -214,7 +214,7 @@ class TapPosition
     TapPosition(this.global, this.relative);
 
     Offset global;
-    Offset relative;
+    Offset? relative;
 
     @override
     bool operator ==(dynamic other)
@@ -231,7 +231,7 @@ class TapPosition
 
 class PositionedTapController
 {
-    _TapPositionDetectorState _state;
+    _TapPositionDetectorState? _state;
 
     void onTap()
     => _state?._onTapEvent();

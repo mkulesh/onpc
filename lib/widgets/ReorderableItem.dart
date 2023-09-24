@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -21,7 +21,7 @@ class ReorderableItem extends StatelessWidget
 {
     final Widget child;
 
-    ReorderableItem({Key key, this.child}) : super(key: key);
+    ReorderableItem({Key? key, required this.child}) : super(key: key);
 
     @override
     Widget build(BuildContext context)
@@ -31,7 +31,7 @@ class ReorderableItem extends StatelessWidget
         if (Platform.isDesktop)
         {
             // On desktop, add a placeholder for drag_handle instead a button
-            items.add(SizedBox(width: ButtonDimens.normalButtonSize, height: 0));
+            items.add(SizedBox(width: ButtonDimens.normalButtonSize, height: ButtonDimens.normalButtonSize));
         }
         else
         {

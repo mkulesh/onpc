@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -22,8 +22,8 @@ class CustomTextField extends StatelessWidget
     final bool isFocused;
     final bool isBorder;
     final bool readOnly;
-    final VoidCallback onPressed;
-    final ValueChanged<String> onChanged;
+    final VoidCallback? onPressed;
+    final ValueChanged<String>? onChanged;
 
     CustomTextField(this.text, { this.isFocused = false, this.isBorder = true, this.readOnly = false, this.onPressed, this.onChanged });
 
