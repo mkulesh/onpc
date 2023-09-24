@@ -29,6 +29,8 @@ dependencies:
   syncfusion_flutter_charts: ^23.1.36
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
   pedantic: ^1.4.0
