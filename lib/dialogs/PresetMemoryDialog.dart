@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -81,12 +81,12 @@ class _PresetMemoryDialogState extends State<PresetMemoryDialog>
                     }),
                 TextButton(
                     child: Text(Strings.action_ok.toUpperCase(),
-                        style: _presetText.text.isEmpty ? td.textTheme.labelLarge.copyWith(color: td.disabledColor) : td.textTheme.labelLarge
+                        style: _presetText.text.isEmpty ? td.textTheme.labelLarge!.copyWith(color: td.disabledColor) : td.textTheme.labelLarge
                     ),
                     onPressed: _presetText.text.isEmpty ? null : ()
                     {
                         Navigator.of(context).pop();
-                        final int preset = int.tryParse(_presetText.text);
+                        final int? preset = int.tryParse(_presetText.text);
                         if (preset != null)
                         {
                             viewContext.stateManager.sendPresetMemoryMsg(PresetMemoryMsg.outputCmd(preset));

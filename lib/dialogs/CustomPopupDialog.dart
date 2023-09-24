@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "package:xml/xml.dart" as xml;
 
@@ -43,17 +43,21 @@ class CustomPopupDialog extends StatefulWidget
 
 class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
 {
-    xml.XmlDocument _popupDocument;
+    late xml.XmlDocument _popupDocument;
     String _popupText = "";
-    xml.XmlElement _popupElement;
-    String _dialogTitle;
+    late xml.XmlElement _popupElement;
+    late String _dialogTitle;
     final List<Pair<xml.XmlElement, TextEditingController>> _textFields = [];
 
     _CustomPopupDialogState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
     void _initData()
     {
-        _popupDocument = state.popupDocument;
+        if (state.popupDocument == null)
+        {
+            return;
+        }
+        _popupDocument = state.popupDocument!;
         final String newText = _popupDocument.toString();
         if (_popupText == newText)
         {
@@ -62,18 +66,18 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
 
         _popupText = newText;
         _popupElement = _popupDocument.findElements("popup").first;
-        _dialogTitle = _popupElement.getAttribute("title");
+        _dialogTitle = _popupElement.getAttribute("title")?? "";
 
         _textFields.clear();
         _popupElement.findElements("textboxgroup").forEach((group)
         {
             group.findElements("textbox").forEach((textBox)
             {
-                final xml.XmlAttribute attr = textBox.getAttributeNode("value");
+                final xml.XmlAttribute? attr = textBox.getAttributeNode("value");
                 if (attr != null)
                 {
                     final TextEditingController field = TextEditingController();
-                    final String defValue = _getDefaultValue(textBox);
+                    final String? defValue = _getDefaultValue(textBox);
                     field.text = (defValue != null) ? defValue : attr.text;
                     _textFields.add(Pair(textBox, field));
                 }
@@ -127,7 +131,7 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
 
     Widget _buildContent(final ThemeData td, BuildContext context)
     {
-        PopupUiType uiType;
+        PopupUiType? uiType;
 
         final List<Widget> elements = [];
 
@@ -135,14 +139,14 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
         _popupElement.findElements("label").forEach((label)
         {
             label.findElements("line").forEach((line)
-                => elements.add(CustomTextLabel.normal(line.getAttribute("text"))));
+                => elements.add(CustomTextLabel.normal(line.getAttribute("text")?? "")));
         });
 
         // text boxes
         bool isFocused = true;
         _textFields.forEach((t)
         {
-            elements.add(CustomTextLabel.small(t.item1.getAttribute("text")));
+            elements.add(CustomTextLabel.small(t.item1.getAttribute("text")?? ""));
             elements.add(CustomTextField(t.item2, isFocused: isFocused));
             uiType = PopupUiType.KEYBOARD;
             isFocused = false;
@@ -157,7 +161,7 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
                 {
                     uiType = PopupUiType.POPUP;
                 }
-                elements.add(_createButton(td, context, button, uiType));
+                elements.add(_createButton(td, context, button, uiType!));
             });
         });
 
@@ -172,7 +176,7 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
     Widget _createButton(final ThemeData td, BuildContext context, final xml.XmlElement button, final PopupUiType uiType)
     {
         final Widget btn = MaterialButton(
-            child: CustomTextLabel.normal(button.getAttribute("text")),
+            child: CustomTextLabel.normal(button.getAttribute("text")?? ""),
             color: td.canvasColor,
             elevation: 1,
             minWidth: 0,
@@ -198,9 +202,15 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
         {
             _textFields.forEach((t)
             {
-                t.item1.getAttributeNode("value").value = t.item2.text;
+                if (t.item1.getAttributeNode("value") != null)
+                {
+                    t.item1.getAttributeNode("value")!.value = t.item2.text;
+                }
             });
-            button.getAttributeNode("selected").value = "true";
+            if (button.getAttributeNode("selected") != null)
+            {
+                button.getAttributeNode("selected")!.value = "true";
+            }
             Logging.info(this.widget, "new doc: " + _popupDocument.toXmlString());
             viewContext.stateManager.sendMessage(CustomPopupMsg.output(uiType, _popupDocument));
         }
@@ -210,10 +220,10 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
         }
     }
 
-    String _getDefaultValue(final xml.XmlElement box)
+    String? _getDefaultValue(final xml.XmlElement box)
     {
-        final EnumItem<ServiceType> _serviceType = viewContext.state.mediaListState.serviceType;
-        final String _artist = viewContext.state.trackState.artist;
+        final EnumItem<ServiceType>? _serviceType = viewContext.state.mediaListState.serviceType;
+        final String? _artist = viewContext.state.trackState.artist;
         if (_serviceType != null && _serviceType.key == ServiceType.DEEZER &&
             _artist != null && _artist.isNotEmpty &&
             box.getAttribute("text") == "Search")

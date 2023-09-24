@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -35,7 +35,7 @@ class DeviceSearchDialog extends StatefulWidget
 
 class _DeviceSearchDialogState extends State<DeviceSearchDialog>
 {
-    BroadcastResponseMsg _device;
+    BroadcastResponseMsg? _device;
 
     ViewContext get viewContext
     => widget._viewContext;
@@ -72,7 +72,7 @@ class _DeviceSearchDialogState extends State<DeviceSearchDialog>
         viewContext.stateManager.stopSearch();
         if (_device != null)
         {
-            viewContext.stateManager.connect(_device.getHost, _device.getPort);
+            viewContext.stateManager.connect(_device!.getHost, _device!.getPort);
         }
         widget._onDispose();
     }

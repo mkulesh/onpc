@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../config/Configuration.dart";
@@ -43,10 +43,10 @@ enum _ModelType
 
 class _DeviceConnectDialogState extends State<DeviceConnectDialog>
 {
-    _ModelType _modelType;
+    _ModelType? _modelType;
     final _address = TextEditingController();
     final _port = TextEditingController();
-    bool _saveEnabled;
+    bool _saveEnabled = false;
     final _alias = TextEditingController();
 
     ViewContext get viewContext
@@ -76,13 +76,15 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                 value: _ModelType.INTEGRA,
                 groupValue: _modelType,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (_ModelType v)
+                onChanged: (_ModelType? v)
                 {
-                    setState(()
+                    if (v != null)
                     {
-                        _modelType = v;
-                        _port.text = ISCP_PORT.toString();
-                    });
+                        setState(() {
+                            _modelType = v;
+                            _port.text = ISCP_PORT.toString();
+                        });
+                    }
                 })
         ));
 
@@ -91,13 +93,15 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                 value: _ModelType.DENON,
                 groupValue: _modelType,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (_ModelType v)
+                onChanged: (_ModelType? v)
                 {
-                    setState(()
+                    if (v != null)
                     {
-                        _modelType = v;
-                        _port.text = DCP_PORT.toString();
-                    });
+                        setState(() {
+                            _modelType = v;
+                            _port.text = DCP_PORT.toString();
+                        });
+                    }
                 })
         ));
 
@@ -144,15 +148,15 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                     }),
                 TextButton(
                     child: Text(Strings.action_ok.toUpperCase(),
-                        style: _address.text.isEmpty ? td.textTheme.labelLarge.copyWith(color: td.disabledColor) : td.textTheme.labelLarge
+                        style: _address.text.isEmpty ? td.textTheme.labelLarge!.copyWith(color: td.disabledColor) : td.textTheme.labelLarge
                     ),
                     onPressed: _address.text.isEmpty ? null : ()
                     {
                         Navigator.of(context).pop();
                         final String host = _address.text;
-                        final int port1 = int.tryParse(_port.text);
+                        final int? port1 = int.tryParse(_port.text);
                         final int port2 = port1 == null ? Configuration.SERVER_PORT.item2 : port1;
-                        final String alias = _saveEnabled ?
+                        final String? alias = _saveEnabled ?
                             (_alias.text.isEmpty ? Convert.ipToString(host, port2.toString()) : _alias.text) : null;
                         viewContext.stateManager.connect(host, port2, manualHost: host, manualAlias: alias);
                     }),

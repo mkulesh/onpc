@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +20,7 @@ import "PopupManager.dart";
 
 class UrlLauncher
 {
-    static void launchURL(final String url, {String errorMsg, BuildContext context}) async
+    static void launchURL(final String url, {String? errorMsg, BuildContext? context}) async
     {
         final Uri uri = Uri.parse(url);
         if (await canLaunchUrl(uri))

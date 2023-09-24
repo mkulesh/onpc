@@ -76,7 +76,7 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
         // all other fields still be null
     }
 
-    BroadcastResponseMsg.connection(ConnectionIf connection, final String alias, final String? identifier) : super.output(CODE, "")
+    BroadcastResponseMsg.connection(ConnectionIf connection, final String? alias, final String? identifier) : super.output(CODE, "")
     {
         setHostAndPort(connection);
         this._identifier = identifier;

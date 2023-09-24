@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "../iscp/StateManager.dart";
 
@@ -45,7 +45,7 @@ enum _ConnectionAction
 
 class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDialog>
 {
-    _ConnectionAction _connectionAction;
+    _ConnectionAction _connectionAction = _ConnectionAction.UPDATE;
     final _alias = TextEditingController();
     final _identifier = TextEditingController();
 
@@ -57,7 +57,7 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
     {
         super.initState();
         _connectionAction = _ConnectionAction.UPDATE;
-        _alias.text = widget._msg.alias;
+        _alias.text = widget._msg.alias?? "";
         _identifier.text = widget._msg.getIdentifier;
     }
 
@@ -75,12 +75,14 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
                 value: _ConnectionAction.UPDATE,
                 groupValue: _connectionAction,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (_ConnectionAction v)
+                onChanged: (_ConnectionAction? v)
                 {
-                    setState(()
+                    if (v != null)
                     {
-                        _connectionAction = v;
-                    });
+                        setState(() {
+                            _connectionAction = v;
+                        });
+                    }
                 })
             )
         );
@@ -98,13 +100,15 @@ class _FavoriteConnectionEditDialogState extends State<FavoriteConnectionEditDia
                 value: _ConnectionAction.DELETE,
                 groupValue: _connectionAction,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (_ConnectionAction v)
+                onChanged: (_ConnectionAction? v)
                 {
-                    setState(()
+                    if (v != null)
                     {
-                        _connectionAction = v;
-                        FocusScope.of(context).unfocus();
-                    });
+                        setState(() {
+                            _connectionAction = v;
+                            FocusScope.of(context).unfocus();
+                        });
+                    }
                 })
             )
         );

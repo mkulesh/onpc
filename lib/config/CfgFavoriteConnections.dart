@@ -108,7 +108,7 @@ class CfgFavoriteConnections extends CfgModule
         return -1;
     }
 
-    BroadcastResponseMsg updateDevice(final ConnectionIf connection, String alias, String identifier)
+    BroadcastResponseMsg updateDevice(final ConnectionIf connection, String? alias, String? identifier)
     {
         BroadcastResponseMsg newMsg;
         final int idx = _find(connection);

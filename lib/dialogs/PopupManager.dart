@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:async';
 
 import "package:flutter/material.dart";
@@ -86,14 +86,14 @@ class PopupManager
         }
     }
 
-    void showPopupDialog(final BuildContext context, final ViewContext viewContext, { final GlobalKey<ScaffoldMessengerState> toastKey })
+    void showPopupDialog(final BuildContext context, final ViewContext viewContext, { required final GlobalKey<ScaffoldMessengerState> toastKey })
     {
         if (_isDialog(_DialogType.TRACK_MENU) && Navigator.of(context).canPop())
         {
             Navigator.of(context).pop();
         }
 
-        final String simplePopupMessage = viewContext.state.retrieveSimplePopupMessage();
+        final String? simplePopupMessage = viewContext.state.retrieveSimplePopupMessage();
         if (simplePopupMessage != null)
         {
             showToast(simplePopupMessage, toastKey: toastKey);
@@ -121,11 +121,11 @@ class PopupManager
         }
     }
 
-    static void showToast(final String msg, {final BuildContext context, final GlobalKey<ScaffoldMessengerState> toastKey})
+    static void showToast(final String msg, {final BuildContext? context, final GlobalKey<ScaffoldMessengerState>? toastKey})
     {
         try
         {
-            final ScaffoldMessengerState sm = (toastKey != null) ? toastKey.currentState : ScaffoldMessenger.of(context);
+            final ScaffoldMessengerState? sm = (toastKey != null) ? toastKey.currentState : ScaffoldMessenger.of(context!);
             if (sm != null)
             {
                 sm.showSnackBar(SnackBar(content: Text(msg)));
