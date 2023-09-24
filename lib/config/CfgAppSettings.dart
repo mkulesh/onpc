@@ -174,8 +174,8 @@ class CfgAppSettings extends CfgModule
     // Tab settings
     final List<CfgTabSettings> _tabSettings = [];
 
-    CfgTabSettings? tabSettings(AppTabs? t)
-    => t != null ? _tabSettings[t.index] : null;
+    CfgTabSettings tabSettings(AppTabs t)
+    => _tabSettings[t.index];
 
     // Media list sort mode
     static const Pair<String, String> MEDIA_SORT_MODE = Pair<String, String>("media_sort_mode", "ITEM_NAME");

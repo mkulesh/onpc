@@ -111,7 +111,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         _layerInfo = _cid.isEmpty ? LayerInfo.SERVICE_TOP : LayerInfo.UNDER_2ND_LAYER;
     }
 
-    DcpMediaContainerMsg.item(final Map<String, Object> heosMsg, final String parentSid, final String parentCid) : super.output(CODE, "")
+    DcpMediaContainerMsg.item(final Map<String, dynamic> heosMsg, final String parentSid, final String parentCid) : super.output(CODE, "")
     {
         _sid = getElement(heosMsg, "sid");
         _parentSid = parentSid;
@@ -127,7 +127,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         _imageUrl = getElement(heosMsg, "image_url");
     }
 
-    DcpMediaContainerMsg.queue(Map<String, Object> heosMsg, String psid) : super.output(CODE, "")
+    DcpMediaContainerMsg.queue(Map<String, dynamic> heosMsg, String psid) : super.output(CODE, "")
     {
         _sid = "";
         _parentSid = psid;
@@ -256,7 +256,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         final Iterable<JsonPathMatch> payload = jsonMsg.getArray("payload[*]");
         for (int i = 0; i < payload.length; i++)
         {
-            final Map<String, Object> map = payload.elementAt(i).value;
+            final Map<String, dynamic> map = payload.elementAt(i).value;
             final DcpMediaContainerMsg itemMsg = DcpMediaContainerMsg.item(map, parentMsg._sid, parentMsg._cid);
             if (itemMsg.isSong())
             {
@@ -290,7 +290,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         final Iterable<JsonPathMatch> payload = jsonMsg.getArray("payload[*]");
         for (int i = 0; i < payload.length; i++)
         {
-            final Map<String, Object> map = payload.elementAt(i).value;
+            final Map<String, dynamic> map = payload.elementAt(i).value;
             final DcpMediaContainerMsg itemMsg = DcpMediaContainerMsg.queue(map, PLAYQUEUE_SID);
             final XmlListItemMsg xmlItem = XmlListItemMsg.details(
                     ISCPMessage.nonNullInteger(itemMsg._qid, 10, i),
@@ -313,7 +313,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         final List<dynamic> browse = options.first.value["browse"];
         for (int i = 0; i < browse.length; i++)
         {
-            final Map<String, Object> item = browse.elementAt(i);
+            final Map<String, dynamic> item = browse.elementAt(i);
             Logging.info(DcpMediaContainerMsg, "item: " + item.toString());
             final int? id = int.tryParse(getElement(item, "id"));
             if (id == null)
@@ -420,7 +420,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         return null;
     }
 
-    static String getElement(Map<String, Object> payload, String name)
+    static String getElement(Map<String, dynamic> payload, String name)
     {
         final Object? obj = payload[name];
         if (obj != null)

@@ -11,7 +11,6 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 
 import "dart:typed_data";
 import "dart:ui";
@@ -21,6 +20,7 @@ import "package:flutter_libserialport/flutter_libserialport.dart";
 import "package:window_manager/window_manager.dart";
 
 import "../config/Configuration.dart";
+import "../constants/Strings.dart";
 import "Logging.dart";
 import "Pair.dart";
 
@@ -39,7 +39,7 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior
 
 class SerialPortWrapper
 {
-    SerialPort _port;
+    SerialPort? _port;
 
     static List<Pair<String, String>> getPorts()
     {
@@ -47,7 +47,7 @@ class SerialPortWrapper
         for (final String name in SerialPort.availablePorts)
         {
             final SerialPort sp = SerialPort(name);
-            final Pair<String, String> port = Pair(name, sp.description);
+            final Pair<String, String> port = Pair(name, sp.description?? Strings.dashed_string);
             _ports.add(port);
             sp.dispose();
         }
@@ -75,8 +75,8 @@ class SerialPortWrapper
             cfg.dsr = 0;
             cfg.xonXoff = 0;
             _port = sp;
-            _port.config = cfg;
-            Logging.info(this, "open serial port: " + _port.name);
+            _port!.config = cfg;
+            Logging.info(this, "open serial port: " + (_port!.name?? Strings.dashed_string));
         }
         else
         {
@@ -89,16 +89,16 @@ class SerialPortWrapper
     {
         if (_port != null)
         {
-            Logging.info(this, "close serial port: " + _port.name);
-            _port.close();
-            _port.dispose();
+            Logging.info(this, "close serial port: " + (_port!.name?? Strings.dashed_string));
+            _port!.close();
+            _port!.dispose();
             _port = null;
         }
     }
 
-    void sendMessage(final String data)
+    void sendMessage(final String? data)
     {
-        if (_port == null || !_port.isOpen)
+        if (_port == null || !_port!.isOpen)
         {
             Logging.info(this, "can not send RI command: port not initialized");
             return;
@@ -110,10 +110,10 @@ class SerialPortWrapper
         try
         {
             final Uint8List bytes = Uint8List.fromList(data.codeUnits);
-            final int res = _port.write(bytes);
+            final int res = _port!.write(bytes);
             Logging.info(this, "sending " + data + bytes.toString()
-                + " to " + _port.name + "; written " + res.toString() + " bytes");
-            _port.drain();
+                + " to " + (_port!.name?? Strings.dashed_string) + "; written " + res.toString() + " bytes");
+            _port!.drain();
         }
         on Exception
         {

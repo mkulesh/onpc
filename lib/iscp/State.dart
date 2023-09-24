@@ -183,6 +183,7 @@ class State with ProtoTypeMix
     final HashMap mediaListPosition = HashMap<int, double>();
 
     // Media filter
+    String manualFilter = "";
     bool _mediaFilterVisible = false;
 
     bool get mediaFilterVisible

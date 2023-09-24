@@ -11,11 +11,12 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:async';
 import 'dart:io';
 
 import "package:back_button_interceptor/back_button_interceptor.dart";
+import "package:collection/collection.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
@@ -86,7 +87,7 @@ void main() async
         title: Strings.app_short_name,
         theme: viewContext.getThemeData(),
         home: MusicControllerApp(windowManager, viewContext),
-        localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales)
+        localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales)
         {
             if (locale != null)
             {
@@ -111,7 +112,7 @@ class MusicControllerApp extends StatefulWidget
     final WindowManagerWrapper _windowManager;
     final ViewContext _viewContext;
 
-    MusicControllerApp(this._windowManager, this._viewContext, {Key key}) : super(key: key);
+    MusicControllerApp(this._windowManager, this._viewContext, {Key? key}) : super(key: key);
 
     @override
     MusicControllerAppState createState()
@@ -133,12 +134,13 @@ class MusicControllerAppState extends State<MusicControllerApp>
     final WindowManagerWrapper _windowManager;
     final ViewContext _viewContext;
     final List<AppTabs> _tabs = [];
-    TabController _tabController;
+    TabController? _tabController;
     final PopupManager _popupManager = PopupManager();
     static const MethodChannel _methodChannel = MethodChannel('platform_method_channel');
 
-    ConnectionState _connectionState;
-    bool _exitConfirm, _searchDialog;
+    ConnectionState? _connectionState;
+    bool _exitConfirm = false;
+    bool _searchDialog = false;
     int _tabBarId = 0, _tabId = 0;
 
     final _toastKey = GlobalKey<ScaffoldMessengerState>();
@@ -180,7 +182,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     {
         WidgetsBinding.instance.removeObserver(this);
         _viewContext.updateNotifier.close();
-        _tabController.dispose();
+        _tabController?.dispose();
         BackButtonInterceptor.remove(_onBackPressed);
         _windowManager.dispose();
         _stateManager.usbSerial.dispose();
@@ -220,15 +222,15 @@ class MusicControllerAppState extends State<MusicControllerApp>
         bool connect = _configuration.isDeviceValid;
         if (_stateManager.intentHost != null)
         {
-            if (_stateManager.intentHost.isValidConnection())
+            if (_stateManager.intentHost!.isValidConnection())
             {
                 connect = true;
             }
             // process optional intent data like target zone and app tab
-            _stateManager.state.activeZone = _stateManager.intentHost.zone;
+            _stateManager.state.activeZone = _stateManager.intentHost!.zone;
             for (AppTabs t in AppTabs.values)
             {
-                if (_stateManager.intentHost.tab.toUpperCase() == Convert.enumToString(t).toUpperCase())
+                if (_stateManager.intentHost!.tab.toUpperCase() == Convert.enumToString(t).toUpperCase())
                 {
                     _setActiveTab(t);
                     break;
@@ -242,9 +244,12 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         if (connect)
         {
-            await Platform.requestNetworkState(_methodChannel).then((replay)
+            await Platform.requestNetworkState(_methodChannel).then((String? replay)
             {
-                _processNetworkStateChange(replay, noChangeCheck: true);
+                if (replay != null)
+                {
+                    _processNetworkStateChange(replay, noChangeCheck: true);
+                }
             });
         }
         else
@@ -262,9 +267,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         final ThemeData td = _viewContext.getThemeData();
 
-        final UpdatableAppBarWidget appBarView = UpdatableAppBarWidget(context,
-            AppBarView(_viewContext, _tabController, _tabs)
-        );
+        final UpdatableAppBarWidget? appBarView = _tabController != null?
+            UpdatableAppBarWidget(context, AppBarView(_viewContext, _tabController!, _tabs)) :
+            null;
 
         if (!_stateManager.state.mediaFilterVisible)
         {
@@ -294,9 +299,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
             // Disable activity resize when a software keyboard is open:
             // The keyboard is placed above the activity view
             resizeToAvoidBottomInset: false,
-            appBar: PreferredSize(
+            appBar: appBarView != null? PreferredSize(
                 preferredSize: Size.fromHeight(appBarHeight), // desired height of appBar + tabBar
-                child: appBarView),
+                child: appBarView) : null,
             drawer: UpdatableWidget(child:
                 DrawerView(context, (context)
                 {
@@ -355,9 +360,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     setState(() {});
                     break;
                 case StateManager.OPEN_MEDIA_VIEW:
-                    final AppTabs tab = _configuration.appSettings.visibleTabs.firstWhere(
-                        (t) => _isControlActive(AppControl.MEDIA_LIST, appTab: t),
-                        orElse: () => null);
+                    final AppTabs? tab = _configuration.appSettings.visibleTabs.firstWhereOrNull(
+                        (t) => _isControlActive(AppControl.MEDIA_LIST, appTab: t));
                     if (tab != null)
                     {
                         _setActiveTab(tab);
@@ -408,23 +412,26 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _startSearch()
     {
-        Platform.requestNetworkState(_methodChannel).then((replay)
+        Platform.requestNetworkState(_methodChannel).then((String? replay)
         {
-            final NetworkState n = Platform.parseNetworkState(replay);
-            _stateManager.setNetworkState(n);
-            _stateManager.startSearch(limited: false);
-            if (!_searchDialog)
+            if (replay != null)
             {
-                _searchDialog = true;
-                showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext c)
-                    => DeviceSearchDialog(_viewContext, ()
-                    {
-                        _searchDialog = false;
-                    })
-                );
+                final NetworkState n = Platform.parseNetworkState(replay);
+                _stateManager.setNetworkState(n);
+                _stateManager.startSearch(limited: false);
+                if (!_searchDialog)
+                {
+                    _searchDialog = true;
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext c)
+                        => DeviceSearchDialog(_viewContext, ()
+                        {
+                            _searchDialog = false;
+                        })
+                    );
+                }
             }
         });
     }
@@ -444,11 +451,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
             _stateManager.connect(_configuration.getDeviceName, _configuration.getDevicePort,
                 manualHost: _configuration.getDeviceName);
         }
-        else if (_stateManager.intentHost != null && _stateManager.intentHost.isValidConnection())
+        else if (_stateManager.intentHost != null && _stateManager.intentHost!.isValidConnection())
         {
-            Logging.info(this.widget, "Use intent connection data: " + _stateManager.intentHost.getHostAndPort);
+            Logging.info(this.widget, "Use intent connection data: " + _stateManager.intentHost!.getHostAndPort);
             _connectionState = ConnectionState.CONNECTING_TO_INTENT;
-            _stateManager.connect(_stateManager.intentHost.getHost, _stateManager.intentHost.getPort);
+            _stateManager.connect(_stateManager.intentHost!.getHost, _stateManager.intentHost!.getPort);
         }
     }
 
@@ -572,10 +579,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
     {
         if (_tabController != null)
         {
-            _tabController.dispose();
+            _tabController!.dispose();
         }
         _tabController = TabController(vsync: this, length: _tabs.length, initialIndex: index);
-        _tabController.addListener(_handleTabSelection);
+        _tabController!.addListener(_handleTabSelection);
         _configuration.appSettings.openedTab = _getActiveTab();
         _tabBarId++; // force re-creation of tabBar
     }
@@ -583,18 +590,21 @@ class MusicControllerAppState extends State<MusicControllerApp>
     AppTabs _getActiveTab()
     {
         final List<AppTabs> tabs = _configuration.appSettings.visibleTabs;
-        return _tabController != null && _tabController.index < tabs.length ? tabs[_tabController.index] : null;
+        return _tabController != null && _tabController!.index < tabs.length ? tabs[_tabController!.index] : AppTabs.LISTEN;
     }
 
     void _setActiveTab(AppTabs tab)
     {
-        setState(()
+        if (_tabController != null)
         {
-            _tabController.index = _configuration.appSettings.getTabIndex(tab);
-        });
+            setState(()
+            {
+                _tabController!.index = _configuration.appSettings.getTabIndex(tab);
+            });
+        }
     }
 
-    bool _isControlActive(final AppControl c, {AppTabs appTab})
+    bool _isControlActive(final AppControl c, {AppTabs? appTab})
     {
         final bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
         final CfgTabSettings tab = _configuration.appSettings.tabSettings(
@@ -605,7 +615,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     void _handleTabSelection()
     {
         final AppTabs tab = _getActiveTab();
-        if (!_tabController.indexIsChanging && tab != null)
+        if (!_tabController!.indexIsChanging)
         {
             _configuration.appSettings.openedTab = tab;
 
