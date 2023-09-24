@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:math';
 
 import "package:flutter/material.dart";
@@ -167,10 +167,10 @@ class RiCdControlView extends UpdatableView
 
     Widget _buildImgBtn(final CdPlayerOperationCommandMsg cmd)
     {
-        final RiCommand rc = configuration.riCommands.findCommand(
+        final RiCommand? rc = configuration.riCommands.findCommand(
             RiDeviceType.CD_PLAYER, Convert.enumToString(cmd.getValue.key));
         return CustomImageButton.normal(
-            cmd.getValue.icon,
+            cmd.getValue.icon!,
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendRiMessage(rc, cmd),
@@ -188,7 +188,7 @@ class RiCdControlView extends UpdatableView
             => DropdownPreferenceDialog(Strings.app_control_ri_cd_player,
                 Drawables.ri_cd_models, Drawables.ri_cd_models,
                 cdValue,
-                    (String val)
+                (String val)
                 {
                     configuration.riCommands.cdModel = val;
                     stateManager.triggerStateEvent(CD_MODEL_CHANGE);

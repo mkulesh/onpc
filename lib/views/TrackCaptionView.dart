@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Strings.dart";
@@ -60,7 +60,7 @@ class TrackCaptionView extends UpdatableView
         if (state.playbackState.negativeFeed.isImageValid)
         {
             titleItems.add(CustomImageButton.normal(
-                state.playbackState.negativeFeed.icon,
+                state.playbackState.negativeFeed.icon!,
                 Strings.cmd_description_f2,
                 onPressed: ()
                 => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.F2, false),
@@ -73,7 +73,7 @@ class TrackCaptionView extends UpdatableView
             final FeedType feed = state.playbackState.positiveFeed.key;
             final bool isSelected = state.mediaListState.isAmazonMusic ? feed == FeedType.LIKE : feed == FeedType.LOVE;
             titleItems.add(CustomImageButton.normal(
-                state.playbackState.positiveFeed.icon,
+                state.playbackState.positiveFeed.icon!,
                 Strings.cmd_description_f1,
                 onPressed: ()
                 => stateManager.sendTrackCmd(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.F1, false),
@@ -118,7 +118,7 @@ class TrackCaptionView extends UpdatableView
 
     String _presetInfo()
     {
-        final Preset preset = state.receiverInformation.getPreset(state.radioState.preset);
+        final Preset? preset = state.receiverInformation.getPreset(state.radioState.preset);
         return preset != null ? preset.displayedString(withId: false) : "";
     }
 }

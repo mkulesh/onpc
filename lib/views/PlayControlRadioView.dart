@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Drawables.dart";
@@ -64,21 +64,21 @@ class PlayControlRadioView extends UpdatableView
 
         cmd.forEach((cmd)
         {
-            if (cmd is PresetCommandMsg)
+            if (cmd is PresetCommandMsg && cmd.getCommand != null)
             {
                 buttons.add(CustomImageButton.normal(
-                    cmd.getCommand.icon,
-                    cmd.getCommand.description,
+                    cmd.getCommand!.icon!,
+                    cmd.getCommand!.description,
                     onPressed: ()
                     => stateManager.sendMessage(cmd),
                     isEnabled: state.isOn
                 ));
             }
-            else if (cmd is TuningCommandMsg)
+            else if (cmd is TuningCommandMsg && cmd.getCommand != null)
             {
                 buttons.add(CustomImageButton.normal(
-                    cmd.getCommand.icon,
-                    cmd.getCommand.description,
+                    cmd.getCommand!.icon!,
+                    cmd.getCommand!.description,
                     onPressed: ()
                     => stateManager.sendMessage(cmd),
                     isEnabled: state.isOn

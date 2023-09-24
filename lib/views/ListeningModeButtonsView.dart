@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -125,7 +125,7 @@ class ListeningModeButtonsView extends UpdatableView
     Widget _buildImageBtn(final ListeningModeMsg cmd)
     {
         return CustomImageButton.big(
-            cmd.getValue.icon,
+            cmd.getValue.icon!,
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendMessage(cmd),

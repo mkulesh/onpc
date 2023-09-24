@@ -61,16 +61,16 @@ class ActivityDimens
     => 1.0 /* divider height*/ + DimensTransform.rotate(context, _tabBarHeightPort, _tabBarHeightLand);
 
     // Activity margins
-    static const EdgeInsetsGeometry _activityMargins
+    static const EdgeInsets _activityMargins
     = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 16.0);
 
-    static const EdgeInsetsGeometry _activityMarginsLandAndroid
+    static const EdgeInsets _activityMarginsLandAndroid
     = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
 
-    static const EdgeInsetsGeometry _activityMarginsLandIOS
+    static const EdgeInsets _activityMarginsLandIOS
     = EdgeInsets.only(left: 48.0, right: 48.0, top: 8.0, bottom: 16.0);
 
-    static EdgeInsetsGeometry activityMargins(BuildContext context, bool isIOS, bool isAndroid)
+    static EdgeInsets activityMargins(BuildContext context, bool isIOS, bool isAndroid)
     => DimensTransform.rotate(context, _activityMargins,
         isIOS ? _activityMarginsLandIOS : (isAndroid ? _activityMarginsLandAndroid : _activityMargins));
 
@@ -104,7 +104,7 @@ class ActivityDimens
     static EdgeInsetsGeometry get headerPaddingTop
     => EdgeInsets.only(top: DimensTransform.scale(10));
 
-    static const EdgeInsetsGeometry noPadding
+    static const EdgeInsets noPadding
     = EdgeInsets.all(0);
 }
 
@@ -173,7 +173,7 @@ class DialogDimens
     = EdgeInsets.only(right: 8);
 
     // padding of dialog content
-    static EdgeInsetsGeometry get contentPadding
+    static EdgeInsets get contentPadding
     => EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0);
 
     // padding of a row

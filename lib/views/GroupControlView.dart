@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class GroupControlView extends UpdatableView
             return SizedBox.shrink();
         }
 
-        final DeviceInfo myDevice = stateManager.sourceDevice;
+        final DeviceInfo myDevice = stateManager.sourceDevice!;
         Logging.logRebuild(this);
 
         // Available devices and maximum groupId
@@ -72,14 +72,14 @@ class GroupControlView extends UpdatableView
             }
             if (di.groupMsg != null)
             {
-                di.groupMsg.zones.forEach((z)
+                di.groupMsg!.zones.forEach((z)
                 => maxGroupId = max(maxGroupId, z.groupid));
             }
         });
 
         // Define this group ID
         final int myZone = state.getActiveZone + 1;
-        final int myGroupId = myDevice.groupMsg.getGroupId(myZone);
+        final int myGroupId = myDevice.groupMsg!.getGroupId(myZone);
         final int targetGroupId = myGroupId == MultiroomZone.NO_GROUP ? maxGroupId + 1 : myGroupId;
 
         final List<Widget> controls = [];
@@ -103,7 +103,7 @@ class GroupControlView extends UpdatableView
 
     Widget _buildDeviceItem(DeviceInfo device, bool myDevice, int myZone, int myGroupId, int targetGroupId, int targetZoneId)
     {
-        final MultiroomDeviceInformationMsg di = device.groupMsg;
+        final MultiroomDeviceInformationMsg? di = device.groupMsg;
         String description = Strings.multiroom_none;
         bool attached = false;
         if (di != null)
@@ -134,7 +134,7 @@ class GroupControlView extends UpdatableView
         final Widget checkBox = Checkbox(
             value: attached,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            onChanged: (bool newValue)
+            onChanged: (bool? newValue)
             => _sendGroupCmd(device, attached, myZone, targetGroupId, targetZoneId));
 
         if (!myDevice)

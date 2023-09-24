@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -69,7 +69,9 @@ class DeviceSettingsView extends UpdatableView
         DcpAudioRestorerMsg.CODE
     ];
 
-    DeviceSettingsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    final bool showAll;
+
+    DeviceSettingsView(final ViewContext viewContext, {this.showAll = false}) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -84,7 +86,6 @@ class DeviceSettingsView extends UpdatableView
         final List<TableRow> rows = [];
 
         final DeviceSettingsState ds = state.deviceSettingsState;
-        final bool showAll = false;
 
         // Change the brightness level of the receiver display.
         if (showAll || ds.dimmerLevel.key != DimmerLevel.NONE)
@@ -336,8 +337,8 @@ class DeviceSettingsView extends UpdatableView
 
     TableRow _buildRow(BuildContext context, final String title,
         final String value, final String description,
-        final ISCPMessage cmd, {List<ISCPMessage> postMessages,
-            List<String> postQueries, void Function(BuildContext context) tapHandler})
+        final ISCPMessage? cmd, {List<ISCPMessage>? postMessages,
+            List<String>? postQueries, void Function(BuildContext context)? tapHandler})
     {
         final Widget rowTitle = CustomTextLabel.small(title, padding: ActivityDimens.headerPadding);
 
@@ -369,7 +370,7 @@ class DeviceSettingsView extends UpdatableView
                 CustomImageButton.small(
                     Drawables.cmd_help,
                     Strings.device_parameter_help,
-                    isEnabled: description != null,
+                    isEnabled: true,
                     onPressed: ()
                     => _onParameterHelpButton(context, title, description),
                     isSelected: false,
@@ -380,7 +381,7 @@ class DeviceSettingsView extends UpdatableView
         return TableRow(children: [rowTitle, rowValue]);
     }
 
-    void _onToggleButton(BuildContext context, final ISCPMessage cmd, {List<ISCPMessage> postMessages, List<String> postQueries})
+    void _onToggleButton(BuildContext context, final ISCPMessage? cmd, {List<ISCPMessage>? postMessages, List<String>? postQueries})
     {
         if (cmd != null)
         {

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:math";
 
 import "package:flutter/material.dart";
@@ -63,7 +63,7 @@ class AudioControlView extends UpdatableView
 
         final SoundControlState soundControl = state.soundControlState;
         final int zone = state.getActiveZone;
-        final Zone zoneInfo = state.getActiveZoneInfo;
+        final Zone? zoneInfo = state.getActiveZoneInfo;
 
         // Master volume
         {
@@ -137,14 +137,14 @@ class AudioControlView extends UpdatableView
         // Subwoofer and Center Level
         if (state.isDefaultZone)
         {
-            final Widget subwooferControl = _createControl(SubwooferLevelCommandMsg.KEY,
+            final Widget? subwooferControl = _createControl(SubwooferLevelCommandMsg.KEY,
                 soundControl.subwooferLevel, SubwooferLevelCommandMsg.NO_LEVEL, Strings.subwoofer_level);
             if (subwooferControl != null)
             {
                 controls.add(subwooferControl);
             }
 
-            final Widget centerControl = _createControl(CenterLevelCommandMsg.KEY,
+            final Widget? centerControl = _createControl(CenterLevelCommandMsg.KEY,
                 soundControl.centerLevel, CenterLevelCommandMsg.NO_LEVEL, Strings.center_level);
             if (centerControl != null)
             {
@@ -158,10 +158,10 @@ class AudioControlView extends UpdatableView
         );
     }
 
-    Widget _createControl(final String key, final int toneLevel, final int noLevel, final String caption, {ToneControl defToneControl})
+    Widget? _createControl(final String key, final int toneLevel, final int noLevel, final String caption, {ToneControl? defToneControl})
     {
         final int zone = state.getActiveZone;
-        ToneControl toneControl = state.receiverInformation.toneControls[key];
+        ToneControl? toneControl = state.receiverInformation.toneControls[key];
         if (toneControl == null)
         {
             toneControl = defToneControl;
@@ -178,10 +178,10 @@ class AudioControlView extends UpdatableView
                 maxValueNum: max,
                 currValue: progress,
                 onCaption: (v)
-                => ((v * step).floor() + toneControl.getMin).toString(),
+                => ((v * step).floor() + toneControl!.getMin).toString(),
                 onChanged: (v)
                 {
-                    final int newVal = (v.toDouble() * step).floor() + toneControl.getMin;
+                    final int newVal = (v.toDouble() * step).floor() + toneControl!.getMin;
                     switch (key)
                     {
                         case ToneCommandMsg.BASS_KEY:
@@ -247,7 +247,7 @@ class AudioControlView extends UpdatableView
     void _addToneControls(List<Widget> controls, SoundControlState soundControl)
     {
         // Bass
-        final Widget bassControl = _createControl(ToneCommandMsg.BASS_KEY,
+        final Widget? bassControl = _createControl(ToneCommandMsg.BASS_KEY,
             soundControl.bassLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_bass,
             defToneControl: configuration.audioControl.isForceAudioControl ? ReceiverInformation.DEFAULT_BASS_CONTROL : null);
         if (bassControl != null)
@@ -255,7 +255,7 @@ class AudioControlView extends UpdatableView
             controls.add(bassControl);
         }
         // Treble
-        final Widget trebleControl = _createControl(ToneCommandMsg.TREBLE_KEY,
+        final Widget? trebleControl = _createControl(ToneCommandMsg.TREBLE_KEY,
             soundControl.trebleLevel, ToneCommandMsg.NO_LEVEL, Strings.tone_treble,
             defToneControl: configuration.audioControl.isForceAudioControl ? ReceiverInformation.DEFAULT_TREBLE_CONTROL : null);
         if (trebleControl != null)

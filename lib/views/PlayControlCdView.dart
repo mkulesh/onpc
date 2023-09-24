@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
@@ -53,13 +53,13 @@ class PlayControlCdView extends UpdatableView
         cmd.forEach((cmdEnum)
         {
             final EnumItem<CdPlayerOperationCommand> cmd = CdPlayerOperationCommandMsg.ValueEnum.valueByKey(cmdEnum);
-            String icon = cmd.icon;
+            String icon = cmd.icon!;
             bool selected = false;
 
             switch (cmd.key)
             {
                 case CdPlayerOperationCommand.REPEAT:
-                    icon = state.playbackState.repeatStatus.icon;
+                    icon = state.playbackState.repeatStatus.icon!;
                     selected = state.playbackState.repeatStatus.key != RepeatStatus.OFF;
                     break;
                 case CdPlayerOperationCommand.RANDOM:

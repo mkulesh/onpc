@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -48,7 +48,7 @@ class DeviceSearchView extends UpdatableView
         {
             final String titleStr = d.getDeviceName(configuration.friendlyNames);
             final Widget title = CustomTextLabel.normal(titleStr);
-            final Widget subTitle = d.getHostAndPort() != titleStr ? CustomTextLabel.small(d.getHostAndPort()) : null;
+            final Widget? subTitle = d.getHostAndPort() != titleStr ? CustomTextLabel.small(d.getHostAndPort()) : null;
 
             final Widget item = ListTile(
                 contentPadding: ActivityDimens.noPadding,

@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../config/CfgAppSettings.dart";
@@ -53,7 +53,7 @@ class AppBarView extends UpdatableView
         final ThemeData td = Theme.of(context);
 
         // Logo
-        String subTitle = "";
+        String? subTitle = "";
         if (!state.isConnected)
         {
             subTitle = Strings.state_not_connected;
@@ -65,13 +65,13 @@ class AppBarView extends UpdatableView
             {
                 subTitle = stateManager.getConnection().getHostAndPort;
             }
-            if (state.isExtendedZone)
+            if (state.isExtendedZone && state.getActiveZoneInfo != null)
             {
                 if (subTitle.isNotEmpty)
                 {
                     subTitle += "/";
                 }
-                subTitle += state.getActiveZoneInfo.getName;
+                subTitle += state.getActiveZoneInfo!.getName;
             }
             if (!state.isOn)
             {
@@ -81,7 +81,7 @@ class AppBarView extends UpdatableView
 
         final double tabBarHeight = ActivityDimens.tabBarHeight(context);
 
-        final Widget tabBar = configuration.appSettings.isSingleTab ? null : PreferredSize(
+        final PreferredSizeWidget? tabBar = configuration.appSettings.isSingleTab ? null : PreferredSize(
             preferredSize: Size.fromHeight(tabBarHeight), // desired height of tabBar
             child: SizedBox(
                 height: tabBarHeight,
@@ -112,7 +112,7 @@ class AppBarView extends UpdatableView
         Logging.info(this, "App bar menu: " + Strings.menu_power_standby);
         final PowerStatus p = state.isOn ? PowerStatus.STB : PowerStatus.ON;
         final PowerStatusMsg cmdMsg = PowerStatusMsg.output(state.getActiveZone, p);
-        if (state.isOn && stateManager.isMultiroomAvailable() && stateManager.sourceDevice.isMasterDevice)
+        if (state.isOn && stateManager.isMultiroomAvailable() && stateManager.sourceDevice!.isMasterDevice)
         {
             final ThemeData td = Theme.of(context);
             final Widget dialog = AlertDialog(

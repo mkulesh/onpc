@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Drawables.dart";
@@ -93,7 +93,7 @@ class TrackFileInfoView extends UpdatableView
          }
 
         // Track info
-        Widget trackInfoBtn;
+        Widget? trackInfoBtn;
         if (_isRadioInput)
         {
             trackInfoBtn = CustomImageButton.small(
@@ -120,7 +120,7 @@ class TrackFileInfoView extends UpdatableView
         {
             final EnumItem<ServiceType> s = Services.ServiceTypeEnum.valueByKey(ServiceType.DCP_PLAYQUEUE);
             trackInfoBtn = CustomImageButton.small(
-                s.icon, s.description,
+                s.icon!, s.description,
                 onPressed: ()
                 {
                     state.mediaListState.setDcpNetTopLayer(state.receiverInformation);

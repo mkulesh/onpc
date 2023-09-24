@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../config/Configuration.dart";
@@ -58,28 +58,30 @@ class VolumeControlButtonsView extends UpdatableView
         final List<Widget> buttons = [];
         cmd.forEach((cmd)
         {
-            String icon, description;
+            String? icon, description;
             bool selected = false;
             if (cmd is AudioMutingMsg)
             {
-                icon = AudioMutingMsg.TOGGLE.icon;
+                icon = AudioMutingMsg.TOGGLE.icon!;
                 description = AudioMutingMsg.TOGGLE.description;
                 selected = state.isOn && soundControl.audioMuting.key == AudioMuting.ON;
             }
             else if (cmd is MasterVolumeMsg)
             {
-                icon = cmd.getCommand.icon;
+                icon = cmd.getCommand.icon!;
                 description = cmd.getCommand.description;
             }
 
-            buttons.add(CustomImageButton.normal(
-                icon,
-                description,
-                onPressed: ()
-                => stateManager.sendMessage(cmd),
-                isEnabled: state.isOn,
-                isSelected: selected
-            ));
+            if (icon != null)
+            {
+                buttons.add(CustomImageButton.normal(
+                    icon,
+                    description,
+                    onPressed: () => stateManager.sendMessage(cmd),
+                    isEnabled: state.isOn,
+                    isSelected: selected
+                ));
+            }
         });
 
         // master volume label

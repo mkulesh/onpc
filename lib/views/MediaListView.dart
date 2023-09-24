@@ -11,7 +11,8 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
+import "package:collection/collection.dart";
 import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
 
@@ -105,7 +106,7 @@ class MediaListView extends StatefulWidget
         DcpMediaItemMsg.CODE
     ];
 
-    MediaListView({Key key, this.viewContext}) : super(key: key);
+    MediaListView({Key? key, required this.viewContext}) : super(key: key);
 
     @override
     String toStringShort() => "MediaListView";
@@ -113,6 +114,13 @@ class MediaListView extends StatefulWidget
     @override
     _MediaListViewState createState()
     => _MediaListViewState(viewContext, UPDATE_TRIGGERS);
+
+    void setManualFilter(String s)
+    {
+        Logging.info(this, "Setting manual media filter: s");
+        viewContext.state.manualFilter = s;
+        viewContext.stateManager.triggerStateEvent(StateManager.WAITING_FOR_DATA_EVENT);
+    }
 }
 
 class _MediaListViewState extends WidgetStreamState<MediaListView>
@@ -121,11 +129,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     static final String _DEEZER_ALBUMS = "MY ALBUMS";
 
     final List<int> _playQueueIds = [];
-    ScrollController _scrollController;
+    late ScrollController _scrollController;
     int _currentLayer = -1;
     final MediaListButtons _headerButtons = MediaListButtons();
     final MediaListSorter _mediaListSorter = MediaListSorter();
-    TextEditingController _mediaFilterController;
+    late TextEditingController _mediaFilterController;
 
     _MediaListViewState(final ViewContext _viewContext, final List<String> _updateTriggers) : super(_viewContext, _updateTriggers);
 
@@ -164,7 +172,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         // Header buttons
         _headerButtons.filter = state.isOn && ms.isListMode && dataItems > 1;
-        _headerButtons.remoteSort = state.isOn && state.getNetworkService != null && state.getNetworkService.isSort;
+        _headerButtons.remoteSort = state.isOn && state.getNetworkService != null && state.getNetworkService!.isSort;
         _headerButtons.appSort = state.isOn && !_headerButtons.remoteSort && ms.isDeezer && _DEEZER_ALBUMS == ms.titleBar.toUpperCase();
         _headerButtons.progress = state.isOn && stateManager.waitingForData;
 
@@ -173,7 +181,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             _mediaFilterController.clear();
         }
-        final String filter = _mediaFilterController.text;
+        final String? filter = viewContext.state.manualFilter.isNotEmpty?
+            viewContext.state.manualFilter : _mediaFilterController.text;
         final bool applyFilter = _headerButtons.filter && filter != null && filter.isNotEmpty;
         if (applyFilter)
         {
@@ -237,7 +246,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     Widget _buildMediaList(final ThemeData td, List<ISCPMessage> items)
     {
-        final Widget list = ListView.builder(
+        final ListView list = ListView.builder(
             padding: ActivityDimens.noPadding,
             scrollDirection: Axis.vertical,
             itemCount: items.length,
@@ -288,7 +297,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final List<Widget> _rows = [];
         _playQueueIds.clear();
 
-        Widget header;
+        Widget? header;
         items.forEach((rowMsg)
         {
             if (rowMsg is XmlListItemMsg)
@@ -338,11 +347,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
     }
 
-    Widget _buildRow(final BuildContext context, final String icon, final bool iconEnabled, final bool isPlaying, final String title, final ISCPMessage cmd, {final String reorderId})
+    Widget _buildRow(final BuildContext context, final String? icon, final bool iconEnabled, final bool isPlaying, final String title, final ISCPMessage cmd, {final String? reorderId})
     {
         final ThemeData td = Theme.of(context);
         final bool isMoved = cmd is XmlListItemMsg && cmd.getMessageId == state.mediaListState.movedItem;
-        final Widget iconImg = icon == null || icon == Drawables.media_item_unknown ? null :
+        final Widget? iconImg = icon == null || icon == Drawables.media_item_unknown ? null :
             CustomImageButton.normal(
                 icon, null,
                 isEnabled: iconEnabled || isPlaying,
@@ -351,7 +360,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             );
 
         final Widget w = ContextMenuListener(
-            key: Key(reorderId),
+            key: reorderId != null? Key(reorderId) : null,
             child: MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
@@ -378,7 +387,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
     }
 
-    void _processItemTap(final BuildContext context, ISCPMessage cmd, final String icon)
+    void _processItemTap(final BuildContext context, ISCPMessage cmd, final String? icon)
     {
         if (Platform.isMobile && cmd is NetworkServiceMsg &&
             [ServiceType.SPOTIFY, ServiceType.DCP_SPOTIFY].contains(cmd.getValue.key))
@@ -394,7 +403,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     Widget _buildNetworkServiceRow(final BuildContext context, NetworkServiceMsg rowMsg)
     {
-        String serviceIcon = rowMsg.getValue.icon;
+        String? serviceIcon = rowMsg.getValue.icon;
         if (serviceIcon == null)
         {
             serviceIcon = Drawables.media_item_unknown;
@@ -403,9 +412,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getValue.description, rowMsg);
     }
 
-    Widget _buildXmlListItemMsg(final BuildContext context, XmlListItemMsg rowMsg, {final String reorderId})
+    Widget _buildXmlListItemMsg(final BuildContext context, XmlListItemMsg rowMsg, {final String? reorderId})
     {
-        String serviceIcon = rowMsg.getIcon.icon;
+        String? serviceIcon = rowMsg.getIcon.icon;
         if (serviceIcon == null)
         {
             serviceIcon = Drawables.media_item_unknown;
@@ -417,12 +426,13 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     Widget _buildPresetCommandMsg(BuildContext context, PresetCommandMsg rowMsg)
     {
         String serviceIcon = Drawables.media_item_music;
-        final bool isPlaying = rowMsg.getPresetConfig.getId == state.radioState.preset;
+        final bool isPlaying = rowMsg.getPresetConfig != null && rowMsg.getPresetConfig!.getId == state.radioState.preset;
         if (isPlaying)
         {
             serviceIcon = Drawables.media_item_play;
         }
-        return _buildRow(context, serviceIcon, false, isPlaying, rowMsg.getPresetConfig.displayedString(), rowMsg);
+        final String name = rowMsg.getPresetConfig != null? rowMsg.getPresetConfig!.displayedString() : Strings.dashed_string;
+        return _buildRow(context, serviceIcon, false, isPlaying, name, rowMsg);
     }
 
     Widget _buildOperationCommandMsg(BuildContext context, OperationCommandMsg rowMsg)
@@ -445,17 +455,17 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     void _onCreateContextMenu(final BuildContext context, final TapPosition position, final ISCPMessage cmd)
     {
         final List<PopupMenuItem<MediaContextMenu>> contextMenu = [];
-        final Selector selector = state.getActualSelector;
-        final NetworkService networkService = state.getNetworkService;
-        final DcpMediaContainerMsg dcpCmd = state.mediaListState.getDcpContainerMsg(cmd);
+        final Selector? selector = state.getActualSelector;
+        final NetworkService? networkService = state.getNetworkService;
+        final DcpMediaContainerMsg? dcpCmd = state.mediaListState.getDcpContainerMsg(cmd);
 
         final bool isMediaItem = (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING) || cmd is PresetCommandMsg;
         final bool isPlaying = cmd is XmlListItemMsg && cmd.getIcon.key == ListItemIcon.PLAY;
         final bool isDcpItem = dcpCmd != null;
         final bool isDcpPlayable = dcpCmd != null && dcpCmd.isPlayable();
         final bool isQueue = state.mediaListState.isQueue;
-        final String shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
-        final String shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getPresetConfig.displayedString() : null;
+        final String? shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
+        final String? shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg && cmd.getPresetConfig != null ? cmd.getPresetConfig!.displayedString() : null;
 
         if (isMediaItem && selector != null)
         {
@@ -585,14 +595,14 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
     }
 
-    void _onContextItemSelected(final BuildContext context, final MediaContextMenu m, final ISCPMessage cmd, final String shortcutItem, final String shortcutAlias)
+    void _onContextItemSelected(final BuildContext context, final MediaContextMenu? m, final ISCPMessage cmd, final String? shortcutItem, final String? shortcutAlias)
     {
         if (m == null)
         {
             return;
         }
         final int idx = cmd.getMessageId;
-        final DcpMediaContainerMsg dcpCmd = state.mediaListState.getDcpContainerMsg(cmd);
+        final DcpMediaContainerMsg? dcpCmd = state.mediaListState.getDcpContainerMsg(cmd);
         Logging.info(this.widget, "selected context menu: " + m.toString() + ", index: " + idx.toString());
         switch (m)
         {
@@ -682,7 +692,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             return Strings.medialist_no_items;
         }
         final MediaListState ms = state.mediaListState;
-        final Selector selector = state.getActualSelector;
+        final Selector? selector = state.getActualSelector;
         if (ms.isSimpleInput)
         {
             if (selector != null && configuration.friendlyNames)
@@ -823,7 +833,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.TOP);
 
         elements.add(CustomImageButton.small(
-            commandTopMsg.getValue.icon,
+            commandTopMsg.getValue.icon!,
             commandTopMsg.getValue.description,
             onPressed: ()
             => stateManager.sendMessage(commandTopMsg, waitingForData: true),
@@ -884,7 +894,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             final OperationCommandMsg cmd = OperationCommandMsg.output(
                 ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, OperationCommand.SORT);
             elements.add(CustomImageButton.small(
-                cmd.getValue.icon,
+                cmd.getValue.icon!,
                 cmd.getValue.description,
                 onPressed: ()
                 => stateManager.sendMessage(cmd)));
@@ -929,9 +939,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             title = msg.getTitle;
         }
-        else if (msg is PresetCommandMsg)
+        else if (msg is PresetCommandMsg && msg.getPresetConfig != null)
         {
-            title = msg.getPresetConfig.displayedString();
+            title = msg.getPresetConfig!.displayedString();
         }
         else
         {
@@ -961,7 +971,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             OperationCommandMsg.output(state.getActiveZone, OperationCommand.RIGHT),
         ].forEach((cmd)
         => buttons.add(CustomImageButton.normal(
-            cmd.getValue.icon,
+            cmd.getValue.icon!,
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendMessage(cmd)))
@@ -1006,13 +1016,13 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         stateManager.sendMessage(mc1);
     }
 
-    XmlListItemMsg _findDcpMenuItem(List<XmlListItemMsg> menuItems, int id)
-    => menuItems.firstWhere((item) => item.getMessageId == id, orElse: () => null);
+    XmlListItemMsg? _findDcpMenuItem(List<XmlListItemMsg> menuItems, int id)
+    => menuItems.firstWhereOrNull((item) => item.getMessageId == id);
 
-    void _callDcpMenuItem(DcpMediaContainerMsg dcpCmd, int id)
+    void _callDcpMenuItem(DcpMediaContainerMsg? dcpCmd, int id)
     {
         final List<XmlListItemMsg> menuItems = state.mediaListState.cloneDcpTrackMenuItems(dcpCmd);
-        final XmlListItemMsg item = _findDcpMenuItem(menuItems, id);
+        final XmlListItemMsg? item = _findDcpMenuItem(menuItems, id);
         if (item != null)
         {
             stateManager.sendMessage(item);

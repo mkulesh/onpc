@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:math";
 
 import "package:flutter/material.dart";
@@ -73,7 +73,7 @@ class VolumeControlSliderView extends UpdatableView
         {
             final MasterVolumeMsg cmd = MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN);
             controls.add(CustomImageButton.normal(
-                cmd.getCommand.icon,
+                cmd.getCommand.icon!,
                 cmd.getCommand.description,
                 onPressed: ()
                 => stateManager.sendMessage(cmd),
@@ -84,7 +84,7 @@ class VolumeControlSliderView extends UpdatableView
         // slider
         {
             final int zone = state.getActiveZone;
-            final Zone zoneInfo = state.getActiveZoneInfo;
+            final Zone? zoneInfo = state.getActiveZoneInfo;
             final int maxVolume = zoneInfo == null ? MasterVolumeMsg.MAX_VOLUME_1_STEP :
                 min(soundControl.getVolumeMax(zoneInfo), configuration.audioControl.masterVolumeMax);
             final Widget slider = CustomProgressBar(
@@ -110,7 +110,7 @@ class VolumeControlSliderView extends UpdatableView
         {
             final MasterVolumeMsg cmd = MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP);
             controls.add(CustomImageButton.normal(
-                cmd.getCommand.icon,
+                cmd.getCommand.icon!,
                 cmd.getCommand.description,
                 onPressed: ()
                 => stateManager.sendMessage(cmd),
@@ -123,7 +123,7 @@ class VolumeControlSliderView extends UpdatableView
             final AudioMutingMsg cmd = AudioMutingMsg.toggle(
                 state.getActiveZone, soundControl.audioMuting, state.protoType);
             controls.add(CustomImageButton.normal(
-                AudioMutingMsg.TOGGLE.icon,
+                AudioMutingMsg.TOGGLE.icon!,
                 AudioMutingMsg.TOGGLE.description,
                 onPressed: ()
                 => stateManager.sendMessage(cmd),

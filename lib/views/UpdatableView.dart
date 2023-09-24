@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:async";
 
 import "package:flutter/material.dart";
@@ -63,7 +63,7 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
     => _viewContext;
 
     final List<String> _updateTriggers;
-    StreamSubscription _updateStream;
+    StreamSubscription? _updateStream;
 
     WidgetStreamState(this._viewContext, this._updateTriggers);
 
@@ -78,7 +78,7 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
     @override
     void dispose()
     {
-        _updateStream.cancel();
+        _updateStream?.cancel();
         super.dispose();
     }
 
@@ -86,7 +86,7 @@ abstract class WidgetStreamState<T extends StatefulWidget> extends State<T> with
     {
         if (_updateStream != null)
         {
-            _updateStream.cancel();
+            _updateStream!.cancel();
             _updateStream = updateNotifier.stream.listen((code)
             => _update(code));
         }
@@ -149,7 +149,7 @@ class UpdatableWidget extends StatefulWidget
 {
     final UpdatableView child;
 
-    UpdatableWidget({Key key, this.child}) : super(key: key);
+    UpdatableWidget({Key? key, required this.child}) : super(key: key);
 
     @override _UpdatableWidgetState createState()
     => _UpdatableWidgetState(child._viewContext, child._updateTriggers);
@@ -186,7 +186,7 @@ class _UpdatableWidgetState extends WidgetStreamState<UpdatableWidget>
         // in case the stream instance changed, subscribe to the new one
         if (widget.child.viewContext.updateNotifier != old.child.viewContext.updateNotifier)
         {
-            _updateStream.cancel();
+            _updateStream?.cancel();
             _updateStream = widget.child.viewContext.updateNotifier.stream.listen((code)
             => _update(code));
         }

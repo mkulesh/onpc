@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
@@ -41,7 +41,7 @@ class TrackCoverView extends UpdatableView
         final ThemeData td = Theme.of(context);
 
         final Widget cover = state.isOn && state.trackState.cover != null ?
-            state.trackState.cover : SvgPicture.asset(
+            state.trackState.cover! : SvgPicture.asset(
                 Drawables.empty_cover,
                 color: state.isOn ? td.colorScheme.secondary : td.disabledColor,
                 fit: BoxFit.contain

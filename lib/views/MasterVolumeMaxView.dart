@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "dart:math";
 
 import "package:flutter/material.dart";
@@ -39,7 +39,7 @@ class MasterVolumeMaxView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final Zone zoneInfo = state.getActiveZoneInfo;
+        final Zone? zoneInfo = state.getActiveZoneInfo;
         final int maxVolume = state.soundControlState.getVolumeMax(zoneInfo);
 
         return CustomProgressBar(

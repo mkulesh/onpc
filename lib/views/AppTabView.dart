@@ -11,7 +11,8 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
+import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 
 import "../config/CfgTabSettings.dart";
@@ -51,9 +52,9 @@ class AppTabView extends UpdatableView
         AppControl.MEDIA_LIST
     ];
 
-    List<AppControl> controlsPortrait;
-    List<AppControl> controlsLandscapeLeft;
-    List<AppControl> controlsLandscapeRight;
+    late List<AppControl> controlsPortrait;
+    late List<AppControl> controlsLandscapeLeft;
+    late List<AppControl> controlsLandscapeRight;
 
     final int _extId;
     int _wId = 0;
@@ -133,10 +134,10 @@ class AppTabView extends UpdatableView
             tab = Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                    Expanded(flex: columnWidths[0].value.toInt(), child: leftColumn),
-                    Expanded(flex: columnWidths[1].value.toInt(), child: VerticalDivider(
+                    Expanded(flex: columnWidths[0]!.value.toInt(), child: leftColumn),
+                    Expanded(flex: columnWidths[1]!.value.toInt(), child: VerticalDivider(
                         color: Theme.of(context).disabledColor)),
-                    Expanded(flex: columnWidths[2].value.toInt(), child: rightColumn)
+                    Expanded(flex: columnWidths[2]!.value.toInt(), child: rightColumn)
                 ]
             );
 
@@ -172,16 +173,16 @@ class AppTabView extends UpdatableView
     => (!isPortrait) ? controlsLandscapeRight : [];
 
     bool _isExpandable(final List<AppControl> types)
-    => types.firstWhere((c) => EXPANDABLE.contains(c), orElse: () => null) != null;
+    => types.firstWhereOrNull((c) => EXPANDABLE.contains(c)) != null;
 
     bool _isFocusable(final List<AppControl> types)
-    => types.firstWhere((c) => FOCUSABLE.contains(c), orElse: () => null) != null;
+    => types.firstWhereOrNull((c) => FOCUSABLE.contains(c)) != null;
 
     void _addWidgets(BuildContext context, final List<AppControl> types, final List<Widget> widgets)
     {
         types.forEach((c)
         {
-            final Widget w = _buildWidget(context, c);
+            final Widget? w = _buildWidget(context, c);
             if (w != null)
             {
                 widgets.add(w);
@@ -189,7 +190,7 @@ class AppTabView extends UpdatableView
         });
     }
 
-    Widget _buildWidget(BuildContext context, AppControl c)
+    Widget? _buildWidget(BuildContext context, AppControl c)
     {
         _wId++;
         final Key key = Key(_extId.toString() + "_" + _wId.toString());
@@ -262,6 +263,5 @@ class AppTabView extends UpdatableView
             case AppControl.RI_TAPE_DECK:
                 return UpdatableWidget(key: key, child: RiTapeDeckControlView(viewContext));
         }
-        return null;
     }
 }

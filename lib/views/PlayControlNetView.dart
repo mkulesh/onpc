@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
@@ -54,14 +54,14 @@ class PlayControlNetView extends UpdatableView
         cmd.forEach((cmdEnum)
         {
             final EnumItem<OperationCommand> cmd = OperationCommandMsg.ValueEnum.valueByKey(cmdEnum);
-            String icon = cmd.icon;
+            String icon = cmd.icon!;
             bool enabled = state.isOn;
             bool selected = false;
 
             switch (cmd.key)
             {
                 case OperationCommand.REPEAT:
-                    icon = state.playbackState.repeatStatus.icon;
+                    icon = state.playbackState.repeatStatus.icon!;
                     enabled = state.playbackState.repeatStatus.key != RepeatStatus.DISABLE;
                     selected = enabled && state.playbackState.repeatStatus.key != RepeatStatus.OFF;
                     break;

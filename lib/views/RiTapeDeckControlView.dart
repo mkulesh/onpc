@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../config/CfgRiCommands.dart";
@@ -71,10 +71,10 @@ class RiTapeDeckControlView extends UpdatableView
 
     Widget _buildImgBtn(final TapeOperationCommandMsg cmd)
     {
-        final RiCommand rc = configuration.riCommands.findCommand(
+        final RiCommand? rc = configuration.riCommands.findCommand(
             RiDeviceType.TAPE_DECK, Convert.enumToString(cmd.getValue.key));
         return CustomImageButton.normal(
-            cmd.getValue.icon,
+            cmd.getValue.icon!,
             cmd.getValue.description,
             onPressed: ()
             => stateManager.sendRiMessage(rc, cmd),

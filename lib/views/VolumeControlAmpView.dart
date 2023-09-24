@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
@@ -44,7 +44,7 @@ class VolumeControlAmpView extends UpdatableView
         cmd.forEach((cmd)
         {
             buttons.add(CustomImageButton.normal(
-                cmd.getValue.icon,
+                cmd.getValue.icon!,
                 cmd.getValue.description,
                 onPressed: ()
                 => stateManager.sendMessage(cmd),

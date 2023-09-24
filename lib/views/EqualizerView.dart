@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 
@@ -91,7 +91,7 @@ class _EqualizerSlider extends StatelessWidget
     final int currValue;
     final NewValueCallback onChanged;
 
-    _EqualizerSlider({this.caption, this.currValue, this.onChanged});
+    _EqualizerSlider({required this.caption, required this.currValue, required this.onChanged});
 
     @override
     Widget build(BuildContext context)

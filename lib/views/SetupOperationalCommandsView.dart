@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -82,7 +82,7 @@ class SetupOperationalCommandsView extends UpdatableView
             final List<Widget> cells = [];
             cmd.forEach((c)
             => cells.add(CustomImageButton.big(
-                    c.getValue.icon,
+                    c.getValue.icon!,
                     c.getValue.description,
                     onPressed: ()
                     => stateManager.sendMessage(c),

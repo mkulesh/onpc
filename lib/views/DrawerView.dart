@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
@@ -75,7 +75,7 @@ class DrawerView extends UpdatableView
             state.receiverInformation.zones.forEach((z)
             {
                 final bool active = (state.getActiveZoneInfo != null) ?
-                    state.getActiveZoneInfo.getId == z.getId : false;
+                    state.getActiveZoneInfo!.getId == z.getId : false;
                 drawerItems.add(_buildDrawerItem(
                     context, Drawables.drawerZone(z.getId), z.getName, isSelected: active,
                     onTabListener: (context)
@@ -186,7 +186,7 @@ class DrawerView extends UpdatableView
     }
 
     Widget _buildDrawerItem(final BuildContext context, final String iconName, final String title,
-        {bool isSelected = false, OnTabListener onTabListener, Widget editButton})
+        {bool isSelected = false, OnTabListener? onTabListener, Widget? editButton})
     {
         final ThemeData td = Theme.of(context);
         final Widget item = InkWell(child: Row(
@@ -200,7 +200,7 @@ class DrawerView extends UpdatableView
                 ),
                 Expanded(child: CustomTextLabel.small(title,
                     color: isSelected ? td.colorScheme.secondary :
-                    (td.brightness == Brightness.dark ? td.bottomAppBarTheme.color : td.textTheme.titleMedium.color))
+                    (td.brightness == Brightness.dark ? td.bottomAppBarTheme.color : td.textTheme.titleMedium!.color))
                 )
             ]),
             onTap: ()

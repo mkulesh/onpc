@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
@@ -53,7 +53,7 @@ class DeviceInfoView extends StatefulWidget
 
 class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
 {
-    TextEditingController _friendlyNameController;
+    late TextEditingController _friendlyNameController;
 
     _DeviceInfoViewState(final ViewContext _viewContext, final List<String> _updateTriggers) : super(_viewContext, _updateTriggers);
 

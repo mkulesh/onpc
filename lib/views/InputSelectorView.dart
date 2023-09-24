@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../config/CheckableItem.dart";
@@ -46,7 +46,7 @@ class InputSelectorView extends UpdatableView
         Logging.logRebuild(this);
 
         final List<CustomTextButton> buttons = [];
-        CustomTextButton selectedButton;
+        CustomTextButton? selectedButton;
 
         final List<Selector> sortedSelectors = _getSortedDeviceSelectors(
             false, state.mediaListState.inputType, state.receiverInformation.deviceSelectors);
@@ -65,7 +65,7 @@ class InputSelectorView extends UpdatableView
                     useFriendlyName: configuration.friendlyNames,
                     friendlyName: deviceSelector.getName);
                 final bool isSelected = state.isOn && state.mediaListState.inputType.code == selectorEnum.code;
-                final Widget button = CustomTextButton(name,
+                final CustomTextButton button = CustomTextButton(name,
                     isEnabled: state.isConnected,
                     isSelected: isSelected,
                     onPressed: ()

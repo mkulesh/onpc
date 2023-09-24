@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -51,7 +51,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     with SingleTickerProviderStateMixin
 {
     final List<AboutScreenTabs> _tabs = [AboutScreenTabs.ABOUT, AboutScreenTabs.RECEIVER, AboutScreenTabs.LOGGING];
-    TabController _tabController;
+    TabController? _tabController;
 
     AboutScreenState(final ViewContext _viewContext, final List<String> _updateTriggers): super(_viewContext, _updateTriggers);
 
@@ -65,7 +65,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     @override
     void dispose()
     {
-        _tabController.dispose();
+        _tabController?.dispose();
         super.dispose();
     }
 
@@ -159,7 +159,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
     {
         final Widget text = Expanded(flex: 1, child:
             SingleChildScrollView(child: SelectableText(data,
-                style: td.textTheme.bodyMedium.copyWith(color: td.textTheme.titleMedium.color),
+                style: td.textTheme.bodyMedium!.copyWith(color: td.textTheme.titleMedium!.color),
                 contextMenuBuilder: (context, editableTextState)
                 => AdaptiveTextSelectionToolbar.buttonItems(
                     anchors: editableTextState.contextMenuAnchors,
@@ -188,17 +188,17 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
         );
     }
 
-    Widget _buildMarkdownView(final ThemeData td, final String data, final EdgeInsetsGeometry padding)
+    Widget _buildMarkdownView(final ThemeData td, final String data, final EdgeInsets padding)
     {
         final MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(td).copyWith(
-            h1: td.textTheme.titleMedium.copyWith(fontWeight: FontWeight.bold),
-            h2: td.textTheme.titleMedium.copyWith(fontWeight: FontWeight.bold),
-            p: td.textTheme.bodyMedium.copyWith(color: td.textTheme.titleMedium.color),
-            a: td.textTheme.bodyMedium.copyWith(color: td.colorScheme.secondary));
+            h1: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+            h2: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+            p: td.textTheme.bodyMedium!.copyWith(color: td.textTheme.titleMedium!.color),
+            a: td.textTheme.bodyMedium!.copyWith(color: td.colorScheme.secondary));
         return Markdown(data: data,
             styleSheet: styleSheet,
             padding: padding,
-            onTapLink: (String text, String href, String title)
+            onTapLink: (String text, String? href, String title)
             {
                 if (href != null)
                 {

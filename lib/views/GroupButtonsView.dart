@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import '../constants/Dimens.dart';
@@ -44,7 +44,7 @@ class GroupButtonsView extends UpdatableView
             return SizedBox.shrink();
         }
 
-        final DeviceInfo myDevice = stateManager.sourceDevice;
+        final DeviceInfo myDevice = stateManager.sourceDevice!;
         Logging.logRebuild(this);
 
         final int zone = MultiroomDeviceInformationMsg.DEFAULT_ZONE;

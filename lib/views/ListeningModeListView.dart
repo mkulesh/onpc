@@ -11,7 +11,7 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
+
 import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
@@ -48,14 +48,14 @@ class ListeningModeListView extends UpdatableView
         }
 
         final List<CustomTextButton> buttons = [];
-        CustomTextButton selectedButton;
+        CustomTextButton? selectedButton;
 
         configuration.audioControl.getSortedListeningModes(
             false, state.soundControlState.listeningMode, state.protoType).forEach((m)
         {
             final ListeningModeMsg cmd = ListeningModeMsg.output(m.key);
             final bool isSelected = state.soundControlState.listeningMode.key == m.key;
-            final Widget button = CustomTextButton(
+            final CustomTextButton button = CustomTextButton(
                 m.description.toUpperCase(),
                 isEnabled: state.isOn,
                 isSelected: isSelected,
