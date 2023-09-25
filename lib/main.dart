@@ -609,7 +609,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         final bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
         final CfgTabSettings tab = _configuration.appSettings.tabSettings(
             appTab == null ? _getActiveTab() : appTab);
-        return (tab != null) ? tab.isControlActive(c, portrait) : false;
+        return tab.isControlActive(c, portrait);
     }
 
     void _handleTabSelection()

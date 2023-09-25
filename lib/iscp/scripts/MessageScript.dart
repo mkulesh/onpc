@@ -183,7 +183,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
             {
                 continue;
             }
-            if (a.state == ActionState.WAITING && a.wait != null)
+            if (a.state == ActionState.WAITING)
             {
                 final String log = a.toString() + ": compare with message " + msg.toString();
                 if (_isResponseMatched(state, a, msg.getCode, msg.getData))

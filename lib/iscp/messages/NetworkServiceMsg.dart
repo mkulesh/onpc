@@ -57,7 +57,7 @@ class NetworkServiceMsg extends EnumParameterMsg<ServiceType>
         {
             return "heos://player/get_queue?pid=" + ISCPMessage.DCP_HEOS_PID + "&range=0,9999";
         }
-        if (getValue.key != null)
+        if (getValue.key != ServiceType.UNKNOWN)
         {
             return "heos://" + _HEOS_COMMAND + "?sid=" + getValue.getDcpCode.substring(2);
         }

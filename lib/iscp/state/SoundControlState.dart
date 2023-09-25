@@ -90,7 +90,7 @@ class SoundControlState
     => _centerCmdLength;
 
     // Listening mode
-    late EnumItem<ListeningMode> _listeningMode;
+    late EnumItem<ListeningMode> _listeningMode = ListeningModeMsg.ValueEnum.defValue;
 
     EnumItem<ListeningMode> get listeningMode
     => _listeningMode;
@@ -295,8 +295,7 @@ class SoundControlState
     }
 
     bool get isDirectListeningMode
-    => _listeningMode != null &&
-        [
+    => [
             ListeningMode.MODE_01,
             ListeningMode.MODE_11,
             ListeningMode.MODE_DCP_DIRECT,

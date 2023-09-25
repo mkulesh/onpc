@@ -74,6 +74,7 @@ class OnpcSocket with ConnectionIf
                 onDone: _onDone,
                 cancelOnError: false);
             _state = MessageChannelState.RUNNING;
+            // ignore: unnecessary_null_comparison
             if (sock.address != null && sock.address.host != null && sock.address.host.isNotEmpty)
             {
                 setHost(sock.address.address);

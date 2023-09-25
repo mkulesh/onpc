@@ -358,6 +358,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         Logging.info(this, ">> DCP AppCommand POST request: " + url + json);
         http.post(Uri.parse(url), headers: {"Content-Type": "text/xml; charset=UTF-8"}, body: json).then((http.Response value)
         {
+            // ignore: unnecessary_null_comparison
             final String resp = value != null && value.body != null ? value.body.replaceAll("\n", "") : "";
             Logging.info(this, "DCP AppCommand POST response: " + resp);
         }).onError((Object? error, stackTrace)

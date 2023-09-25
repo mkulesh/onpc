@@ -183,12 +183,11 @@ class CfgTabSettings
     {
         if (isPortrait)
         {
-            return controlsPortrait != null && controlsPortrait.contains(c);
+            return controlsPortrait.contains(c);
         }
         else
         {
-            return (controlsLandscapeLeft != null && controlsLandscapeLeft.contains(c)) ||
-                   (controlsLandscapeRight != null && controlsLandscapeRight.contains(c));
+            return controlsLandscapeLeft.contains(c) || controlsLandscapeRight.contains(c);
         }
     }
 }

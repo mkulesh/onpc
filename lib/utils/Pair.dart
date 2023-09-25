@@ -12,8 +12,6 @@
  * Public License along with this program.
  */
 
-import 'package:quiver/core.dart';
-
 class Pair<T1, T2>
 {
     // Returns the first item of the pair
@@ -65,5 +63,5 @@ class Pair<T1, T2>
 
     @override
     int get hashCode
-    => hash2(item1.hashCode, item2.hashCode);
+    => Object.hash(item1, item2);
 }

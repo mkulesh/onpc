@@ -320,7 +320,7 @@ class ReceiverInformation
     => _controlList.firstWhereOrNull((s) => s.startsWith(ListeningModeMsg.CODE)) != null;
 
     bool get isReceiverInformation
-    => _xml != null && _xml.isNotEmpty;
+    => _xml.isNotEmpty;
 
     bool get isFriendlyName
     => _friendlyName != null;

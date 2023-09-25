@@ -99,7 +99,7 @@ class CfgAppSettings extends CfgModule
     {
         if (_language == "system")
         {
-            return _systemLocale != null && Strings.app_languages.contains(_systemLocale.languageCode) ?
+            return Strings.app_languages.contains(_systemLocale.languageCode) ?
             _systemLocale.languageCode : DEFAULT_LOCALE.languageCode;
         }
         return _language;

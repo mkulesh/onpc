@@ -63,14 +63,11 @@ class CheckableItem
         String selectedItems = "";
         for (CheckableItem d in items)
         {
-            if (d != null)
+            if (selectedItems.toString().isNotEmpty)
             {
-                if (selectedItems.toString().isNotEmpty)
-                {
-                    selectedItems += ";";
-                }
-                selectedItems += d.code + "," + (d.checked ? "true" : "false");
+                selectedItems += ";";
             }
+            selectedItems += d.code + "," + (d.checked ? "true" : "false");
         }
         configuration.saveTokens(parameter, selectedItems);
     }

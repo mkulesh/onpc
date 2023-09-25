@@ -88,7 +88,7 @@ class _TextButtonScrollState extends State<TextButtonScroll>
         {
             return;
         }
-        if (_scrollController!.hasClients && _scrollController!.position != null)
+        if (_scrollController!.hasClients)
         {
             if (left < _scrollController!.position.pixels)
             {

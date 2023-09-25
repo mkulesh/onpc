@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Version.dart';
 import 'package:onpc/utils/Logging.dart';
-import 'package:onpc/views/MediaListView.dart';
 import 'package:onpc/widgets/CustomTextLabel.dart';
 import 'package:onpc/widgets/ReorderableItem.dart';
 
@@ -32,7 +31,7 @@ class OnpcTestUtils {
   static const int LONG_DELAY = 10;
   static const int HUGE_DELAY = 15;
 
-  static const Offset LIST_DRAG_OFFSET = Offset(0, -20);
+  static const Offset LIST_DRAG_OFFSET = Offset(0, -100);
 
   int _stepDelay = NORMAL_DELAY;
 
@@ -134,9 +133,15 @@ class OnpcTestUtils {
     }
   }
 
-  void setMediaFilter(String s) {
-    final MediaListView listW = find.byType(MediaListView).evaluate().first.widget as MediaListView;
-    listW.setManualFilter(s);
+  Future<void> ensureVisibleInList(
+      WidgetTester tester, String title, final Finder list, OnFind finder, Offset dragOffset,
+      {int? delay}) async {
+    Logging.info(tester, STEP_HEADER + title);
+    expect(list, findsOneWidget);
+    while (finder().evaluate().isEmpty) {
+      await tester.drag(list, dragOffset, warnIfMissed: false);
+      await stepDelay(tester, delay: delay ?? _stepDelay);
+    }
   }
 
   Future<void> writeLog(String tName) async {

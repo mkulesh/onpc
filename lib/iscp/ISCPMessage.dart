@@ -56,7 +56,7 @@ class ISCPMessage with ConnectionIf
     => _modelCategoryId;
 
     bool get isMultiline
-    => _data != null && _data.length > EISCPMessage.LOG_LINE_LENGTH;
+    => _data.length > EISCPMessage.LOG_LINE_LENGTH;
 
     @override
     String toString()
@@ -112,7 +112,7 @@ class ISCPMessage with ConnectionIf
         String str = "";
         for (int i = start; i < min(end, pars.length); i++)
         {
-            if (pars[i] != null && pars[i].isNotEmpty)
+            if (pars[i].isNotEmpty)
             {
                 if (str.isNotEmpty)
                 {

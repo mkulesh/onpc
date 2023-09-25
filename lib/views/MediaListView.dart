@@ -15,6 +15,7 @@
 import "package:collection/collection.dart";
 import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
+import "package:onpc/iscp/ConnectionIf.dart";
 
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CheckableItem.dart";
@@ -114,13 +115,6 @@ class MediaListView extends StatefulWidget
     @override
     _MediaListViewState createState()
     => _MediaListViewState(viewContext, UPDATE_TRIGGERS);
-
-    void setManualFilter(String s)
-    {
-        Logging.info(this, "Setting manual media filter: s");
-        viewContext.state.manualFilter = s;
-        viewContext.stateManager.triggerStateEvent(StateManager.WAITING_FOR_DATA_EVENT);
-    }
 }
 
 class _MediaListViewState extends WidgetStreamState<MediaListView>
@@ -181,8 +175,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             _mediaFilterController.clear();
         }
-        final String? filter = viewContext.state.manualFilter.isNotEmpty?
-            viewContext.state.manualFilter : _mediaFilterController.text;
+        final String? filter = _mediaFilterController.text;
         final bool applyFilter = _headerButtons.filter && filter != null && filter.isNotEmpty;
         if (applyFilter)
         {
@@ -578,7 +571,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 child: Text(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
         }
 
-        if (state.isShortcutPossible && shortcutItem != null && shortcutAlias != null)
+        if (state.protoType == ProtoType.ISCP && state.isShortcutPossible && shortcutItem != null && shortcutAlias != null)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
                 child: Text(Strings.favorite_shortcut_create), value: MediaContextMenu.ADD_TO_FAVORITES));

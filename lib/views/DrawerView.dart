@@ -124,7 +124,7 @@ class DrawerView extends UpdatableView
             // Application
             drawerItems.add(CustomDivider());
             drawerItems.add(CustomTextLabel.small(Strings.drawer_application, padding: DrawerDimens.labelPadding));
-            if (tabLayoutBuilder != null && configuration.appSettings.visibleTabs.isNotEmpty)
+            if (configuration.appSettings.visibleTabs.isNotEmpty)
             {
                 drawerItems.add(_buildDrawerItem(
                     context, Drawables.drawer_tab_layout, Strings.drawer_tab_layout, onTabListener: _openTabLayout));

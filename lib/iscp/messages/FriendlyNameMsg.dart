@@ -27,7 +27,7 @@ class FriendlyNameMsg extends ISCPMessage
     FriendlyNameMsg(EISCPMessage raw) : super(CODE, raw)
     {
         String str = "";
-        if (getData != null && getData != ".")
+        if (getData != ".")
         {
             str = getData.startsWith(".") ? getData.substring(1) : getData;
         }

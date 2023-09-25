@@ -47,7 +47,7 @@ class MediaListState
     => _dcpTunerMode;
 
     // ListTitleInfoMsg
-    late EnumItem<ServiceType> _serviceType;
+    late EnumItem<ServiceType> _serviceType = Services.ServiceTypeEnum.defValue;
 
     EnumItem<ServiceType> get serviceType
     => _serviceType;
@@ -401,8 +401,7 @@ class MediaListState
     => _inputType.key != InputSelector.NONE && !_inputType.isMediaList;
 
     bool get isUsb
-    => _serviceType != null &&
-        [ServiceType.USB_FRONT, ServiceType.USB_REAR].contains(_serviceType.key);
+    => [ServiceType.USB_FRONT, ServiceType.USB_REAR].contains(_serviceType.key);
 
     bool isTopLayer()
     {
@@ -485,7 +484,7 @@ class MediaListState
         final List<ISCPMessage> retValue = [];
         _mediaItems.forEach((msg)
         {
-            if (msg is XmlListItemMsg && msg.getTitle != null && msg.getTitle.isNotEmpty)
+            if (msg is XmlListItemMsg && msg.getTitle.isNotEmpty)
             {
                 retValue.add(msg);
             }
@@ -509,7 +508,7 @@ class MediaListState
         }
         for (int i = 1; i < pathItems.length; i++)
         {
-            if (pathItems[i] == null || pathItems[i].isEmpty)
+            if (pathItems[i].isEmpty)
             {
                 return false;
             }

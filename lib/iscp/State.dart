@@ -183,7 +183,6 @@ class State with ProtoTypeMix
     final HashMap mediaListPosition = HashMap<int, double>();
 
     // Media filter
-    String manualFilter = "";
     bool _mediaFilterVisible = false;
 
     bool get mediaFilterVisible
@@ -525,12 +524,11 @@ class State with ProtoTypeMix
                 _receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
 
     NetworkService? get getNetworkService
-    => (_mediaListState.serviceType != null) ? _receiverInformation.getNetworkService(_mediaListState.serviceType.getCode) : null;
+    => _receiverInformation.getNetworkService(_mediaListState.serviceType.getCode);
 
     bool _processCustomPopup(CustomPopupMsg msg)
     {
-        if (msg.popupDocument.findElements("popup").isNotEmpty &&
-            msg.popupDocument.findElements("popup").first != null)
+        if (msg.popupDocument.findElements("popup").isNotEmpty)
         {
             _popupDocument = msg.popupDocument;
         }
@@ -599,7 +597,7 @@ class State with ProtoTypeMix
 
     bool get isShortcutPossible
     {
-        final bool isMediaList = mediaListState.numberOfLayers > 0 && mediaListState.titleBar.isNotEmpty && mediaListState.serviceType != null;
+        final bool isMediaList = mediaListState.numberOfLayers > 0 && mediaListState.titleBar.isNotEmpty;
         return !SKIP_XML_MESSAGES && (isMediaList || mediaListState.isSimpleInput);
     }
 

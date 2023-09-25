@@ -199,6 +199,7 @@ class _TapPositionDetectorState extends State<PositionedTapDetector>
         return GestureDetector(
             child: widget.child,
             behavior: (widget.behavior ??
+                // ignore: unnecessary_null_comparison
                 (widget.child == null ? HitTestBehavior.translucent : HitTestBehavior.deferToChild)),
             onTap: _onTapEvent,
             onLongPress: _onLongPressEvent,

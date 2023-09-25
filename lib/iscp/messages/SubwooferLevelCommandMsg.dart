@@ -47,7 +47,7 @@ class SubwooferLevelCommandMsg extends ISCPMessage
     {
         _command = ValueEnum.defValue;
         _level = ISCPMessage.nonNullInteger(getData, 16, NO_LEVEL);
-        _cmdLength = getData == null ? NO_LEVEL : getData.length;
+        _cmdLength = getData.length;
     }
 
     SubwooferLevelCommandMsg.output(SubwooferLevelCommand v) :
