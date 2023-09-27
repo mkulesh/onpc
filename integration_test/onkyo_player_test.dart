@@ -16,6 +16,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import 'onpc_test_utils.dart';
 
@@ -31,10 +32,13 @@ void main() {
     app.main();
     await tu.stepDelay(tester);
 
-    await tu.openTab(tester, "LISTEN", delay: OnpcTestUtils.LONG_DELAY);
+    await tu.openTab(tester, "LISTEN", swipeLeft: true, delay: OnpcTestUtils.LONG_DELAY);
 
-    await tu.openDrawer(tester);
-    await tu.findAndTap(tester, "Find and connect", () => find.text(PLAYER), delay: OnpcTestUtils.HUGE_DELAY);
+    if (find.text("Onkyo Player").evaluate().isEmpty &&
+        find.text("Onkyo Player (Standby)").evaluate().isEmpty) {
+      await tu.openDrawer(tester);
+      await tu.findAndTap(tester, "Find and connect", () => find.text(PLAYER), delay: OnpcTestUtils.HUGE_DELAY);
+    }
 
     Logging.logSize = 5000; // After reconnect, increase log size
 
@@ -56,13 +60,22 @@ void main() {
 
 Future<void> _playFromUsb(final OnpcTestUtils tu, WidgetTester tester) async {
   await tu.openTab(tester, "MEDIA");
-  await tu.findAndTap(tester, "Select USB", () => find.text("USB Disk"));
-  await tu.findAndTap(tester, "Open onkyo_music", () => find.text("onkyo_music"), waitFor: true);
-  await tu.findAndTap(tester, "Open Rock", () => find.text("Blues"));
-  await tu.findAndTap(tester, "Open interpret", () => find.text("Ayo"));
-  await tu.findAndTap(tester, "Open context menu", () => find.text("Joyful (2000)"), rightClick: true);
-  await tu.findAndTap(tester, "Replace and play", () => find.text("Replace and play"));
+  await tu.navigateToMedia(tester, ["USB Disk", OnpcTestUtils.TOP_LAYER, "onkyo_music", "Blues", "Ayo"]);
+  await tu.contextMenu(tester, "Joyful (2000)", "Replace and play", waitFor: true);
   await tu.openTab(tester, "LISTEN", delay: OnpcTestUtils.LONG_DELAY);
+
+  expect(find.text("FLAC/44.1kHz/16bit"), findsOneWidget);
+  expect(find.text("Ayo"), findsOneWidget);
+  expect(find.text("Joyful"), findsOneWidget);
+
+  final Finder pBar = find.byType(SfSlider);
+  expect(pBar, findsOneWidget);
+  await tu.slideByValue(tester, pBar, 120);
+  await tu.slideByValue(tester, pBar, -60);
+
+  await tu.findAndTap(tester, "Open Audio/Video info", () => find.byTooltip("Audio/Video info"));
+  await tu.findAndTap(tester, "Close Audio/Video info", () => find.text("OK"));
+
   await tu.findAndTap(tester, "Next track", () => find.byTooltip("Track Up"), delay: OnpcTestUtils.LONG_DELAY);
   await tu.findAndTap(tester, "Random", () => find.byTooltip("Random"));
   await tu.findAndTap(tester, "Repeat", () => find.byTooltip("Repeat"));
@@ -92,14 +105,11 @@ Future<void> _changeVolume(final OnpcTestUtils tu, WidgetTester tester) async {
 
 Future<void> _playFromQueue(final OnpcTestUtils tu, WidgetTester tester) async {
   await tu.openTab(tester, "MEDIA");
-  await tu.findAndTap(tester, "Select top level", () => find.byTooltip("Top Menu"));
-  await tu.findAndTap(tester, "Select Play Queue", () => find.text("Play Queue"));
+  await tu.navigateToMedia(tester, ["NET", OnpcTestUtils.TOP_LAYER, "Play Queue"]);
   expect(find.text("Play Queue | items: 12"), findsOneWidget);
   await tu.findAndTap(tester, "Start track", () => find.text("03-Letter By Letter.flac"));
-  await tu.findAndTap(tester, "Open context menu", () => find.text("04-How Many Times.flac"), rightClick: true);
-  await tu.findAndTap(tester, "Remove one item", () => find.text("Remove item"));
-  await tu.findAndTap(tester, "Open context menu", () => find.text("07-Only You.flac"), rightClick: true);
-  await tu.findAndTap(tester, "Clear queue", () => find.text("Remove all"));
+  await tu.contextMenu(tester, "04-How Many Times.flac", "Remove item");
+  await tu.contextMenu(tester, "07-Only You.flac", "Remove all");
   await tu.findAndTap(tester, "Return to top layer", () => find.text("Return"));
 }
 
@@ -117,7 +127,7 @@ Future<void> _playFromDAB(final OnpcTestUtils tu, WidgetTester tester) async {
 Future<void> _groupUngroup(final OnpcTestUtils tu, WidgetTester tester, bool group) async {
   await tu.openTab(tester, "LISTEN");
   await tu.findAndTap(tester, "Open group dialog", () => find.byTooltip("Group/Ungroup devices"));
-  await tu.findAndTap(tester, "Select Onkyo Box", () => find.text("Onkyo Box"), delay: OnpcTestUtils.LONG_DELAY);
+  await tu.findAndTap(tester, "Select Onkyo Box", () => find.text("My Onkyo Box"), delay: OnpcTestUtils.LONG_DELAY);
   await tu.findAndTap(tester, "Close group dialog", () => find.text("OK"));
   if (group) {
     await tu.findAndTap(tester, "Change speakers", () => find.byTooltip("Change speaker channel"));

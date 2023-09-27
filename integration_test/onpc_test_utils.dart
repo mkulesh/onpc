@@ -16,16 +16,19 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/constants/Version.dart';
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/widgets/CustomTextLabel.dart';
 import 'package:onpc/widgets/ReorderableItem.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 typedef OnFind = Finder Function();
 
 class OnpcTestUtils {
   static const String STEP_HEADER = "=================================> ";
 
+  static const String TOP_LAYER = "_MEDIA_LIST_TOP_LAYER";
   static const int SHORT_DELAY = 2;
   static const int NORMAL_DELAY = 5;
   static const int LONG_DELAY = 10;
@@ -52,13 +55,28 @@ class OnpcTestUtils {
     await stepDelay(tester, delay: delay ?? _stepDelay);
   }
 
+  Future<void> openDrawerMenu(WidgetTester tester, String text, {int? delay}) async {
+    await openDrawer(tester, delay: delay ?? _stepDelay);
+    await tester.dragUntilVisible(find.text(text), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+    await findAndTap(tester, "Open drawer menu: " + text, () => find.text(text), delay: delay ?? _stepDelay);
+  }
+
   Future<void> previousScreen(WidgetTester tester, {int? delay}) async {
     Logging.info(tester, STEP_HEADER + "Open previous screen");
     await tester.tapAt(Offset(30, 30));
     await stepDelay(tester, delay: delay ?? _stepDelay);
   }
 
-  Future<void> openTab(WidgetTester tester, String s, {int? delay}) async {
+  Future<void> openTab(WidgetTester tester, String s,
+      {bool swipeLeft = false, bool swipeRight = false, int? delay}) async {
+    if (swipeLeft) {
+      await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(200, 0), warnIfMissed: false);
+      await stepDelay(tester);
+    }
+    if (swipeRight) {
+      await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(-200, 0), warnIfMissed: false);
+      await stepDelay(tester);
+    }
     await findAndTap(tester, "Open " + s + " tab", () => find.widgetWithText(Tab, s), delay: delay ?? _stepDelay);
   }
 
@@ -74,11 +92,51 @@ class OnpcTestUtils {
     await stepDelay(tester, delay: delay ?? _stepDelay);
   }
 
+  Future<void> navigateToMedia(WidgetTester tester, List<String> list,
+      {bool waitFor = true, int? delay}) async {
+    for (int i = 0; i < list.length; i++) {
+      if (list[i] == TOP_LAYER) {
+        await findAndTap(tester, "Select top level", () => find.byTooltip("Top Menu"));
+      } else {
+        await findAndTap(tester, "Navigate to: " + list[i], () => find.text(list[i]),
+            waitFor: waitFor, delay: delay ?? _stepDelay);
+      }
+    }
+  }
+
+  Future<void> contextMenu(WidgetTester tester, String item, String text, {bool waitFor = false, int? delay}) async {
+    await findAndTap(tester, "Select item: " + item, () => find.text(item),
+        waitFor: waitFor, rightClick: true, delay: delay ?? _stepDelay);
+    await findAndTap(tester, "Open context menu: " + text, () => find.text(text), delay: delay ?? _stepDelay);
+  }
+
+  Future<void> slideByValue(WidgetTester tester, Finder slider, double value, {int? delay}) async {
+    final widget = slider.evaluate().first.widget;
+    if (widget is SfSlider) {
+      Logging.info(
+          widget,
+          "SfSlider: min = " +
+              widget.min.toString() +
+              ", max = " +
+              widget.max.toString() +
+              ", value = " +
+              widget.value.toString());
+
+      final double totalWidth = tester.getSize(slider).width - (2 * ActivityDimens.progressBarRadius);
+      final double start = totalWidth * (widget.value - widget.min) / (widget.max - widget.min);
+      final double end = totalWidth * (widget.value + value - widget.min) / (widget.max - widget.min);
+
+      final zeroPoint = tester.getTopLeft(slider) +
+          Offset(ActivityDimens.progressBarRadius + start, tester.getSize(slider).height / 2);
+      await tester.flingFrom(zeroPoint, Offset(end - start, 0), 80);
+      await stepDelay(tester, delay: delay ?? _stepDelay);
+    }
+  }
+
   Future<void> setText(WidgetTester tester, int num, int idx, String name, {int? delay}) async {
     final Finder fab = find.byWidgetPredicate((widget) => widget is TextFormField);
     expect(fab, findsNWidgets(num));
     await tester.enterText(fab.at(idx), name);
-    await tester.testTextInput.receiveAction(TextInputAction.done);
     await stepDelay(tester, delay: delay ?? _stepDelay);
   }
 
@@ -140,8 +198,9 @@ class OnpcTestUtils {
     expect(list, findsOneWidget);
     while (finder().evaluate().isEmpty) {
       await tester.drag(list, dragOffset, warnIfMissed: false);
-      await stepDelay(tester, delay: delay ?? _stepDelay);
+      await tester.pumpAndSettle();
     }
+    await stepDelay(tester, delay: delay ?? _stepDelay);
   }
 
   Future<void> writeLog(String tName) async {

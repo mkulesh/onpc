@@ -43,6 +43,7 @@ import "dialogs/PopupManager.dart";
 import "iscp/ConnectionIf.dart";
 import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
+import "iscp/messages/DcpReceiverInformationMsg.dart";
 import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
@@ -368,6 +369,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     }
                     break;
                 case ReceiverInformationMsg.CODE:
+                case DcpReceiverInformationMsg.CODE:
                     if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
                     {
                         _configuration.setReceiverInformation(_viewContext.stateManager);
