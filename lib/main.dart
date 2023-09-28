@@ -370,10 +370,14 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     break;
                 case ReceiverInformationMsg.CODE:
                 case DcpReceiverInformationMsg.CODE:
-                    if (_stateManager.isConnected && !changes.contains(StateManager.CONNECTION_EVENT))
+                    if (_stateManager.isConnected)
                     {
-                        _configuration.setReceiverInformation(_viewContext.stateManager);
-                        _viewContext.state.multiroomState.updateFavorites();
+                        _viewContext.stateManager.validateZone();
+                        if (!changes.contains(StateManager.CONNECTION_EVENT))
+                        {
+                            _configuration.setReceiverInformation(_viewContext.stateManager);
+                            _viewContext.state.multiroomState.updateFavorites();
+                        }
                     }
                     break;
             }

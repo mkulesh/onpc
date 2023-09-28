@@ -255,6 +255,17 @@ class StateManager
         return _state.getActiveZone;
     }
 
+    void validateZone()
+    {
+        if (!state.isDefaultZone &&
+            state.getActiveZone >= state.receiverInformation.zones.length &&
+            state.receiverInformation.zones.isNotEmpty)
+        {
+            Logging.info(this, "Attempt to use an invalid zone: activate default zone.");
+            changeZone(state.receiverInformation.zones.first.getId);
+        }
+    }
+
     void _onConnected(MessageChannel channel, ConnectionIf connection)
     {
         Logging.info(this, "Connected to " + connection.getHostAndPort + " via " + _networkState.toString());
@@ -293,7 +304,7 @@ class StateManager
         _messageChannel.sendMessage(
             EISCPMessage.output(JacketArtMsg.CODE, JacketArtMsg.REQUEST));
 
-        // initial call os the message scripts
+        // initial call of the message scripts
         if (runScrips)
         {
             _startScripts();
@@ -778,7 +789,7 @@ class StateManager
 
     void sendMessage(final ISCPMessage msg, {bool waitingForData = false, String waitingForMsg = ""})
     {
-        Logging.info(this, "sending message: " + msg.toString());
+        Logging.info(this, "sending message: " + msg.toString() + ", waiting for responce: " + waitingForData.toString());
         _circlePlayRemoveMsg = null;
         if (msg.hasImpactOnMediaList() || (msg is DisplayModeMsg && !state.mediaListState.isPlaybackMode))
         {
@@ -1027,7 +1038,7 @@ class StateManager
     bool isMasterDevice(final DeviceInfo di)
     {
         final String identifier = state.receiverInformation.getIdentifier();
-        return isSourceHost(di.responseMsg) || (identifier != null && identifier == di.responseMsg.getIdentifier);
+        return isSourceHost(di.responseMsg) || (identifier == di.responseMsg.getIdentifier);
     }
 
     void updateScripts({bool autoPower = false, final String? intent, final List<Shortcut>? shortcuts})
