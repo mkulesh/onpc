@@ -168,7 +168,7 @@ class BroadcastSearch
             return;
         }
 
-        if (raw.getParameters == null || raw.getParameters == "QSTN")
+        if (raw.getParameters == "QSTN")
         {
             return;
         }

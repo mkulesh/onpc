@@ -21,6 +21,7 @@ import 'package:onpc/constants/Version.dart';
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/widgets/CustomTextLabel.dart';
 import 'package:onpc/widgets/ReorderableItem.dart';
+import 'package:onpc/utils/Platform.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 typedef OnFind = Finder Function();
@@ -88,7 +89,13 @@ class OnpcTestUtils {
     Logging.info(tester, STEP_HEADER + title);
     final Finder fab = finder();
     expect(fab, findsOneWidget);
-    await tester.tap(fab, buttons: rightClick ? 0x02 : 0x01, warnIfMissed: false);
+    if (rightClick && Platform.isDesktop) {
+      await tester.tap(fab, buttons: 0x02, warnIfMissed: false);
+    } else if (rightClick && Platform.isMobile) {
+      await tester.longPress(fab, warnIfMissed: false);
+    } else {
+      await tester.tap(fab, buttons: 0x01, warnIfMissed: false);
+    }
     await stepDelay(tester, delay: delay ?? _stepDelay);
   }
 
@@ -168,20 +175,21 @@ class OnpcTestUtils {
     }
   }
 
-  Future<void> dragReorderableItem(WidgetTester tester, String drag, Offset dragOffset, {int? delay}) async {
+  Future<void> dragReorderableItem(WidgetTester tester, String drag, Offset dragOffset,
+      {int? delay, int dragIndex = 0}) async {
     final Finder list = find.byType(ReorderableItem);
     final List<Finder> drags = [];
     list.evaluate().forEach((element) {
       final widget = element.widget;
       if (widget is ReorderableItem) {
         final Finder dragHandle = find.descendant(of: find.byWidget(widget), matching: find.byType(SizedBox));
-        expect(dragHandle, findsOneWidget);
+        expect(dragHandle, findsNWidgets(dragIndex + 1));
         final Finder text = find.descendant(of: find.byWidget(widget), matching: find.byType(CustomTextLabel));
         expect(text, findsOneWidget);
         final name = (text.evaluate().first.widget as CustomTextLabel).description;
         if (name == drag) {
           Logging.info(widget, " " + name + " -> drag " + dragOffset.toString());
-          drags.add(dragHandle);
+          drags.add(dragHandle.at(dragIndex));
         }
       }
     });

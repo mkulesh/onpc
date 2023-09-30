@@ -109,6 +109,7 @@ Future<void> _playFromQueue(final OnpcTestUtils tu, WidgetTester tester) async {
   expect(find.text("Play Queue | items: 12"), findsOneWidget);
   await tu.findAndTap(tester, "Start track", () => find.text("03-Letter By Letter.flac"));
   await tu.contextMenu(tester, "04-How Many Times.flac", "Remove item");
+  await tu.dragReorderableItem(tester, "06-Watching You.flac", Offset(0, 600), dragIndex: 2);
   await tu.contextMenu(tester, "07-Only You.flac", "Remove all");
   await tu.findAndTap(tester, "Return to top layer", () => find.text("Return"));
 }

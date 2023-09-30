@@ -29,7 +29,11 @@ void main() {
     tu.setStepDelay(OnpcTestUtils.SHORT_DELAY);
 
     app.main();
-    await tu.stepDelay(tester);
+    if (Platform.isIOS) {
+      await tu.stepDelay(tester, delay: OnpcTestUtils.LONG_DELAY);
+    } else {
+      await tu.stepDelay(tester);
+    }
 
     if (find.text("Search").evaluate().isNotEmpty) {
       // Device search is opened
@@ -141,9 +145,12 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu, WidgetTester tester) asy
     await tu.findAndTap(tester, "Change App language2", () => find.text("English"));
   }
 
-  if (find.text("Small").evaluate().isEmpty) {
+  if (Platform.isDesktop && find.text("Small").evaluate().isEmpty) {
     await tu.findAndTap(tester, "Change Text and buttons size1", () => find.text("Text and buttons size"));
     await tu.findAndTap(tester, "Change Text and buttons size2", () => find.text("Small"));
+  } else if (Platform.isIOS && find.text("Big").evaluate().isEmpty) {
+    await tu.findAndTap(tester, "Change Text and buttons size1", () => find.text("Text and buttons size"));
+    await tu.findAndTap(tester, "Change Text and buttons size2", () => find.text("Big"));
   }
 
   await tester.dragUntilVisible(find.text("Sound control"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);

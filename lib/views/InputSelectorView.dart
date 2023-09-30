@@ -65,6 +65,7 @@ class InputSelectorView extends UpdatableView
                     useFriendlyName: configuration.friendlyNames,
                     friendlyName: deviceSelector.getName);
                 final bool isSelected = state.isOn && state.mediaListState.inputType.code == selectorEnum.code;
+                final bool waitingForData = !isSelected || !state.mediaListState.isTopLayer();
                 final CustomTextButton button = CustomTextButton(name,
                     isEnabled: state.isConnected,
                     isSelected: isSelected,
@@ -74,7 +75,7 @@ class InputSelectorView extends UpdatableView
                         {
                             stateManager.sendMessage(PowerStatusMsg.output(state.getActiveZone, PowerStatus.ON));
                         }
-                        stateManager.sendMessage(cmd, waitingForData: true);
+                        stateManager.sendMessage(cmd, waitingForData: waitingForData);
                     });
                 if (isSelected)
                 {
