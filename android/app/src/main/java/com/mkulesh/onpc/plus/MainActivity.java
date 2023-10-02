@@ -277,7 +277,7 @@ public class MainActivity extends FlutterActivity
 
     private void handleIntent(Intent intent)
     {
-        if (intent != null)
+        if (intent != null && intentData == null)
         {
             if (intent.getDataString() != null)
             {
