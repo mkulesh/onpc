@@ -194,6 +194,8 @@ public class MainActivity extends FlutterActivity
     @Override
     protected void onStart()
     {
+        //Log.d("onpc", "onStart: invalidate intentData");
+        intentData = null;
         try
         {
             // avoid NullPointerException in io.flutter.embedding.android.FlutterActivity
@@ -265,6 +267,7 @@ public class MainActivity extends FlutterActivity
             broadcastReceiver = new MyBroadcastReceiver(this);
             registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
+        //Log.d("onpc", "onResume: intent = " + getIntent());
         handleIntent(getIntent());
     }
 
@@ -272,6 +275,7 @@ public class MainActivity extends FlutterActivity
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
+        //Log.d("onpc", "onNewIntent: intent = " + intent);
         handleIntent(intent);
     }
 
@@ -287,6 +291,7 @@ public class MainActivity extends FlutterActivity
             {
                 intentData = intent.getAction();
             }
+            //Log.d("onpc", "handleIntent: intentData = " + intentData);
             setIntent(new Intent());
         }
     }
@@ -365,6 +370,7 @@ public class MainActivity extends FlutterActivity
         }
         else if (methodCall.method.equals(GET_INTENT))
         {
+            //Log.d("onpc", "onPlatformMethodCall: intent = " + intentData);
             result.success(intentData != null ? intentData : "");
         }
         else
