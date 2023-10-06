@@ -82,7 +82,8 @@ class TimeInfoMsg extends ISCPMessage
                 final int? duration = int.tryParse(durationStr);
                 if (curPos != null && duration != null)
                 {
-                    return TimeInfoMsg._dcp(_millisToTime(curPos),_millisToTime(duration));
+                    return TimeInfoMsg._dcp(_millisToTime(curPos),
+                        duration == 0 ? INVALID_TIME : _millisToTime(duration));
                 }
             }
         }

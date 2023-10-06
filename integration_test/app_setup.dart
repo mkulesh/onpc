@@ -169,9 +169,10 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu, WidgetTester tester) asy
       await tu.findAndTap(tester, "Change Use USB-RI interface", () => find.text("Use USB-RI interface"));
       if (find.text(USB_RI1).evaluate().isNotEmpty) {
         await tu.findAndTap(tester, "Select " + USB_RI1, () => find.text(USB_RI1));
-      }
-      if (find.text(USB_RI2).evaluate().isNotEmpty) {
+      } else if (find.text(USB_RI2).evaluate().isNotEmpty) {
         await tu.findAndTap(tester, "Select " + USB_RI2, () => find.text(USB_RI2));
+      } else {
+        await tu.findAndTap(tester, "Select Cancel", () => find.text("CANCEL"));
       }
     }
   }
