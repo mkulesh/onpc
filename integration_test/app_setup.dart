@@ -236,7 +236,7 @@ Future<void> _buildFavourites(final OnpcTestUtils tu, WidgetTester tester,
   }
 
   if (deezer) {
-    await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER, "Deezer"]);
+    await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER, "Deezer", "My Music", "My Music | items: 6"]);
     await tu.contextMenu(tester, FLOW.item1, "Create shortcut", waitFor: true);
     await tu.navigateToMedia(tester, ["My Music", "Favourite tracks"]);
     await tu.ensureVisibleInList(

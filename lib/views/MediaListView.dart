@@ -190,13 +190,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             items = _mediaListSorter.sortDeezerItems(items, configuration.appSettings.mediaSortMode);
         }
 
-        // Add "Return" button if necessary
-        if (state.isOn && ms.layerInfo != null && !ms.isTopLayer()
-            && !configuration.backAsReturn && !_returnMessageExists(items))
-        {
-            items.insert(0, stateManager.getReturnMessage());
-        }
-
         // Add "Playback" indication if necessary
         if (isPlayback)
         {
@@ -205,16 +198,18 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             items.add(playbackIndicationItem);
         }
 
+        // List items
+        final int visibleItems = items.length;
+        final int totalItems = ms.mediaItemsTotal > 0 ? ms.mediaItemsTotal : ms.numberOfItems;
+
         // Scroll positions
         _scrollController.removeListener(_saveScrollPosition);
-        if (!applyFilter)
+        if (visibleItems == totalItems)
         {
             _processLayerInfo(ms, dataItems);
         }
 
         // Create list
-        final int visibleItems = _returnMessageExists(items) ? items.length - 1 : items.length;
-        final int totalItems = _returnMessageExists(ms.mediaItems) ? ms.numberOfItems - 1 : ms.numberOfItems;
         final bool isAdvancedQueue = ms.isQueue && configuration.isAdvancedQueue;
         final Widget mediaList = isAdvancedQueue ? _buildPlayQueueList(context, items) : _buildMediaList(td, items);
         final List<Widget> elements = [
@@ -239,15 +234,19 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     Widget _buildMediaList(final ThemeData td, List<ISCPMessage> items)
     {
+        final ISCPMessage? retMsg = _getReturnMessage();
+        final itemCount = retMsg != null ? items.length + 1 : items.length;
         final ListView list = ListView.builder(
             padding: ActivityDimens.noPadding,
             scrollDirection: Axis.vertical,
-            itemCount: items.length,
+            itemCount: itemCount,
             physics: ClampingScrollPhysics(),
             controller: _scrollController,
             itemBuilder: (BuildContext itemContext, int index)
             {
-                final ISCPMessage rowMsg = items[index];
+                final ISCPMessage rowMsg = retMsg != null ?
+                    (index == 0 ? retMsg : items[index - 1]) :
+                    (items[index]);
                 if (rowMsg is NetworkServiceMsg)
                 {
                     return _buildNetworkServiceRow(itemContext, rowMsg);
@@ -291,6 +290,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         _playQueueIds.clear();
 
         Widget? header;
+        final ISCPMessage? retMsg = _getReturnMessage();
+        if (retMsg != null && retMsg is OperationCommandMsg)
+        {
+            header = _buildOperationCommandMsg(context, retMsg);
+        }
         items.forEach((rowMsg)
         {
             if (rowMsg is XmlListItemMsg)
@@ -300,16 +304,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
             else if (rowMsg is OperationCommandMsg)
             {
-                final Widget row = _buildOperationCommandMsg(context, rowMsg);
-                if (rowMsg.getValue.key == OperationCommand.RETURN)
-                {
-                    header = row;
-                }
-                else
-                {
-                    _rows.add(row);
-                    _playQueueIds.add(rowMsg.getMessageId);
-                }
+                _rows.add(_buildOperationCommandMsg(context, rowMsg));
+                _playQueueIds.add(rowMsg.getMessageId);
             }
         });
 
@@ -722,7 +718,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             {
                 title += ms.titleBar;
             }
-            if (_numberOfItems > 0)
+            if (_numberOfItems >= 0)
             {
                 title += " | " + Strings.medialist_items + ": ";
                 if (_visibleItems < _numberOfItems)
@@ -999,9 +995,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
     }
 
-    bool _returnMessageExists(final List<ISCPMessage> items)
-    => items.isNotEmpty && state.mediaListState.isReturnMsg(items.first);
-
     void _sendDcpMediaCmd(DcpMediaContainerMsg mc, int aid)
     {
         final DcpMediaContainerMsg mc1 = DcpMediaContainerMsg.copy(mc);
@@ -1020,5 +1013,17 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             stateManager.sendMessage(item);
         }
+    }
+
+    ISCPMessage? _getReturnMessage()
+    {
+        if (state.isOn
+            && state.mediaListState.layerInfo != null
+            && !state.mediaListState.isTopLayer()
+            && !configuration.backAsReturn)
+        {
+            return stateManager.getReturnMessage();
+        }
+        return null;
     }
 }

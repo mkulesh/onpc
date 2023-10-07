@@ -103,6 +103,13 @@ class MediaListState
 
     final List<String> listInfoItems = [];
 
+    // Total target number of media items, when media list is
+    // downloaded in several steps like for huge Denon media lists
+    int _mediaItemsTotal = -1;
+
+    int get mediaItemsTotal
+    => _mediaItemsTotal;
+
     // Denon control protocol
     final List<DcpMediaContainerMsg> _dcpMediaPath = [];
 
@@ -145,6 +152,7 @@ class MediaListState
             return;
         }
         _mediaItems.clear();
+        _mediaItemsTotal = -1;
         _movedItem = -1;
     }
 
@@ -341,6 +349,7 @@ class MediaListState
     void _createServiceItems(final List<NetworkService> networkServices)
     {
         _mediaItems.clear();
+        _mediaItemsTotal = -1;
         networkServices.forEach((s)
         {
             final EnumItem<ServiceType> service = Services.ServiceTypeEnum.valueByCode(s.getId);
@@ -575,6 +584,10 @@ class MediaListState
             _uiType = UIType.LIST;
             _numberOfLayers = _dcpMediaPath.length;
             _mediaListCid = msg.getCid();
+            _mediaItemsTotal = msg.getCount();
+            _titleBar = (_layerInfo == LayerInfo.SERVICE_TOP &&
+                _serviceType.key != ServiceType.UNKNOWN) ?
+                _serviceType.description : "";
         }
         else if (msg.getCid() != _mediaListCid)
         {
@@ -640,6 +653,7 @@ class MediaListState
         _numberOfLayers = 0;
         _mediaListCid = "";
         _dcpMediaPath.clear();
+        _titleBar = "";
         _createServiceItems(ri.networkServices);
     }
 
