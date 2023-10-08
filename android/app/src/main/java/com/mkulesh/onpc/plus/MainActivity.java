@@ -189,13 +189,12 @@ public class MainActivity extends FlutterActivity
         // Message channel to Flutter code
         platformChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), METHOD_CHANNEL);
         platformChannel.setMethodCallHandler(this::onPlatformMethodCall);
+        intentData = null;
     }
 
     @Override
     protected void onStart()
     {
-        //Log.d("onpc", "onStart: invalidate intentData");
-        intentData = null;
         try
         {
             // avoid NullPointerException in io.flutter.embedding.android.FlutterActivity
@@ -300,6 +299,8 @@ public class MainActivity extends FlutterActivity
     protected void onPause()
     {
         super.onPause();
+        // Log.d("onpc", "onPause: invalidate intentData");
+        intentData = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && networkCallback != null)
         {
             connectionState.connectivity.unregisterNetworkCallback(networkCallback);
