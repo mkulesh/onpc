@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Note: Additional settings for XCode 14.3.1 / Flutter 2.10.1 are necessary:
-#   https://stackoverflow.com/questions/75574268/missing-file-libarclite-iphoneos-a-xcode-14-3
+# Note: Additional settings after XCode update:
+# 1. sudo gem install cocoapods
+# 2. https://stackoverflow.com/questions/75574268/missing-file-libarclite-iphoneos-a-xcode-14-3
 #   cd /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/
 #   sudo mkdir arc
 #   cd  arc

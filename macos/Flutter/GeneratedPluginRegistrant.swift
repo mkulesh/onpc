@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import flutter_libserialport
-import path_provider_macos
+import path_provider_foundation
 import shared_preferences_foundation
 import url_launcher_macos
 import window_manager
