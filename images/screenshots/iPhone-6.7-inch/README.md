@@ -1,5 +1,5 @@
-# https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/
-# Taken from iPhone 14 Plus 1284 x 2778 pixels (Simulator):
+# https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/ 
+# Taken from iPhone 15 Plus 1290 x 2796 pixels (Simulator):
 - audio_control.png: LISTEN tab, audio control dialog, purple-green theme
 - device.png: DEVICE tab, vertical, indigo-orange theme
 - listen.png: LISTEN tab, horizontal orientation, strong dark
