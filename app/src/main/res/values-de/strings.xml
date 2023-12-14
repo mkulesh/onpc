@@ -422,6 +422,7 @@
     <string name="service_slacker">Slacker</string>
     <string name="service_mediafly">Mediafly</string>
     <string name="service_spotify">Spotify</string>
+    <string name="service_spotify_missing_app">Die Spotify-App ist auf dem Gerät nicht gefunden</string>
     <string name="service_aupeo">AUPEO!</string>
     <string name="service_radiko">Radiko</string>
     <string name="service_e_onkyo">e-onkyo</string>

@@ -14,6 +14,7 @@
 
 package com.mkulesh.onpc.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -571,6 +572,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     private void updateListView(@NonNull final State state)
     {
         listView.clearChoices();
@@ -684,14 +686,37 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         if (activity.isConnected() && listViewAdapter != null && position < listViewAdapter.getCount())
         {
             final ISCPMessage selectedItem = listViewAdapter.getItem(position);
-            if (selectedItem != null)
+            if (selectedItem == null)
             {
-                moveFrom = -1;
-                mediaFilter.setVisibility(false, true);
-                // #6: Unable to play music from NAS: allow to select not selectable items as well
-                updateTitle(activity.getStateManager().getState(), true);
-                activity.getStateManager().sendMessage(selectedItem);
+                return;
             }
+
+            if (getContext() != null && selectedItem instanceof NetworkServiceMsg)
+            {
+                final NetworkServiceMsg cmd = (NetworkServiceMsg) selectedItem;
+                if (cmd.getService() == ServiceType.SPOTIFY || cmd.getService() == ServiceType.DCP_SPOTIFY)
+                {
+                    Logging.info(this, "Selected media item: " + cmd + " -> launch Spotify app");
+                    // Also see AndroidManifest.xml, queries section
+                    Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.spotify.music");
+                    if (intent != null)
+                    {
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Toast.makeText(activity, R.string.service_spotify_missing_app, Toast.LENGTH_LONG).show();
+                    }
+                    return;
+                }
+            }
+
+            moveFrom = -1;
+            mediaFilter.setVisibility(false, true);
+            // #6: Unable to play music from NAS: allow to select not selectable items as well
+            updateTitle(activity.getStateManager().getState(), true);
+            activity.getStateManager().sendMessage(selectedItem);
         }
     }
 

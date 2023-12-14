@@ -369,13 +369,23 @@ public class DcpReceiverInformationMsg extends ISCPMessage
             }
             if (!networkServices.isEmpty())
             {
-                final ServiceType s = ServiceType.DCP_PLAYQUEUE;
-                networkServices.put(s.getCode(), new ReceiverInformationMsg.NetworkService(
-                        s.getCode(), s.getName(), ReceiverInformationMsg.ALL_ZONES, false, false));
+                ensureNetworkService(networkServices, ServiceType.DCP_PLAYQUEUE);
+                ensureNetworkService(networkServices, ServiceType.DCP_SPOTIFY);
                 return new DcpReceiverInformationMsg(networkServices);
             }
         }
         return null;
+    }
+
+    private static void ensureNetworkService(final Map<String, ReceiverInformationMsg.NetworkService> nsList, final ServiceType s)
+    {
+        final boolean missing = nsList.get(s.getCode()) == null;
+        if (missing)
+        {
+            Logging.info(s, "Enforced missing network service " + s);
+            nsList.put(s.getCode(), new ReceiverInformationMsg.NetworkService(
+                    s.getCode(), s.getName(), ReceiverInformationMsg.ALL_ZONES, false, false));
+        }
     }
 
     @Nullable

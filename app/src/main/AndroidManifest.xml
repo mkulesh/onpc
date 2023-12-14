@@ -22,6 +22,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <!-- Allow to launch Spotify app -->
+        <package android:name="com.spotify.music" />
+    </queries>
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
