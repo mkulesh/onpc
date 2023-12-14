@@ -518,8 +518,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 continue;
             }
+
+            final boolean isSelected = state.isOn() && state.inputType.getCode().equals(s.getId());
+            final boolean waitingForData = !isSelected || !state.isTopLayer();
             final AppCompatButton b = createButton(msg.getInputType().getDescriptionId(),
-                    null, msg.getInputType(), () -> setProgressIndicator(state, true));
+                    null, msg.getInputType(), null);
             prepareButtonListeners(b, null, () ->
             {
                 if (!state.isOn())
@@ -529,7 +532,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
                 else
                 {
-                    setProgressIndicator(state, true);
+                    setProgressIndicator(state, waitingForData);
                 }
                 activity.getStateManager().sendMessage(msg);
             });
@@ -537,7 +540,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 b.setText(s.getName());
             }
-            if (state.inputType.getCode().equals(s.getId()))
+            if (isSelected)
             {
                 selectedButton = b;
             }
