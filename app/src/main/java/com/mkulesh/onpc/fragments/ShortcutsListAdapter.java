@@ -47,6 +47,7 @@ class ShortcutsListAdapter extends BaseAdapter
         {
             items.add(new CfgFavoriteShortcuts.Shortcut(d, d.alias));
         }
+        //noinspection ComparatorCombinators
         Collections.sort(items, (o1, o2) -> Integer.compare(o1.order, o2.order));
         notifyDataSetChanged();
     }

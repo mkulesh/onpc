@@ -23,7 +23,7 @@ public abstract class ZonedMessage extends ISCPMessage
         super(raw);
         for (int i = 0; i < zoneCommands.length; i++)
         {
-            if (zoneCommands[i].toUpperCase().equals(raw.getCode().toUpperCase()))
+            if (zoneCommands[i].equalsIgnoreCase(raw.getCode()))
             {
                 zoneIndex = i;
                 return;

@@ -27,7 +27,7 @@ import androidx.annotation.Nullable;
 /*
  * Tone/Front (for main zone) and Tone (for zones 2, 3) command
  */
-@SuppressWarnings("DuplicateExpressions")
+@SuppressWarnings({ "DuplicateExpressions", "RedundantSuppression" })
 public class ToneCommandMsg extends ZonedMessage
 {
     final static String CODE = "TFR";

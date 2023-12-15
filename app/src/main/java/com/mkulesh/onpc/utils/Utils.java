@@ -68,6 +68,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 public class Utils
 {
+    @SuppressWarnings("CharsetObjectCanBeUsed")
     public static final Charset UTF_8 = Charset.forName("UTF-8");
 
     public static byte[] catBuffer(byte[] bytes, int offset, int length)
@@ -368,10 +369,9 @@ public class Utils
             }
             else
             {
-                int hours = 0;
                 int minutes = Integer.parseInt(tokens[0]);
                 int seconds = Integer.parseInt(tokens[1]);
-                return 3600 * hours + 60 * minutes + seconds;
+                return 60 * minutes + seconds;
             }
         }
         catch (Exception ex)
@@ -488,6 +488,7 @@ public class Utils
                                        @NonNull final String par, @NonNull final String def)
     {
         final String val = preferences.getString(par, def);
+        //noinspection ConstantConditions
         return val == null ? def : val;
     }
 

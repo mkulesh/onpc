@@ -39,5 +39,6 @@ public interface ConnectionIf
     int getPort();
 
     @NonNull
+    @SuppressWarnings("unused")
     String getHostAndPort();
 }

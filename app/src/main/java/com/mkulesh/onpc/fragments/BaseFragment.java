@@ -221,6 +221,7 @@ abstract public class BaseFragment extends Fragment
         Utils.setButtonSelected(activity, b, isSelected);
     }
 
+    @SuppressWarnings("SameParameterValue")
     AppCompatButton createButton(@StringRes int descriptionId,
                                  final ISCPMessage msg, Object tag, final ButtonListener listener)
     {

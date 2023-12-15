@@ -370,6 +370,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         return null;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private boolean callDcpMenuItem(DcpMediaContainerMsg dcpCmd, int id)
     {
         final List<XmlListItemMsg> menuItems = activity.getStateManager().getState().cloneDcpTrackMenuItems(dcpCmd);

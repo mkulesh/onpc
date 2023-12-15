@@ -32,7 +32,7 @@ public final class Logging
     public static boolean isEnabled()
     {
         // Should be false in release build
-        return true;
+        return false;
     }
 
     public static boolean isTimeMsgEnabled()
@@ -56,6 +56,7 @@ public final class Logging
                         latestLogging.take();
                     }
                     final int l = logLineNumber.addAndGet(1);
+                    //noinspection ResultOfMethodCallIgnored
                     latestLogging.offer(String.format("#%04d: ", l) + out);
                 }
                 catch (Exception e)

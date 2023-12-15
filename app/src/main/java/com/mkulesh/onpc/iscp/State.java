@@ -1400,7 +1400,7 @@ public class State implements ConnectionIf
                 {
                     for (NetworkServiceMsg i : serviceItems)
                     {
-                        if (i.getService().getName().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                        if (i.getService().getName().equalsIgnoreCase(msg.getListedData()))
                         {
                             return false;
                         }
@@ -1420,7 +1420,7 @@ public class State implements ConnectionIf
             {
                 for (XmlListItemMsg i : mediaItems)
                 {
-                    if (i.getTitle().toUpperCase().equals(msg.getListedData().toUpperCase()))
+                    if (i.getTitle().equalsIgnoreCase(msg.getListedData()))
                     {
                         return false;
                     }
@@ -1578,7 +1578,7 @@ public class State implements ConnectionIf
             {
                 for (XmlListItemMsg i : mediaItems)
                 {
-                    if (i.getTitle().toUpperCase().equals(s.toUpperCase()))
+                    if (i.getTitle().equalsIgnoreCase(s))
                     {
                         return true;
                     }

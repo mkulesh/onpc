@@ -63,6 +63,7 @@ public class PreferencesMain extends AppCompatPreferenceActivity
             {
                 screen.removePreference(findPreference(CfgAppSettings.REMOTE_INTERFACE_AMP));
                 screen.removePreference(findPreference(CfgAppSettings.REMOTE_INTERFACE_CD));
+                //noinspection RedundantCast
                 final PreferenceCategory adv = (PreferenceCategory) findPreference("category_advanced");
                 if (adv != null)
                 {

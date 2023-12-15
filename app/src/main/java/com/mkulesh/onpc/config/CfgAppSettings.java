@@ -56,12 +56,14 @@ public class CfgAppSettings
 
         final boolean isIscp, isDcp;
 
+        @SuppressWarnings("SameParameterValue")
         Tabs(final boolean isIscp, final boolean isDcp)
         {
             this.isIscp = isIscp;
             this.isDcp = isDcp;
         }
 
+        @SuppressWarnings("BooleanMethodIsAlwaysInverted")
         public boolean isVisible(ConnectionIf.ProtoType pt)
         {
             return (pt == ConnectionIf.ProtoType.ISCP && isIscp) || (pt == ConnectionIf.ProtoType.DCP && isDcp);

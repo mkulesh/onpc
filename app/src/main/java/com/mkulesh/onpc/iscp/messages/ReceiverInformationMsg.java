@@ -183,6 +183,7 @@ public class ReceiverInformationMsg extends ISCPMessage
                     + ", volMax=" + volMax;
         }
 
+        @SuppressWarnings("unused")
         public boolean equals(Zone other)
         {
             return other != null &&
@@ -397,6 +398,7 @@ public class ReceiverInformationMsg extends ISCPMessage
             return R.drawable.media_item_unknown;
         }
 
+        @SuppressWarnings("BooleanMethodIsAlwaysInverted")
         public boolean equals(Preset other)
         {
             return other != null &&
