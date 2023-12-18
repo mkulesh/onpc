@@ -1,0 +1,2 @@
+• Added Spotify support
+• Adapted for Android 14
