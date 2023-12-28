@@ -11,8 +11,8 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
-// @dart=2.9
 import "dart:io";
+import "package:collection/collection.dart";
 import "package:xml/xml.dart" as xml;
 import "package:args/args.dart";
 import 'package:xml/xml.dart';
@@ -101,7 +101,7 @@ void main(List<String> arguments) async
         outContent.writeln("");
         allStrings.where((e) => e.getAttribute("translatable") == "false").forEach((element)
         {
-            final String name = element.getAttribute("name");
+            final String name = element.getAttribute("name")!;
             final XmlNode node = element.children.first;
             outContent.writeln('    static const String ' + name + ' = "' + node.toString() + '";');
         });
@@ -111,7 +111,7 @@ void main(List<String> arguments) async
         outContent.writeln("");
         allArrays.where((e) => e.getAttribute("translatable") == "false").forEach((element)
         {
-            final String name = element.getAttribute("name");
+            final String name = element.getAttribute("name")!;
             outContent.writeln('    static const List<String> ' + name + ' = [');
             int idx = 1;
             element.children.forEach((node)
@@ -130,23 +130,26 @@ void main(List<String> arguments) async
         allStrings.where((e) => e.getAttribute("translatable") != "false").forEach((element)
         {
             outContent.writeln("");
-            final String name = element.getAttribute("name");
+            final String name = element.getAttribute("name")!;
             final XmlNode node = element.children.first;
             outContent.writeln('    static const List<String> l_' + name + ' = [');
             outContent.writeln('        /*en*/ "' + node.toString() + '",');
             for (String tName in TRANSLATIONS)
             {
                 final tDoc = inTranslations[tName];
-                XmlElement tElement = tDoc.findAllElements("string").firstWhere(
-                        (e) => e.getAttribute("name") == name, orElse: () => null);
-                if (tElement == null)
+                if (tDoc != null)
                 {
-                    print("    ERROR: string " + name + " is not found in translation " + tName);
-                    tElement = element;
+                    XmlElement? tElement = tDoc.findAllElements("string").firstWhereOrNull(
+                            (e) => e.getAttribute("name") == name);
+                    if (tElement == null)
+                    {
+                        print("    ERROR: string " + name + " is not found in translation " + tName);
+                        tElement = element;
+                    }
+                    final XmlNode tNode = tElement.children.first;
+                    outContent.writeln('        /*' + tName + '*/ "' + tNode.toString()
+                        + (tName == TRANSLATIONS.last ? '"];' : '",'));
                 }
-                final XmlNode tNode = tElement.children.first;
-                outContent.writeln('        /*' + tName + '*/ "' + tNode.toString()
-                    + (tName == TRANSLATIONS.last ? '"];' : '",'));
             };
             outContent.writeln('    static String get ' + name + ' => l_' + name + '[_language];');
         });
@@ -156,20 +159,23 @@ void main(List<String> arguments) async
         allArrays.where((e) => e.getAttribute("translatable") != "false").forEach((element)
         {
             outContent.writeln("");
-            final String name = element.getAttribute("name");
+            final String name = element.getAttribute("name")!;
             outContent.writeln('    static const List<List<String>> l_' + name + ' = [');
             _writeArray(outContent, "en", element, false);
             for (String tName in TRANSLATIONS)
             {
                 final tDoc = inTranslations[tName];
-                XmlElement tElement = tDoc.findAllElements("string-array").firstWhere(
-                        (e)  => e.getAttribute("name") == name, orElse: () => null);
-                if (tElement == null)
+                if (tDoc != null)
                 {
-                    print("    ERROR: array " + name + " is not found in translation " + tName);
-                    tElement = element;
+                    XmlElement? tElement = tDoc.findAllElements("string-array").firstWhereOrNull(
+                            (e) => e.getAttribute("name") == name);
+                    if (tElement == null)
+                    {
+                        print("    ERROR: array " + name + " is not found in translation " + tName);
+                        tElement = element;
+                    }
+                    _writeArray(outContent, tName, tElement, tName == TRANSLATIONS.last);
                 }
-                _writeArray(outContent, tName, tElement, tName == TRANSLATIONS.last);
             }
             outContent.writeln('    static List<String> get ' + name + ' => l_' + name + '[_language];');
         });
