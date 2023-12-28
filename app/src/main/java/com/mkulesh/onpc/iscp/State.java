@@ -1775,6 +1775,10 @@ public class State implements ConnectionIf
     public boolean isShortcutPossible()
     {
         final boolean isMediaList = numberOfLayers > 0 && titleBar != null && !titleBar.isEmpty() && serviceType != null;
+        Logging.info(this, "Shortcut parameters: numberOfLayers=" + numberOfLayers +
+                ", titleBar=" + titleBar +
+                ", serviceType=" + serviceType +
+                ", isMediaList=" + isMediaList);
         return !SKIP_XML_MESSAGES && (isMediaList || isSimpleInput());
     }
 

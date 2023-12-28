@@ -32,7 +32,7 @@ public final class Logging
     public static boolean isEnabled()
     {
         // Should be false in release build
-        return false;
+        return true;
     }
 
     public static boolean isTimeMsgEnabled()
