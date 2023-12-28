@@ -2,7 +2,7 @@
 name: onpc
 description: Enhanced Music Controller
 
-version: 2.13.1+307
+version: 2.13.2+308
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
