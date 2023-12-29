@@ -57,7 +57,7 @@ class BaseAppTheme
             secondary: accentColor
         );
 
-        final Color focusColor = disabledColor.withOpacity(0.3);
+        final Color focusColor = disabledColor.withOpacity(0.12);
 
         return ThemeData(
             brightness: brightness,
@@ -65,17 +65,19 @@ class BaseAppTheme
             primaryColorDark: primaryColorDark,
             canvasColor: brightness == Brightness.dark ? primaryColor : backgroundColor,
             scaffoldBackgroundColor: backgroundColor,
-            dividerColor: primaryColor,
+            dividerColor: disabledColor,
             disabledColor: disabledColor,
             indicatorColor: accentColor,
             focusColor: focusColor,
+            hoverColor: focusColor,
 
             bottomAppBarTheme: BottomAppBarTheme(
                 color: textColorAppBar
             ),
 
             colorScheme: colorScheme.copyWith(
-                background: backgroundColor
+                background: backgroundColor,
+                surfaceTint: Colors.transparent
             ),
 
             appBarTheme: AppBarTheme(
@@ -89,6 +91,59 @@ class BaseAppTheme
                 labelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
                 unselectedLabelColor: textColorAppBar.withAlpha(175),
                 unselectedLabelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
+                indicatorColor: accentColor,
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: disabledColor.withAlpha(75)
+            ),
+
+            drawerTheme: DrawerThemeData(
+                backgroundColor: brightness == Brightness.dark ? primaryColor : backgroundColor,
+                surfaceTintColor: Colors.transparent,
+                elevation: ActivityDimens.elevation
+            ),
+
+            dialogTheme: DialogTheme(
+                backgroundColor: brightness == Brightness.dark ? primaryColor : backgroundColor,
+                surfaceTintColor: Colors.transparent,
+                elevation: ActivityDimens.elevation
+            ),
+
+            popupMenuTheme: PopupMenuThemeData(
+                color: brightness == Brightness.dark ? primaryColor : backgroundColor,
+                surfaceTintColor: Colors.transparent,
+                elevation: ActivityDimens.elevation
+            ),
+
+            dividerTheme: DividerThemeData(
+                thickness: 0.3,
+                color: disabledColor
+            ),
+
+            radioTheme: RadioThemeData(
+                fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                    return states.contains(MaterialState.selected) ? accentColor : textColor;
+                })
+            ),
+
+            iconTheme: IconThemeData(
+                color: textColor
+            ),
+
+            checkboxTheme: CheckboxThemeData(
+                fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                    return states.contains(MaterialState.selected) ? accentColor : Colors.transparent;
+                }),
+                side: BorderSide(color: textColor, width: 2)
+            ),
+
+            switchTheme: SwitchThemeData(
+                thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                    return states.contains(MaterialState.selected) ? accentColor : textColorAppBar;
+                }),
+                trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                    return states.contains(MaterialState.selected) ? accentColor.withAlpha(125) : disabledColor;
+                }),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
 
             textTheme: TextTheme(
@@ -107,7 +162,7 @@ class BaseAppTheme
             textButtonTheme: TextButtonThemeData(
                 style: ButtonStyle(
                     overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                        if (states.contains(MaterialState.focused)) {
+                        if (states.contains(MaterialState.focused) || states.contains(MaterialState.hovered)) {
                             return focusColor;
                         }
                         return null; // Use the component's default.
@@ -121,8 +176,8 @@ class BaseAppTheme
                 selectionHandleColor: accentColor,
             ),
 
-            tooltipTheme:
-                TooltipThemeData(waitDuration: Duration(seconds: 2)
+            tooltipTheme: TooltipThemeData(
+                waitDuration: Duration(seconds: 2)
             )
         );
     }

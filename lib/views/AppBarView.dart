@@ -164,7 +164,7 @@ class AppBarView extends UpdatableView
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-                CustomDivider(color: td.primaryColorDark.withAlpha(175)),
+                CustomDivider(),
                 TabBar(
                     controller: _tabController,
                     isScrollable: true,

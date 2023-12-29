@@ -55,9 +55,8 @@ class DrawerView extends UpdatableView
     {
         Logging.logRebuild(this);
         FocusScope.of(context).unfocus();
-        final ThemeData td = Theme.of(context);
 
-        final Widget header = DrawerHeader(child: _buildDrawerHeader(context), decoration: BoxDecoration(color: td.primaryColor));
+        final Widget header = _buildDrawerHeader(context);
 
         final List<Widget> drawerItems = [];
         {
@@ -180,7 +179,8 @@ class DrawerView extends UpdatableView
 
         return DrawerHeader(
             margin: EdgeInsets.zero,
-            padding: EdgeInsets.only(top: 16),
+            padding: EdgeInsets.only(top: 16, bottom: 8),
+            decoration: BoxDecoration(color: td.primaryColor),
             child: content
         );
     }

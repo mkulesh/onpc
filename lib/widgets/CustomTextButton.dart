@@ -45,7 +45,7 @@ class CustomTextButton extends StatelessWidget
         final Widget result = MaterialButton(
             child: Text(text, style: td.textTheme.labelLarge!.copyWith(color: color)),
             padding: _getPadding(),
-            color: isInDialog ? td.dialogBackgroundColor : td.colorScheme.background,
+            color: isInDialog ? td.dialogTheme.backgroundColor : td.colorScheme.background,
             textColor: color,
             elevation: 0,
             minWidth: 0,

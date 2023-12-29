@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 
 import "../constants/Dimens.dart";
+import "CustomTextLabel.dart";
 
 class SwitchPreference extends StatefulWidget
 {
@@ -49,14 +50,14 @@ class _SwitchPreferenceState extends State<SwitchPreference>
             leading: widget.icon,
             title: ListTileTheme(
                 contentPadding: ActivityDimens.noPadding,
-                child: Text(widget.title)),
-            subtitle: widget.desc == null ? null : Text(widget.desc!),
-            trailing: Switch(
-                value: _value,
-                activeColor: Theme.of(context).colorScheme.secondary,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (val)
-                => val ? onEnable() : onDisable()
+                child: CustomTextLabel.normal(widget.title)),
+            subtitle: widget.desc == null ? null : CustomTextLabel.small(widget.desc!),
+            trailing: Transform.scale(scale: DimensTransform.switchScaleFactor,
+                child: Switch(
+                    value: _value,
+                    onChanged: (val)
+                    => val ? onEnable() : onDisable()
+                )
             ),
             onTap: ()
             => _value ? onDisable() : onEnable()

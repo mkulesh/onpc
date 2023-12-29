@@ -26,6 +26,7 @@ import "../utils/Pair.dart";
 import "../utils/Platform.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
+import "../widgets/CustomTextLabel.dart";
 import "../widgets/PreferenceTitle.dart";
 import "../widgets/SwitchPreference.dart";
 import "CfgAppSettings.dart";
@@ -289,9 +290,9 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         }
         final Widget res = ListTile(
             leading: _getIcon(td, icon),
-            title: Text(name),
-            subtitle: Text(displayValues[groupValue]),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: CustomTextLabel.normal(name),
+            subtitle: CustomTextLabel.small(displayValues[groupValue]),
+            trailing: Icon(Icons.keyboard_arrow_right, color: td.textTheme.titleMedium!.color),
             onTap: ()
             => showDialog(
                 context: context,
@@ -322,8 +323,8 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
     {
         return ListTile(
             leading: _getIcon(td, icon),
-            title: Text(name),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: CustomTextLabel.normal(name),
+            trailing: Icon(Icons.keyboard_arrow_right, color: td.textTheme.titleMedium!.color),
             onTap: ()
             => Navigator.pushNamed(context, activity)
         );

@@ -150,6 +150,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
                activeTrackColor: td.colorScheme.secondary,
                inactiveTrackColor: td.disabledColor.withAlpha(125),
                tickSize: Size(1, 5),
+               overlayColor: td.hoverColor
                )
            ),
            child: SfSlider(
@@ -176,7 +177,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         );
 
         final Widget downButton = widget.onDownButton != null ?
-            CustomTextButton(widget.minValueStr,
+            CustomTextButton(widget.minValueStr.padRight(3),
                 padding: ActivityDimens.noPadding,
                 isEnabled: true,
                 isInDialog: widget.isInDialog,
@@ -187,7 +188,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
             CustomTextLabel.small(widget.minValueStr, textAlign: TextAlign.left);
 
         final Widget upButton = widget.onUpButton != null ?
-            CustomTextButton(widget.maxValueStr,
+            CustomTextButton(widget.maxValueStr.padLeft(3),
                 padding: ActivityDimens.noPadding,
                 isEnabled: true,
                 isInDialog: widget.isInDialog,

@@ -79,7 +79,7 @@ class ContextMenuListener<T> extends StatelessWidget
             if (menuItems != null)
             {
                 menuItems!.forEach((item) =>
-                    contextMenu.add(PopupMenuItem<T>(child: Text(item.item1), value: item.item2)));
+                    contextMenu.add(PopupMenuItem<T>(child: CustomTextLabel.normal(item.item1), value: item.item2)));
             }
             showMenu(
                 context: context,

@@ -16,6 +16,7 @@ import "package:flutter/material.dart";
 class DimensTransform
 {
     static double scaleFactor = 1.0;
+    static double switchScaleFactor = 1.0;
 
     static T rotate<T>(BuildContext context, T port, T land)
     {
@@ -52,9 +53,9 @@ class ActivityDimens
     => DimensTransform.rotate(context, _appBarHeightPort, _appBarHeightLand);
 
     // TabBar
-    // Note that a Tab has fixed height _kTabHeight + indicatorWeight (48 + 2 points);
+    // Note that a Tab has fixed height _kTabHeight + indicatorWeight (46 + 2 points);
     // i.e this height shall greater than this parameter
-    static const double _tabBarHeightPort = 52;
+    static const double _tabBarHeightPort = 48;
     static const double _tabBarHeightLand = 48;
 
     static double tabBarHeight(BuildContext context)

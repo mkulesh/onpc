@@ -45,7 +45,7 @@ class CustomTextField extends StatelessWidget
             decoration: InputDecoration(
                 contentPadding: DialogDimens.textFieldPadding,
                 isDense: true,
-                border: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.disabledColor)) : InputBorder.none,
+                enabledBorder: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.textTheme.titleMedium!.color!)) : InputBorder.none,
                 focusedBorder: isBorder ? UnderlineInputBorder(borderSide: BorderSide(color: td.colorScheme.secondary)) : InputBorder.none
             )
         );
