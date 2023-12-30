@@ -12,12 +12,12 @@ call copy ..\pubspec.yaml_desktop ..\pubspec.yaml
 :: Prepare platform-specific files: enable flutter_libserialport
 call copy ..\lib\utils\CompatUtils.dart.desktop ..\lib\utils\CompatUtils.dart
 
-:: Build with: Flutter version 3.7.10, Dart version 2.19.6
+:: Build with: Flutter version 3.16.0, Dart version 3.2.0
 :: Ensure that file:^6.1.4 is used in pubspec.lock file
 call del *.msix
 call flutter clean
 call cd c:\work\android\flutter
-call git checkout 3.7.10
+call git checkout 3.16.0
 call cd %myPath%
 call flutter doctor -v
 call flutter build windows --release
@@ -25,7 +25,7 @@ call flutter build windows --release
 :: Create msix installer
 echo Windows Store flag: %1
 call flutter pub run msix:create %1
-call move ..\build\windows\runner\Release\onpc.msix MusicControl-v%VER%-windows-x86_64.msix
+call move ..\build\windows\x64\runner\Release\onpc.msix MusicControl-v%VER%-windows-x86_64.msix
 
 :: Create native TAR
 :: call copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.28.29325\x64\Microsoft.VC142.CRT\msvcp140.dll" "..\build\windows\runner\Release"

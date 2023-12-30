@@ -68,10 +68,10 @@ class DcpHeosMessage
         return true;
     }
 
-    int getInt(final String path)
+    int? getInt(final String path)
     {
         final Iterable<JsonPathMatch> list = JsonPath(r"$." + path).read(_jsonMsg);
-        return list.isEmpty ? null : list.first.value;
+        return list.isEmpty ? null : list.first.value as int;
     }
 
     String? getString(final String path)

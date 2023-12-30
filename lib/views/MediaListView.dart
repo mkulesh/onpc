@@ -487,25 +487,25 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 if (isAdvQueue)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                        child: Text(Strings.playlist_replace_and_play), value: MediaContextMenu.REPLACE_AND_PLAY));
+                        child: CustomTextLabel.normal(Strings.playlist_replace_and_play), value: MediaContextMenu.REPLACE_AND_PLAY));
                 }
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_add), value: MediaContextMenu.ADD));
+                    child: CustomTextLabel.normal(Strings.playlist_add), value: MediaContextMenu.ADD));
                 if (isAdvQueue && !isDcpItem)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                        child: Text(Strings.playlist_replace), value: MediaContextMenu.REPLACE));
+                        child: CustomTextLabel.normal(Strings.playlist_replace), value: MediaContextMenu.REPLACE));
                 }
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_add_and_play), value: MediaContextMenu.ADD_AND_PLAY));
+                    child: CustomTextLabel.normal(Strings.playlist_add_and_play), value: MediaContextMenu.ADD_AND_PLAY));
             }
 
             if (isQueue)
             {
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_remove), value: MediaContextMenu.REMOVE));
+                    child: CustomTextLabel.normal(Strings.playlist_remove), value: MediaContextMenu.REMOVE));
                 contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                    child: Text(Strings.playlist_remove_all), value: MediaContextMenu.REMOVE_ALL));
+                    child: CustomTextLabel.normal(Strings.playlist_remove_all), value: MediaContextMenu.REMOVE_ALL));
             }
 
             // DCP options
@@ -516,35 +516,35 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_TO_HEOS) != null)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                        child: Text(Strings.playlist_add_to_heos_favourites), 
+                        child: CustomTextLabel.normal(Strings.playlist_add_to_heos_favourites),
                         value: MediaContextMenu.SO_ADD_TO_HEOS));
                 }
 
                 if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REMOVE_FROM_HEOS) != null)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                        child: Text(Strings.playlist_remove_from_heos_favourites), 
+                        child: CustomTextLabel.normal(Strings.playlist_remove_from_heos_favourites),
                         value: MediaContextMenu.SO_REMOVE_FROM_HEOS));
                 }
 
                 if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REPLACE_AND_PLAY_ALL) != null)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                        child: Text(Strings.playlist_replace_and_play_all), 
+                        child: CustomTextLabel.normal(Strings.playlist_replace_and_play_all),
                         value: MediaContextMenu.SO_REPLACE_AND_PLAY_ALL));
                 }
 
                 if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_ALL) != null)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                        child: Text(Strings.playlist_add_all), 
+                        child: CustomTextLabel.normal(Strings.playlist_add_all),
                         value: MediaContextMenu.SO_ADD_ALL));
                 }
 
                 if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL) != null)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                        child: Text(Strings.playlist_add_and_play_all), 
+                        child: CustomTextLabel.normal(Strings.playlist_add_and_play_all),
                         value: MediaContextMenu.SO_ADD_AND_PLAY_ALL));
                 }
                 if (oldLength > 0 && oldLength != contextMenu.length)
@@ -558,19 +558,19 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         if (state.playbackState.isTrackMenuActive && isPlaying && !isQueue && !isDcpItem)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                child: Text(Strings.cmd_track_menu), value: MediaContextMenu.TRACK_MENU));
+                child: CustomTextLabel.normal(Strings.cmd_track_menu), value: MediaContextMenu.TRACK_MENU));
         }
 
         if (isMediaItem && isPlaying && !isDcpItem)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                child: Text(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
+                child: CustomTextLabel.normal(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
         }
 
         if (state.protoType == ProtoType.ISCP && state.isShortcutPossible && shortcutItem != null && shortcutAlias != null)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
-                child: Text(Strings.favorite_shortcut_create), value: MediaContextMenu.ADD_TO_FAVORITES));
+                child: CustomTextLabel.normal(Strings.favorite_shortcut_create), value: MediaContextMenu.ADD_TO_FAVORITES));
         }
 
         if (contextMenu.isNotEmpty)

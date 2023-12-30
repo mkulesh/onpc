@@ -62,8 +62,8 @@ class DcpMediaItemMsg extends ISCPMessage
             {
                 return null;
             }
-            final int sid = jsonMsg.getInt("payload.sid");
-            return DcpMediaItemMsg._dcp(mid, sid);
+            final int? sid = jsonMsg.getInt("payload.sid");
+            return sid != null ? DcpMediaItemMsg._dcp(mid, sid) : null;
         }
         return null;
     }

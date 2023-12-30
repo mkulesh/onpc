@@ -67,7 +67,7 @@ class CustomTextButton extends StatelessWidget
         final Size size = (TextPainter(
             text: TextSpan(text: text, style: td.textTheme.labelLarge),
             maxLines: 1,
-            textScaleFactor: MediaQuery.of(context).textScaleFactor,
+            textScaler: MediaQuery.of(context).textScaler,
             textDirection: TextDirection.ltr)
             ..layout())
             .size;

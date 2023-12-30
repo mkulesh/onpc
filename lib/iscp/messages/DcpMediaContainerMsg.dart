@@ -256,7 +256,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         final Iterable<JsonPathMatch> payload = jsonMsg.getArray("payload[*]");
         for (int i = 0; i < payload.length; i++)
         {
-            final Map<String, dynamic> map = payload.elementAt(i).value;
+            final Map<String, dynamic> map = payload.elementAt(i).value as Map<String, dynamic>;
             final DcpMediaContainerMsg itemMsg = DcpMediaContainerMsg.item(map, parentMsg._sid, parentMsg._cid);
             if (itemMsg.isSong())
             {
@@ -290,7 +290,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         final Iterable<JsonPathMatch> payload = jsonMsg.getArray("payload[*]");
         for (int i = 0; i < payload.length; i++)
         {
-            final Map<String, dynamic> map = payload.elementAt(i).value;
+            final Map<String, dynamic> map = payload.elementAt(i).value as Map<String, dynamic>;
             final DcpMediaContainerMsg itemMsg = DcpMediaContainerMsg.queue(map, PLAYQUEUE_SID);
             final XmlListItemMsg xmlItem = XmlListItemMsg.details(
                     ISCPMessage.nonNullInteger(itemMsg._qid, 10, i),
@@ -306,11 +306,11 @@ class DcpMediaContainerMsg extends ISCPMessage
     static void readOptions(final DcpMediaContainerMsg parentMsg, final DcpHeosMessage jsonMsg)
     {
         final Iterable<JsonPathMatch> options = jsonMsg.getArray("options[*]");
-        if (options.isEmpty || options.first.value["browse"] == null)
+        if (options.isEmpty || !(options.first.value is Map<String, dynamic>))
         {
             return;
         }
-        final List<dynamic> browse = options.first.value["browse"];
+        final List<dynamic> browse = (options.first.value as Map<String, dynamic>)["browse"];
         for (int i = 0; i < browse.length; i++)
         {
             final Map<String, dynamic> item = browse.elementAt(i);

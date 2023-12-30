@@ -60,6 +60,7 @@ class BaseAppTheme
         final Color focusColor = disabledColor.withOpacity(0.12);
 
         return ThemeData(
+            useMaterial3: false,
             brightness: brightness,
             primaryColor: primaryColor,
             primaryColorDark: primaryColorDark,
@@ -93,7 +94,8 @@ class BaseAppTheme
                 unselectedLabelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
                 indicatorColor: accentColor,
                 indicatorSize: TabBarIndicatorSize.tab,
-                dividerColor: disabledColor.withAlpha(75)
+                dividerColor: Colors.transparent,
+                tabAlignment: TabAlignment.center
             ),
 
             drawerTheme: DrawerThemeData(
@@ -134,16 +136,6 @@ class BaseAppTheme
                     return states.contains(MaterialState.selected) ? accentColor : Colors.transparent;
                 }),
                 side: BorderSide(color: textColor, width: 2)
-            ),
-
-            switchTheme: SwitchThemeData(
-                thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                    return states.contains(MaterialState.selected) ? accentColor : textColorAppBar;
-                }),
-                trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                    return states.contains(MaterialState.selected) ? accentColor.withAlpha(125) : disabledColor;
-                }),
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
 
             textTheme: TextTheme(

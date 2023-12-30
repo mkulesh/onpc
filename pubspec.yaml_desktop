@@ -5,8 +5,8 @@ description: Enhanced Music Controller
 version: 2.13.2+308
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: 3.7.10
+  sdk: '>=2.14.0 <3.0.0'
+  flutter: 3.16.0
 
 dependencies:
   flutter:
@@ -14,17 +14,17 @@ dependencies:
 
   collection: ^1.17.0
   quiver: ^3.0.1
-  xml: ^5.1.1
-  flutter_svg: ^0.22.0
-  http: ^0.13.3
+  xml: ^6.5.0
+  flutter_svg: ^2.0.9
+  http: ^1.1.2
   draggable_scrollbar: ^0.1.0
   shared_preferences: ^2.0.5
   back_button_interceptor: ^5.0.0
   sprintf: ^6.0.0
   flutter_markdown: ^0.6.8
   url_launcher: ^6.1.11
-  google_fonts: ^2.2.0
-  json_path: ^0.4.0
+  google_fonts: ^6.1.0
+  json_path: ^0.7.0
   syncfusion_flutter_sliders: ^23.1.36
   syncfusion_flutter_charts: ^23.1.36
   flutter_libserialport: ^0.3.0
@@ -36,7 +36,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.4.0
-  msix: 2.6.3
+  msix: 3.16.7
 
 flutter:
 
@@ -52,6 +52,7 @@ flutter:
     - lib/assets/ri/
 
 msix_config:
+  build_windows: false
   display_name: Enhanced Music Controller
   publisher_display_name: Mikhail Kulesh
   identity_name: 25529MikhailKulesh.EnhancedMusicController

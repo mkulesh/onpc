@@ -196,14 +196,14 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this.widget, "Application state change: " + state.toString());
         if (state == AppLifecycleState.resumed)
         {
-            if (Platform.isIOS && _stateManager.isConnected)
+            if (!Platform.isAndroid && _stateManager.isConnected)
             {
                 Logging.info(this.widget, "App resumed, but already connected. Ignore resuming.");
                 return;
             }
             _onResume();
         }
-        else
+        else if (Platform.isMobile)
         {
             _disconnect();
         }
