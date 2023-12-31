@@ -141,7 +141,8 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
         <item>Amplificateur Externe (RI)</item>
         <item>Dispositif (Boutons)</item>
         <item>Dispositif (Glissière)</item>
-        <item>Dispositif (Boutons et Glissière)</item>
+        <item>Dispositif (Boutons autour du Glissière)</item>
+        <item>Dispositif (Boutons au-dessus du Glissière)</item>
         <item>Automatique</item>
     </string-array>
 

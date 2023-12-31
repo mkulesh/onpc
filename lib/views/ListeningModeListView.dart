@@ -42,7 +42,10 @@ class ListeningModeListView extends UpdatableView
         final SoundControlType soundControl = state.soundControlState.soundControlType(
             configuration.audioControl.soundControl, state.getActiveZoneInfo);
 
-        if (![SoundControlType.DEVICE_BUTTONS, SoundControlType.DEVICE_SLIDER, SoundControlType.DEVICE_BTN_SLIDER].contains(soundControl))
+        if (![SoundControlType.DEVICE_BUTTONS,
+              SoundControlType.DEVICE_SLIDER,
+              SoundControlType.DEVICE_BTN_AROUND_SLIDER,
+              SoundControlType.DEVICE_BTN_ABOVE_SLIDER].contains(soundControl))
         {
             return SizedBox.shrink();
         }

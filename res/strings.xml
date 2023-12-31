@@ -150,7 +150,8 @@ Enjoy!""</string>
         <item>External amplifier (RI)</item>
         <item>Device (Buttons)</item>
         <item>Device (Slider)</item>
-        <item>Device (Buttons and Slider)</item>
+        <item>Device (Buttons around Slider)</item>
+        <item>Device (Buttons above Slider)</item>
         <item>Automatic</item>
     </string-array>
 
@@ -161,6 +162,7 @@ Enjoy!""</string>
         <item>device</item>
         <item>device-slider</item>
         <item>device-btn-slider</item>
+        <item>device-btn-above-slider</item>
         <item>auto</item>
     </string-array>
 

@@ -33,7 +33,8 @@ enum SoundControlType
 {
     DEVICE_BUTTONS,
     DEVICE_SLIDER,
-    DEVICE_BTN_SLIDER,
+    DEVICE_BTN_AROUND_SLIDER,
+    DEVICE_BTN_ABOVE_SLIDER,
     RI_AMP,
     NONE
 }
@@ -313,7 +314,9 @@ class SoundControlState
             case "device-slider":
                 return SoundControlType.DEVICE_SLIDER;
             case "device-btn-slider":
-                return SoundControlType.DEVICE_BTN_SLIDER;
+                return SoundControlType.DEVICE_BTN_AROUND_SLIDER;
+            case "device-btn-above-slider":
+                return SoundControlType.DEVICE_BTN_ABOVE_SLIDER;
             case "external-amplifier":
                 return SoundControlType.RI_AMP;
             default:

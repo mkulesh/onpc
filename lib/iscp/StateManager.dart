@@ -914,7 +914,8 @@ class StateManager
         {
             case SoundControlType.DEVICE_BUTTONS:
             case SoundControlType.DEVICE_SLIDER:
-            case SoundControlType.DEVICE_BTN_SLIDER:
+            case SoundControlType.DEVICE_BTN_AROUND_SLIDER:
+            case SoundControlType.DEVICE_BTN_ABOVE_SLIDER:
             {
                 final List<ISCPMessage> cmds = [
                     MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP),

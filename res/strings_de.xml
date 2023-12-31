@@ -142,7 +142,8 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         <item>Externer Verstärker (RI)</item>
         <item>Gerät (Tasten)</item>
         <item>Gerät (Slider)</item>
-        <item>Gerät (Tasten und Slider)</item>
+        <item>Gerät (Tasten rund um den Slider)</item>
+        <item>Gerät (Tasten über den Slider)</item>
         <item>Automatisch</item>
     </string-array>
 

@@ -19,8 +19,7 @@ import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../views/VolumeControlAmpView.dart";
-import "../views/VolumeControlButtonsView.dart";
-import "../views/VolumeControlSliderView.dart";
+import "../views/VolumeControlDeviceView.dart";
 import "UpdatableView.dart";
 
 class VolumeControlView extends UpdatableView
@@ -44,10 +43,10 @@ class VolumeControlView extends UpdatableView
         switch (soundControl)
         {
             case SoundControlType.DEVICE_BUTTONS:
-                return UpdatableWidget(child: VolumeControlButtonsView(viewContext));
             case SoundControlType.DEVICE_SLIDER:
-            case SoundControlType.DEVICE_BTN_SLIDER:
-                return UpdatableWidget(child: VolumeControlSliderView(viewContext, soundControl == SoundControlType.DEVICE_BTN_SLIDER));
+            case SoundControlType.DEVICE_BTN_AROUND_SLIDER:
+            case SoundControlType.DEVICE_BTN_ABOVE_SLIDER:
+                return UpdatableWidget(child: VolumeControlDeviceView(viewContext, soundControl));
             case SoundControlType.RI_AMP:
                 return UpdatableWidget(child: VolumeControlAmpView(viewContext));
             default:

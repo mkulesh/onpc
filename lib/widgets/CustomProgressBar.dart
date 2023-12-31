@@ -172,7 +172,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
 
         final Widget sliderBox = Container(
             constraints: BoxConstraints(maxHeight: ActivityDimens.progressBarHeight),
-            padding: EdgeInsets.symmetric(horizontal: 2.0 * radius),
+            padding: EdgeInsets.fromLTRB(1.5 * radius, 4, 1.5 * radius, 0),
             child: Align(alignment: Alignment.center, child: slider)
         );
 
