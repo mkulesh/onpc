@@ -64,7 +64,7 @@ class DrawerView extends UpdatableView
             // Device
             drawerItems.add(CustomTextLabel.small(Strings.drawer_device, padding: DrawerDimens.labelPadding));
             drawerItems.add(_buildDrawerItem(
-                context, Drawables.drawer_search, Strings.drawer_device_search, onTabListener: _showDeviceSearchDialog));
+                context, Drawables.cmd_search, Strings.drawer_device_search, onTabListener: _showDeviceSearchDialog));
             drawerItems.add(_buildDrawerItem(
                 context, Drawables.drawer_connect, Strings.drawer_device_connect, onTabListener: _showDeviceConnectDialog));
 

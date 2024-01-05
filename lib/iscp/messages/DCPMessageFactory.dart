@@ -28,6 +28,8 @@ import "DcpMediaContainerMsg.dart";
 import "DcpMediaEventMsg.dart";
 import "DcpMediaItemMsg.dart";
 import "DcpReceiverInformationMsg.dart";
+import "DcpSearchCriteriaMsg.dart";
+import "DcpSearchMsg.dart";
 import "DcpTunerModeMsg.dart";
 import "DimmerLevelMsg.dart";
 import "FirmwareUpdateMsg.dart";
@@ -149,6 +151,7 @@ class DCPMessageFactory
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(jsonMsg));
             addISCPMsg(DcpMediaEventMsg.processHeosMessage(jsonMsg));
             addISCPMsg(CustomPopupMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(DcpSearchCriteriaMsg.processHeosMessage(jsonMsg));
         }
         on Exception catch (e)
         {
@@ -337,6 +340,10 @@ class DCPMessageFactory
             return SetupOperationCommandMsg(raw);
         case NetworkServiceMsg.CODE:
             return NetworkServiceMsg(raw);
+        case DcpSearchCriteriaMsg.CODE:
+            return DcpSearchCriteriaMsg(raw);
+        case DcpSearchMsg.CODE:
+            return DcpSearchMsg(raw);
         case DcpReceiverInformationMsg.CODE:
             return DcpReceiverInformationMsg(raw);
         case DcpTunerModeMsg.CODE:

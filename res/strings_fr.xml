@@ -367,6 +367,12 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="medialist_playback_mode">Mode de lecture</string>
     <string name="medialist_no_items">Pas d\'éléments</string>
     <string name="medialist_filter">Filtrer les éléments</string>
+    <string name="medialist_search">Recherche</string>
+    <string name="medialist_search_artist">Artiste</string>
+    <string name="medialist_search_album">Album</string>
+    <string name="medialist_search_track">Track</string>
+    <string name="medialist_search_station">Station</string>
+    <string name="medialist_search_playlist">Playlist</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

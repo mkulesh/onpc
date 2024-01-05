@@ -12,11 +12,14 @@
  * Public License along with this program.
  */
 
+import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
+import "../../utils/Pair.dart";
 import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
 import "../messages/DcpMediaContainerMsg.dart";
 import "../messages/DcpMediaItemMsg.dart";
+import "../messages/DcpSearchCriteriaMsg.dart";
 import "../messages/DcpTunerModeMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/InputSelectorMsg.dart";
@@ -115,6 +118,13 @@ class MediaListState
 
     List<DcpMediaContainerMsg> get dcpMediaPath
     => _dcpMediaPath;
+
+    final Map<String, List<Pair<String, int>>> _dcpSearchCriteria = Map();
+
+    String _mediaListSid = "";
+
+    String get mediaListSid
+    => _mediaListSid;
 
     String _mediaListCid = "";
 
@@ -583,11 +593,22 @@ class MediaListState
             _layerInfo = msg.getLayerInfo();
             _uiType = UIType.LIST;
             _numberOfLayers = _dcpMediaPath.length;
+            _mediaListSid = msg.getSid();
             _mediaListCid = msg.getCid();
             _mediaItemsTotal = msg.getCount();
-            _titleBar = (_layerInfo == LayerInfo.SERVICE_TOP &&
-                _serviceType.key != ServiceType.UNKNOWN) ?
-                _serviceType.description : "";
+            if (_layerInfo == LayerInfo.SERVICE_TOP && _serviceType.key != ServiceType.UNKNOWN)
+            {
+                _titleBar = _serviceType.description;
+            }
+            else if (msg.getBrowseType() == BrowseType.SEARCH_RESULT && msg.getSearchStr().isNotEmpty)
+            {
+                _titleBar = Strings.medialist_search + ": " + msg.getSearchStr();
+            }
+            else
+            {
+                _titleBar = "";
+            }
+
         }
         else if (msg.getCid() != _mediaListCid)
         {
@@ -635,6 +656,23 @@ class MediaListState
         return changed;
     }
 
+    bool processDcpSearchCriteriaMsg(DcpSearchCriteriaMsg msg)
+    {
+        _dcpSearchCriteria[msg.sid] = msg.criteria;
+        Logging.info(this, "DCP search criteria:" + _dcpSearchCriteria.toString());
+        return true;
+    }
+
+    List<Pair<String, int>> getDcpSearchCriteria()
+    {
+        if (inputType.key == InputSelector.DCP_NET)
+        {
+            final List<Pair<String, int>>? list = _dcpSearchCriteria[_mediaListSid];
+            return list == null ? [] : list;
+        }
+        return [];
+    }
+
     DcpMediaContainerMsg? getDcpContainerMsg(final ISCPMessage msg, {bool allowContainerMsg = true})
     {
         if (msg is XmlListItemMsg && msg.getCmdMessage != null && msg.getCmdMessage is DcpMediaContainerMsg)
@@ -651,6 +689,7 @@ class MediaListState
         _layerInfo = LayerInfo.NET_TOP;
         _uiType = UIType.LIST;
         _numberOfLayers = 0;
+        _mediaListSid = "";
         _mediaListCid = "";
         _dcpMediaPath.clear();
         _titleBar = "";

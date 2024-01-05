@@ -368,6 +368,12 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="medialist_playback_mode">Abspielmodus</string>
     <string name="medialist_no_items">Keine Elemente</string>
     <string name="medialist_filter">Elemente filtern</string>
+    <string name="medialist_search">Suchen</string>
+    <string name="medialist_search_artist">Künstler</string>
+    <string name="medialist_search_album">Album</string>
+    <string name="medialist_search_track">Track</string>
+    <string name="medialist_search_station">Station</string>
+    <string name="medialist_search_playlist">Wiedergabeliste</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

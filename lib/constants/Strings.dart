@@ -2176,6 +2176,54 @@ Enjoy!"""];
         /*pl*/ "Filtruj elementy"];
     static String get medialist_filter => l_medialist_filter[_language];
 
+    static const List<String> l_medialist_search = [
+        /*en*/ "Search",
+        /*ru*/ "Поиск",
+        /*de*/ "Suchen",
+        /*fr*/ "Recherche",
+        /*pl*/ "Szukaj"];
+    static String get medialist_search => l_medialist_search[_language];
+
+    static const List<String> l_medialist_search_artist = [
+        /*en*/ "Artist",
+        /*ru*/ "Артист",
+        /*de*/ "Künstler",
+        /*fr*/ "Artiste",
+        /*pl*/ "Artysta"];
+    static String get medialist_search_artist => l_medialist_search_artist[_language];
+
+    static const List<String> l_medialist_search_album = [
+        /*en*/ "Album",
+        /*ru*/ "Альбом",
+        /*de*/ "Album",
+        /*fr*/ "Album",
+        /*pl*/ "Album"];
+    static String get medialist_search_album => l_medialist_search_album[_language];
+
+    static const List<String> l_medialist_search_track = [
+        /*en*/ "Track",
+        /*ru*/ "Трек",
+        /*de*/ "Track",
+        /*fr*/ "Track",
+        /*pl*/ "Track"];
+    static String get medialist_search_track => l_medialist_search_track[_language];
+
+    static const List<String> l_medialist_search_station = [
+        /*en*/ "Station",
+        /*ru*/ "Станция",
+        /*de*/ "Station",
+        /*fr*/ "Station",
+        /*pl*/ "Station"];
+    static String get medialist_search_station => l_medialist_search_station[_language];
+
+    static const List<String> l_medialist_search_playlist = [
+        /*en*/ "Playlist",
+        /*ru*/ "Плейлист",
+        /*de*/ "Wiedergabeliste",
+        /*fr*/ "Playlist",
+        /*pl*/ "Playlist"];
+    static String get medialist_search_playlist => l_medialist_search_playlist[_language];
+
     static const List<String> l_input_selector_vcr_dvr = [
         /*en*/ "VCR/DVR",
         /*ru*/ "VCR/DVR",

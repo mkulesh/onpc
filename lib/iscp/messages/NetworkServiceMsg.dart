@@ -48,7 +48,7 @@ class NetworkServiceMsg extends EnumParameterMsg<ServiceType>
     /*
      * Denon control protocol
      */
-    static const String _HEOS_COMMAND = "heos://browse/browse";
+    static const String _HEOS_COMMAND = "browse/browse";
 
     @override
     String? buildDcpMsg(bool isQuery)

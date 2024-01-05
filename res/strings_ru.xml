@@ -366,6 +366,12 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="medialist_playback_mode">Режим воспроизведения</string>
     <string name="medialist_no_items">Список пуст</string>
     <string name="medialist_filter">Фильтровать список</string>
+    <string name="medialist_search">Поиск</string>
+    <string name="medialist_search_artist">Артист</string>
+    <string name="medialist_search_album">Альбом</string>
+    <string name="medialist_search_track">Трек</string>
+    <string name="medialist_search_station">Станция</string>
+    <string name="medialist_search_playlist">Плейлист</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

@@ -41,6 +41,7 @@ import "messages/DcpMediaContainerMsg.dart";
 import "messages/DcpMediaEventMsg.dart";
 import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
+import "messages/DcpSearchCriteriaMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
 import "messages/DisplayModeMsg.dart";
 import "messages/EnumParameterMsg.dart";
@@ -700,6 +701,11 @@ class StateManager
                 newMc.setAid("");
                 newMc.setStart(currItems);
                 sendMessage(newMc);
+            }
+            if (mc.getStart() == 0 && state.mediaListState.mediaListSid.isNotEmpty && state.mediaListState.mediaListSid == mc.getSid())
+            {
+                // #290: Additional DcpSearchCriteriaMsg shall be sent in order to request valid search criteria for the service
+                sendMessage(DcpSearchCriteriaMsg.output(mc.getSid()));
             }
         }
 

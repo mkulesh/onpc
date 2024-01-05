@@ -23,6 +23,7 @@ import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/DcpSearchDialog.dart";
 import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../dialogs/PopupManager.dart";
 import "../dialogs/UrlLauncher.dart";
@@ -30,6 +31,7 @@ import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/DcpMediaContainerMsg.dart";
 import "../iscp/messages/DcpMediaItemMsg.dart";
+import "../iscp/messages/DcpSearchCriteriaMsg.dart";
 import "../iscp/messages/DcpTunerModeMsg.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
@@ -86,6 +88,7 @@ class MediaListButtons
     bool remoteSort = false;
     bool appSort = false;
     bool progress = false;
+    bool dcpSearch = false;
 }
 
 class MediaListView extends StatefulWidget
@@ -104,7 +107,8 @@ class MediaListView extends StatefulWidget
         XmlListInfoMsg.CODE,
         PresetCommandMsg.CODE,
         DcpMediaContainerMsg.CODE,
-        DcpMediaItemMsg.CODE
+        DcpMediaItemMsg.CODE,
+        DcpSearchCriteriaMsg.CODE
     ];
 
     MediaListView({Key? key, required this.viewContext}) : super(key: key);
@@ -169,7 +173,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         _headerButtons.remoteSort = state.isOn && state.getNetworkService != null && state.getNetworkService!.isSort;
         _headerButtons.appSort = state.isOn && !_headerButtons.remoteSort && ms.isDeezer && _DEEZER_ALBUMS == ms.titleBar.toUpperCase();
         _headerButtons.progress = state.isOn && stateManager.waitingForData;
-
+        _headerButtons.dcpSearch = state.isOn &&
+            state.protoType == ProtoType.DCP &&
+            ms.getDcpSearchCriteria().isNotEmpty;
+        
         // Apply filter
         if (ms.numberOfLayers != _currentLayer)
         {
@@ -861,6 +868,26 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             )
         ));
 
+        // DCP Search button
+        if (!buttons.progress && buttons.dcpSearch)
+        {
+            elements.add(CustomImageButton.small(
+                Drawables.cmd_search,
+                Strings.medialist_search,
+                onPressed: ()
+                {
+                    if (state.mediaListState.getDcpSearchCriteria().isNotEmpty)
+                    {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext c) =>
+                                DcpSearchDialog(viewContext, state.mediaListState.getDcpSearchCriteria())
+                        );
+                    }
+                }));
+        }
+
         // Filter button
         if (!buttons.progress && buttons.filter)
         {
@@ -888,7 +915,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 onPressed: ()
                 => stateManager.sendMessage(cmd)));
         }
-        else if (buttons.appSort)
+        else if (!buttons.progress && buttons.appSort)
         {
             elements.add(CustomImageButton.small(
                 Drawables.cmd_sort,

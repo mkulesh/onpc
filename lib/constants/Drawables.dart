@@ -67,12 +67,12 @@ class Drawables
     static const String cmd_sort = BUTTONS_PATH + "cmd_sort.svg";
     static const String cmd_rds_info = BUTTONS_PATH + "cmd_rds_info.svg";
     static const String cmd_help = BUTTONS_PATH + "cmd_help.svg";
+    static const String cmd_search = BUTTONS_PATH + "cmd_search.svg";
 
     static const String drawer_about = BUTTONS_PATH + "drawer_about.svg";
     static const String drawer_tab_layout = BUTTONS_PATH + "drawer_tab_layout.svg";
     static const String drawer_app_settings = BUTTONS_PATH + "drawer_app_settings.svg";
     static const String drawer_connect = BUTTONS_PATH + "drawer_connect.svg";
-    static const String drawer_search = BUTTONS_PATH + "drawer_search.svg";
     static const String drawer_favorite_device = BUTTONS_PATH + "drawer_favorite_device.svg";
     static const String drawer_found_device = BUTTONS_PATH + "drawer_found_device.svg"; // audio-video
     static const String drawer_edit_item = BUTTONS_PATH + "drawer_edit_item.svg"; // pencil-outline

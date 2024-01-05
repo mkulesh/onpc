@@ -35,6 +35,7 @@ import "messages/DcpEcoModeMsg.dart";
 import "messages/DcpMediaContainerMsg.dart";
 import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
+import "messages/DcpSearchCriteriaMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
 import "messages/DeviceNameMsg.dart";
 import "messages/DigitalFilterMsg.dart";
@@ -501,6 +502,10 @@ class State with ProtoTypeMix
         if (msg is DcpMediaItemMsg)
         {
             return _isChange(DcpMediaItemMsg.CODE, _mediaListState.processDcpMediaItemMsg(msg, _playbackState));
+        }
+        else if (msg is DcpSearchCriteriaMsg)
+        {
+            return _isChange(DcpSearchCriteriaMsg.CODE, _mediaListState.processDcpSearchCriteriaMsg(msg));
         }
 
         if (msg is DcpEcoModeMsg)

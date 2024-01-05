@@ -417,6 +417,12 @@ Enjoy!""</string>
     <string name="medialist_playback_mode">Playback mode</string>
     <string name="medialist_no_items">No items</string>
     <string name="medialist_filter">Filter items</string>
+    <string name="medialist_search">Search</string>
+    <string name="medialist_search_artist">Artist</string>
+    <string name="medialist_search_album">Album</string>
+    <string name="medialist_search_track">Track</string>
+    <string name="medialist_search_station">Station</string>
+    <string name="medialist_search_playlist">Playlist</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

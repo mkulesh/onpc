@@ -46,7 +46,7 @@ class _DeviceSearchDialogState extends State<DeviceSearchDialog>
         final ThemeData td = viewContext.getThemeData();
 
         final Widget dialog = AlertDialog(
-            title: CustomDialogTitle(Strings.drawer_device_search, Drawables.drawer_search),
+            title: CustomDialogTitle(Strings.drawer_device_search, Drawables.cmd_search),
             contentPadding: DialogDimens.contentPadding,
             content: UpdatableWidget(child: DeviceSearchView(viewContext, (d)
             {

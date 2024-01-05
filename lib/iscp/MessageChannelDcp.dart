@@ -26,6 +26,7 @@ import "ISCPMessage.dart";
 import "MessageChannel.dart";
 import "OnpcSocket.dart";
 import "messages/DCPMessageFactory.dart";
+import "messages/DcpMediaContainerMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/TimeInfoMsg.dart";
 
@@ -37,6 +38,7 @@ typedef OnNewISCPMessage = void Function(ISCPMessage message, MessageChannel cha
 class MessageChannelDcp with ConnectionIf implements MessageChannel
 {
     static const int DCP_SEND_DELAY = 75; // Send the COMMAND in 50ms or more intervals.
+    static const int MAX_MSG_LOG = 1024;  // Maximum size of logged message
 
     // goform protocol
     static const String DCP_FORM_IPHONE_APP = "formiPhoneApp";
@@ -264,11 +266,18 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
                 (messages.isEmpty ? " -> Ignored" :
                     (messages.length == 1 ? " -> " + messages.first.toString() :
                         " -> " + messages.length.toString() + "msg"));
-                        Logging.info(this, "<< new DCP message " + dcpMsg
-                        + " from " + onpcSocket.getHostAndPort
-                        + ", size=" + dcpMsg.length.toString()
-                        + "B, remaining=" + remaining.toString() + "B"
-                        + resStr);
+
+            final cutMsg = jsonMsg != null &&
+                [DcpMediaContainerMsg.HEOS_RESP_BROWSE_CONT,
+                    DcpMediaContainerMsg.HEOS_RESP_BROWSE_SEARCH,
+                    DcpMediaContainerMsg.HEOS_RESP_BROWSE_QUEUE].contains(jsonMsg.command) &&
+                dcpMsg.length > MAX_MSG_LOG;
+
+            Logging.info(this, "<< new DCP message " + (cutMsg ? (dcpMsg.substring(0, MAX_MSG_LOG) + "...<CUT>") : dcpMsg)
+                + " from " + onpcSocket.getHostAndPort
+                + ", size=" + dcpMsg.length.toString()
+                + "B, remaining=" + remaining.toString() + "B"
+                + resStr);
         }
         if (_heosPidPrev == null && _heosPid != null)
         {
