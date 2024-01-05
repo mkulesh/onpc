@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -47,4 +48,36 @@ class FriendlyNameMsg extends ISCPMessage
     {
         return false;
     }
+
+    /*
+     * Denon control protocol
+     * Command: heos://player/get_player_info?pid=player_id
+     * Response: {"heos": {"command": "player/get_player_info", "result": "success", "message": "pid=-2078441090"},
+     *            "payload": {"name": "Denon Player", "pid": -2078441090, ...}}
+     * Change: NSFRN
+     */
+    static const String _HEOS_COMMAND = "player/get_player_info";
+    static const String _DCP_COMMAND = "NSFRN";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND ];
+
+    static FriendlyNameMsg? processDcpMessage(String dcpMsg)
+    {
+        if (dcpMsg.startsWith(_DCP_COMMAND))
+        {
+            return FriendlyNameMsg.output(dcpMsg.substring(_DCP_COMMAND.length).trim());
+        }
+        return null;
+    }
+
+    static FriendlyNameMsg? processHeosMessage(DcpHeosMessage jsonMsg)
+    {
+        final String? name = jsonMsg.getCmdProperty(_HEOS_COMMAND, "payload.name");
+        return name != null ? FriendlyNameMsg.output(name) : null;
+    }
+
+    @override
+    String? buildDcpMsg(bool isQuery)
+    => isQuery ? "heos://" + _HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID : (_DCP_COMMAND + " " + _friendlyName);
 }

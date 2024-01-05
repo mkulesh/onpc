@@ -613,6 +613,12 @@ class StateManager
             Logging.info(this, "-> processing DCP message: " + msg.toString());
         }
 
+        final String? multiroomChange = state.multiroomState.process(msg);
+        if (!isSourceHost(msg))
+        {
+            return multiroomChange;
+        }
+
         if (msg is ZonedMessage && msg.zoneIndex != state.getActiveZone)
         {
             Logging.info(this, "message ignored: non active zone " + msg.zoneIndex.toString());
@@ -1006,16 +1012,16 @@ class StateManager
         if (state.multiroomState.processBroadcastResponse(msg))
         {
             triggerStateEvent(BroadcastResponseMsg.CODE);
-            if (msg.protoType == ProtoType.ISCP && _messageChannel.isConnected && isSourceHost(msg))
+            if (_messageChannel.isConnected && isSourceHost(msg))
             {
-                _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel));
+                _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel, _messageChannel.getProtoType));
             }
         }
         if (_searchEngine != null && state.multiroomState.isSearchFinished())
         {
             stopSearch();
         }
-        if (msg.protoType == ProtoType.ISCP && !isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
+        if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
         {
             Logging.info(this, "connecting to multiroom device: " + msg.getHostAndPort);
             final MessageChannel m = _createChannel(msg.getPort, _onMultiroomDeviceConnected, _onMultiroomDeviceDisconnected);
@@ -1028,7 +1034,7 @@ class StateManager
     void _onMultiroomDeviceConnected(MessageChannel channel, ConnectionIf connection)
     {
         Logging.info(this, "connected to " + connection.getHostAndPort);
-        channel.sendQueries(state.multiroomState.getQueries(connection));
+        channel.sendQueries(state.multiroomState.getQueries(connection, channel.getProtoType));
     }
 
     void _onMultiroomDeviceDisconnected(ConnectionErrorType errorType, String result)

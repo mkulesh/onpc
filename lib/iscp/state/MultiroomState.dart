@@ -131,10 +131,10 @@ class MultiroomState
         MultiroomChannelSettingMsg.CODE
     ];
 
-    List<String> getQueries(ConnectionIf connection)
+    List<String> getQueries(ConnectionIf connection, ProtoType protoType)
     {
         Logging.info(this, "Requesting data for connection " + connection.getHostAndPort + "...");
-        return MESSAGE_SCOPE;
+        return protoType == ProtoType.DCP ? [FriendlyNameMsg.CODE] : MESSAGE_SCOPE;
     }
 
     // Update logic

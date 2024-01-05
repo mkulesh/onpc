@@ -33,6 +33,7 @@ import "DcpSearchMsg.dart";
 import "DcpTunerModeMsg.dart";
 import "DimmerLevelMsg.dart";
 import "FirmwareUpdateMsg.dart";
+import "FriendlyNameMsg.dart";
 import "HdmiCecMsg.dart";
 import "InputSelectorMsg.dart";
 import "JacketArtMsg.dart";
@@ -72,6 +73,7 @@ class DCPMessageFactory
     void prepare()
     {
         _acceptedCodes.addAll(DcpReceiverInformationMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(FriendlyNameMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(PowerStatusMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(InputSelectorMsg.getAcceptedDcpCodes());
 
@@ -101,6 +103,7 @@ class DCPMessageFactory
     void convertDcpMsg(String dcpMsg)
     {
         addISCPMsg(DcpReceiverInformationMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(FriendlyNameMsg.processDcpMessage(dcpMsg));
         addISCPMsg(PowerStatusMsg.processDcpMessage(dcpMsg));
         addISCPMsg(InputSelectorMsg.processDcpMessage(dcpMsg));
 
@@ -137,6 +140,7 @@ class DCPMessageFactory
 
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(jsonMsg));
             addISCPMsg(FirmwareUpdateMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(FriendlyNameMsg.processHeosMessage(jsonMsg));
 
             // Playback
             addISCPMsg(ArtistNameMsg.processHeosMessage(jsonMsg));
@@ -265,6 +269,8 @@ class DCPMessageFactory
     {
         switch (raw.getCode)
         {
+        case FriendlyNameMsg.CODE:
+            return FriendlyNameMsg(raw);
         case PowerStatusMsg.CODE:
         case PowerStatusMsg.ZONE2_CODE:
         case PowerStatusMsg.ZONE3_CODE:

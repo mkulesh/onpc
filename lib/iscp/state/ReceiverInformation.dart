@@ -123,6 +123,7 @@ class ReceiverInformation
         Logging.info(this, "Requesting DCP data for zone " + zone.toString() + "...");
         return [
             PowerStatusMsg.ZONE_COMMANDS[zone],
+            FriendlyNameMsg.CODE,
             FirmwareUpdateMsg.CODE
         ];
     }
