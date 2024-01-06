@@ -604,11 +604,14 @@ class MediaListState
             {
                 _titleBar = Strings.medialist_search + ": " + msg.getSearchStr();
             }
+            else if (_dcpMediaPath.isNotEmpty && _dcpMediaPath.length >= 2)
+            {
+                _titleBar = _dcpMediaPath[_dcpMediaPath.length - 2].getItems().first.getTitle;
+            }
             else
             {
                 _titleBar = "";
             }
-
         }
         else if (msg.getCid() != _mediaListCid)
         {
@@ -671,6 +674,17 @@ class MediaListState
             return list == null ? [] : list;
         }
         return [];
+    }
+
+    void storeSelectedDcpItem(XmlListItemMsg rowMsg)
+    {
+        if (_dcpMediaPath.isNotEmpty)
+        {
+            final DcpMediaContainerMsg last = _dcpMediaPath.last;
+            last.getItems().clear();
+            last.getItems().add(rowMsg);
+            Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last.toString());
+        }
     }
 
     DcpMediaContainerMsg? getDcpContainerMsg(final ISCPMessage msg, {bool allowContainerMsg = true})
