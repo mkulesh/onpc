@@ -117,6 +117,13 @@ class CfgAudioControl extends CfgModule
     bool get volumeKeys
     => _volumeKeys;
 
+    // Zone maximum volume (used to detect external amplifier)
+    static const Pair<String, String> ZONE_VOLUME_MAX = Pair<String, String>("zone_volume_max", "");
+    final List<int> _zoneVolumeMax = [];
+
+    int zoneVolumeMax(int zone)
+    => zone < _zoneVolumeMax.length? _zoneVolumeMax[zone] : 0;
+
     // methods
     CfgAudioControl(final SharedPreferences preferences) : super(preferences);
 
@@ -126,12 +133,22 @@ class CfgAudioControl extends CfgModule
         _soundControl = getString(SOUND_CONTROL, doLog: true);
         _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
         _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
+        _zoneVolumeMax.clear();
+        getString(ZONE_VOLUME_MAX, doLog: true).split(",").forEach((str) => _zoneVolumeMax.add(int.tryParse(str) ?? 0));
     }
 
     @override
     void setReceiverInformation(StateManager stateManager)
     {
         _masterVolumeMax = getInt(getModelDependentInt(MASTER_VOLUME_MAX), doLog: true);
+        _zoneVolumeMax.clear();
+        String volumeZoneMaxStr = "";
+        stateManager.state.receiverInformation.zones.forEach((z)
+        {
+            _zoneVolumeMax.add(z.getVolMax);
+            volumeZoneMaxStr += ("," + z.getVolMax.toString());
+        });
+        saveStringParameter(ZONE_VOLUME_MAX, volumeZoneMaxStr.startsWith(",") ? volumeZoneMaxStr.substring(1) : volumeZoneMaxStr);
     }
 
     List<EnumItem<ListeningMode>> getSortedListeningModes(

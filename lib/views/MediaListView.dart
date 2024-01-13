@@ -1018,7 +1018,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
             shortcutCfg.updateShortcut(shortcut, shortcut.alias);
             PopupManager.showToast(Strings.favorite_shortcut_added, context: context);
-            stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
+            stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
         }
         else
         {

@@ -659,10 +659,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 _processGlobalShortcut(call.method, par);
                 break;
             case Platform.VOLUME_UP:
-                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 0);
+                _stateManager.changeMasterVolume(_configuration.audioControl, 0);
                 break;
             case Platform.VOLUME_DOWN:
-                _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 1);
+                _stateManager.changeMasterVolume(_configuration.audioControl, 1);
                 break;
             case Platform.NETWORK_STATE_CHANGE:
                 _processNetworkStateChange(par);
@@ -683,17 +683,17 @@ class MusicControllerAppState extends State<MusicControllerApp>
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_up"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume up");
-            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 0);
+            _stateManager.changeMasterVolume(_configuration.audioControl, 0);
         }
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_down"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume down");
-            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 1);
+            _stateManager.changeMasterVolume(_configuration.audioControl, 1);
         }
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_mute"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume mute");
-            _stateManager.changeMasterVolume(_configuration.audioControl.soundControl, 2);
+            _stateManager.changeMasterVolume(_configuration.audioControl, 2);
         }
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_trdn"))
         {

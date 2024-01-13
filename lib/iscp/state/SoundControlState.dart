@@ -16,6 +16,7 @@ import "dart:math";
 
 import "package:sprintf/sprintf.dart";
 
+import "../../config/CfgAudioControl.dart";
 import "../../utils/Logging.dart";
 import "../messages/AllChannelEqMsg.dart";
 import "../messages/AudioMutingMsg.dart";
@@ -303,12 +304,12 @@ class SoundControlState
             ListeningMode.MODE_DCP_PURE_DIRECT
         ].contains(_listeningMode.key);
 
-    SoundControlType soundControlType(final String config, Zone? zone)
+    static SoundControlType soundControlType(final CfgAudioControl audioControl, int zone)
     {
-        switch (config)
+        switch (audioControl.soundControl)
         {
             case "auto":
-                return (zone != null && zone.getVolMax == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE_SLIDER;
+                return (audioControl.zoneVolumeMax(zone) == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE_SLIDER;
             case "device":
                 return SoundControlType.DEVICE_BUTTONS;
             case "device-slider":

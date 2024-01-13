@@ -18,9 +18,11 @@ import 'dart:math';
 
 import "package:collection/collection.dart";
 
+import "../config/CfgAudioControl.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CfgRiCommands.dart";
 import "../iscp/BroadcastSearch.dart";
+import "../iscp/CommandHelper.dart";
 import "../iscp/scripts/MessageScript.dart";
 import "../iscp/scripts/MessageScriptIf.dart";
 import "../utils/CompatUtils.dart";
@@ -34,8 +36,6 @@ import "MessageChannelDcp.dart";
 import "MessageChannelIscp.dart";
 import "OnpcSocket.dart";
 import "State.dart";
-import "messages/AmpOperationCommandMsg.dart";
-import "messages/AudioMutingMsg.dart";
 import "messages/BroadcastResponseMsg.dart";
 import "messages/DcpMediaContainerMsg.dart";
 import "messages/DcpMediaEventMsg.dart";
@@ -49,7 +49,6 @@ import "messages/InputSelectorMsg.dart";
 import "messages/JacketArtMsg.dart";
 import "messages/ListInfoMsg.dart";
 import "messages/ListTitleInfoMsg.dart";
-import "messages/MasterVolumeMsg.dart";
 import "messages/MenuStatusMsg.dart";
 import "messages/MessageFactory.dart";
 import "messages/NetworkServiceMsg.dart";
@@ -68,7 +67,6 @@ import "scripts/AutoPower.dart";
 import "scripts/RequestListeningMode.dart";
 import "state/MediaListState.dart";
 import "state/MultiroomState.dart";
-import "state/SoundControlState.dart";
 
 typedef OnStateChanged = void Function(Set<String> changes);
 typedef OnOutputMessage = void Function(ISCPMessage msg);
@@ -83,6 +81,7 @@ class StateManager
     static const String BROADCAST_SEARCH_EVENT = "BROADCAST_SEARCH";
     static const String START_SEARCH_EVENT = "START_SEARCH";
     static const String ANY_DATA = "ANY_DATA";
+    static const String SHORTCUT_CHANGE_EVENT = "SHORTCUT_CHANGE";
 
     static const Duration GUI_UPDATE_DELAY = Duration(milliseconds: 500);
 
@@ -801,7 +800,7 @@ class StateManager
 
     void sendMessage(final ISCPMessage msg, {bool waitingForData = false, String waitingForMsg = ""})
     {
-        Logging.info(this, "sending message: " + msg.toString() + ", waiting for responce: " + waitingForData.toString());
+        Logging.info(this, "sending message: " + msg.toString() + ", waiting for response: " + waitingForData.toString());
         _circlePlayRemoveMsg = null;
         if (msg.hasImpactOnMediaList() || (msg is DisplayModeMsg && !state.mediaListState.isPlaybackMode))
         {
@@ -887,69 +886,18 @@ class StateManager
 
     void changePlaybackState(OperationCommand key)
     {
-        if (!state.mediaListState.isPlaybackMode
-            && state.mediaListState.isUsb
-            && [OperationCommand.TRDN, OperationCommand.TRUP].contains(key))
+        final CommandHelper helper = CommandHelper(_state, _messageChannel);
+        helper.changePlaybackState(key);
+        if (helper.hasImpactOnMediaList)
         {
-            // Issue-44: on some receivers, "TRDN" and "TRUP" for USB only work
-            // in playback mode. Therefore, switch to this mode before
-            // send OperationCommandMsg if current mode is LIST
-            sendTrackCmd(state.getActiveZone, key, false);
-        }
-        else if (protoType == ProtoType.ISCP && key == OperationCommand.PLAY)
-        {
-            // For Onkyo only: To start play in normal mode, PAUSE shall be issue instead of PLAY command
-            sendMessage(OperationCommandMsg.output(state.getActiveZone, OperationCommand.PAUSE));
-        }
-        else if (key == OperationCommand.REPEAT)
-        {
-            sendMessage(OperationCommandMsg.output(state.getActiveZone,
-                OperationCommandMsg.toggleRepeat(protoType, state.playbackState.repeatStatus.key)));
-        }
-        else if (key == OperationCommand.RANDOM)
-        {
-            sendMessage(OperationCommandMsg.output(state.getActiveZone,
-                OperationCommandMsg.toggleShuffle(protoType, state.playbackState.shuffleStatus)));
-        }
-        else
-        {
-            sendMessage(OperationCommandMsg.output(state.getActiveZone, key));
+            _requestXmlList = true;
         }
     }
 
-    void changeMasterVolume(final String soundControlStr, int cmd)
+    void changeMasterVolume(final CfgAudioControl audioControl, int cmd)
     {
-        final SoundControlType soundControl = state.soundControlState.soundControlType(
-            soundControlStr, state.getActiveZoneInfo);
-
-        switch (soundControl)
-        {
-            case SoundControlType.DEVICE_BUTTONS:
-            case SoundControlType.DEVICE_SLIDER:
-            case SoundControlType.DEVICE_BTN_AROUND_SLIDER:
-            case SoundControlType.DEVICE_BTN_ABOVE_SLIDER:
-            {
-                final List<ISCPMessage> cmds = [
-                    MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP),
-                    MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN),
-                    AudioMutingMsg.toggle(state.getActiveZone,
-                        state.soundControlState.audioMuting, protoType)
-                ];
-                return sendMessage(cmds[cmd]);
-            }
-            case SoundControlType.RI_AMP:
-            {
-                final List<ISCPMessage> cmds = [
-                    AmpOperationCommandMsg.output(AmpOperationCommand.MVLUP),
-                    AmpOperationCommandMsg.output(AmpOperationCommand.MVLDOWN),
-                    AmpOperationCommandMsg.output(AmpOperationCommand.AMTTG)
-                ];
-                return sendMessage(cmds[cmd]);
-            }
-            default:
-                // Nothing to do
-                break;
-        }
+        final CommandHelper helper = CommandHelper(_state, _messageChannel);
+        helper.changeMasterVolume(audioControl, cmd);
     }
 
     void triggerStateEvent(String event)

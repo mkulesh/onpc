@@ -16,7 +16,9 @@ import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AudioMutingMsg.dart";
+import "../iscp/messages/DcpReceiverInformationMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../views/VolumeControlAmpView.dart";
 import "../views/VolumeControlDeviceView.dart";
@@ -26,6 +28,8 @@ class VolumeControlView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.ZONE_EVENT,
+        ReceiverInformationMsg.CODE,
+        DcpReceiverInformationMsg.CODE,
         // Some strange bug: VolumeControlButtonsView is sometime not updated in landscape mode upon reception of "AMT"/"MVL" messages
         // As a workaround, we update whole VolumeControlView when these messages received
         AudioMutingMsg.CODE,
@@ -37,8 +41,8 @@ class VolumeControlView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        final SoundControlType soundControl = state.soundControlState.soundControlType(
-            configuration.audioControl.soundControl, state.getActiveZoneInfo);
+        final SoundControlType soundControl = SoundControlState.soundControlType(
+            configuration.audioControl, state.getActiveZone);
 
         switch (soundControl)
         {

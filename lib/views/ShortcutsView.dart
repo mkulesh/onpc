@@ -41,7 +41,7 @@ enum _ShortcutContextMenu
 class ShortcutsView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT
+        StateManager.SHORTCUT_CHANGE_EVENT
     ];
 
     ShortcutsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -126,7 +126,7 @@ class ShortcutsView extends UpdatableView
                 break;
             case _ShortcutContextMenu.DELETE:
                 configuration.favoriteShortcuts.deleteShortcut(s);
-                stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
+                stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
                 break;
             case _ShortcutContextMenu.COPY_TO_CLIPBOARD:
                 Clipboard.setData(ClipboardData(text: s.toScript(state.receiverInformation.model, state.mediaListState)));
@@ -141,7 +141,7 @@ class ShortcutsView extends UpdatableView
             newIndex -= 1;
         }
         configuration.favoriteShortcuts.reorder(oldIndex, newIndex);
-        stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
+        stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
     }
 
     void _selectShortcut(Shortcut s)

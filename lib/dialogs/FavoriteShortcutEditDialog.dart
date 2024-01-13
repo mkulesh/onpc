@@ -18,6 +18,7 @@ import "../config/CfgFavoriteShortcuts.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../iscp/StateManager.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomDialogEditField.dart";
 import "../widgets/CustomDialogTitle.dart";
@@ -25,8 +26,6 @@ import "../widgets/CustomTextLabel.dart";
 
 class FavoriteShortcutEditDialog extends StatefulWidget
 {
-    static const String SHORTCUT_CHANGE_EVENT = "SHORTCUT_CHANGE";
-
     final ViewContext _viewContext;
     final Shortcut _shortcut;
 
@@ -85,7 +84,7 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
                     onPressed: ()
                     {
                         widget._viewContext.configuration.favoriteShortcuts.updateShortcut(widget._shortcut, _alias.text);
-                        widget._viewContext.stateManager.triggerStateEvent(FavoriteShortcutEditDialog.SHORTCUT_CHANGE_EVENT);
+                        widget._viewContext.stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
                         Navigator.of(context).pop();
                     }),
             ]
