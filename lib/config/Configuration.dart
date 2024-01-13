@@ -79,6 +79,7 @@ class Configuration extends CfgModule
 
     static const Pair<String, String> PROTO_TYPE = Pair<String, String>("proto_type", "ISCP");
     static const Pair<String, String> MODEL = Pair<String, String>("model", "NONE");
+    static const Pair<String, String> DEVICE_FRIENDLY_NAME = Pair<String, String>("device_friendly_name", "");
 
     static const String NETWORK_SERVICES = "network_services";
     static const String SELECTED_NETWORK_SERVICES = "selected_network_services";
@@ -172,6 +173,17 @@ class Configuration extends CfgModule
         riCommands.read();
     }
 
+    void readHomeWidgetCfg()
+    {
+        Logging.info(this, "Reading home widget configuration...");
+
+        // Connection options
+        _deviceName = getString(SERVER_NAME, doLog: true);
+        _devicePort = getInt(SERVER_PORT, doLog: true);
+        _activeZone = getInt(ACTIVE_ZONE, doLog: true);
+        audioControl.read();
+    }
+
     void saveDevice(final String device, final int port) async
     {
         _deviceName = device;
@@ -192,6 +204,7 @@ class Configuration extends CfgModule
         Logging.info(this, "Save receiver information");
         saveStringParameter(PROTO_TYPE, Convert.enumToString(stateManager.protoType), prefix: "  ");
         saveStringParameter(MODEL, m, prefix: "  ");
+        saveStringParameter(DEVICE_FRIENDLY_NAME, state.getDeviceName(true), prefix: "  ");
         if (state.networkServices.isNotEmpty)
         {
             String str = "";
@@ -246,6 +259,11 @@ class Configuration extends CfgModule
                 getStringDef(Configuration.DEVICE_SELECTORS + "_" + item.getCode, defName);
         }
         return defName;
+    }
+
+    void saveDeviceFriendlyName(final ReceiverInformation state)
+    {
+        saveStringParameter(DEVICE_FRIENDLY_NAME, state.getDeviceName(true));
     }
 
     ProtoType get protoType

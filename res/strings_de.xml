@@ -98,9 +98,13 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="menu_latest_logging">Letztes Log</string>
     <string name="menu_switch_off_group">Alle Geräte in der Gruppe ausschalten?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Favoriten</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Einschalten</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Widget Optionen</string>
+    <string name="pref_widget_theme">Widget Thema</string>
+    <string name="pref_widget_transparency">Transparenz</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Gerät Optionen</string>
@@ -149,7 +153,6 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
     <!-- App-Themes -->
     <string name="pref_theme">Thema</string>
-    <string name="pref_widget_theme">Widget Thema</string>
     <string-array name="pref_theme_names">
         <item>OLED (Schwarz und Limette)</item>
         <item>Dunkel (Dunkelgrau und Blau)</item>

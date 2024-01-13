@@ -648,14 +648,6 @@ Enjoy!"""];
         /*pl*/ "Wyłączyć wszystkie urządzenia w grupie?"];
     static String get menu_switch_off_group => l_menu_switch_off_group[_language];
 
-    static const List<String> l_shortcut_widget_name = [
-        /*en*/ "Shortcuts",
-        /*ru*/ "Ярлыки",
-        /*de*/ "Favoriten",
-        /*fr*/ "Raccourcis",
-        /*pl*/ "Skróty"];
-    static String get shortcut_widget_name => l_shortcut_widget_name[_language];
-
     static const List<String> l_shortcut_power_on = [
         /*en*/ "Power On",
         /*ru*/ "Включить",
@@ -663,6 +655,30 @@ Enjoy!"""];
         /*fr*/ "Allumer",
         /*pl*/ "Zasilanie włączone"];
     static String get shortcut_power_on => l_shortcut_power_on[_language];
+
+    static const List<String> l_pref_category_widget = [
+        /*en*/ "Widget options",
+        /*ru*/ "Настройки виджета",
+        /*de*/ "Widget Optionen",
+        /*fr*/ "Options des widgets",
+        /*pl*/ "Opcje widgetów"];
+    static String get pref_category_widget => l_pref_category_widget[_language];
+
+    static const List<String> l_pref_widget_theme = [
+        /*en*/ "Widget theme",
+        /*ru*/ "Тема виджета",
+        /*de*/ "Widget Thema",
+        /*fr*/ "Widget Thème",
+        /*pl*/ "Widget motyw"];
+    static String get pref_widget_theme => l_pref_widget_theme[_language];
+
+    static const List<String> l_pref_widget_transparency = [
+        /*en*/ "Transparency",
+        /*ru*/ "Прозрачность",
+        /*de*/ "Transparenz",
+        /*fr*/ "Transparence",
+        /*pl*/ "Przezroczystość"];
+    static String get pref_widget_transparency => l_pref_widget_transparency[_language];
 
     static const List<String> l_pref_category_device_options = [
         /*en*/ "Device options",
@@ -903,14 +919,6 @@ Enjoy!"""];
         /*fr*/ "Thème",
         /*pl*/ "Motyw"];
     static String get pref_theme => l_pref_theme[_language];
-
-    static const List<String> l_pref_widget_theme = [
-        /*en*/ "Widget theme",
-        /*ru*/ "Тема виджета",
-        /*de*/ "Widget Thema",
-        /*fr*/ "Widget Thème",
-        /*pl*/ "Widget Motyw"];
-    static String get pref_widget_theme => l_pref_widget_theme[_language];
 
     static const List<String> l_pref_language = [
         /*en*/ "App language",

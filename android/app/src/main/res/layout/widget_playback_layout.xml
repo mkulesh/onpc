@@ -57,8 +57,20 @@
 
             <ImageButton
                 style="@style/ImageButtonSmallStyle"
-                android:id="@+id/widget_refresh"
-                android:src="@drawable/widget_refresh" />
+                android:id="@+id/btn_volume_off"
+                android:src="@drawable/cmd_volume_off" />
+
+            <ImageButton
+                style="@style/ImageButtonSmallStyle"
+                android:id="@+id/btn_volume_down"
+                android:src="@drawable/cmd_volume_down"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp" />
+
+            <ImageButton
+                style="@style/ImageButtonSmallStyle"
+                android:id="@+id/btn_volume_up"
+                android:src="@drawable/cmd_volume_up" />
         </LinearLayout>
 
         <ImageView
@@ -68,30 +80,39 @@
             android:paddingRight="8dp"
             android:layout_height="1dp"
             android:src="@color/widget_b_text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_power"
+                android:src="@drawable/cmd_power" />
+
+            <ImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_previous"
+                android:src="@drawable/cmd_previous" />
+
+            <ImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_stop"
+                android:src="@drawable/cmd_stop" />
+
+            <ImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_play"
+                android:src="@drawable/cmd_play" />
+
+            <ImageButton
+                style="@style/ImageButtonPrimaryStyle"
+                android:id="@+id/btn_next"
+                android:src="@drawable/cmd_next" />
+
+        </LinearLayout>
     </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:paddingTop="42dp">
-
-        <ListView
-            android:id="@+id/shortcuts_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/transparent" />
-
-        <TextView
-            android:id="@+id/empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:gravity="center_vertical"
-            android:background="@android:color/transparent"
-            android:text="@string/dashed_string"
-            android:textSize="18sp" />
-    </FrameLayout>
 </RelativeLayout>

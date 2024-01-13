@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 
+import 'dart:async';
 import 'dart:io' as io;
 
 import 'package:flutter/services.dart';
@@ -34,6 +35,8 @@ class Platform
     static const String KEEP_SCREEN_ON_ENABLED = "setKeepScreenOnEnabled";
     static const String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnDisabled";
     static const String GET_INTENT = "getIntent";
+    static const String REGISTER_WIDGET_CALLBACK = "registerWidgetCallback";
+    static const String _WIDGET_UPDATE = "widgetUpdate";
 
     // platform -> dart
     static const String PLATFORM_LOG = "log";
@@ -56,12 +59,12 @@ class Platform
     static bool get isMobile => (io.Platform.isAndroid || io.Platform.isIOS);
 
     // Send a command to platform
-    static Future<String?> sendPlatformCommand(final MethodChannel _methodChannel, final String cmd)
+    static Future<String?> sendPlatformCommand(final MethodChannel _methodChannel, final String cmd, [ dynamic arguments ])
     {
         if (isAndroid)
         {
             Logging.info(_methodChannel, "Call platform method: " + cmd);
-            return _methodChannel.invokeMethod(cmd);
+            return _methodChannel.invokeMethod(cmd, arguments);
         }
         else
         {
@@ -102,6 +105,20 @@ class Platform
         else
         {
             return Future.value("");
+        }
+    }
+
+    // Delayed widget update
+    static Timer? _widgetUpdateTimer;
+    static void updateWidgets(final MethodChannel _methodChannel)
+    {
+        if (isAndroid && _widgetUpdateTimer == null)
+        {
+            _widgetUpdateTimer = Timer(Duration(seconds: 1), ()
+            {
+                _widgetUpdateTimer = null;
+                Platform.sendPlatformCommand(_methodChannel, Platform._WIDGET_UPDATE);
+            });
         }
     }
 }

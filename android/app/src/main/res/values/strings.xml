@@ -32,9 +32,10 @@
 
     <!-- Main menu -->
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Shortcuts</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Power On</string>
+
+    <!-- Home widgets -->
 
     <!-- Application settings -->
 

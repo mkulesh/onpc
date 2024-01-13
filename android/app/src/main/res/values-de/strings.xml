@@ -30,9 +30,10 @@
 
     <!-- Main menu -->
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Favoriten</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Einschalten</string>
+
+    <!-- Home widgets -->
 
     <!-- Application settings -->
 

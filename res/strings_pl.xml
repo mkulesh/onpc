@@ -100,9 +100,13 @@ Enjoy!""</string>
     <string name="menu_latest_logging">Ostatnie logowanie</string>
     <string name="menu_switch_off_group">Wyłączyć wszystkie urządzenia w grupie?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Skróty</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Zasilanie włączone</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Opcje widgetów</string>
+    <string name="pref_widget_theme">Widget motyw</string>
+    <string name="pref_widget_transparency">Przezroczystość</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Opcje urządzenia</string>
@@ -151,7 +155,6 @@ Enjoy!""</string>
 
     <!-- App themes -->
     <string name="pref_theme">Motyw</string>
-    <string name="pref_widget_theme">Widget Motyw</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Czarny i limonkowy)</item>
         <item>Dark (Ciemnoszary i cyjan)</item>

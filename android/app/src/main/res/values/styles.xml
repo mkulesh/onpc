@@ -18,4 +18,35 @@
              Flutter draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background_color</item>
     </style>
+
+    <style name="ImageButtonPrimaryStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:saveEnabled">false</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="ImageButtonSmallStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:saveEnabled">false</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:clickable">true</item>
+    </style>
+
 </resources>

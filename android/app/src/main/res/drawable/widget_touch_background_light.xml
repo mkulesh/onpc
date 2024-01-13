@@ -12,15 +12,8 @@
   ~ Public License along with this program.
   -->
 
-<resources>
-
-    <!-- Default widget colors as defined in CfgAppSettings.dart file -->
-    <color name="widget_light_background">#FAFAFA</color>
-    <color name="widget_dark_background">#000000</color>
-
-    <color name="widget_h_text">#FF9800</color>
-    <color name="widget_b_text">#212121</color>
-
-    <color name="black_transparent_10">#1a000000</color>
-    <color name="white_transparent_20">#33ffffff</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/round_black_transparent" android:state_focused="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/round_black_transparent" android:state_focused="true" />
+    <item android:drawable="@drawable/round_black_transparent" android:state_pressed="true" />
+</selector>

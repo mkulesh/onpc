@@ -16,46 +16,40 @@ package com.mkulesh.onpc.plus;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.ContentObserver;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.util.Log;
 import android.widget.RemoteViews;
-
-import com.mkulesh.onpc.utils.Utils;
 
 /**
  * The shortcuts widget's AppWidgetProvider.
  */
-public class WidgetShortcutsProvider extends AppWidgetProvider
+public class WidgetShortcutsProvider extends WidgetBase
 {
     public static final String RUN_ACTION = "com.mkulesh.onpc.pro.RUN";
     public static final String CLICK_ACTION = "com.mkulesh.onpc.pro.CLICK";
     public static final String REFRESH_ACTION = "com.mkulesh.onpc.pro.REFRESH";
     public static final String WIDGET_SHORTCUT = "com.mkulesh.onpc.plus.WIDGET_SHORTCUT";
 
-    private static HandlerThread sWorkerThread;
-    private static Handler sWorkerQueue;
-    private static WeatherDataProviderObserver sDataObserver;
+    private static DataProviderObserver sDataObserver;
 
     public WidgetShortcutsProvider()
     {
-        // Start the worker thread
-        sWorkerThread = new HandlerThread("WidgetShortcutsProvider-worker");
-        sWorkerThread.start();
-        sWorkerQueue = new Handler(sWorkerThread.getLooper());
+        super("WidgetShortcutsProvider-worker");
+    }
+
+    public static PendingIntent buildIntent(Context context, String action)
+    {
+        final Intent intent = new Intent(context, WidgetShortcutsProvider.class);
+        intent.setAction(action);
+        // noinspection NewApi
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     @Override
@@ -70,7 +64,7 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
         {
             final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
             final ComponentName cn = new ComponentName(context, WidgetShortcutsProvider.class);
-            sDataObserver = new WeatherDataProviderObserver(mgr, cn, sWorkerQueue);
+            sDataObserver = new DataProviderObserver(mgr, cn, sWorkerQueue);
             r.registerContentObserver(WidgetShortcutsDataProvider.CONTENT_URI, true, sDataObserver);
         }
     }
@@ -135,50 +129,11 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+    protected RemoteViews buildLayout(Context context, int appWidgetId)
     {
-        // Update each of the widgets with the remote adapter
-        for (int appWidgetId : appWidgetIds)
-        {
-            RemoteViews layout = buildLayout(context, appWidgetId);
-            appWidgetManager.updateAppWidget(appWidgetId, layout);
-        }
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
-    }
-
-    @Override
-    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
-                                          int appWidgetId, Bundle newOptions)
-    {
-        appWidgetManager.updateAppWidget(appWidgetId, buildLayout(context, appWidgetId));
-    }
-
-    private void openApp(Context context, String packageName, String script)
-    {
-        final PackageManager manager = context.getPackageManager();
-        try
-        {
-            Intent i = manager.getLaunchIntentForPackage(packageName);
-            if (i != null)
-            {
-                i.addCategory(Intent.CATEGORY_LAUNCHER);
-                if (script != null)
-                {
-                    i.setDataAndType(Uri.parse(script), "text/xml");
-                }
-                Log.d("onpc", "called with intent: " + i);
-                context.startActivity(i);
-            }
-        }
-        catch (ActivityNotFoundException e)
-        {
-            // empty
-        }
-    }
-
-    private RemoteViews buildLayout(Context context, int appWidgetId)
-    {
+        readParameters(context);
         RemoteViews rv;
+
         // Specify the service to provide data for the collection widget.  Note that we need to
         // embed the appWidgetId via the data otherwise it will be ignored.
         final Intent intent = new Intent(context, WidgetShortcutsService.class);
@@ -191,41 +146,24 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
         // view of the collection view.
         rv.setEmptyView(R.id.shortcuts_list, R.id.empty_view);
 
+        // Background
+        rv.setInt(R.id.widget_background, "setImageResource",
+                darkTheme ? R.drawable.widget_background_dark : R.drawable.widget_background_light);
+        rv.setInt(R.id.widget_background, "setImageAlpha",
+                transparency ? alpha : 255);
+
         // Prepare the title
-        final int hColor = Utils.getColor(context, "widget_h_text", R.color.widget_h_text);
-        rv.setInt(R.id.widget_title, "setBackgroundColor",
-                Utils.getColor(context, "widget_h_background", R.color.widget_h_background));
-        rv.setTextViewText(R.id.widget_name, context.getString(R.string.shortcut_widget_name));
-        rv.setTextColor(R.id.widget_name, hColor);
-        {
-            final Intent refreshIntent = new Intent(context, WidgetShortcutsProvider.class);
-            refreshIntent.setAction(WidgetShortcutsProvider.RUN_ACTION);
-            // noinspection NewApi
-            final PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0,
-                    refreshIntent, PendingIntent.FLAG_IMMUTABLE);
-            rv.setOnClickPendingIntent(R.id.app_icon, refreshPendingIntent);
-        }
+        rv.setTextViewText(R.id.widget_name, title);
+        rv.setTextColor(R.id.widget_name, textColor);
+        rv.setOnClickPendingIntent(R.id.app_icon, buildIntent(context, WidgetShortcutsProvider.RUN_ACTION));
+        rv.setInt(R.id.widget_divider, "setColorFilter", imageColor);
+        rv.setInt(R.id.widget_divider, "setImageAlpha", alpha);
 
         // Prepare refresh button
-        final Drawable drawable = Utils.getDrawable(context, R.drawable.widget_refresh);
-        if (drawable != null)
-        {
-            drawable.clearColorFilter();
-            Utils.setColorFilter(drawable, hColor);
-            rv.setImageViewBitmap(R.id.widget_refresh, Utils.drawableToBitmap(drawable));
-        }
-        {
-            final Intent refreshIntent = new Intent(context, WidgetShortcutsProvider.class);
-            refreshIntent.setAction(WidgetShortcutsProvider.REFRESH_ACTION);
-            // noinspection NewApi
-            final PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0,
-                    refreshIntent, PendingIntent.FLAG_IMMUTABLE);
-            rv.setOnClickPendingIntent(R.id.widget_refresh, refreshPendingIntent);
-        }
+        prepareButton(context, rv, R.id.widget_refresh, R.drawable.widget_refresh, imageColor, imageBgColor,
+                buildIntent(context, WidgetShortcutsProvider.REFRESH_ACTION));
 
         // Prepare items
-        rv.setInt(R.id.widget_content, "setBackgroundColor",
-                Utils.getColor(context, "widget_b_background", R.color.widget_b_background));
         {
             final Intent onClickIntent = new Intent(context, WidgetShortcutsProvider.class);
             onClickIntent.setAction(WidgetShortcutsProvider.CLICK_ACTION);
@@ -241,14 +179,14 @@ public class WidgetShortcutsProvider extends AppWidgetProvider
 }
 
 /**
- * Our data observer just notifies an update for all weather widgets when it detects a change.
+ * Our data observer just notifies an update for all widgets when it detects a change.
  */
-class WeatherDataProviderObserver extends ContentObserver
+class DataProviderObserver extends ContentObserver
 {
     private final AppWidgetManager mAppWidgetManager;
     private final ComponentName mComponentName;
 
-    WeatherDataProviderObserver(AppWidgetManager mgr, ComponentName cn, Handler h)
+    DataProviderObserver(AppWidgetManager mgr, ComponentName cn, Handler h)
     {
         super(h);
         mAppWidgetManager = mgr;

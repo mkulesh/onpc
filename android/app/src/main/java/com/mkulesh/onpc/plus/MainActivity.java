@@ -15,6 +15,7 @@
 package com.mkulesh.onpc.plus;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,8 +32,12 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
+import com.mkulesh.onpc.utils.Utils;
+
+import java.util.ArrayList;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodCall;
@@ -42,7 +47,6 @@ import io.flutter.plugin.common.MethodChannel;
 public class MainActivity extends FlutterActivity
 {
     private static final String METHOD_CHANNEL = "platform_method_channel";
-    private static final String SHARED_PREFERENCES_NAME = "FlutterSharedPreferences";
 
     // dart -> platform
     private static final String GET_NETWORK_STATE = "getNetworkState";
@@ -51,6 +55,8 @@ public class MainActivity extends FlutterActivity
     private static final String KEEP_SCREEN_ON_ENABLED = "setKeepScreenOnEnabled";
     private static final String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnDisabled";
     private static final String GET_INTENT = "getIntent";
+    private static final String REGISTER_WIDGET_CALLBACK = "registerWidgetCallback";
+    private static final String WIDGET_UPDATE = "widgetUpdate";
 
     // platform -> dart
     private static final String VOLUME_UP = "volumeUp";
@@ -152,13 +158,15 @@ public class MainActivity extends FlutterActivity
             this.listener = listener;
         }
         @Override
-        public void onAvailable(Network network) {
+        public void onAvailable(Network network)
+        {
             super.onAvailable(network);
             //Log.d("onpc", "network available via network callback: " + network);
             listener.runOnUiThread(listener::onNetworkStateChanged);
         }
         @Override
-        public void onLost(Network network) {
+        public void onLost(Network network)
+        {
             //Log.d("onpc", "network lost via network callback: " + network);
             listener.runOnUiThread(listener::onNetworkStateChanged);
         }
@@ -173,7 +181,7 @@ public class MainActivity extends FlutterActivity
     private MethodChannel platformChannel = null;
 
     @Override
-    public void configureFlutterEngine(FlutterEngine flutterEngine)
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine)
     {
         super.configureFlutterEngine(flutterEngine);
 
@@ -271,7 +279,7 @@ public class MainActivity extends FlutterActivity
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
+    protected void onNewIntent(@NonNull Intent intent)
     {
         super.onNewIntent(intent);
         //Log.d("onpc", "onNewIntent: intent = " + intent);
@@ -313,20 +321,10 @@ public class MainActivity extends FlutterActivity
 
     private void readPreferences()
     {
-        final SharedPreferences preferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        final SharedPreferences preferences = getSharedPreferences(Utils.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         Map<String, ?> allPrefs = preferences.getAll();
-        volumeKeys = readBooleanPreference(allPrefs, "flutter.volume_keys", volumeKeys);
-        keepScreenOn = readBooleanPreference(allPrefs, "flutter.keep_screen_on", keepScreenOn);
-    }
-
-    private boolean readBooleanPreference(final Map<String, ?> allPrefs, final String name, final boolean defValue)
-    {
-        Object val = allPrefs.get(name);
-        if (val instanceof Boolean)
-        {
-            return (Boolean)val;
-        }
-        return defValue;
+        volumeKeys = Utils.readBooleanPreference(allPrefs, "volume_keys", volumeKeys);
+        keepScreenOn = Utils.readBooleanPreference(allPrefs, "keep_screen_on", keepScreenOn);
     }
 
     public void restartActivity()
@@ -341,6 +339,7 @@ public class MainActivity extends FlutterActivity
         startActivity(intent);
     }
 
+    @SuppressLint("ApplySharedPref")
     void onPlatformMethodCall(MethodCall methodCall, MethodChannel.Result result)
     {
         boolean newKeepScreenOn = keepScreenOn;
@@ -373,6 +372,45 @@ public class MainActivity extends FlutterActivity
         {
             //Log.d("onpc", "onPlatformMethodCall: intent = " + intentData);
             result.success(intentData != null ? intentData : "");
+        }
+        else if (methodCall.method.equals(REGISTER_WIDGET_CALLBACK))
+        {
+            if (methodCall.arguments instanceof ArrayList && ((ArrayList<?>) methodCall.arguments).size() == 8)
+            {
+                final SharedPreferences preferences = getSharedPreferences(Utils.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = preferences.edit();
+                editor.putLong("flutter.widget_playback_power", (long) ((ArrayList<?>) methodCall.arguments).get(0));
+                editor.putLong("flutter.widget_playback_previous", (long) ((ArrayList<?>) methodCall.arguments).get(1));
+                editor.putLong("flutter.widget_playback_next", (long) ((ArrayList<?>) methodCall.arguments).get(2));
+                editor.putLong("flutter.widget_playback_stop", (long) ((ArrayList<?>) methodCall.arguments).get(3));
+                editor.putLong("flutter.widget_playback_play", (long) ((ArrayList<?>) methodCall.arguments).get(4));
+                editor.putLong("flutter.widget_playback_volume_up", (long) ((ArrayList<?>) methodCall.arguments).get(5));
+                editor.putLong("flutter.widget_playback_volume_down", (long) ((ArrayList<?>) methodCall.arguments).get(6));
+                editor.putLong("flutter.widget_playback_volume_off", (long) ((ArrayList<?>) methodCall.arguments).get(7));
+                editor.commit();
+                result.success("registered " + ((ArrayList<?>) methodCall.arguments).size() + " callbacks");
+            }
+            else
+            {
+                result.success("invalid number of callbacks");
+            }
+        }
+        else if (methodCall.method.equals(WIDGET_UPDATE))
+        {
+            final PendingIntent playback = WidgetPlaybackProvider.buildIntent(
+                    this, WidgetPlaybackProvider.REFRESH_ACTION);
+            final PendingIntent shortcuts = WidgetShortcutsProvider.buildIntent(
+                    this, WidgetShortcutsProvider.REFRESH_ACTION);
+            try
+            {
+                playback.send();
+                shortcuts.send();
+                result.success("widget update triggered");
+            }
+            catch (PendingIntent.CanceledException e)
+            {
+                result.success("widget update fails");
+            }
         }
         else
         {

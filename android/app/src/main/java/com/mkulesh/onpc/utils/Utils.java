@@ -33,6 +33,7 @@ import org.w3c.dom.Node;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -135,6 +136,26 @@ public class Utils
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    public static boolean readBooleanPreference(final Map<String, ?> allPrefs, final String name, final boolean defValue)
+    {
+        Object val = allPrefs.get("flutter." + name);
+        if (val instanceof Boolean)
+        {
+            return (Boolean)val;
+        }
+        return defValue;
+    }
+
+    public static String readStringPreference(final Map<String, ?> allPrefs, final String name, final String defValue)
+    {
+        Object val = allPrefs.get("flutter." + name);
+        if (val instanceof String)
+        {
+            return (String)val;
+        }
+        return defValue;
     }
 
     public static int getColor(Context context, String par, int defValue)

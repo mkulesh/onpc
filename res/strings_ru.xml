@@ -98,9 +98,13 @@ Copyright © 2019-2023 by __Михаил Кулеш__
     <string name="menu_latest_logging">Лог приложения</string>
     <string name="menu_switch_off_group">Выключить все устройства в группе?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Ярлыки</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Включить</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Настройки виджета</string>
+    <string name="pref_widget_theme">Тема виджета</string>
+    <string name="pref_widget_transparency">Прозрачность</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Настройки устройства</string>
@@ -149,7 +153,6 @@ Copyright © 2019-2023 by __Михаил Кулеш__
 
     <!-- App themes -->
     <string name="pref_theme">Тема</string>
-    <string name="pref_widget_theme">Тема виджета</string>
     <string-array name="pref_theme_names">
         <item>Контрастная темная (черно-желтая)</item>
         <item>Темная (серая и сине-зеленая)</item>

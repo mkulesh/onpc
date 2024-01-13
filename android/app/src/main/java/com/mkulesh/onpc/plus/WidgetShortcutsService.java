@@ -90,7 +90,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
         }
 
         // Return a proper item with filled data
-        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
+        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_shortcuts_item);
         rv.setTextViewText(R.id.widget_item, alias);
         rv.setTextColor(R.id.widget_item, Utils.getColor(mContext, "widget_b_text", R.color.widget_b_text));
 

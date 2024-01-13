@@ -40,10 +40,12 @@ import "constants/Dimens.dart";
 import "constants/Strings.dart";
 import "dialogs/DeviceSearchDialog.dart";
 import "dialogs/PopupManager.dart";
+import "homeWidget.dart";
 import "iscp/ConnectionIf.dart";
 import "iscp/StateManager.dart";
 import "iscp/messages/CustomPopupMsg.dart";
 import "iscp/messages/DcpReceiverInformationMsg.dart";
+import "iscp/messages/FriendlyNameMsg.dart";
 import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
@@ -169,6 +171,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _exitConfirm = false;
         _searchDialog = false;
         WidgetsBinding.instance.addObserver(this);
+
+        if (Platform.isAndroid)
+        {
+            registerWidgetPlaybackCallback(_methodChannel);
+        }
 
         _onResume().then((value)
         {
@@ -379,6 +386,14 @@ class MusicControllerAppState extends State<MusicControllerApp>
                             _viewContext.state.multiroomState.updateFavorites();
                         }
                     }
+                    Platform.updateWidgets(_methodChannel);
+                    break;
+                case StateManager.SHORTCUT_CHANGE_EVENT:
+                    Platform.updateWidgets(_methodChannel);
+                    break;
+                case FriendlyNameMsg.CODE:
+                    _configuration.saveDeviceFriendlyName(_stateManager.state.receiverInformation);
+                    Platform.updateWidgets(_methodChannel);
                     break;
             }
         });
@@ -563,6 +578,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         // Depending on new setting, app may be restarted by platform code here
         if (informPlatform)
         {
+            Platform.updateWidgets(_methodChannel);
             Platform.sendPlatformCommand(_methodChannel, _configuration.audioControl.volumeKeys ?
                 Platform.VOLUME_KEYS_ENABLED : Platform.VOLUME_KEYS_DISABLED);
             Platform.sendPlatformCommand(_methodChannel, _configuration.keepScreenOn ?

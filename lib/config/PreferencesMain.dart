@@ -77,24 +77,6 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
                 });
             }));
 
-        // Widget Theme
-        if (Platform.isAndroid)
-        {
-            elements.add(_customDropdownPreference(td,
-                Strings.pref_widget_theme,
-                CfgAppSettings.WIDGET_THEME,
-                icon: Drawables.pref_widget_theme,
-                values: Strings.pref_theme_codes,
-                displayValues: Strings.pref_theme_names,
-                onChange: (String val)
-                {
-                    setState(()
-                    {
-                        _configuration.appSettings.widgetTheme = val;
-                    });
-                }));
-        }
-
         // Language
         elements.add(_customDropdownPreference(td,
             Strings.pref_language,
@@ -130,6 +112,32 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
             Strings.pref_visible_tabs,
             icon: Drawables.pref_visible_tabs,
             activity: Activities.activity_visible_tabs));
+
+        // Widget options
+        if (Platform.isAndroid)
+        {
+            elements.add(CustomDivider());
+            elements.add(PreferenceTitle(Strings.pref_category_widget));
+
+            elements.add(_customDropdownPreference(td,
+                Strings.pref_widget_theme,
+                CfgAppSettings.WIDGET_THEME,
+                icon: Drawables.pref_widget_theme,
+                values: Strings.pref_theme_codes,
+                displayValues: Strings.pref_theme_names,
+                onChange: (String val)
+                {
+                    setState(()
+                    {
+                        _configuration.appSettings.widgetTheme = val;
+                    });
+                }));
+            elements.add(_customSwitchPreference(td,
+                Strings.pref_widget_transparency,
+                CfgAppSettings.WIDGET_TRANSPARENCY,
+                icon: Drawables.pref_widget_transparency));
+        }
+
 
         // Device options
         elements.add(CustomDivider());

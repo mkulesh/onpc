@@ -106,9 +106,13 @@ Enjoy!""</string>
     <string name="menu_latest_logging">Latest logging</string>
     <string name="menu_switch_off_group">Switch off all devices in the group?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Shortcuts</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Power On</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Widget options</string>
+    <string name="pref_widget_theme">Widget theme</string>
+    <string name="pref_widget_transparency">Transparency</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Device options</string>
@@ -168,7 +172,6 @@ Enjoy!""</string>
 
     <!-- App themes -->
     <string name="pref_theme">Theme</string>
-    <string name="pref_widget_theme">Widget theme</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Black and Lime)</item>
         <item>Dark (Dim Gray and Cyan)</item>

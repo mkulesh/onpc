@@ -30,9 +30,10 @@
 
     <!-- Main menu -->
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Skróty</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Zasilanie włączone</string>
+
+    <!-- Home widgets -->
 
     <!-- Application settings -->
 

@@ -42,10 +42,11 @@ enum _AllStandbyStep
 class AutoPower implements MessageScriptIf
 {
     final AutoPowerMode autoPowerMode;
+    final bool closeOnDone;
     bool _done = false;
     _AllStandbyStep _allStandbyStep = _AllStandbyStep.NONE;
 
-    AutoPower(this.autoPowerMode);
+    AutoPower(this.autoPowerMode, { this.closeOnDone = true });
 
     @override
     bool isValid(ProtoType protoType)
@@ -107,7 +108,7 @@ class AutoPower implements MessageScriptIf
                     _done = true;
                     break;
                 }
-                if (_done)
+                if (_done && closeOnDone)
                 {
                     Logging.info(this, "close app after all-standby on startup");
                     SystemNavigator.pop();
@@ -115,4 +116,6 @@ class AutoPower implements MessageScriptIf
             }
         }
     }
+
+    bool get done => _done;
 }

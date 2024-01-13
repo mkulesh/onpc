@@ -16,6 +16,7 @@ package com.mkulesh.onpc.plus;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -49,11 +50,11 @@ public class WidgetShortcutsDataProvider extends ContentProvider
         if (getContext() != null)
         {
             final SharedPreferences preferences = getContext().getSharedPreferences(
-                    Utils.SHARED_PREFERENCES_NAME, getContext().MODE_PRIVATE);
+                    Utils.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
             final CfgFavoriteShortcuts cfg = new CfgFavoriteShortcuts();
             cfg.read(preferences);
             shortcuts.addAll(cfg.getShortcuts());
-            Log.d("onpc", "read shortcuts: " + shortcuts.size());
+            Log.d("onpc", "read widget shortcuts: " + shortcuts.size());
         }
     }
 
