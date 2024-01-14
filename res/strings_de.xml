@@ -32,7 +32,7 @@
 # Verbesserter AVR-Controller
 Musik richtig hören!
 
-Copyright © 2019-2023 by __Mikhail Kulesh__
+Copyright © 2019-2024 by __Mikhail Kulesh__
 
 Diese App ermöglicht die Fernsteuerung eines Netzwerkplayers oder eines Netzwerk-A/V-Receivers über das lokale Netzwerk.
 Die App unterstützt Onkyo/Pioneer/Integra, die im April 2016 oder später veröffentlicht wurden, und Denon/Marantz mit integrierter HEOS-Technologie.
@@ -633,6 +633,6 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="error_invalid_device_address">Ungültiger Gerätename oder Port</string>
     <string name="error_connection_no_network">Keine Verbindung zum Netzwerk</string>
     <string name="error_connection_no_wifi">Keine WLAN Verbindung, bitte IP und Port manuell eingeben</string>
-    <string name="error_connection_no_response">Onkyo Gerät %s antwortet nicht</string>
+    <string name="error_connection_no_response">Remote-Gerät %s antwortet nicht</string>
 
 </resources>
