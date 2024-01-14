@@ -367,6 +367,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     }
                     setState(() {});
                     break;
+                case StateManager.ZONE_EVENT:
+                    _configuration.activeZone = _stateManager.state.getActiveZone;
+                    Platform.updateWidgets(_methodChannel);
+                    break;
                 case StateManager.OPEN_MEDIA_VIEW:
                     final AppTabs? tab = _configuration.appSettings.visibleTabs.firstWhereOrNull(
                         (t) => _isControlActive(AppControl.MEDIA_LIST, appTab: t));

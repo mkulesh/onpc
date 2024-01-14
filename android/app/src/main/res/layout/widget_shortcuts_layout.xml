@@ -50,8 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:minLines="1"
-                android:maxLines="2"
-                android:textAllCaps="true"
+                android:maxLines="1"
                 android:textSize="18sp"
                 android:background="@android:color/transparent" />
 

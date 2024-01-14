@@ -148,6 +148,20 @@ public class Utils
         return defValue;
     }
 
+    public static long readIntPreference(final Map<String, ?> allPrefs, final String name, final long defValue)
+    {
+        Object val = allPrefs.get("flutter." + name);
+        if (val instanceof Long)
+        {
+            return (long)val;
+        }
+        if (val instanceof Integer)
+        {
+            return (int)val;
+        }
+        return defValue;
+    }
+
     public static String readStringPreference(final Map<String, ?> allPrefs, final String name, final String defValue)
     {
         Object val = allPrefs.get("flutter." + name);

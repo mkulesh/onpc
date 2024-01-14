@@ -70,6 +70,11 @@ public abstract class WidgetBase extends AppWidgetProvider
         final boolean friendlyNames = Utils.readBooleanPreference(allPrefs, "friendly_names", true);
         title = friendlyNames ? Utils.readStringPreference(allPrefs, "device_friendly_name", "") :
                 Utils.readStringPreference(allPrefs, "model", "");
+        final long activeZone = Utils.readIntPreference(allPrefs, "active_zone", 0);
+        if (!title.isEmpty() && activeZone > 0)
+        {
+            title += ("/Zone" + (activeZone + 1));
+        }
         darkTheme = Utils.readBooleanPreference(allPrefs, "widget_dark_theme", false);
         transparency = Utils.readBooleanPreference(allPrefs, "widget_transparency", true);
         textColor = Utils.getColor(context, "widget_h_text", R.color.widget_h_text);

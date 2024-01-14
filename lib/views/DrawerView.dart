@@ -79,7 +79,7 @@ class DrawerView extends UpdatableView
                     context, Drawables.drawerZone(z.getId), z.getName, isSelected: active,
                     onTabListener: (context)
                     {
-                        configuration.activeZone = stateManager.changeZone(z.getId);
+                        stateManager.changeZone(z.getId);
                     }
                 ));
             });

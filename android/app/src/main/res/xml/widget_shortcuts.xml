@@ -13,11 +13,13 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="250dp"
+    android:minWidth="120dp"
     android:minHeight="80dp"
-    android:updatePeriodMillis="1800000"
-    android:initialLayout="@layout/widget_shortcuts_layout"
-    android:resizeMode="vertical|horizontal"
+    android:targetCellWidth="3"
+    android:targetCellHeight="2"
     android:minResizeWidth="80dp"
     android:minResizeHeight="80dp"
+    android:resizeMode="vertical|horizontal"
+    android:updatePeriodMillis="1800000"
+    android:initialLayout="@layout/widget_shortcuts_layout"
     android:previewImage="@drawable/widget_shortcuts_preview" />
