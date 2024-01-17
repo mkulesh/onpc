@@ -148,6 +148,15 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     final _toastKey = GlobalKey<ScaffoldMessengerState>();
 
+    // On Android a strange behaviour is observed:
+    // 1. A pair of state changes inactive/resumed is triggered twice when app
+    //    is started from the widget. As a result, the second call of _onResume
+    //    may prevent successful connect.
+    // 2. platform_method_channel can trigger callback before resuming.
+    // This variable is aimed to skip the second call of _onResume and
+    // early callbacks of platform_method_channel
+    bool _isResumed = false;
+
     MusicControllerAppState(this._windowManager, this._viewContext);
 
     Configuration get _configuration
@@ -200,25 +209,48 @@ class MusicControllerAppState extends State<MusicControllerApp>
     @override
     void didChangeAppLifecycleState(AppLifecycleState state)
     {
+        super.didChangeAppLifecycleState(state);
         Logging.info(this.widget, "Application state change: " + state.toString());
-        if (state == AppLifecycleState.resumed)
+        switch (state)
         {
-            if (!Platform.isAndroid && _stateManager.isConnected)
-            {
-                Logging.info(this.widget, "App resumed, but already connected. Ignore resuming.");
-                return;
-            }
-            _onResume();
-        }
-        else if (Platform.isMobile)
-        {
-            _disconnect();
+            case AppLifecycleState.resumed:
+                if (_isResumed || _stateManager.isConnected)
+                {
+                    Logging.info(this.widget, "Resuming triggered, but the app is already " +
+                        (_isResumed? "resumed" : "connected") + " -> Ignore resuming.");
+                }
+                else
+                {
+                    _onResume();
+                }
+                break;
+            case AppLifecycleState.inactive:
+                // Skip inactive on Android: the app still be active when showed in the taskbar
+                if (!Platform.isAndroid)
+                {
+                    _isResumed = false;
+                }
+                // On iOS, also disconnect in this stage
+                if (Platform.isIOS)
+                {
+                    _disconnect();
+                }
+                break;
+            default:
+                _isResumed = false;
+                // On all desktop platforms: the app still be active when minimized into the taskbar
+                // On all mobile platforms, also disconnect in this stage
+                if (Platform.isMobile)
+                {
+                    _disconnect();
+                }
         }
     }
 
     Future<void> _onResume() async
     {
         Logging.info(this.widget, "resuming application");
+        _isResumed = true;
         await Platform.requestIntent(_methodChannel).then((replay)
         {
             if (replay != null && replay.startsWith(Platform.TARGET_CONTROL))
@@ -677,6 +709,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     Future<void> _onPlatformMethodCall(MethodCall call) async
     {
+        if (!_isResumed)
+        {
+            return;
+        }
         String par = "";
         if (call.arguments is String)
         {
