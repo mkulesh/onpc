@@ -28,7 +28,7 @@ dependencies:
   syncfusion_flutter_sliders: ^23.1.36
   syncfusion_flutter_charts: ^23.1.36
   flutter_libserialport: ^0.3.0
-  window_manager: ^0.1.3
+  window_manager: ^0.3.7
 
 dev_dependencies:
   integration_test:

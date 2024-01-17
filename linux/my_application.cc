@@ -30,16 +30,16 @@ static void my_application_activate(GApplication* application) {
   // if future cases occur).
   gboolean use_header_bar = TRUE;
 #ifdef GDK_WINDOWING_X11
-  GdkScreen *screen = gtk_window_get_screen(window);
+  GdkScreen* screen = gtk_window_get_screen(window);
   if (GDK_IS_X11_SCREEN(screen)) {
-     const gchar* wm_name = gdk_x11_screen_get_window_manager_name(screen);
-     if (g_strcmp0(wm_name, "GNOME Shell") != 0) {
-       use_header_bar = FALSE;
-     }
+    const gchar* wm_name = gdk_x11_screen_get_window_manager_name(screen);
+    if (g_strcmp0(wm_name, "GNOME Shell") != 0) {
+      use_header_bar = FALSE;
+    }
   }
 #endif
   if (use_header_bar) {
-    GtkHeaderBar *header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
+    GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
     gtk_header_bar_set_title(header_bar, "Music Control");
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
@@ -60,7 +60,9 @@ static void my_application_activate(GApplication* application) {
   }
 
   gtk_window_set_default_size(window, 350, 720);
-  gtk_widget_show(GTK_WIDGET(window));
+  // Hidden at launch
+  // gtk_widget_show(GTK_WIDGET(window));
+  gtk_widget_realize(GTK_WIDGET(window));
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
@@ -75,7 +77,7 @@ static void my_application_activate(GApplication* application) {
 }
 
 // Implements GApplication::local_command_line.
-static gboolean my_application_local_command_line(GApplication* application, gchar ***arguments, int *exit_status) {
+static gboolean my_application_local_command_line(GApplication* application, gchar*** arguments, int* exit_status) {
   MyApplication* self = MY_APPLICATION(application);
 
   self->cmd_arguments = g_strdupv(*arguments);
@@ -96,7 +98,7 @@ static gboolean my_application_local_command_line(GApplication* application, gch
 }
 
 // Implements GObject::dispose.
-static void my_application_dispose(GObject *object) {
+static void my_application_dispose(GObject* object) {
   MyApplication* self = MY_APPLICATION(object);
   g_clear_pointer(&self->dart_entrypoint_arguments, g_strfreev);
   G_OBJECT_CLASS(my_application_parent_class)->dispose(object);
