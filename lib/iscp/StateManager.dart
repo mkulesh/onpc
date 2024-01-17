@@ -1013,7 +1013,6 @@ class StateManager
         }
         if (intent != null)
         {
-            Logging.info(this, "received intent: " + intent);
             if (intent == Platform.SHORTCUT_AUTO_POWER)
             {
                 powerMode = AutoPowerMode.POWER_ON;

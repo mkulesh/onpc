@@ -379,14 +379,14 @@ public class MainActivity extends FlutterActivity
             {
                 final SharedPreferences preferences = getSharedPreferences(Utils.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
                 final SharedPreferences.Editor editor = preferences.edit();
-                editor.putLong("flutter.widget_playback_power", (long) ((ArrayList<?>) methodCall.arguments).get(0));
-                editor.putLong("flutter.widget_playback_previous", (long) ((ArrayList<?>) methodCall.arguments).get(1));
-                editor.putLong("flutter.widget_playback_next", (long) ((ArrayList<?>) methodCall.arguments).get(2));
-                editor.putLong("flutter.widget_playback_stop", (long) ((ArrayList<?>) methodCall.arguments).get(3));
-                editor.putLong("flutter.widget_playback_play", (long) ((ArrayList<?>) methodCall.arguments).get(4));
-                editor.putLong("flutter.widget_playback_volume_up", (long) ((ArrayList<?>) methodCall.arguments).get(5));
-                editor.putLong("flutter.widget_playback_volume_down", (long) ((ArrayList<?>) methodCall.arguments).get(6));
-                editor.putLong("flutter.widget_playback_volume_off", (long) ((ArrayList<?>) methodCall.arguments).get(7));
+                saveWidgetCallback(editor, "widget_playback_power",       (ArrayList<?>) methodCall.arguments, 0);
+                saveWidgetCallback(editor, "widget_playback_previous",    (ArrayList<?>) methodCall.arguments, 1);
+                saveWidgetCallback(editor, "widget_playback_next",        (ArrayList<?>) methodCall.arguments, 2);
+                saveWidgetCallback(editor, "widget_playback_stop",        (ArrayList<?>) methodCall.arguments, 3);
+                saveWidgetCallback(editor, "widget_playback_play",        (ArrayList<?>) methodCall.arguments, 4);
+                saveWidgetCallback(editor, "widget_playback_volume_up",   (ArrayList<?>) methodCall.arguments, 5);
+                saveWidgetCallback(editor, "widget_playback_volume_down", (ArrayList<?>) methodCall.arguments, 6);
+                saveWidgetCallback(editor, "widget_playback_volume_off",  (ArrayList<?>) methodCall.arguments, 7);
                 editor.commit();
                 result.success("registered " + ((ArrayList<?>) methodCall.arguments).size() + " callbacks");
             }
@@ -420,6 +420,19 @@ public class MainActivity extends FlutterActivity
         if (newKeepScreenOn != keepScreenOn)
         {
             restartActivity();
+        }
+    }
+
+    private void saveWidgetCallback(SharedPreferences.Editor editor, String name, ArrayList<?> arguments, int i)
+    {
+        final Object obj = arguments.get(i);
+        if (obj instanceof Long)
+        {
+            editor.putLong("flutter." + name, (long) obj);
+        }
+        else if (obj instanceof Integer)
+        {
+            editor.putInt("flutter." + name, (int) obj);
         }
     }
 

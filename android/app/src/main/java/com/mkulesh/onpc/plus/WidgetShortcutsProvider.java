@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 /**
@@ -32,9 +33,12 @@ import android.widget.RemoteViews;
  */
 public class WidgetShortcutsProvider extends WidgetBase
 {
-    public static final String RUN_ACTION = "com.mkulesh.onpc.pro.RUN";
-    public static final String CLICK_ACTION = "com.mkulesh.onpc.pro.CLICK";
-    public static final String REFRESH_ACTION = "com.mkulesh.onpc.pro.REFRESH";
+    // Actions
+    private static final String RUN_ACTION = "com.mkulesh.onpc.plus.shortcuts.RUN";
+    private static final String CLICK_ACTION = "com.mkulesh.onpc.plus.shortcuts.CLICK";
+    public static final String REFRESH_ACTION = "com.mkulesh.onpc.plus.shortcuts.REFRESH";
+    // Intents send to Flutter
+    public static final String TARGET_CONTROL = "com.mkulesh.onpc.plus.CONTROL:SHR";
     public static final String WIDGET_SHORTCUT = "com.mkulesh.onpc.plus.WIDGET_SHORTCUT";
 
     private static DataProviderObserver sDataObserver;
@@ -72,6 +76,7 @@ public class WidgetShortcutsProvider extends WidgetBase
     @Override
     public void onReceive(Context ctx, Intent intent)
     {
+        Log.d("onpc", "WidgetShortcuts action: " + intent);
         final String action = intent.getAction();
         if (REFRESH_ACTION.equals(action))
         {
@@ -122,7 +127,7 @@ public class WidgetShortcutsProvider extends WidgetBase
         }
         else if (RUN_ACTION.equals(action))
         {
-            openApp(ctx, ctx.getPackageName(), null);
+            openApp(ctx, ctx.getPackageName(), TARGET_CONTROL);
         }
 
         super.onReceive(ctx, intent);

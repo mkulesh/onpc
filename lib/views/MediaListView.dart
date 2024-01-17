@@ -24,7 +24,6 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/DcpSearchDialog.dart";
-import "../dialogs/FavoriteShortcutEditDialog.dart";
 import "../dialogs/PopupManager.dart";
 import "../dialogs/UrlLauncher.dart";
 import "../iscp/ISCPMessage.dart";

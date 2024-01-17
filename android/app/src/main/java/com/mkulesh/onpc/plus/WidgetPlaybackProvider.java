@@ -19,6 +19,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 /**
@@ -26,9 +27,12 @@ import android.widget.RemoteViews;
  */
 public class WidgetPlaybackProvider extends WidgetBase
 {
-    public static final String RUN_ACTION = "com.mkulesh.onpc.pro.RUN";
-    public static final String REFRESH_ACTION = "com.mkulesh.onpc.pro.REFRESH";
-    public static final String PLAYBACK_ACTION = "com.mkulesh.onpc.pro.PLAYBACK_ACTION:";
+    // Actions
+    private static final String RUN_ACTION = "com.mkulesh.onpc.plus.playback.RUN";
+    public static final String REFRESH_ACTION = "com.mkulesh.onpc.plus.playback.REFRESH";
+    private static final String PLAYBACK_ACTION = "com.mkulesh.onpc.plus.playback.PLAYBACK_ACTION:";
+    // Intents send to Flutter
+    public static final String TARGET_CONTROL = "com.mkulesh.onpc.plus.CONTROL:PLC";
 
     public WidgetPlaybackProvider()
     {
@@ -40,7 +44,7 @@ public class WidgetPlaybackProvider extends WidgetBase
         final Intent intent = new Intent(context, WidgetPlaybackProvider.class);
         intent.setAction(action);
         // noinspection NewApi
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        return PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
     @Override
@@ -55,6 +59,7 @@ public class WidgetPlaybackProvider extends WidgetBase
     @Override
     public void onReceive(Context ctx, Intent intent)
     {
+        Log.d("onpc", "WidgetPlayback action: " + intent);
         final String action = intent.getAction();
         if (REFRESH_ACTION.equals(action))
         {
@@ -72,7 +77,7 @@ public class WidgetPlaybackProvider extends WidgetBase
         }
         else if (RUN_ACTION.equals(action))
         {
-            openApp(ctx, ctx.getPackageName(), null);
+            openApp(ctx, ctx.getPackageName(), TARGET_CONTROL);
         }
         else if (action != null && action.startsWith(PLAYBACK_ACTION))
         {

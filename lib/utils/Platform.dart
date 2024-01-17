@@ -46,6 +46,7 @@ class Platform
     static const String NETWORK_STATE_CHANGE = "networkStateChange";
 
     // Intents
+    static const String TARGET_CONTROL = "com.mkulesh.onpc.plus.CONTROL:";
     static const String SHORTCUT_AUTO_POWER = "com.mkulesh.onpc.plus.AUTO_POWER";
     static const String SHORTCUT_ALL_STANDBY = "com.mkulesh.onpc.plus.ALL_STANDBY";
     static const String WIDGET_SHORTCUT = "com.mkulesh.onpc.plus.WIDGET_SHORTCUT";

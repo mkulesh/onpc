@@ -221,6 +221,21 @@ class MusicControllerAppState extends State<MusicControllerApp>
         Logging.info(this.widget, "resuming application");
         await Platform.requestIntent(_methodChannel).then((replay)
         {
+            if (replay != null && replay.startsWith(Platform.TARGET_CONTROL))
+            {
+                Logging.info(this.widget, "received intent: " + replay);
+            }
+            if (replay != null && replay.startsWith(Platform.TARGET_CONTROL))
+            {
+                final AppControl c = CfgTabSettings.ValueEnum.valueByCode(replay.replaceAll(Platform.TARGET_CONTROL, "")).key;
+                Logging.info(this.widget, "set active tab for control: " + c.toString());
+                final AppTabs? tab = _configuration.appSettings.visibleTabs.firstWhereOrNull(
+                        (t) => _isControlActive(c, appTab: t));
+                if (tab != null)
+                {
+                    _setActiveTab(tab);
+                }
+            }
             _stateManager.updateScripts(
                 autoPower: _configuration.autoPower,
                 intent: replay,
