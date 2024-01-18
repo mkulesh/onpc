@@ -27,15 +27,14 @@ This "Premium" version implements exactly the same receiver control functionalit
 * android - contains Android-specific code (Java) that implements home widgets, volume keys handling, network state listener.
 The build script contains a signing parameter section in order to sign the target APK with a personal Google Play developer certificate that is not available on github.
 To build Android app, these parameters shall be removed and build script shall be adapted: 
-  - open the file android/app/build.gradle and comment out all parameters in sections signingConfigs->Release and buildTypes->release
+  - open the file `android/app/build.gradle` and comment out all parameters in sections `signingConfigs->Release` and `buildTypes->release`
   - navigate to release directory
   - open the file build-android.sh and adapt the parameter FLUTTER_PATH to the actual Flutter installation path
   - run the script build-android.sh
-  - new unsigned MusicControl-v<Version>-android.apk shall appear in the release directory
+  - new unsigned `MusicControl-v<Version>-android.apk` shall appear in the release directory
   - in case of any Gradle problem:  
-    - stop the gradle daemon:
-        ../android/gradlew --stop
-    - remove gradle cashes in the directory ~/.gradle/caches
+    - stop the gradle daemon: `../android/gradlew --stop`
+    - remove gradle cashes in the directory `~/.gradle/caches`
 
 * images - launcher images and screenshots
 
@@ -77,23 +76,23 @@ To build Android app, these parameters shall be removed and build script shall b
   - navigate to release directory
   - open the file build-linux.sh and adapt the parameter FLUTTER_PATH to the actual Flutter installation path
   - run the script build-linux.sh
-  - new compressed MusicControl-<version>-linux-x86_64.zip and a directory MusicControl-<version>-linux-x86_64 shall appear in the release directory
+  - new compressed `MusicControl-<version>-linux-x86_64.zip` and a directory `MusicControl-<version>-linux-x86_64` shall appear in the release directory
 
 * macos - contains macOS-specific code (Swift) and XCode project settings. There is no special features, only the standard macOS runner. To build macOS app:
   - navigate to release directory
   - open the file build-macos.sh and adapt the parameter FLUTTER_PATH to the actual Flutter installation path
   - run the script build-macos.sh
-  - new compressed file MusicControl-<version>-macos.dmg.zip shall appear in the release directory  
+  - new compressed file `MusicControl-<version>-macos.dmg.zip` shall appear in the release directory  
 
 * release - build scripts
 
 * res - string resources using within the app for all available translations. Stored as Android resource files. Can be converted to Flutter format using the script convert.sh
 
-* windows - contains Windows-specific code (C++) and Visual Studio project settings. There is no special features, only the standard macOS runner. To build Windows app:
+* windows - contains Windows-specific code (C++) and Visual Studio project settings. Implements keyboard shortcuts for playback control. To build Windows app:
   - navigate to release directory
   - open the file build-windows.bat and adapt the parameter FLUTTER_PATH to the actual Flutter installation path
   - run the script build-windows.bat
-  - new file MusicControl-<version>-windows-x86_64.msix shall appear in the release directory
+  - new file `MusicControl-<version>-windows-x86_64.msix` shall appear in the release directory
 
 ## License
 Copyright © 2019-2023 by __Mikhail Kulesh__
