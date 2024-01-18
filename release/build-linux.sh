@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set this parameter to the actual Flutter installation path
+FLUTTER_PATH=/work/android/flutter
+
 echo Build Linux app...
 
 # Necessary Fedora packages:
@@ -11,7 +14,7 @@ ln -s pubspec.yaml_desktop ../pubspec.yaml
 
 # Build with: Flutter version 3.16.0, Dart version 3.2.0
 flutter clean
-cd /work/android/flutter
+cd ${FLUTTER_PATH}
 git checkout 3.16.0
 cd -
 flutter doctor -v

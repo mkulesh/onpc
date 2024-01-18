@@ -9,6 +9,9 @@
 #   sudo git clone https://github.com/kamyarelyasi/Libarclite-Files.git .
 #   sudo chmod +x *
 
+# Set this parameter to the actual Flutter installation path
+FLUTTER_PATH=/Volumes/work/android/flutter
+
 echo Build macOS app...
 
 # Prepare Yaml file
@@ -17,7 +20,7 @@ ln -s pubspec.yaml_desktop ../pubspec.yaml
 
 # Build with: Flutter version 3.16.0, Dart version 3.2.0
 flutter clean
-cd /Volumes/work/android/flutter
+cd ${FLUTTER_PATH}
 git checkout 3.16.0
 cd -
 flutter doctor -v

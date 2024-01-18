@@ -1,5 +1,8 @@
 echo off
 
+:: Set this parameter to the actual Flutter installation path
+set FLUTTER_PATH=c:\work\android\flutter
+
 set /p VER=<VERSION.txt
 set myPath=%cd%
 echo Build Windows app MusicControl-v%VER%-windows-x86_64
@@ -16,7 +19,7 @@ call copy ..\lib\utils\CompatUtils.dart.desktop ..\lib\utils\CompatUtils.dart
 :: Ensure that file:^6.1.4 is used in pubspec.lock file
 call del *.msix
 call flutter clean
-call cd c:\work\android\flutter
+call cd %FLUTTER_PATH%
 call git checkout 3.16.0
 call cd %myPath%
 call flutter doctor -v
