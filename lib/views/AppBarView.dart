@@ -94,6 +94,14 @@ class AppBarView extends UpdatableView
             subTitle = null;
         }
 
+        final int screenHeight = MediaQuery.of(context).size.height.toInt();
+        if (Platform.isDesktop && screenHeight <= 1)
+        {
+            // window_manager plugin initially minimizes the app (window height = 1)
+            // In this case, AppBar cannot be drawn since it has a fixed size that is greater than window size
+            return SizedBox.shrink();
+        }
+
         return AppBar(
             title: CustomActivityTitle(title, subTitle),
             actions: <Widget>[
