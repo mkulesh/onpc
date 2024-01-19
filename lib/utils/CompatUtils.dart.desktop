@@ -167,4 +167,13 @@ class WindowManagerWrapper with WindowListener
             _configuration.appSettings.windowFrame = rect;
         });
     }
+
+    @override
+    void onWindowMoved()
+    {
+        windowManager.getBounds().then((Rect rect)
+        {
+            _configuration.appSettings.windowFrame = rect;
+        });
+    }
 }
