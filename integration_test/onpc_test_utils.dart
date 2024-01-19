@@ -201,12 +201,15 @@ class OnpcTestUtils {
 
   Future<void> ensureVisibleInList(
       WidgetTester tester, String title, final Finder list, OnFind finder, Offset dragOffset,
-      {int? delay}) async {
+      {int? delay, bool extraDrag = false}) async {
     Logging.info(tester, STEP_HEADER + title);
     expect(list, findsOneWidget);
     while (finder().evaluate().isEmpty) {
       await tester.drag(list, dragOffset, warnIfMissed: false);
       await tester.pumpAndSettle();
+    }
+    if (extraDrag) {
+      await tester.drag(list, dragOffset, warnIfMissed: false);
     }
     await stepDelay(tester, delay: delay ?? _stepDelay);
   }
