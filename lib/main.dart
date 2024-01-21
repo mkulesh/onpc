@@ -709,8 +709,9 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     Future<void> _onPlatformMethodCall(MethodCall call) async
     {
-        if (!_isResumed)
+        if (!Platform.isWindows && !_isResumed)
         {
+            // On Windows, always process platform callback due to keyboard shortcuts
             return;
         }
         String par = "";
