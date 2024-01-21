@@ -56,6 +56,7 @@ class Platform
     static bool get isAndroid => io.Platform.isAndroid;
     static bool get isIOS => io.Platform.isIOS;
     static bool get isWindows => io.Platform.isWindows;
+    static bool get isMacOS => io.Platform.isMacOS;
     static bool get isDesktop => (io.Platform.isMacOS || io.Platform.isLinux || io.Platform.isWindows);
     static bool get isMobile => (io.Platform.isAndroid || io.Platform.isIOS);
 

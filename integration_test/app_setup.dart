@@ -246,7 +246,8 @@ Future<void> _buildFavourites(final OnpcTestUtils tu, WidgetTester tester,
         tester, "Ensure return", find.byType(ListView), () => find.text("Return"), DRAG_OFFSET_UP);
     await tu.navigateToMedia(tester, ["Return", "My Playlists", "Onkyo playlist"]);
     await tu.ensureVisibleInList(
-        tester, "Ensure song", find.byType(ListView), () => find.text(PLAYLIST.item1), DRAG_OFFSET_DOWN, extraDrag: true);
+        tester, "Ensure song", find.byType(ListView), () => find.text(PLAYLIST.item1), DRAG_OFFSET_DOWN,
+        extraDrag: Platform.isMacOS);
     await tu.contextMenu(tester, PLAYLIST.item1, "Create shortcut", waitFor: true);
     await _renameShortcuts(tu, tester, [FLOW, FAVOURITES, PLAYLIST]);
   }

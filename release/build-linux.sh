@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Set this parameter to the actual Flutter installation path
+# Call "git fetch" in this directory so that your local Flutter
+# repository gets all the new info from Github
 FLUTTER_PATH=/work/android/flutter
 
 echo Build Linux app...
