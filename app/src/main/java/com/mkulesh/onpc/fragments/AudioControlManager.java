@@ -15,7 +15,9 @@
 package com.mkulesh.onpc.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -290,7 +292,7 @@ class AudioControlManager
         });
     }
 
-    int getVolumeMax(@NonNull final State state, @Nullable final ReceiverInformationMsg.Zone zone)
+    public int getVolumeMax(@NonNull final State state, @Nullable final ReceiverInformationMsg.Zone zone)
     {
         final int scale = (zone != null && zone.getVolumeStep() == 0) ? 2 : 1;
         return (zone != null && zone.getVolMax() > 0) ?
@@ -512,9 +514,10 @@ class AudioControlManager
     void createSliderSoundControl(
             @NonNull final BaseFragment fragment,
             @NonNull final LinearLayout layout,
-            boolean addUpDownButtons)
+            @NonNull final State state,
+            final State.SoundControlType soundControl)
     {
-        // master volume label
+        if (soundControl != State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER)
         {
             final AppCompatButton b = fragment.createButton(
                     R.string.dashed_string, null, VOLUME_LEVEL, null);
@@ -522,11 +525,16 @@ class AudioControlManager
             fragment.prepareButtonListeners(b, null, this::showAudioControlDialog);
             layout.addView(b);
         }
-        if (addUpDownButtons) // volume down
+        if (soundControl == State.SoundControlType.DEVICE_BTN_AROUND_SLIDER) // volume down
         {
             final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.DOWN;
             layout.addView(fragment.createButton(
                     cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
+        }
+        if (soundControl == State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER)
+        {
+            layout.addView(createTextView(fragment.getContext(),
+                    null, "0", R.style.SecondaryTextViewStyle));
         }
         // slider
         {
@@ -566,18 +574,45 @@ class AudioControlManager
             });
             layout.addView(b);
         }
-        if (addUpDownButtons) // volume up
+        if (soundControl == State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER)
+        {
+            final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+            final int maxVolume = Math.min(getVolumeMax(state, zone),
+                    activity.getConfiguration().audioControl.getMasterVolumeMax());
+            layout.addView(createTextView(fragment.getContext(),
+                    VOLUME_LEVEL, State.getVolumeLevelStr(maxVolume, zone), R.style.SecondaryTextViewStyle));
+        }
+        if (soundControl == State.SoundControlType.DEVICE_BTN_AROUND_SLIDER) // volume up
         {
             final MasterVolumeMsg.Command cmd = MasterVolumeMsg.Command.UP;
             layout.addView(fragment.createButton(
                     cmd.getImageId(), cmd.getDescriptionId(), null, cmd));
         }
-        // audio muting
+        if (soundControl != State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER)
         {
             final AudioMutingMsg.Status status = AudioMutingMsg.Status.TOGGLE;
             final AppCompatImageButton b = fragment.createButton(
                     R.drawable.volume_amp_muting, status.getDescriptionId(), null, status);
             layout.addView(b);
         }
+    }
+
+    @SuppressLint("NewApi")
+    private TextView createTextView(final Context context, @Nullable final String tag, @NonNull final String text, final int style)
+    {
+        final TextView tv = new TextView(context);
+        tv.setTag(tag);
+        tv.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            tv.setTextAppearance(style);
+        }
+        else
+        {
+            tv.setTextAppearance(context, style);
+        }
+        tv.setText(text);
+        return tv;
     }
 }

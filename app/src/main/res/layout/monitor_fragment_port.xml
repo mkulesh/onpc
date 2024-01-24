@@ -41,7 +41,20 @@
     </HorizontalScrollView>
 
     <LinearLayout
-        android:id="@+id/sound_control_layout"
+        android:id="@+id/sound_control_btn_layout"
+        android:tag="portrait"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <!-- Will be filled programmatically -->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sound_control_slider_layout"
         android:tag="portrait"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

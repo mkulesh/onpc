@@ -14,6 +14,7 @@
 
 package com.mkulesh.onpc.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -73,7 +74,7 @@ import androidx.appcompat.widget.AppCompatSeekBar;
 public class ListenFragment extends BaseFragment implements AudioControlManager.MasterVolumeInterface
 {
     private HorizontalScrollView listeningModeLayout;
-    private LinearLayout soundControlLayout;
+    private LinearLayout soundControlBtnLayout, soundControlSliderLayout;
     private AppCompatImageButton btnRepeat;
     private AppCompatImageButton btnPrevious;
     private AppCompatImageButton btnPausePlay;
@@ -103,7 +104,8 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         rootView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         listeningModeLayout = rootView.findViewById(R.id.listening_mode_layout);
-        soundControlLayout = rootView.findViewById(R.id.sound_control_layout);
+        soundControlBtnLayout = rootView.findViewById(R.id.sound_control_btn_layout);
+        soundControlSliderLayout = rootView.findViewById(R.id.sound_control_slider_layout);
 
         // Command Buttons
         btnRepeat = rootView.findViewById(R.id.btn_repeat);
@@ -264,14 +266,16 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
     {
         amplifierButtons.clear();
         deviceSoundButtons.clear();
-        soundControlLayout.removeAllViews();
-        soundControlLayout.setVisibility(View.GONE);
+        soundControlBtnLayout.removeAllViews();
+        soundControlBtnLayout.setVisibility(View.GONE);
+        soundControlSliderLayout.removeAllViews();
+        soundControlSliderLayout.setVisibility(View.GONE);
     }
 
     private void prepareAmplifierButtons()
     {
         clearSoundVolumeButtons();
-        soundControlLayout.setVisibility(View.VISIBLE);
+        soundControlBtnLayout.setVisibility(View.VISIBLE);
         listeningModeLayout.setVisibility(View.GONE);
 
         final AmpOperationCommandMsg.Command[] commands = new AmpOperationCommandMsg.Command[]{
@@ -286,34 +290,44 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             final AppCompatImageButton b = createButton(
                     msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
                     msg, msg.getCommand().getCode());
-            soundControlLayout.addView(b);
+            soundControlBtnLayout.addView(b);
             amplifierButtons.add(b);
         }
     }
 
     private void prepareDeviceSoundButtons(final State.SoundControlType soundControl,
-                                           @NonNull ConnectionIf.ProtoType protoType)
+                                           @NonNull final State state)
     {
         clearSoundVolumeButtons();
-        soundControlLayout.setVisibility(View.VISIBLE);
+        soundControlBtnLayout.setVisibility(View.VISIBLE);
+        final ConnectionIf.ProtoType protoType = state.protoType;
 
         // Here, we create zone-dependent buttons without command message.
         // The message for active zone will be assigned in updateActiveView
         final boolean isSlider = soundControl == State.SoundControlType.DEVICE_SLIDER ||
-                soundControl == State.SoundControlType.DEVICE_BTN_SLIDER;
-        if (isSlider && soundControlLayout.getTag() != null && soundControlLayout.getTag().equals("portrait"))
+                soundControl == State.SoundControlType.DEVICE_BTN_AROUND_SLIDER ||
+                soundControl == State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER;
+        if (isSlider && soundControlBtnLayout.getTag() != null && soundControlBtnLayout.getTag().equals("portrait"))
         {
-            audioControlManager.createSliderSoundControl(this, soundControlLayout,
-                    soundControl == State.SoundControlType.DEVICE_BTN_SLIDER);
+            if (soundControl == State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER)
+            {
+                audioControlManager.createButtonsSoundControl(this, soundControlBtnLayout);
+            }
+            soundControlSliderLayout.setVisibility(View.VISIBLE);
+            audioControlManager.createSliderSoundControl(this, soundControlSliderLayout, state, soundControl);
         }
         else
         {
-            audioControlManager.createButtonsSoundControl(this, soundControlLayout);
+            audioControlManager.createButtonsSoundControl(this, soundControlBtnLayout);
         }
 
-        for (int i = 0; i < soundControlLayout.getChildCount(); i++)
+        for (int i = 0; i < soundControlBtnLayout.getChildCount(); i++)
         {
-            deviceSoundButtons.add(soundControlLayout.getChildAt(i));
+            deviceSoundButtons.add(soundControlBtnLayout.getChildAt(i));
+        }
+        for (int i = 0; i < soundControlSliderLayout.getChildCount(); i++)
+        {
+            deviceSoundButtons.add(soundControlSliderLayout.getChildAt(i));
         }
 
         // fast selector for listening mode
@@ -426,8 +440,9 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             break;
         case DEVICE_BUTTONS:
         case DEVICE_SLIDER:
-        case DEVICE_BTN_SLIDER:
-            prepareDeviceSoundButtons(soundControl, state.protoType);
+        case DEVICE_BTN_AROUND_SLIDER:
+        case DEVICE_BTN_ABOVE_SLIDER:
+            prepareDeviceSoundButtons(soundControl, state);
             break;
         default:
             clearSoundVolumeButtons();
@@ -816,6 +831,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
     /*
      * Volume control
      */
+    @SuppressLint("SetTextI18n")
     private void updateVolumeLevel(View view, @Nullable final State state)
     {
         final boolean volumeValid = state != null && state.isOn() && state.volumeLevel != MasterVolumeMsg.NO_LEVEL;
@@ -840,7 +856,6 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                         activity.getConfiguration().audioControl.getMasterVolumeMax());
                 b.setMax(maxVolume);
                 b.setProgress(Math.max(0, state.volumeLevel));
-
             }
             else
             {
@@ -849,16 +864,30 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             }
             b.setEnabled(volumeValid);
         }
+        else if (view instanceof TextView)
+        {
+            if (volumeValid)
+            {
+                final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
+                final int maxVolume = Math.min(audioControlManager.getVolumeMax(state, zone),
+                        activity.getConfiguration().audioControl.getMasterVolumeMax());
+                ((TextView) view).setText(State.getVolumeLevelStr(maxVolume, zone));
+            }
+            else
+            {
+                ((TextView) view).setText("100");
+            }
+        }
     }
 
     @Override
     public void onMasterVolumeMaxUpdate(@NonNull final State state)
     {
-        // This callback is called if mater volume maximum is changed.
+        // This callback is called if master volume maximum is changed.
         // We shall re-scale master volume slider if it is visible
         for (View view : deviceSoundButtons)
         {
-            if (view instanceof AppCompatSeekBar && audioControlManager.isVolumeLevel(view))
+            if (audioControlManager.isVolumeLevel(view))
             {
                 updateVolumeLevel(view, state);
             }
