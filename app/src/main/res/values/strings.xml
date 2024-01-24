@@ -34,7 +34,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Enhanced AVR Controller: listen to music properly!</p>
-    <p>Copyright © 2018-2023 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2024 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
        The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
        Its two most popular features are music playback and sound profile management.</p>
@@ -94,9 +94,13 @@
     <string name="menu_latest_logging">Latest logging</string>
     <string name="menu_switch_off_group">Switch off all devices in the group?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Shortcuts</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Power On</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Widget options</string>
+    <string name="pref_widget_theme">Widget theme</string>
+    <string name="pref_widget_transparency">Transparency</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Device options</string>
@@ -138,7 +142,8 @@
         <item>External amplifier (RI)</item>
         <item>Device (Buttons)</item>
         <item>Device (Slider)</item>
-        <item>Device (Buttons and Slider)</item>
+        <item>Device (Buttons around Slider)</item>
+        <item>Device (Buttons above Slider)</item>
         <item>Automatic</item>
     </string-array>
 
@@ -149,12 +154,12 @@
         <item>device</item>
         <item>device-slider</item>
         <item>device-btn-slider</item>
+        <item>device-btn-above-slider</item>
         <item>auto</item>
     </string-array>
 
     <!-- App themes -->
     <string name="pref_theme">Theme</string>
-    <string name="pref_widget_theme">Widget theme</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Black and Lime)</item>
         <item>Dark (Dim Gray and Cyan)</item>
@@ -423,6 +428,12 @@
     <string name="medialist_playback_mode">Playback mode</string>
     <string name="medialist_no_items">No items</string>
     <string name="medialist_filter">Filter items</string>
+    <string name="medialist_search">Search</string>
+    <string name="medialist_search_artist">Artist</string>
+    <string name="medialist_search_album">Album</string>
+    <string name="medialist_search_track">Track</string>
+    <string name="medialist_search_station">Station</string>
+    <string name="medialist_search_playlist">Playlist</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

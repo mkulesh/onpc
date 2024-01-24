@@ -30,7 +30,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Contrôleur AVR amélioré: Ecoutez votre musique correctement!</p>
-    <p>Copyright © 2018-2023 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2024 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Cette application permet le contrôle à distance d\'un lecteur réseau ou d\'un récepteur réseau A/V via le réseau local.
        L\'application prend en charge Onkyo/Pioneer/Integra sorti en avril 2016 ou plus tard et Denon/Marantz avec la technologie HEOS intégrée.
        Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.</p>
@@ -88,9 +88,13 @@
     <string name="menu_latest_logging">Dernière entrée</string>
     <string name="menu_switch_off_group">Éteindre tous les appareils du groupe?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Raccourcis</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Allumer</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Options des widgets</string>
+    <string name="pref_widget_theme">Widget Thème</string>
+    <string name="pref_widget_transparency">Transparence</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Options dispositif</string>
@@ -132,13 +136,13 @@
         <item>Amplificateur Externe (RI)</item>
         <item>Dispositif (Boutons)</item>
         <item>Dispositif (Glissière)</item>
-        <item>Dispositif (Boutons et Glissière)</item>
+        <item>Dispositif (Boutons autour du Glissière)</item>
+        <item>Dispositif (Boutons au-dessus du Glissière)</item>
         <item>Automatique</item>
     </string-array>
 
     <!-- App themes -->
     <string name="pref_theme">Thème</string>
-    <string name="pref_widget_theme">Widget Thème</string>
     <string-array name="pref_theme_names">
         <item>Très sombre (Noir et jaune)</item>
         <item>Sombre (Gris et bleu)</item>
@@ -357,6 +361,12 @@
     <string name="medialist_playback_mode">Mode de lecture</string>
     <string name="medialist_no_items">Pas d\'éléments</string>
     <string name="medialist_filter">Filtrer les éléments</string>
+    <string name="medialist_search">Recherche</string>
+    <string name="medialist_search_artist">Artiste</string>
+    <string name="medialist_search_album">Album</string>
+    <string name="medialist_search_track">Track</string>
+    <string name="medialist_search_station">Station</string>
+    <string name="medialist_search_playlist">Playlist</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

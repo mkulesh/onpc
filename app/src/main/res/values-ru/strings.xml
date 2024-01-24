@@ -30,7 +30,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Улучшенный AVR-контроллер: Слушайте музыку правильно!</p>
-    <p>Copyright © 2018-2023 by <b>Михаил Кулеш, Александр Гоманюк</b></p>
+    <p>Copyright © 2018-2024 by <b>Михаил Кулеш, Александр Гоманюк</b></p>
     <p>Это приложение позволяет удаленно управлять сетевым проигрывателем или сетевым AV-ресивером по локальной сети.
        Приложение поддерживает Onkyo/Pioneer/Integra, выпущенные в апреле 2016 года или позже, и Denon/Marantz со встроенной технологией HEOS.
        Основное предназначение программы - управление воспроизведением и звуковыми профилями.</p>
@@ -90,9 +90,13 @@
     <string name="menu_latest_logging">Лог приложения</string>
     <string name="menu_switch_off_group">Выключить все устройства в группе?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Ярлыки</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Включить</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Настройки виджета</string>
+    <string name="pref_widget_theme">Тема виджета</string>
+    <string name="pref_widget_transparency">Прозрачность</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Настройки устройства</string>
@@ -134,13 +138,13 @@
         <item>Внешний усилитель (RI)</item>
         <item>Устройство (Кнопки)</item>
         <item>Устройство (Слайдер)</item>
-        <item>Устройство (Кнопки и слайдер)</item>
+        <item>Устройство (Слайдер между кнопками)</item>
+        <item>Устройство (Кнопки над слайдером)</item>
         <item>Выбрать автоматически</item>
     </string-array>
 
     <!-- App themes -->
     <string name="pref_theme">Тема</string>
-    <string name="pref_widget_theme">Тема виджета</string>
     <string-array name="pref_theme_names">
         <item>Контрастная темная (черно-желтая)</item>
         <item>Темная (серая и сине-зеленая)</item>
@@ -357,6 +361,12 @@
     <string name="medialist_playback_mode">Режим воспроизведения</string>
     <string name="medialist_no_items">Список пуст</string>
     <string name="medialist_filter">Фильтровать список</string>
+    <string name="medialist_search">Поиск</string>
+    <string name="medialist_search_artist">Артист</string>
+    <string name="medialist_search_album">Альбом</string>
+    <string name="medialist_search_track">Трек</string>
+    <string name="medialist_search_station">Станция</string>
+    <string name="medialist_search_playlist">Плейлист</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

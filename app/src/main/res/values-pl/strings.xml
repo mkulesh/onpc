@@ -30,7 +30,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Enhanced AVR Controller: listen to music properly!</p>
-    <p>Copyright © 2018-2023 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2024 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
        The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
        Its two most popular features are music playback and sound profile management.</p>
@@ -88,9 +88,13 @@
     <string name="menu_latest_logging">Ostatnie logowanie</string>
     <string name="menu_switch_off_group">Wyłączyć wszystkie urządzenia w grupie?</string>
 
-    <!-- Shortcuts and widgets -->
-    <string name="shortcut_widget_name">Skróty</string>
+    <!-- Shortcuts -->
     <string name="shortcut_power_on">Zasilanie włączone</string>
+
+    <!-- Home widgets -->
+    <string name="pref_category_widget">Opcje widgetów</string>
+    <string name="pref_widget_theme">Widget motyw</string>
+    <string name="pref_widget_transparency">Przezroczystość</string>
 
     <!-- Application settings -->
     <string name="pref_category_device_options">Opcje urządzenia</string>
@@ -132,13 +136,13 @@
         <item>Wzmacniacz zewnętrzny (RI)</item>
         <item>Urządzenie (Przyciski)</item>
         <item>Urządzenie (Suwak)</item>
-        <item>Urządzenie (Przyciski i suwak)</item>
+        <item>Urządzenie (Przyciski wokół Slidera)</item>
+        <item>Urządzenie (Przyciski nad Sliderem)</item>
         <item>Automatyczna</item>
     </string-array>
 
     <!-- App themes -->
     <string name="pref_theme">Motyw</string>
-    <string name="pref_widget_theme">Widget Motyw</string>
     <string-array name="pref_theme_names">
         <item>Strong Dark (Czarny i limonkowy)</item>
         <item>Dark (Ciemnoszary i cyjan)</item>
@@ -356,6 +360,12 @@
     <string name="medialist_playback_mode">Tryb odtwarzania</string>
     <string name="medialist_no_items">Brak listy</string>
     <string name="medialist_filter">Filtruj elementy</string>
+    <string name="medialist_search">Szukaj</string>
+    <string name="medialist_search_artist">Artysta</string>
+    <string name="medialist_search_album">Album</string>
+    <string name="medialist_search_track">Track</string>
+    <string name="medialist_search_station">Station</string>
+    <string name="medialist_search_playlist">Playlist</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
