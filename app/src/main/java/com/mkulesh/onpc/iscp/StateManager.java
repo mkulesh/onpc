@@ -659,6 +659,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                     DcpMediaItemMsg.CODE,
                     FirmwareUpdateMsg.CODE,
                     PowerStatusMsg.ZONE_COMMANDS[state.getActiveZone()],
+                    FriendlyNameMsg.CODE
             };
             sendQueries(powerStateQueries, "requesting DCP power state...");
         }

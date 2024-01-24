@@ -14,10 +14,15 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
+import com.jayway.jsonpath.JsonPath;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /*
  * Friendly Name Setting Command
@@ -68,5 +73,46 @@ public class FriendlyNameMsg extends ISCPMessage
     public boolean hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol
+     * Command: heos://player/get_player_info?pid=player_id
+     * Response: {"heos": {"command": "player/get_player_info", "result": "success", "message": "pid=-2078441090"},
+     *            "payload": {"name": "Denon Player", "pid": -2078441090, ...}}
+     * Change: NSFRN
+     */
+    private final static String HEOS_COMMAND = "player/get_player_info";
+    private final static String DCP_COMMAND = "NSFRN";
+
+    @NonNull
+    public static ArrayList<String> getAcceptedDcpCodes()
+    {
+        return new ArrayList<>(Collections.singletonList(DCP_COMMAND));
+    }
+
+    @Nullable
+    public static FriendlyNameMsg processDcpMessage(@NonNull String dcpMsg)
+    {
+        return dcpMsg.startsWith(DCP_COMMAND) ?
+                new FriendlyNameMsg(dcpMsg.substring(DCP_COMMAND.length()).trim()) : null;
+    }
+
+    @Nullable
+    public static FriendlyNameMsg processHeosMessage(@NonNull final String command, @NonNull final String heosMsg)
+    {
+        if (HEOS_COMMAND.equals(command))
+        {
+            final String name = JsonPath.read(heosMsg, "$.payload.name");
+            return name != null ? new FriendlyNameMsg(name) : null;
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public String buildDcpMsg(boolean isQuery)
+    {
+        return isQuery ? "heos://" + HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID : (DCP_COMMAND + " " + friendlyName);
     }
 }

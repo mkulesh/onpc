@@ -39,6 +39,7 @@ public class DCPMessageFactory
         this.zone = zone;
 
         acceptedCodes.addAll(DcpReceiverInformationMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(FriendlyNameMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(PowerStatusMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(InputSelectorMsg.getAcceptedDcpCodes());
 
@@ -68,6 +69,7 @@ public class DCPMessageFactory
     private void convertDcpMsg(@NonNull String dcpMsg)
     {
         addISCPMsg(DcpReceiverInformationMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(FriendlyNameMsg.processDcpMessage(dcpMsg));
         addISCPMsg(PowerStatusMsg.processDcpMessage(dcpMsg));
         addISCPMsg(InputSelectorMsg.processDcpMessage(dcpMsg));
 
@@ -126,8 +128,9 @@ public class DCPMessageFactory
                 return;
             }
 
-            addISCPMsg(FirmwareUpdateMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(FirmwareUpdateMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(FriendlyNameMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(CustomPopupMsg.processHeosMessage(cmd, tokens));
 
             // Playback
@@ -260,6 +263,8 @@ public class DCPMessageFactory
     {
         switch (raw.getCode().toUpperCase())
         {
+        case FriendlyNameMsg.CODE:
+            return new FriendlyNameMsg(raw);
         case PowerStatusMsg.CODE:
         case PowerStatusMsg.ZONE2_CODE:
         case PowerStatusMsg.ZONE3_CODE:
