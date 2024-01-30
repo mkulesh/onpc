@@ -45,8 +45,9 @@ Future<void> _widgetPlaybackPower() async
     _stateManager.start(
         (MessageChannel channel) // On initial state
         {
-            channel.addAllowedMessage(PowerStatusMsg.CODE);
-            channel.sendQueries([PowerStatusMsg.CODE]);
+            final String msgCode = PowerStatusMsg.ZONE_COMMANDS[_stateManager.state.getActiveZone];
+            channel.addAllowedMessage(msgCode);
+            channel.sendQueries([msgCode]);
         },
         (MessageChannel channel, ISCPMessage msg) // On message
         {
