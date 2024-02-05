@@ -45,6 +45,12 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical">
 
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/ImageButtonSecondaryStyle"
+                android:id="@+id/cmd_top_button"
+                android:src="@drawable/cmd_top"
+                android:contentDescription="@string/cmd_description_top" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 style="@style/DeviceEditableViewStyle"
                 android:id="@+id/filter_regex"
@@ -76,6 +82,13 @@
                 android:src="@drawable/timer_sand"
                 android:visibility="gone"
                 android:contentDescription="@string/medialist_processing" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/ImageButtonSecondaryStyle"
+                android:id="@+id/cmd_search"
+                android:src="@drawable/cmd_search"
+                android:visibility="gone"
+                android:contentDescription="@string/medialist_search" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonSecondaryStyle"

@@ -131,7 +131,6 @@ public class DCPMessageFactory
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(FirmwareUpdateMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(FriendlyNameMsg.processHeosMessage(cmd, heosMsg));
-            addISCPMsg(CustomPopupMsg.processHeosMessage(cmd, tokens));
 
             // Playback
             addISCPMsg(ArtistNameMsg.processHeosMessage(cmd, heosMsg));
@@ -140,13 +139,13 @@ public class DCPMessageFactory
             addISCPMsg(JacketArtMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(TimeInfoMsg.processHeosMessage(cmd, tokens));
             addISCPMsg(PlayStatusMsg.processHeosMessage(cmd, tokens));
+            addISCPMsg(DcpMediaItemMsg.processHeosMessage(cmd, heosMsg));
 
             // Media list
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(cmd, heosMsg, tokens));
-            addISCPMsg(DcpMediaItemMsg.processHeosMessage(cmd, heosMsg));
-
-            // Queue processing
             addISCPMsg(DcpMediaEventMsg.processHeosMessage(cmd));
+            addISCPMsg(CustomPopupMsg.processHeosMessage(cmd, tokens));
+            addISCPMsg(DcpSearchCriteriaMsg.processHeosMessage(cmd, heosMsg, tokens));
         }
         catch (Exception ex)
         {
@@ -340,6 +339,10 @@ public class DCPMessageFactory
             return new SetupOperationCommandMsg(raw);
         case NetworkServiceMsg.CODE:
             return new NetworkServiceMsg(raw);
+        case DcpSearchCriteriaMsg.CODE:
+            return new DcpSearchCriteriaMsg(raw);
+        case DcpSearchMsg.CODE:
+            return new DcpSearchMsg(raw);
         case DcpReceiverInformationMsg.CODE:
             return new DcpReceiverInformationMsg(raw);
         case DcpTunerModeMsg.CODE:

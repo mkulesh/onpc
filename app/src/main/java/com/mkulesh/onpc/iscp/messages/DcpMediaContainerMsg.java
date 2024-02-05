@@ -37,10 +37,18 @@ import androidx.annotation.Nullable;
  */
 public class DcpMediaContainerMsg extends ISCPMessage
 {
+    public enum BrowseType
+    {
+        MEDIA_LIST,
+        PLAY_QUEUE,
+        SEARCH_RESULT,
+        MEDIA_ITEM,
+        PLAYQUEUE_ITEM
+    }
+
     public final static String CODE = "D05";
     private final static String EMPTY = "";
     private final static String YES = "yes";
-    private final static String PLAYQUEUE_SID = "9999";
 
     public final static int SO_ADD_TO_HEOS = 19;
     public final static int SO_REMOVE_FROM_HEOS = 20;
@@ -49,7 +57,8 @@ public class DcpMediaContainerMsg extends ISCPMessage
     public final static int SO_ADD_ALL = 203;
     public final static int SO_REPLACE_AND_PLAY_ALL = 204;
 
-    private final String sid;
+    private final BrowseType browseType;
+    private String sid;
     private final String parentSid;
     private final String cid;
     private final String parentCid;
@@ -65,19 +74,23 @@ public class DcpMediaContainerMsg extends ISCPMessage
     private int count = 0;
     private String aid = EMPTY;
     private String qid = EMPTY;
-
     private ListTitleInfoMsg.LayerInfo layerInfo = null;
+    private String scid = EMPTY;
+    private String searchStr = EMPTY;
     private final List<XmlListItemMsg> items = new ArrayList<>();
     private final List<XmlListItemMsg> options = new ArrayList<>();
 
     private final static String HEOS_RESP_BROWSE_SERV = "heos/browse";
     private final static String HEOS_RESP_BROWSE_CONT = "browse/browse";
+    private final static String HEOS_RESP_BROWSE_SEARCH = "browse/search";
     private final static String HEOS_RESP_BROWSE_QUEUE = "player/get_queue";
     public final static String HEOS_SET_SERVICE_OPTION = "browse/set_service_option";
 
     DcpMediaContainerMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
+        final String browseTypeStr = getElement(data, "$.item.browseType");
+        this.browseType = BrowseType.values()[Integer.parseInt(browseTypeStr)];
         this.sid = getElement(data, "$.item.sid");
         this.parentSid = getElement(data, "$.item.parentSid");
         this.cid = getElement(data, "$.item.cid");
@@ -94,11 +107,14 @@ public class DcpMediaContainerMsg extends ISCPMessage
         this.name = getElement(data, "$.item.name");
         this.aid = getElement(data, "$.item.aid");
         this.qid = getElement(data, "$.item.qid");
+        this.scid = getElement(data, "$.item.scid");
+        this.searchStr = getElement(data, "$.item.searchStr");
     }
 
     public DcpMediaContainerMsg(final DcpMediaContainerMsg other)
     {
         super(0, CODE);
+        this.browseType = other.browseType;
         this.sid = other.sid;
         this.parentSid = other.parentSid;
         this.cid = other.cid;
@@ -116,12 +132,15 @@ public class DcpMediaContainerMsg extends ISCPMessage
         this.aid = other.aid;
         this.qid = other.qid;
         this.layerInfo = other.layerInfo;
+        this.scid = other.scid;
+        this.searchStr = other.searchStr;
         // Do not copy items
     }
 
-    DcpMediaContainerMsg(Map<String, String> tokens)
+    DcpMediaContainerMsg(Map<String, String> tokens, final BrowseType browseType)
     {
         super(0, CODE);
+        this.browseType = browseType;
         this.sid = nonNull(tokens.get("sid"));
         this.parentSid = this.sid;
         this.cid = nonNull(tokens.get("cid"));
@@ -139,11 +158,22 @@ public class DcpMediaContainerMsg extends ISCPMessage
         }
         this.layerInfo = cid.isEmpty() ?
                 ListTitleInfoMsg.LayerInfo.SERVICE_TOP : ListTitleInfoMsg.LayerInfo.UNDER_2ND_LAYER;
+        if (browseType == BrowseType.SEARCH_RESULT)
+        {
+            this.layerInfo = ListTitleInfoMsg.LayerInfo.UNDER_2ND_LAYER;
+            this.scid = nonNull(tokens.get("scid"));
+            this.searchStr = nonNull(tokens.get("search"));
+        }
+        else if (browseType == BrowseType.PLAY_QUEUE)
+        {
+            this.sid = ServiceType.DCP_PLAYQUEUE.getDcpCode().substring(2);
+        }
     }
 
     public DcpMediaContainerMsg(@NonNull Map<String, Object> heosMsg, final String parentSid, final String parentCid)
     {
         super(0, CODE);
+        this.browseType = BrowseType.MEDIA_ITEM;
         this.sid = getElement(heosMsg, "sid");
         this.parentSid = parentSid;
         this.cid = getElement(heosMsg, "cid");
@@ -158,11 +188,12 @@ public class DcpMediaContainerMsg extends ISCPMessage
         this.imageUrl = getElement(heosMsg, "image_url");
     }
 
-    public DcpMediaContainerMsg(@NonNull Map<String, Object> heosMsg, String psid)
+    public DcpMediaContainerMsg(@NonNull Map<String, Object> heosMsg)
     {
         super(0, CODE);
+        browseType = BrowseType.PLAYQUEUE_ITEM;
         this.sid = "";
-        this.parentSid = psid;
+        this.parentSid = "";
         this.cid = "";
         this.parentCid = "";
         this.mid = getElement(heosMsg, "mid");
@@ -178,7 +209,12 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
     public boolean keyEqual(@NonNull DcpMediaContainerMsg msg)
     {
-        return sid.equals(msg.sid) && cid.equals(msg.cid);
+        return browseType == msg.browseType && sid.equals(msg.sid) && cid.equals(msg.cid);
+    }
+
+    public BrowseType getBrowseType()
+    {
+        return browseType;
     }
 
     public String getSid()
@@ -251,11 +287,17 @@ public class DcpMediaContainerMsg extends ISCPMessage
         return options;
     }
 
+    public String getSearchStr()
+    {
+        return searchStr;
+    }
+
     @NonNull
     @Override
     public String toString()
     {
-        return CODE + "[SID=" + sid
+        return CODE + "[TYPE=" + browseType
+                + ";SID=" + sid
                 + "; PSID=" + parentSid
                 + "; CID=" + cid
                 + "; PCID=" + parentCid
@@ -274,6 +316,8 @@ public class DcpMediaContainerMsg extends ISCPMessage
                 + (layerInfo == null ? EMPTY : "; LAYER=" + layerInfo)
                 + (items.isEmpty() ? EMPTY : "; ITEMS=" + items.size())
                 + (options.isEmpty() ? EMPTY : "; OPTIONS=" + options.size())
+                + (scid.isEmpty() ? EMPTY : "; SCID=" + scid)
+                + (searchStr.isEmpty() ? EMPTY : "; SEARCH=" + searchStr)
                 + "]";
     }
 
@@ -281,6 +325,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
     public EISCPMessage getCmdMsg()
     {
         final StringBuilder sb = new StringBuilder("{\"item\":{");
+        addJsonParameter(sb, "browseType", String.valueOf(browseType.ordinal()), true);
         addJsonParameter(sb, "sid", sid, true);
         addJsonParameter(sb, "parentSid", parentSid, true);
         addJsonParameter(sb, "cid", cid, true);
@@ -292,7 +337,9 @@ public class DcpMediaContainerMsg extends ISCPMessage
         addJsonParameter(sb, "name", name, true);
         addJsonParameter(sb, "start", String.valueOf(start), true);
         addJsonParameter(sb, "aid", aid, true);
-        addJsonParameter(sb, "qid", qid, false);
+        addJsonParameter(sb, "qid", qid, true);
+        addJsonParameter(sb, "scid", scid, true);
+        addJsonParameter(sb, "searchStr", searchStr, false);
         sb.append("}}");
         return new EISCPMessage(CODE, sb.toString());
     }
@@ -311,9 +358,13 @@ public class DcpMediaContainerMsg extends ISCPMessage
     public static DcpMediaContainerMsg processHeosMessage(@NonNull final String command,
                                                           @NonNull final String heosMsg, @NonNull final Map<String, String> tokens)
     {
-        if (HEOS_RESP_BROWSE_SERV.equals(command) || HEOS_RESP_BROWSE_CONT.equals(command))
+        if (HEOS_RESP_BROWSE_SERV.equals(command) ||
+                HEOS_RESP_BROWSE_CONT.equals(command) ||
+                HEOS_RESP_BROWSE_SEARCH.equals(command))
         {
-            final DcpMediaContainerMsg parentMsg = new DcpMediaContainerMsg(tokens);
+            final BrowseType type = HEOS_RESP_BROWSE_SEARCH.equals(command) ?
+                    BrowseType.SEARCH_RESULT : BrowseType.MEDIA_LIST;
+            final DcpMediaContainerMsg parentMsg = new DcpMediaContainerMsg(tokens, type);
             readMediaItems(parentMsg, heosMsg);
             try
             {
@@ -329,11 +380,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
         if (HEOS_RESP_BROWSE_QUEUE.equals(command))
         {
-            if (tokens.get("sid") == null)
-            {
-                tokens.put("sid", PLAYQUEUE_SID);
-            }
-            final DcpMediaContainerMsg parentMsg = new DcpMediaContainerMsg(tokens);
+            final DcpMediaContainerMsg parentMsg = new DcpMediaContainerMsg(tokens, BrowseType.PLAY_QUEUE);
             readPlayQueueItems(parentMsg, heosMsg);
             return parentMsg;
         }
@@ -384,8 +431,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
         {
             @SuppressWarnings("unchecked")
             final DcpMediaContainerMsg itemMsg = new DcpMediaContainerMsg(
-                    (LinkedHashMap<String, Object>) payload.get(i),
-                    PLAYQUEUE_SID);
+                    (LinkedHashMap<String, Object>) payload.get(i));
             final XmlListItemMsg xmlItem = new XmlListItemMsg(
                     Integer.parseInt(itemMsg.qid),
                     0,
@@ -456,7 +502,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
         }
         else if (container)
         {
-            if (playable && !parentSid.isEmpty() && !parentCid.isEmpty() && !aid.isEmpty())
+            if (playable && !parentSid.isEmpty() && !cid.isEmpty() && !aid.isEmpty())
             {
                 return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&aid=%s",
                         DCP_HEOS_PID, parentSid, cid, aid);
@@ -469,14 +515,19 @@ public class DcpMediaContainerMsg extends ISCPMessage
         }
         else
         {
-            if (!playable && !sid.isEmpty())
+            if (!playable)
             {
-                if (PLAYQUEUE_SID.equals(sid))
+                if (browseType == BrowseType.PLAY_QUEUE)
                 {
                     return String.format("heos://player/get_queue?pid=%s&range=%d,9999",
                             DCP_HEOS_PID, start);
                 }
-                else
+                else if (browseType == BrowseType.SEARCH_RESULT)
+                {
+                    return String.format("heos://browse/search?sid=%s&search=%s&scid=%s&range=%d,9999",
+                            sid, searchStr, scid, start);
+                }
+                else if (!sid.isEmpty())
                 {
                     return String.format("heos://browse/browse?sid=%s", sid);
                 }
@@ -496,13 +547,21 @@ public class DcpMediaContainerMsg extends ISCPMessage
                                 DCP_HEOS_PID, parentSid, mid);
                     }
                 }
-                if (isSong() && !parentSid.isEmpty() && !parentCid.isEmpty())
+                if (isSong() && !parentSid.isEmpty())
                 {
-                    return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&mid=%s&aid=%s",
-                            DCP_HEOS_PID, parentSid, parentCid, mid, aid);
+                    if (!parentCid.isEmpty())
+                    {
+                        return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&cid=%s&mid=%s&aid=%s",
+                                DCP_HEOS_PID, parentSid, parentCid, mid, aid);
+                    }
+                    else
+                    {
+                        return String.format("heos://browse/add_to_queue?pid=%s&sid=%s&mid=%s&aid=%s",
+                                DCP_HEOS_PID, parentSid, mid, aid);
+                    }
                 }
             }
-            if (playable && PLAYQUEUE_SID.equals(parentSid) && !qid.isEmpty())
+            if (playable && browseType == BrowseType.PLAYQUEUE_ITEM && !qid.isEmpty())
             {
                 return String.format("heos://player/play_queue?pid=%s&qid=%s", DCP_HEOS_PID, qid);
             }

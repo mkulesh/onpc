@@ -33,6 +33,7 @@ import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaEventMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.DcpSearchCriteriaMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -762,6 +763,11 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 newMc.setAid("");
                 newMc.setStart(currItems);
                 sendMessage(newMc);
+            }
+            if (mc.getStart() == 0 && !state.mediaListSid.isEmpty() && state.mediaListSid.equals(mc.getSid()))
+            {
+                // #290: Additional DcpSearchCriteriaMsg shall be sent in order to request valid search criteria for the service
+                sendMessage(new DcpSearchCriteriaMsg(mc.getSid()));
             }
         }
 

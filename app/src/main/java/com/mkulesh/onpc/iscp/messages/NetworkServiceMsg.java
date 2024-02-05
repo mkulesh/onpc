@@ -88,7 +88,7 @@ public class NetworkServiceMsg extends ISCPMessage
     /*
      * Denon control protocol
      */
-    private final static String HEOS_COMMAND = "heos://browse/browse";
+    private final static String HEOS_COMMAND = "browse/browse";
 
     @Nullable
     @Override

@@ -32,6 +32,7 @@ import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.DcpSearchCriteriaMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.DigitalFilterMsg;
 import com.mkulesh.onpc.iscp.messages.DimmerLevelMsg;
@@ -93,6 +94,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 public class State implements ConnectionIf
 {
@@ -231,6 +234,8 @@ public class State implements ConnectionIf
     public String mediaListCid = "";
     public String mediaListMid = "";
     private final List<XmlListItemMsg> dcpTrackMenuItems = new ArrayList<>();
+    private final Map<String, List<Pair<String, Integer>>> dcpSearchCriteria = new HashMap<>();
+    public String mediaListSid = "";
 
     // Popup
     public final AtomicReference<CustomPopupMsg> popup = new AtomicReference<>();
@@ -489,6 +494,7 @@ public class State implements ConnectionIf
         maxTime = TimeInfoMsg.INVALID_TIME;
         currentTrack = null;
         maxTrack = null;
+        titleBar = "";
     }
 
     public ChangeType update(ISCPMessage msg)
@@ -735,7 +741,10 @@ public class State implements ConnectionIf
         {
             return process((DcpMediaItemMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
-
+        else if (msg instanceof DcpSearchCriteriaMsg)
+        {
+            return process((DcpSearchCriteriaMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
+        }
         return ChangeType.NONE;
     }
 
@@ -1982,7 +1991,26 @@ public class State implements ConnectionIf
                 serviceType = (ServiceType) ISCPMessage.searchDcpParameter(
                         "HS" + msg.getSid(), ServiceType.values(), ServiceType.UNKNOWN);
                 layerInfo = msg.getLayerInfo();
+                uiType = ListTitleInfoMsg.UIType.LIST;
+                numberOfLayers = dcpMediaPath.size();
+                mediaListSid = msg.getSid();
                 mediaListCid = msg.getCid();
+                if (layerInfo ==  ListTitleInfoMsg.LayerInfo.SERVICE_TOP && serviceType != ServiceType.UNKNOWN)
+                {
+                    titleBar = serviceType.getName();
+                }
+                else if (msg.getBrowseType() == DcpMediaContainerMsg.BrowseType.SEARCH_RESULT && !msg.getSearchStr().isEmpty())
+                {
+                    titleBar = msg.getSearchStr();
+                }
+                else if (!dcpMediaPath.isEmpty() && dcpMediaPath.size() >= 2)
+                {
+                    titleBar = dcpMediaPath.get(dcpMediaPath.size() - 2).getItems().get(0).getTitle();
+                }
+                else
+                {
+                    titleBar = "";
+                }
             }
             else if (!msg.getCid().equals(mediaListCid))
             {
@@ -2042,6 +2070,7 @@ public class State implements ConnectionIf
         }
         createServiceItems();
         numberOfItems = serviceItems.size();
+        mediaListSid = "";
         dcpMediaPath.clear();
     }
 
@@ -2061,6 +2090,38 @@ public class State implements ConnectionIf
             }
         }
         return changed;
+    }
+
+    private boolean process(DcpSearchCriteriaMsg msg)
+    {
+        dcpSearchCriteria.put(msg.getSid(), msg.getCriteria());
+        for (Map.Entry<String, List<Pair<String, Integer>>> entry : dcpSearchCriteria.entrySet())
+        {
+            Logging.info(this, "DCP search criteria: sid=" + entry.getKey() + ", value=" + entry.getValue());
+        }
+        return true;
+    }
+
+    @Nullable
+    public List<Pair<String, Integer>> getDcpSearchCriteria()
+    {
+        if (isOn() && protoType == State.ProtoType.DCP && inputType == InputSelectorMsg.InputType.DCP_NET)
+        {
+            final List<Pair<String, Integer>> sc = dcpSearchCriteria.get(mediaListSid);
+            return sc != null && !sc.isEmpty() ? sc : null;
+        }
+        return null;
+    }
+
+    public void storeSelectedDcpItem(XmlListItemMsg rowMsg)
+    {
+        if (!dcpMediaPath.isEmpty())
+        {
+            final DcpMediaContainerMsg last = dcpMediaPath.get(dcpMediaPath.size() - 1);
+            last.getItems().clear();
+            last.getItems().add(rowMsg);
+            Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last);
+        }
     }
 
     private void setDcpPlayingItem()

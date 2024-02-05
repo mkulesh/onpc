@@ -425,9 +425,11 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             selectorPaletteLayout.removeAllViews();
         }
-        setTitleLayout(false);
+        final AppCompatImageButton cmdTopButton = rootView.findViewById(R.id.cmd_top_button);
+        setButtonEnabled(cmdTopButton, false);
+        setTitleLayout(true);
         titleBar.setTag(null);
-        titleBar.setText(R.string.dashed_string);
+        titleBar.setText(R.string.medialist_no_items);
         listView.clearChoices();
         listView.invalidate();
         listView.setAdapter(new MediaListAdapter(this, activity, new ArrayList<>()));
@@ -492,16 +494,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             return;
         }
 
-        // Top menu button
-        {
-            final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.TOP);
-            final AppCompatImageButton b = createButton(
-                    msg.getCommand().getImageId(), msg.getCommand().getDescriptionId(),
-                    msg, msg.getCommand(), 0, buttonMarginHorizontal, R.dimen.button_margin_vertical);
-            prepareButtonListeners(b, msg, () -> setProgressIndicator(state, true));
-            selectorPaletteLayout.addView(b);
-        }
-
         // Selectors
         AppCompatButton selectedButton = null;
         for (ReceiverInformationMsg.Selector s : activity.getConfiguration().getSortedDeviceSelectors(
@@ -564,12 +556,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             {
                 continue;
             }
-            if (v.getTag() instanceof OperationCommandMsg.Command)
-            {
-                setButtonEnabled(v, v.getTag() == OperationCommandMsg.Command.TOP && !state.isTopLayer());
-
-            }
-            else if (v.getTag() instanceof InputSelectorMsg.InputType)
+            if (v.getTag() instanceof InputSelectorMsg.InputType)
             {
                 setButtonSelected(v, state.inputType == v.getTag());
             }
@@ -718,8 +705,16 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
             moveFrom = -1;
             mediaFilter.setVisibility(false, true);
+
+            final State state = activity.getStateManager().getState();
+            if (state.protoType == ConnectionIf.ProtoType.DCP &&
+                    selectedItem instanceof XmlListItemMsg)
+            {
+                state.storeSelectedDcpItem((XmlListItemMsg)selectedItem);
+            }
+
             // #6: Unable to play music from NAS: allow to select not selectable items as well
-            updateTitle(activity.getStateManager().getState(), true);
+            updateTitle(state, true);
             activity.getStateManager().sendMessage(selectedItem);
         }
     }
@@ -738,6 +733,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
 
     private void updateTitle(@NonNull final State state, boolean processing)
     {
+        // Top menu button
+        {
+            final AppCompatImageButton cmdTopButton = rootView.findViewById(R.id.cmd_top_button);
+            setButtonEnabled(cmdTopButton, !state.isTopLayer());
+            final OperationCommandMsg msg = new OperationCommandMsg(OperationCommandMsg.Command.TOP);
+            prepareButtonListeners(cmdTopButton, msg, () -> setProgressIndicator(state, true));
+        }
+
         final StringBuilder title = new StringBuilder();
         final ReceiverInformationMsg.Selector selector = state.getActualSelector();
         if (state.isSimpleInput())
@@ -834,6 +837,21 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final AppCompatImageView btn = rootView.findViewById(R.id.progress_indicator);
             btn.setVisibility(showProgress ? View.VISIBLE : View.GONE);
             Utils.setImageViewColorAttr(activity, btn, R.attr.colorButtonDisabled);
+        }
+
+        // DCP Search button
+        {
+            final AppCompatImageButton btn = rootView.findViewById(R.id.cmd_search);
+            btn.setVisibility(View.GONE);
+            if (!showProgress && state != null && state.getDcpSearchCriteria() != null)
+            {
+                btn.setVisibility(View.VISIBLE);
+                prepareButtonListeners(btn, null, () -> {
+                    final Dialogs d = new Dialogs(activity);
+                    d.showDcpSearchDialog(state, () -> setProgressIndicator(state, true));
+                });
+                setButtonEnabled(btn, true);
+            }
         }
 
         // Filter button

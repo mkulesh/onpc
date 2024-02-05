@@ -362,7 +362,7 @@ class MainNavigationDrawer
                     switch (m.getItemId())
                     {
                     case R.id.drawer_device_search:
-                        updateItem(m, R.drawable.drawer_search, R.string.drawer_device_search);
+                        updateItem(m, R.drawable.cmd_search, R.string.drawer_device_search);
                         break;
                     case R.id.drawer_device_connect:
                         updateItem(m, R.drawable.drawer_connect, R.string.drawer_device_connect);
