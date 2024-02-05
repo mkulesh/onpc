@@ -16,7 +16,6 @@ package com.mkulesh.onpc.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
@@ -40,7 +39,6 @@ import com.mkulesh.onpc.iscp.messages.ToneCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -103,19 +101,6 @@ class AudioControlManager
                 (state.listeningMode != null && state.listeningMode.isDirectMode());
     }
 
-    private AlertDialog createDialog(@NonNull final FrameLayout frameView, @DrawableRes final int iconId, @StringRes final int titleId)
-    {
-        final Drawable icon = Utils.getDrawable(activity, iconId);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-        return new AlertDialog.Builder(activity)
-                .setTitle(titleId)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView)
-                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog1, which) -> dialog1.dismiss())
-                .create();
-    }
-
     boolean showAudioControlDialog()
     {
         if (!isAudioControlEnabled())
@@ -169,7 +154,8 @@ class AudioControlManager
         prepareToneControl(
                 state, CenterLevelCommandMsg.KEY, centerLevelGroup, R.string.center_level);
 
-        audioControlDialog = createDialog(frameView, R.drawable.volume_audio_control, R.string.app_control_audio_control);
+        final Dialogs dl = new Dialogs(activity);
+        audioControlDialog = dl.createOkDialog(frameView, R.drawable.volume_audio_control, R.string.app_control_audio_control);
         audioControlDialog.setOnDismissListener((d) ->
         {
             Logging.info(this, "closing audio control dialog");
@@ -359,7 +345,8 @@ class AudioControlManager
         progressBar.setProgress(Math.min(maxVolume,
                 activity.getConfiguration().audioControl.getMasterVolumeMax()));
 
-        final AlertDialog masterVolumeMaxDialog = createDialog(frameView, R.drawable.volume_max_limit, R.string.master_volume_restrict);
+        final Dialogs dl = new Dialogs(activity);
+        final AlertDialog masterVolumeMaxDialog = dl.createOkDialog(frameView, R.drawable.volume_max_limit, R.string.master_volume_restrict);
         masterVolumeMaxDialog.setOnDismissListener((d) ->
         {
             if (volumeGroup != null)

@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.fragments;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,7 +45,6 @@ import com.mkulesh.onpc.iscp.messages.SleepSetCommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerACommandMsg;
 import com.mkulesh.onpc.iscp.messages.SpeakerBCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 
 import java.util.HashSet;
 
@@ -54,7 +52,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 public class DeviceFragment extends BaseFragment
@@ -288,25 +285,8 @@ public class DeviceFragment extends BaseFragment
     {
         if (getContext() != null && activity.isConnected() && activity.getStateManager().getState().isOn())
         {
-            final Drawable icon = Utils.getDrawable(getContext(), R.drawable.cmd_firmware_update);
-            Utils.setDrawableColorAttr(getContext(), icon, android.R.attr.textColorSecondary);
-            final AlertDialog dialog = new AlertDialog.Builder(getContext())
-                    .setTitle(R.string.device_firmware)
-                    .setIcon(icon)
-                    .setCancelable(true)
-                    .setMessage(R.string.device_firmware_confirm)
-                    .setNeutralButton(R.string.action_cancel, (d, which) -> d.dismiss())
-                    .setPositiveButton(R.string.action_ok, (d, which) ->
-                    {
-                        if (activity.isConnected())
-                        {
-                            activity.getStateManager().sendMessageToGroup(
-                                    new FirmwareUpdateMsg(FirmwareUpdateMsg.Status.NET));
-                        }
-                        d.dismiss();
-                    }).create();
-            dialog.show();
-            Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+            final Dialogs dl = new Dialogs(activity);
+            dl.showFirmwareUpdateDialog();
         }
     }
 
@@ -444,24 +424,8 @@ public class DeviceFragment extends BaseFragment
         }
         else
         {
-            final Drawable icon = Utils.getDrawable(getContext(), R.drawable.menu_power_standby);
-            Utils.setDrawableColorAttr(getContext(), icon, android.R.attr.textColorSecondary);
-            final AlertDialog dialog = new AlertDialog.Builder(getContext())
-                    .setTitle(R.string.device_network_standby)
-                    .setIcon(icon)
-                    .setCancelable(true)
-                    .setMessage(R.string.device_network_standby_confirm)
-                    .setNeutralButton(R.string.action_cancel, (d, which) -> d.dismiss())
-                    .setPositiveButton(R.string.action_ok, (d, which) ->
-                    {
-                        if (activity.isConnected())
-                        {
-                            activity.getStateManager().sendMessage(new NetworkStandByMsg(NetworkStandByMsg.Status.OFF));
-                        }
-                        d.dismiss();
-                    }).create();
-            dialog.show();
-            Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+            final Dialogs dl = new Dialogs(activity);
+            dl.showNetworkStandByDialog();
         }
     }
 

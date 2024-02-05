@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,7 +47,6 @@ import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PlayStatusMsg;
 import com.mkulesh.onpc.iscp.messages.PresetCommandMsg;
-import com.mkulesh.onpc.iscp.messages.PresetMemoryMsg;
 import com.mkulesh.onpc.iscp.messages.RDSInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.ServiceType;
@@ -57,7 +55,6 @@ import com.mkulesh.onpc.iscp.messages.TimeSeekMsg;
 import com.mkulesh.onpc.iscp.messages.TuningCommandMsg;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
-import com.mkulesh.onpc.widgets.HorizontalNumberPicker;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -472,7 +469,11 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 format.setText(state.fileFormat);
             }
             format.setClickable(state.protoType == ConnectionIf.ProtoType.ISCP);
-            format.setOnClickListener((v) -> showAvInfoDialog(state));
+            format.setOnClickListener((v) ->
+            {
+                final Dialogs dl = new Dialogs(activity);
+                dl.showAvInfoDialog(state);
+            });
         }
 
         // service icon and track
@@ -561,7 +562,11 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             if (state.isRadioInput())
             {
                 updatePresetButtons();
-                prepareButtonListeners(btnTrackMenu, null, () -> showPresetMemoryDialog(state));
+                prepareButtonListeners(btnTrackMenu, null, () ->
+                {
+                    final Dialogs dl = new Dialogs(activity);
+                    dl.showPresetMemoryDialog(state);
+                });
             }
             else
             {
@@ -620,57 +625,11 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         prepareButton(btn, imageId, R.string.av_info_dialog);
         btn.setVisibility(visible ? View.VISIBLE : View.GONE);
         setButtonEnabled(btn, state != null && state.protoType == ConnectionIf.ProtoType.ISCP);
-        prepareButtonListeners(btn, null, () -> showAvInfoDialog(state));
-    }
-
-    private void showAvInfoDialog(@Nullable final State state)
-    {
-        if (state == null)
+        prepareButtonListeners(btn, null, () ->
         {
-            return;
-        }
-
-        if (state.avInfoAudioInput.isEmpty() && state.avInfoAudioOutput.isEmpty() &&
-                state.avInfoVideoInput.isEmpty() && state.avInfoVideoOutput.isEmpty())
-        {
-            return;
-        }
-
-        final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.dialog_av_info, frameView);
-
-        final Drawable icon = Utils.getDrawable(activity, state.getServiceIcon());
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-
-        if (getContext() != null && getContext().getResources() != null)
-        {
-            ((TextView) frameView.findViewById(R.id.av_info_audio_input)).setText(
-                    String.format(getContext().getResources().getString(
-                            R.string.av_info_input), state.avInfoAudioInput));
-
-            ((TextView) frameView.findViewById(R.id.av_info_audio_output)).setText(
-                    String.format(getContext().getResources().getString(
-                            R.string.av_info_output), state.avInfoAudioOutput));
-
-            ((TextView) frameView.findViewById(R.id.av_info_video_input)).setText(
-                    String.format(getContext().getResources().getString(
-                            R.string.av_info_input), state.avInfoVideoInput));
-
-            ((TextView) frameView.findViewById(R.id.av_info_video_output)).setText(
-                    String.format(getContext().getResources().getString(
-                            R.string.av_info_output), state.avInfoVideoOutput));
-        }
-
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.av_info_dialog)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView)
-                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) -> dialog12.dismiss())
-                .create();
-
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+            final Dialogs dl = new Dialogs(activity);
+            dl.showAvInfoDialog(state);
+        });
     }
 
     /*
@@ -966,41 +925,5 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                     feed == MenuStatusMsg.Feed.LIKE : feed == MenuStatusMsg.Feed.LOVE;
             setButtonSelected(btn, isSelected);
         }
-    }
-
-    private void showPresetMemoryDialog(@NonNull final State state)
-    {
-        final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.dialog_preset_memory, frameView);
-
-        final HorizontalNumberPicker numberPicker = frameView.findViewById(R.id.preset_memory_number);
-        numberPicker.minValue = 1;
-        numberPicker.maxValue = PresetMemoryMsg.MAX_NUMBER;
-        numberPicker.setValue(state.nextEmptyPreset());
-        numberPicker.setEnabled(true);
-
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.cmd_track_menu);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.cmd_preset_memory)
-                .setIcon(icon)
-                .setCancelable(true)
-                .setView(frameView)
-                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
-                {
-                    Utils.showSoftKeyboard(activity, numberPicker, false);
-                    dialog1.dismiss();
-                })
-                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog12, which) ->
-                {
-                    Utils.showSoftKeyboard(activity, numberPicker, false);
-                    // in order to get updated preset list, we need to request Receiver Information
-                    activity.getStateManager().requestRIonPreset(true);
-                    activity.getStateManager().sendMessage(new PresetMemoryMsg(numberPicker.getValue()));
-                })
-                .create();
-
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 }

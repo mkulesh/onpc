@@ -16,7 +16,6 @@ package com.mkulesh.onpc.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,8 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.mkulesh.onpc.R;
@@ -34,14 +31,12 @@ import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.utils.Logging;
-import com.mkulesh.onpc.utils.Utils;
 import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.HashSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 public class ShortcutsFragment extends BaseFragment
 {
@@ -150,7 +145,8 @@ public class ShortcutsFragment extends BaseFragment
             switch (item.getItemId())
             {
             case R.id.shortcut_menu_edit:
-                editFavoriteShortcut(selectedItem);
+                final Dialogs dl = new Dialogs(activity);
+                dl.showEditShortcutDialog(selectedItem, this::updateContent);
                 selectedItem = null;
                 return true;
             case R.id.shortcut_menu_delete:
@@ -166,42 +162,6 @@ public class ShortcutsFragment extends BaseFragment
         }
         selectedItem = null;
         return super.onContextItemSelected(item);
-    }
-
-    private void editFavoriteShortcut(@NonNull final CfgFavoriteShortcuts.Shortcut shortcut)
-    {
-        final FrameLayout frameView = new FrameLayout(activity);
-        activity.getLayoutInflater().inflate(R.layout.dialog_favorite_shortcut_layout, frameView);
-
-        final TextView path = frameView.findViewById(R.id.favorite_shortcut_path);
-        path.setText(shortcut.getLabel(activity));
-
-        final EditText alias = frameView.findViewById(R.id.favorite_shortcut_alias);
-        alias.setText(shortcut.alias);
-
-        final Drawable icon = Utils.getDrawable(activity, R.drawable.drawer_edit_item);
-        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle(R.string.favorite_shortcut_edit)
-                .setIcon(icon)
-                .setCancelable(false)
-                .setView(frameView)
-                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
-                {
-                    Utils.showSoftKeyboard(activity, alias, false);
-                    dialog1.dismiss();
-                })
-                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog2, which) ->
-                {
-                    Utils.showSoftKeyboard(activity, alias, false);
-                    activity.getConfiguration().favoriteShortcuts.updateShortcut(
-                            shortcut, alias.getText().toString());
-                    updateContent();
-                    dialog2.dismiss();
-                }).create();
-
-        dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
     }
 
     private void copyToClipboard(CfgFavoriteShortcuts.Shortcut shortcut)

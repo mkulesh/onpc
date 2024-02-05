@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -33,6 +32,7 @@ import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.fragments.BaseFragment;
+import com.mkulesh.onpc.fragments.Dialogs;
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
@@ -46,7 +46,6 @@ import com.mkulesh.onpc.iscp.scripts.AutoPower;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
 import com.mkulesh.onpc.iscp.scripts.RequestListeningMode;
-import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -59,7 +58,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -310,14 +308,14 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             final String text = isConnected() ? getStateManager().getState().receiverInformation :
                     getResources().getString(R.string.state_not_connected);
-            HtmlDialogBuilder.buildXmlDialog(this,
-                    R.mipmap.ic_launcher, R.string.menu_receiver_information, text).show();
+            final Dialogs dl = new Dialogs(this);
+            dl.showXmlDialog(R.mipmap.ic_launcher, R.string.menu_receiver_information, text);
             return true;
         }
         case R.id.menu_latest_logging:
         {
-            HtmlDialogBuilder.buildXmlDialog(this,
-                    R.mipmap.ic_launcher, R.string.menu_latest_logging, Logging.getLatestLogging()).show();
+            final Dialogs dl = new Dialogs(this);
+            dl.showXmlDialog(R.mipmap.ic_launcher, R.string.menu_latest_logging, Logging.getLatestLogging());
             return true;
         }
         default:
@@ -333,26 +331,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         final PowerStatusMsg cmdMsg = new PowerStatusMsg(getStateManager().getState().getActiveZone(), p);
         if (state.isOn() && isMultiroomAvailable() && state.isMasterDevice())
         {
-            final Drawable icon = Utils.getDrawable(this, R.drawable.menu_power_standby);
-            Utils.setDrawableColorAttr(this, icon, android.R.attr.textColorSecondary);
-            final AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle(R.string.menu_power_standby)
-                    .setIcon(icon)
-                    .setCancelable(true)
-                    .setMessage(R.string.menu_switch_off_group)
-                    .setNeutralButton(R.string.action_cancel, (d, which) -> d.dismiss())
-                    .setNegativeButton(R.string.action_no, (d, which) ->
-                    {
-                        getStateManager().sendMessage(cmdMsg);
-                        d.dismiss();
-                    })
-                    .setPositiveButton(R.string.action_ok, (d, which) ->
-                    {
-                        getStateManager().sendMessageToGroup(cmdMsg);
-                        d.dismiss();
-                    }).create();
-            dialog.show();
-            Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+            final Dialogs dl = new Dialogs(this);
+            dl.showOnStandByDialog(cmdMsg);
         }
         else
         {

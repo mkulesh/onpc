@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.config.PreferencesMain;
+import com.mkulesh.onpc.fragments.Dialogs;
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ConnectionState;
 import com.mkulesh.onpc.iscp.DeviceList;
@@ -37,7 +38,6 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
 import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
-import com.mkulesh.onpc.utils.HtmlDialogBuilder;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -113,8 +113,8 @@ class MainNavigationDrawer
             activity.startActivityForResult(new Intent(activity, PreferencesMain.class), MainActivity.SETTINGS_ACTIVITY_REQID);
             break;
         case R.id.drawer_about:
-            HtmlDialogBuilder.buildHtmlDialog(activity,
-                    R.mipmap.ic_launcher, R.string.app_name, R.string.about_text).show();
+            final Dialogs dl = new Dialogs(activity);
+            dl.showHtmlDialog(R.mipmap.ic_launcher, R.string.app_name, R.string.about_text);
             break;
         case R.id.drawer_premium:
         case R.id.drawer_desktop:
