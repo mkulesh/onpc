@@ -34,7 +34,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatRadioButton
-                style="@style/PrimaryTextViewStyle"
+                style="@style/RadioButtonStyle"
                 android:id="@+id/connect_models_integra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 android:checked="false" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
-                style="@style/PrimaryTextViewStyle"
+                style="@style/RadioButtonStyle"
                 android:id="@+id/connect_models_denon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

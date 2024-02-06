@@ -16,229 +16,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:gravity="center"
     tools:context="com.mkulesh.onpc.MainActivity">
 
-    <HorizontalScrollView
-        android:id="@+id/listening_mode_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:scrollbarStyle="outsideOverlay"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Will be filled programmatically -->
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
-
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            style="@style/ImageButtonSecondaryStyle"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:paddingTop="@dimen/button_margin_horizontal"
-            android:paddingBottom="@dimen/button_margin_horizontal"
-            android:id="@+id/btn_input_selector"
-            android:src="@drawable/media_item_unknown" />
-
-        <TextView
-            android:id="@+id/tv_file_format"
-            style="@style/SecondaryTextViewStyle"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textScaleX="1.0"
-            android:maxLines="2"
-            android:gravity="left"
-            android:background="?attr/selectableItemBackground" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            style="@style/ImageButtonSecondaryStyle"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:paddingLeft="@dimen/button_margin_horizontal"
-            android:paddingRight="@dimen/button_margin_horizontal"
-            android:id="@+id/btn_multiroom_group"
-            android:src="@drawable/cmd_multiroom_group"
-            android:contentDescription="@string/cmd_multiroom_group"
-            android:visibility="invisible"
-            android:tag="GROUP" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            style="@style/TextButtonStyle"
-            android:layout_height="@dimen/button_size"
-            android:layout_width="wrap_content"
-            android:layout_margin="0dp"
-            android:padding="0dp"
-            android:id="@+id/btn_multiroom_channel"
-            android:src="@drawable/cmd_multiroom_channel"
-            android:contentDescription="@string/cmd_multiroom_channel"
-            android:visibility="invisible"
-            android:tag="CHANNEL" />
-
-        <TextView
-            style="@style/SecondaryTextViewStyle"
-            android:id="@+id/tv_track"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/button_margin_horizontal"
-            android:maxLines="2"
-            android:gravity="right" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            style="@style/ImageButtonSecondaryStyle"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:paddingTop="@dimen/button_margin_horizontal"
-            android:paddingBottom="@dimen/button_margin_horizontal"
-            android:id="@+id/btn_track_menu"
-            android:src="@drawable/cmd_track_menu"
-            android:contentDescription="@string/cmd_track_menu"
-            android:visibility="invisible"
-            android:tag="MENU" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/tv_cover_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.33"
+        android:paddingRight="@dimen/activity_horizontal_margin_land"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/tv_cover"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_margin="@dimen/cover_image_margin_land"
             android:layout_gravity="center"
             android:saveEnabled="false" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:id="@+id/tv_time_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
-            <androidx.appcompat.widget.AppCompatSeekBar
-                style="@style/SegBarStyle"
-                android:id="@+id/progress_bar"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:min="0"
-                android:max="1000" />
-
-            <TextView
-                style="@style/SecondaryTextViewStyle"
-                android:id="@+id/tv_time_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.66"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <HorizontalScrollView
+            android:id="@+id/listening_mode_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:scrollbarStyle="outsideOverlay"
+            android:visibility="gone">
 
-            <TextView
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/tv_artist"
-                android:textStyle="bold"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_gravity="center" />
+                android:orientation="horizontal">
 
-            <TextView
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/tv_album"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_gravity="center" />
-        </LinearLayout>
+                <!-- Will be filled programmatically -->
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonSecondaryStyle"
-                android:id="@+id/btn_negative_feed"
-                android:contentDescription="@string/cmd_description_f2"
-                android:tag="F2"
-                android:visibility="gone" />
-
-            <TextView
-                style="@style/PrimaryTextViewStyle"
-                android:id="@+id/tv_title"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonSecondaryStyle"
-                android:id="@+id/btn_positive_feed"
-                android:contentDescription="@string/cmd_description_f1"
-                android:tag="F1"
-                android:visibility="gone" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        </HorizontalScrollView>
 
         <LinearLayout
             android:id="@+id/sound_control_btn_layout"
-            android:tag="landscape"
-            android:layout_width="wrap_content"
+            android:tag="portrait"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:gravity="center">
 
             <!-- Will be filled programmatically -->
@@ -247,7 +78,7 @@
 
         <LinearLayout
             android:id="@+id/sound_control_slider_layout"
-            android:tag="landscape"
+            android:tag="portrait"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -259,64 +90,248 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_repeat"
-                android:tag="REPEAT" />
+                style="@style/ImageButtonSecondaryStyle"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingTop="@dimen/button_margin_horizontal"
+                android:paddingBottom="@dimen/button_margin_horizontal"
+                android:id="@+id/btn_input_selector"
+                android:src="@drawable/media_item_unknown" />
+
+            <TextView
+                android:id="@+id/tv_file_format"
+                style="@style/SecondaryTextViewStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textScaleX="1.0"
+                android:maxLines="2"
+                android:gravity="left"
+                android:background="?attr/selectableItemBackground" />
 
             <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_previous"
-                android:tag="TRDN" />
+                style="@style/ImageButtonSecondaryStyle"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/button_margin_horizontal"
+                android:paddingRight="@dimen/button_margin_horizontal"
+                android:id="@+id/btn_multiroom_group"
+                android:src="@drawable/cmd_multiroom_group"
+                android:contentDescription="@string/cmd_multiroom_group"
+                android:visibility="invisible"
+                android:tag="GROUP" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/TextButtonStyle"
+                android:layout_height="@dimen/button_size"
+                android:layout_width="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="0dp"
+                android:id="@+id/btn_multiroom_channel"
+                android:src="@drawable/cmd_multiroom_channel"
+                android:contentDescription="@string/cmd_multiroom_channel"
+                android:visibility="invisible"
+                android:tag="CHANNEL" />
+
+            <TextView
+                style="@style/SecondaryTextViewStyle"
+                android:id="@+id/tv_track"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/button_margin_horizontal"
+                android:maxLines="2"
+                android:gravity="right" />
 
             <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_stop"
-                android:tag="STOP" />
+                style="@style/ImageButtonSecondaryStyle"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingTop="@dimen/button_margin_horizontal"
+                android:paddingBottom="@dimen/button_margin_horizontal"
+                android:id="@+id/btn_track_menu"
+                android:src="@drawable/cmd_track_menu"
+                android:contentDescription="@string/cmd_track_menu"
+                android:visibility="invisible"
+                android:tag="MENU" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_pause_play"
-                android:tag="PAUSE" />
+        </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_next"
-                android:tag="TRUP" />
+        <LinearLayout
+            android:id="@+id/tv_cover_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_random"
-                android:tag="RANDOM" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_preset_down"
-                android:tag="PRS:DOWN" />
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:id="@+id/tv_time_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_tuning_down"
-                android:tag="TUN:DOWN" />
+                <androidx.appcompat.widget.AppCompatSeekBar
+                    style="@style/SegBarStyle"
+                    android:id="@+id/progress_bar"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:min="0"
+                    android:max="1000" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_rds_info"
-                android:tag="RDS:UP" />
+                <TextView
+                    style="@style/SecondaryTextViewStyle"
+                    android:id="@+id/tv_time_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_tuning_up"
-                android:tag="TUN:UP" />
+        </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/ImageButtonPrimaryStyle"
-                android:id="@+id/btn_preset_up"
-                android:tag="PRS:UP" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/tv_artist"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/tv_album"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonSecondaryStyle"
+                    android:id="@+id/btn_negative_feed"
+                    android:contentDescription="@string/cmd_description_f2"
+                    android:tag="F2"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/PrimaryTextViewStyle"
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonSecondaryStyle"
+                    android:id="@+id/btn_positive_feed"
+                    android:contentDescription="@string/cmd_description_f1"
+                    android:tag="F1"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_repeat"
+                    android:tag="REPEAT" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_previous"
+                    android:tag="TRDN" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_stop"
+                    android:tag="STOP" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_pause_play"
+                    android:tag="PAUSE" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_next"
+                    android:tag="TRUP" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_random"
+                    android:tag="RANDOM" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_preset_down"
+                    android:tag="PRS:DOWN" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_tuning_down"
+                    android:tag="TUN:DOWN" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_rds_info"
+                    android:tag="RDS:UP" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_tuning_up"
+                    android:tag="TUN:UP" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    style="@style/ImageButtonPrimaryStyle"
+                    android:id="@+id/btn_preset_up"
+                    android:tag="PRS:UP" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

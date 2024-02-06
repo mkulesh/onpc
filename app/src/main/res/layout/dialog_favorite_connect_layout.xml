@@ -46,7 +46,7 @@
                 android:paddingTop="?dialogPreferredPadding">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    style="@style/PrimaryTextViewStyle"
+                    style="@style/RadioButtonStyle"
                     android:id="@+id/favorite_connection_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -96,10 +96,11 @@
                 android:paddingTop="?dialogPreferredPadding">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    style="@style/PrimaryTextViewStyle"
+                    style="@style/RadioButtonStyle"
                     android:id="@+id/favorite_connection_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="0dp"
                     android:gravity="center_vertical"
                     android:text="@string/pref_item_delete" />
             </LinearLayout>

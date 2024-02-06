@@ -16,7 +16,7 @@
 
     <!-- Activity parameters -->
     <dimen name="activity_horizontal_margin_port">16dp</dimen>
-    <dimen name="activity_horizontal_margin_land">64dp</dimen>
+    <dimen name="activity_horizontal_margin_land">32dp</dimen>
     <dimen name="activity_vertical_margin_port">16dp</dimen>
     <dimen name="activity_vertical_margin_land">8dp</dimen>
     <dimen name="activity_tab_height_port">48dp</dimen>

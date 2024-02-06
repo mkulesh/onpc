@@ -304,7 +304,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         final boolean isSlider = soundControl == State.SoundControlType.DEVICE_SLIDER ||
                 soundControl == State.SoundControlType.DEVICE_BTN_AROUND_SLIDER ||
                 soundControl == State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER;
-        if (isSlider && soundControlBtnLayout.getTag() != null && soundControlBtnLayout.getTag().equals("portrait"))
+        if (isSlider)
         {
             if (soundControl == State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER)
             {
