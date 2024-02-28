@@ -90,6 +90,7 @@
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
+    <string name="menu_continue">Continue playback</string>
     <string name="menu_receiver_information">Receiver information</string>
     <string name="menu_latest_logging">Latest logging</string>
     <string name="menu_switch_off_group">Switch off all devices in the group?</string>
@@ -115,6 +116,7 @@
     <string name="pref_keep_playback_mode">Keep playback mode</string>
     <string name="pref_keep_playback_mode_summary">Always keep playback mode in MEDIA tab while playing</string>
     <string name="pref_exit_confirm">Press back button twice for exit</string>
+    <string name="pref_enable_continue">Enable continue feature for USB input</string>
     <string name="pref_keep_screen_on">Keep the screen turned on</string>
     <string name="pref_developer_mode">Developer options</string>
     <string name="pref_device_selectors">Input selectors</string>

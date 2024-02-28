@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import android.text.TextUtils;
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
@@ -28,6 +29,7 @@ import com.mkulesh.onpc.iscp.messages.ServiceType;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -59,6 +61,8 @@ public class Configuration
     static final String KEEP_PLAYBACK_MODE = "keep_playback_mode";
     private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
+    private static final String ENABLE_CONTINUE = "enable_continue";
+    private static final String CONTINUE_PATH = "continue_path";
 
     private final SharedPreferences preferences;
 
@@ -271,6 +275,33 @@ public class Configuration
         return result;
     }
 
+    public List<String> getContinuePath()
+    {
+        String param = CONTINUE_PATH + "_" + preferences.getString(Configuration.MODEL, "NONE");
+        if (preferences.contains(param)) {
+            final String stringPath = preferences.getString(param,"");
+            if (!stringPath.isEmpty()){
+                return new ArrayList<>(Arrays.asList(stringPath.split(";")));
+            }
+        }
+        return null;
+    }
+
+    public void setContinuePath(List<String> pathItems)
+    {
+        Logging.info(this, "Saving continue path: " + pathItems.toString());
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.putString(CONTINUE_PATH + "_" + preferences.getString(Configuration.MODEL, "NONE"), TextUtils.join(";", pathItems));
+        prefEditor.apply();
+    }
+
+    public void clearContinuePath() {
+        Logging.info(this, "Clearing continue path");
+        SharedPreferences.Editor prefEditor = preferences.edit();
+        prefEditor.remove(CONTINUE_PATH + "_" + preferences.getString(Configuration.MODEL, "NONE"));
+        prefEditor.apply();
+    }
+
     public boolean isKeepScreenOn()
     {
         return preferences.getBoolean(Configuration.KEEP_SCREEN_ON, false);
@@ -299,6 +330,11 @@ public class Configuration
     public boolean isDeveloperMode()
     {
         return preferences.getBoolean(DEVELOPER_MODE, false);
+    }
+
+    public boolean isContinueEnabled()
+    {
+        return preferences.getBoolean(ENABLE_CONTINUE, false);
     }
 
     @NonNull

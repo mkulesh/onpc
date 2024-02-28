@@ -86,6 +86,7 @@
 
     <!-- Main menu -->
     <string name="menu_power_standby">Вкл/выкл</string>
+    <string name="menu_continue">Продолжить воспроизведение</string>
     <string name="menu_receiver_information">Информация об устройстве</string>
     <string name="menu_latest_logging">Лог приложения</string>
     <string name="menu_switch_off_group">Выключить все устройства в группе?</string>
@@ -113,6 +114,7 @@
     <string name="pref_exit_confirm">Для выхода нажмите Назад дважды</string>
     <string name="pref_keep_screen_on">Не гасить экран</string>
     <string name="pref_developer_mode">Для разработчика</string>
+    <string name="pref_enable_continue">Использовать экспериментальные возможности Продолжить воспроизведение USB-входа</string>
     <string name="pref_device_selectors">Входные каналы</string>
     <string name="pref_listening_modes">Звуковые профили</string>
     <string name="pref_network_services">Сетевые сервисы</string>

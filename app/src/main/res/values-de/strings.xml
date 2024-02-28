@@ -84,6 +84,7 @@
 
     <!-- Main menu -->
     <string name="menu_power_standby">An/Standby</string>
+    <string name="menu_continue">Wiedergabe fortsetzen</string>
     <string name="menu_receiver_information">Receiver Informationen</string>
     <string name="menu_latest_logging">Letztes Log</string>
     <string name="menu_switch_off_group">Alle Geräte in der Gruppe ausschalten?</string>
@@ -111,6 +112,7 @@
     <string name="pref_exit_confirm">Zweimal zurück zum Beenden</string>
     <string name="pref_keep_screen_on">Bildschirm aktiv lassen</string>
     <string name="pref_developer_mode">Entwicklereinstellungen</string>
+    <string name="pref_enable_continue">Experimentell: Fortsetzen der Wiedergabe für USB Input</string>
     <string name="pref_device_selectors">Eingangskanäle</string>
     <string name="pref_listening_modes">Klangprofile</string>
     <string name="pref_network_services">Netzwerkdienste</string>

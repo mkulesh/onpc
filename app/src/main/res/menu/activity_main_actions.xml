@@ -18,6 +18,12 @@
     tools:ignore="AlwaysShowAction">
 
     <item
+        android:id="@+id/menu_continue"
+        android:icon="@drawable/menu_continue"
+        android:title="@string/menu_continue"
+        android:enabled="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_power_standby"
         android:icon="@drawable/menu_power_standby"
         android:title="@string/menu_power_standby"

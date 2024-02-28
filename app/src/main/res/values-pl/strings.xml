@@ -84,6 +84,7 @@
 
     <!-- Main menu -->
     <string name="menu_power_standby">On/Standby</string>
+    <string name="menu_continue">Kontynuuj odtwarzanie</string>
     <string name="menu_receiver_information">Informacje o urządzeniu</string>
     <string name="menu_latest_logging">Ostatnie logowanie</string>
     <string name="menu_switch_off_group">Wyłączyć wszystkie urządzenia w grupie?</string>
@@ -111,6 +112,7 @@
     <string name="pref_exit_confirm">Naciśnij dwukrotnie przycisk Wstecz, aby wyjść</string>
     <string name="pref_keep_screen_on">Ekran zawsze włączony</string>
     <string name="pref_developer_mode">Opcje deweloperskie</string>
+    <string name="pref_enable_continue">Eksperymentalna: Włącz funkcję kontynuacji dla wejścia USB</string>
     <string name="pref_device_selectors">Wybór wejścia</string>
     <string name="pref_listening_modes">Tryb dźwięku</string>
     <string name="pref_network_services">Usługi sieciowe</string>

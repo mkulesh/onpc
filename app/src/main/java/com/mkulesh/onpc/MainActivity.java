@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.CfgAppSettings;
+import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.config.Configuration;
 import com.mkulesh.onpc.fragments.BaseFragment;
 import com.mkulesh.onpc.fragments.Dialogs;
@@ -39,9 +40,7 @@ import com.mkulesh.onpc.iscp.DeviceList;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateHolder;
 import com.mkulesh.onpc.iscp.StateManager;
-import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
-import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
-import com.mkulesh.onpc.iscp.messages.ReceiverInformationMsg;
+import com.mkulesh.onpc.iscp.messages.*;
 import com.mkulesh.onpc.iscp.scripts.AutoPower;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
@@ -51,8 +50,10 @@ import com.mkulesh.onpc.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -280,9 +281,17 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             {
                 m.setVisible(Logging.saveLogging);
             }
+            if (m.getItemId() == R.id.menu_continue)
+            {
+                m.setVisible(configuration.isContinueEnabled());
+            }
         }
         updateToolbar(stateHolder.getState());
         return true;
+    }
+
+    private boolean isResumeStateAvailable() {
+        return (configuration.getContinuePath() != null);
     }
 
     @Override
@@ -302,6 +311,12 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             if (isConnected())
             {
                 powerOnOff();
+            }
+            return true;
+            case R.id.menu_continue:
+            if (isConnected())
+            {
+                continuePlayback();
             }
             return true;
         case R.id.menu_receiver_information:
@@ -329,6 +344,14 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         final PowerStatusMsg.PowerStatus p = state.isOn() ?
                 PowerStatusMsg.PowerStatus.STB : PowerStatusMsg.PowerStatus.ON;
         final PowerStatusMsg cmdMsg = new PowerStatusMsg(getStateManager().getState().getActiveZone(), p);
+
+        // if usb is used, save the current playback path
+        if (state.isUsb() && configuration.isContinueEnabled()) {
+            List<String> path = state.pathItems;
+            path.add(state.title);
+            configuration.setContinuePath(path);
+        }
+
         if (state.isOn() && isMultiroomAvailable() && state.isMasterDevice())
         {
             final Dialogs dl = new Dialogs(this);
@@ -337,6 +360,22 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         else
         {
             getStateManager().sendMessage(cmdMsg);
+        }
+    }
+
+    private void continuePlayback() {
+        List<String> path = configuration.getContinuePath();
+        if (path != null) {
+            String lastitem = path.remove(path.size()-1);
+            CfgFavoriteShortcuts.Shortcut sc = new CfgFavoriteShortcuts.Shortcut(
+                    42,
+                    InputSelectorMsg.InputType.USB_FRONT,
+                    ServiceType.USB_FRONT,
+                    lastitem,""
+            );
+            sc.setPathItems(path,this,ServiceType.USB_FRONT);
+            getStateManager().applyShortcut(this,sc);
+            configuration.clearContinuePath();
         }
     }
 
@@ -712,6 +751,16 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                     {
                         Utils.setDrawableColorAttr(this, m.getIcon(),
                                 state.isOn() ? android.R.attr.textColorTertiary : R.attr.colorAccent);
+                    }
+                }
+                if (m.getItemId() == R.id.menu_continue) {
+                    if (state != null && isResumeStateAvailable()) {
+                        m.setEnabled(true);
+                        Utils.setDrawableColorAttr(this, m.getIcon(), android.R.attr.textColorTertiary);
+                    }
+                    else {
+                        m.setEnabled(false);
+                        Utils.setDrawableColorAttr(this, m.getIcon(), R.attr.colorButtonDisabled);
                     }
                 }
             }

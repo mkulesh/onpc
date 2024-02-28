@@ -29,6 +29,12 @@ The two most popular features of the app are music playback and sound profile ma
 - Allows control of receivers over an OpenVPN connection (even over a cellular connection)
 - Integration with "Tasker"
 
+### Additional features of this fork
+
+- Includes a feature to continue the playback of the USB input source after switching off the receiver
+- This could also be useful for other sources but I only implemented it for the USB input
+- This experimental feature is not active by default and has to be enabled in the settings
+
 ## Versions
 
 *Free Android Version (Enhanced Music Controller Lite)*

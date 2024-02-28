@@ -84,6 +84,7 @@
 
     <!-- Main menu -->
     <string name="menu_power_standby">marche/arrêt</string>
+    <string name="menu_continue">Continuer la lecture</string>
     <string name="menu_receiver_information">Information du récepteur</string>
     <string name="menu_latest_logging">Dernière entrée</string>
     <string name="menu_switch_off_group">Éteindre tous les appareils du groupe?</string>
@@ -111,6 +112,7 @@
     <string name="pref_exit_confirm">Bouton retour deux fois pour quitter</string>
     <string name="pref_keep_screen_on">Écran toujours allumé</string>
     <string name="pref_developer_mode">Options développeurs</string>
+    <string name="pref_enable_continue">Expérimental: Activer la fonction de poursuite pour l’entrée USB</string>
     <string name="pref_device_selectors">Sélection des sources</string>
     <string name="pref_listening_modes">Modes d\'écoutes</string>
     <string name="pref_network_services">Sources réseau</string>
