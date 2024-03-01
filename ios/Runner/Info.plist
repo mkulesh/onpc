@@ -40,8 +40,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
@@ -57,5 +55,9 @@
     <array>
       <string>spotify</string>
     </array>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+    <key>FLTEnableImpeller</key>
+    <false/>
 </dict>
 </plist>

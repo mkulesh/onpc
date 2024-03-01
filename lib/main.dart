@@ -218,6 +218,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 {
                     Logging.info(this.widget, "Resuming triggered, but the app is already " +
                         (_isResumed? "resumed" : "connected") + " -> Ignore resuming.");
+                    if (Platform.isIOS && _searchDialog && _stateManager.isSearching)
+                    {
+                        _stateManager.startSearch(limited: false, restart: true);
+                    }
                 }
                 else
                 {

@@ -13,6 +13,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import "../utils/Platform.dart";
@@ -84,6 +85,7 @@ class BaseAppTheme
             appBarTheme: AppBarTheme(
                 backgroundColor: strong ? backgroundColor : primaryColor,
                 iconTheme: IconThemeData(color: textColorAppBar),
+                systemOverlayStyle: SystemUiOverlayStyle.light,
                 elevation: ActivityDimens.elevation,
             ),
 

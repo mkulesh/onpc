@@ -925,7 +925,7 @@ class StateManager
         _state.multiroomState.clear();
     }
 
-    void startSearch({bool limited = true})
+    void startSearch({bool limited = true, bool restart = false})
     {
         disconnectMultiroom(true);
         if (_networkState != NetworkState.WIFI)
@@ -934,10 +934,10 @@ class StateManager
             _state.multiroomState.deviceList.forEach((key,d) => _processDeviceResponse(d.responseMsg));
             return;
         }
-        Logging.info(this, "Starting device search: limited=" + limited.toString());
+        Logging.info(this, "Starting device search: limited=" + limited.toString() + ", restart=" + restart.toString());
         _state.multiroomState.startSearch(limited: limited);
         _state.multiroomState.updateFavorites();
-        if (_searchEngine == null)
+        if (_searchEngine == null || (_searchEngine!.isStopped && restart))
         {
             _searchEngine = BroadcastSearch(_processDeviceResponse);
             triggerStateEvent(BROADCAST_SEARCH_EVENT);

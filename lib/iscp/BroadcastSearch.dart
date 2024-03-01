@@ -28,6 +28,9 @@ class BroadcastSearch
     OnDeviceFound? onDeviceFound;
     RawDatagramSocket? _socket;
 
+    bool get isStopped
+    => _socket == null;
+
     final EISCPMessage _mX = EISCPMessage.outputCat("x", "ECN", "QSTN");
     final EISCPMessage _mP = EISCPMessage.outputCat("p", "ECN", "QSTN");
 

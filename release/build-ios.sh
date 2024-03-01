@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Note: The Impeller for Flutter 3.16.0 results in really bad
+# rendering quality for the flutter_svg library. It is temporary
+# disabled in the file ios/Runner/Info.plist, parameter FLTEnableImpeller
+# When rendering quality will be fixed in any later Flutter version,
+# the Impeller can be enabled again by deleting this parameter.
+
 # Set this parameter to the actual Flutter installation path
 # Call "git fetch" in this directory so that your local Flutter
 # repository gets all the new info from Github
