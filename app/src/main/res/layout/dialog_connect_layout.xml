@@ -58,7 +58,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 style="@style/PrimaryTextViewStyle"
                 android:id="@+id/device_name"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minWidth="300dp"
                 android:inputType="text"
@@ -71,7 +71,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 style="@style/PrimaryTextViewStyle"
                 android:id="@+id/device_port"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minWidth="300dp"
                 android:inputType="text"
@@ -96,7 +96,7 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     style="@style/PrimaryTextViewStyle"
                     android:id="@+id/device_friendly_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:minWidth="300dp"
                     android:inputType="text"

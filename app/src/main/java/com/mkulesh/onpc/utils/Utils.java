@@ -294,8 +294,14 @@ public class Utils
     /**
      * Fix dialog icon color after dialog creation. Necessary for older Android Versions
      */
-    public static void fixIconColor(@NonNull AlertDialog dialog, @AttrRes int resId)
+    public static void fixDialogLayout(@NonNull AlertDialog dialog, @AttrRes int resId)
     {
+        final int width = (int)(dialog.getContext().getResources().getDisplayMetrics().widthPixels * 0.90);
+        final int height = (int)(dialog.getContext().getResources().getDisplayMetrics().heightPixels * 0.90);
+        if (dialog.getWindow() != null)
+        {
+            dialog.getWindow().setLayout(Math.min(width, height), ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
         final ImageView imageView = dialog.findViewById(android.R.id.icon);
         if (imageView != null)
         {

@@ -145,7 +145,7 @@ public class Dialogs
                 .create();
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     @NonNull
@@ -197,7 +197,7 @@ public class Dialogs
                 .create();
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     public void showNetworkStandByDialog()
@@ -221,7 +221,7 @@ public class Dialogs
                 .create();
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     public void showAvInfoDialog(@Nullable final State state)
@@ -261,7 +261,7 @@ public class Dialogs
 
         final AlertDialog dialog = createOkDialog(frameView, state.getServiceIcon(), R.string.av_info_dialog);
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     public void showPresetMemoryDialog(@NonNull final State state)
@@ -297,7 +297,7 @@ public class Dialogs
                 .create();
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     public void showEditShortcutDialog(@NonNull final CfgFavoriteShortcuts.Shortcut shortcut, final ButtonListener bl)
@@ -337,7 +337,7 @@ public class Dialogs
                 .create();
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     public void showOnStandByDialog(@NonNull final PowerStatusMsg cmdMsg)
@@ -361,7 +361,7 @@ public class Dialogs
                     d.dismiss();
                 }).create();
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     public void showHtmlDialog(@DrawableRes int icon, @StringRes int title, @StringRes int textId)

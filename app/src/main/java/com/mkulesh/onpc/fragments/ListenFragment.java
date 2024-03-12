@@ -749,7 +749,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                     final AlertDialog alertDialog = MultiroomManager.createDeviceSelectionDialog(
                             activity, b.getContentDescription());
                     alertDialog.show();
-                    Utils.fixIconColor(alertDialog, android.R.attr.textColorSecondary);
+                    Utils.fixDialogLayout(alertDialog, android.R.attr.textColorSecondary);
                 }
             });
         }

@@ -316,7 +316,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         }
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     private void updateRadioGroup(final Map<String, DeviceInfo> devices)

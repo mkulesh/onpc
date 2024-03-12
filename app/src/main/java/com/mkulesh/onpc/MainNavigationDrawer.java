@@ -242,7 +242,7 @@ class MainNavigationDrawer
                 }).create();
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     private void navigationChangeZone(final int idx)
@@ -531,7 +531,7 @@ class MainNavigationDrawer
                 }).create();
 
         dialog.show();
-        Utils.fixIconColor(dialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     private void onRadioBtnChange(final AppCompatRadioButton[] radioGroup, AppCompatRadioButton v)

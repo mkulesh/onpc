@@ -80,7 +80,7 @@ class PopupManager
             updateTrackMenuGroup(activity, state, trackMenuGroup);
 
             trackMenuDialog.show();
-            Utils.fixIconColor(trackMenuDialog, android.R.attr.textColorSecondary);
+            Utils.fixDialogLayout(trackMenuDialog, android.R.attr.textColorSecondary);
         }
         else if (trackMenuGroup != null)
         {
@@ -175,7 +175,7 @@ class PopupManager
             });
 
             popupDialog.show();
-            Utils.fixIconColor(popupDialog, android.R.attr.textColorSecondary);
+            Utils.fixDialogLayout(popupDialog, android.R.attr.textColorSecondary);
         }
         catch (Exception e)
         {

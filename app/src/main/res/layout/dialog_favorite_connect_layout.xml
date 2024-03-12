@@ -67,7 +67,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/PrimaryTextViewStyle"
                         android:id="@+id/favorite_connection_alias"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:minWidth="300dp"
                         android:inputType="text"
@@ -80,7 +80,7 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         style="@style/PrimaryTextViewStyle"
                         android:id="@+id/favorite_connection_identifier"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:minWidth="300dp"
                         android:inputType="text"

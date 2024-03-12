@@ -170,7 +170,7 @@ class AudioControlManager
 
         updateActiveView(state);
         audioControlDialog.show();
-        Utils.fixIconColor(audioControlDialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(audioControlDialog, android.R.attr.textColorSecondary);
         return true;
     }
 
@@ -360,7 +360,7 @@ class AudioControlManager
         });
 
         masterVolumeMaxDialog.show();
-        Utils.fixIconColor(masterVolumeMaxDialog, android.R.attr.textColorSecondary);
+        Utils.fixDialogLayout(masterVolumeMaxDialog, android.R.attr.textColorSecondary);
     }
 
     private void prepareToneControl(@NonNull final State state,
