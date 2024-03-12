@@ -150,6 +150,7 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Denon AVR-S760H](https://www.denon.com/de-de/product/av-receivers/avr-s760h/AVRS760H.html)
 - [Denon AVR-X2400H](https://www.denon.com/de-ch/shop/avreceiver/avrx2400h)
 - [Denon AVR-X2600H](https://www.denon.com/de-ch/shop/avreceiver/avrx2600h)
+- [Denon AVR-X2800H](https://www.denon.com/de-ch/shop/avreceiver/avrx2800h)
 - [Denon AVR-X3700H](https://www.denon.com/de-ch/shop/avreceiver/avcx3700h)
 - [Denon AVR-X3800H](https://www.denon.com/de-ch/shop/avreceiver/avcx3800h)
 - [Denon AVR-X4300H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x4300h/800218.html)
