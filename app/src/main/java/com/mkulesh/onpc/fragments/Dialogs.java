@@ -368,12 +368,14 @@ public class Dialogs
     {
         final AlertDialog dialog = buildHtmlDialog(icon, title, activity.getResources().getString(textId), true);
         dialog.show();
+        Utils.fixDialogLayout(dialog, null);
     }
 
     public void showXmlDialog(@DrawableRes int icon, @StringRes int title, final String text)
     {
         final AlertDialog dialog = buildHtmlDialog(icon, title, text, false);
         dialog.show();
+        Utils.fixDialogLayout(dialog, null);
     }
 
     @SuppressLint("NewApi")
