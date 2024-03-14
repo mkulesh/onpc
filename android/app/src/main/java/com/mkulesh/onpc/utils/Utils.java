@@ -25,6 +25,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -75,7 +76,7 @@ public class Utils
         }
         catch (Exception e)
         {
-            // empty
+            Log.d("onpc", "Failed to parse XML: " + e.getLocalizedMessage());
         }
     }
 

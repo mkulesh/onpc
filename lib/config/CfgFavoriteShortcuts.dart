@@ -114,11 +114,11 @@ class Shortcut
         label += " id=\"" + _id.toString() + "\"";
         label += " input=\"" + _input.getCode + "\"";
         label += " service=\"" + _service.getCode + "\"";
-        label += " item=\"" + _item + "\"";
-        label += " alias=\"" + _alias + "\">";
+        label += " item=\"" + escape(_item) + "\"";
+        label += " alias=\"" + escape(_alias) + "\">";
         for (String dir in _pathItems)
         {
-            label += "<dir name=\"" + dir + "\"/>";
+            label += "<dir name=\"" + escape(dir) + "\"/>";
         }
         label += "</" + FAVORITE_SHORTCUT_TAG + ">";
         return label.toString();
@@ -227,6 +227,12 @@ class Shortcut
             icon = Drawables.media_item_unknown;
         }
         return icon;
+    }
+
+    String escape(String str) 
+    {
+        // this escape method is only important for java widget class CfgFavoriteShortcuts.java
+        return str.replaceAll("&", "&#38;").replaceAll("'","&#39;").replaceAll('"', "&#34;");
     }
 }
 
