@@ -82,6 +82,11 @@ response message with exactly this response value.
 - _listitem_: the name of a media item. The command will be finalized, when the receiver provides
 a media list that contains this media item.
 
+## Model-independent command
+The scripts described above only work for Onkyo/Pioneer/Integra AVR. In order to support Denon/Marantz, 
+there is a possibility to send some pre-defined command in the "dat" field instead of a message script:
+- com.mkulesh.onpc.AUTO_POWER: power on the AVR after application start
+- com.mkulesh.onpc.ALL_STANDBY: power off the AVR after application start and exit the app
 
 ## Examples
 In this directory, we collected a set of helpful examples of scripts:
