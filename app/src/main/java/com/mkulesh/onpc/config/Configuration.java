@@ -54,6 +54,7 @@ public class Configuration
     private static final String SELECTED_NETWORK_SERVICES = "selected_network_services";
 
     private static final String KEEP_SCREEN_ON = "keep_screen_on";
+    static final String SHOW_WHEN_LOCKED = "show_when_locked";
     private static final String BACK_AS_RETURN = "back_as_return";
     static final String ADVANCED_QUEUE = "advanced_queue";
     static final String KEEP_PLAYBACK_MODE = "keep_playback_mode";
@@ -274,6 +275,11 @@ public class Configuration
     public boolean isKeepScreenOn()
     {
         return preferences.getBoolean(Configuration.KEEP_SCREEN_ON, false);
+    }
+
+    public boolean isShowWhenLocked()
+    {
+        return preferences.getBoolean(Configuration.SHOW_WHEN_LOCKED, false);
     }
 
     public boolean isBackAsReturn()

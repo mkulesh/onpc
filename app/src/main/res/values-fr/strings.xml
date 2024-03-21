@@ -110,6 +110,8 @@
     <string name="pref_keep_playback_mode_summary">Toujours conserver le mode lecture dans l\'onglet SOURCE quand l\'écoute est en cours</string>
     <string name="pref_exit_confirm">Bouton retour deux fois pour quitter</string>
     <string name="pref_keep_screen_on">Écran toujours allumé</string>
+    <string name="pref_show_when_locked">En haut de l\'écran de verrouillage</string>
+    <string name="pref_show_when_locked_summary">L\'application peut démarrer en haut de l\'écran de verrouillage</string>
     <string name="pref_developer_mode">Options développeurs</string>
     <string name="pref_device_selectors">Sélection des sources</string>
     <string name="pref_listening_modes">Modes d\'écoutes</string>

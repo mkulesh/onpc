@@ -14,6 +14,8 @@
 
 package com.mkulesh.onpc;
 
+import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -119,6 +121,12 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             versionName = null;
         }
 
+        Logging.info(this, "App can start on-top of the lock screen: " + configuration.isShowWhenLocked());
+        if (configuration.isShowWhenLocked())
+        {
+            allowShowWhenLocked();
+        }
+
         connectionState = new ConnectionState(this);
         deviceList = new DeviceList(this, connectionState, this,
                 configuration.favoriteConnections.getDevices());
@@ -129,6 +137,26 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         initGUI();
         setOpenedTab(configuration.appSettings.getOpenedTab());
         updateToolbar(null);
+    }
+
+    private void allowShowWhenLocked()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
+        {
+            setShowWhenLocked(true);
+            setTurnScreenOn(true);
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            if (keyguardManager!=null)
+            {
+                keyguardManager.requestDismissKeyguard(this, null);
+            }
+        }
+        else
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        }
     }
 
     @Override
@@ -393,6 +421,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         }
     }
 
+    @SuppressLint("UnsafeIntentLaunch")
     public void restartActivity()
     {
         PackageManager pm = getPackageManager();
@@ -599,11 +628,20 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             if (intent.getDataString() != null)
             {
                 intentData = intent.getDataString();
-                final MessageScript ms = (intentData != null && !intentData.isEmpty()) ? new MessageScript(this, intentData) : null;
-                messageScript = ms != null && ms.isValid() ? ms : null;
+                if (intentData.startsWith("com.mkulesh.onpc"))
+                {
+                    Logging.info(this, "    direct command in the data field: " + intentData);
+                }
+                else
+                {
+                    Logging.info(this, "    message script in the data field: " + intentData);
+                    final MessageScript ms = (intentData != null && !intentData.isEmpty()) ? new MessageScript(this, intentData) : null;
+                    messageScript = ms != null && ms.isValid() ? ms : null;
+                }
             }
             else
             {
+                Logging.info(this, "    direct command in the action field: " + intentData);
                 intentData = intent.getAction();
             }
             setIntent(null);
