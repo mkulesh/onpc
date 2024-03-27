@@ -1,0 +1,6 @@
+• Added Deezer and local search for Denon HEOS
+• Possibility to use friendly device name for DENON receivers
+• Possibility to run the app on the top of the lock screen
+• Add a new type of volume control (Buttons above Slider)
+• Improved a message when connection to Denon receiver fails
+• Fixed a bug: Invalid dialog size after device rotation
