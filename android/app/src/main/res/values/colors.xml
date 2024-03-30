@@ -14,6 +14,8 @@
 
 <resources>
 
+    <color name="ic_launcher_background">#0077dd</color>
+
     <!-- Default widget colors as defined in CfgAppSettings.dart file -->
     <color name="widget_light_background">#FAFAFA</color>
     <color name="widget_dark_background">#000000</color>
