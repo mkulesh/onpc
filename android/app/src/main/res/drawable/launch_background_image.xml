@@ -13,6 +13,6 @@
   -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="@color/ic_launcher_background" />
     <item android:drawable="@mipmap/ic_launcher" android:gravity="center" android:height="56dp" android:width="56dp" />
 </layer-list>
