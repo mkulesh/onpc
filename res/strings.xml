@@ -128,6 +128,8 @@ Enjoy!""</string>
     <string name="pref_keep_playback_mode_summary">Always keep playback mode in MEDIA tab while playing</string>
     <string name="pref_exit_confirm">Press back button twice for exit</string>
     <string name="pref_keep_screen_on">Keep the screen turned on</string>
+    <string name="pref_show_when_locked">On top of the lock screen</string>
+    <string name="pref_show_when_locked_summary">App can start on-top of the lock screen</string>
     <string name="pref_developer_mode">Developer options</string>
     <string name="pref_device_selectors">Input selectors</string>
     <string name="pref_listening_modes">Listening modes</string>

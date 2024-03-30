@@ -762,7 +762,7 @@ Enjoy!"""];
 
     static const List<String> l_pref_exit_confirm = [
         /*en*/ "Press back button twice for exit",
-        /*ru*/ "Для выхода нажмите Назад дважды",
+        /*ru*/ "Для выхода нажмите \"Назад\" дважды",
         /*de*/ "Zweimal zurück zum Beenden",
         /*fr*/ "Bouton retour deux fois pour quitter",
         /*pl*/ "Naciśnij dwukrotnie przycisk Wstecz, aby wyjść"];
@@ -775,6 +775,22 @@ Enjoy!"""];
         /*fr*/ "Écran toujours allumé",
         /*pl*/ "Ekran zawsze włączony"];
     static String get pref_keep_screen_on => l_pref_keep_screen_on[_language];
+
+    static const List<String> l_pref_show_when_locked = [
+        /*en*/ "On top of the lock screen",
+        /*ru*/ "Поверх экрана блокировки",
+        /*de*/ "Oben auf dem Sperrbildschirm",
+        /*fr*/ "En haut de l\'écran de verrouillage",
+        /*pl*/ "Na górze ekranu blokady"];
+    static String get pref_show_when_locked => l_pref_show_when_locked[_language];
+
+    static const List<String> l_pref_show_when_locked_summary = [
+        /*en*/ "App can start on-top of the lock screen",
+        /*ru*/ "Приложение может запускаться поверх экрана блокировки",
+        /*de*/ "Die App kann oben auf dem Sperrbildschirm gestartet werden",
+        /*fr*/ "L\'application peut démarrer en haut de l\'écran de verrouillage",
+        /*pl*/ "Aplikację można uruchomić na ekranie blokady"];
+    static String get pref_show_when_locked_summary => l_pref_show_when_locked_summary[_language];
 
     static const List<String> l_pref_developer_mode = [
         /*en*/ "Developer options",

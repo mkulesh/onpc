@@ -634,10 +634,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
         if (informPlatform)
         {
             Platform.updateWidgets(_methodChannel);
-            Platform.sendPlatformCommand(_methodChannel, _configuration.audioControl.volumeKeys ?
-                Platform.VOLUME_KEYS_ENABLED : Platform.VOLUME_KEYS_DISABLED);
-            Platform.sendPlatformCommand(_methodChannel, _configuration.keepScreenOn ?
-                Platform.KEEP_SCREEN_ON_ENABLED : Platform.KEEP_SCREEN_ON_DISABLED);
+            final arguments = <dynamic>[];
+            arguments.add(_configuration.audioControl.volumeKeys);
+            arguments.add(_configuration.keepScreenOn);
+            arguments.add(_configuration.showWhenLocked);
+            Platform.sendPlatformCommand(_methodChannel, Platform.SET_ACTIVITY_STATE, arguments);
         }
 
         if (updScripts)

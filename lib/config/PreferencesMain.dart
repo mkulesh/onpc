@@ -236,6 +236,11 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
                 Configuration.KEEP_SCREEN_ON,
                 icon: Drawables.pref_keep_screen_on));
             elements.add(_customSwitchPreference(td,
+                Strings.pref_show_when_locked,
+                Configuration.SHOW_WHEN_LOCKED,
+                icon: Drawables.pref_show_when_locked,
+                desc: Strings.pref_show_when_locked_summary));
+            elements.add(_customSwitchPreference(td,
                 Strings.pref_back_as_return,
                 Configuration.BACK_AS_RETURN,
                 icon: Drawables.cmd_return,

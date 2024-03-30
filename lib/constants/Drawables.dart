@@ -145,6 +145,7 @@ class Drawables
     static const String pref_exit_confirm = BUTTONS_PATH + "pref_exit_confirm.svg";
     static const String pref_friendly_name = BUTTONS_PATH + "pref_friendly_name.svg";
     static const String pref_keep_screen_on = BUTTONS_PATH + "pref_keep_screen_on.svg";
+    static const String pref_show_when_locked = BUTTONS_PATH + "pref_show_when_locked.svg";
     static const String pref_language = BUTTONS_PATH + "pref_language.svg";
     static const String pref_listening_modes = BUTTONS_PATH + "pref_listening_modes.svg";
     static const String pref_network_services = BUTTONS_PATH + "pref_network_services.svg";

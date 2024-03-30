@@ -120,6 +120,8 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="pref_keep_playback_mode_summary">Während die Wiedergabe aktiv ist, Abspielmodus in MEDIEN behalten</string>
     <string name="pref_exit_confirm">Zweimal zurück zum Beenden</string>
     <string name="pref_keep_screen_on">Bildschirm aktiv lassen</string>
+    <string name="pref_show_when_locked">Oben auf dem Sperrbildschirm</string>
+    <string name="pref_show_when_locked_summary">Die App kann oben auf dem Sperrbildschirm gestartet werden</string>
     <string name="pref_developer_mode">Entwicklereinstellungen</string>
     <string name="pref_device_selectors">Eingangskanäle</string>
     <string name="pref_listening_modes">Klangprofile</string>

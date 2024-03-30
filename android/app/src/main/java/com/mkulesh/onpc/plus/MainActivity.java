@@ -15,6 +15,7 @@
 package com.mkulesh.onpc.plus;
 
 import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.net.NetworkRequest;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
@@ -50,10 +52,7 @@ public class MainActivity extends FlutterActivity
 
     // dart -> platform
     private static final String GET_NETWORK_STATE = "getNetworkState";
-    private static final String VOLUME_KEYS_ENABLED = "setVolumeKeysEnabled";
-    private static final String VOLUME_KEYS_DISABLED = "setVolumeKeysDisabled";
-    private static final String KEEP_SCREEN_ON_ENABLED = "setKeepScreenOnEnabled";
-    private static final String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnDisabled";
+    private static final String SET_ACTIVITY_STATE = "setActivityState";
     private static final String GET_INTENT = "getIntent";
     private static final String REGISTER_WIDGET_CALLBACK = "registerWidgetCallback";
     private static final String WIDGET_UPDATE = "widgetUpdate";
@@ -158,14 +157,14 @@ public class MainActivity extends FlutterActivity
             this.listener = listener;
         }
         @Override
-        public void onAvailable(Network network)
+        public void onAvailable(@NonNull Network network)
         {
             super.onAvailable(network);
             //Log.d("onpc", "network available via network callback: " + network);
             listener.runOnUiThread(listener::onNetworkStateChanged);
         }
         @Override
-        public void onLost(Network network)
+        public void onLost(@NonNull Network network)
         {
             //Log.d("onpc", "network lost via network callback: " + network);
             listener.runOnUiThread(listener::onNetworkStateChanged);
@@ -177,6 +176,7 @@ public class MainActivity extends FlutterActivity
     private MyNetworkCallback networkCallback;
     private boolean volumeKeys = true;
     private boolean keepScreenOn = false;
+    private boolean showWhenLocked = false;
     private String intentData = null;
     private MethodChannel platformChannel = null;
 
@@ -189,7 +189,13 @@ public class MainActivity extends FlutterActivity
         readPreferences();
         if (keepScreenOn)
         {
+            Log.d("onpc", "Main activity parameters: keepScreenOn");
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+        if (showWhenLocked)
+        {
+            Log.d("onpc", "Main activity parameters: showWhenLocked");
+            allowShowWhenLocked();
         }
 
         connectionState = new ConnectionState(this);
@@ -198,6 +204,27 @@ public class MainActivity extends FlutterActivity
         platformChannel = new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), METHOD_CHANNEL);
         platformChannel.setMethodCallHandler(this::onPlatformMethodCall);
         intentData = null;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void allowShowWhenLocked()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
+        {
+            setShowWhenLocked(true);
+            setTurnScreenOn(true);
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            if (keyguardManager!=null)
+            {
+                keyguardManager.requestDismissKeyguard(this, null);
+            }
+        }
+        else
+        {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        }
     }
 
     @Override
@@ -325,8 +352,10 @@ public class MainActivity extends FlutterActivity
         Map<String, ?> allPrefs = preferences.getAll();
         volumeKeys = Utils.readBooleanPreference(allPrefs, "volume_keys", volumeKeys);
         keepScreenOn = Utils.readBooleanPreference(allPrefs, "keep_screen_on", keepScreenOn);
+        showWhenLocked = Utils.readBooleanPreference(allPrefs, "show_when_locked", showWhenLocked);
     }
 
+    @SuppressLint("UnsafeIntentLaunch")
     public void restartActivity()
     {
         PackageManager pm = getPackageManager();
@@ -343,25 +372,21 @@ public class MainActivity extends FlutterActivity
     void onPlatformMethodCall(MethodCall methodCall, MethodChannel.Result result)
     {
         boolean newKeepScreenOn = keepScreenOn;
-        if (methodCall.method.equals(VOLUME_KEYS_ENABLED))
+        boolean newShowWhenLocked = showWhenLocked;
+        if (methodCall.method.equals(SET_ACTIVITY_STATE))
         {
-            volumeKeys = true;
-            result.success("volume keys enabled");
-        }
-        else if (methodCall.method.equals(VOLUME_KEYS_DISABLED))
-        {
-            volumeKeys = false;
-            result.success("volume keys disabled");
-        }
-        else if (methodCall.method.equals(KEEP_SCREEN_ON_ENABLED))
-        {
-            newKeepScreenOn = true;
-            result.success("keep screen on enabled");
-        }
-        else if (methodCall.method.equals(KEEP_SCREEN_ON_DISABLED))
-        {
-            newKeepScreenOn = false;
-            result.success("keep screen on disabled");
+            if (methodCall.arguments instanceof ArrayList && ((ArrayList<?>) methodCall.arguments).size() == 3)
+            {
+                final ArrayList<?> arguments = (ArrayList<?>) methodCall.arguments;
+                volumeKeys = Utils.getBooleanArgument(arguments, 0, volumeKeys, "setActivityState: volumeKeys");
+                newKeepScreenOn = Utils.getBooleanArgument(arguments,1, newKeepScreenOn, "setActivityState: keepScreenOn");
+                newShowWhenLocked = Utils.getBooleanArgument(arguments,2, newShowWhenLocked, "setActivityState: showWhenLocked");
+                result.success("activity state processed");
+            }
+            else
+            {
+                result.success("invalid number of arguments");
+            }
         }
         else if (methodCall.method.equals(GET_NETWORK_STATE))
         {
@@ -417,7 +442,7 @@ public class MainActivity extends FlutterActivity
             result.success("nothing to do");
         }
 
-        if (newKeepScreenOn != keepScreenOn)
+        if (newKeepScreenOn != keepScreenOn || newShowWhenLocked != showWhenLocked)
         {
             restartActivity();
         }

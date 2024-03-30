@@ -30,10 +30,7 @@ class Platform
 
     // dart -> platform
     static const String GET_NETWORK_STATE = "getNetworkState";
-    static const String VOLUME_KEYS_ENABLED = "setVolumeKeysEnabled";
-    static const String VOLUME_KEYS_DISABLED = "setVolumeKeysDisabled";
-    static const String KEEP_SCREEN_ON_ENABLED = "setKeepScreenOnEnabled";
-    static const String KEEP_SCREEN_ON_DISABLED = "setKeepScreenOnDisabled";
+    static const String SET_ACTIVITY_STATE = "setActivityState";
     static const String GET_INTENT = "getIntent";
     static const String REGISTER_WIDGET_CALLBACK = "registerWidgetCallback";
     static const String _WIDGET_UPDATE = "widgetUpdate";

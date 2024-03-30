@@ -122,6 +122,8 @@ Enjoy!""</string>
     <string name="pref_keep_playback_mode_summary">Zawsze zachowuj tryb odtwarzania na karcie MEDIA podczas odtwarzania</string>
     <string name="pref_exit_confirm">Naciśnij dwukrotnie przycisk Wstecz, aby wyjść</string>
     <string name="pref_keep_screen_on">Ekran zawsze włączony</string>
+    <string name="pref_show_when_locked">Na górze ekranu blokady</string>
+    <string name="pref_show_when_locked_summary">Aplikację można uruchomić na ekranie blokady</string>
     <string name="pref_developer_mode">Opcje deweloperskie</string>
     <string name="pref_device_selectors">Wybór wejścia</string>
     <string name="pref_listening_modes">Tryb dźwięku</string>

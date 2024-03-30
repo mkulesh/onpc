@@ -34,6 +34,7 @@ import org.w3c.dom.Node;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -192,5 +193,16 @@ public class Utils
         {
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         }
+    }
+
+    public static boolean getBooleanArgument(ArrayList<?> arguments, int i, boolean defValue, String logText)
+    {
+        boolean val = defValue;
+        if (arguments.get(i) instanceof Boolean)
+        {
+            val = (boolean) arguments.get(i);
+            Log.d("onpc", logText + "=" + val);
+        }
+        return val;
     }
 }

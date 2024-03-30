@@ -95,6 +95,12 @@ class Configuration extends CfgModule
     bool get keepScreenOn
     => _keepScreenOn;
 
+    static const Pair<String, bool> SHOW_WHEN_LOCKED = Pair<String, bool>("show_when_locked", false); // For Android only
+    bool _showWhenLocked = SHOW_WHEN_LOCKED.item2;
+
+    bool get showWhenLocked
+    => _showWhenLocked;
+
     static const Pair<String, bool> BACK_AS_RETURN = Pair<String, bool>("back_as_return", true); // For Android only
     bool _backAsReturn = BACK_AS_RETURN.item2;
 
@@ -159,6 +165,7 @@ class Configuration extends CfgModule
 
         // Advanced options
         _keepScreenOn = Platform.isAndroid ? getBool(KEEP_SCREEN_ON, doLog: true) : false;
+        _showWhenLocked = Platform.isAndroid ? getBool(SHOW_WHEN_LOCKED, doLog: true) : false;
         _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
         _advancedQueue = getBool(ADVANCED_QUEUE, doLog: true);
         _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);

@@ -118,8 +118,10 @@ Copyright © 2019-2024 by __Михаил Кулеш__
     <string name="pref_advanced_queue_summary">Использовать экспериментальные возможности очереди воспроизведения</string>
     <string name="pref_keep_playback_mode">Режим воспроизведения</string>
     <string name="pref_keep_playback_mode_summary">Во вкладке КАНАЛЫ всегда оставаться в режиме воспроизведения.</string>
-    <string name="pref_exit_confirm">Для выхода нажмите Назад дважды</string>
+    <string name="pref_exit_confirm">Для выхода нажмите \"Назад\" дважды</string>
     <string name="pref_keep_screen_on">Не гасить экран</string>
+    <string name="pref_show_when_locked">Поверх экрана блокировки</string>
+    <string name="pref_show_when_locked_summary">Приложение может запускаться поверх экрана блокировки</string>
     <string name="pref_developer_mode">Для разработчика</string>
     <string name="pref_device_selectors">Входные каналы</string>
     <string name="pref_listening_modes">Звуковые профили</string>
