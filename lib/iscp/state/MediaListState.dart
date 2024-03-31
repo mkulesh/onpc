@@ -617,6 +617,12 @@ class MediaListState
         {
             return false;
         }
+        else if (_mediaItemsTotal != msg.getCount())
+        {
+            _mediaItemsTotal = msg.getCount();
+            Logging.info(this, "Changed total number of items: " + _mediaItemsTotal.toString());
+        }
+
         _mediaItems.removeWhere((e) => isReturnMsg(e));
         _mediaItems.addAll(msg.getItems());
         _mediaItems.sort((ISCPMessage lhs, ISCPMessage rhs)
