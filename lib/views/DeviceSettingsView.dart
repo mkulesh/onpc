@@ -17,12 +17,14 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/RenameDialog.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/messages/AutoPowerMsg.dart";
 import "../iscp/messages/DcpAudioRestorerMsg.dart";
 import "../iscp/messages/DcpEcoModeMsg.dart";
 import "../iscp/messages/DigitalFilterMsg.dart";
 import "../iscp/messages/DimmerLevelMsg.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/GoogleCastAnalyticsMsg.dart";
 import "../iscp/messages/HdmiCecMsg.dart";
 import "../iscp/messages/LateNightCommandMsg.dart";
@@ -34,11 +36,36 @@ import "../iscp/messages/SleepSetCommandMsg.dart";
 import "../iscp/messages/SpeakerACommandMsg.dart";
 import "../iscp/messages/SpeakerBCommandMsg.dart";
 import "../iscp/state/DeviceSettingsState.dart";
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
+import "../utils/Pair.dart";
+import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
+
+enum _ParameterContextMenu
+{
+    EDIT
+}
+
+enum _ParameterType
+{
+    DIMMER_LEVEL,
+    DIGITAL_FILTER,
+    MUSIC_OPTIMIZER,
+    AUTO_POWER,
+    HDMI_CEC,
+    PHASE_MATCHING_BASS,
+    SLEEP_TIME,
+    SPEAKER_AB_COMMAND,
+    GOOGLE_CAST_ANALYTICS,
+    LATE_NIGHT_MODE,
+    NETWORK_STANDBY,
+    DCP_ECO_MODE,
+    DCP_AUDIO_RESTORER
+}
 
 enum _SpeakerABStatus
 {
@@ -51,7 +78,10 @@ enum _SpeakerABStatus
 
 class DeviceSettingsView extends UpdatableView
 {
+    static const DEVICE_SETTING_RENAMED = "DEVICE_SETTING_RENAMED";
+
     static const List<String> UPDATE_TRIGGERS = [
+        DEVICE_SETTING_RENAMED,
         PowerStatusMsg.CODE,
         DimmerLevelMsg.CODE,
         DigitalFilterMsg.CODE,
@@ -91,9 +121,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.dimmerLevel.key != DimmerLevel.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_dimmer_level,
-                ds.dimmerLevel.description,
-                Strings.device_dimmer_level_help,
+                _ParameterType.DIMMER_LEVEL,
+                Pair(Strings.device_dimmer_level, Strings.device_dimmer_level_help),
+                ds.dimmerLevel,
                 DimmerLevelMsg.output(DimmerLevel.TOGGLE)));
         }
 
@@ -103,9 +133,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.digitalFilter.key != DigitalFilter.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_digital_filter,
-                ds.digitalFilter.description,
-                Strings.device_digital_filter_help,
+                _ParameterType.DIGITAL_FILTER,
+                Pair(Strings.device_digital_filter, Strings.device_digital_filter_help),
+                ds.digitalFilter,
                 DigitalFilterMsg.output(DigitalFilter.TOGGLE)));
         }
 
@@ -117,9 +147,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.musicOptimizer.key != MusicOptimizer.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_music_optimizer,
-                ds.musicOptimizer.description,
-                Strings.device_music_optimizer_help,
+                _ParameterType.MUSIC_OPTIMIZER,
+                Pair(Strings.device_music_optimizer, Strings.device_music_optimizer_help),
+                ds.musicOptimizer,
                 MusicOptimizerMsg.output(MusicOptimizer.TOGGLE)));
         }
 
@@ -129,9 +159,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.autoPower.key != AutoPower.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_auto_power,
-                ds.autoPower.description,
-                Strings.device_auto_power_help,
+                _ParameterType.AUTO_POWER,
+                Pair(Strings.device_auto_power, Strings.device_auto_power_help),
+                ds.autoPower,
                 AutoPowerMsg.output(AutoPower.TOGGLE)));
         }
 
@@ -144,9 +174,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.hdmiCec.key != HdmiCec.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_hdmi_cec,
-                ds.hdmiCec.description,
-                Strings.device_hdmi_cec_help,
+                _ParameterType.HDMI_CEC,
+                Pair(Strings.device_hdmi_cec, Strings.device_hdmi_cec_help),
+                ds.hdmiCec,
                 HdmiCecMsg.toggle(ds.hdmiCec, state.protoType)));
         }
 
@@ -157,9 +187,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.phaseMatchingBass.key != PhaseMatchingBass.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_phase_matching_bass,
-                ds.phaseMatchingBass.description,
-                Strings.device_phase_matching_bass_help,
+                _ParameterType.PHASE_MATCHING_BASS,
+                Pair(Strings.device_phase_matching_bass, Strings.device_phase_matching_bass_help),
+                ds.phaseMatchingBass,
                 PhaseMatchingBassMsg.output(PhaseMatchingBass.TOGGLE)));
         }
 
@@ -170,10 +200,10 @@ class DeviceSettingsView extends UpdatableView
             final String description = ds.sleepTime == SleepSetCommandMsg.SLEEP_OFF ?
                 Strings.device_two_way_switch_off :
                 ds.sleepTime.toString() + " " + Strings.device_sleep_time_minutes;
-            rows.add(_buildRow(context,
-                Strings.device_sleep_time,
-                description,
-                Strings.device_sleep_time_help,
+            rows.add(_buildRowExt(context,
+                _ParameterType.SLEEP_TIME,
+                Pair(Strings.device_sleep_time, Strings.device_sleep_time_help),
+                Pair(ds.sleepTime.toString(), description),
                 SleepSetCommandMsg.output(SleepSetCommandMsg.toggle(ds.sleepTime))));
         }
 
@@ -182,6 +212,7 @@ class DeviceSettingsView extends UpdatableView
         if (zone < 2)
         {
             final _SpeakerABStatus spState = _getSpeakerABStatus(ds.speakerA.key, ds.speakerB.key);
+            final Pair<String, String> name = Pair(Strings.speaker_ab_command, Strings.speaker_ab_command_help);
             // OFF -> A_ONLY -> B_ONLY -> ON -> OFF (optional) -> A_ONLY -> B_ONLY -> ON -> ...
             switch (spState)
             {
@@ -193,10 +224,9 @@ class DeviceSettingsView extends UpdatableView
                     break;
                 showAllCase:
                 case _SpeakerABStatus.OFF: // OFF -> A_ONLY
-                    rows.add(_buildRow(context,
-                        Strings.speaker_ab_command,
-                        Strings.speaker_ab_command_ab_off,
-                        Strings.speaker_ab_command_help,
+                    rows.add(_buildRowExt(context,
+                        _ParameterType.SPEAKER_AB_COMMAND, name,
+                        Pair("OFF", Strings.speaker_ab_command_ab_off),
                         SpeakerACommandMsg.output(zone, SpeakerACommand.ON),
                         postQueries: [
                             SpeakerACommandMsg.ZONE_COMMANDS[zone]
@@ -204,10 +234,9 @@ class DeviceSettingsView extends UpdatableView
                     ));
                     break;
                 case _SpeakerABStatus.A_ONLY: // A_ONLY -> B_ONLY
-                    rows.add(_buildRow(context,
-                        Strings.speaker_ab_command,
-                        Strings.speaker_ab_command_a_only,
-                        Strings.speaker_ab_command_help,
+                    rows.add(_buildRowExt(context,
+                        _ParameterType.SPEAKER_AB_COMMAND, name,
+                        Pair("A_ONLY", Strings.speaker_ab_command_a_only),
                         SpeakerBCommandMsg.output(zone, SpeakerBCommand.ON),
                         postMessages: [
                             SpeakerACommandMsg.output(zone, SpeakerACommand.OFF)
@@ -219,10 +248,9 @@ class DeviceSettingsView extends UpdatableView
                     ));
                     break;
                 case _SpeakerABStatus.B_ONLY: // B_ONLY -> ON
-                    rows.add(_buildRow(context,
-                        Strings.speaker_ab_command,
-                        Strings.speaker_ab_command_b_only,
-                        Strings.speaker_ab_command_help,
+                    rows.add(_buildRowExt(context,
+                        _ParameterType.SPEAKER_AB_COMMAND, name,
+                        Pair("B_ONLY", Strings.speaker_ab_command_b_only),
                         SpeakerACommandMsg.output(zone, SpeakerACommand.ON),
                         postQueries: [
                             SpeakerACommandMsg.ZONE_COMMANDS[zone]
@@ -232,10 +260,9 @@ class DeviceSettingsView extends UpdatableView
                 case _SpeakerABStatus.ON: // ON -> OFF (optional) -> A_ONLY
                     if (state.receiverInformation.model == "DTM-6")
                     {
-                        rows.add(_buildRow(context,
-                            Strings.speaker_ab_command,
-                            Strings.speaker_ab_command_ab_on,
-                            Strings.speaker_ab_command_help,
+                        rows.add(_buildRowExt(context,
+                            _ParameterType.SPEAKER_AB_COMMAND, name,
+                            Pair("ON", Strings.speaker_ab_command_ab_on),
                             SpeakerACommandMsg.output(zone, SpeakerACommand.OFF),
                             postMessages: [
                                 SpeakerBCommandMsg.output(zone, SpeakerBCommand.OFF)
@@ -248,10 +275,9 @@ class DeviceSettingsView extends UpdatableView
                     }
                     else
                     {
-                        rows.add(_buildRow(context,
-                            Strings.speaker_ab_command,
-                            Strings.speaker_ab_command_ab_on,
-                            Strings.speaker_ab_command_help,
+                        rows.add(_buildRowExt(context,
+                            _ParameterType.SPEAKER_AB_COMMAND, name,
+                            Pair("ON", Strings.speaker_ab_command_ab_on),
                             SpeakerBCommandMsg.output(zone, SpeakerBCommand.OFF),
                             postQueries: [
                                 SpeakerBCommandMsg.ZONE_COMMANDS[zone]
@@ -267,9 +293,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.googleCastAnalytics.key != GoogleCastAnalytics.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_google_cast_analytics,
-                ds.googleCastAnalytics.description,
-                Strings.device_google_cast_analytics_help,
+                _ParameterType.GOOGLE_CAST_ANALYTICS,
+                Pair(Strings.device_google_cast_analytics, Strings.device_google_cast_analytics_help),
+                ds.googleCastAnalytics,
                 GoogleCastAnalyticsMsg.output(GoogleCastAnalyticsMsg.toggle(ds.googleCastAnalytics.key))));
         }
 
@@ -279,9 +305,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.lateNightMode.key != LateNightMode.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_late_night,
-                ds.lateNightMode.description,
-                Strings.device_late_night_help,
+                _ParameterType.LATE_NIGHT_MODE,
+                Pair(Strings.device_late_night, Strings.device_late_night_help),
+                ds.lateNightMode,
                 LateNightCommandMsg.output(LateNightMode.UP)));
         }
 
@@ -291,9 +317,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.networkStandBy.key != NetworkStandBy.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_network_standby,
-                ds.networkStandBy.description,
-                Strings.device_network_standby_help,
+                _ParameterType.NETWORK_STANDBY,
+                Pair(Strings.device_network_standby, Strings.device_network_standby_help),
+                ds.networkStandBy,
                 null, tapHandler: _onNetworkStandBy));
         }
 
@@ -301,9 +327,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.dcpEcoMode.key != DcpEcoMode.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_dcp_eco_mode,
-                ds.dcpEcoMode.description,
-                Strings.device_dcp_eco_mode_help,
+                _ParameterType.DCP_ECO_MODE,
+                Pair(Strings.device_dcp_eco_mode, Strings.device_dcp_eco_mode_help),
+                ds.dcpEcoMode,
                 DcpEcoModeMsg.toggle(ds.dcpEcoMode)));
         }
 
@@ -311,9 +337,9 @@ class DeviceSettingsView extends UpdatableView
         if (showAll || ds.dcpAudioRestorer.key != DcpAudioRestorer.NONE)
         {
             rows.add(_buildRow(context,
-                Strings.device_dcp_audio_restorer,
-                ds.dcpAudioRestorer.description,
-                Strings.device_dcp_audio_restorer_help,
+                _ParameterType.DCP_AUDIO_RESTORER,
+                Pair(Strings.device_dcp_audio_restorer, Strings.device_dcp_audio_restorer_help),
+                ds.dcpAudioRestorer,
                 DcpAudioRestorerMsg.toggle(ds.dcpAudioRestorer)));
         }
 
@@ -335,44 +361,88 @@ class DeviceSettingsView extends UpdatableView
             ]);
     }
 
-    TableRow _buildRow(BuildContext context, final String title,
-        final String value, final String description,
+    TableRow _buildRow<T>(BuildContext context,
+        final _ParameterType type,
+        final Pair<String, String> name,
+        final EnumItem<T> value,
         final ISCPMessage? cmd, {List<ISCPMessage>? postMessages,
             List<String>? postQueries, void Function(BuildContext context)? tapHandler})
     {
-        final Widget rowTitle = CustomTextLabel.small(title, padding: ActivityDimens.headerPadding);
+        return _buildRowExt(context,
+            type,
+            name,
+            Pair(value.getCode, value.description),
+            cmd,
+            postMessages: postMessages,
+            postQueries: postQueries,
+            tapHandler: tapHandler);
+    }
+
+    TableRow _buildRowExt(BuildContext context,
+        final _ParameterType type,
+        final Pair<String, String> name,
+        final Pair<String, String> value,
+        final ISCPMessage? cmd, {List<ISCPMessage>? postMessages,
+            List<String>? postQueries, void Function(BuildContext context)? tapHandler})
+    {
+        final Widget rowTitle = CustomTextLabel.small(name.item1, padding: ActivityDimens.headerPadding);
+
+        final Pair<String, String> newValue = Pair(value.item1,
+            viewContext.configuration.appSettings.readDeviceSetting(
+                Convert.enumToString(type), value.item1, value.item2));
+
+        final Widget paramValue = ContextMenuListener<_ParameterContextMenu>(
+            child: InkWell(
+                child: CustomTextLabel.normal(newValue.item2, textAlign: TextAlign.center),
+                onTap: ()
+                {
+                    if (state.isOn)
+                    {
+                        FocusScope.of(context).unfocus();
+                        if (tapHandler != null)
+                        {
+                            tapHandler(context);
+                        }
+                        else
+                        {
+                            _onToggleButton(context, cmd,
+                                postMessages: postMessages,
+                                postQueries: postQueries);
+                        }
+                    }
+                }),
+            menuName: name.item1,
+            menuItems: [Pair(Strings.pref_item_update, _ParameterContextMenu.EDIT)],
+            onItemSelected: (BuildContext c, _ParameterContextMenu m)
+            {
+                if (m == _ParameterContextMenu.EDIT)
+                {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext c)
+                        => RenameDialog(newValue.item2, (newName)
+                            {
+                                viewContext.configuration.appSettings.saveDeviceSetting(
+                                    Convert.enumToString(type), value.item1, newName);
+                                viewContext.stateManager.triggerStateEvent(DEVICE_SETTING_RENAMED);
+                            })
+                    );
+                }
+            }
+        );
 
         final Widget rowValue = Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-                Expanded(
-                    child: InkWell(
-                        child: CustomTextLabel.normal(value, textAlign: TextAlign.center),
-                        onTap: ()
-                        {
-                            if (state.isOn)
-                            {
-                                FocusScope.of(context).unfocus();
-                                if (tapHandler != null)
-                                {
-                                    tapHandler(context);
-                                }
-                                else
-                                {
-                                    _onToggleButton(context, cmd,
-                                        postMessages: postMessages,
-                                        postQueries: postQueries);
-                                }
-                            }
-                        }),
-                    flex: 1),
+                Expanded(child: paramValue, flex: 1),
                 CustomImageButton.small(
                     Drawables.cmd_help,
                     Strings.device_parameter_help,
                     isEnabled: true,
                     onPressed: ()
-                    => _onParameterHelpButton(context, title, description),
+                    => _onParameterHelpButton(context, name),
                     isSelected: false,
                 )
             ]
@@ -397,14 +467,14 @@ class DeviceSettingsView extends UpdatableView
         }
     }
 
-    void _onParameterHelpButton(BuildContext context, final String title, final String description)
+    void _onParameterHelpButton(BuildContext context, final Pair<String, String> name)
     {
         Logging.info(this, "Parameter help button pressed");
         final ThemeData td = Theme.of(context);
         final Widget dialog = AlertDialog(
-            title: CustomDialogTitle(title, Drawables.cmd_help),
+            title: CustomDialogTitle(name.item1, Drawables.cmd_help),
             contentPadding: DialogDimens.contentPadding,
-            content: CustomTextLabel.normal(description),
+            content: CustomTextLabel.normal(name.item2),
             actions: <Widget>[
                 TextButton(
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),

@@ -15,15 +15,13 @@
 import 'package:flutter/material.dart';
 
 import "../constants/Dimens.dart";
-import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
+import "../dialogs/RenameDialog.dart";
 import "../utils/Pair.dart";
 import "../utils/Platform.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomActivityTitle.dart";
-import "../widgets/CustomDialogEditField.dart";
-import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/ReorderableItem.dart";
 import "CfgModule.dart";
@@ -199,53 +197,18 @@ class CheckableItem
                 menuName: this.text,
                 menuItems: [Pair(Strings.pref_item_update, _CheckableItemContextMenu.EDIT)],
                 onItemSelected: (BuildContext c, _CheckableItemContextMenu m)
-                => _onContextItemSelected(c, theme, m, this)
-            );
+                {
+                    if (m == _CheckableItemContextMenu.EDIT)
+                    {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext c)
+                            => RenameDialog(text, (newName) => onRename!(newName))
+                        );
+                    }
+                });
         }
         return ReorderableItem(key: Key(this.code), child: listTile);
-    }
-
-    static void _onContextItemSelected(final BuildContext context, final ThemeData theme,
-        final _CheckableItemContextMenu m, final CheckableItem item)
-    {
-        if (m != _CheckableItemContextMenu.EDIT)
-        {
-            return;
-        }
-
-        final _alias = TextEditingController();
-        _alias.text = item.text;
-
-        final Widget dialog = AlertDialog(
-            title: CustomDialogTitle(Strings.pref_item_update, Drawables.drawer_edit_item),
-            contentPadding: DialogDimens.contentPadding,
-            content: CustomDialogEditField(_alias,
-                textLabel: Strings.pref_item_name,
-                isFocused: true),
-            actions: <Widget>[
-                TextButton(
-                    child: Text(Strings.action_cancel.toUpperCase(), style: theme.textTheme.labelLarge),
-                    onPressed: ()
-                    {
-                        Navigator.of(context).pop();
-                    }),
-                TextButton(
-                    child: Text(Strings.action_ok.toUpperCase(), style: theme.textTheme.labelLarge),
-                    onPressed: ()
-                    {
-                        if (item.onRename  != null)
-                        {
-                            item.onRename!(_alias.text);
-                        }
-                        Navigator.of(context).pop();
-                    }),
-            ]
-        );
-
-        showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext c) => Theme(data: theme, child: dialog)
-        );
     }
 }

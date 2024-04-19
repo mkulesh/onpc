@@ -444,6 +444,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     Platform.updateWidgets(_methodChannel);
                     break;
                 case StateManager.SHORTCUT_CHANGE_EVENT:
+                case StateManager.ZONE_RENAMED:
                     Platform.updateWidgets(_methodChannel);
                     break;
                 case FriendlyNameMsg.CODE:

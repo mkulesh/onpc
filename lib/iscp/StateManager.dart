@@ -77,6 +77,7 @@ class StateManager
     static const String CONNECTION_EVENT = "CONNECT";
     static const String OPEN_MEDIA_VIEW = "OPEN_MEDIA_VIEW";
     static const String ZONE_EVENT = "ZONE";
+    static const String ZONE_RENAMED = "ZONE_RENAMED";
     static const String WAITING_FOR_DATA_EVENT = "WAITING_FOR_DATA";
     static const String BROADCAST_SEARCH_EVENT = "BROADCAST_SEARCH";
     static const String START_SEARCH_EVENT = "START_SEARCH";

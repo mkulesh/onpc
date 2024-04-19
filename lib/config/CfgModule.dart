@@ -95,6 +95,12 @@ abstract class CfgModule
     Pair<String, int> getModelDependentInt(final Pair<String, int> par)
     => Pair<String, int>(getModelDependentParameter(par.item1), par.item2);
 
+    void deleteParameter(final Pair<String, String> par, {String prefix = ""}) async
+    {
+        Logging.info(this, prefix + "deleting " + par.item1);
+        await preferences.remove(par.item1);
+    }
+
     void saveStringParameter(final Pair<String, String> par, final String value, {String prefix = ""}) async
     {
         Logging.info(this, prefix + "saving " + par.item1 + ": " + value);

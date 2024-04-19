@@ -36,6 +36,7 @@ class AppBarView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         StateManager.CONNECTION_EVENT,
         StateManager.ZONE_EVENT,
+        StateManager.ZONE_RENAMED,
         ReceiverInformationMsg.CODE,
         FriendlyNameMsg.CODE,
         PowerStatusMsg.CODE
@@ -71,7 +72,7 @@ class AppBarView extends UpdatableView
                 {
                     subTitle += "/";
                 }
-                subTitle += state.getActiveZoneInfo!.getName;
+                subTitle += configuration.appSettings.readZoneName(state.getActiveZoneInfo!);
             }
             if (!state.isOn)
             {

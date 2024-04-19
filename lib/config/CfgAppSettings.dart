@@ -21,6 +21,7 @@ import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
@@ -289,6 +290,30 @@ class CfgAppSettings extends CfgModule
         }
         return false;
     }
+
+    // Device Settings names
+    static const String DEVICE_SETTING = "device_setting";
+
+    void saveDeviceSetting(final String type, final String par, final String name)
+    {
+        final Pair<String, String> key = Pair((DEVICE_SETTING + "_" + type + "_" + par).toLowerCase(), "");
+        name.isNotEmpty ? saveStringParameter(key, name) : deleteParameter(key);
+    }
+
+    String readDeviceSetting(final String type, final String par, final String def)
+    => getString(Pair((DEVICE_SETTING + "_" + type + "_" + par).toLowerCase(), def));
+
+    // Zone names
+    static const String ZONE_NAME = "zone_name";
+
+    void saveZoneName(final Zone zone, final String name)
+    {
+        final Pair<String, String> key = Pair((ZONE_NAME + "_" + zone.getId).toLowerCase(), "");
+        name.isNotEmpty ? saveStringParameter(key, name) : deleteParameter(key);
+    }
+
+    String readZoneName(final Zone zone)
+    => getString(Pair((ZONE_NAME + "_" + zone.getId).toLowerCase(), zone.getName));
 
     // methods
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);

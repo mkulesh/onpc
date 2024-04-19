@@ -22,6 +22,7 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/DeviceConnectDialog.dart";
 import "../dialogs/FavoriteConnectionEditDialog.dart";
+import "../dialogs/RenameDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
@@ -41,6 +42,7 @@ typedef OnTabListener = void Function(BuildContext context);
 class DrawerView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
+        StateManager.ZONE_RENAMED,
         BroadcastResponseMsg.CODE,
         FriendlyNameMsg.CODE,
     ];
@@ -71,19 +73,26 @@ class DrawerView extends UpdatableView
             // Zones
             drawerItems.add(CustomDivider());
             drawerItems.add(CustomTextLabel.small(Strings.drawer_group_zone, padding: DrawerDimens.labelPadding));
+            final bool isMultiZone = state.receiverInformation.zones.length > 1;
             state.receiverInformation.zones.forEach((z)
             {
                 final bool active = (state.getActiveZoneInfo != null) ?
                     state.getActiveZoneInfo!.getId == z.getId : false;
+                final String friendlyName = configuration.appSettings.readZoneName(z);
                 drawerItems.add(_buildDrawerItem(
-                    context, Drawables.drawerZone(z.getId), z.getName, isSelected: active,
+                    context, Drawables.drawerZone(z.getId), friendlyName, isSelected: active,
+                    editButton: isMultiZone ? CustomImageButton.small(
+                        Drawables.drawer_edit_item,
+                        Strings.pref_item_update,
+                        onPressed: () => _showZoneEditDialog(context, friendlyName, z)
+                    ) : null,
                     onTabListener: (context)
                     {
                         stateManager.changeZone(z.getId);
                     }
                 ));
             });
-            if (state.receiverInformation.zones.length > 1)
+            if (isMultiZone)
             {
                 drawerItems.add(_buildDrawerItem(
                     context,
@@ -256,6 +265,20 @@ class DrawerView extends UpdatableView
             stateManager.sendMessage(PowerStatusMsg.output(
                 ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE, PowerStatus.ALL_STB));
         }
+    }
+
+    void _showZoneEditDialog(final BuildContext context, final String friendlyName, final Zone z)
+    {
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => RenameDialog(friendlyName, (newName)
+            {
+                configuration.appSettings.saveZoneName(z, newName);
+                stateManager.triggerStateEvent(StateManager.ZONE_RENAMED);
+            })
+        );
     }
 
     void _showFavoriteConnectionEditDialog(final BuildContext context, final BroadcastResponseMsg msg)

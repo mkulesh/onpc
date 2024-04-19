@@ -44,7 +44,6 @@ public abstract class WidgetBase extends AppWidgetProvider
     protected static HandlerThread sWorkerThread;
     protected static Handler sWorkerQueue;
     protected static String dartBundlePath;
-
     protected String title;
     protected boolean darkTheme;
     protected boolean transparency;
@@ -73,7 +72,10 @@ public abstract class WidgetBase extends AppWidgetProvider
         final long activeZone = Utils.readIntPreference(allPrefs, "active_zone", 0);
         if (!title.isEmpty() && activeZone > 0)
         {
-            title += ("/Zone" + (activeZone + 1));
+            final long zone = activeZone + 1;
+            final String oldName = "Zone" + zone;
+            final String newName = Utils.readStringPreference(allPrefs, "zone_name_" + zone, oldName);
+            title += ("/" + newName);
         }
         darkTheme = Utils.readBooleanPreference(allPrefs, "widget_dark_theme", false);
         transparency = Utils.readBooleanPreference(allPrefs, "widget_transparency", true);

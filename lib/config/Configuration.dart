@@ -248,7 +248,7 @@ class Configuration extends CfgModule
     void saveManualDeviceSelector(final EnumItem<InputSelector> item, final String name)
     {
         final Pair<String, String> par = Pair<String, String>(MANUAL_DEVICE_SELECTORS + "_" + item.getCode, "");
-        saveStringParameter(par, name);
+        name.isNotEmpty ? saveStringParameter(par, name) : deleteParameter(par);
     }
 
     String deviceSelectorName(final EnumItem<InputSelector> item, {bool useFriendlyName = false, String friendlyName = ""})
