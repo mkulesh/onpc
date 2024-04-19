@@ -18,6 +18,7 @@ const int DCP_PORT = 23; // Denon main port
 const int DCP_UDP_PORT = 1900; // HEOS UDP port
 const int DCP_HEOS_PORT = 1255; // HEOS main port
 const int DCP_HTTP_PORT = 8080; // Denon-HTTP port (receiver info and command API)
+const int DCP_WEB_GUI = 10443; // Denon-Web-GUI port
 
 enum ProtoType
 {

@@ -17,6 +17,7 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../dialogs/UrlLauncher.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/FirmwareUpdateMsg.dart";
@@ -216,6 +217,24 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
             children: rows,
         );
 
+        Widget ip = CustomTextLabel.small(stateManager.getConnection().getHostAndPort,
+            padding: ActivityDimens.headerPadding,
+            textAlign: TextAlign.right);
+        if (state.protoType == ProtoType.DCP)
+        {
+            ip = InkWell(
+                child: ip,
+                onTap: ()
+                {
+                    if (state.protoType == ProtoType.DCP)
+                    {
+                        UrlLauncher.launchURL("https://" +
+                            stateManager.getConnection().getHost + ":" +
+                            DCP_WEB_GUI.toString());
+                    }
+                });
+        }
+
         final Widget title = Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -225,11 +244,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                         padding: ActivityDimens.headerPadding,
                         textAlign: TextAlign.left),
                     flex: 1),
-                Expanded(
-                    child: CustomTextLabel.small(stateManager.getConnection().getHostAndPort,
-                        padding: ActivityDimens.headerPadding,
-                        textAlign: TextAlign.right),
-                    flex: 1),
+                ip,
             ]);
 
         return Column(
