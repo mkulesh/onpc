@@ -36,8 +36,8 @@ The two most popular features of the app are music playback and sound profile ma
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play" height="110">](https://play.google.com/store/apps/details?id=com.mkulesh.onpc)
       
-[<img src="https://gitlab.com/fdroid/artwork/raw/master/badge/get-it-on.png"
-      alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+alt="Get it on F-Droid" height="110">](https://f-droid.org/packages/com.mkulesh.onpc)
 
 *Premium Version*
 
@@ -67,7 +67,7 @@ On Windows:
 
 Do you want try the last version in development?
 - [TestFlight on iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
-- <img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_linux.png" align="center" height="48" width="48"> [Linux (Fedora Workstation)](https://1drv.ms/u/s!At2sh2-YDyGFgTY827qdnu3VsmjC?e=FPjUeB)
+- [Linux (Fedora Workstation)](https://1drv.ms/f/s!At2sh2-YDyGFdsDFl6N3ncDowMg?e=idcSVa)
 
 ## Known Limitations
 - Please note that the app does not support the music streaming from your phone to the network player or the receiver
