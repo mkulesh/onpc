@@ -308,12 +308,15 @@ class CfgAppSettings extends CfgModule
 
     void saveZoneName(final Zone zone, final String name)
     {
-        final Pair<String, String> key = Pair((ZONE_NAME + "_" + zone.getId).toLowerCase(), "");
-        name.isNotEmpty ? saveStringParameter(key, name) : deleteParameter(key);
+        final String key = getModelDependentParameter(ZONE_NAME + "_" + zone.getId).toLowerCase();
+        name.isNotEmpty ? saveStringParameter(Pair(key, ""), name) : deleteParameter(Pair(key, ""));
     }
 
     String readZoneName(final Zone zone)
-    => getString(Pair((ZONE_NAME + "_" + zone.getId).toLowerCase(), zone.getName));
+    {
+        final String key = getModelDependentParameter(ZONE_NAME + "_" + zone.getId).toLowerCase();
+        return getString(Pair(key, zone.getName));
+    }
 
     // methods
     CfgAppSettings(final SharedPreferences preferences) : super(preferences);
