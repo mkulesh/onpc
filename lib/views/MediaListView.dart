@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -1009,7 +1009,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             final CfgFavoriteShortcuts shortcutCfg = configuration.favoriteShortcuts;
             final Shortcut shortcut = Shortcut(
-                shortcutCfg.getNextId(), ms.inputType, ms.serviceType, item, alias);
+                shortcutCfg.getNextId(), state.protoType, ms.inputType, ms.serviceType,
+                item, alias);
             if (ms.pathItems.isNotEmpty)
             {
                 Logging.info(this.widget, "full path to the item: " + ms.pathItems.toString());

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -52,7 +52,16 @@ class ShortcutsView extends UpdatableView
         Logging.logRebuild(this);
 
         Widget tab;
-        if (configuration.favoriteShortcuts.shortcuts.isEmpty)
+        final List<Shortcut> shortcuts = [];
+        configuration.favoriteShortcuts.shortcuts.forEach((s)
+        {
+            if (s.protoType == stateManager.protoType)
+            {
+                shortcuts.add(s);
+            }
+        });
+
+        if (shortcuts.isEmpty)
         {
             final String message = sprintf(Strings.favorite_shortcut_howto, [
                 CfgAppSettings.getTabName(AppTabs.MEDIA),
@@ -129,7 +138,7 @@ class ShortcutsView extends UpdatableView
                 stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
                 break;
             case _ShortcutContextMenu.COPY_TO_CLIPBOARD:
-                Clipboard.setData(ClipboardData(text: s.toScript(state.receiverInformation.model, state.mediaListState)));
+                Clipboard.setData(ClipboardData(text: s.toScript(state.protoType, state.receiverInformation.model, state.mediaListState)));
                 break;
         }
     }

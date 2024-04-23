@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -18,12 +18,14 @@ import "package:shared_preferences/shared_preferences.dart";
 import "package:xml/xml.dart" as xml;
 
 import "../constants/Drawables.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ServiceType.dart";
 import "../iscp/state/MediaListState.dart";
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "CfgModule.dart";
@@ -36,6 +38,11 @@ class Shortcut
 
     int get id
     => _id;
+
+    late ProtoType _protoType;
+
+    ProtoType get protoType
+    => _protoType;
 
     late EnumItem<InputSelector> _input;
 
@@ -65,6 +72,7 @@ class Shortcut
     Shortcut.fromXml(xml.XmlElement e)
     {
         _id = ISCPMessage.nonNullInteger(e.getAttribute("id"), 10, 0);
+        _protoType = Convert.stringToProtoType(ISCPMessage.nonNullString(e.getAttribute("protoType")));
         _input = InputSelectorMsg.ValueEnum.valueByCode(ISCPMessage.nonNullString(e.getAttribute("input")));
         _service = Services.ServiceTypeEnum.valueByCode(ISCPMessage.nonNullString(e.getAttribute("service")));
         _item = ISCPMessage.nonNullString(e.getAttribute("item"));
@@ -75,6 +83,7 @@ class Shortcut
     Shortcut.copy(final Shortcut old, final String alias)
     {
         this._id = old._id;
+        this._protoType = old._protoType;
         this._input = old._input;
         this._service = old._service;
         this._item = old._item;
@@ -82,9 +91,11 @@ class Shortcut
         this._pathItems.addAll(old._pathItems);
     }
 
-    Shortcut(final int id, final EnumItem<InputSelector> input, final EnumItem<ServiceType> service, final String item, final String alias)
+    Shortcut(final int id, final ProtoType protoType, final EnumItem<InputSelector> input,
+             final EnumItem<ServiceType> service, final String item, final String alias)
     {
         this._id = id;
+        this._protoType = protoType;
         this._input = input;
         this._service = service;
         this._item = item;
@@ -112,6 +123,7 @@ class Shortcut
         String label = "";
         label += "<" + FAVORITE_SHORTCUT_TAG;
         label += " id=\"" + _id.toString() + "\"";
+        label += " protoType=\"" + Convert.enumToString(_protoType) + "\"";
         label += " input=\"" + _input.getCode + "\"";
         label += " service=\"" + _service.getCode + "\"";
         label += " item=\"" + escape(_item) + "\"";
@@ -140,7 +152,10 @@ class Shortcut
         return label.toString();
     }
 
-    String toScript(final String model, final MediaListState mediaState)
+    String toScript(final ProtoType proto, final String model, final MediaListState mediaState)
+    => proto == ProtoType.ISCP ? _toIscpScript(model, mediaState) : _toDcpScript(model, mediaState);
+
+    String _toIscpScript(final String model, final MediaListState mediaState)
     {
         String data = "";
         data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
@@ -212,6 +227,12 @@ class Shortcut
         // Select target item
         data += "<send cmd=\"NLA\" par=\"" + item + "\" wait=\"1000\"/>";
         data += "</onpcScript>";
+        return data;
+    }
+
+    String _toDcpScript(final String model, final MediaListState mediaState)
+    {
+        String data = "";
         return data;
     }
 
