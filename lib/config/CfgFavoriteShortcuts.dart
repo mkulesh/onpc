@@ -368,10 +368,26 @@ class CfgFavoriteShortcuts extends CfgModule
         return id + 1;
     }
 
-    void reorder(int oldIndex, int newIndex)
+    void reorder(int oldId, int newId)
     {
-        final Shortcut item = shortcuts.removeAt(oldIndex);
-        shortcuts.insert(newIndex, item);
+        int oldIndex = -1;
+        int newIndex = -1;
+        for (int i = 0; i < shortcuts.length; i++)
+        {
+            if (shortcuts[i].id == oldId)
+            {
+                oldIndex = i;
+            }
+            if (shortcuts[i].id == newId)
+            {
+                newIndex = i;
+            }
+        }
+        if (oldIndex >= 0 && newIndex >=0 && oldIndex != newIndex)
+        {
+            final Shortcut old = shortcuts.removeAt(oldIndex);
+            shortcuts.insert(newIndex, old);
+        }
         write();
     }
 }

@@ -44,12 +44,15 @@ class ShortcutsView extends UpdatableView
         StateManager.SHORTCUT_CHANGE_EVENT
     ];
 
+    final List<int> _shortcutIds = [];
+
     ShortcutsView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         Logging.logRebuild(this);
+        _shortcutIds.clear();
 
         Widget tab;
         final List<Shortcut> shortcuts = [];
@@ -73,8 +76,11 @@ class ShortcutsView extends UpdatableView
         else
         {
             final List<Widget> rows = [];
-            configuration.favoriteShortcuts.shortcuts.forEach((s)
-            => rows.add(_buildRow(context, s)));
+            for (int i = 0; i < shortcuts.length; i++)
+            {
+                rows.add(_buildRow(context, i, shortcuts[i]));
+                _shortcutIds.add(shortcuts[i].id);
+            }
 
             tab = Scrollbar(child: ReorderableListView(
                 primary: true,
@@ -87,7 +93,7 @@ class ShortcutsView extends UpdatableView
         return Expanded(flex: 1, child: tab);
     }
 
-    Widget _buildRow(final BuildContext context, final Shortcut s)
+    Widget _buildRow(final BuildContext context, final int index, final Shortcut s)
     {
         final Widget w = ContextMenuListener<_ShortcutContextMenu>(
             child: MediaQuery.removePadding(
@@ -117,7 +123,7 @@ class ShortcutsView extends UpdatableView
             onItemSelected: (BuildContext c, _ShortcutContextMenu m)
             => _onContextItemSelected(c, m, s)
         );
-        return ReorderableItem(key: Key(s.id.toString()), child: w);
+        return ReorderableItem(key: Key(index.toString()), child: w);
     }
 
     void _onContextItemSelected(final BuildContext context, final _ShortcutContextMenu m, final Shortcut s)
@@ -149,8 +155,11 @@ class ShortcutsView extends UpdatableView
         {
             newIndex -= 1;
         }
-        configuration.favoriteShortcuts.reorder(oldIndex, newIndex);
-        stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
+        if (oldIndex < _shortcutIds.length && newIndex < _shortcutIds.length)
+        {
+            configuration.favoriteShortcuts.reorder(_shortcutIds[oldIndex], _shortcutIds[newIndex]);
+            stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
+        }
     }
 
     void _selectShortcut(Shortcut s)
