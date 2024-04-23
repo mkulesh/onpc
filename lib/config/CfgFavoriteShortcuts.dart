@@ -64,6 +64,8 @@ class Shortcut
     String get alias
     => _alias;
 
+    late String _actionFlag;
+
     final List<String> _pathItems = [];
 
     List<String> get pathItems
@@ -77,6 +79,7 @@ class Shortcut
         _service = Services.ServiceTypeEnum.valueByCode(ISCPMessage.nonNullString(e.getAttribute("service")));
         _item = ISCPMessage.nonNullString(e.getAttribute("item"));
         _alias = ISCPMessage.nonNullString(e.getAttribute("alias"));
+        _actionFlag = ISCPMessage.nonNullString(e.getAttribute("actionFlag"));
         e.findAllElements("dir").forEach((dir) => _pathItems.add(ISCPMessage.nonNullString(dir.getAttribute("name"))));
     }
 
@@ -88,11 +91,13 @@ class Shortcut
         this._service = old._service;
         this._item = old._item;
         this._alias = alias;
+        this._actionFlag = old._actionFlag;
         this._pathItems.addAll(old._pathItems);
     }
 
     Shortcut(final int id, final ProtoType protoType, final EnumItem<InputSelector> input,
-             final EnumItem<ServiceType> service, final String item, final String alias)
+             final EnumItem<ServiceType> service, final String item, final String alias,
+             final String actionFlag)
     {
         this._id = id;
         this._protoType = protoType;
@@ -100,6 +105,7 @@ class Shortcut
         this._service = service;
         this._item = item;
         this._alias = alias;
+        this._actionFlag = actionFlag;
     }
 
     void setPathItems(final List<String> path, final EnumItem<ServiceType>? service)
@@ -128,6 +134,7 @@ class Shortcut
         label += " service=\"" + _service.getCode + "\"";
         label += " item=\"" + escape(_item) + "\"";
         label += " alias=\"" + escape(_alias) + "\">";
+        label += " actionFlag=\"" + _actionFlag + "\">";
         for (String dir in _pathItems)
         {
             label += "<dir name=\"" + escape(dir) + "\"/>";

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -49,6 +49,9 @@ class Action
     // parameter used for actions command. Empty string means no parameter is used.
     late String par;
 
+    // flag to be applied for given action: AID for DCP protocol
+    late String actionFlag;
+
     // Delay in milliseconds used for action WAIT. Zero means no delay.
     late int milliseconds;
 
@@ -77,6 +80,7 @@ class Action
             throw Exception("missing command parameter in 'send' command");
         }
         par = _unEscape(par);
+        actionFlag = ISCPMessage.nonNullString(action.getAttribute("flag"));
         milliseconds = ISCPMessage.nonNullInteger(action.getAttribute("wait"), 10, -1);
         wait = ISCPMessage.nonNullString(action.getAttribute("wait"));
         resp = _unEscape(ISCPMessage.nonNullString(action.getAttribute("resp")));
@@ -89,7 +93,7 @@ class Action
 
     @override
     String toString()
-    => "Action [" + cmd + "," + par + "," + wait + "," + resp + "," + listitem + "]/" + ACTION_STATES[state.index];
+    => "Action [cmd=" + cmd + ", par=" + par + ", flag=" + actionFlag + ", wait=" + wait + ", resp=" + resp + ", listitem=" + listitem + "]/" + ACTION_STATES[state.index];
 
     String _unEscape(String str)
     {

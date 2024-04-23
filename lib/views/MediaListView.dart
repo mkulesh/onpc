@@ -15,7 +15,6 @@
 import "package:collection/collection.dart";
 import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
-import "package:onpc/iscp/ConnectionIf.dart";
 
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CheckableItem.dart";
@@ -26,6 +25,7 @@ import "../constants/Strings.dart";
 import "../dialogs/DcpSearchDialog.dart";
 import "../dialogs/PopupManager.dart";
 import "../dialogs/UrlLauncher.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/DcpMediaContainerMsg.dart";
@@ -88,6 +88,16 @@ class MediaListButtons
     bool appSort = false;
     bool progress = false;
     bool dcpSearch = false;
+}
+
+class ShortcutInfo
+{
+    String? item;
+    String? alias;
+    String actionFlag = "";
+
+    bool get isValid
+    => item != null && alias != null;
 }
 
 class MediaListView extends StatefulWidget
@@ -463,8 +473,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final bool isDcpItem = dcpCmd != null;
         final bool isDcpPlayable = dcpCmd != null && dcpCmd.isPlayable();
         final bool isQueue = state.mediaListState.isQueue;
-        final String? shortcutItem = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
-        final String? shortcutAlias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg && cmd.getPresetConfig != null ? cmd.getPresetConfig!.displayedString() : null;
+        final ShortcutInfo shortcutInfo = ShortcutInfo();
+        shortcutInfo.item = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
+        shortcutInfo.alias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg && cmd.getPresetConfig != null ? cmd.getPresetConfig!.displayedString() : null;
 
         if (isMediaItem && selector != null)
         {
@@ -577,7 +588,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 child: CustomTextLabel.normal(Strings.medialist_playback_mode), value: MediaContextMenu.PLAYBACK_MODE));
         }
 
-        if (state.protoType == ProtoType.ISCP && state.isShortcutPossible && shortcutItem != null && shortcutAlias != null)
+        if (state.isShortcutPossible && shortcutInfo.isValid)
         {
             contextMenu.add(PopupMenuItem<MediaContextMenu>(
                 child: CustomTextLabel.normal(Strings.favorite_shortcut_create), value: MediaContextMenu.ADD_TO_FAVORITES));
@@ -589,12 +600,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 context: context,
                 position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
                 items: contextMenu).then((m)
-            => _onContextItemSelected(context, m, cmd, shortcutItem, shortcutAlias)
+            => _onContextItemSelected(context, m, cmd, shortcutInfo)
             );
         }
     }
 
-    void _onContextItemSelected(final BuildContext context, final MediaContextMenu? m, final ISCPMessage cmd, final String? shortcutItem, final String? shortcutAlias)
+    void _onContextItemSelected(final BuildContext context, final MediaContextMenu? m, final ISCPMessage cmd, final ShortcutInfo shortcutInfo)
     {
         if (m == null)
         {
@@ -660,9 +671,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 stateManager.sendMessage(StateManager.LIST_MSG);
                 break;
             case MediaContextMenu.ADD_TO_FAVORITES:
-                if (state.isShortcutPossible && shortcutItem != null && shortcutAlias != null)
+                if (state.isShortcutPossible && shortcutInfo.isValid)
                 {
-                    _addShortcut(context, shortcutItem, shortcutAlias);
+                    _addShortcut(context, shortcutInfo);
                 }
                 break;
             case MediaContextMenu.SO_ADD_TO_HEOS:
@@ -1002,7 +1013,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         );
     }
 
-    void _addShortcut(final BuildContext context, final String item, final String alias)
+    void _addShortcut(final BuildContext context, final ShortcutInfo info)
     {
         final MediaListState ms = state.mediaListState;
         if (ms.isPathItemsConsistent())
@@ -1010,7 +1021,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             final CfgFavoriteShortcuts shortcutCfg = configuration.favoriteShortcuts;
             final Shortcut shortcut = Shortcut(
                 shortcutCfg.getNextId(), state.protoType, ms.inputType, ms.serviceType,
-                item, alias);
+                info.item!, info.alias!, info.actionFlag);
             if (ms.pathItems.isNotEmpty)
             {
                 Logging.info(this.widget, "full path to the item: " + ms.pathItems.toString());
