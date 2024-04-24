@@ -66,15 +66,15 @@ public abstract class WidgetBase extends AppWidgetProvider
     {
         final SharedPreferences preferences = context.getSharedPreferences(Utils.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         Map<String, ?> allPrefs = preferences.getAll();
+        final String model = Utils.readStringPreference(allPrefs, "model", "");
         final boolean friendlyNames = Utils.readBooleanPreference(allPrefs, "friendly_names", true);
-        title = friendlyNames ? Utils.readStringPreference(allPrefs, "device_friendly_name", "") :
-                Utils.readStringPreference(allPrefs, "model", "");
+        title = friendlyNames ? Utils.readStringPreference(allPrefs, "device_friendly_name", "") : model;
         final long activeZone = Utils.readIntPreference(allPrefs, "active_zone", 0);
         if (!title.isEmpty() && activeZone > 0)
         {
             final long zone = activeZone + 1;
             final String oldName = "Zone" + zone;
-            final String newName = Utils.readStringPreference(allPrefs, "zone_name_" + zone, oldName);
+            final String newName = Utils.readStringPreference(allPrefs, ("zone_name_" + zone + "_" + model).toLowerCase(), oldName);
             title += ("/" + newName);
         }
         darkTheme = Utils.readBooleanPreference(allPrefs, "widget_dark_theme", false);
