@@ -53,10 +53,8 @@ class AutoPower implements MessageScriptIf
     => true;
 
     @override
-    void initialize(final String data)
-    {
-        // nothing to do
-    }
+    bool initialize(final State state, MessageChannel channel)
+    => isValid(state.protoType);
 
     @override
     void start(final State state, MessageChannel channel)

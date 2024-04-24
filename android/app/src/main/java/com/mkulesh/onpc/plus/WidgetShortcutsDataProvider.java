@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -21,7 +21,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.utils.Utils;
@@ -54,7 +55,6 @@ public class WidgetShortcutsDataProvider extends ContentProvider
             final CfgFavoriteShortcuts cfg = new CfgFavoriteShortcuts();
             cfg.read(preferences);
             shortcuts.addAll(cfg.getShortcuts());
-            Log.d("onpc", "read widget shortcuts: " + shortcuts.size());
         }
     }
 
@@ -66,7 +66,7 @@ public class WidgetShortcutsDataProvider extends ContentProvider
     }
 
     @Override
-    public synchronized Cursor query(Uri uri, String[] projection, String selection,
+    public synchronized Cursor query(@NonNull Uri uri, String[] projection, String selection,
                                      String[] selectionArgs, String sortOrder)
     {
         final MatrixCursor c = new MatrixCursor(new String[]{ Columns.ID, Columns.ALIAS, Columns.SCRIPT });
@@ -78,27 +78,27 @@ public class WidgetShortcutsDataProvider extends ContentProvider
     }
 
     @Override
-    public String getType(Uri uri)
+    public String getType(@NonNull Uri uri)
     {
         return "vnd.android.cursor.dir/com.mkulesh.onpc.pro.alias";
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values)
+    public Uri insert(@NonNull Uri uri, ContentValues values)
     {
         // This example code does not support inserting
         return null;
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs)
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs)
     {
         // This example code does not support deleting
         return 0;
     }
 
     @Override
-    public synchronized int update(Uri uri, ContentValues values, String selection,
+    public synchronized int update(@NonNull Uri uri, ContentValues values, String selection,
                                    String[] selectionArgs)
     {
         readData();

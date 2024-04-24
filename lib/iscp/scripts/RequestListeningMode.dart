@@ -43,10 +43,8 @@ class RequestListeningMode implements MessageScriptIf
     => protoType == ProtoType.ISCP;
 
     @override
-    void initialize(final String data)
-    {
-        // nothing to do
-    }
+    bool initialize(final State state, MessageChannel channel)
+    => isValid(state.protoType);
 
     @override
     void start(State state, MessageChannel channel)

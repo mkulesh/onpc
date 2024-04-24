@@ -14,8 +14,6 @@
 
 <resources>
 
-    <string name="dashed_string" translatable="false">---</string>
-
     <!-- Main view -->
     <string name="app_name_pro">Enhanced Music Controller</string>
     <string name="app_short_name">Music Control</string>

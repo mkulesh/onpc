@@ -16,12 +16,14 @@ import 'dart:async';
 
 import "package:xml/xml.dart" as xml;
 
+import "../../config/CfgFavoriteShortcuts.dart";
 import "../../utils/Logging.dart";
 import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "../MessageChannel.dart";
 import "../State.dart";
+import "../messages/DcpMediaContainerMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/ListTitleInfoMsg.dart";
 import "../messages/NetworkServiceMsg.dart";
@@ -109,6 +111,10 @@ class MessageScript with ConnectionIf implements MessageScriptIf
 {
     static final String SCRIPT_NAME = "onpcScript";
 
+    // input data
+    final String? intent;
+    final Shortcut? shortcut;
+
     // optional target zone
     int _zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
 
@@ -124,18 +130,25 @@ class MessageScript with ConnectionIf implements MessageScriptIf
     // Actions to be performed
     final List<Action> actions = [];
 
-    MessageScript(final String data)
-    {
-        initialize(data);
-    }
+    MessageScript({this.intent, this.shortcut});
 
     @override
     bool isValid(ProtoType protoType)
-    => protoType == ProtoType.ISCP && actions.isNotEmpty;
+    => actions.isNotEmpty;
 
     @override
-    void initialize(final String data)
+    bool initialize(final State state, MessageChannel channel)
     {
+        Logging.info(this, "initialization...");
+        if (intent == null && shortcut == null)
+        {
+            Logging.info(this, "either intent or shortcut shall be provided. Script aborted.");
+            return false;
+        }
+
+        final String data = intent != null ? intent! : shortcut!.toScript(
+            state.protoType, state.receiverInformation.model, state.mediaListState);
+
         try
         {
             final xml.XmlDocument document = xml.XmlDocument.parse(data);
@@ -156,6 +169,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
         }
         actions.forEach((a)
         => Logging.info(this, a.toString()));
+        return isValid(state.protoType);
     }
 
     @override
@@ -250,7 +264,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
         switch (cmd)
         {
             case OperationCommandMsg.CODE:
-                return par == "TOP" && state.mediaListState.isTopLayer();
+                return state.protoType == ProtoType.ISCP && par == "TOP" && state.mediaListState.isTopLayer();
             case PowerStatusMsg.CODE:
                 return par == PowerStatusMsg.ValueEnum
                     .valueByKey(state.receiverInformation.powerStatus)
@@ -309,23 +323,47 @@ class MessageScript with ConnectionIf implements MessageScriptIf
         }
         else
         {
-            EISCPMessage? msg;
-            if (a.cmd == XmlListInfoMsg.CODE)
+            XmlListItemMsg? item;
+            if (a.cmd == XmlListInfoMsg.CODE || a.cmd == DcpMediaContainerMsg.CODE)
             {
-                for (ISCPMessage item in state.mediaListState.mediaItems)
+                for (ISCPMessage i in state.mediaListState.mediaItems)
                 {
-                    if (item is XmlListItemMsg && item.getTitle == a.par)
+                    if (i is XmlListItemMsg && i.getTitle == a.par)
                     {
-                        msg = item.getCmdMsg();
+                        item = i;
                     }
                 }
             }
-            if (msg == null)
+            // DCP command
+            final DcpMediaContainerMsg? dcpMsg =
+                item != null? state.mediaListState.getDcpContainerMsg(item) : null;
+            if (item != null && dcpMsg != null)
             {
-                msg = EISCPMessage.output(a.cmd, a.par);
+                if (a.actionFlag.isNotEmpty)
+                {
+                    final DcpMediaContainerMsg dcpMsg1 = DcpMediaContainerMsg.copy(dcpMsg);
+                    dcpMsg1.setAid(a.actionFlag);
+                    channel.sendIscp(dcpMsg1);
+                    Logging.info(this, a.toString() + ": sent DCP action message " + dcpMsg1.toString());
+                }
+                else
+                {
+                    state.mediaListState.storeSelectedDcpItem(item);
+                    channel.sendIscp(dcpMsg);
+                    Logging.info(this, a.toString() + ": sent DCP message " + dcpMsg.toString());
+                }
             }
-            channel.sendMessage(msg);
-            Logging.info(this, a.toString() + ": sent message " + msg.toString());
+            else
+            {
+                // ISCP command
+                EISCPMessage? msg = item != null ? item.getCmdMsg() : null;
+                if (msg == null)
+                {
+                    msg = EISCPMessage.output(a.cmd, a.par);
+                }
+                channel.sendMessage(msg);
+                Logging.info(this, a.toString() + ": sent ISCP message " + msg.toString());
+            }
         }
 
         a.state = ActionState.WAITING;

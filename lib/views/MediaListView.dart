@@ -476,6 +476,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final ShortcutInfo shortcutInfo = ShortcutInfo();
         shortcutInfo.item = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
         shortcutInfo.alias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg && cmd.getPresetConfig != null ? cmd.getPresetConfig!.displayedString() : null;
+        shortcutInfo.actionFlag = isDcpPlayable? "4" : "";
 
         if (isMediaItem && selector != null)
         {

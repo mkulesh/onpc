@@ -32,7 +32,7 @@ abstract class MessageScriptIf
     // not empty, the MessageScript is valid and these actions will be performed after the
     // connection is established.
     //
-    void initialize(final String intent);
+    bool initialize(final State state, MessageChannel channel);
 
     //
     // This method is called from the state manager after the connection is established

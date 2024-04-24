@@ -133,7 +133,7 @@ class Shortcut
         label += " input=\"" + _input.getCode + "\"";
         label += " service=\"" + _service.getCode + "\"";
         label += " item=\"" + escape(_item) + "\"";
-        label += " alias=\"" + escape(_alias) + "\">";
+        label += " alias=\"" + escape(_alias) + "\"";
         label += " actionFlag=\"" + _actionFlag + "\">";
         for (String dir in _pathItems)
         {
@@ -143,6 +143,9 @@ class Shortcut
         return label.toString();
     }
 
+    bool isNetService(InputSelector key)
+    => [InputSelector.NET, InputSelector.DCP_NET].contains(key);
+
     String getLabel()
     {
         String label = "";
@@ -150,7 +153,7 @@ class Shortcut
         {
             label += _input.description + "/";
         }
-        if (_input.key == InputSelector.NET && _service.key != ServiceType.UNKNOWN)
+        if (isNetService(_input.key) && _service.key != ServiceType.UNKNOWN)
         {
             label += _service.description + "/";
         }
@@ -197,7 +200,7 @@ class Shortcut
 
         // Go to the top level. Response depends on the input type and model
         String firstPath = pathItems.isEmpty ? item : pathItems.first;
-        if (input.key == InputSelector.NET && service.key != ServiceType.UNKNOWN)
+        if (isNetService(input.key) && service.key != ServiceType.UNKNOWN)
         {
             if (model == "TX-8130")
             {
@@ -240,6 +243,57 @@ class Shortcut
     String _toDcpScript(final String model, final MediaListState mediaState)
     {
         String data = "";
+        data += "<onpcScript host=\"\" port=\"\" zone=\"0\">";
+        data += "<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>";
+        data += "<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>";
+        data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>";
+        data += "<send cmd=\"SLI\" par=\"" + input.getCode
+            + "\" wait=\"SLI\" resp=\"" + input.getCode + "\"/>";
+
+        // Radio input requires a special handling
+        if (input.key == InputSelector.DCP_TUNER)
+        {
+            data += "<send cmd=\"PRS\" par=\"" + item + "\" wait=\"PRS\"/>";
+            data += "</onpcScript>";
+            return data;
+        }
+
+        // #270: Simple inputs do not need additional processing
+        if (!input.isMediaList)
+        {
+            data += "</onpcScript>";
+            return data;
+        }
+
+        // Go to the top level. Response depends on the input type and model
+        String firstPath = pathItems.isEmpty ? item : pathItems.first;
+        if (isNetService(input.key) && service.key != ServiceType.UNKNOWN)
+        {
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"D01\" listitem=\"" + service.description + "\"/>";
+        }
+        else
+        {
+            data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"NLA\" listitem=\"" + firstPath + "\"/>";
+        }
+
+        // Select target service
+        data += "<send cmd=\"NSV\" par=\"" + service.getCode + "0\" wait=\"D05\" listitem=\"" + firstPath + "\"/>";
+
+        // Apply target path, if necessary
+        if (pathItems.isNotEmpty)
+        {
+            for (int i = 0; i < pathItems.length - 1; i++)
+            {
+                firstPath = pathItems[i];
+                final String nextPath = pathItems[i + 1];
+                data += "<send cmd=\"NLA\" par=\"" + firstPath + "\" wait=\"D05\" listitem=\"" + nextPath + "\"/>";
+            }
+            data += "<send cmd=\"NLA\" par=\"" + pathItems.last + "\" wait=\"D05\" listitem=\"" + item + "\"/>";
+        }
+
+        // Select target item with given flag
+        data += "<send cmd=\"NLA\" par=\"" + item + "\" flag=\"" + _actionFlag + "\"" + " wait=\"1000\"/>";
+        data += "</onpcScript>";
         return data;
     }
 

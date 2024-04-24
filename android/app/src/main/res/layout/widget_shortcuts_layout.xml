@@ -90,7 +90,6 @@
             android:paddingRight="12dp"
             android:gravity="center_vertical"
             android:background="@android:color/transparent"
-            android:text="@string/dashed_string"
             android:textSize="18sp" />
     </FrameLayout>
 </RelativeLayout>

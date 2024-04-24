@@ -1027,14 +1027,18 @@ class StateManager
                 final List<String> tokens = intent.split(":");
                 if (tokens.length > 1)
                 {
-                    applyShortcut(
-                        shortcuts.firstWhereOrNull(
-                            (s) => s.id == ISCPMessage.nonNullInteger(tokens[1], 10, -1)));
+                    final Shortcut? shortcut = shortcuts.firstWhereOrNull(
+                            (s) => s.id == ISCPMessage.nonNullInteger(tokens[1], 10, -1));
+                    if (shortcut != null)
+                    {
+                        applyShortcut(shortcut);
+                        triggerStateEvent(StateManager.OPEN_MEDIA_VIEW);
+                    }
                 }
             }
             else if (intent.contains(MessageScript.SCRIPT_NAME))
             {
-                messageScript = MessageScript(intent);
+                messageScript = MessageScript(intent: intent);
             }
         }
         if (powerMode != null)
@@ -1042,7 +1046,7 @@ class StateManager
             addScript(AutoPower(powerMode));
         }
         addScript(RequestListeningMode());
-        if (messageScript != null && messageScript.isValid(protoType))
+        if (messageScript != null)
         {
             addScript(messageScript);
             _intentHost = messageScript;
@@ -1052,7 +1056,7 @@ class StateManager
     void _startScripts()
     => _messageScripts.forEach((script)
     {
-        if (script.isValid(protoType))
+        if (script.initialize(state, _messageChannel))
         {
             script.start(state, _messageChannel);
         }
@@ -1067,22 +1071,15 @@ class StateManager
         }
     });
 
-    void _activateScript(final MessageScript script)
+    void applyShortcut(final Shortcut shortcut)
     {
+        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
+        final MessageScript script = MessageScript(shortcut: shortcut);
         _messageScripts.removeWhere((s) => s is MessageScript);
-        if (script.isValid(protoType))
+        _messageScripts.add(script);
+        if (_state.isConnected && script.initialize(state, _messageChannel))
         {
-            _messageScripts.add(script);
             script.start(state, _messageChannel);
-        }
-    }
-
-    void applyShortcut(final Shortcut? shortcut)
-    {
-        if (shortcut != null)
-        {
-            Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-            _activateScript(MessageScript(shortcut.toScript(protoType, state.receiverInformation.model, state.mediaListState)));
         }
     }
 

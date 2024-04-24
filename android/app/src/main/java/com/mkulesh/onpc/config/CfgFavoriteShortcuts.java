@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,6 +15,7 @@
 package com.mkulesh.onpc.config;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.mkulesh.onpc.utils.Utils;
 
@@ -46,7 +47,7 @@ public class CfgFavoriteShortcuts
         }
         for (StringParameterIf t : values)
         {
-            if (t.getCode().toUpperCase().equals(code.toUpperCase()))
+            if (t.getCode().equalsIgnoreCase(code))
             {
                 return t;
             }
@@ -188,6 +189,7 @@ public class CfgFavoriteShortcuts
     public static class Shortcut
     {
         public final int id;
+        public final Utils.ProtoType protoType;
         final InputType input;
         final ServiceType service;
         final String item;
@@ -197,6 +199,7 @@ public class CfgFavoriteShortcuts
         Shortcut(final Element e)
         {
             this.id = Utils.parseIntAttribute(e, "id", 0);
+            this.protoType = Utils.stringToProtoType(e.getAttribute("protoType"));
             this.input = (InputType) searchParameter(
                     e.getAttribute("input"), InputType.values(), InputType.NONE);
             this.service = (ServiceType) searchParameter(
@@ -221,6 +224,8 @@ public class CfgFavoriteShortcuts
     public void read(SharedPreferences preferences)
     {
         shortcuts.clear();
+        final Utils.ProtoType protoType = Utils.stringToProtoType(
+                preferences.getString("flutter.proto_type", ""));
         final long fcNumber = preferences.getLong(FAVORITE_SHORTCUT_NUMBER, 0);
         for (long i = 0; i < fcNumber; i++)
         {
@@ -229,10 +234,15 @@ public class CfgFavoriteShortcuts
             {
                 if (elem.getTagName().equals(FAVORITE_SHORTCUT_TAG))
                 {
-                    shortcuts.add(new Shortcut(elem));
+                    final Shortcut s = new Shortcut(elem);
+                    if (s.protoType == protoType)
+                    {
+                        shortcuts.add(s);
+                    }
                 }
             });
         }
+        Log.d("onpc", "read widget shortcuts for " + protoType + ": " + shortcuts.size());
     }
 
     public final List<Shortcut> getShortcuts()

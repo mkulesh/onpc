@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -587,26 +587,22 @@ class MediaListState
             tmpPath.add(DcpMediaContainerMsg.copy(msg));
             _dcpMediaPath.clear();
             _dcpMediaPath.addAll(tmpPath);
-            Logging.info(this, "Dcp media path: " + _dcpMediaPath.toString());
+            _syncPathItems();
             // Info
-            _serviceType = msg.getServiceType();
+            _serviceType = _dcpMediaPath.isEmpty ? msg.getServiceType() : _dcpMediaPath.first.getServiceType();
             _layerInfo = msg.getLayerInfo();
             _uiType = UIType.LIST;
             _numberOfLayers = _dcpMediaPath.length;
             _mediaListSid = msg.getSid();
             _mediaListCid = msg.getCid();
             _mediaItemsTotal = msg.getCount();
-            if (_layerInfo == LayerInfo.SERVICE_TOP && _serviceType.key != ServiceType.UNKNOWN)
-            {
-                _titleBar = _serviceType.description;
-            }
-            else if (msg.getBrowseType() == BrowseType.SEARCH_RESULT && msg.getSearchStr().isNotEmpty)
+            if (msg.getBrowseType() == BrowseType.SEARCH_RESULT && msg.getSearchStr().isNotEmpty)
             {
                 _titleBar = Strings.medialist_search + ": " + msg.getSearchStr();
             }
-            else if (_dcpMediaPath.isNotEmpty && _dcpMediaPath.length >= 2)
+            else if (_pathItems.isNotEmpty)
             {
-                _titleBar = _dcpMediaPath[_dcpMediaPath.length - 2].getItems().first.getTitle;
+                _titleBar = _pathItems.last;
             }
             else
             {
@@ -690,7 +686,30 @@ class MediaListState
             last.getItems().clear();
             last.getItems().add(rowMsg);
             Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last.toString());
+            _syncPathItems();
         }
+    }
+
+    void _syncPathItems()
+    {
+        Logging.info(this, "DCP: dcp media path: " + _dcpMediaPath.toString());
+        _pathItems.clear();
+        for (int i = 0; i < _dcpMediaPath.length; i++)
+        {
+            final DcpMediaContainerMsg element = _dcpMediaPath[i];
+            final bool isService = element.getLayerInfo() == LayerInfo.SERVICE_TOP &&
+                element.getServiceType().key != ServiceType.UNKNOWN;
+            final bool isTitleItem = element.getItems().length == 1;
+            if (i == 0)
+            {
+                _pathItems.add(isService ? element.getServiceType().description : "");
+            }
+            if (i < _dcpMediaPath.length - 1 || isTitleItem)
+            {
+                _pathItems.add(isTitleItem ? element.getItems().first.getTitle : "");
+            }
+        };
+        Logging.info(this, "media list path: " + _pathItems.toString());
     }
 
     DcpMediaContainerMsg? getDcpContainerMsg(final ISCPMessage msg, {bool allowContainerMsg = true})
@@ -712,6 +731,7 @@ class MediaListState
         _mediaListSid = "";
         _mediaListCid = "";
         _dcpMediaPath.clear();
+        _syncPathItems();
         _titleBar = "";
         _createServiceItems(ri.networkServices);
     }
