@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# Note: Additional settings after XCode update:
-# 1. sudo gem install cocoapods
-# 2. https://stackoverflow.com/questions/75574268/missing-file-libarclite-iphoneos-a-xcode-14-3
-#   cd /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/
-#   sudo mkdir arc
-#   cd  arc
-#   sudo git clone https://github.com/kamyarelyasi/Libarclite-Files.git .
-#   sudo chmod +x *
-
 # Set this parameter to the actual Flutter installation path
 # Call "git fetch" in this directory so that your local Flutter
 # repository gets all the new info from Github
