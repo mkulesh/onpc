@@ -16,6 +16,7 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
 import "../constants/Dimens.dart";
+import "../utils/Convert.dart";
 
 class CustomImageButton extends StatelessWidget
 {
@@ -103,7 +104,7 @@ class CustomImageButton extends StatelessWidget
 
         final SvgPicture svg = SvgPicture.asset(
             icon,
-            color: color,
+            colorFilter: Convert.toColorFilter(color),
             width: _size,
             height: _size,
             semanticsLabel: description

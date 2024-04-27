@@ -12,6 +12,8 @@
  * Public License along with this program.
  */
 
+import "dart:ui";
+
 import "../iscp/ConnectionIf.dart";
 
 class Convert
@@ -26,4 +28,7 @@ class Convert
     => ProtoType.values.firstWhere(
         (p) => Convert.enumToString(p).toUpperCase() == protoType.toUpperCase(),
         orElse: () => ProtoType.ISCP);
+
+    static ColorFilter toColorFilter(final Color c)
+    => ColorFilter.mode(c, BlendMode.srcIn);
 }

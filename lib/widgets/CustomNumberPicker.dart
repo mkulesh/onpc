@@ -19,6 +19,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
+import "../utils/Convert.dart";
 import "CustomTextLabel.dart";
 
 enum PickerAction
@@ -102,7 +103,7 @@ class _CustomNumberPickerState extends State<CustomNumberPicker>
                             child: SvgPicture.asset(
                                 Drawables.numeric_negative_1,
                                 height: ButtonDimens.smallButtonSize,
-                                color: td.disabledColor,
+                                colorFilter: Convert.toColorFilter(td.disabledColor),
                             ),
                         ),
                     ),
@@ -132,7 +133,7 @@ class _CustomNumberPickerState extends State<CustomNumberPicker>
                             child: SvgPicture.asset(
                                 Drawables.numeric_positive_1,
                                 height: ButtonDimens.smallButtonSize,
-                                color: td.disabledColor,
+                                colorFilter: Convert.toColorFilter(td.disabledColor),
                             ),
                         ),
                     )

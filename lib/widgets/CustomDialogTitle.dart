@@ -16,6 +16,7 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
 import "../constants/Dimens.dart";
+import "../utils/Convert.dart";
 import "CustomTextLabel.dart";
 
 class CustomDialogTitle extends StatelessWidget
@@ -38,7 +39,7 @@ class CustomDialogTitle extends StatelessWidget
                     icon!,
                     width: DialogDimens.iconSize,
                     height: DialogDimens.iconSize,
-                    color: td.disabledColor)));
+                    colorFilter: Convert.toColorFilter(td.disabledColor))));
         }
 
         children.add(Flexible(child: CustomTextLabel.normal(description, bold: true)));

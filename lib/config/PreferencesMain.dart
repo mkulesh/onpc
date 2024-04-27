@@ -22,6 +22,7 @@ import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../dialogs/DropdownPreferenceDialog.dart";
 import "../iscp/ConnectionIf.dart";
+import "../utils/Convert.dart";
 import "../utils/Pair.dart";
 import "../utils/Platform.dart";
 import "../widgets/CustomActivityTitle.dart";
@@ -350,7 +351,7 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
             return SvgPicture.asset(icon,
                 width: DialogDimens.iconSize,
                 height: DialogDimens.iconSize,
-                color: td.disabledColor);
+                colorFilter: Convert.toColorFilter(td.disabledColor));
         }
         return null;
     }

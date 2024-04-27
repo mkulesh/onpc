@@ -22,6 +22,7 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/JacketArtMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
+import "../utils/Convert.dart";
 import "UpdatableView.dart";
 
 class TrackCoverView extends UpdatableView
@@ -43,7 +44,7 @@ class TrackCoverView extends UpdatableView
         final Widget cover = state.isOn && state.trackState.cover != null ?
             state.trackState.cover! : SvgPicture.asset(
                 Drawables.empty_cover,
-                color: state.isOn ? td.colorScheme.secondary : td.disabledColor,
+                colorFilter: Convert.toColorFilter(state.isOn ? td.colorScheme.secondary : td.disabledColor),
                 fit: BoxFit.contain
             );
 
@@ -52,6 +53,8 @@ class TrackCoverView extends UpdatableView
             alignment: Alignment.center,
             child: Material( // with Material
                 elevation: ActivityDimens.elevation,
+                color: td.colorScheme.background,
+                shadowColor: td.disabledColor,
                 child: IconButton(
                     icon: cover,
                     padding: ActivityDimens.noPadding,

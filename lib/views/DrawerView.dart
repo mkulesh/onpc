@@ -29,6 +29,7 @@ import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/MultiroomState.dart";
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Platform.dart";
 import "../views/UpdatableView.dart";
@@ -158,7 +159,7 @@ class DrawerView extends UpdatableView
 
         final SvgPicture drawerHeaderImage = SvgPicture.asset(
             Drawables.drawer_header,
-            color: td.colorScheme.secondary,
+            colorFilter: Convert.toColorFilter(td.colorScheme.secondary),
             fit: BoxFit.fitHeight
         );
 
