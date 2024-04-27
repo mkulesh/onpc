@@ -204,7 +204,7 @@ class CheckableItem
                             context: context,
                             barrierDismissible: true,
                             builder: (BuildContext c)
-                            => RenameDialog(text, (newName) => onRename!(newName))
+                            => Theme(data: theme, child: RenameDialog(text, (newName) => onRename!(newName)))
                         );
                     }
                 });

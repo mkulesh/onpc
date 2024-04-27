@@ -59,11 +59,12 @@ class _RenameDialogState extends State<RenameDialog>
                         textLabel: Strings.pref_item_name,
                         isFocused: true),
                     flex: 1),
-                CustomImageButton.small(
-                    Drawables.cmd_delete,
-                    Strings.pref_item_delete,
-                    onPressed: () => _alias.text = ""
-                )
+                Transform.translate(
+                    child: CustomImageButton.small(
+                        Drawables.cmd_delete,
+                        Strings.pref_item_delete,
+                        onPressed: () => _alias.text = ""),
+                    offset: Offset(8, 0))
             ]);
 
         final Widget dialog = AlertDialog(
