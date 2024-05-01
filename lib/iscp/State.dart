@@ -81,6 +81,7 @@ import "state/MultiroomState.dart";
 import "state/PlaybackState.dart";
 import "state/RadioState.dart";
 import "state/ReceiverInformation.dart";
+import "state/ScripsState.dart";
 import "state/SoundControlState.dart";
 import "state/TrackState.dart";
 
@@ -199,6 +200,10 @@ class State with ProtoTypeMix
         _mediaFilterVisible = !_mediaFilterVisible;
     }
 
+    // MessageScript state
+    final ScriptsState scripts = ScriptsState();
+
+    // Methods
     bool updateConnection(bool c, ProtoType p)
     {
         setProtoType(p);

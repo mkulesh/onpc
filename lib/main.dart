@@ -257,7 +257,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _isResumed = true;
         await Platform.requestIntent(_methodChannel).then((replay)
         {
-            if (replay != null && replay.startsWith(Platform.TARGET_CONTROL))
+            if (replay != null)
             {
                 Logging.info(this.widget, "received intent: " + replay);
             }
@@ -278,29 +278,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 shortcuts: _configuration.favoriteShortcuts.shortcuts);
         });
 
-        bool connect = _configuration.isDeviceValid;
-        if (_stateManager.intentHost != null)
-        {
-            if (_stateManager.intentHost!.isValidConnection())
-            {
-                connect = true;
-            }
-            // process optional intent data like target zone and app tab
-            _stateManager.state.activeZone = _stateManager.intentHost!.zone;
-            for (AppTabs t in AppTabs.values)
-            {
-                if (_stateManager.intentHost!.tab.toUpperCase() == Convert.enumToString(t).toUpperCase())
-                {
-                    _setActiveTab(t);
-                    break;
-                }
-            }
-        }
-        else
-        {
-            _stateManager.state.activeZone = _configuration.activeZone;
-        }
-
+        final bool connect = _configuration.isDeviceValid ||
+            (_stateManager.intentHost != null && _stateManager.intentHost!.isValidConnection());
         if (connect)
         {
             await Platform.requestNetworkState(_methodChannel).then((String? replay)
@@ -520,19 +499,29 @@ class MusicControllerAppState extends State<MusicControllerApp>
             // nothing to do
             return;
         }
-        if (_configuration.isDeviceValid)
+        if (_stateManager.intentHost != null && _stateManager.intentHost!.isValidConnection())
+        {
+            Logging.info(this.widget, "Use intent connection data: " + _stateManager.intentHost!.getHostAndPort);
+            _connectionState = ConnectionState.CONNECTING_TO_INTENT;
+            _stateManager.state.activeZone = _stateManager.intentHost!.zone;
+            for (AppTabs t in AppTabs.values)
+            {
+                if (_stateManager.intentHost!.tab.toUpperCase() == Convert.enumToString(t).toUpperCase())
+                {
+                    _setActiveTab(t);
+                    break;
+                }
+            }
+            _stateManager.connect(_stateManager.intentHost!.getHost, _stateManager.intentHost!.getPort);
+        }
+        else if (_configuration.isDeviceValid)
         {
             Logging.info(this.widget, "Use stored connection data: "
                 + Convert.ipToString(_configuration.getDeviceName, _configuration.getDevicePort.toString()));
             _connectionState = ConnectionState.CONNECTING_TO_SAVED;
+            _stateManager.state.activeZone = _configuration.activeZone;
             _stateManager.connect(_configuration.getDeviceName, _configuration.getDevicePort,
                 manualHost: _configuration.getDeviceName);
-        }
-        else if (_stateManager.intentHost != null && _stateManager.intentHost!.isValidConnection())
-        {
-            Logging.info(this.widget, "Use intent connection data: " + _stateManager.intentHost!.getHostAndPort);
-            _connectionState = ConnectionState.CONNECTING_TO_INTENT;
-            _stateManager.connect(_stateManager.intentHost!.getHost, _stateManager.intentHost!.getPort);
         }
     }
 

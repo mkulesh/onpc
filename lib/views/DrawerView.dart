@@ -124,7 +124,7 @@ class DrawerView extends UpdatableView
                         ) : null,
                         onTabListener: (context)
                         {
-                            stateManager.connect(msg.getHost, msg.getPort);
+                            stateManager.connect(msg.getHost, msg.getPort, clearScripts: true);
                         }
                     ));
                 }

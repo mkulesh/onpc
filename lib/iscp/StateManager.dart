@@ -21,10 +21,11 @@ import "package:collection/collection.dart";
 import "../config/CfgAudioControl.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CfgRiCommands.dart";
+import "../config/CfgTabSettings.dart";
 import "../iscp/BroadcastSearch.dart";
 import "../iscp/CommandHelper.dart";
 import "../iscp/scripts/MessageScript.dart";
-import "../iscp/scripts/MessageScriptIf.dart";
+import "../iscp/state/ScripsState.dart";
 import "../utils/CompatUtils.dart";
 import "../utils/Logging.dart";
 import "../utils/Platform.dart";
@@ -63,8 +64,6 @@ import "messages/TimeInfoMsg.dart";
 import "messages/TimeSeekMsg.dart";
 import "messages/TrackInfoMsg.dart";
 import "messages/XmlListInfoMsg.dart";
-import "scripts/AutoPower.dart";
-import "scripts/RequestListeningMode.dart";
 import "state/MediaListState.dart";
 import "state/MultiroomState.dart";
 
@@ -165,23 +164,8 @@ class StateManager
     // USB-RI interface
     final SerialPortWrapper usbSerial = SerialPortWrapper();
 
-    // MessageScript processor
-    final List<MessageScriptIf> _messageScripts = [];
-
-    void clearScripts()
-    {
-        _messageScripts.clear();
-    }
-
-    void addScript(MessageScriptIf script)
-    {
-        _messageScripts.add(script);
-    }
-
-    MessageScript? _intentHost;
-
     MessageScript? get intentHost
-    => _intentHost;
+    => _state.scripts.intentHost;
 
     StateManager(List<BroadcastResponseMsg> _favorites)
     {
@@ -196,8 +180,12 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
-    void connect(String host, int port, {String? manualHost, String? manualAlias})
+    void connect(String host, int port, {String? manualHost, String? manualAlias, bool clearScripts = false})
     {
+        if (clearScripts)
+        {
+            _state.scripts.clearScripts(ScriptType.RUNTIME);
+        }
         if (isConnected)
         {
             disconnect(true);
@@ -285,9 +273,6 @@ class StateManager
         {
             _requestInitialDcpState(runScrips : true);
         }
-
-        // After scripts are started, no need to hold intent host
-        _intentHost = null;
     }
 
     void _requestInitialIscpState({bool requestCoverLink = false, bool runScrips = false})
@@ -308,7 +293,7 @@ class StateManager
         // initial call of the message scripts
         if (runScrips)
         {
-            _startScripts();
+            _state.scripts.startScripts(_state, _messageChannel);
         }
     }
 
@@ -319,7 +304,7 @@ class StateManager
             // initial call os the message scripts
             if (runScrips)
             {
-                _startScripts();
+                _state.scripts.startScripts(_state, _messageChannel);
             }
             if (msg == null)
             {
@@ -371,7 +356,7 @@ class StateManager
                 final ISCPMessage msg = MessageFactory.create(raw);
                 msg.setHostAndPort(channel);
                 final String? changeCode = _processIscpMessage(msg);
-                _processScripts(msg, channel);
+                _state.scripts.processScripts(msg, _state, channel);
                 _onProcessFinished(changeCode != null, changeCode);
             }
             on Exception catch (e)
@@ -593,7 +578,7 @@ class StateManager
             {
                 raw.setHostAndPort(channel);
                 final String? changeCode = _processDcpMessage(raw);
-                _processScripts(raw, channel);
+                _state.scripts.processScripts(raw, _state, channel);
                 _onProcessFinished(changeCode != null, changeCode);
             }
             on Exception catch (e)
@@ -1005,82 +990,17 @@ class StateManager
 
     void updateScripts({bool autoPower = false, final String? intent, final List<Shortcut>? shortcuts})
     {
-        clearScripts();
-        MessageScript? messageScript;
-        AutoPowerMode? powerMode;
-        if (autoPower)
+        final AppControl? appControl = _state.scripts.updateScripts(autoPower: autoPower, intent: intent, shortcuts: shortcuts);
+        if (appControl == AppControl.MEDIA_LIST)
         {
-            powerMode = AutoPowerMode.POWER_ON;
-        }
-        if (intent != null)
-        {
-            if (intent == Platform.SHORTCUT_AUTO_POWER)
-            {
-                powerMode = AutoPowerMode.POWER_ON;
-            }
-            else if (intent == Platform.SHORTCUT_ALL_STANDBY)
-            {
-                powerMode = AutoPowerMode.ALL_STANDBY;
-            }
-            if (intent.contains(Platform.WIDGET_SHORTCUT) && shortcuts != null)
-            {
-                final List<String> tokens = intent.split(":");
-                if (tokens.length > 1)
-                {
-                    final Shortcut? shortcut = shortcuts.firstWhereOrNull(
-                            (s) => s.id == ISCPMessage.nonNullInteger(tokens[1], 10, -1));
-                    if (shortcut != null)
-                    {
-                        applyShortcut(shortcut);
-                        triggerStateEvent(StateManager.OPEN_MEDIA_VIEW);
-                    }
-                }
-            }
-            else if (intent.contains(MessageScript.SCRIPT_NAME))
-            {
-                messageScript = MessageScript(intent: intent);
-            }
-        }
-        if (powerMode != null)
-        {
-            addScript(AutoPower(powerMode));
-        }
-        addScript(RequestListeningMode());
-        if (messageScript != null)
-        {
-            addScript(messageScript);
-            _intentHost = messageScript;
+            triggerStateEvent(StateManager.OPEN_MEDIA_VIEW);
         }
     }
-
-    void _startScripts()
-    => _messageScripts.forEach((script)
-    {
-        if (script.initialize(state, _messageChannel))
-        {
-            script.start(state, _messageChannel);
-        }
-    });
-
-    void _processScripts(final ISCPMessage msg, MessageChannel channel)
-    => _messageScripts.forEach((script)
-    {
-        if (script.isValid(protoType))
-        {
-            script.processMessage(msg, state, channel);
-        }
-    });
 
     void applyShortcut(final Shortcut shortcut)
     {
         Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        final MessageScript script = MessageScript(shortcut: shortcut);
-        _messageScripts.removeWhere((s) => s is MessageScript);
-        _messageScripts.add(script);
-        if (_state.isConnected && script.initialize(state, _messageChannel))
-        {
-            script.start(state, _messageChannel);
-        }
+        _state.scripts.applyShortcut(shortcut, _state, _messageChannel);
     }
 
     MessageChannel _createChannel(int port, OnConnected _onConnected, OnDisconnected _onDisconnected)

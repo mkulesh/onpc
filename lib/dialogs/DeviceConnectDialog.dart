@@ -158,7 +158,7 @@ class _DeviceConnectDialogState extends State<DeviceConnectDialog>
                         final int port2 = port1 == null ? Configuration.SERVER_PORT.item2 : port1;
                         final String? alias = _saveEnabled ?
                             (_alias.text.isEmpty ? Convert.ipToString(host, port2.toString()) : _alias.text) : null;
-                        viewContext.stateManager.connect(host, port2, manualHost: host, manualAlias: alias);
+                        viewContext.stateManager.connect(host, port2, manualHost: host, manualAlias: alias, clearScripts: true);
                     }),
             ]
         );

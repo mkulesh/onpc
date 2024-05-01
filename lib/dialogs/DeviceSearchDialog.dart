@@ -72,7 +72,7 @@ class _DeviceSearchDialogState extends State<DeviceSearchDialog>
         viewContext.stateManager.stopSearch();
         if (_device != null)
         {
-            viewContext.stateManager.connect(_device!.getHost, _device!.getPort);
+            viewContext.stateManager.connect(_device!.getHost, _device!.getPort, clearScripts: true);
         }
         widget._onDispose();
     }
