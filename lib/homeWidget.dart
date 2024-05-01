@@ -80,9 +80,10 @@ void _sendOperationCommand(OperationCommand op) async
     _stateManager.start(
         (MessageChannel channel) // On initial state
         {
-            channel.addAllowedMessage(PowerStatusMsg.CODE);
+            final String msgCode = PowerStatusMsg.ZONE_COMMANDS[_stateManager.state.getActiveZone];
+            channel.addAllowedMessage(msgCode);
             channel.addAllowedMessage(ListTitleInfoMsg.CODE);
-            channel.sendQueries([PowerStatusMsg.CODE]);
+            channel.sendQueries([msgCode]);
         },
         (MessageChannel channel, ISCPMessage msg) // On message
         {
@@ -155,7 +156,9 @@ void _sendMasterVolumeCommand(int cmd) async
     _stateManager.start(
         (MessageChannel channel) // On initial state
         {
-            channel.addAllowedMessage(AudioMutingMsg.CODE);
+            final String msgCode = AudioMutingMsg.ZONE_COMMANDS[_stateManager.state.getActiveZone];
+            channel.addAllowedMessage(msgCode);
+            channel.sendQueries([msgCode]);
             if (SoundControlState.soundControlType(audioControl, _stateManager.configuration!.activeZone) == SoundControlType.RI_AMP)
             {
                 // For RI we can send command immediately
@@ -166,7 +169,7 @@ void _sendMasterVolumeCommand(int cmd) async
             else
             {
                 // Need AudioMutingMsg to properly handle changeMasterVolume
-                channel.sendQueries([AudioMutingMsg.CODE]);
+                channel.sendQueries([msgCode]);
             }
         },
         (MessageChannel channel, ISCPMessage msg) // On message
