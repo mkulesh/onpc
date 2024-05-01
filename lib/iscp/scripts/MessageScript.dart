@@ -26,6 +26,7 @@ import "../State.dart";
 import "../messages/DcpMediaContainerMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/ListTitleInfoMsg.dart";
+import "../messages/MessageFactory.dart";
 import "../messages/NetworkServiceMsg.dart";
 import "../messages/OperationCommandMsg.dart";
 import "../messages/PowerStatusMsg.dart";
@@ -104,6 +105,26 @@ class Action
         str = str.replaceAll("~dq~", "\"");
         return str;
     }
+
+    String _changeZone(final State state, final String cmd)
+    {
+        final int newIdx = state.getActiveZone;
+        for (List<String> zm in MessageFactory.getAllZonedMessages())
+        {
+            final int oldIdx = zm.indexWhere((element) => element.toLowerCase() == cmd.toLowerCase());
+            if (oldIdx >= 0 && oldIdx != newIdx && newIdx < zm.length)
+            {
+                return zm[newIdx];
+            }
+        }
+        return cmd;
+    }
+
+    void shiftZone(State state)
+    {
+        cmd = _changeZone(state, cmd);
+        wait = _changeZone(state, wait);
+    }
 }
 
 
@@ -130,25 +151,17 @@ class MessageScript with ConnectionIf implements MessageScriptIf
     // Actions to be performed
     final List<Action> actions = [];
 
-    MessageScript({this.intent, this.shortcut});
-
-    @override
-    bool isValid(ProtoType protoType)
-    => actions.isNotEmpty;
-
-    @override
-    bool initialize(final State state, MessageChannel channel)
+    MessageScript({this.intent, this.shortcut})
     {
-        Logging.info(this, "initialization...");
-        if (intent == null && shortcut == null)
+        if (intent != null)
         {
-            Logging.info(this, "either intent or shortcut shall be provided. Script aborted.");
-            return false;
+            _read(intent!);
         }
+    }
 
-        final String data = intent != null ? intent! : shortcut!.toScript(
-            state.protoType, state.receiverInformation.model, state.mediaListState);
-
+    void _read(String data)
+    {
+        actions.clear();
         try
         {
             final xml.XmlDocument document = xml.XmlDocument.parse(data);
@@ -167,8 +180,33 @@ class MessageScript with ConnectionIf implements MessageScriptIf
             Logging.info(this, "can not create action: " + e.toString());
             actions.clear();
         }
+    }
+
+    @override
+    bool isValid(ProtoType protoType)
+    => actions.isNotEmpty;
+
+    @override
+    bool initialize(final State state, MessageChannel channel)
+    {
+        Logging.info(this, "initialization...");
+        if (intent == null && shortcut == null)
+        {
+            Logging.info(this, "either intent or shortcut shall be provided. Script aborted.");
+            return false;
+        }
+
+        final String data = intent != null ? intent! : shortcut!.toScript(
+            state.protoType, state.receiverInformation.model, state.mediaListState);
+        _read(data);
         actions.forEach((a)
-        => Logging.info(this, a.toString()));
+        {
+            if (state.protoType == ProtoType.DCP)
+            {
+                a.shiftZone(state);
+            }
+            Logging.info(this, a.toString());
+        });
         return isValid(state.protoType);
     }
 
@@ -266,10 +304,16 @@ class MessageScript with ConnectionIf implements MessageScriptIf
             case OperationCommandMsg.CODE:
                 return state.protoType == ProtoType.ISCP && par == "TOP" && state.mediaListState.isTopLayer();
             case PowerStatusMsg.CODE:
+            case PowerStatusMsg.ZONE2_CODE:
+            case PowerStatusMsg.ZONE3_CODE:
+            case PowerStatusMsg.ZONE4_CODE:
                 return par == PowerStatusMsg.ValueEnum
                     .valueByKey(state.receiverInformation.powerStatus)
                     .getCode;
             case InputSelectorMsg.CODE:
+            case InputSelectorMsg.ZONE2_CODE:
+            case InputSelectorMsg.ZONE3_CODE:
+            case InputSelectorMsg.ZONE4_CODE:
                 return par == state.mediaListState.inputType.getCode;
             case NetworkServiceMsg.CODE:
                 return par == state.mediaListState.serviceType.getCode + "0";
@@ -344,13 +388,13 @@ class MessageScript with ConnectionIf implements MessageScriptIf
                     final DcpMediaContainerMsg dcpMsg1 = DcpMediaContainerMsg.copy(dcpMsg);
                     dcpMsg1.setAid(a.actionFlag);
                     channel.sendIscp(dcpMsg1);
-                    Logging.info(this, a.toString() + ": sent DCP action message " + dcpMsg1.toString());
+                    Logging.info(this, a.toString() + ": sent DCP media container message with action " + dcpMsg1.toString());
                 }
                 else
                 {
                     state.mediaListState.storeSelectedDcpItem(item);
                     channel.sendIscp(dcpMsg);
-                    Logging.info(this, a.toString() + ": sent DCP message " + dcpMsg.toString());
+                    Logging.info(this, a.toString() + ": sent DCP media container message " + dcpMsg.toString());
                 }
             }
             else
@@ -362,7 +406,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
                     msg = EISCPMessage.output(a.cmd, a.par);
                 }
                 channel.sendMessage(msg);
-                Logging.info(this, a.toString() + ": sent ISCP message " + msg.toString());
+                Logging.info(this, a.toString() + ": sent message " + msg.toString());
             }
         }
 

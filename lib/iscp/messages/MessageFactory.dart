@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -218,5 +218,20 @@ class MessageFactory
             default:
                 throw Exception("No factory method for message " + raw.getCode);
         }
+    }
+
+    static List<List<String>> getAllZonedMessages()
+    {
+        final List<List<String>> retValue = [];
+        retValue.add(PowerStatusMsg.ZONE_COMMANDS);
+        retValue.add(SpeakerACommandMsg.ZONE_COMMANDS);
+        retValue.add(SpeakerBCommandMsg.ZONE_COMMANDS);
+        retValue.add(InputSelectorMsg.ZONE_COMMANDS);
+        retValue.add(AudioMutingMsg.ZONE_COMMANDS);
+        retValue.add(MasterVolumeMsg.ZONE_COMMANDS);
+        retValue.add(ToneCommandMsg.ZONE_COMMANDS);
+        retValue.add(PresetCommandMsg.ZONE_COMMANDS);
+        retValue.add(TuningCommandMsg.ZONE_COMMANDS);
+        return retValue;
     }
 }

@@ -253,6 +253,8 @@ class Shortcut
         // Radio input requires a special handling
         if (input.key == InputSelector.DCP_TUNER)
         {
+            // Additional waiting time since tuner has some initialization period
+            data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"5000\"/>";
             data += "<send cmd=\"PRS\" par=\"" + item + "\" wait=\"PRS\"/>";
             data += "</onpcScript>";
             return data;
