@@ -53,61 +53,88 @@ void main() {
     await _changeListenLayout(tu, tester);
 
     if (find.text("My Denon AVR").evaluate().isEmpty) {
-      await _saveConnection(tu, tester, "My Denon AVR", "192.168.1.82", isDCP: true);
-      await _changeInputs(tester, tu, [
-        Pair("HEOS MUSIC", "NET"),
-        Pair("BLUETOOTH", "BT"),
-        Pair("DVD", ""),
-        Pair("Blu-ray", ""),
-        Pair("TV Audio", ""),
-        Pair("Onkyo", "ONKYO"),
-        Pair("Media Player", ""),
-        Pair("Game", ""),
-        Pair("C7030", "CD"),
-        Pair("Phono", ""),
-      ]);
-      await _changeServices(tester, tu, [
-        Pair("Deezer", true),
-        Pair("Local Music", true),
-        Pair("Spotify", false),
-        Pair("Tidal", false),
-        Pair("Amazon Music", false),
-        Pair("Napster", false),
-        Pair("Soundcloud", false),
-        Pair("Play List", false),
-        Pair("History", false),
-      ]);
+      await _setupDenon(tu, tester);
     }
+
     if (find.text("My Onkyo Box").evaluate().isEmpty) {
-      await _saveConnection(tu, tester, "My Onkyo Box", "192.168.1.81");
-      await _changeServices(tester, tu, [
-        Pair("Deezer", true),
-        Pair("Music Server (DLNA)", true),
-        Pair("Spotify", false),
-        Pair("Tidal", false),
-        Pair("Amazon Music", false),
-      ]);
+      await _setupOnkyoBox(tu, tester);
     }
+
     if (find.text("My Onkyo Player").evaluate().isEmpty) {
-      await _saveConnection(tu, tester, "My Onkyo Player", "192.168.1.80");
-      await _changeInputs(tester, tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
-      await _changeServices(tester, tu, [
-        Pair("Deezer", true),
-        Pair("Music Server (DLNA)", true),
-        Pair("Spotify", false),
-        Pair("Tidal", false),
-        Pair("Amazon Music", false),
-      ]);
+      await _setupOnkyoPlayer(tu, tester);
     }
 
     await tu.openTab(tester, "SHORTCUTS");
     if (find.text("Deezer Flow").evaluate().isEmpty) {
       await _buildFavourites(tu, tester, dlna: true, deezer: true, tuneIn: true, usbMusic: true, radio: true);
     }
+
     if (Platform.isDesktop) {
       await _addRiDevices(tu, tester);
     }
   });
+}
+
+Future<void> _setupDenon(OnpcTestUtils tu, WidgetTester tester) async {
+  await _saveConnection(tu, tester, "My Denon AVR", "192.168.1.82", isDCP: true);
+  await _renameZone(tu, tester, 1, "To Onkyo");
+  await _changeInputs(tester, tu, [
+    Pair("HEOS MUSIC", "NET"),
+    Pair("BLUETOOTH", "BT"),
+    Pair("DVD", ""),
+    Pair("Blu-ray", ""),
+    Pair("TV Audio", ""),
+    Pair("Onkyo", "ONKYO"),
+    Pair("Media Player", ""),
+    Pair("Game", ""),
+    Pair("C7030", "CD"),
+    Pair("Phono", ""),
+  ]);
+  await _changeServices(tester, tu, [
+    Pair("Deezer", true),
+    Pair("Local Music", true),
+    Pair("Spotify", false),
+    Pair("Tidal", false),
+    Pair("Amazon Music", false),
+    Pair("Napster", false),
+    Pair("Soundcloud", false),
+    Pair("Play List", false),
+    Pair("History", false),
+  ]);
+}
+
+Future<void> _renameZone(OnpcTestUtils tu, WidgetTester tester, int zone, String newName) async{
+  await tu.openDrawer(tester);
+  await tu.findAndTap(tester, "Search Edit Button", () => find.byTooltip("Edit"), num: 2, idx: zone);
+  expect(find.text("Edit"), findsOneWidget);
+  await tu.setText(tester, 1, 0, newName);
+  await tu.findAndTap(tester, "Close Rename dialog", () => find.text("OK"));
+  await tu.previousScreen(tester);
+  await tu.openDrawerMenu(tester, newName, delay: OnpcTestUtils.LONG_DELAY);
+  expect(find.textContaining("Denon AVR/" + newName), findsOneWidget);
+}
+
+Future<void> _setupOnkyoBox(OnpcTestUtils tu, WidgetTester tester) async {
+  await _saveConnection(tu, tester, "My Onkyo Box", "192.168.1.81");
+  await _changeServices(tester, tu, [
+    Pair("Deezer", true),
+    Pair("Music Server (DLNA)", true),
+    Pair("Spotify", false),
+    Pair("Tidal", false),
+    Pair("Amazon Music", false),
+  ]);
+}
+
+Future<void> _setupOnkyoPlayer(OnpcTestUtils tu, WidgetTester tester) async{
+  await _saveConnection(tu, tester, "My Onkyo Player", "192.168.1.80");
+  await _changeInputs(tester, tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
+  await _changeServices(tester, tu, [
+    Pair("Deezer", true),
+    Pair("Music Server (DLNA)", true),
+    Pair("Spotify", false),
+    Pair("Tidal", false),
+    Pair("Amazon Music", false),
+  ]);
 }
 
 Future<void> _saveConnection(final OnpcTestUtils tu, WidgetTester tester, String name, String address,

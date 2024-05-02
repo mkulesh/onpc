@@ -82,19 +82,19 @@ class OnpcTestUtils {
   }
 
   Future<void> findAndTap(WidgetTester tester, String title, OnFind finder,
-      {bool rightClick = false, bool waitFor = false, int? delay}) async {
+      {bool rightClick = false, bool waitFor = false, int num = 1, int idx = 0, int? delay}) async {
     while (waitFor && finder().evaluate().isEmpty) {
       await stepDelay(tester, delay: 1);
     }
     Logging.info(tester, STEP_HEADER + title);
     final Finder fab = finder();
-    expect(fab, findsOneWidget);
+    expect(fab, findsExactly(num));
     if (rightClick && Platform.isDesktop) {
-      await tester.tap(fab, buttons: 0x02, warnIfMissed: false);
+      await tester.tap(fab.at(idx), buttons: 0x02, warnIfMissed: false);
     } else if (rightClick && Platform.isMobile) {
-      await tester.longPress(fab, warnIfMissed: false);
+      await tester.longPress(fab.at(idx), warnIfMissed: false);
     } else {
-      await tester.tap(fab, buttons: 0x01, warnIfMissed: false);
+      await tester.tap(fab.at(idx), buttons: 0x01, warnIfMissed: false);
     }
     await stepDelay(tester, delay: delay ?? _stepDelay);
   }
