@@ -101,17 +101,24 @@ Future<void> _setupDenon(OnpcTestUtils tu, WidgetTester tester) async {
     Pair("Play List", false),
     Pair("History", false),
   ]);
-}
-
-Future<void> _renameZone(OnpcTestUtils tu, WidgetTester tester, int zone, String newName) async{
-  await tu.openDrawer(tester);
-  await tu.findAndTap(tester, "Search Edit Button", () => find.byTooltip("Edit"), num: 2, idx: zone);
-  expect(find.text("Edit"), findsOneWidget);
-  await tu.setText(tester, 1, 0, newName);
-  await tu.findAndTap(tester, "Close Rename dialog", () => find.text("OK"));
-  await tu.previousScreen(tester);
-  await tu.openDrawerMenu(tester, newName, delay: OnpcTestUtils.LONG_DELAY);
-  expect(find.textContaining("Denon AVR/" + newName), findsOneWidget);
+  await _changeListeningModes(tester, tu, [
+    Pair("Stereo", true),
+    Pair("Auto", false),
+    Pair("Dolby Digital", false),
+    Pair("DTS Surround", false),
+    Pair("Auro 3D", false),
+    Pair("Auro 2D SURR", false),
+    Pair("MCH Stereo", false),
+    Pair("Wide Screen", false),
+    Pair("Super Stadium", false),
+    Pair("Rock Arena", false),
+    Pair("Jazz Club", false),
+    Pair("Classic Concert", false),
+    Pair("Mono Movie", false),
+    Pair("Matrix", false),
+    Pair("Video Game", false),
+    Pair("Virtual", false),
+  ]);
 }
 
 Future<void> _setupOnkyoBox(OnpcTestUtils tu, WidgetTester tester) async {
@@ -122,6 +129,30 @@ Future<void> _setupOnkyoBox(OnpcTestUtils tu, WidgetTester tester) async {
     Pair("Spotify", false),
     Pair("Tidal", false),
     Pair("Amazon Music", false),
+  ]);
+  await _changeListeningModes(tester, tu, [
+    Pair("Mono", false),
+    Pair("Stereo", false),
+    Pair("Direct", false),
+    Pair("Unplugged", false),
+    Pair("Orchestra", false),
+    Pair("Studio-Mix", false),
+    Pair("Pure Audio", false),
+    Pair("Full Mono", false),
+    Pair("All Ch Stereo", false),
+    Pair("TV Logic", false),
+    Pair("Theater-Dimensional", false),
+    Pair("Dolby Digital", false),
+    Pair("Dolby Surround", false),
+    Pair("Dolby THX Cinema", false),
+    Pair("Dolby THX Music", false),
+    Pair("Dolby THX Games", false),
+    Pair("DTS Neural:X", false),
+    Pair("DTS Virtual:X", false),
+    Pair("Game-RPG", false),
+    Pair("Game-Action", false),
+    Pair("Game-Rock", false),
+    Pair("Game-Sports", false),
   ]);
 }
 
@@ -237,6 +268,23 @@ Future<void> _changeInputs(WidgetTester tester, OnpcTestUtils tu, List<Pair<Stri
   await tu.previousScreen(tester);
 }
 
+Future<void> _changeListeningModes(WidgetTester tester, OnpcTestUtils tu, List<Pair<String, bool>> items) async {
+  await tu.openDrawerMenu(tester, "Settings");
+  final String lm = "Listening modes";
+  await tester.ensureVisible(find.text(lm));
+  await tu.findAndTap(tester, "Change " + lm, () => find.text(lm));
+  for (int i = 0; i < items.length; i++) {
+    final Pair<String, bool> item = items[i];
+    await tester.ensureVisible(find.text(item.item1));
+    await tu.changeReorderableItem(tester, item.item1, state: item.item2);
+    if (item.item2) {
+      await tu.dragReorderableItem(tester, item.item1, Offset(0, -600));
+    }
+  }
+  await tu.previousScreen(tester);
+  await tu.previousScreen(tester);
+}
+
 Future<void> _changeListenLayout(final OnpcTestUtils tu, WidgetTester tester) async {
   await tu.openDrawerMenu(tester, "Tab layout");
   await tu.dragReorderableItem(tester, "File information", Offset(0, -600));
@@ -334,4 +382,15 @@ Future<void> _addRiDevices(OnpcTestUtils tu, WidgetTester tester) async {
   await tu.changeReorderableItem(tester, MD, state: true);
   await tu.changeReorderableItem(tester, TD, state: true);
   await tu.previousScreen(tester);
+}
+
+Future<void> _renameZone(OnpcTestUtils tu, WidgetTester tester, int zone, String newName) async{
+  await tu.openDrawer(tester);
+  await tu.findAndTap(tester, "Search Edit Button", () => find.byTooltip("Edit"), num: 2, idx: zone);
+  expect(find.text("Edit"), findsOneWidget);
+  await tu.setText(tester, 1, 0, newName);
+  await tu.findAndTap(tester, "Close Rename dialog", () => find.text("OK"));
+  await tu.previousScreen(tester);
+  await tu.openDrawerMenu(tester, newName, delay: OnpcTestUtils.LONG_DELAY);
+  expect(find.textContaining("Denon AVR/" + newName), findsOneWidget);
 }
