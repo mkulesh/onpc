@@ -89,6 +89,10 @@ Future<void> _setupDenon(OnpcTestUtils tu, WidgetTester tester) async {
     Pair("Video Game", false),
     Pair("Virtual", false),
   ]);
+  await tu.openTab(tester, "SHORTCUTS");
+  if (find.text("Deezer Flow").evaluate().isEmpty) {
+    await _buildDenonFavourites(tu, tester, dlna: true, deezer: true, tuneIn: true, usbMusic: true, favorite: true, radio: true);
+  }
   await _renameZone(tu, tester, 1, "To Onkyo");
 }
 
@@ -320,6 +324,80 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu, WidgetTester tester,
   }
 
   await tu.findAndTap(tester, "Start Deezer", () => find.text(FAVOURITES.item2), delay: OnpcTestUtils.NORMAL_DELAY);
+}
+
+Future<void> _buildDenonFavourites(OnpcTestUtils tu, WidgetTester tester, {required bool dlna, required bool deezer, required bool tuneIn, required bool usbMusic, required bool favorite, required bool radio}) async {
+  final DRAG_OFFSET_UP = Offset(0, 300);
+  await tu.openTab(tester, "MEDIA");
+  await tu.findAndTap(tester, "Select NET", () => find.text("NET"));
+
+  if (dlna) {
+    await tu.openTab(tester, "MEDIA");
+    final Pair<String, String> MUSE = Pair<String, String>("- All Albums -", "Muse on DLNA");
+    await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER,
+      "Local Music", "Supermicro DLNA Server", "Music", "Artist", "Muse<S>Mylene Farmer"], ensureVisible: true);
+    await tu.contextMenu(tester, MUSE.item1, "Create shortcut", waitFor: true);
+    await _renameShortcuts(tu, tester, [MUSE]);
+  }
+
+  if (deezer) {
+    await tu.openTab(tester, "MEDIA");
+    final Pair<String, String> PLAYLIST = Pair<String, String>("Onkyo playlist", "Deezer Playlist");
+    final Pair<String, String> FAVOURITES = Pair<String, String>("Loved Tracks", "Deezer Favourites");
+    final Pair<String, String> ROCK_STATION = Pair<String, String>("Rock classics", "Deezer Classic Rock");
+    await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER, "Deezer", "My Playlists"]);
+    await tu.contextMenu(tester, PLAYLIST.item1, "Create shortcut", waitFor: true);
+    await tu.contextMenu(tester, FAVOURITES.item1, "Create shortcut", waitFor: true);
+    await tu.navigateToMedia(tester, ["Return", "Radio Channels", "Rock<S>Soul & Funk"],
+        ensureVisible: true, ensureAfter: () => find.text(ROCK_STATION.item1));
+    await tu.contextMenu(tester, ROCK_STATION.item1, "Create shortcut", waitFor: true);
+    await _renameShortcuts(tu, tester, [PLAYLIST, FAVOURITES, ROCK_STATION]);
+  }
+
+  if (tuneIn) {
+    await tu.openTab(tester, "MEDIA");
+    await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER, "TuneIn Radio", "Favorites"]);
+    await tu.contextMenu(tester, "Absolute Classic Hits (Classic Hits)", "Create shortcut", waitFor: true);
+  }
+
+  if (usbMusic) {
+    final String DENON_AVR = "Denon AVR";
+    await tu.openTab(tester, "MEDIA");
+    await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER, "Local Music"]);
+    await tu.findAndTap(tester, "Navigate to: " + DENON_AVR, () => find.widgetWithText(ListTile, DENON_AVR));
+    await tu.navigateToMedia(tester, ["Genres"]);
+    await tu.contextMenu(tester, "Disco", "Create shortcut", waitFor: true);
+    await tu.contextMenu(tester, "Power Metall", "Create shortcut", waitFor: true);
+    await tu.contextMenu(tester, "Rock", "Create shortcut", waitFor: true);
+    await tu.ensureVisibleInList(
+        tester, "Ensure Русский рок", find.byType(ListView), () => find.text("Сборники"), OnpcTestUtils.LIST_DRAG_OFFSET);
+    await tu.contextMenu(tester, "Русский рок", "Create shortcut", waitFor: true);
+  }
+
+  if (favorite) {
+    await tu.openTab(tester, "MEDIA");
+    await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER, "Favorite"]);
+    await tu.contextMenu(tester, "Flow", "Create shortcut");
+    await tu.contextMenu(tester, "Hard Rock", "Create shortcut");
+    await tu.contextMenu(tester, "PureRock.US (Metal)", "Create shortcut");
+  }
+
+  if (radio) {
+    final Pair<String, String> DAB = Pair<String, String>("17 - BOB!", "BOB! on DAB");
+    final Pair<String, String> FM = Pair<String, String>("2 - 89.80 MHz", "ENERGY on FM");
+    await tu.openTab(tester, "MEDIA");
+    await tu.findAndTap(tester, "Select TUNER", () => find.text("TUNER"));
+    await tu.ensureVisibleInList(
+        tester, "Ensure return", find.byType(ListView), () => find.text("DAB"), DRAG_OFFSET_UP);
+    await tu.findAndTap(tester, "Select DAB", () => find.text("DAB"));
+    await tu.contextMenu(tester, DAB.item1, "Create shortcut", waitFor: true);
+    await tu.findAndTap(tester, "Select FM", () => find.text("FM"));
+    await tu.contextMenu(tester, FM.item1, "Create shortcut", waitFor: true);
+    await tu.openTab(tester, "SHORTCUTS");
+    await _renameShortcuts(tu, tester, [DAB, FM]);
+  }
+
+  await tu.findAndTap(tester, "Start Deezer", () => find.text("Flow"), delay: OnpcTestUtils.NORMAL_DELAY);
 }
 
 Future<void> _renameShortcuts(OnpcTestUtils tu, WidgetTester tester, final List<Pair<String, String>> items) async {
