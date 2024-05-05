@@ -30,12 +30,12 @@ class OnpcTestUtils {
   static const String STEP_HEADER = "=================================> ";
 
   static const String TOP_LAYER = "_MEDIA_LIST_TOP_LAYER";
-  static const int SHORT_DELAY = 2;
+  static const int DELAY_MS = 500;
   static const int NORMAL_DELAY = 5;
   static const int LONG_DELAY = 10;
   static const int HUGE_DELAY = 15;
 
-  static const Offset LIST_DRAG_OFFSET = Offset(0, -100);
+  static const Offset LIST_DRAG_OFFSET = Offset(0, -200);
 
   int _stepDelay = NORMAL_DELAY;
 
@@ -43,48 +43,62 @@ class OnpcTestUtils {
     _stepDelay = value;
   }
 
-  Future<void> stepDelay(WidgetTester tester, {int? delay}) async {
-    for (int i = 0; i < (delay ?? _stepDelay); i++) {
+  Future<void> stepDelayMs(WidgetTester tester) async {
+    for (int i = 0; i < DELAY_MS; i += 100) {
       await tester.pumpAndSettle();
-      await Future.delayed(Duration(milliseconds: 900));
+      await Future.delayed(Duration(milliseconds: 100));
     }
   }
 
-  Future<void> openDrawer(WidgetTester tester, {int? delay}) async {
+  Future<void> ensureElement(WidgetTester tester, OnFind finder) async {
+    while (finder().evaluate().isEmpty) {
+      await tester.pumpAndSettle();
+      await Future.delayed(Duration(milliseconds: 100));
+    }
+  }
+
+  Future<void> openDrawer(WidgetTester tester) async {
     Logging.info(tester, STEP_HEADER + "Open application drawer");
     await tester.tapAt(Offset(30, 30));
-    await stepDelay(tester, delay: delay ?? _stepDelay);
+    await ensureElement(tester, () => find.text("Enhanced Music Controller"));
   }
 
-  Future<void> openDrawerMenu(WidgetTester tester, String text, {int? delay}) async {
-    await openDrawer(tester, delay: delay ?? _stepDelay);
+  Future<void> openDrawerMenu(WidgetTester tester, String text, {OnFind? ensureAfter}) async {
+    await openDrawer(tester);
     await tester.dragUntilVisible(find.text(text), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-    await findAndTap(tester, "Open drawer menu: " + text, () => find.text(text), delay: delay ?? _stepDelay);
+    await findAndTap(tester, "Open drawer menu: " + text, () => find.text(text), ensureAfter: ensureAfter);
   }
 
-  Future<void> previousScreen(WidgetTester tester, {int? delay}) async {
+  Future<void> openSettings(WidgetTester tester, String s) async {
+    await openDrawerMenu(tester, "Settings", ensureAfter: () => find.text("Theme"));
+    await tester.ensureVisible(find.text(s));
+    await findAndTap(tester, "Change " + s, () => find.text(s));
+  }
+
+  Future<void> previousScreen(WidgetTester tester) async {
     Logging.info(tester, STEP_HEADER + "Open previous screen");
     await tester.tapAt(Offset(30, 30));
-    await stepDelay(tester, delay: delay ?? _stepDelay);
+    await stepDelayMs(tester);
   }
 
   Future<void> openTab(WidgetTester tester, String s,
       {bool swipeLeft = false, bool swipeRight = false, int? delay}) async {
     if (swipeLeft) {
       await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(200, 0), warnIfMissed: false);
-      await stepDelay(tester);
+      await stepDelayMs(tester);
     }
     if (swipeRight) {
       await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(-200, 0), warnIfMissed: false);
-      await stepDelay(tester);
+      await stepDelayMs(tester);
     }
     await findAndTap(tester, "Open " + s + " tab", () => find.widgetWithText(Tab, s), delay: delay ?? _stepDelay);
   }
 
   Future<void> findAndTap(WidgetTester tester, String title, OnFind finder,
-      {bool rightClick = false, bool waitFor = false, int num = 1, int idx = 0, int? delay}) async {
-    while (waitFor && finder().evaluate().isEmpty) {
-      await stepDelay(tester, delay: 1);
+      {bool rightClick = false, bool waitFor = false, int num = 1, int idx = 0,
+       int? delay, OnFind? ensureAfter}) async {
+    if (waitFor) {
+      await ensureElement(tester, finder);
     }
     Logging.info(tester, STEP_HEADER + title);
     final Finder fab = finder();
@@ -96,28 +110,48 @@ class OnpcTestUtils {
     } else {
       await tester.tap(fab.at(idx), buttons: 0x01, warnIfMissed: false);
     }
-    await stepDelay(tester, delay: delay ?? _stepDelay);
-  }
-
-  Future<void> navigateToMedia(WidgetTester tester, List<String> list,
-      {bool waitFor = true, int? delay}) async {
-    for (int i = 0; i < list.length; i++) {
-      if (list[i] == TOP_LAYER) {
-        await findAndTap(tester, "Select top level", () => find.byTooltip("Top Menu"));
-      } else {
-        await findAndTap(tester, "Navigate to: " + list[i], () => find.text(list[i]),
-            waitFor: waitFor, delay: delay ?? _stepDelay);
+    if (ensureAfter != null) {
+      await ensureElement(tester, ensureAfter);
+    } else {
+      for (int i = 0; i < (delay ?? _stepDelay); i++) {
+        await tester.pumpAndSettle();
+        await Future.delayed(Duration(milliseconds: 900));
       }
     }
   }
 
-  Future<void> contextMenu(WidgetTester tester, String item, String text, {bool waitFor = false, int? delay}) async {
-    await findAndTap(tester, "Select item: " + item, () => find.text(item),
-        waitFor: waitFor, rightClick: true, delay: delay ?? _stepDelay);
-    await findAndTap(tester, "Open context menu: " + text, () => find.text(text), delay: delay ?? _stepDelay);
+  Future<void> navigateToMedia(WidgetTester tester, List<String> list,
+      {bool waitFor = true, bool ensureVisible = false, OnFind? ensureAfter}) async {
+    for (int i = 0; i < list.length; i++) {
+      if (list[i] == TOP_LAYER) {
+        await findAndTap(tester, "Select top level", () => find.byTooltip("Top Menu"));
+      } else {
+        final List<String> tags = list[i].split("<S>");
+        if (tags.length == 2) {
+          Logging.info(tester, STEP_HEADER + "Split: " + tags.toString());
+        }
+        final String item = tags.length == 2 ? tags.first : list[i];
+        final String postItem = tags.length == 2 ? tags.last : list[i];
+        if (ensureVisible) {
+          await ensureVisibleInList(
+              tester, "Ensure item " + postItem, find.byType(ListView), () => find.text(postItem), Offset(0, -300));
+        }
+        await findAndTap(tester, "Navigate to: " + item, () => find.text(item),
+            waitFor: waitFor, ensureAfter: () => find.text("Return"));
+      }
+    }
+    if (ensureAfter != null) {
+      await ensureVisibleInList(tester, "Ensure item ", find.byType(ListView), ensureAfter, OnpcTestUtils.LIST_DRAG_OFFSET);
+    }
   }
 
-  Future<void> slideByValue(WidgetTester tester, Finder slider, double value, {int? delay}) async {
+  Future<void> contextMenu(WidgetTester tester, String item, String menu, {bool waitFor = false, OnFind? ensureAfter}) async {
+    await findAndTap(tester, "Select item: " + item, () => find.text(item),
+        waitFor: waitFor, rightClick: true, ensureAfter: () => find.text(menu));
+    await findAndTap(tester, "Open context menu: " + menu, () => find.text(menu), ensureAfter: ensureAfter);
+  }
+
+  Future<void> slideByValue(WidgetTester tester, Finder slider, double value) async {
     final widget = slider.evaluate().first.widget;
     if (widget is SfSlider) {
       Logging.info(
@@ -136,18 +170,18 @@ class OnpcTestUtils {
       final zeroPoint = tester.getTopLeft(slider) +
           Offset(ActivityDimens.progressBarRadius + start, tester.getSize(slider).height / 2);
       await tester.flingFrom(zeroPoint, Offset(end - start, 0), 80);
-      await stepDelay(tester, delay: delay ?? _stepDelay);
+      await stepDelayMs(tester);
     }
   }
 
-  Future<void> setText(WidgetTester tester, int num, int idx, String name, {int? delay}) async {
+  Future<void> setText(WidgetTester tester, int num, int idx, String name) async {
     final Finder fab = find.byWidgetPredicate((widget) => widget is TextFormField);
     expect(fab, findsNWidgets(num));
     await tester.enterText(fab.at(idx), name);
-    await stepDelay(tester, delay: delay ?? _stepDelay);
+    await stepDelayMs(tester);
   }
 
-  Future<void> changeReorderableItem(WidgetTester tester, key, {bool state = false, int? delay}) async {
+  Future<void> changeReorderableItem(WidgetTester tester, key, {bool state = false}) async {
     final Finder list = find.byType(ReorderableItem);
     final List<Finder> taps = [];
     list.evaluate().forEach((element) {
@@ -171,12 +205,12 @@ class OnpcTestUtils {
       }
     });
     for (int i = 0; i < taps.length; i++) {
-      await findAndTap(tester, "Change checkbox", () => taps[i], delay: delay ?? _stepDelay);
+      await findAndTap(tester, "Change checkbox", () => taps[i], delay: 0);
+      await stepDelayMs(tester);
     }
   }
 
-  Future<void> dragReorderableItem(WidgetTester tester, String drag, Offset dragOffset,
-      {int? delay, int dragIndex = 0}) async {
+  Future<void> dragReorderableItem(WidgetTester tester, String drag, Offset dragOffset, {int dragIndex = 0}) async {
     final Finder list = find.byType(ReorderableItem);
     final List<Finder> drags = [];
     list.evaluate().forEach((element) {
@@ -195,23 +229,19 @@ class OnpcTestUtils {
     });
     for (int i = 0; i < drags.length; i++) {
       await tester.drag(drags[i], dragOffset, warnIfMissed: false);
-      await stepDelay(tester, delay: delay ?? _stepDelay);
+      await stepDelayMs(tester);
     }
   }
 
   Future<void> ensureVisibleInList(
-      WidgetTester tester, String title, final Finder list, OnFind finder, Offset dragOffset,
-      {int? delay, bool extraDrag = false}) async {
+      WidgetTester tester, String title, final Finder list, OnFind finder, Offset dragOffset) async {
     Logging.info(tester, STEP_HEADER + title);
     expect(list, findsOneWidget);
     while (finder().evaluate().isEmpty) {
       await tester.drag(list, dragOffset, warnIfMissed: false);
       await tester.pumpAndSettle();
     }
-    if (extraDrag) {
-      await tester.drag(list, dragOffset, warnIfMissed: false);
-    }
-    await stepDelay(tester, delay: delay ?? _stepDelay);
+    await stepDelayMs(tester);
   }
 
   Future<void> writeLog(String tName) async {

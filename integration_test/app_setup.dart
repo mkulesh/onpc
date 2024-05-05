@@ -13,6 +13,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:onpc/main.dart' as app;
@@ -26,58 +27,27 @@ void main() {
 
   testWidgets('Initial configuration of the app', (tester) async {
     final OnpcTestUtils tu = OnpcTestUtils();
-    tu.setStepDelay(OnpcTestUtils.SHORT_DELAY);
+    tu.setStepDelay(1);
 
     app.main();
-    if (Platform.isIOS) {
-      await tu.stepDelay(tester, delay: OnpcTestUtils.LONG_DELAY);
-    } else {
-      await tu.stepDelay(tester);
-    }
-
+    await tu.stepDelayMs(tester);
     if (find.text("Search").evaluate().isNotEmpty) {
       // Device search is opened
       expect(find.text("Not connected"), findsOneWidget);
       await tu.findAndTap(tester, "Connect to Onkyo Player", () => find.text("192.168.1.80:60128"), waitFor: true);
-    } else {
-      await tu.openTab(tester, "LISTEN");
-    }
-
-    if (find.text("Onkyo Player (Standby)").evaluate().isNotEmpty) {
-      // Player is off - call power on
-      await tu.findAndTap(tester, "Power-off", () => find.byTooltip("On/Standby"));
     }
 
     await _aboutScreen(tu, tester);
     await _changeAppSettings(tu, tester);
     await _changeListenLayout(tu, tester);
-
-    if (find.text("My Denon AVR").evaluate().isEmpty) {
-      await _setupDenon(tu, tester);
-    }
-
-    if (find.text("My Onkyo Box").evaluate().isEmpty) {
-      await _setupOnkyoBox(tu, tester);
-    }
-
-    if (find.text("My Onkyo Player").evaluate().isEmpty) {
-      await _setupOnkyoPlayer(tu, tester);
-    }
-
-    await tu.openTab(tester, "SHORTCUTS");
-    if (find.text("Deezer Flow").evaluate().isEmpty) {
-      await _buildFavourites(tu, tester, dlna: true, deezer: true, tuneIn: true, usbMusic: true, radio: true);
-    }
-
-    if (Platform.isDesktop) {
-      await _addRiDevices(tu, tester);
-    }
+    await _setupDenon(tu, tester);
+    await _setupOnkyoBox(tu, tester);
+    await _setupOnkyoPlayer(tu, tester);
   });
 }
 
 Future<void> _setupDenon(OnpcTestUtils tu, WidgetTester tester) async {
   await _saveConnection(tu, tester, "My Denon AVR", "192.168.1.82", isDCP: true);
-  await _renameZone(tu, tester, 1, "To Onkyo");
   await _changeInputs(tester, tu, [
     Pair("HEOS MUSIC", "NET"),
     Pair("BLUETOOTH", "BT"),
@@ -119,6 +89,7 @@ Future<void> _setupDenon(OnpcTestUtils tu, WidgetTester tester) async {
     Pair("Video Game", false),
     Pair("Virtual", false),
   ]);
+  await _renameZone(tu, tester, 1, "To Onkyo");
 }
 
 Future<void> _setupOnkyoBox(OnpcTestUtils tu, WidgetTester tester) async {
@@ -158,6 +129,10 @@ Future<void> _setupOnkyoBox(OnpcTestUtils tu, WidgetTester tester) async {
 
 Future<void> _setupOnkyoPlayer(OnpcTestUtils tu, WidgetTester tester) async{
   await _saveConnection(tu, tester, "My Onkyo Player", "192.168.1.80");
+  if (find.text("Onkyo Player (Standby)").evaluate().isNotEmpty) {
+    // Player is off - call power on
+    await tu.findAndTap(tester, "Power-off", () => find.byTooltip("On/Standby"));
+  }
   await _changeInputs(tester, tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
   await _changeServices(tester, tu, [
     Pair("Deezer", true),
@@ -166,13 +141,19 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu, WidgetTester tester) async{
     Pair("Tidal", false),
     Pair("Amazon Music", false),
   ]);
+  await tu.openTab(tester, "SHORTCUTS");
+  if (find.text("Deezer Flow").evaluate().isEmpty) {
+    await _buildOnkyoFavourites(tu, tester, dlna: true, deezer: true, tuneIn: true, usbMusic: true, radio: true);
+  }
+  if (Platform.isDesktop) {
+    await _addRiDevices(tu, tester);
+  }
 }
 
 Future<void> _saveConnection(final OnpcTestUtils tu, WidgetTester tester, String name, String address,
     {bool isDCP = false}) async {
-  await tu.openDrawerMenu(tester, "Connect");
+  await tu.openDrawerMenu(tester, "Connect", ensureAfter: () => find.text("Onkyo/Pioneer/Integra"));
   expect(find.text("Connect"), findsOneWidget);
-  expect(find.text("Onkyo/Pioneer/Integra"), findsOneWidget);
   expect(find.text("Denon/Marantz"), findsOneWidget);
   expect(find.text("Address"), findsOneWidget);
   expect(find.text("Port (optional)"), findsOneWidget);
@@ -186,52 +167,45 @@ Future<void> _saveConnection(final OnpcTestUtils tu, WidgetTester tester, String
 }
 
 Future<void> _aboutScreen(OnpcTestUtils tu, WidgetTester tester) async {
-  await tu.openDrawerMenu(tester, "About");
+  await tu.openDrawerMenu(tester, "About", ensureAfter: () => find.byType(Markdown));
   await tu.previousScreen(tester);
 }
 
 Future<void> _changeAppSettings(final OnpcTestUtils tu, WidgetTester tester) async {
-  await tu.openDrawerMenu(tester, "Settings");
+  await tu.openDrawerMenu(tester, "Settings", ensureAfter: () => find.text("Theme"));
 
-  if (find.text("Light (Purple and Green)").evaluate().isEmpty) {
-    await tu.findAndTap(tester, "Change Theme1", () => find.text("Theme"));
-    await tu.findAndTap(tester, "Change Theme2", () => find.text("Light (Purple and Green)"));
+  final String THEME = "Light (Purple and Green)";
+  if (find.text(THEME).evaluate().isEmpty) {
+    await tu.findAndTap(tester, "Change Theme1", () => find.text("Theme"), ensureAfter: () => find.text(THEME));
+    await tu.findAndTap(tester, "Change Theme2", () => find.text(THEME));
   }
 
-  if (find.text("English").evaluate().isEmpty) {
-    await tu.findAndTap(tester, "Change App language1", () => find.text("App language"));
-    await tu.findAndTap(tester, "Change App language2", () => find.text("English"));
+  final String LANGUAGE = "English";
+  if (find.text(LANGUAGE).evaluate().isEmpty) {
+    await tu.findAndTap(tester, "Change App language1", () => find.text("App language"), ensureAfter: () => find.text(LANGUAGE));
+    await tu.findAndTap(tester, "Change App language2", () => find.text(LANGUAGE));
   }
 
-  if (Platform.isDesktop && find.text("Small").evaluate().isEmpty) {
-    await tu.findAndTap(tester, "Change Text and buttons size1", () => find.text("Text and buttons size"));
-    await tu.findAndTap(tester, "Change Text and buttons size2", () => find.text("Small"));
-  } else if (Platform.isIOS && find.text("Big").evaluate().isEmpty) {
-    await tu.findAndTap(tester, "Change Text and buttons size1", () => find.text("Text and buttons size"));
-    await tu.findAndTap(tester, "Change Text and buttons size2", () => find.text("Big"));
+  final String SIZE = Platform.isIOS ? "Big" : "Small";
+  if (find.text(SIZE).evaluate().isEmpty) {
+    await tu.findAndTap(tester, "Change Text and buttons size1", () => find.text("Text and buttons size"), ensureAfter: () => find.text(SIZE));
+    await tu.findAndTap(tester, "Change Text and buttons size2", () => find.text(SIZE));
   }
 
   await tester.dragUntilVisible(find.text("Sound control"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-  if (find.text("Automatic").evaluate().isEmpty) {
-    await tu.findAndTap(tester, "Change Sound control1", () => find.text("Sound control"));
-    await tu.findAndTap(tester, "Change Sound control2", () => find.text("Automatic"));
+  final String SOUND = "Automatic";
+  if (find.text(SOUND).evaluate().isEmpty) {
+    await tu.findAndTap(tester, "Change Sound control1", () => find.text("Sound control"), ensureAfter: () => find.text(SOUND));
+    await tu.findAndTap(tester, "Change Sound control2", () => find.text(SOUND));
   }
 
   // RI-USB
   if (Platform.isDesktop) {
-    await tester.dragUntilVisible(
-        find.text("Use USB-RI interface"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-    final String USB_RI1 = "OnkioRI FT231X - D30AWI99";
-    final String USB_RI2 = "OnkioRI FT231X";
-    if (find.text(USB_RI1).evaluate().isEmpty && find.text(USB_RI2).evaluate().isEmpty) {
-      await tu.findAndTap(tester, "Change Use USB-RI interface", () => find.text("Use USB-RI interface"));
-      if (find.text(USB_RI1).evaluate().isNotEmpty) {
-        await tu.findAndTap(tester, "Select " + USB_RI1, () => find.text(USB_RI1));
-      } else if (find.text(USB_RI2).evaluate().isNotEmpty) {
-        await tu.findAndTap(tester, "Select " + USB_RI2, () => find.text(USB_RI2));
-      } else {
-        await tu.findAndTap(tester, "Select Cancel", () => find.text("CANCEL"));
-      }
+    await tester.dragUntilVisible(find.text("Use USB-RI interface"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+    final String USB_RI = "OnkioRI FT231X";
+    if (find.textContaining(USB_RI).evaluate().isEmpty) {
+      await tu.findAndTap(tester, "Change Use USB-RI interface1", () => find.text("Use USB-RI interface"), ensureAfter: () => find.textContaining(USB_RI));
+      await tu.findAndTap(tester, "Change Use USB-RI interface2", () => find.textContaining(USB_RI));
     }
   }
 
@@ -239,8 +213,7 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu, WidgetTester tester) asy
 }
 
 Future<void> _changeServices(WidgetTester tester, OnpcTestUtils tu, List<Pair<String, bool>> items) async {
-  await tu.openDrawerMenu(tester, "Settings");
-  await tu.findAndTap(tester, "Change services", () => find.text("Network services"));
+  await tu.openSettings(tester, "Network services");
   for (int i = 0; i < items.length; i++) {
     final Pair<String, bool> item = items[i];
     await tu.changeReorderableItem(tester, item.item1, state: item.item2);
@@ -251,15 +224,14 @@ Future<void> _changeServices(WidgetTester tester, OnpcTestUtils tu, List<Pair<St
 }
 
 Future<void> _changeInputs(WidgetTester tester, OnpcTestUtils tu, List<Pair<String, String>> items) async {
-  await tu.openDrawerMenu(tester, "Settings");
-  await tu.findAndTap(tester, "Change inputs", () => find.text("Input selectors"));
+  await tu.openSettings(tester, "Input selectors");
   for (int i = 0; i < items.length; i++) {
     final Pair<String, String> item = items[i];
     if (item.item2.isEmpty) {
       await tu.changeReorderableItem(tester, item.item1);
       await tu.dragReorderableItem(tester, item.item1, Offset(0, 600));
     } else {
-      await tu.contextMenu(tester, item.item1, "Edit");
+      await tu.contextMenu(tester, item.item1, "Edit", ensureAfter: () => find.text("CANCEL"));
       await tu.setText(tester, 1, 0, item.item2);
       await tu.findAndTap(tester, "Close edit dialog", () => find.text("OK"));
     }
@@ -269,10 +241,7 @@ Future<void> _changeInputs(WidgetTester tester, OnpcTestUtils tu, List<Pair<Stri
 }
 
 Future<void> _changeListeningModes(WidgetTester tester, OnpcTestUtils tu, List<Pair<String, bool>> items) async {
-  await tu.openDrawerMenu(tester, "Settings");
-  final String lm = "Listening modes";
-  await tester.ensureVisible(find.text(lm));
-  await tu.findAndTap(tester, "Change " + lm, () => find.text(lm));
+  await tu.openSettings(tester, "Listening modes");
   for (int i = 0; i < items.length; i++) {
     final Pair<String, bool> item = items[i];
     await tester.ensureVisible(find.text(item.item1));
@@ -286,23 +255,19 @@ Future<void> _changeListeningModes(WidgetTester tester, OnpcTestUtils tu, List<P
 }
 
 Future<void> _changeListenLayout(final OnpcTestUtils tu, WidgetTester tester) async {
-  await tu.openDrawerMenu(tester, "Tab layout");
-  await tu.dragReorderableItem(tester, "File information", Offset(0, -600));
+  final String s = "File information";
+  await tu.openDrawerMenu(tester, "Tab layout", ensureAfter: () => find.text(s));
+  await tu.dragReorderableItem(tester, s, Offset(0, -600));
   await tu.previousScreen(tester);
 }
 
-Future<void> _buildFavourites(final OnpcTestUtils tu, WidgetTester tester,
+Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu, WidgetTester tester,
     {bool dlna = false, bool deezer = false, bool tuneIn = false, bool usbMusic = false, bool radio = false}) async {
-  final DRAG_OFFSET_DOWN = Offset(0, -300);
   final DRAG_OFFSET_UP = Offset(0, 300);
-  final Pair<String, String> FLOW = Pair<String, String>("Flow", "Deezer Flow");
   final Pair<String, String> FAVOURITES = Pair<String, String>("The Dancer", "Deezer Favourites");
-  final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
-  final Pair<String, String> DAB = Pair<String, String>("Playback mode", "DAB");
-  final Pair<String, String> FM = Pair<String, String>("2 - ENERGY - 89.80 MHz", "ENERGY");
 
   await tu.openTab(tester, "MEDIA");
-  await tu.findAndTap(tester, "Select NET", () => find.text("NET"), delay: OnpcTestUtils.LONG_DELAY);
+  await tu.findAndTap(tester, "Select NET", () => find.text("NET"), ensureAfter: () => find.text("Music Server (DLNA)"));
 
   if (dlna) {
     await tu
@@ -311,18 +276,15 @@ Future<void> _buildFavourites(final OnpcTestUtils tu, WidgetTester tester,
   }
 
   if (deezer) {
+    final Pair<String, String> FLOW = Pair<String, String>("Flow", "Deezer Flow");
+    final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
     await tu.navigateToMedia(tester, [OnpcTestUtils.TOP_LAYER, "Deezer", "My Music", "My Music | items: 6"]);
     await tu.contextMenu(tester, FLOW.item1, "Create shortcut", waitFor: true);
-    await tu.navigateToMedia(tester, ["My Music", "Favourite tracks"]);
-    await tu.ensureVisibleInList(
-        tester, "Ensure song", find.byType(ListView), () => find.text(FAVOURITES.item1), DRAG_OFFSET_DOWN);
-    await tu.contextMenu(tester, FAVOURITES.item1, "Create shortcut", waitFor: true);
+    await tu.navigateToMedia(tester, ["My Music", "Favourite tracks"], ensureAfter: () => find.text(FAVOURITES.item1));
+    await tu.contextMenu(tester, FAVOURITES.item1, "Create shortcut");
     await tu.ensureVisibleInList(
         tester, "Ensure return", find.byType(ListView), () => find.text("Return"), DRAG_OFFSET_UP);
-    await tu.navigateToMedia(tester, ["Return", "My Playlists", "Onkyo playlist"]);
-    await tu.ensureVisibleInList(
-        tester, "Ensure song", find.byType(ListView), () => find.text(PLAYLIST.item1), DRAG_OFFSET_DOWN,
-        extraDrag: Platform.isMacOS);
+    await tu.navigateToMedia(tester, ["Return", "My Playlists", "Onkyo playlist"], ensureAfter: () => find.text("Forever / Y&T"));
     await tu.contextMenu(tester, PLAYLIST.item1, "Create shortcut", waitFor: true);
     await _renameShortcuts(tu, tester, [FLOW, FAVOURITES, PLAYLIST]);
   }
@@ -341,27 +303,29 @@ Future<void> _buildFavourites(final OnpcTestUtils tu, WidgetTester tester,
     await tu.contextMenu(tester, "Power Metall", "Create shortcut", waitFor: true);
     await tu.contextMenu(tester, "Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
-        tester, "Ensure Русский рок", find.byType(ListView), () => find.text("Русский рок"), DRAG_OFFSET_DOWN);
+        tester, "Ensure Русский рок", find.byType(ListView), () => find.text("Русский рок"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu(tester, "Русский рок", "Create shortcut", waitFor: true);
   }
 
   if (radio) {
+    final Pair<String, String> DAB = Pair<String, String>("Playback mode", "DAB");
+    final Pair<String, String> FM = Pair<String, String>("2 - ENERGY - 89.80 MHz", "ENERGY");
     await tu.openTab(tester, "MEDIA");
-    await tu.findAndTap(tester, "Select DAB", () => find.text("DAB"), delay: OnpcTestUtils.LONG_DELAY);
+    await tu.findAndTap(tester, "Select DAB", () => find.text("DAB"), ensureAfter: () => find.text(DAB.item1));
     await tu.contextMenu(tester, DAB.item1, "Create shortcut", waitFor: true);
-    await tu.findAndTap(tester, "Select FM", () => find.text("FM"), delay: OnpcTestUtils.LONG_DELAY);
+    await tu.findAndTap(tester, "Select FM", () => find.text("FM"), ensureAfter: () => find.text(FM.item1));
     await tu.contextMenu(tester, FM.item1, "Create shortcut", waitFor: true);
     await tu.openTab(tester, "SHORTCUTS");
     await _renameShortcuts(tu, tester, [DAB, FM]);
   }
 
-  await tu.findAndTap(tester, "Start Deezer", () => find.text(FAVOURITES.item2));
+  await tu.findAndTap(tester, "Start Deezer", () => find.text(FAVOURITES.item2), delay: OnpcTestUtils.NORMAL_DELAY);
 }
 
 Future<void> _renameShortcuts(OnpcTestUtils tu, WidgetTester tester, final List<Pair<String, String>> items) async {
   await tu.openTab(tester, "SHORTCUTS");
   for (int i = 0; i < items.length; i++) {
-    await tu.contextMenu(tester, items[i].item1, "Edit");
+    await tu.contextMenu(tester, items[i].item1, "Edit", ensureAfter: () => find.text("CANCEL"));
     await tu.setText(tester, 1, 0, items[i].item2);
     await tu.findAndTap(tester, "Close edit dialog", () => find.text("OK"));
   }
@@ -373,12 +337,12 @@ Future<void> _addRiDevices(OnpcTestUtils tu, WidgetTester tester) async {
   await tu.openTab(tester, "RI", swipeRight: true);
 
   // Tab layout
-  await tu.openDrawerMenu(tester, "Tab layout");
+  await tu.openDrawerMenu(tester, "Tab layout", ensureAfter: () => find.text("Divider"));
   await tu.changeReorderableItem(tester, "Divider");
   await tu.ensureVisibleInList(
       tester, "Ensure " + TD, find.byType(ReorderableListView), () => find.text(TD), OnpcTestUtils.LIST_DRAG_OFFSET);
   await tester.drag(find.text(MD), OnpcTestUtils.LIST_DRAG_OFFSET, warnIfMissed: false);
-  await tu.stepDelay(tester);
+  await tu.stepDelayMs(tester);
   await tu.changeReorderableItem(tester, MD, state: true);
   await tu.changeReorderableItem(tester, TD, state: true);
   await tu.previousScreen(tester);
@@ -391,6 +355,5 @@ Future<void> _renameZone(OnpcTestUtils tu, WidgetTester tester, int zone, String
   await tu.setText(tester, 1, 0, newName);
   await tu.findAndTap(tester, "Close Rename dialog", () => find.text("OK"));
   await tu.previousScreen(tester);
-  await tu.openDrawerMenu(tester, newName, delay: OnpcTestUtils.LONG_DELAY);
-  expect(find.textContaining("Denon AVR/" + newName), findsOneWidget);
+  await tu.openDrawerMenu(tester, newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
 }

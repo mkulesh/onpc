@@ -30,7 +30,7 @@ void main() {
     tu.setStepDelay(OnpcTestUtils.NORMAL_DELAY);
 
     app.main();
-    await tu.stepDelay(tester);
+    await tu.stepDelayMs(tester);
 
     await tu.openTab(tester, "LISTEN", swipeLeft: true, delay: OnpcTestUtils.LONG_DELAY);
 
