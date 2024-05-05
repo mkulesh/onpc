@@ -82,7 +82,7 @@ class OnpcTestUtils {
   }
 
   Future<void> openTab(WidgetTester tester, String s,
-      {bool swipeLeft = false, bool swipeRight = false, int? delay}) async {
+      {bool swipeLeft = false, bool swipeRight = false, OnFind? ensureAfter}) async {
     if (swipeLeft) {
       await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(200, 0), warnIfMissed: false);
       await stepDelayMs(tester);
@@ -91,7 +91,8 @@ class OnpcTestUtils {
       await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(-200, 0), warnIfMissed: false);
       await stepDelayMs(tester);
     }
-    await findAndTap(tester, "Open " + s + " tab", () => find.widgetWithText(Tab, s), delay: delay ?? _stepDelay);
+    await findAndTap(tester, "Open " + s + " tab", () => find.widgetWithText(Tab, s),
+        ensureAfter : ensureAfter);
   }
 
   Future<void> findAndTap(WidgetTester tester, String title, OnFind finder,
@@ -124,7 +125,12 @@ class OnpcTestUtils {
       {bool waitFor = true, bool ensureVisible = false, OnFind? ensureAfter}) async {
     for (int i = 0; i < list.length; i++) {
       if (list[i] == TOP_LAYER) {
-        await findAndTap(tester, "Select top level", () => find.byTooltip("Top Menu"));
+        if (i + 1 < list.length) {
+          await findAndTap(tester, "Select top level", () => find.byTooltip("Top Menu"),
+              ensureAfter: () => find.text(list[i + 1]));
+        } else {
+          await findAndTap(tester, "Select top level", () => find.byTooltip("Top Menu"));
+        }
       } else {
         final List<String> tags = list[i].split("<S>");
         if (tags.length == 2) {
