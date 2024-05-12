@@ -17,6 +17,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:onpc/main.dart' as app;
+import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
 import 'package:onpc/utils/Platform.dart';
 
@@ -26,7 +27,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Initial configuration of the app', (tester) async {
-    final OnpcTestUtils tu = OnpcTestUtils(tester, 1);
+    final OnpcTestUtils tu = OnpcTestUtils(tester);
 
     app.main();
     await tu.stepDelayMs();
@@ -43,7 +44,8 @@ void main() {
     await _setupOnkyoBox(tu);
     await _setupOnkyoPlayer(tu);
 
-    await Future.delayed(Duration(seconds: 2));
+    // Write log
+    await tu.writeLog("auto-test-setup");
   });
 }
 
@@ -169,6 +171,7 @@ Future<void> _saveConnection(final OnpcTestUtils tu, String name, String address
   await tu.findAndTap("Save connection", () => find.text("Save connection"));
   await tu.setText(3, 2, name);
   await tu.findAndTap("Close connect dialog", () => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
+  Logging.logSize = 5000; // After reconnect, increase log size
 }
 
 Future<void> _aboutScreen(OnpcTestUtils tu) async {
@@ -276,9 +279,9 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
   final Pair<String, String> FAVOURITES = Pair<String, String>("The Dancer", "Deezer Favourites");
 
   await tu.openTab("MEDIA");
-  await tu.findAndTap("Select NET", () => find.text("NET"), ensureAfter: () => find.text("Music Server (DLNA)"));
 
   if (dlna) {
+    await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Music Server (DLNA)", "Supermicro DLNA Server", "Music"]);
     await tu.contextMenu("Artist", "Create shortcut", waitFor: true);
   }
@@ -286,6 +289,9 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
   if (deezer) {
     final Pair<String, String> FLOW = Pair<String, String>("Flow", "Deezer Flow");
     final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
+    await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
+    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer"]);
+    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Music", "My Music | items: 6"]);
     await tu.contextMenu(FLOW.item1, "Create shortcut", waitFor: true);
     await tu.navigateToMedia(["My Music", "Favourite tracks"], ensureAfter: () => find.text(FAVOURITES.item1));
@@ -307,6 +313,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
 
   if (tuneIn) {
     await tu.openTab("MEDIA");
+    await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "TuneIn Radio", "My Presets"]);
     await tu.contextMenu("Absolut relax (Easy Listening)", "Create shortcut", waitFor: true);
     await tu.contextMenu("PureRock.US (Metal)", "Create shortcut", waitFor: true);
@@ -314,7 +321,8 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
 
   if (usbMusic) {
     await tu.openTab("MEDIA");
-    await tu.navigateToMedia(["USB Disk", OnpcTestUtils.TOP_LAYER, "onkyo_music"]);
+    await tu.findAndTap("Select USB Disk", () => find.text("USB Disk"), delay: OnpcTestUtils.NORMAL_DELAY);
+    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "onkyo_music"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
     await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);

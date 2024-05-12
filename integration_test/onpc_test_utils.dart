@@ -14,11 +14,14 @@
 
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/constants/Version.dart';
 import 'package:onpc/utils/Logging.dart';
+import 'package:onpc/utils/Pair.dart';
+import 'package:onpc/widgets/CustomImageButton.dart';
 import 'package:onpc/widgets/CustomTextLabel.dart';
 import 'package:onpc/widgets/ReorderableItem.dart';
 import 'package:onpc/utils/Platform.dart';
@@ -30,17 +33,20 @@ class OnpcTestUtils {
   static const String STEP_HEADER = "=================================> ";
 
   static const String TOP_LAYER = "_MEDIA_LIST_TOP_LAYER";
-  static const int DELAY_MS = 500;
+  static const int _DEFAULT_DELAY_MS = 500;
+  static const int _WAITING_DURATION = 1000 * 60; // 60 seconds waiting duration
+
   static const int NORMAL_DELAY = 5;
   static const int LONG_DELAY = 10;
   static const int HUGE_DELAY = 15;
 
   static const Offset LIST_DRAG_OFFSET = Offset(0, -200);
+  static const Offset LIST_DRAG_OFFSET_UP = Offset(0, 300);
 
   final WidgetTester tester;
-  int stepDelay = NORMAL_DELAY;
+  final int _stepDelay = 1;
 
-  OnpcTestUtils(this.tester, this.stepDelay);
+  OnpcTestUtils(this.tester);
 
   Future<void> connect(String device, String searchFor) async {
     await stepDelayMs();
@@ -48,26 +54,35 @@ class OnpcTestUtils {
       await openDrawer();
       await findAndTap("Find and connect", () => find.text(device), delay: OnpcTestUtils.HUGE_DELAY);
     }
+    Logging.logSize = 5000; // After reconnect, increase log size
   }
 
-  Future<void> stepDelayMs() async {
-    for (int i = 0; i < DELAY_MS; i += 100) {
+  Future<void> stepDelaySec(int delay) async {
+    await stepDelayMs(delay: 1000 * delay);
+  }
+
+  Future<void> stepDelayMs({int? delay}) async {
+    for (int i = 0; i < (delay ?? _DEFAULT_DELAY_MS); i += 100) {
       await tester.pumpAndSettle();
       await Future.delayed(Duration(milliseconds: 100));
     }
   }
 
   Future<void> ensureVisible(OnFind finder) async {
+    final int start = DateTime.now().millisecondsSinceEpoch;
     while (finder().evaluate().isEmpty) {
       await tester.pumpAndSettle();
       await Future.delayed(Duration(milliseconds: 100));
+      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
     }
   }
 
   Future<void> ensureDeleted(OnFind finder) async {
+    final int start = DateTime.now().millisecondsSinceEpoch;
     while (finder().evaluate().isNotEmpty) {
       await tester.pumpAndSettle();
       await Future.delayed(Duration(milliseconds: 100));
+      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
     }
   }
 
@@ -130,7 +145,7 @@ class OnpcTestUtils {
     if (ensureAfter != null) {
       await ensureVisible(ensureAfter);
     } else {
-      for (int i = 0; i < (delay ?? stepDelay); i++) {
+      for (int i = 0; i < (delay ?? _stepDelay); i++) {
         await tester.pumpAndSettle();
         await Future.delayed(Duration(milliseconds: 900));
       }
@@ -147,6 +162,7 @@ class OnpcTestUtils {
         } else {
           await findAndTap("Select top level", () => find.byTooltip("Top Menu"));
         }
+        await stepDelaySec(1);
       } else {
         final List<String> tags = list[i].split("<S>");
         if (tags.length == 2) {
@@ -272,10 +288,50 @@ class OnpcTestUtils {
   }
 
   Future<void> writeLog(String tName) async {
+    Logging.logSize = 5000;
+    await stepDelaySec(NORMAL_DELAY);
+    Logging.info(this, STEP_HEADER + "Test PASSED");
     final StringBuffer outContent = StringBuffer();
     final DateTime now = DateTime.now();
     Logging.latestLogging.forEach((str) => outContent.writeln(str.substring(6)));
     final String fName = tName + "_" + Version.NAME + "_" + now.toString().replaceAll(":", "-") + ".log";
     await File(fName).writeAsString(outContent.toString());
+  }
+
+  List<Pair<String, String>> getListContent() {
+    final List<Pair<String, String>> retValue = [];
+    final Finder list = find.byWidgetPredicate((widget) => widget is ListTile);
+    list.evaluate().forEach((element) {
+      if (element.widget is ListTile) {
+        final ListTile widget = element.widget as ListTile;
+        if (widget.leading is CustomImageButton && widget.title is CustomTextLabel) {
+          final String icon = (widget.leading as CustomImageButton).icon;
+          final String title = (widget.title as CustomTextLabel).description;
+          retValue.add(Pair(icon, title));
+        }
+      }
+    });
+    return retValue;
+  }
+
+  Future<void> waitMediaItemPlaying(String name) async {
+    final int start = DateTime.now().millisecondsSinceEpoch;
+    while (true) {
+      await tester.pumpAndSettle();
+      final Pair<String, String>? bob =
+          getListContent().firstWhereOrNull((s) => s.item1.contains("media_item_play") && s.item2.contains(name));
+      if (bob != null) {
+        break;
+      }
+      await Future.delayed(Duration(milliseconds: 100));
+      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
+    }
+  }
+
+  Future<void> changeFriendlyName(OnpcTestUtils tu, String name) async {
+    await tu.setText(1, 0, name);
+    await tu.findAndTap("Change friendly name", () => find.byTooltip("Change friendly name"));
+    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
+    expect(find.text(name), findsExactly(2));
   }
 }
