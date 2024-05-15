@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -25,12 +25,17 @@ import "ServiceType.dart";
 class DcpMediaItemMsg extends ISCPMessage
 {
     static const String CODE = "D06";
+    static const int INVALID_TRACK = -1;
 
     final int _sid;
 
-    DcpMediaItemMsg(EISCPMessage raw) : _sid = -1, super(CODE, raw);
+    final int _qid;
 
-    DcpMediaItemMsg._dcp(final String mid, final int sid) : _sid = sid, super.output(CODE, mid);
+    DcpMediaItemMsg(EISCPMessage raw) :
+            _sid = INVALID_TRACK, _qid = INVALID_TRACK, super(CODE, raw);
+
+    DcpMediaItemMsg._dcp(final String mid, final int sid, final int qid) :
+            _sid = sid, _qid = qid, super.output(CODE, mid);
 
     EnumItem<ServiceType> getServiceType()
     {
@@ -38,9 +43,11 @@ class DcpMediaItemMsg extends ISCPMessage
         return (st == null) ? Services.ServiceTypeEnum.defValue : st;
     }
 
+    int get qid => _qid;
+
     @override
     String toString()
-    => super.toString() + "[SID=" + _sid.toString() + "]";
+    => super.toString() + "[SID=" + _sid.toString() + ", QID=" + _qid.toString() + "]";
 
     /*
      * Denon control protocol
@@ -63,7 +70,9 @@ class DcpMediaItemMsg extends ISCPMessage
                 return null;
             }
             final int? sid = jsonMsg.getInt("payload.sid");
-            return sid != null ? DcpMediaItemMsg._dcp(mid, sid) : null;
+            final int? qid = ("station" == type) ?
+                INVALID_TRACK : jsonMsg.getInt("payload.qid");
+            return sid != null ? DcpMediaItemMsg._dcp(mid, sid, qid != null ? qid : INVALID_TRACK) : null;
         }
         return null;
     }

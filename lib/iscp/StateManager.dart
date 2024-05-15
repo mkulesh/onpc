@@ -630,11 +630,18 @@ class StateManager
         if (msg is DcpMediaEventMsg)
         {
             final MediaListState ms = state.mediaListState;
-            if (msg.getData == DcpMediaEventMsg.HEOS_EVENT_QUEUE &&
-                ms.isQueue)
+            if (msg.getData == DcpMediaEventMsg.HEOS_EVENT_QUEUE)
             {
-                Logging.info(this, "DCP: requesting queue state...");
-                sendMessage(NetworkServiceMsg.output(ms.serviceType.key));
+                if (state.trackState.currentTrack != TrackInfoMsg.INVALID_TRACK)
+                {
+                    Logging.info(this, "DCP: requesting queue size...");
+                    sendMessage(TrackInfoMsg.output(state.trackState.currentTrack, TrackInfoMsg.INVALID_TRACK));
+                }
+                if (ms.isQueue)
+                {
+                    Logging.info(this, "DCP: requesting queue items...");
+                    sendMessage(NetworkServiceMsg.output(ms.serviceType.key));
+                }
             }
             if (msg.getData == DcpMediaEventMsg.HEOS_EVENT_SERVICEOPT &&
                 ms.dcpMediaPath.isNotEmpty)
@@ -648,6 +655,16 @@ class StateManager
         if (changed == null)
         {
             return null;
+        }
+
+        if (msg is DcpMediaItemMsg)
+        {
+            final DcpMediaItemMsg mc = msg;
+            if (mc.qid != DcpMediaItemMsg.INVALID_TRACK)
+            {
+                Logging.info(this, "DCP: requesting queue size...");
+                sendMessage(TrackInfoMsg.output(mc.qid, TrackInfoMsg.INVALID_TRACK));
+            }
         }
 
         if (msg is PowerStatusMsg)

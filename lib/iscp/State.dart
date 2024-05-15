@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -506,7 +506,9 @@ class State with ProtoTypeMix
         }
         if (msg is DcpMediaItemMsg)
         {
-            return _isChange(DcpMediaItemMsg.CODE, _mediaListState.processDcpMediaItemMsg(msg, _playbackState));
+            final String? ch1 = _isChange(DcpMediaItemMsg.CODE, _mediaListState.processDcpMediaItemMsg(msg, _playbackState));
+            final String? ch2 = _isChange(DcpMediaItemMsg.CODE, _trackState.processDcpMediaItemMsg(msg));
+            return ch1 != null ? ch1 : ch2;
         }
         else if (msg is DcpSearchCriteriaMsg)
         {

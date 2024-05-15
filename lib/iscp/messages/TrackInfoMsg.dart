@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 
+import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -39,6 +40,13 @@ class TrackInfoMsg extends ISCPMessage
         _maxTrack = ISCPMessage.nonNullInteger(pars[1], 10, INVALID_TRACK);
     }
 
+    TrackInfoMsg.output(int currentTrack, int maxTrack) :
+            super.output(CODE, currentTrack.toString() + ISCPMessage.PAR_SEP + maxTrack.toString())
+    {
+        _currentTrack = currentTrack;
+        _maxTrack = maxTrack;
+    }
+
     int get getCurrentTrack
     => _currentTrack;
 
@@ -48,4 +56,39 @@ class TrackInfoMsg extends ISCPMessage
     @override
     String toString()
     => super.toString() + "[CURR=" + _currentTrack.toString() + "; MAX=" + _maxTrack.toString() + "]";
+
+    /*
+     * Denon control protocol
+     * Request queue length: heos://player/get_queue?pid=PID&range=X,Y
+     * Response: {"heos": {"command": "player/get_queue", "result": "success", "message": "pid=PID&range=X,Y&returned=17&count=17"}, "payload": []}
+     */
+    static const String _HEOS_COMMAND = "player/get_queue";
+
+    static TrackInfoMsg? processHeosMessage(final DcpHeosMessage jsonMsg)
+    {
+        if (_HEOS_COMMAND == jsonMsg.command)
+        {
+            final int? count = int.tryParse(jsonMsg.getMsgTag("count"));
+            if (count != null && count == 0)
+            {
+                return TrackInfoMsg.output(INVALID_TRACK, INVALID_TRACK);
+            }
+            final List<String> rangeStr = jsonMsg.getMsgTag("range").split(",");
+            if (rangeStr.length == 2 && rangeStr.first == rangeStr.last)
+            {
+                // process get_queue response with equal start and end items
+                final int? current = int.tryParse(rangeStr.first);
+                if (current != null && count != null)
+                {
+                    return TrackInfoMsg.output(current, count);
+                }
+            }
+        }
+        return null;
+    }
+
+    @override
+    String? buildDcpMsg(bool isQuery)
+    => "heos://" + _HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID +
+        "&range=" + _currentTrack.toString() + "," + _currentTrack.toString();
 }

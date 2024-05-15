@@ -85,6 +85,7 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.text(artist1));
   expect(find.byTooltip("Play Queue"), findsOneWidget);
   expect(find.text(album1), findsExactly(2));
+  expect(find.text("1/27"), findsOneWidget);
 
   // Play mode
   await tu.findAndTap("Random", () => find.byTooltip("Random"), delay: OnpcTestUtils.NORMAL_DELAY);
@@ -97,6 +98,7 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.findAndTap("Next track", () => find.byTooltip("Track Up"), ensureAfter: () => find.text("Midnight Mover"));
   expect(find.text(artist1), findsOneWidget);
   expect(find.text(album1), findsOneWidget);
+  expect(find.text("2/27"), findsOneWidget);
 
   // Pause
   await tu.ensureVisible(() => find.byTooltip("Pause"));
@@ -116,6 +118,7 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.text(artist2));
   expect(find.text("Fury"), findsOneWidget);
   expect(find.text(album2), findsOneWidget);
+  expect(find.text("24/27"), findsOneWidget);
 }
 
 Future<void> _playFromQueue(OnpcTestUtils tu) async {
@@ -164,6 +167,7 @@ Future<void> _playFromQueue(OnpcTestUtils tu) async {
 
   await tu.findAndTap("Return to top layer", () => find.text("Return"),
       ensureAfter: () => find.textContaining("HEOS MUSIC | items:"));
+  await tu.openTab("LISTEN", ensureAfter: () => find.text("---/---"));
 }
 
 Future<void> _playFromDeezer(OnpcTestUtils tu) async {

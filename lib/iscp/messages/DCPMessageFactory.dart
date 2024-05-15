@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General License as published by the Free Software Foundation, either version 3 of the License,
@@ -54,6 +54,7 @@ import "SleepSetCommandMsg.dart";
 import "TimeInfoMsg.dart";
 import "TitleNameMsg.dart";
 import "ToneCommandMsg.dart";
+import "TrackInfoMsg.dart";
 import "TuningCommandMsg.dart";
 
 /*
@@ -150,6 +151,7 @@ class DCPMessageFactory
             addISCPMsg(TimeInfoMsg.processHeosMessage(jsonMsg));
             addISCPMsg(PlayStatusMsg.processHeosMessage(jsonMsg));
             addISCPMsg(DcpMediaItemMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(TrackInfoMsg.processHeosMessage(jsonMsg));
 
             // Media list
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(jsonMsg));
@@ -283,6 +285,8 @@ class DCPMessageFactory
             return InputSelectorMsg(raw);
         case TimeInfoMsg.CODE:
             return TimeInfoMsg(raw);
+        case TrackInfoMsg.CODE:
+            return TrackInfoMsg(raw);
         case JacketArtMsg.CODE:
             return JacketArtMsg(raw);
         case TitleNameMsg.CODE:

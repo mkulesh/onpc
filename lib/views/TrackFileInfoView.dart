@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -21,6 +21,7 @@ import "../dialogs/PresetMemoryDialog.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
+import "../iscp/messages/DcpMediaItemMsg.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/FileFormatMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
@@ -56,6 +57,7 @@ class TrackFileInfoView extends UpdatableView
         PresetCommandMsg.CODE,
         TrackInfoMsg.CODE,
         ListTitleInfoMsg.CODE,
+        DcpMediaItemMsg.CODE
     ];
 
     TrackFileInfoView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
