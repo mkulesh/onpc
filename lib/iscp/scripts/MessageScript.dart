@@ -392,7 +392,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
                 }
                 else
                 {
-                    state.mediaListState.storeSelectedDcpItem(item);
+                    state.mediaListState.prepareDcpNextLayer(item);
                     channel.sendIscp(dcpMsg);
                     Logging.info(this, a.toString() + ": sent DCP media container message " + dcpMsg.toString());
                 }

@@ -752,6 +752,13 @@ class MediaListState
         return retValue;
     }
 
+    void prepareDcpNextLayer(XmlListItemMsg item)
+    {
+        storeSelectedDcpItem(item);
+        clearItems();
+        _mediaListCid = "";
+    }
+
     void _setDcpPlayingItem()
     {
         for (ISCPMessage msg in _mediaItems)
