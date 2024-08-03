@@ -131,6 +131,14 @@
 
     <string name="pref_force_audio_control">Kontrola audio zawsze dostępna</string>
 
+    <!-- Cover click behaviour -->
+    <string name="pref_cover_click">Zachowanie kliknięcia okładki albumu</string>
+    <string-array name="pref_cover_click_names">
+        <item>Nic</item>
+        <item>Tryb wyświetlania na urządzeniu</item> <!-- tv_display_mode -->
+        <item>Wyciszenie dźwięku</item>
+    </string-array>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Kontrola dźwięku</string>
     <string-array name="pref_sound_control_names">

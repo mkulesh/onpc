@@ -137,6 +137,21 @@
 
     <string name="pref_force_audio_control">Audio control always available</string>
 
+    <!-- Cover click behaviour -->
+    <string name="pref_cover_click">Album\'s cover click behaviour</string>
+    <string-array name="pref_cover_click_names">
+        <item>None</item>
+        <item>Display mode on device</item> <!-- tv_display_mode -->
+        <item>Audio muting</item>
+    </string-array>
+
+    <string name="pref_cover_click_default" translatable="false">display-mode</string>
+    <string-array name="pref_cover_click_codes" translatable="false">
+        <item>none</item>
+        <item>display-mode</item>
+        <item>audio-mute</item>
+    </string-array>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Sound control</string>
     <string-array name="pref_sound_control_names">

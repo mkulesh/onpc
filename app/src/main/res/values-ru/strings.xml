@@ -110,7 +110,7 @@
     <string name="pref_advanced_queue_summary">Использовать экспериментальные возможности очереди воспроизведения</string>
     <string name="pref_keep_playback_mode">Режим воспроизведения</string>
     <string name="pref_keep_playback_mode_summary">Во вкладке КАНАЛЫ всегда оставаться в режиме воспроизведения.</string>
-    <string name="pref_exit_confirm">Для выхода нажмите \'Назад\' дважды</string>
+    <string name="pref_exit_confirm">Для выхода нажмите \"Назад\" дважды</string>
     <string name="pref_keep_screen_on">Не гасить экран</string>
     <string name="pref_show_when_locked">Поверх экрана блокировки</string>
     <string name="pref_show_when_locked_summary">Приложение может запускаться поверх экрана блокировки</string>
@@ -132,6 +132,14 @@
     <string name="pref_friendly_names_summary_off">Использовать встроенные названия</string>
 
     <string name="pref_force_audio_control">Контроль звука всегда доступен</string>
+
+    <!-- Cover click behaviour -->
+    <string name="pref_cover_click">Нажатие на обложку альбома</string>
+    <string-array name="pref_cover_click_names">
+        <item>Нет действия</item>
+        <item>Режим отображения на дисплее устройства</item> <!-- tv_display_mode -->
+        <item>Отключение звука</item>
+    </string-array>
 
     <!-- Sound Control -->
     <string name="pref_sound_control">Управление звуком</string>

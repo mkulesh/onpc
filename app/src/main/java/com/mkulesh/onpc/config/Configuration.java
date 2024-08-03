@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
@@ -58,6 +59,7 @@ public class Configuration
     private static final String BACK_AS_RETURN = "back_as_return";
     static final String ADVANCED_QUEUE = "advanced_queue";
     static final String KEEP_PLAYBACK_MODE = "keep_playback_mode";
+    static final String COVER_CLICK = "cover_click";
     private static final String EXIT_CONFIRM = "exit_confirm";
     private static final String DEVELOPER_MODE = "developer_mode";
 
@@ -295,6 +297,11 @@ public class Configuration
     public boolean keepPlaybackMode()
     {
         return preferences.getBoolean(Configuration.KEEP_PLAYBACK_MODE, false);
+    }
+
+    public String coverClickBehaviour(Context context)
+    {
+        return getStringPref(preferences, COVER_CLICK, context.getString(R.string.pref_cover_click_default));
     }
 
     public boolean isExitConfirm()

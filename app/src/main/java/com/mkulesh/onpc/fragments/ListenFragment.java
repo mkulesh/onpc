@@ -143,9 +143,6 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         clearSoundVolumeButtons();
 
         cover = rootView.findViewById(R.id.tv_cover);
-        cover.setContentDescription(activity.getResources().getString(R.string.tv_display_mode));
-        prepareButtonListeners(cover, new DisplayModeMsg(DisplayModeMsg.TOGGLE));
-
         seekBar = rootView.findViewById(R.id.progress_bar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
@@ -485,6 +482,31 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
 
         // cover
         cover.setEnabled(true);
+        final String coverClick = activity.getConfiguration().coverClickBehaviour(activity);
+        switch (coverClick)
+        {
+            case "none":
+                cover.setContentDescription(null);
+                break;
+            case "display-mode":
+                cover.setContentDescription(activity.getResources().getString(R.string.tv_display_mode));
+                prepareButtonListeners(cover, new DisplayModeMsg(DisplayModeMsg.TOGGLE));
+                break;
+            case "audio-mute":
+                if (soundControl == State.SoundControlType.RI_AMP)
+                {
+                    cover.setContentDescription(activity.getResources().getString(R.string.amp_cmd_audio_muting_toggle));
+                    prepareButtonListeners(cover, new AmpOperationCommandMsg(AmpOperationCommandMsg.Command.AMTTG.getCode()));
+                }
+                else
+                {
+                    cover.setContentDescription(activity.getResources().getString(R.string.audio_muting_toggle));
+                    prepareButtonListeners(cover, new AudioMutingMsg(
+                            state.getActiveZone(), AudioMutingMsg.toggle(state.audioMuting, state.protoType)));
+                }
+                break;
+        }
+
         if (state.cover == null || state.isSimpleInput())
         {
             cover.setImageResource(R.drawable.empty_cover);
