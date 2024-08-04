@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -262,6 +262,20 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
                 icon: Drawables.cmd_track_menu,
                 desc: Strings.pref_keep_playback_mode_summary));
         }
+
+        elements.add(_customDropdownPreference(td,
+            Strings.pref_cover_click,
+            Configuration.COVER_CLICK,
+            icon: Drawables.pref_cover_click,
+            values: Strings.pref_cover_click_codes,
+            displayValues: Strings.pref_cover_click_names,
+            onChange: (String val)
+            {
+                setState(()
+                {
+                    _configuration.coverClickBehaviour = val;
+                });
+            }));
 
         if (Platform.isAndroid)
         {

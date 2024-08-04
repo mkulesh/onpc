@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,6 +15,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_svg/svg.dart";
 
+import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
@@ -22,6 +23,7 @@ import "../iscp/StateManager.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/JacketArtMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
+import "../iscp/state/SoundControlState.dart";
 import "../utils/Convert.dart";
 import "UpdatableView.dart";
 
@@ -31,7 +33,8 @@ class TrackCoverView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         PowerStatusMsg.CODE,
         JacketArtMsg.CODE,
-        InputSelectorMsg.CODE
+        InputSelectorMsg.CODE,
+        Configuration.CONFIGURATION_EVENT
     ];
 
     TrackCoverView(final ViewContext viewContext, { this.flex = 1 }) : super(viewContext, UPDATE_TRIGGERS);
@@ -48,6 +51,23 @@ class TrackCoverView extends UpdatableView
                 fit: BoxFit.contain
             );
 
+        String tooltip = "";
+        VoidCallback? onPressed;
+        switch (configuration.coverClickBehaviour)
+        {
+            case "none":
+                break;
+            case "display-mode":
+                tooltip = Strings.tv_display_mode;
+                onPressed = () => stateManager.sendMessage(StateManager.DISPLAY_MSG);
+                break;
+            case "audio-mute":
+                final SoundControlType soundControl = SoundControlState.soundControlType(configuration.audioControl, state.getActiveZone);
+                tooltip = (soundControl == SoundControlType.RI_AMP) ? Strings.amp_cmd_audio_muting_toggle : Strings.audio_muting_toggle;
+                onPressed = () => stateManager.changeMasterVolume(configuration.audioControl, 2);
+                break;
+        }
+
         Widget box = FittedBox(
             fit: BoxFit.contain,
             alignment: Alignment.center,
@@ -59,9 +79,8 @@ class TrackCoverView extends UpdatableView
                     icon: cover,
                     padding: ActivityDimens.noPadding,
                     alignment: Alignment.center,
-                    tooltip: Strings.tv_display_mode,
-                    onPressed: ()
-                    => stateManager.sendMessage(StateManager.DISPLAY_MSG)
+                    tooltip: tooltip,
+                    onPressed: onPressed
                 ))
         );
 

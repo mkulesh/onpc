@@ -140,6 +140,14 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
 
     <string name="pref_force_audio_control">Contrôle audio toujours disponible</string>
 
+    <!-- Cover click behaviour -->
+    <string name="pref_cover_click">Comportement du clic sur la couverture de l\'album</string>
+    <string-array name="pref_cover_click_names">
+        <item>Aucun</item>
+        <item>Mode affichage sur le dispositif</item>   <!-- tv_display_mode -->
+        <item>Coupure du son</item>
+    </string-array>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Contrôle du son</string>
     <string-array name="pref_sound_control_names">

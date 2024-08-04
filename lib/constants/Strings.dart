@@ -37,6 +37,7 @@ class Strings
     static const String models_denon = "Denon/Marantz";
     static const String drawer_premium_link = "https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus";
     static const String drawer_desktop_link = "https://www.microsoft.com/store/apps/9P9V57CZ8JG3";
+    static const String pref_cover_click_default = "display-mode";
     static const String pref_sound_control_default = "device";
     static const String pref_theme_default = "indigo-orange";
     static const String pref_language_default = "system";
@@ -133,6 +134,10 @@ class Strings
 
     /* Non-translatable arrays */
 
+    static const List<String> pref_cover_click_codes = [
+        "none",
+        "display-mode",
+        "audio-mute"];
     static const List<String> pref_sound_control_codes = [
         "none",
         "external-amplifier",
@@ -919,6 +924,14 @@ Enjoy!"""];
         /*fr*/ "Contrôle audio toujours disponible",
         /*pl*/ "Kontrola audio zawsze dostępna"];
     static String get pref_force_audio_control => l_pref_force_audio_control[_language];
+
+    static const List<String> l_pref_cover_click = [
+        /*en*/ "Album\'s cover click behaviour",
+        /*ru*/ "Нажатие на обложку альбома",
+        /*de*/ "Klickverhalten des Albumcovers",
+        /*fr*/ "Comportement du clic sur la couverture de l\'album",
+        /*pl*/ "Zachowanie kliknięcia okładki albumu"];
+    static String get pref_cover_click => l_pref_cover_click[_language];
 
     static const List<String> l_pref_sound_control = [
         /*en*/ "Sound control",
@@ -3937,6 +3950,24 @@ Enjoy!"""];
     static String get error_connection_no_response => l_error_connection_no_response[_language];
 
     /* Translatable arrays */
+
+    static const List<List<String>> l_pref_cover_click_names = [
+        /*en*/ ["None",
+                "Display mode on device",
+                "Audio muting"],
+        /*ru*/ ["Нет действия",
+                "Режим отображения на дисплее устройства",
+                "Отключение звука"],
+        /*de*/ ["Kein",
+                "Anzeigemodus am Gerät",
+                "Stummschalten des Tons"],
+        /*fr*/ ["Aucun",
+                "Mode affichage sur le dispositif",
+                "Coupure du son"],
+        /*pl*/ ["Nic",
+                "Tryb wyświetlania na urządzeniu",
+                "Wyciszenie dźwięku"]];
+    static List<String> get pref_cover_click_names => l_pref_cover_click_names[_language];
 
     static const List<List<String>> l_pref_sound_control_names = [
         /*en*/ ["None",

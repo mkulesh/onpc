@@ -141,6 +141,14 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 
     <string name="pref_force_audio_control">Audiosteuerung immer verfügbar</string>
 
+    <!-- Cover click behaviour -->
+    <string name="pref_cover_click">Klickverhalten des Albumcovers</string>
+    <string-array name="pref_cover_click_names">
+        <item>Kein</item>
+        <item>Anzeigemodus am Gerät</item>  <!-- tv_display_mode -->
+        <item>Stummschalten des Tons</item>
+    </string-array>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Lautstärkekontrolle</string>
     <string-array name="pref_sound_control_names">

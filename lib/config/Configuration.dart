@@ -14,6 +14,7 @@
 
 import "package:shared_preferences/shared_preferences.dart";
 
+import "../constants/Strings.dart";
 import "../constants/Version.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
@@ -119,6 +120,18 @@ class Configuration extends CfgModule
     bool get keepPlaybackMode
     => _keepPlaybackMode;
 
+    static const Pair<String, String> COVER_CLICK = Pair<String, String>("cover_click", Strings.pref_cover_click_default);
+    String _coverClickBehaviour = COVER_CLICK.item2;
+
+    String get coverClickBehaviour
+    => _coverClickBehaviour;
+
+    set coverClickBehaviour(String value)
+    {
+        _coverClickBehaviour = value;
+        saveStringParameter(COVER_CLICK, value);
+    }
+
     static const Pair<String, bool> EXIT_CONFIRM = Pair<String, bool>("exit_confirm", false);
     bool _exitConfirm = EXIT_CONFIRM.item2;
 
@@ -169,6 +182,7 @@ class Configuration extends CfgModule
         _backAsReturn = Platform.isAndroid ? getBool(BACK_AS_RETURN, doLog: true) : false;
         _advancedQueue = getBool(ADVANCED_QUEUE, doLog: true);
         _keepPlaybackMode = getBool(KEEP_PLAYBACK_MODE, doLog: true);
+        _coverClickBehaviour = getString(COVER_CLICK, doLog: true);
         _exitConfirm = Platform.isAndroid ? getBool(EXIT_CONFIRM, doLog: true) : false;
         _developerMode = getBool(DEVELOPER_MODE, doLog: true);
 

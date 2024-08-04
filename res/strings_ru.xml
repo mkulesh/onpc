@@ -141,6 +141,14 @@ Copyright © 2019-2024 by __Михаил Кулеш__
 
     <string name="pref_force_audio_control">Контроль звука всегда доступен</string>
 
+    <!-- Cover click behaviour -->
+    <string name="pref_cover_click">Нажатие на обложку альбома</string>
+    <string-array name="pref_cover_click_names">
+        <item>Нет действия</item>
+        <item>Режим отображения на дисплее устройства</item> <!-- tv_display_mode -->
+        <item>Отключение звука</item>
+    </string-array>
+
     <!-- Sound Control -->
     <string name="pref_sound_control">Управление звуком</string>
     <string-array name="pref_sound_control_names">
