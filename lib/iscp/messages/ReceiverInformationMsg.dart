@@ -19,6 +19,7 @@ import 'dart:typed_data';
 
 import 'package:sprintf/sprintf.dart';
 import 'package:xml/xml.dart' as xml;
+import 'package:flutter/services.dart' show rootBundle;
 
 import "../../constants/Drawables.dart";
 import "../../utils/Logging.dart";
@@ -361,6 +362,8 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     final Map<String, ToneControl> _toneControls = HashMap<String, ToneControl>();
     String? _dcpPresetData;
 
+    static const String _DCP_REC_INFO_TEST = ""; // "lib/assets/rec_info.xml";
+
     ReceiverInformationMsg(EISCPMessage raw) : super(CODE, raw)
     {
         setProtoType(ProtoType.ISCP);
@@ -537,6 +540,17 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     {
         final String port1 = DCP_HTTP_PORT.toString();
         final String port2 = "80";
+
+        if (_DCP_REC_INFO_TEST.isNotEmpty)
+        {
+            Logging.info(_DCP_REC_INFO_TEST, "DCP Receiver information: loading test data");
+            rootBundle.loadString(_DCP_REC_INFO_TEST).then((String ri1)
+            {
+                onReceiverInfo(ReceiverInformationMsg.dcp(ri1, null, host, port1));
+            });
+            return;
+        }
+
         _requestDcpXml(host, port1, "Deviceinfo.xml").then((String? ri1)
         {
             if (ri1 != null)
@@ -635,7 +649,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     {
         final Iterable<xml.XmlElement> zones = zoneCapabilities.findAllElements("Zone");
         final Iterable<xml.XmlElement> volumes = zoneCapabilities.findAllElements("Volume");
-        final Iterable<xml.XmlElement> input = zoneCapabilities.findAllElements("InputSource");
+        final Iterable<xml.XmlElement> input = zoneCapabilities.findElements("InputSource");
         if (zones.length != 1)
         {
             return;
