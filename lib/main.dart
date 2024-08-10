@@ -64,8 +64,8 @@ void main() async
 {
     debugPaintSizeEnabled = Logging.isVisualLayout;
 
-    // Ignore CERTIFICATE_VERIFY_FAILED error for Deezer cover art on older Android
-    if (Platform.isAndroid)
+    // Ignore CERTIFICATE_VERIFY_FAILED error for Deezer cover art on older Android and Windows
+    if (Platform.isAndroid || Platform.isWindows)
     {
         HttpOverrides.global = OncpHttpOverrides();
     }
