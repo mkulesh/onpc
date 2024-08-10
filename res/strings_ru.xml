@@ -390,6 +390,7 @@ Copyright © 2019-2024 by __Михаил Кулеш__
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
     <string name="input_selector_cbl_sat">CBL/SAT</string>
     <string name="input_selector_game">GAME</string>
+    <string name="input_selector_game1">GAME1</string>
     <string name="input_selector_aux">AUX</string>
     <string name="input_selector_aux1">AUX1</string>
     <string name="input_selector_aux2">AUX2</string>

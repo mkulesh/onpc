@@ -2285,6 +2285,14 @@ Enjoy!"""];
         /*pl*/ "GAME"];
     static String get input_selector_game => l_input_selector_game[_language];
 
+    static const List<String> l_input_selector_game1 = [
+        /*en*/ "GAME1",
+        /*ru*/ "GAME1",
+        /*de*/ "GAME1",
+        /*fr*/ "GAME1",
+        /*pl*/ "GAME1"];
+    static String get input_selector_game1 => l_input_selector_game1[_language];
+
     static const List<String> l_input_selector_aux = [
         /*en*/ "AUX",
         /*ru*/ "AUX",

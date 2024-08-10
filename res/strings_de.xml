@@ -392,6 +392,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
     <string name="input_selector_cbl_sat">CBL/SAT</string>
     <string name="input_selector_game">GAME</string>
+    <string name="input_selector_game1">GAME1</string>
     <string name="input_selector_aux">AUX</string>
     <string name="input_selector_aux1">AUX1</string>
     <string name="input_selector_aux2">AUX2</string>

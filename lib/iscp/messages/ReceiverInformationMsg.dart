@@ -511,6 +511,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         "CBL/SAT" : InputSelector.DCP_SAT_CBL,
         "MEDIA PLAYER" : InputSelector.DCP_MPLAY,
         "GAME" : InputSelector.DCP_GAME,
+        "GAME1" : InputSelector.DCP_GAME1,
         "TUNER" : InputSelector.DCP_TUNER,
         "AUX1" : InputSelector.DCP_AUX1,
         "AUX2" : InputSelector.DCP_AUX2,
