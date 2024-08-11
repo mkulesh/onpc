@@ -244,7 +244,7 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
 Future<void> _changeVolume(final OnpcTestUtils tu) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip("Volume level down"));
   await tu.findAndTap("Volume mute", () => find.byTooltip("Sets amplifier audio muting wrap-around"),
-      delay: OnpcTestUtils.NORMAL_DELAY);
+      delay: OnpcTestUtils.NORMAL_DELAY, num: 2);
   await tu.findAndTap("Volume down", () => find.byTooltip("Volume level down"), delay: OnpcTestUtils.NORMAL_DELAY);
   await tu.findAndTap("Volume up", () => find.byTooltip("Volume level up"), delay: OnpcTestUtils.NORMAL_DELAY);
 }
@@ -260,10 +260,12 @@ Future<void> _groupUngroup(final OnpcTestUtils tu, bool group) async {
   if (group) {
     await tu.findAndTap("Select Onkyo Box", () => find.text("My Onkyo Box"),
         ensureAfter: () => find.textContaining("Group 1"));
+    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     expect(find.text("Group 1: Master, Channel ST"), findsOneWidget);
   } else {
     await tu.findAndTap("Select Onkyo Box", () => find.text("My Onkyo Box"),
         ensureAfter: () => find.text("Not attached"));
+    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     expect(find.text("Not attached"), findsExactly(2));
   }
   await tu.findAndTap("Close group dialog", () => find.text("OK"));

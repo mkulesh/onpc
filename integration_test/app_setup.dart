@@ -221,6 +221,15 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
     }
   }
 
+  await tu.tester.dragUntilVisible(
+      find.text("Album's cover click behaviour"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+  final String MODE = "Audio muting";
+  if (find.text(MODE).evaluate().isEmpty) {
+    await tu.findAndTap("Change cover click behaviour1", () => find.text("Album's cover click behaviour"),
+        ensureAfter: () => find.text(MODE));
+    await tu.findAndTap("Change cover click behaviour2", () => find.text(MODE));
+  }
+
   await tu.previousScreen();
 }
 
@@ -359,18 +368,28 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
 
   if (dlna) {
     await tu.openTab("MEDIA");
+    final Pair<String, String> ARTISTS = Pair<String, String>("Artist", "Artists on DLNA");
+    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music", "Supermicro DLNA Server", "Music"],
+        ensureVisible: true);
+    await tu.contextMenu(ARTISTS.item1, "Create shortcut", waitFor: true);
     final Pair<String, String> MUSE = Pair<String, String>("- All Albums -", "Muse on DLNA");
     await tu.navigateToMedia(
         [OnpcTestUtils.TOP_LAYER, "Local Music", "Supermicro DLNA Server", "Music", "Artist", "Muse<S>Mylene Farmer"],
         ensureVisible: true);
     await tu.contextMenu(MUSE.item1, "Create shortcut", waitFor: true);
-    await _renameShortcuts(tu, [MUSE], ["NET/Local Music/Supermicro DLNA Server/Music/Artist/Muse/- All Albums -"]);
+    await _renameShortcuts(tu, [
+      ARTISTS,
+      MUSE
+    ], [
+      "NET/Local Music/Supermicro DLNA Server/Music/Artist",
+      "NET/Local Music/Supermicro DLNA Server/Music/Artist/Muse/- All Albums -"
+    ]);
   }
 
   if (deezer) {
     await tu.openTab("MEDIA");
     final Pair<String, String> PLAYLIST = Pair<String, String>("Onkyo playlist", "Deezer Playlist");
-    final Pair<String, String> FAVOURITES = Pair<String, String>("Loved Tracks", "Deezer Favourites");
+    final Pair<String, String> FAVOURITES = Pair<String, String>("Favourite tracks", "Deezer Favourites");
     final Pair<String, String> ROCK_STATION = Pair<String, String>("Rock classics", "Deezer Classic Rock");
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Playlists"]);
     await tu.contextMenu(PLAYLIST.item1, "Create shortcut", waitFor: true);
@@ -384,7 +403,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
       ROCK_STATION
     ], [
       "NET/Deezer/My Playlists/Onkyo playlist",
-      "NET/Deezer/My Playlists/Loved Tracks",
+      "NET/Deezer/My Playlists/Favourite tracks",
       "NET/Deezer/Radio Channels/Rock/Rock classics"
     ]);
   }
