@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion 34
         applicationId "com.mkulesh.onpc.plus"
         versionCode flutterVersionCode.toInteger()
