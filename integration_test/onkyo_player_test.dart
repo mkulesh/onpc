@@ -285,8 +285,8 @@ Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   await tu.changeFriendlyName(tu, "New Player Name");
 
   // Restore friendly name
-  await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip("Volume level down"));
-  await tu.openTab("DEVICE", ensureAfter: () => find.byTooltip("Change friendly name"));
+  await tu.openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.byTooltip("Volume level down"));
+  await tu.openTab("DEVICE", swipeRight: true, ensureAfter: () => find.byTooltip("Change friendly name"));
   await tu.changeFriendlyName(tu, "Onkyo Player");
 
   // Rename dimmer level

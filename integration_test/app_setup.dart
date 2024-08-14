@@ -213,7 +213,7 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
   if (Platform.isDesktop) {
     await tu.tester
         .dragUntilVisible(find.text("Use USB-RI interface"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-    final String USB_RI = "OnkioRI FT231X";
+    final String USB_RI = Platform.isWindows? "USB Serial Port" : "OnkioRI FT231X";
     if (find.textContaining(USB_RI).evaluate().isEmpty) {
       await tu.findAndTap("Change Use USB-RI interface1", () => find.text("Use USB-RI interface"),
           ensureAfter: () => find.textContaining(USB_RI));
@@ -336,7 +336,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
-        "Ensure Русский рок", find.byType(ListView), () => find.text("Русский рок"), OnpcTestUtils.LIST_DRAG_OFFSET);
+        "Ensure Эстрада", find.byType(ListView), () => find.text("Эстрада"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu("Русский рок", "Create shortcut", waitFor: true);
   }
 
@@ -459,6 +459,8 @@ Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>>
     assert(items.length == path.length);
   }
   for (int i = 0; i < items.length; i++) {
+    await tu.ensureVisibleInList(
+        "Ensure " + items[i].item1, find.byType(ReorderableListView), () => find.text(items[i].item1), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu(items[i].item1, "Edit",
         ensureAfter: () => find.text("CANCEL"), checkItems: ["Edit shortcut", "Edit", "Delete", "Copy to clipboard"]);
     if (path.isNotEmpty) {
