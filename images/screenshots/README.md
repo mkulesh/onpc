@@ -1,9 +1,9 @@
 # iOS screenshots
-- iPhone-5.5-inch: iPhone 8 Plus, 1242 x 2208.
+- iPhone-5.5-inch: iPhone 7 Plus, 1242 x 2208.
 - iPhone-6.5-inch: iPhone 14 Plus, 1284 x 2778.
 - iPhone-6.7-inch: iPhone 15 Plus, 1290 x 2796.
-- iPad-12.9-inch-2gen: iPad Pro 2rd generation, 2048 x 2732. Use "Huge" font size.
-- iPad-12.9-inch-3gen: iPad Pro 3rd generation, 2048 x 2732. Use "Huge" font size.
+- iPad-12.9-inch-2gen: iPad Pro 2rd generation, 2048 x 2732. Use "Big" font size.
+- iPad-13.0-inch-6gen: iPad Pro 6rd generation, 2048 x 2732. Use "Big" font size.
 See https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/
 
 # Android screenshots
