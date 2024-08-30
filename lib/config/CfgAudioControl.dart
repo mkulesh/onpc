@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -19,10 +19,17 @@ import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
+import "../utils/Convert.dart";
 import "../utils/Pair.dart";
 import "../utils/Platform.dart";
 import "CfgModule.dart";
 import "CheckableItem.dart";
+
+enum VolumeUnit
+{
+    ABSOLUTE,
+    RELATIVE
+}
 
 class CfgAudioControl extends CfgModule
 {
@@ -45,6 +52,19 @@ class CfgAudioControl extends CfgModule
 
     bool get isForceAudioControl
     => _forceAudioControl;
+
+    // Volume unit
+    static const Pair<String, String> VOLUME_UNIT = Pair<String, String>("volume_unit", "ABSOLUTE");
+    VolumeUnit _volumeUnit = VolumeUnit.ABSOLUTE;
+
+    VolumeUnit get volumeUnit
+    => _volumeUnit;
+
+    static const Pair<String, String> ZERO_LEVEL = Pair<String, String>("zero_level", "");
+    double? _zeroLevel;
+
+    double? get zeroLevel
+    => _zeroLevel;
 
     // Selected listening modes
     static const String _SELECTED_LISTENING_MODES = "selected_listening_modes";
@@ -132,6 +152,11 @@ class CfgAudioControl extends CfgModule
     {
         _soundControl = getString(SOUND_CONTROL, doLog: true);
         _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
+        final _volumeUnitStr = getString(VOLUME_UNIT, doLog: true).toUpperCase();
+        _volumeUnit = VolumeUnit.values.firstWhere(
+                (p) => Convert.enumToString(p).toUpperCase() == _volumeUnitStr,
+                orElse: () => VolumeUnit.ABSOLUTE);
+        _zeroLevel = double.tryParse(getString(ZERO_LEVEL, doLog: true));
         _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
         _zoneVolumeMax.clear();
         getString(ZONE_VOLUME_MAX, doLog: true).split(",").forEach((str) => _zoneVolumeMax.add(int.tryParse(str) ?? 0));
@@ -151,6 +176,14 @@ class CfgAudioControl extends CfgModule
         saveStringParameter(ZONE_VOLUME_MAX, volumeZoneMaxStr.startsWith(",") ? volumeZoneMaxStr.substring(1) : volumeZoneMaxStr);
     }
 
+    void setVolumeUnit(VolumeUnit volumeUnit, double? zeroValue)
+    {
+        _volumeUnit = volumeUnit;
+        saveStringParameter(VOLUME_UNIT, Convert.enumToString(_volumeUnit), prefix: "  ");
+        _zeroLevel = zeroValue;
+        saveStringParameter(ZERO_LEVEL, _zeroLevel == null ? "" : _zeroLevel.toString(), prefix: "  ");
+    }
+    
     List<EnumItem<ListeningMode>> getSortedListeningModes(
         bool allItems, EnumItem<ListeningMode> activeItem, ProtoType protoType)
     {

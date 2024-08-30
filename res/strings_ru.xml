@@ -140,6 +140,10 @@ Copyright © 2019-2024 by __Михаил Кулеш__
     <string name="pref_friendly_names_summary_off">Использовать встроенные названия</string>
 
     <string name="pref_force_audio_control">Контроль звука всегда доступен</string>
+    <string name="pref_volume_unit">Обозначение уровня громкости</string>
+    <string name="pref_volume_unit_absolute">Абсолютное</string>
+    <string name="pref_volume_unit_relative">Относительное (дБ)</string>
+    <string name="pref_volume_unit_zero">Нулевой (0 дБ) уровень</string>
 
     <!-- Cover click behaviour -->
     <string name="pref_cover_click">Нажатие на обложку альбома</string>

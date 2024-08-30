@@ -925,6 +925,38 @@ Enjoy!"""];
         /*pl*/ "Kontrola audio zawsze dostępna"];
     static String get pref_force_audio_control => l_pref_force_audio_control[_language];
 
+    static const List<String> l_pref_volume_unit = [
+        /*en*/ "Master volume unit",
+        /*ru*/ "Обозначение уровня громкости",
+        /*de*/ "Lautstärkeeinheit",
+        /*fr*/ "Unité de volume principale",
+        /*pl*/ "Jednostka głośności głównej"];
+    static String get pref_volume_unit => l_pref_volume_unit[_language];
+
+    static const List<String> l_pref_volume_unit_absolute = [
+        /*en*/ "Absolute",
+        /*ru*/ "Абсолютное",
+        /*de*/ "Absolute",
+        /*fr*/ "Absolue",
+        /*pl*/ "Absolutny"];
+    static String get pref_volume_unit_absolute => l_pref_volume_unit_absolute[_language];
+
+    static const List<String> l_pref_volume_unit_relative = [
+        /*en*/ "Relative (dB)",
+        /*ru*/ "Относительное (дБ)",
+        /*de*/ "Relativ (dB)",
+        /*fr*/ "Relative (dB)",
+        /*pl*/ "Względny (dB)"];
+    static String get pref_volume_unit_relative => l_pref_volume_unit_relative[_language];
+
+    static const List<String> l_pref_volume_unit_zero = [
+        /*en*/ "Zero (0 dB) level",
+        /*ru*/ "Нулевой (0 дБ) уровень",
+        /*de*/ "Nullpegel (0 dB)",
+        /*fr*/ "Niveau zéro (0 dB)",
+        /*pl*/ "Poziom zerowy (0 dB)"];
+    static String get pref_volume_unit_zero => l_pref_volume_unit_zero[_language];
+
     static const List<String> l_pref_cover_click = [
         /*en*/ "Album\'s cover click behaviour",
         /*ru*/ "Нажатие на обложку альбома",

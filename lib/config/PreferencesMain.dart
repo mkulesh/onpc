@@ -21,6 +21,7 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../dialogs/DropdownPreferenceDialog.dart";
+import "../dialogs/VolumeUnitDialog.dart";
 import "../iscp/ConnectionIf.dart";
 import "../utils/Convert.dart";
 import "../utils/Pair.dart";
@@ -193,6 +194,15 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
             Strings.pref_force_audio_control,
             CfgAudioControl.FORCE_AUDIO_CONTROL,
             icon: Drawables.volume_audio_control));
+        elements.add(ListTile(
+            leading: _getIcon(td, Drawables.pref_volume_unit),
+            title: CustomTextLabel.normal(Strings.pref_volume_unit),
+            trailing: Icon(Icons.keyboard_arrow_right, color: td.textTheme.titleMedium!.color),
+            onTap: () => showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext c)
+                => VolumeUnitDialog(_configuration))));
 
         // Advanced options
         elements.add(CustomDivider());

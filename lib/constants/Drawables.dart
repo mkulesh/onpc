@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -152,6 +152,7 @@ class Drawables
     static const String pref_ri_amplifier = BUTTONS_PATH + "pref_ri_amplifier.svg";
     static const String pref_ri_disc_player = BUTTONS_PATH + "pref_ri_disc_player.svg";
     static const String pref_sound_control = BUTTONS_PATH + "pref_sound_control.svg";
+    static const String pref_volume_unit = BUTTONS_PATH + "pref_volume_unit.svg";
     static const String pref_text_size = BUTTONS_PATH + "pref_text_size.svg";
     static const String pref_volume_keys = BUTTONS_PATH + "pref_volume_keys.svg";
     static const String pref_advanced_queue = BUTTONS_PATH + "pref_advanced_queue.svg";

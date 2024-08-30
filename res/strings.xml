@@ -148,6 +148,10 @@ Enjoy!""</string>
     <string name="pref_friendly_names_summary_off">Use build-in names</string>
 
     <string name="pref_force_audio_control">Audio control always available</string>
+    <string name="pref_volume_unit">Master volume unit</string>
+    <string name="pref_volume_unit_absolute">Absolute</string>
+    <string name="pref_volume_unit_relative">Relative (dB)</string>
+    <string name="pref_volume_unit_zero">Zero (0 dB) level</string>
 
     <!-- Cover click behaviour -->
     <string name="pref_cover_click">Album\'s cover click behaviour</string>

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -16,6 +16,7 @@ import "dart:math";
 
 import "package:flutter/material.dart";
 
+import "../config/CfgAudioControl.dart";
 import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
@@ -59,6 +60,7 @@ class AudioControlView extends UpdatableView
     {
         Logging.logRebuild(this);
 
+        final CfgAudioControl ac = configuration.audioControl;
         final List<Widget> controls = [];
 
         final SoundControlState soundControl = state.soundControlState;
@@ -67,7 +69,7 @@ class AudioControlView extends UpdatableView
 
         // Master volume
         {
-            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), configuration.audioControl.masterVolumeMax);
+            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), ac.masterVolumeMax);
 
             final Widget maxVolumeBtn = CustomImageButton.small(
                 Drawables.volume_max_limit,
@@ -82,8 +84,12 @@ class AudioControlView extends UpdatableView
                 maxValueStr: SoundControlState.getVolumeLevelStr(maxVolume, zoneInfo),
                 maxValueNum: maxVolume,
                 currValue: soundControl.volumeLevel,
-                onCaption: (v)
-                => SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo),
+                onCaption: (v) {
+                    final String dB = ac.volumeUnit == VolumeUnit.RELATIVE ?
+                        " (" + SoundControlState.getRelativeLevelStr(v.floor(), state.getActiveZoneInfo, ac) + ")"
+                        : "";
+                    return SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo) + dB;
+                },
                 onChanged: (v)
                 => stateManager.sendMessage(MasterVolumeMsg.value(zone, max(v, 0))),
                 onDownButton: (v)

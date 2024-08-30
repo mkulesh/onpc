@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -16,6 +16,7 @@ import "dart:math";
 
 import "package:flutter/material.dart";
 
+import "../config/CfgAudioControl.dart";
 import "../config/Configuration.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
@@ -140,12 +141,14 @@ class VolumeControlDeviceView extends UpdatableView
 
     Widget _masterVolumeBtn(BuildContext context, SoundControlState soundControl, bool volumeValid)
     {
-        final String volumeLevel = SoundControlState.getVolumeLevelStr(
-            tmpVolumeLevel < 0 ? soundControl.volumeLevel : tmpVolumeLevel, state.getActiveZoneInfo);
+        final int volumeLevel = tmpVolumeLevel < 0 ? soundControl.volumeLevel : tmpVolumeLevel;
+        final String volumeLevelStr = configuration.audioControl.volumeUnit == VolumeUnit.RELATIVE ?
+            SoundControlState.getRelativeLevelStr(volumeLevel, state.getActiveZoneInfo, configuration.audioControl)
+            : SoundControlState.getVolumeLevelStr( volumeLevel, state.getActiveZoneInfo);
         return CustomImageButton.normal(
             Drawables.volume_audio_control,
             Strings.app_control_audio_control,
-            text: volumeValid ? volumeLevel : "",
+            text: volumeValid ? volumeLevelStr : "",
             onPressed: ()
             => _showAudioControlDialog(context, AudioControlType.TONE_CONTROL),
             isEnabled: volumeValid

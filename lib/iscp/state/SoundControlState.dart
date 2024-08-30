@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -42,6 +42,8 @@ enum SoundControlType
 
 class SoundControlState
 {
+    static const double DEF_VOL_MAX = 82.0;
+
     // Audio muting
     late EnumItem<AudioMuting> _audioMuting;
 
@@ -294,6 +296,20 @@ class SoundControlState
         {
             return volumeLevel.toString();
         }
+    }
+
+    static String getRelativeLevelStr(int volumeLevel, Zone? zone, final CfgAudioControl audioControl)
+    {
+        final double zeroLevel = (audioControl.zeroLevel != null) ? audioControl.zeroLevel! :
+            ((zone != null && zone.getVolMax > 0) ? zone.getVolMax.toDouble() : DEF_VOL_MAX);
+        final bool doubleStep = zone != null && zone.getVolumeStep == 0;
+        final double val = doubleStep ? (volumeLevel / 2.0 - zeroLevel) : (volumeLevel - zeroLevel);
+        //Logging.info(audioControl, "relative level: zeroLevel=" + zeroLevel.toString()
+        //    + ", volumeLevel=" + volumeLevel.toString()
+        //    + ", doubleStep=" + doubleStep.toString()
+        //    + ", val=" + val.toString()
+        //);
+        return sprintf("%1.1f dB", [val]);
     }
 
     bool get isDirectListeningMode
