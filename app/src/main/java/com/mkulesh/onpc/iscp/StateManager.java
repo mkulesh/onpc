@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -665,27 +665,44 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             sendQueries(powerStateQueries, "requesting DCP power state...");
         }
 
+        // no further message handling, if power off
+        if (!state.isOn())
+        {
+            state.inputType = InputSelectorMsg.InputType.NONE;
+            return changed != State.ChangeType.NONE;
+        }
+
         if (msg instanceof DcpMediaEventMsg)
         {
-            if (msg.getData().equals(DcpMediaEventMsg.HEOS_EVENT_QUEUE) &&
-                    state.isOn() && state.serviceType == ServiceType.DCP_PLAYQUEUE)
+            if (msg.getData().equals(DcpMediaEventMsg.HEOS_EVENT_QUEUE))
             {
-                Logging.info(this, "DCP: requesting queue state...");
-                sendMessage(new NetworkServiceMsg(state.serviceType));
+                if (state.currentTrack != null)
+                {
+                    Logging.info(this, "DCP: requesting queue size...");
+                    sendMessage(new TrackInfoMsg(state.currentTrack));
+                }
+                if (state.serviceType == ServiceType.DCP_PLAYQUEUE)
+                {
+                    Logging.info(this, "DCP: requesting queue state...");
+                    sendMessage(new NetworkServiceMsg(state.serviceType));
+                }
             }
             if (msg.getData().equals(DcpMediaEventMsg.HEOS_EVENT_SERVICEOPT) &&
-                    state.isOn() && !state.dcpMediaPath.isEmpty())
+                    !state.dcpMediaPath.isEmpty())
             {
                 Logging.info(this, "DCP: requesting media list...");
                 sendMessage(state.dcpMediaPath.get(state.dcpMediaPath.size() - 1));
             }
         }
 
-        // no further message handling, if power off
-        if (!state.isOn())
+        if (msg instanceof DcpMediaItemMsg)
         {
-            state.inputType = InputSelectorMsg.InputType.NONE;
-            return changed != State.ChangeType.NONE;
+            final DcpMediaItemMsg mc = (DcpMediaItemMsg) msg;
+            if (mc.getQid() != DcpMediaItemMsg.INVALID_TRACK)
+            {
+                Logging.info(this, "DCP: requesting queue size...");
+                sendMessage(new TrackInfoMsg(mc.getQid()));
+            }
         }
 
         // no further message handling, if no changes are detected

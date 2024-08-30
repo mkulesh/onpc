@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -741,7 +741,7 @@ public class State implements ConnectionIf
         {
             return process((DcpMediaItemMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
-        else if (msg instanceof DcpSearchCriteriaMsg)
+        if (msg instanceof DcpSearchCriteriaMsg)
         {
             return process((DcpSearchCriteriaMsg) msg) ? ChangeType.MEDIA_ITEMS : ChangeType.NONE;
         }
@@ -1635,7 +1635,7 @@ public class State implements ConnectionIf
             str.append("/");
             str.append(!presetList.isEmpty() ? Integer.toString(presetList.size()) : dashedString);
         }
-        else if (protoType == ConnectionIf.ProtoType.ISCP)
+        else
         {
             str.append(currentTrack != null ? Integer.toString(currentTrack) : dashedString);
             str.append("/");
@@ -2078,7 +2078,7 @@ public class State implements ConnectionIf
     {
         ServiceType si = (ServiceType) ISCPMessage.searchDcpParameter(
                 "HS" + msg.getSid(), ServiceType.values(), ServiceType.UNKNOWN);
-        final boolean changed = !msg.getData().equals(mediaListMid) || si != serviceIcon;
+        boolean changed = !msg.getData().equals(mediaListMid) || si != serviceIcon;
         mediaListMid = msg.getData();
         serviceIcon = si;
         timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
@@ -2087,6 +2087,20 @@ public class State implements ConnectionIf
             synchronized (mediaItems)
             {
                 setDcpPlayingItem();
+            }
+        }
+        final Integer tr = msg.getQid() == DcpMediaItemMsg.INVALID_TRACK ? null : msg.getQid();
+        if (!isEqual(currentTrack, tr))
+        {
+            currentTrack = tr;
+            changed = true;
+        }
+        if (msg.getQid() == DcpMediaItemMsg.INVALID_TRACK)
+        {
+            if (maxTrack != null)
+            {
+                maxTrack = null;
+                changed = true;
             }
         }
         return changed;

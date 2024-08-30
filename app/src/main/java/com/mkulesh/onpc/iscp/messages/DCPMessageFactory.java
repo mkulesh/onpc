@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -140,6 +140,7 @@ public class DCPMessageFactory
             addISCPMsg(TimeInfoMsg.processHeosMessage(cmd, tokens));
             addISCPMsg(PlayStatusMsg.processHeosMessage(cmd, tokens));
             addISCPMsg(DcpMediaItemMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(TrackInfoMsg.processHeosMessage(cmd, tokens));
 
             // Media list
             addISCPMsg(DcpMediaContainerMsg.processHeosMessage(cmd, heosMsg, tokens));
@@ -276,6 +277,8 @@ public class DCPMessageFactory
             return new InputSelectorMsg(raw);
         case TimeInfoMsg.CODE:
             return new TimeInfoMsg(raw);
+        case TrackInfoMsg.CODE:
+            return new TrackInfoMsg(raw);
         case JacketArtMsg.CODE:
             return new JacketArtMsg(raw);
         case TitleNameMsg.CODE:

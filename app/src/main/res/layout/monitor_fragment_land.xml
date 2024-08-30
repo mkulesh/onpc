@@ -146,6 +146,8 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/button_margin_horizontal"
+                android:paddingRight="4dp"
+                android:paddingBottom="2dp"
                 android:maxLines="2"
                 android:gravity="right" />
 

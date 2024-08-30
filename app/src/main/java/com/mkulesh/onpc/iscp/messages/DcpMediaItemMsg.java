@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -28,19 +28,23 @@ import androidx.annotation.Nullable;
 public class DcpMediaItemMsg extends ISCPMessage
 {
     public final static String CODE = "D06";
+    public final static int INVALID_TRACK = -1;
 
     private final int sid;
+    private final int qid;
 
     DcpMediaItemMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
-        sid = -1;
+        sid = INVALID_TRACK;
+        qid = INVALID_TRACK;
     }
 
-    DcpMediaItemMsg(final String mid, final int sid)
+    DcpMediaItemMsg(final String mid, final int sid, final int qid)
     {
         super(0, mid);
         this.sid = sid;
+        this.qid = qid;
     }
 
     public int getSid()
@@ -48,11 +52,16 @@ public class DcpMediaItemMsg extends ISCPMessage
         return sid;
     }
 
+    public int getQid()
+    {
+        return qid;
+    }
+
     @NonNull
     @Override
     public String toString()
     {
-        return CODE + "[" + data + ", SID=" + sid + "]";
+        return CODE + "[" + data + ", SID=" + sid + ", QID=" + qid + "]";
     }
 
     /*
@@ -66,17 +75,10 @@ public class DcpMediaItemMsg extends ISCPMessage
         if (HEOS_COMMAND.equals(command))
         {
             final String type = JsonPath.read(heosMsg, "$.payload.type");
-            final String mid;
-            if ("station".equals(type))
-            {
-                mid = JsonPath.read(heosMsg, "$.payload.album_id");
-            }
-            else
-            {
-                mid = JsonPath.read(heosMsg, "$.payload.mid");
-            }
+            final String mid = JsonPath.read(heosMsg, "station".equals(type) ? "$.payload.album_id" : "$.payload.mid");
             final int sid = JsonPath.read(heosMsg, "$.payload.sid");
-            return new DcpMediaItemMsg(mid, sid);
+            final int qid = "station".equals(type) ? INVALID_TRACK : JsonPath.read(heosMsg, "$.payload.qid");
+            return new DcpMediaItemMsg(mid, sid, qid);
         }
         return null;
     }

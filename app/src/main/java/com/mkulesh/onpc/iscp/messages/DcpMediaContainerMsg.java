@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -380,6 +380,12 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
         if (HEOS_RESP_BROWSE_QUEUE.equals(command))
         {
+            final String[] rangeStr = nonNull(tokens.get("range")).split(",");
+            if (rangeStr.length == 2 && rangeStr[0] != null && rangeStr[0].equals(rangeStr[1]))
+            {
+                // ignore get_queue response with equal start and end items: such a message corresponds to TrackInfoMsg
+                return null;
+            }
             final DcpMediaContainerMsg parentMsg = new DcpMediaContainerMsg(tokens, BrowseType.PLAY_QUEUE);
             readPlayQueueItems(parentMsg, heosMsg);
             return parentMsg;
