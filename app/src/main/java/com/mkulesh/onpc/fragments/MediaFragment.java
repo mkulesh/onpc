@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -73,6 +73,13 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
     private PresetCommandMsg selectedStation = null;
     int moveFrom = -1;
     private int filteredItems = 0;
+
+    static class ShortcutInfo
+    {
+        String item;
+        String alias;
+        String actionFlag = "";
+    }
 
     public MediaFragment()
     {
@@ -155,12 +162,14 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final ReceiverInformationMsg.NetworkService networkService = state.getNetworkService();
             if (selector != null)
             {
-                Logging.info(this, "Context menu for selector " + selector +
-                        (networkService != null ? " and service " + networkService : ""));
                 ListView lv = (ListView) v;
                 AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 final Object item = lv.getItemAtPosition(acmi.position);
                 final boolean isShortcut = state.isShortcutPossible();
+                Logging.info(this, "Context menu for selector " + selector +
+                        (networkService != null ? " and service " + networkService : "") +
+                        ", isShortcut=" + isShortcut);
+
                 if (item instanceof XmlListItemMsg)
                 {
                     selectedItem = (XmlListItemMsg) item;
@@ -168,9 +177,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     inflater.inflate(R.menu.playlist_context_menu, menu);
                     MenuCompat.setGroupDividerEnabled(menu, true);
 
-                    final boolean isDcpItem = selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg;
-                    final boolean isDcpPlayable = isDcpItem &&
-                            ((DcpMediaContainerMsg) selectedItem.getCmdMessage()).isPlayable();
+                    final DcpMediaContainerMsg dcpMsg = state.getDcpContainerMsg(selectedItem);
+                    final boolean isDcpItem = dcpMsg != null;
+                    final boolean isDcpPlayable = dcpMsg != null && dcpMsg.isPlayable();
 
                     final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE ||
                             (isDcpItem && state.serviceType == ServiceType.DCP_PLAYQUEUE);
@@ -246,7 +255,6 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     menu.findItem(R.id.playlist_menu_replace).setVisible(false);
                     menu.findItem(R.id.playlist_track_menu).setVisible(false);
                     menu.findItem(R.id.cmd_playback_mode).setVisible(false);
-                    menu.findItem(R.id.cmd_shortcut_create).setVisible(false);
                 }
             }
         }
@@ -259,9 +267,15 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         {
             final State state = activity.getStateManager().getState();
             final int idx = selectedItem.getMessageId();
-            final String title = selectedItem.getTitle();
+
             final DcpMediaContainerMsg dcpCmd = (selectedItem.getCmdMessage() instanceof DcpMediaContainerMsg) ?
                     (DcpMediaContainerMsg) selectedItem.getCmdMessage() : null;
+            final boolean isDcpPlayable = dcpCmd != null && dcpCmd.isPlayable();
+            final ShortcutInfo shortcutInfo = new ShortcutInfo();
+            shortcutInfo.item = selectedItem.getTitle();
+            shortcutInfo.alias = selectedItem.getTitle();
+            shortcutInfo.actionFlag = isDcpPlayable ? "4" : "";
+
             Logging.info(this, "Context menu '" + item.getTitle() + "'; " + selectedItem);
             selectedItem = null;
             switch (item.getItemId())
@@ -332,7 +346,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 activity.getStateManager().sendMessage(StateManager.LIST_MSG);
                 return true;
             case R.id.cmd_shortcut_create:
-                addShortcut(state, title, title);
+                addShortcut(state, shortcutInfo);
                 return true;
             case R.id.playlist_menu_add_to_heos_favourites:
                 return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_TO_HEOS);
@@ -348,9 +362,10 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         }
         else if (selectedStation != null && activity.isConnected() && item.getItemId() == R.id.cmd_shortcut_create)
         {
-            addShortcut(activity.getStateManager().getState(),
-                    String.format("%02x", selectedStation.getPresetConfig().getId()),
-                    selectedStation.getPresetConfig().displayedString(true));
+            final ShortcutInfo shortcutInfo = new ShortcutInfo();
+            shortcutInfo.item = String.format("%02x", selectedStation.getPresetConfig().getId());
+            shortcutInfo.alias = selectedStation.getPresetConfig().displayedString(true);
+            addShortcut(activity.getStateManager().getState(), shortcutInfo);
             selectedStation = null;
             return true;
         }
@@ -382,7 +397,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
         return true;
     }
 
-    private void addShortcut(final @NonNull State state, final String item, final String alias)
+    private void addShortcut(final @NonNull State state, final ShortcutInfo info)
     {
         if (state.isShortcutPossible())
         {
@@ -392,10 +407,12 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 final ServiceType s = state.serviceType == null ? ServiceType.UNKNOWN : state.serviceType;
                 final CfgFavoriteShortcuts.Shortcut shortcut = new CfgFavoriteShortcuts.Shortcut(
                         shortcutCfg.getNextId(),
+                        state.protoType,
                         state.inputType,
                         s,
-                        item,
-                        alias);
+                        info.item,
+                        info.alias,
+                        info.actionFlag);
                 if (!state.pathItems.isEmpty())
                 {
                     Logging.info(this, "full path to the item: " + state.pathItems);
@@ -710,7 +727,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             if (state.protoType == ConnectionIf.ProtoType.DCP &&
                     selectedItem instanceof XmlListItemMsg)
             {
-                state.storeSelectedDcpItem((XmlListItemMsg)selectedItem);
+                state.storeSelectedDcpItem((XmlListItemMsg) selectedItem);
             }
 
             // #6: Unable to play music from NAS: allow to select not selectable items as well

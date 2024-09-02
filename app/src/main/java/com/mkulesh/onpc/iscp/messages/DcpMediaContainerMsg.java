@@ -113,7 +113,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
     public DcpMediaContainerMsg(final DcpMediaContainerMsg other)
     {
-        super(0, CODE);
+        super(CODE, "");
         this.browseType = other.browseType;
         this.sid = other.sid;
         this.parentSid = other.parentSid;
@@ -139,7 +139,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
     DcpMediaContainerMsg(Map<String, String> tokens, final BrowseType browseType)
     {
-        super(0, CODE);
+        super(CODE, "");
         this.browseType = browseType;
         this.sid = nonNull(tokens.get("sid"));
         this.parentSid = this.sid;
@@ -172,7 +172,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
     public DcpMediaContainerMsg(@NonNull Map<String, Object> heosMsg, final String parentSid, final String parentCid)
     {
-        super(0, CODE);
+        super(CODE, "");
         this.browseType = BrowseType.MEDIA_ITEM;
         this.sid = getElement(heosMsg, "sid");
         this.parentSid = parentSid;
@@ -190,7 +190,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
 
     public DcpMediaContainerMsg(@NonNull Map<String, Object> heosMsg)
     {
-        super(0, CODE);
+        super(CODE, "");
         browseType = BrowseType.PLAYQUEUE_ITEM;
         this.sid = "";
         this.parentSid = "";
@@ -220,6 +220,12 @@ public class DcpMediaContainerMsg extends ISCPMessage
     public String getSid()
     {
         return sid;
+    }
+
+    public ServiceType getServiceType()
+    {
+        return (ServiceType) ISCPMessage.searchDcpParameter(
+                "HS" + getSid(), ServiceType.values(), ServiceType.UNKNOWN);
     }
 
     public String getCid()

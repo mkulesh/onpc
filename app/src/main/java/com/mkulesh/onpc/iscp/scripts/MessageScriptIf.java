@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -13,6 +13,7 @@
  */
 package com.mkulesh.onpc.iscp.scripts;
 
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
@@ -24,7 +25,7 @@ public interface MessageScriptIf
     /**
      * Checks whether the script contains valid action to be performed
      **/
-    boolean isValid();
+    boolean isValid(ConnectionIf.ProtoType protoType);
 
     /**
      * This method shall parse the data field in the input intent. After XML is parsed,
@@ -34,7 +35,7 @@ public interface MessageScriptIf
      * not empty, the MessageScript is valid and these actions will be performed after the
      * connection is established.
      **/
-    void initialize(@NonNull final String data);
+    boolean initialize(@NonNull final State state);
 
     /**
      * This method is called from the state manager after the connection is established

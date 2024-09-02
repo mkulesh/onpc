@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -20,8 +20,10 @@ import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
 import com.mkulesh.onpc.iscp.State;
+import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListTitleInfoMsg;
+import com.mkulesh.onpc.iscp.messages.MessageFactory;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
 import com.mkulesh.onpc.iscp.messages.OperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.PowerStatusMsg;
@@ -57,16 +59,19 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     static class Action
     {
         // command to be sent
-        final String cmd;
+        String cmd;
 
         // parameter used for actions command. Empty string means no parameter is used.
         final String par;
+
+        // flag to be applied for given action: AID for DCP protocol
+        final String actionFlag;
 
         // Delay in milliseconds used for action WAIT. Zero means no delay.
         final int milliseconds;
 
         // the command to wait for. Null if time based (or no) wait is used
-        final String wait;
+        String wait;
 
         // string that must match the acknowledgement message
         final String resp;
@@ -77,28 +82,78 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         // The attribute that holds the actual state of this action
         ActionState state = ActionState.UNSENT;
 
-        Action(String cmd, String par, final int milliseconds, String wait, String resp, String listitem)
+        Action(@NonNull final Element action) throws Exception
         {
-            this.cmd = cmd;
-            this.par = par;
-            this.milliseconds = milliseconds;
-            this.wait = wait;
-            this.resp = resp;
-            this.listitem = listitem;
+            cmd = action.getAttribute("cmd");
+            if (cmd == null)
+            {
+                throw new Exception("missing command code in 'send' command");
+            }
+            final String parStr = action.getAttribute("par");
+            if (parStr == null)
+            {
+                throw new Exception("missing command parameter in 'send' command");
+            }
+            par = unEscape(parStr);
+            actionFlag = action.getAttribute("flag");
+            milliseconds = Utils.parseIntAttribute(action, "wait", -1);
+            wait = action.getAttribute("wait");
+            resp = unEscape(action.getAttribute("resp"));
+            listitem = unEscape(action.getAttribute("listitem"));
+            if (milliseconds < 0 && (wait == null || wait.isEmpty()))
+            {
+                throw new Exception("missing time or wait CMD in 'send' command");
+            }
         }
 
         @NonNull
         public String toString()
         {
-            return "Action"
-                    + "[" + cmd
-                    + "," + par
-                    + "," + wait
-                    + "," + resp
-                    + "," + listitem
+            return "Action [cmd=" + cmd
+                    + ", par=" + par
+                    + ", flag=" + actionFlag
+                    + ", wait=" + wait
+                    + ", resp=" + resp
+                    + ", listitem=" + listitem
                     + "]/" + ACTION_STATES[state.ordinal()];
         }
 
+        @NonNull
+        private static String unEscape(@NonNull String str)
+        {
+            str = str.replace("~lt~", "<");
+            str = str.replace("~gt~", ">");
+            str = str.replace("~dq~", "\"");
+            return str;
+        }
+
+        private String changeZone(final State state, final String cmd)
+        {
+            final int newIdx = state.getActiveZone();
+            for (String[] zm : MessageFactory.getAllZonedMessages())
+            {
+                int oldIdx = -1;
+                for (int i = 0; i < zm.length; i++)
+                {
+                    if (zm[i].equalsIgnoreCase(cmd))
+                    {
+                        oldIdx = i;
+                        break;
+                    }
+                }
+                if (oldIdx >= 0 && oldIdx != newIdx && newIdx < zm.length)
+                {
+                    return zm[newIdx];
+                }
+            }
+            return cmd;
+        }
+
+        void shiftZone(State state)
+        {
+            cmd = changeZone(state, cmd);
+            wait = changeZone(state, wait);
+        }
     }
 
     // optional connected host (ConnectionIf)
@@ -115,30 +170,22 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
     private final List<Action> actions = new ArrayList<>();
 
     private final Context context;
+    private final String data;
 
     public MessageScript(Context context, @NonNull final String data)
     {
         this.context = context;
-        initialize(data);
+        this.data = data;
     }
 
     @Override
-    public boolean isValid()
+    public boolean isValid(ConnectionIf.ProtoType protoType)
     {
         return !actions.isEmpty();
     }
 
-    @NonNull
-    private String unEscape(@NonNull String str)
-    {
-        str = str.replace("~lt~", "<");
-        str = str.replace("~gt~", ">");
-        str = str.replace("~dq~", "\"");
-        return str;
-    }
-
     @Override
-    public void initialize(@NonNull final String data)
+    public boolean initialize(@NonNull final State state)
     {
         Utils.openXml(this, data, (final Element elem) ->
         {
@@ -162,34 +209,20 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                     final Element action = (Element) prop;
                     if (action.getTagName().equals("send"))
                     {
-                        final String cmd = action.getAttribute("cmd");
-                        if (cmd == null)
-                        {
-                            throw new Exception("missing command code in 'send' command");
-                        }
-                        String par = action.getAttribute("par");
-                        if (par == null)
-                        {
-                            throw new Exception("missing command parameter in 'send' command");
-                        }
-                        par = unEscape(par);
-                        final int milliseconds = Utils.parseIntAttribute(action, "wait", -1);
-                        final String wait = action.getAttribute("wait");
-                        final String resp = unEscape(action.getAttribute("resp"));
-                        final String listitem = unEscape(action.getAttribute("listitem"));
-                        if (milliseconds < 0 && (wait == null || wait.isEmpty()))
-                        {
-                            throw new Exception("missing time or wait CMD in 'send' command");
-                        }
-                        actions.add(new Action(cmd, par, milliseconds, wait, resp, listitem));
+                        actions.add(new Action(action));
                     }
                 }
             }
         });
         for (Action a : actions)
         {
+            if (state.protoType == ProtoType.DCP)
+            {
+                a.shiftZone(state);
+            }
             info(this, a.toString());
         }
+        return isValid(state.protoType);
     }
 
     @Override
@@ -284,10 +317,16 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         switch (cmd)
         {
         case OperationCommandMsg.CODE:
-            return par.equals(OperationCommandMsg.Command.TOP.toString()) && state.isTopLayer();
+            return state.protoType == ProtoType.ISCP && par.equals(OperationCommandMsg.Command.TOP.toString()) && state.isTopLayer();
         case PowerStatusMsg.CODE:
+        case PowerStatusMsg.ZONE2_CODE:
+        case PowerStatusMsg.ZONE3_CODE:
+        case PowerStatusMsg.ZONE4_CODE:
             return par.equals(state.powerStatus.getCode());
         case InputSelectorMsg.CODE:
+        case InputSelectorMsg.ZONE2_CODE:
+        case InputSelectorMsg.ZONE3_CODE:
+        case InputSelectorMsg.ZONE4_CODE:
             return par.equals(state.inputType.getCode());
         case NetworkServiceMsg.CODE:
             return par.equals(state.serviceType.getCode() + "0");
@@ -319,7 +358,10 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
                     }
                 }
             }
-            else return par != null && (a.resp.isEmpty() || a.resp.equals(par));
+            else
+            {
+                return par != null && (a.resp.isEmpty() || a.resp.equals(par));
+            }
         }
         return false;
     }
@@ -343,24 +385,48 @@ public class MessageScript implements ConnectionIf, MessageScriptIf
         }
         else
         {
-            EISCPMessage msg = null;
-            if (a.cmd.equals(XmlListInfoMsg.CODE))
+            XmlListItemMsg item = null;
+            if (a.cmd.equals(XmlListInfoMsg.CODE) || a.cmd.equals(DcpMediaContainerMsg.CODE))
             {
                 final List<XmlListItemMsg> cloneMediaItems = state.cloneMediaItems();
-                for (XmlListItemMsg item : cloneMediaItems)
+                for (XmlListItemMsg i : cloneMediaItems)
                 {
-                    if (item.getTitle().equals(a.par))
+                    if (i.getTitle().equals(a.par))
                     {
-                        msg = item.getCmdMsg();
+                        item = i;
                     }
                 }
             }
-            if (msg == null)
+            // DCP command
+            final DcpMediaContainerMsg dcpMsg =
+                    item != null ? state.getDcpContainerMsg(item) : null;
+            if (item != null && dcpMsg != null)
             {
-                msg = new EISCPMessage(a.cmd, a.par);
+                if (!a.actionFlag.isEmpty())
+                {
+                    final DcpMediaContainerMsg dcpMsg1 = new DcpMediaContainerMsg(dcpMsg);
+                    dcpMsg1.setAid(a.actionFlag);
+                    channel.sendMessage(dcpMsg1.getCmdMsg());
+                    info(this, a + ": sent DCP media container message with action " + dcpMsg1);
+                }
+                else
+                {
+                    state.prepareDcpNextLayer(item);
+                    channel.sendMessage(dcpMsg.getCmdMsg());
+                    info(this, a + ": sent DCP media container message " + dcpMsg);
+                }
             }
-            channel.sendMessage(msg);
-            info(this, a + ": sent message " + msg);
+            else
+            {
+                // ISCP command
+                EISCPMessage msg = item != null ? item.getCmdMsg() : null;
+                if (msg == null)
+                {
+                    msg = new EISCPMessage(a.cmd, a.par);
+                }
+                channel.sendMessage(msg);
+                info(this, a + ": sent message " + msg);
+            }
         }
 
         a.state = ActionState.WAITING;

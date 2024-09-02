@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -36,6 +36,12 @@ public abstract class ZonedMessage extends ISCPMessage
     protected ZonedMessage(final int messageId, final String data, int zoneIndex)
     {
         super(messageId, data);
+        this.zoneIndex = zoneIndex;
+    }
+
+    protected ZonedMessage(final String[] zoneCommands, int zoneIndex, final String data)
+    {
+        super(zoneIndex < zoneCommands.length ? zoneCommands[zoneIndex] : null, data);
         this.zoneIndex = zoneIndex;
     }
 

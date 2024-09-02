@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -33,9 +33,9 @@ import androidx.annotation.StringRes;
 public class InputSelectorMsg extends ZonedMessage
 {
     public final static String CODE = "SLI";
-    final static String ZONE2_CODE = "SLZ";
-    final static String ZONE3_CODE = "SL3";
-    final static String ZONE4_CODE = "SL4";
+    public final static String ZONE2_CODE = "SLZ";
+    public final static String ZONE3_CODE = "SL3";
+    public final static String ZONE4_CODE = "SL4";
 
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
@@ -186,7 +186,7 @@ public class InputSelectorMsg extends ZonedMessage
 
     public InputSelectorMsg(int zoneIndex, final String cmd)
     {
-        super(0, null, zoneIndex);
+        super(ZONE_COMMANDS, zoneIndex, cmd);
         inputType = (InputType) searchParameter(cmd, InputType.values(), InputType.NONE);
     }
 

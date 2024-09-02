@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -107,7 +107,7 @@ public class DcpReceiverInformationMsg extends ISCPMessage
 
     public DcpReceiverInformationMsg(QueryType q)
     {
-        super(-1, "");
+        super(CODE, "");
         this.updateType = UpdateType.NONE;
         this.queryType = q;
     }
@@ -128,42 +128,42 @@ public class DcpReceiverInformationMsg extends ISCPMessage
 
     public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.Selector selector)
     {
-        super(-1, "");
+        super(CODE, "");
         this.updateType = UpdateType.SELECTOR;
         this.selector = selector;
     }
 
     public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.Zone zone)
     {
-        super(-1, "");
+        super(CODE, "");
         this.updateType = UpdateType.MAX_VOLUME;
         maxVolumeZone = zone;
     }
 
     public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.ToneControl toneControl)
     {
-        super(-1, "");
+        super(CODE, "");
         this.updateType = UpdateType.TONE_CONTROL;
         this.toneControl = toneControl;
     }
 
     public DcpReceiverInformationMsg(@NonNull final ReceiverInformationMsg.Preset preset)
     {
-        super(-1, "");
+        super(CODE, "");
         this.updateType = UpdateType.PRESET;
         this.preset = preset;
     }
 
     public DcpReceiverInformationMsg(final Map<String, ReceiverInformationMsg.NetworkService> networkServices)
     {
-        super(-1, "");
+        super(CODE, "");
         this.updateType = UpdateType.NETWORK_SERVICES;
         this.networkServices = networkServices;
     }
 
     public DcpReceiverInformationMsg(final UpdateType type, final String par)
     {
-        super(-1, "");
+        super(CODE, "");
         this.updateType = type;
         this.firmwareVer = par;
     }

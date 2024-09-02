@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -33,7 +33,9 @@ import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.utils.Logging;
 import com.mobeta.android.dslv.DragSortListView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -94,7 +96,16 @@ public class ShortcutsFragment extends BaseFragment
             return;
         }
 
-        if (activity.getConfiguration().favoriteShortcuts.getShortcuts().isEmpty())
+        final List<CfgFavoriteShortcuts.Shortcut> shortcuts = new ArrayList<>();
+        for (CfgFavoriteShortcuts.Shortcut s : activity.getConfiguration().favoriteShortcuts.getShortcuts())
+        {
+            if (s.protoType == state.protoType)
+            {
+                shortcuts.add(s);
+            }
+        }
+
+        if (shortcuts.isEmpty())
         {
             final String message = String.format(
                     activity.getResources().getString(R.string.favorite_shortcut_howto),
@@ -106,7 +117,7 @@ public class ShortcutsFragment extends BaseFragment
             return;
         }
 
-        listViewAdapter.setItems(activity.getConfiguration().favoriteShortcuts.getShortcuts());
+        listViewAdapter.setItems(shortcuts);
         listView.setVisibility(View.VISIBLE);
         listView.setOnItemClickListener((adapterView, view, pos, l) ->
         {

@@ -200,10 +200,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         StrictMode.setThreadPolicy(policy);
         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
 
-        // initial call os the message scripts
+        // initial call of the message scripts
         for (MessageScriptIf script : messageScripts)
         {
-            if (script.isValid())
+            if (script.initialize(state))
             {
                 script.start(state, messageChannel);
             }
@@ -219,7 +219,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                 messageScripts.remove(script);
             }
         }
-        if (messageScript.isValid())
+        if (messageScript.initialize(state))
         {
             messageScripts.add(messageScript);
             messageScript.start(state, messageChannel);
@@ -314,7 +314,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                             processIscpMessage(msg) : processDcpMessage(msg);
                     for (MessageScriptIf script : messageScripts)
                     {
-                        if (script.isValid())
+                        if (script.isValid(state.protoType))
                         {
                             script.processMessage(msg, state, messageChannel);
                         }

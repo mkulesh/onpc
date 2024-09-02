@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -315,9 +315,8 @@ public class Configuration
     }
 
     @NonNull
-    public static ConnectionIf.ProtoType getProtoType(final SharedPreferences preferences)
+    static ConnectionIf.ProtoType stringToProtoType(String protoType)
     {
-        final String protoType = preferences.getString(Configuration.PROTO_TYPE, "NONE");
         for (ConnectionIf.ProtoType p : ConnectionIf.ProtoType.values())
         {
             if (p.name().equalsIgnoreCase(protoType))
@@ -326,5 +325,12 @@ public class Configuration
             }
         }
         return ConnectionIf.ProtoType.ISCP;
+    }
+
+    @NonNull
+    public static ConnectionIf.ProtoType getProtoType(final SharedPreferences preferences)
+    {
+        final String protoType = preferences.getString(Configuration.PROTO_TYPE, "ISCP");
+        return stringToProtoType(protoType);
     }
 }

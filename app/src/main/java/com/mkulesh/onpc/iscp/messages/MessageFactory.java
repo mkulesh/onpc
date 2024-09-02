@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -16,6 +16,8 @@ package com.mkulesh.onpc.iscp.messages;
 
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
+
+import java.util.ArrayList;
 
 /**
  * A static helper class used to create messages
@@ -156,5 +158,20 @@ public class MessageFactory
         default:
             throw new Exception("No factory method for message " + raw.getCode());
         }
+    }
+
+    public static ArrayList<String[]> getAllZonedMessages()
+    {
+        final ArrayList<String[]> retValue = new ArrayList<>();
+        retValue.add(PowerStatusMsg.ZONE_COMMANDS);
+        retValue.add(SpeakerACommandMsg.ZONE_COMMANDS);
+        retValue.add(SpeakerBCommandMsg.ZONE_COMMANDS);
+        retValue.add(InputSelectorMsg.ZONE_COMMANDS);
+        retValue.add(AudioMutingMsg.ZONE_COMMANDS);
+        retValue.add(MasterVolumeMsg.ZONE_COMMANDS);
+        retValue.add(ToneCommandMsg.ZONE_COMMANDS);
+        retValue.add(PresetCommandMsg.ZONE_COMMANDS);
+        retValue.add(TuningCommandMsg.ZONE_COMMANDS);
+        return retValue;
     }
 }

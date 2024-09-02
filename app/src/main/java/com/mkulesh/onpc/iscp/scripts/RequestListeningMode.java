@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -13,6 +13,7 @@
  */
 package com.mkulesh.onpc.iscp.scripts;
 
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.MessageChannel;
@@ -43,15 +44,15 @@ public class RequestListeningMode implements MessageScriptIf
     private final BlockingQueue<Timer> listeningModeQueue = new ArrayBlockingQueue<>(1, true);
 
     @Override
-    public boolean isValid()
+    public boolean isValid(ConnectionIf.ProtoType protoType)
     {
-        return true;
+        return protoType == ConnectionIf.ProtoType.ISCP;
     }
 
     @Override
-    public void initialize(@NonNull final String data)
+    public boolean initialize(@NonNull final State state)
     {
-        // nothing to do
+        return isValid(state.protoType);
     }
 
     @Override

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             setShowWhenLocked(true);
             setTurnScreenOn(true);
             KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-            if (keyguardManager!=null)
+            if (keyguardManager != null)
             {
                 keyguardManager.requestDismissKeyguard(this, null);
             }
@@ -635,8 +635,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 else
                 {
                     Logging.info(this, "    message script in the data field: " + intentData);
-                    final MessageScript ms = (intentData != null && !intentData.isEmpty()) ? new MessageScript(this, intentData) : null;
-                    messageScript = ms != null && ms.isValid() ? ms : null;
+                    messageScript = (intentData != null && !intentData.isEmpty()) ?
+                            new MessageScript(this, intentData) : null;
                 }
             }
             else

@@ -16,6 +16,7 @@ package com.mkulesh.onpc.iscp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 import com.mkulesh.onpc.R;
@@ -113,6 +114,9 @@ public class State implements ConnectionIf
         AUDIO_CONTROL,
         MULTIROOM_INFO
     }
+
+    // App resources
+    private Resources resources;
 
     // connected host (ConnectionIf)
     public final ProtoType protoType;
@@ -393,6 +397,7 @@ public class State implements ConnectionIf
     public void createDefaultReceiverInfo(final Context context, final boolean forceAudioControl)
     {
         // By default, add all possible device selectors
+        resources = context.getResources();
         synchronized (deviceSelectors)
         {
             deviceSelectors.clear();
@@ -1986,26 +1991,21 @@ public class State implements ConnectionIf
                 tmpPath.add(new DcpMediaContainerMsg(msg));
                 dcpMediaPath.clear();
                 dcpMediaPath.addAll(tmpPath);
-                Logging.info(this, "Dcp media path: " + dcpMediaPath);
+                syncPathItems();
                 // Info
-                serviceType = (ServiceType) ISCPMessage.searchDcpParameter(
-                        "HS" + msg.getSid(), ServiceType.values(), ServiceType.UNKNOWN);
+                serviceType = dcpMediaPath.isEmpty() ? msg.getServiceType() : dcpMediaPath.get(0).getServiceType();
                 layerInfo = msg.getLayerInfo();
                 uiType = ListTitleInfoMsg.UIType.LIST;
                 numberOfLayers = dcpMediaPath.size();
                 mediaListSid = msg.getSid();
                 mediaListCid = msg.getCid();
-                if (layerInfo ==  ListTitleInfoMsg.LayerInfo.SERVICE_TOP && serviceType != ServiceType.UNKNOWN)
-                {
-                    titleBar = serviceType.getName();
-                }
-                else if (msg.getBrowseType() == DcpMediaContainerMsg.BrowseType.SEARCH_RESULT && !msg.getSearchStr().isEmpty())
+                if (msg.getBrowseType() == DcpMediaContainerMsg.BrowseType.SEARCH_RESULT && !msg.getSearchStr().isEmpty())
                 {
                     titleBar = msg.getSearchStr();
                 }
-                else if (!dcpMediaPath.isEmpty() && dcpMediaPath.size() >= 2)
+                else if (!pathItems.isEmpty())
                 {
-                    titleBar = dcpMediaPath.get(dcpMediaPath.size() - 2).getItems().get(0).getTitle();
+                    titleBar = pathItems.get(pathItems.size() - 1);
                 }
                 else
                 {
@@ -2063,15 +2063,22 @@ public class State implements ConnectionIf
 
     public void setDcpNetTopLayer()
     {
+        Logging.info(this, "DCP: Set network top layer for " + networkServices.size() + " services");
+        serviceType = ServiceType.NET;
         layerInfo = ListTitleInfoMsg.LayerInfo.NET_TOP;
+        uiType = ListTitleInfoMsg.UIType.LIST;
+        numberOfLayers = 0;
+        mediaListSid = "";
+        mediaListCid = "";
+        dcpMediaPath.clear();
+        syncPathItems();
+        titleBar = "";
         synchronized (mediaItems)
         {
             mediaItems.clear();
         }
         createServiceItems();
         numberOfItems = serviceItems.size();
-        mediaListSid = "";
-        dcpMediaPath.clear();
     }
 
     private boolean process(DcpMediaItemMsg msg)
@@ -2135,7 +2142,50 @@ public class State implements ConnectionIf
             last.getItems().clear();
             last.getItems().add(rowMsg);
             Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last);
+            syncPathItems();
         }
+    }
+
+    private void syncPathItems()
+    {
+        Logging.info(this, "DCP: dcp media path: " + dcpMediaPath);
+        pathItems.clear();
+        for (int i = 0; i < dcpMediaPath.size(); i++)
+        {
+            final DcpMediaContainerMsg element = dcpMediaPath.get(i);
+            final boolean isService = element.getLayerInfo() == ListTitleInfoMsg.LayerInfo.SERVICE_TOP &&
+                    element.getServiceType() != ServiceType.UNKNOWN;
+            final boolean isTitleItem = element.getItems().size() == 1;
+            if (i == 0)
+            {
+                pathItems.add(isService ?
+                        (resources != null ? resources.getString(element.getServiceType().getDescriptionId())
+                                : element.getServiceType().getName()) : "");
+            }
+            if (i < dcpMediaPath.size() - 1 || isTitleItem)
+            {
+                pathItems.add(isTitleItem ? element.getItems().get(0).getTitle() : "");
+            }
+        }
+        Logging.info(this, "media list path: " + pathItems);
+    }
+
+    public void prepareDcpNextLayer(XmlListItemMsg item)
+    {
+        storeSelectedDcpItem(item);
+        clearItems();
+        mediaListCid = "";
+    }
+
+    public DcpMediaContainerMsg getDcpContainerMsg(final ISCPMessage msg)
+    {
+        if (msg instanceof XmlListItemMsg &&
+                ((XmlListItemMsg) msg).getCmdMessage() != null &&
+                ((XmlListItemMsg) msg).getCmdMessage() instanceof DcpMediaContainerMsg)
+        {
+            return (DcpMediaContainerMsg) (((XmlListItemMsg) msg).getCmdMessage());
+        }
+        return (msg instanceof DcpMediaContainerMsg) ? (DcpMediaContainerMsg) msg : null;
     }
 
     private void setDcpPlayingItem()

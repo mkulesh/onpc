@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.mkulesh.onpc.R;
+import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
@@ -47,22 +48,26 @@ public class CfgFavoriteShortcuts
     public static class Shortcut
     {
         public final int id;
+        public final ConnectionIf.ProtoType protoType;
         final InputSelectorMsg.InputType input;
         final ServiceType service;
         final String item;
         public final String alias;
+        final String actionFlag;
         public int order;
         final List<String> pathItems = new ArrayList<>();
 
         Shortcut(final Element e)
         {
             this.id = Utils.parseIntAttribute(e, "id", 0);
+            this.protoType = Configuration.stringToProtoType(e.getAttribute("protoType"));
             this.input = (InputSelectorMsg.InputType) InputSelectorMsg.searchParameter(
                     e.getAttribute("input"), InputSelectorMsg.InputType.values(), InputSelectorMsg.InputType.NONE);
             this.service = (ServiceType) ISCPMessage.searchParameter(
                     e.getAttribute("service"), ServiceType.values(), ServiceType.UNKNOWN);
             this.item = e.getAttribute("item");
             this.alias = e.getAttribute("alias");
+            this.actionFlag = e.getAttribute("actionFlag");
             this.order = Utils.parseIntAttribute(e, "order", id);
             for (Node dir = e.getFirstChild(); dir != null; dir = dir.getNextSibling())
             {
@@ -79,21 +84,27 @@ public class CfgFavoriteShortcuts
         public Shortcut(final Shortcut old, final String alias)
         {
             this.id = old.id;
+            this.protoType = old.protoType;
             this.input = old.input;
             this.service = old.service;
             this.item = old.item;
             this.alias = alias;
+            this.actionFlag = old.actionFlag;
             this.order = old.order;
             this.pathItems.addAll(old.pathItems);
         }
 
-        public Shortcut(final int id, final InputSelectorMsg.InputType input, final ServiceType service, final String item, final String alias)
+        public Shortcut(final int id, final ConnectionIf.ProtoType protoType,
+                        final InputSelectorMsg.InputType input, final ServiceType service,
+                        final String item, final String alias, final String actionFlag)
         {
             this.id = id;
+            this.protoType = protoType;
             this.input = input;
             this.service = service;
             this.item = item;
             this.alias = alias;
+            this.actionFlag = actionFlag;
             this.order = id;
         }
 
@@ -120,10 +131,12 @@ public class CfgFavoriteShortcuts
             StringBuilder label = new StringBuilder();
             label.append("<").append(FAVORITE_SHORTCUT_TAG);
             label.append(" id=\"").append(id).append("\"");
+            label.append(" protoType=\"").append(protoType.name().toUpperCase()).append("\"");
             label.append(" input=\"").append(input.getCode()).append("\"");
             label.append(" service=\"").append(service.getCode()).append("\"");
             label.append(" item=\"").append(escape(item)).append("\"");
             label.append(" alias=\"").append(escape(alias)).append("\"");
+            label.append(" actionFlag=\"").append(escape(actionFlag)).append("\"");
             label.append(" order=\"").append(order).append("\">");
             for (String dir : pathItems)
             {
@@ -131,6 +144,12 @@ public class CfgFavoriteShortcuts
             }
             label.append("</" + FAVORITE_SHORTCUT_TAG + ">");
             return label.toString();
+        }
+
+        private boolean isNetService(InputSelectorMsg.InputType key)
+        {
+            return key == InputSelectorMsg.InputType.NET
+                    || key == InputSelectorMsg.InputType.DCP_NET;
         }
 
         public String getLabel(Context context)
@@ -142,7 +161,7 @@ public class CfgFavoriteShortcuts
                 label.append(context.getString(input.getDescriptionId())).append("/");
             }
 
-            if (input == InputSelectorMsg.InputType.NET && service != ServiceType.UNKNOWN)
+            if (isNetService(input) && service != ServiceType.UNKNOWN)
             {
                 label.append(context.getString(service.getDescriptionId())).append("/");
             }
@@ -157,6 +176,12 @@ public class CfgFavoriteShortcuts
 
         @NonNull
         public String toScript(@NonNull final Context context, @NonNull final State state)
+        {
+            return state.protoType == ConnectionIf.ProtoType.ISCP ?
+                    toIscpScript(context, state) : toDcpScript(context);
+        }
+
+        private String toIscpScript(@NonNull final Context context, @NonNull final State state)
         {
             final StringBuilder data = new StringBuilder();
             data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
@@ -184,7 +209,7 @@ public class CfgFavoriteShortcuts
 
             // Go to the top level. Response depends on the input type and model
             String firstPath = escape(pathItems.isEmpty() ? item : pathItems.get(0));
-            if (input == InputSelectorMsg.InputType.NET && service != ServiceType.UNKNOWN)
+            if (isNetService(input) && service != ServiceType.UNKNOWN)
             {
                 if ("TX-8130".equals(state.getModel()))
                 {
@@ -230,6 +255,85 @@ public class CfgFavoriteShortcuts
             data.append("<send cmd=\"NLA\" par=\"")
                     .append(escape(item))
                     .append("\" wait=\"1000\"/>");
+            data.append("</onpcScript>");
+            return data.toString();
+        }
+
+        private String toDcpScript(@NonNull final Context context)
+        {
+            final StringBuilder data = new StringBuilder();
+            data.append("<onpcScript host=\"\" port=\"\" zone=\"0\">");
+            data.append("<send cmd=\"PWR\" par=\"QSTN\" wait=\"PWR\"/>");
+            data.append("<send cmd=\"PWR\" par=\"01\" wait=\"PWR\" resp=\"01\"/>");
+            data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>");
+            data.append("<send cmd=\"SLI\" par=\"")
+                    .append(input.getCode())
+                    .append("\" wait=\"SLI\" resp=\"")
+                    .append(input.getCode())
+                    .append("\"/>");
+
+            // Radio input requires a special handling
+            if (input == InputSelectorMsg.InputType.DCP_TUNER)
+            {
+                // Additional waiting time since tuner has some initialization period
+                data.append("<send cmd=\"SLI\" par=\"QSTN\" wait=\"5000\"/>");
+                data.append("<send cmd=\"PRS\" par=\"")
+                        .append(item)
+                        .append("\" wait=\"PRS\"/>");
+                data.append("</onpcScript>");
+                return data.toString();
+            }
+
+            // #270: Simple inputs do not need additional processing
+            if (!input.isMediaList())
+            {
+                data.append("</onpcScript>");
+                return data.toString();
+            }
+
+            // Go to the top level. Response depends on the input type and model
+            String firstPath = pathItems.isEmpty() ? item : pathItems.get(0);
+            if (isNetService(input) && service != ServiceType.UNKNOWN)
+            {
+                data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"D01\" listitem=\"")
+                        .append(context.getString(service.getDescriptionId()))
+                        .append("\"/>");
+            }
+
+            // Select target service
+            data.append("<send cmd=\"NSV\" par=\"")
+                    .append(service.getCode())
+                    .append("0\" wait=\"D05\" listitem=\"")
+                    .append(firstPath)
+                    .append("\"/>");
+
+            // Apply target path, if necessary
+            if (!pathItems.isEmpty())
+            {
+                for (int i = 0; i < pathItems.size() - 1; i++)
+                {
+                    firstPath = pathItems.get(i);
+                    final String nextPath = pathItems.get(i + 1);
+                    data.append("<send cmd=\"NLA\" par=\"")
+                            .append(firstPath)
+                            .append("\" wait=\"D05\" listitem=\"")
+                            .append(nextPath)
+                            .append("\"/>)");
+                }
+                data.append("<send cmd=\"NLA\" par=\"")
+                        .append(pathItems.get(pathItems.size() - 1))
+                        .append("\" wait=\"D05\" listitem=\"")
+                        .append(item)
+                        .append("\"/>)");
+            }
+
+            // Select target item with given flag
+            data.append("<send cmd=\"NLA\" par=\"")
+                    .append(item)
+                    .append("\" flag=\"")
+                    .append(actionFlag)
+                    .append("\"")
+                    .append(" wait=\"1000\"/>");
             data.append("</onpcScript>");
             return data.toString();
         }

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -29,9 +29,9 @@ import androidx.annotation.Nullable;
 public class PowerStatusMsg extends ZonedMessage
 {
     public final static String CODE = "PWR";
-    final static String ZONE2_CODE = "ZPW";
-    final static String ZONE3_CODE = "PW3";
-    final static String ZONE4_CODE = "PW4";
+    public final static String ZONE2_CODE = "ZPW";
+    public final static String ZONE3_CODE = "PW3";
+    public final static String ZONE4_CODE = "PW4";
 
     public final static String[] ZONE_COMMANDS = new String[]{ CODE, ZONE2_CODE, ZONE3_CODE, ZONE4_CODE };
 
@@ -75,7 +75,7 @@ public class PowerStatusMsg extends ZonedMessage
 
     public PowerStatusMsg(int zoneIndex, PowerStatus powerStatus)
     {
-        super(0, null, zoneIndex);
+        super(ZONE_COMMANDS, zoneIndex, powerStatus.code);
         this.powerStatus = powerStatus;
     }
 
