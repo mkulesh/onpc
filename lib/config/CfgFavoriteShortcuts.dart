@@ -33,6 +33,7 @@ import "CfgModule.dart";
 class Shortcut
 {
     static String FAVORITE_SHORTCUT_TAG = "favoriteShortcut";
+    static String DCP_PLAYABLE_TAG = "4";
 
     late int _id;
 
@@ -309,6 +310,10 @@ class Shortcut
         if (icon == null)
         {
             icon = Drawables.media_item_unknown;
+        }
+        if (icon == Drawables.media_item_folder && _actionFlag == Shortcut.DCP_PLAYABLE_TAG)
+        {
+            icon = Drawables.media_item_folder_play;
         }
         return icon;
     }

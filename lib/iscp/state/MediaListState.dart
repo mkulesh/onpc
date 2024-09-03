@@ -150,9 +150,15 @@ class MediaListState
         _numberOfLayers = 0;
         _numberOfTitles = 0;
         _currentCursorPosition = 0;
+        clearPathItems();
+        clearItems();
+    }
+
+    void clearPathItems()
+    {
         _pathItems.clear();
         _pathIndexOffset = 0;
-        clearItems();
+        _dcpMediaPath.clear();
     }
 
     void clearItems({bool skipForRadio = false})
@@ -684,8 +690,16 @@ class MediaListState
         {
             final DcpMediaContainerMsg last = _dcpMediaPath.last;
             last.getItems().clear();
-            last.getItems().add(rowMsg);
-            Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last.toString());
+            final DcpMediaContainerMsg? cntMsg = getDcpContainerMsg(rowMsg);
+            if (cntMsg != null && !cntMsg.isContainer() && cntMsg.isPlayable())
+            {
+                Logging.info(this, "Skipped save of selected DCP item: " + rowMsg.toString() + ": is a stream");
+            }
+            else
+            {
+                last.getItems().add(rowMsg);
+                Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last.toString());
+            }
             _syncPathItems();
         }
     }

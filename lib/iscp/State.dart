@@ -389,6 +389,7 @@ class State with ProtoTypeMix
             {
                 _trackState.clear();
                 _playbackState.clear();
+                _mediaListState.clearPathItems();
             }
             if (_mediaListState.isRadioInput)
             {
