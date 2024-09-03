@@ -88,7 +88,7 @@ public class TrackInfoMsg extends ISCPMessage
     @Override
     public String toString()
     {
-        return CODE + "[" + currentTrack + "; " + maxTrack + "]";
+        return CODE + "[DATA=" + data + "; CURR=" + currentTrack + "; MAX=" + maxTrack + "]";
     }
 
     @Override
@@ -127,7 +127,7 @@ public class TrackInfoMsg extends ISCPMessage
                 {
                     // process get_queue response with equal start and end items
                     final int current = Integer.parseInt(rangeStr[0]);
-                    return new TrackInfoMsg(current, count);
+                    return new TrackInfoMsg(current + 1, count);
                 }
             }
             catch (Exception e)
@@ -144,8 +144,9 @@ public class TrackInfoMsg extends ISCPMessage
     {
         if (currentTrack != null)
         {
+            final int c = Math.max(0, currentTrack - 1);
             return "heos://" + HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID +
-                    "&range=" + currentTrack + "," + currentTrack;
+                    "&range=" + c + "," + c;
         }
         return null;
     }
