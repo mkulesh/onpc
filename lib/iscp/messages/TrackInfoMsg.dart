@@ -12,6 +12,8 @@
  * Public License along with this program.
  */
 
+import "dart:math";
+
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
@@ -80,7 +82,7 @@ class TrackInfoMsg extends ISCPMessage
                 final int? current = int.tryParse(rangeStr.first);
                 if (current != null && count != null)
                 {
-                    return TrackInfoMsg.output(current, count);
+                    return TrackInfoMsg.output(current + 1, count);
                 }
             }
         }
@@ -89,6 +91,9 @@ class TrackInfoMsg extends ISCPMessage
 
     @override
     String? buildDcpMsg(bool isQuery)
-    => "heos://" + _HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID +
-        "&range=" + _currentTrack.toString() + "," + _currentTrack.toString();
+    {
+        final int c = max(0, _currentTrack - 1);
+        return "heos://" + _HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID +
+            "&range=" + c.toString() + "," + c.toString();
+    }
 }
