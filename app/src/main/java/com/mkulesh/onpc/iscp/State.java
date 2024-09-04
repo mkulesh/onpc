@@ -487,6 +487,13 @@ public class State implements ConnectionIf
         return false;
     }
 
+    private void clearPathItems()
+    {
+        pathItems.clear();
+        pathIndexOffset = 0;
+        dcpMediaPath.clear();
+    }
+
     private void clearTrackInfo()
     {
         cover = null;
@@ -847,6 +854,7 @@ public class State implements ConnectionIf
             clearTrackInfo();
             serviceType = null;
             clearItems();
+            clearPathItems();
             if (!isCdInput())
             {
                 timeSeek = MenuStatusMsg.TimeSeek.DISABLE;
@@ -2140,8 +2148,16 @@ public class State implements ConnectionIf
         {
             final DcpMediaContainerMsg last = dcpMediaPath.get(dcpMediaPath.size() - 1);
             last.getItems().clear();
-            last.getItems().add(rowMsg);
-            Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last);
+            final DcpMediaContainerMsg cntMsg = getDcpContainerMsg(rowMsg);
+            if (cntMsg != null && !cntMsg.isContainer() && cntMsg.isPlayable())
+            {
+                Logging.info(this, "Skipped save of selected DCP item: " + rowMsg.toString() + ": is a stream");
+            }
+            else
+            {
+                last.getItems().add(rowMsg);
+                Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last);
+            }
             syncPathItems();
         }
     }

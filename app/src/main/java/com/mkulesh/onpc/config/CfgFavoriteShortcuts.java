@@ -47,6 +47,8 @@ public class CfgFavoriteShortcuts
 
     public static class Shortcut
     {
+        public static final String DCP_PLAYABLE_TAG = "4";
+
         public final int id;
         public final ConnectionIf.ProtoType protoType;
         final InputSelectorMsg.InputType input;
@@ -345,6 +347,10 @@ public class CfgFavoriteShortcuts
             if (icon == R.drawable.media_item_unknown)
             {
                 icon = input.getImageId();
+            }
+            if (icon == R.drawable.media_item_folder && Shortcut.DCP_PLAYABLE_TAG.equals(actionFlag))
+            {
+                icon = R.drawable.media_item_folder_play;
             }
             return icon;
         }

@@ -274,7 +274,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             final ShortcutInfo shortcutInfo = new ShortcutInfo();
             shortcutInfo.item = selectedItem.getTitle();
             shortcutInfo.alias = selectedItem.getTitle();
-            shortcutInfo.actionFlag = isDcpPlayable ? "4" : "";
+            shortcutInfo.actionFlag = isDcpPlayable ? CfgFavoriteShortcuts.Shortcut.DCP_PLAYABLE_TAG : "";
 
             Logging.info(this, "Context menu '" + item.getTitle() + "'; " + selectedItem);
             selectedItem = null;
