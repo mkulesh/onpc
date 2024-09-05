@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -17,6 +17,7 @@ package com.mkulesh.onpc.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -558,5 +559,32 @@ public class Utils
             break;
         }
         return length;
+    }
+
+    public static AssetManager assetManager;
+
+    @Nullable
+    public static String readAssetData(String inFile)
+    {
+        if (assetManager == null)
+        {
+            return null;
+        }
+        String tContents = "";
+        try
+        {
+            InputStream stream = assetManager.open(inFile);
+            int size = stream.available();
+            byte[] buffer = new byte[size];
+            //noinspection ResultOfMethodCallIgnored
+            stream.read(buffer);
+            stream.close();
+            tContents = new String(buffer);
+        }
+        catch (IOException e)
+        {
+            // Handle exceptions here
+        }
+        return tContents;
     }
 }

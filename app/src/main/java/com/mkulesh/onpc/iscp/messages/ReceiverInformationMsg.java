@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -52,6 +52,8 @@ public class ReceiverInformationMsg extends ISCPMessage
     public final static int DEFAULT_ACTIVE_ZONE = 0;
     public final static int ALL_ZONES = 0xFF;
     public final static int EXT_ZONES = 14; // 1110 - all zones except main
+
+    public final static String DCP_REC_INFO_TEST = "";
 
     public static class NetworkService
     {
@@ -740,6 +742,13 @@ public class ReceiverInformationMsg extends ISCPMessage
 
     private static String getDcpXmlData(final String host, final int port) throws Exception
     {
+        //noinspection ConstantValue
+        if (!DCP_REC_INFO_TEST.isEmpty())
+        {
+            Logging.info(DCP_REC_INFO_TEST, "DCP Receiver information: loading test data");
+            return Utils.readAssetData(DCP_REC_INFO_TEST);
+        }
+
         final byte[] bytes = Utils.getUrlData(new URL(getDcpGoformUrl(host, port, "Deviceinfo.xml")), true);
         if (bytes != null)
         {
@@ -899,6 +908,7 @@ public class ReceiverInformationMsg extends ISCPMessage
         funcNameMap.put("CBL/SAT", InputSelectorMsg.InputType.DCP_SAT_CBL);
         funcNameMap.put("MEDIA PLAYER", InputSelectorMsg.InputType.DCP_MPLAY);
         funcNameMap.put("GAME", InputSelectorMsg.InputType.DCP_GAME);
+        funcNameMap.put("GAME1", InputSelectorMsg.InputType.DCP_GAME1);
         funcNameMap.put("TUNER", InputSelectorMsg.InputType.DCP_TUNER);
         funcNameMap.put("AUX1", InputSelectorMsg.InputType.DCP_AUX1);
         funcNameMap.put("AUX2", InputSelectorMsg.InputType.DCP_AUX2);

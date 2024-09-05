@@ -130,6 +130,10 @@
     <string name="pref_friendly_names_summary_off">Namen des Protokolls nutzen</string>
 
     <string name="pref_force_audio_control">Audiosteuerung immer verfügbar</string>
+    <string name="pref_volume_unit">Lautstärkeeinheit</string>
+    <string name="pref_volume_unit_absolute">Absolute</string>
+    <string name="pref_volume_unit_relative">Relativ (dB)</string>
+    <string name="pref_volume_unit_zero">Nullpegel (0 dB)</string>
 
     <!-- Cover click behaviour -->
     <string name="pref_cover_click">Klickverhalten des Albumcovers</string>
@@ -382,6 +386,7 @@
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
     <string name="input_selector_cbl_sat">CBL/SAT</string>
     <string name="input_selector_game">GAME</string>
+    <string name="input_selector_game1">GAME1</string>
     <string name="input_selector_aux">AUX</string>
     <string name="input_selector_aux1">AUX1</string>
     <string name="input_selector_aux2">AUX2</string>

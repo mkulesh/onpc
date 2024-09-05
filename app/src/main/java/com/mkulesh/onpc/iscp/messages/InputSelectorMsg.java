@@ -93,6 +93,7 @@ public class InputSelectorMsg extends ZonedMessage
         DCP_SAT_CBL("SAT/CBL", R.string.input_selector_cbl_sat, R.drawable.media_item_sat),
         DCP_MPLAY("MPLAY", R.string.input_selector_mplayer, R.drawable.media_item_mplayer),
         DCP_GAME("GAME", R.string.input_selector_game, R.drawable.media_item_game),
+        DCP_GAME1("GAME1", R.string.input_selector_game1, R.drawable.media_item_game),
         DCP_TUNER("TUNER", R.string.input_selector_tuner, R.drawable.media_item_radio),
         DCP_AUX1("AUX1", R.string.input_selector_aux1, R.drawable.media_item_rca),
         DCP_AUX2("AUX2", R.string.input_selector_aux2, R.drawable.media_item_rca),

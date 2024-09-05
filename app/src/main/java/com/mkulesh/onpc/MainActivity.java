@@ -519,6 +519,11 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             savedReceiverInformation = null;
             // Default receiver information used if ReceiverInformationMsg is missing
             {
+                //noinspection ConstantValue
+                if (!ReceiverInformationMsg.DCP_REC_INFO_TEST.isEmpty())
+                {
+                    Utils.assetManager = this.getAssets();
+                }
                 final State s = stateHolder.getState();
                 s.createDefaultReceiverInfo(this, configuration.audioControl.isForceAudioControl());
                 configuration.setReceiverInformation(s);
