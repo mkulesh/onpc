@@ -294,7 +294,7 @@ public class CfgFavoriteShortcuts
             }
 
             // Go to the top level. Response depends on the input type and model
-            String firstPath = pathItems.isEmpty() ? item : pathItems.get(0);
+            String firstPath = escape(pathItems.isEmpty() ? item : pathItems.get(0));
             if (isNetService(input) && service != ServiceType.UNKNOWN)
             {
                 data.append("<send cmd=\"NTC\" par=\"TOP\" wait=\"D01\" listitem=\"")
@@ -314,8 +314,8 @@ public class CfgFavoriteShortcuts
             {
                 for (int i = 0; i < pathItems.size() - 1; i++)
                 {
-                    firstPath = pathItems.get(i);
-                    final String nextPath = pathItems.get(i + 1);
+                    firstPath = escape(pathItems.get(i));
+                    final String nextPath = escape(pathItems.get(i + 1));
                     data.append("<send cmd=\"NLA\" par=\"")
                             .append(firstPath)
                             .append("\" wait=\"D05\" listitem=\"")
@@ -323,15 +323,15 @@ public class CfgFavoriteShortcuts
                             .append("\"/>)");
                 }
                 data.append("<send cmd=\"NLA\" par=\"")
-                        .append(pathItems.get(pathItems.size() - 1))
+                        .append(escape(pathItems.get(pathItems.size() - 1)))
                         .append("\" wait=\"D05\" listitem=\"")
-                        .append(item)
+                        .append(escape(item))
                         .append("\"/>)");
             }
 
             // Select target item with given flag
             data.append("<send cmd=\"NLA\" par=\"")
-                    .append(item)
+                    .append(escape(item))
                     .append("\" flag=\"")
                     .append(actionFlag)
                     .append("\"")
