@@ -53,6 +53,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         private final boolean isFavorite;
         final int responses;
         boolean selected;
+        boolean valid;
 
         DeviceInfo(@NonNull final BroadcastResponseMsg msg, final boolean isFavorite, int responses)
         {
@@ -60,6 +61,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             this.isFavorite = isFavorite;
             this.responses = responses;
             this.selected = false;
+            this.valid = true;
         }
     }
 
@@ -109,13 +111,37 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
         }
     }
 
+    public void invalidateFavouriteDevice(String host, int port)
+    {
+        synchronized (devices)
+        {
+            for (DeviceInfo di : devices.values())
+            {
+                if (di.isFavorite && di.message.getHost().equals(host) && di.message.getPort() == port)
+                {
+                    Logging.info(this, "invalidating favourite device: " + di.message);
+                    di.valid = false;
+                }
+            }
+        }
+    }
+
     public List<BroadcastResponseMsg> getDevices()
+    {
+        return getDevices(false);
+    }
+
+    public List<BroadcastResponseMsg> getDevices(boolean validOnly)
     {
         List<BroadcastResponseMsg> retValue = new ArrayList<>();
         synchronized (devices)
         {
             for (DeviceInfo di : devices.values())
             {
+                if (validOnly && !di.valid)
+                {
+                    continue;
+                }
                 retValue.add(new BroadcastResponseMsg(di.message));
             }
         }

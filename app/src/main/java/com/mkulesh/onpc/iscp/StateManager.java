@@ -960,7 +960,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     private void handleMultiroom()
     {
-        for (BroadcastResponseMsg msg : deviceList.getDevices())
+        for (BroadcastResponseMsg msg : deviceList.getDevices(true))
         {
             if (!msg.isValidConnection())
             {
@@ -988,6 +988,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
             {
                 multiroomChannels.put(msg.getHostAndPort(), m);
                 m.start();
+            }
+            else
+            {
+                deviceList.invalidateFavouriteDevice(msg.getHost(), msg.getPort());
             }
         }
     }
