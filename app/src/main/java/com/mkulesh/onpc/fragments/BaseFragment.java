@@ -72,6 +72,10 @@ abstract public class BaseFragment extends Fragment
         buttonSize = activity.getResources().getDimensionPixelSize(R.dimen.button_size);
         buttonMarginHorizontal = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_horizontal);
         buttonMarginVertical = activity.getResources().getDimensionPixelSize(R.dimen.button_margin_vertical);
+        if (activity.orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            buttonMarginVertical /= 2;
+        }
     }
 
     @SuppressWarnings("SameParameterValue")
