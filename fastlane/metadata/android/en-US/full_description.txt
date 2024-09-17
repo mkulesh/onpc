@@ -8,7 +8,7 @@ Other benefits include:
 * Maximum privacy: No ads, no trackers, no telemetry, no special permissions like GPS
 * The modern Material design supports different color themes and works on smartphones and/or tablets in portrait and landscape mode
 * One-click access to music playback actions
-* One-click access to media items using shortcuts for Onkyo or Favourites for Denon
+* One-click access to media items using shortcuts
 * Full music playback control (play, stop, pause, track up/down, time seek, repeat and random modes)
 * Full tone control (listening modes, bass, center, treble and subwoofer levels)
 * Enhanced Play Queue support (add, replace, remove, remove all, change playback order)

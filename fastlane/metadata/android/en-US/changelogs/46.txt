@@ -1,0 +1,6 @@
+• Added shortcuts for Denon AVR
+• Added a new setting that allows to change the album cover click behaviour
+• Denon AVR: queue items number for play queue is now indicated in the LISTEN tab
+• Fixed black pixels on border of round icon
+• Fixed a bug: missing input selectors on Marantz CINEMA 50
+• Fixed a bug: app freezes when a device from the favorite connection list is off
