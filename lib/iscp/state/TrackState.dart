@@ -108,6 +108,8 @@ class TrackState
     String get avInfoAudioOutput
     => _avInfoAudioOutput;
 
+    late String _dcpAudioFormat, _dcpAudioFreq;
+
     late String _avInfoVideoInput;
 
     String get avInfoVideoInput
@@ -154,6 +156,8 @@ class TrackState
         _coverPending = false;
         _avInfoAudioInput = "";
         _avInfoAudioOutput = "";
+        _dcpAudioFormat = "";
+        _dcpAudioFreq = "";
         _avInfoVideoInput = "";
         _avInfoVideoOutput = "";
     }
@@ -256,20 +260,46 @@ class TrackState
 
     bool processAudioInformation(AudioInformationMsg msg)
     {
-        final bool changed = _avInfoAudioInput != msg.audioInput
-            || _avInfoAudioOutput != msg.audioOutput;
-        _avInfoAudioInput = msg.audioInput;
-        _avInfoAudioOutput = msg.audioOutput;
-        return changed;
+        switch (msg.updateType)
+        {
+            case AudioInformationUpd.ALL:
+                final bool changed = _avInfoAudioInput != msg.audioInput
+                    || _avInfoAudioOutput != msg.audioOutput;
+                _avInfoAudioInput = msg.audioInput;
+                _avInfoAudioOutput = msg.audioOutput;
+                return changed;
+            case AudioInformationUpd.DCP_FORMAT:
+                final bool changed = _dcpAudioFormat != msg.audioInput;
+                _dcpAudioFormat = msg.audioInput;
+                _avInfoAudioInput = _dcpAudioFormat + " " + _dcpAudioFreq;
+                return changed;
+            case AudioInformationUpd.DCP_FREQ:
+                final bool changed = _dcpAudioFreq != msg.frequency;
+                _dcpAudioFreq = msg.frequency;
+                _avInfoAudioInput = _dcpAudioFormat + " " + _dcpAudioFreq;
+                return changed;
+        }
     }
 
     bool processVideoInformation(VideoInformationMsg msg)
     {
-        final bool changed = _avInfoVideoInput != msg.videoInput
-            || _avInfoVideoOutput != msg.videoOutput;
-        _avInfoVideoInput = msg.videoInput;
-        _avInfoVideoOutput = msg.videoOutput;
-        return changed;
+        switch (msg.updateType)
+        {
+            case VideoInformationUpd.ALL:
+                final bool changed = _avInfoVideoInput != msg.videoInput
+                  || _avInfoVideoOutput != msg.videoOutput;
+                _avInfoVideoInput = msg.videoInput;
+                _avInfoVideoOutput = msg.videoOutput;
+                return changed;
+            case VideoInformationUpd.DCP_INPUT:
+                final bool changed = _avInfoVideoInput != msg.videoInput;
+                _avInfoVideoInput = msg.videoInput;
+                return changed;
+            case VideoInformationUpd.DCP_OUTPUT:
+                final bool changed = _avInfoVideoOutput != msg.videoOutput;
+                _avInfoVideoOutput = msg.videoOutput;
+                return changed;
+        }
     }
 
     void processXmlListItem(final List<ISCPMessage> list)

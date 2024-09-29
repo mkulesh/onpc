@@ -20,6 +20,7 @@ import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "AlbumNameMsg.dart";
 import "ArtistNameMsg.dart";
+import "AudioInformationMsg.dart";
 import "AudioMutingMsg.dart";
 import "CustomPopupMsg.dart";
 import "DcpAudioRestorerMsg.dart";
@@ -56,6 +57,7 @@ import "TitleNameMsg.dart";
 import "ToneCommandMsg.dart";
 import "TrackInfoMsg.dart";
 import "TuningCommandMsg.dart";
+import "VideoInformationMsg.dart";
 
 /*
  * Denon control protocol - Processing of DCP and HEOS messages
@@ -98,6 +100,10 @@ class DCPMessageFactory
         _acceptedCodes.addAll(DcpAudioRestorerMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(HdmiCecMsg.getAcceptedDcpCodes());
 
+        // AV info
+        _acceptedCodes.addAll(AudioInformationMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(VideoInformationMsg.getAcceptedDcpCodes());
+
         Logging.info(this, "Accepted DCP codes: " + _acceptedCodes.toString());
     }
 
@@ -127,6 +133,10 @@ class DCPMessageFactory
         addISCPMsg(DcpEcoModeMsg.processDcpMessage(dcpMsg));
         addISCPMsg(DcpAudioRestorerMsg.processDcpMessage(dcpMsg));
         addISCPMsg(HdmiCecMsg.processDcpMessage(dcpMsg));
+
+        // AV info
+        addISCPMsg(AudioInformationMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(VideoInformationMsg.processDcpMessage(dcpMsg));
     }
 
     void _convertHeosMsg(String heosMsg, int? pid, DcpHeosMessage jsonMsg)
@@ -364,6 +374,10 @@ class DCPMessageFactory
             return DcpAudioRestorerMsg(raw);
         case DcpMediaItemMsg.CODE:
             return DcpMediaItemMsg(raw);
+        case AudioInformationMsg.CODE:
+            return AudioInformationMsg(raw);
+        case VideoInformationMsg.CODE:
+            return VideoInformationMsg(raw);
         default:
             throw Exception("No factory method for message " + raw.getCode);
         }

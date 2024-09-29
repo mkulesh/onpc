@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -23,8 +23,9 @@ import "../widgets/CustomDialogTitle.dart";
 class AvInfoDialog extends StatefulWidget
 {
     final ViewContext _viewContext;
+    final void Function() _onDispose;
 
-    AvInfoDialog(this._viewContext);
+    AvInfoDialog(this._viewContext, this._onDispose);
 
     @override _AvInfoDialogState createState()
     => _AvInfoDialogState();
@@ -48,5 +49,12 @@ class _AvInfoDialogState extends State<AvInfoDialog>
                 )
             ]
         );
+    }
+
+    @override
+    void dispose()
+    {
+        super.dispose();
+        widget._onDispose();
     }
 }

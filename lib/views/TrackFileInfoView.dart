@@ -37,6 +37,8 @@ import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/messages/ServiceType.dart";
 import "../iscp/messages/TrackInfoMsg.dart";
 import "../iscp/messages/TuningCommandMsg.dart";
+import "../iscp/scripts/RequestAvInfo.dart";
+import "../iscp/state/ScripsState.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextLabel.dart";
 import "GroupButtonsView.dart";
@@ -68,31 +70,38 @@ class TrackFileInfoView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        final avInfoEnabled = state.isOn && state.protoType == ProtoType.ISCP;
+        final avInfoEnabled = state.isOn;
         // File format info
         final String serviceIcon = state.getServiceIcon();
-        Widget textFileFormat = Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-                CustomImageButton.small(serviceIcon, Strings.av_info_dialog, isEnabled: avInfoEnabled),
-                Expanded(child: CustomTextLabel.small(_buildFileFormat(), textAlign: TextAlign.left))
-            ]);
-
+        Widget textFileFormatBtn = CustomImageButton.small(serviceIcon, Strings.av_info_dialog, isEnabled: avInfoEnabled);
         if (avInfoEnabled)
         {
-            textFileFormat = InkWell(
-                child: textFileFormat,
+            textFileFormatBtn = InkWell(
+                child: textFileFormatBtn,
                 onTap: ()
                 {
+                    if (state.protoType == ProtoType.DCP)
+                    {
+                        state.scripts.addScript(ScriptType.RUNTIME, RequestAvInfo());
+                    }
                     stateManager.sendQueries(state.trackState.getAvInfoQueries());
                     showDialog(
                         context: context,
                         barrierDismissible: true,
                         builder: (BuildContext c)
-                        => AvInfoDialog(viewContext));
+                        => AvInfoDialog(viewContext, () {
+                            state.scripts.removeScript(RequestAvInfo());
+                    }));
                 });
-         }
+        }
+
+        final Widget textFileFormat = Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+                textFileFormatBtn,
+                Expanded(child: CustomTextLabel.small(_buildFileFormat(), textAlign: TextAlign.left))
+            ]);
 
         // Track info
         Widget? trackInfoBtn;

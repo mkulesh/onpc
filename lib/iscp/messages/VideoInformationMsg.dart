@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,12 +15,23 @@
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
+enum VideoInformationUpd
+{
+    ALL,
+    DCP_INPUT,
+    DCP_OUTPUT
+}
+
 /*
  * Video Information Command message
  */
 class VideoInformationMsg extends ISCPMessage
 {
     static const String CODE = "IFV";
+
+    final VideoInformationUpd _updateType;
+
+    VideoInformationUpd get updateType => _updateType;
 
     /*
      * Information of Video(Same Immediate Display ',' is separator of informations)
@@ -36,11 +47,26 @@ class VideoInformationMsg extends ISCPMessage
      */
     late String _videoInput, _videoOutput;
 
-    VideoInformationMsg(EISCPMessage raw) : super(CODE, raw)
+    VideoInformationMsg(EISCPMessage raw) :
+            _updateType = VideoInformationUpd.ALL, super(CODE, raw)
     {
         final List<String> pars = getData.split(ISCPMessage.COMMA_SEP);
         _videoInput = getTags(pars, 0, 4);
         _videoOutput = getTags(pars, 4, pars.length);
+    }
+
+    VideoInformationMsg.dcpInput(String _videoInput) :
+            _updateType = VideoInformationUpd.DCP_INPUT, super.output(CODE, "")
+    {
+        this._videoInput = _videoInput;
+        this._videoOutput = "";
+    }
+
+    VideoInformationMsg.dcpOutput(String _videoOutput) :
+            _updateType = VideoInformationUpd.DCP_OUTPUT, super.output(CODE, "")
+    {
+        this._videoInput = "";
+        this._videoOutput = _videoOutput;
     }
 
     String get videoInput
@@ -52,4 +78,33 @@ class VideoInformationMsg extends ISCPMessage
     @override
     String toString()
     => super.toString() + "[IN=" + _videoInput + "; OUT=" + _videoOutput + "]";
+
+    /*
+     * Denon control protocol
+     */
+    static const String _DCP_COMMAND_INPUT = "SSINFSIGRES";
+
+    static List<String> getAcceptedDcpCodes()
+    => [ _DCP_COMMAND_INPUT ];
+
+    static VideoInformationMsg? processDcpMessage(String dcpMsg)
+    {
+        if (dcpMsg.startsWith(_DCP_COMMAND_INPUT))
+        {
+            final String par = dcpMsg.substring(_DCP_COMMAND_INPUT.length).trim();
+            if (par.startsWith("I"))
+            {
+                return VideoInformationMsg.dcpInput(par.substring(1));
+            }
+            if (par.startsWith("O"))
+            {
+                return VideoInformationMsg.dcpOutput(par.substring(1));
+            }
+        }
+        return null;
+    }
+
+    @override
+    String? buildDcpMsg(bool isQuery)
+    => _DCP_COMMAND_INPUT + " " + ISCPMessage.DCP_MSG_REQ;
 }

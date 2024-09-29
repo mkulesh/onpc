@@ -13,9 +13,9 @@
  */
 
 import 'package:collection/collection.dart';
-import 'package:onpc/config/CfgTabSettings.dart';
 
 import '../../config/CfgFavoriteShortcuts.dart';
+import '../../config/CfgTabSettings.dart';
 import '../../utils/Convert.dart';
 import '../../utils/Logging.dart';
 import '../../utils/Pair.dart';
@@ -146,5 +146,13 @@ class ScriptsState
             }
         }
         return retValue;
+    }
+
+    void removeScript(MessageScriptIf script)
+    {
+        Logging.info(this, "Delete scripts of type " + script.runtimeType.toString());
+        _messageScripts.removeWhere((m) =>
+            m.item2.runtimeType.toString() == script.runtimeType.toString());
+        Logging.info(this, "    Known scripts: " + _messageScripts.toString());
     }
 }
