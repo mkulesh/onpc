@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -28,7 +28,7 @@ class CustomProgressBar extends StatefulWidget
 {
     final String? caption;
     final String minValueStr, maxValueStr;
-    final int maxValueNum, currValue;
+    final int minValueNum, maxValueNum, currValue;
     final CaptionCallback? onCaption;
     final NewValueCallback? onMoving;
     final NewValueCallback? onChanged;
@@ -41,6 +41,7 @@ class CustomProgressBar extends StatefulWidget
     CustomProgressBar({
         this.caption,
         required this.minValueStr,
+        this.minValueNum = 0,
         required this.maxValueStr,
         required this.maxValueNum,
         required this.currValue,
@@ -116,7 +117,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
         }
 
         final double radius = ActivityDimens.progressBarRadius;
-        final double minV = 0.0;
+        final double minV = widget.minValueNum.toDouble();
         final double maxV = widget.maxValueNum.toDouble();
 
         // #281: Increase Flutter version: CustomProgressBar used in volume

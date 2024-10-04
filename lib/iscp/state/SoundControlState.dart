@@ -19,6 +19,7 @@ import "package:sprintf/sprintf.dart";
 import "../../config/CfgAudioControl.dart";
 import "../../utils/Logging.dart";
 import "../messages/AllChannelEqMsg.dart";
+import "../messages/AudioBalanceMsg.dart";
 import "../messages/AudioMutingMsg.dart";
 import "../messages/CenterLevelCommandMsg.dart";
 import "../messages/DirectCommandMsg.dart";
@@ -129,6 +130,13 @@ class SoundControlState
         }
     }
 
+    // Audio balance
+    late int _balance;
+
+    int get balance
+    => _balance;
+
+    // Data processing
     SoundControlState()
     {
         clear();
@@ -168,6 +176,7 @@ class SoundControlState
             AudioMutingMsg.ZONE_COMMANDS[zone],
             MasterVolumeMsg.ZONE_COMMANDS[zone],
             ListeningModeMsg.CODE,
+            AudioBalanceMsg.CODE
         ];
 
         if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
@@ -190,6 +199,7 @@ class SoundControlState
         _centerLevel = CenterLevelCommandMsg.NO_LEVEL;
         _centerCmdLength = CenterLevelCommandMsg.NO_LEVEL;
         _listeningMode = ListeningModeMsg.ValueEnum.defValue;
+        _balance = AudioBalanceMsg.NO_LEVEL;
     }
 
     bool processAudioMuting(AudioMutingMsg msg)
@@ -269,6 +279,13 @@ class SoundControlState
     {
         final bool changed = _listeningMode.key != msg.getValue.key;
         _listeningMode = msg.getValue;
+        return changed;
+    }
+
+    bool processAudioBalance(AudioBalanceMsg msg)
+    {
+        final bool changed = _balance != msg.getValue;
+        _balance = msg.getValue;
         return changed;
     }
 

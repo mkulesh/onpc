@@ -1733,6 +1733,14 @@ Enjoy!"""];
         /*pl*/ "Equalizer"];
     static String get equalizer => l_equalizer[_language];
 
+    static const List<String> l_audio_balance = [
+        /*en*/ "Balance",
+        /*ru*/ "Баланс",
+        /*de*/ "Balance",
+        /*fr*/ "Balance",
+        /*pl*/ "Balance"];
+    static String get audio_balance => l_audio_balance[_language];
+
     static const List<String> l_preset_command_up = [
         /*en*/ "Sets preset wrap-around up",
         /*ru*/ "Следующий канал",

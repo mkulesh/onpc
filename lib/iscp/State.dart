@@ -24,6 +24,7 @@ import "ISCPMessage.dart";
 import "messages/AlbumNameMsg.dart";
 import "messages/AllChannelEqMsg.dart";
 import "messages/ArtistNameMsg.dart";
+import "messages/AudioBalanceMsg.dart";
 import "messages/AudioInformationMsg.dart";
 import "messages/AudioMutingMsg.dart";
 import "messages/AutoPowerMsg.dart";
@@ -450,6 +451,10 @@ class State with ProtoTypeMix
         else if (msg is ListeningModeMsg)
         {
             return _isChange(ListeningModeMsg.CODE, _soundControlState.processListeningMode(msg));
+        }
+        else if (msg is AudioBalanceMsg)
+        {
+            return _isChange(AudioBalanceMsg.CODE, _soundControlState.processAudioBalance(msg));
         }
         else if (msg is AllChannelEqMsg)
         {

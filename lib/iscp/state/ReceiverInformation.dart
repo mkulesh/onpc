@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -18,6 +18,7 @@ import "package:collection/collection.dart";
 
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
+import "../../utils/Pair.dart";
 import "../ConnectionIf.dart";
 import "../messages/CenterLevelCommandMsg.dart";
 import "../messages/DcpReceiverInformationMsg.dart";
@@ -73,6 +74,12 @@ class ReceiverInformation
 
     Map<String, ToneControl> get toneControls
     => _toneControls;
+
+    // Audio balance
+    Pair<int, int>? _balanceRange;
+
+    Pair<int, int>? get balanceRange
+    => _balanceRange;
 
     // From FriendlyNameMsg, DeviceNameMsg
     String? _friendlyName;
@@ -137,6 +144,7 @@ class ReceiverInformation
         _deviceSelectors.clear();
         _presetList.clear();
         _controlList.clear();
+        _balanceRange = null;
         _friendlyName = null;
         _deviceName = "";
         _powerStatus = PowerStatus.NONE;
@@ -211,6 +219,8 @@ class ReceiverInformation
 
         _toneControls.clear();
         _toneControls.addAll(msg.toneControls);
+
+        _balanceRange = msg.balanceRange != null ? Pair<int, int>(msg.balanceRange!.item1, msg.balanceRange!.item2) : null;
 
         return true;
     }

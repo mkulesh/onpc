@@ -23,7 +23,7 @@ dependencies:
   sprintf: ^6.0.0
   flutter_markdown: ^0.6.8
   url_launcher: ^6.1.11
-  google_fonts: ^6.1.0
+  google_fonts: 6.1.0
   json_path: ^0.7.0
   syncfusion_flutter_sliders: ^23.1.36
   syncfusion_flutter_charts: ^23.1.36

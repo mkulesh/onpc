@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -23,6 +23,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import "../../constants/Drawables.dart";
 import "../../utils/Logging.dart";
+import "../../utils/Pair.dart";
 import "../../utils/UrlLoader.dart";
 import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
@@ -360,6 +361,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     final List<Preset> _presetList = [];
     final List<String> _controlList = [];
     final Map<String, ToneControl> _toneControls = HashMap<String, ToneControl>();
+    Pair<int, int>? _balanceRange;
     String? _dcpPresetData;
 
     static const String _DCP_REC_INFO_TEST = ""; // "lib/assets/rec_info.xml";
@@ -396,6 +398,9 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
 
     Map<String, ToneControl> get toneControls
     => _toneControls;
+
+    Pair<int, int>? get balanceRange
+    => _balanceRange;
 
     void _parseIscpXml()
     {
@@ -744,10 +749,21 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
     void _parseDcpDeviceCapabilities(xml.XmlElement element)
     {
         final Iterable<xml.XmlElement> valList = element.findAllElements("Control");
-        final String val = valList.isEmpty ? "0" : valList.first.text;
+        final String val = valList.isEmpty ? "0" : valList.first.innerText;
         if (val == "1")
         {
             _controlList.add(element.name.local);
+            // Audio balance
+            if (element.name.local == "Balance")
+            {
+                final Iterable<xml.XmlElement> maxValList = element.findAllElements("MaxRange");
+                final int? balanceInt = maxValList.isNotEmpty ? int.tryParse(maxValList.first.innerText.trim()) : null;
+                if (balanceInt != null)
+                {
+                    _balanceRange = Pair<int, int>(-(balanceInt / 2).floor(), (balanceInt / 2).floor());
+                    Logging.info(this, "  balance range: " + _balanceRange.toString());
+                }
+            }
         }
     }
 

@@ -22,7 +22,9 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/AudioControlDialog.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/AudioBalanceMsg.dart";
 import "../iscp/messages/CenterLevelCommandMsg.dart";
 import "../iscp/messages/DirectCommandMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
@@ -33,6 +35,7 @@ import "../iscp/messages/ToneCommandMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
+import "../utils/Pair.dart";
 import "../widgets/CustomCheckbox.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomProgressBar.dart";
@@ -50,7 +53,8 @@ class AudioControlView extends UpdatableView
         DirectCommandMsg.CODE,
         SubwooferLevelCommandMsg.CODE,
         CenterLevelCommandMsg.CODE,
-        ListeningModeMsg.CODE
+        ListeningModeMsg.CODE,
+        AudioBalanceMsg.CODE
     ];
 
     AudioControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
@@ -138,6 +142,32 @@ class AudioControlView extends UpdatableView
             {
                 _addToneControls(controls, soundControl);
             }
+        }
+
+        // Audio balance
+        if (state.protoType == ProtoType.DCP &&
+            state.receiverInformation.balanceRange != null &&
+            soundControl.balance != AudioBalanceMsg.NO_LEVEL)
+        {
+            final Pair<int, int> balanceRange = state.receiverInformation.balanceRange!;
+            controls.add(CustomProgressBar(
+                caption: Strings.audio_balance,
+                minValueStr: balanceRange.item1.toString(),
+                minValueNum: balanceRange.item1,
+                maxValueStr: balanceRange.item2.toString(),
+                maxValueNum: balanceRange.item2,
+                currValue: soundControl.balance,
+                onCaption: (v) {
+                    return soundControl.balance.toString();
+                },
+                onChanged: (v)
+                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.VAL, v)),
+                onDownButton: (v)
+                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.DOWN, AudioBalanceMsg.NO_LEVEL)),
+                onUpButton: (v)
+                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.UP, AudioBalanceMsg.NO_LEVEL)),
+                isInDialog: true
+            ));
         }
 
         // Subwoofer and Center Level
