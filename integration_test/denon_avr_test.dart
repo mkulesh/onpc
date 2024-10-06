@@ -36,8 +36,8 @@ void main() {
     await _playFromUsb(tu);
     await _playFromQueue(tu);
     await _playFromDeezer(tu);
+    await _changeListeningModes(tu, "FLAC 44.1 kHz");
     await _playFromDAB(tu);
-    await _changeListeningModes(tu);
     await _changeDeviceSettings(tu);
 
     // Power-off
@@ -119,6 +119,9 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   expect(find.text("Fury"), findsOneWidget);
   expect(find.text(album2), findsOneWidget);
   expect(find.text("24/27"), findsOneWidget);
+
+  // Audio info dialog
+  await tu.ensureAvInfo("MP3 44.1 kHz", "Stereo");
 }
 
 Future<void> _playFromQueue(OnpcTestUtils tu) async {
@@ -206,6 +209,18 @@ Future<void> _playFromDeezer(OnpcTestUtils tu) async {
   // Check that item is added
   await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Favorite"]);
   expect(find.text(shortcut), findsOneWidget);
+
+  // Play from Deezer favourites
+  final String toPlay = "Don't You Believe a Stranger";
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Playlists", "Favourite tracks"]);
+  await tu.ensureVisible(() => find.textContaining("Favourite tracks | items: "));
+  expect(find.text(toPlay), findsOneWidget);
+  await tu.findAndTap("Start " + toPlay, () => find.text(toPlay));
+  await tu.waitMediaItemPlaying(toPlay);
+
+  // Audio info
+  await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"));
+  await tu.ensureAvInfo("FLAC 44.1 kHz", "Stereo");
 }
 
 Future<void> _playFromDAB(final OnpcTestUtils tu) async {
@@ -226,20 +241,22 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
   await tu.ensureVisible(() => find.text("5C:178.352MHz"));
   expect(find.text("BOB!"), findsOneWidget);
   expect(find.text("RADIO BOB!"), findsOneWidget);
+  await tu.ensureAvInfo("AAC", "Stereo");
 
   // Change station by preset
   await tu.findAndTap("Next preset", () => find.byTooltip("Sets preset wrap-around up"),
-      ensureAfter: () => find.text("6A:181.936MHz"));
-  expect(find.text("ROLAND"), findsOneWidget);
+      ensureAfter: () => find.text("ROLAND"));
   expect(find.text("RADIO ROLAND"), findsOneWidget);
+  await tu.stepDelayMs();
 
   // Seek station
   await tu.findAndTap("Next station", () => find.byTooltip("Sets tuning frequency wrap-around up"),
       ensureAfter: () => find.text("5D:180.064MHz"));
   expect(find.text("ROCK ANTENNE"), findsOneWidget);
+  await tu.stepDelayMs();
 
   // Change station by list
-  final String station = "OldieAnt";
+  final String station = "OLDIEANT";
   await tu.openTab("MEDIA", ensureAfter: () => find.textContaining(station));
   await tu.findAndTap("Start " + station, () => find.textContaining(station));
   await tu.waitMediaItemPlaying(station);
@@ -248,10 +265,10 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
   expect(find.text("OLDIE ANTENNE"), findsOneWidget);
 }
 
-Future<void> _changeListeningModes(OnpcTestUtils tu) async {
-  await _changeListeningMode(tu, "Pure Direct");
-  await _changeListeningMode(tu, "Direct");
-  await _changeListeningMode(tu, "Stereo");
+Future<void> _changeListeningModes(OnpcTestUtils tu, String input) async {
+  await _changeListeningMode(tu, input, "Pure Direct");
+  await _changeListeningMode(tu, input, "Direct");
+  await _changeListeningMode(tu, input, "Stereo");
 }
 
 Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
@@ -279,9 +296,10 @@ Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   expect(find.text("Bright"), findsOneWidget);
 }
 
-Future<void> _changeListeningMode(OnpcTestUtils tu, String mode) async {
+Future<void> _changeListeningMode(OnpcTestUtils tu, String input, String mode) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.text(mode.toUpperCase()));
   await tu.findAndTap("Set " + mode, () => find.text(mode.toUpperCase()), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.ensureAvInfo(input, mode);
   await tu.openTab("RC", swipeRight: true, ensureAfter: () => find.text("Listening modes"));
   expect(find.text(mode), findsOneWidget);
   if (mode == "Stereo") {

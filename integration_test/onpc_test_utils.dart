@@ -334,4 +334,17 @@ class OnpcTestUtils {
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     expect(find.text(name), findsExactly(2));
   }
+
+  Future<void> ensureAvInfo(String input, String output, {bool video = true}) async {
+    await findAndTap("Open AV info", () => find.byTooltip("Audio/Video info"),
+        ensureAfter: () => find.text("Audio/Video info"));
+    await stepDelayMs();
+    await ensureVisible(() => find.textContaining("Input: " + input));
+    await ensureVisible(() => find.textContaining("Output: " + output));
+    if (video) {
+      expect(find.text("Input: ---"), findsOneWidget);
+      expect(find.text("Output: ---"), findsOneWidget);
+    }
+    await findAndTap("Close AV info", () => find.text("OK"));
+  }
 }

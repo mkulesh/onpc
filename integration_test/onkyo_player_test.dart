@@ -94,11 +94,6 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.slideByValue(pBar, 120);
   await tu.slideByValue(pBar, -60);
 
-  // Audio info dialog
-  await tu.findAndTap("Open Audio/Video info", () => find.byTooltip("Audio/Video info"),
-      ensureAfter: () => find.textContaining("All Ch Stereo"));
-  await tu.findAndTap("Close Audio/Video info", () => find.text("OK"));
-
   // New track
   await tu.findAndTap("Next track", () => find.byTooltip("Track Up"), ensureAfter: () => find.text("Midnight Mover"));
   expect(find.text(artist1), findsOneWidget);
@@ -123,6 +118,9 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.text(artist2));
   expect(find.text(album2), findsOneWidget);
   expect(find.text("Fury"), findsOneWidget);
+
+  // Audio info dialog
+  await tu.ensureAvInfo("NETWORK, All Ch Stereo", "", video: false);
 }
 
 Future<void> _playFromQueue(OnpcTestUtils tu) async {
@@ -232,6 +230,7 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
   expect(find.byTooltip("Sets tuning frequency wrap-around down"), findsOneWidget);
   expect(find.byTooltip("Sets preset wrap-around up"), findsOneWidget);
   expect(find.byTooltip("Sets preset wrap-around down"), findsOneWidget);
+  await tu.ensureAvInfo("ANALOG, All Ch Stereo", "", video: false);
 
   // Change station
   await tu.findAndTap("Next station", () => find.byTooltip("Sets tuning frequency wrap-around up"),
