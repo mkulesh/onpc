@@ -197,12 +197,19 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         elements.add(ListTile(
             leading: _getIcon(td, Drawables.pref_volume_unit),
             title: CustomTextLabel.normal(Strings.pref_volume_unit),
+            subtitle: CustomTextLabel.small(_configuration.audioControl.volumeUnit == VolumeUnit.ABSOLUTE ?
+                Strings.pref_volume_unit_absolute : Strings.pref_volume_unit_relative),
             trailing: Icon(Icons.keyboard_arrow_right, color: td.textTheme.titleMedium!.color),
             onTap: () => showDialog(
                 context: context,
                 barrierDismissible: true,
                 builder: (BuildContext c)
-                => VolumeUnitDialog(_configuration))));
+                => VolumeUnitDialog(_configuration, (VolumeUnit v) {
+                    setState(()
+                    {
+                        // Nothing to do, just to update the subtitle
+                    });
+                }))));
 
         // Advanced options
         elements.add(CustomDivider());

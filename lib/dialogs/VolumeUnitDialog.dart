@@ -26,8 +26,9 @@ import '../widgets/CustomDialogTitle.dart';
 class VolumeUnitDialog extends StatefulWidget
 {
     final Configuration configuration;
+    final ValueChanged<VolumeUnit> _onChange;
 
-    VolumeUnitDialog(this.configuration);
+    VolumeUnitDialog(this.configuration, this._onChange);
 
     @override _VolumeUnitDialogState createState()
     => _VolumeUnitDialogState();
@@ -45,6 +46,13 @@ class _VolumeUnitDialogState extends State<VolumeUnitDialog>
         _volumeUnit = widget.configuration.audioControl.volumeUnit;
         final double? _zeroLevel = widget.configuration.audioControl.zeroLevel;
         _zeroValue.text =  _zeroLevel != null ? _zeroLevel.toString() : "";
+    }
+
+    @override
+    void dispose()
+    {
+        super.dispose();
+        _zeroValue.dispose();
     }
 
     @override
@@ -67,7 +75,13 @@ class _VolumeUnitDialogState extends State<VolumeUnitDialog>
                             _volumeUnit = v;
                         });
                     }
-                })
+                }),
+            onChanged: (bool v)
+            {
+                setState(() {
+                    _volumeUnit = VolumeUnit.ABSOLUTE;
+                });
+            }
         ));
 
         controls.add(CustomCheckbox(Strings.pref_volume_unit_relative,
@@ -83,7 +97,13 @@ class _VolumeUnitDialogState extends State<VolumeUnitDialog>
                             _volumeUnit = v;
                         });
                     }
-                })
+                }),
+            onChanged: (bool v)
+            {
+                setState(() {
+                    _volumeUnit = VolumeUnit.RELATIVE;
+                });
+            }
         ));
 
         controls.add(CustomDialogEditField(_zeroValue,
@@ -116,6 +136,7 @@ class _VolumeUnitDialogState extends State<VolumeUnitDialog>
                   onPressed: ()
                   {
                       widget.configuration.audioControl.setVolumeUnit(_volumeUnit, double.tryParse(_zeroValue.text));
+                      widget._onChange(_volumeUnit);
                       Navigator.of(context).pop();
                   }),
             ]
