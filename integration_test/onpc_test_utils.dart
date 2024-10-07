@@ -21,10 +21,12 @@ import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/constants/Version.dart';
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
+import 'package:onpc/utils/Platform.dart';
 import 'package:onpc/widgets/CustomImageButton.dart';
+import 'package:onpc/widgets/CustomProgressBar.dart';
+import 'package:onpc/widgets/CustomTextButton.dart';
 import 'package:onpc/widgets/CustomTextLabel.dart';
 import 'package:onpc/widgets/ReorderableItem.dart';
-import 'package:onpc/utils/Platform.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 typedef OnFind = Finder Function();
@@ -346,5 +348,30 @@ class OnpcTestUtils {
       expect(find.text("Output: ---"), findsOneWidget);
     }
     await findAndTap("Close AV info", () => find.text("OK"));
+  }
+
+  Pair<Finder, Finder> findSliderByName(String s, {bool withButtons = false}) {
+    Pair<Finder, Finder>? retValue;
+    final Finder list = find.byType(CustomProgressBar);
+    for (var element in list.evaluate()) {
+      final widget = element.widget;
+      if (widget is CustomProgressBar) {
+        final Finder slider = find.descendant(of: find.byWidget(widget), matching: find.byType(SfSlider));
+        expect(slider, findsOneWidget);
+        final Finder text = find.descendant(of: find.byWidget(widget), matching: find.byType(CustomTextLabel));
+        if (text.evaluate().isNotEmpty) {
+          final String name = (text.evaluate().first.widget as CustomTextLabel).description;
+          if (name.startsWith(s)) {
+            final Finder buttons = find.descendant(of: find.byWidget(widget), matching: find.byType(CustomTextButton));
+            if (withButtons) {
+              expect(buttons, findsNWidgets(2));
+            }
+            retValue = Pair(slider, buttons);
+          }
+        }
+      }
+    }
+    assert(retValue != null);
+    return retValue!;
   }
 }

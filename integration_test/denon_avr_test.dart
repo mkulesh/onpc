@@ -18,6 +18,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
+import 'package:onpc/widgets/CustomTextButton.dart';
 
 import 'onpc_test_utils.dart';
 
@@ -34,6 +35,7 @@ void main() {
     await tu.connect(FRIENDLY_NAME, DENON_AVR);
 
     await _playFromUsb(tu);
+    await _audioControl(tu);
     await _playFromQueue(tu);
     await _playFromDeezer(tu);
     await _changeListeningModes(tu, "FLAC 44.1 kHz");
@@ -122,6 +124,36 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
 
   // Audio info dialog
   await tu.ensureAvInfo("MP3 44.1 kHz", "Stereo");
+}
+
+Future<void> _audioControl(OnpcTestUtils tu) async {
+  await tu.findAndTap("Open audio control", () => find.byTooltip("Audio control"),
+      ensureAfter: () => find.text("Audio control"));
+
+  // Balance
+  {
+    Pair<Finder, Finder> balance;
+    // Stepwise down
+    while (find.text("Balance: -12").evaluate().isEmpty) {
+      balance = tu.findSliderByName("Balance:");
+      await tu.slideByValue(balance.item1, -2);
+    }
+    // Up by value
+    balance = tu.findSliderByName("Balance: -12");
+    await tu.slideByValue(balance.item1, 12);
+    // Up using button
+    balance = tu.findSliderByName("Balance: 0", withButtons: true);
+    assert(balance.item2.evaluate().length == 2);
+    assert((balance.item2.evaluate().first.widget as CustomTextButton).text.contains("-12"));
+    assert((balance.item2.evaluate().last.widget as CustomTextButton).text.contains("12"));
+    await tu.findAndTap("Balance up", () => balance.item2, num: 2, idx: 1, ensureAfter: () => find.text("Balance: 1"));
+    // Down using button
+    balance = tu.findSliderByName("Balance: 1", withButtons: true);
+    await tu.findAndTap("Balance down", () => balance.item2,
+        num: 2, idx: 0, ensureAfter: () => find.text("Balance: 0"));
+  }
+
+  await tu.findAndTap("Open audio control", () => find.text("OK"));
 }
 
 Future<void> _playFromQueue(OnpcTestUtils tu) async {
