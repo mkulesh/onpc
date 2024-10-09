@@ -182,55 +182,37 @@ Future<void> _aboutScreen(OnpcTestUtils tu) async {
 Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
   await tu.openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
 
-  final String THEME = "Light (Purple and Green)";
-  if (find.text(THEME).evaluate().isEmpty) {
-    await tu.findAndTap("Change Theme1", () => find.text("Theme"), ensureAfter: () => find.text(THEME));
-    await tu.findAndTap("Change Theme2", () => find.text(THEME));
-  }
+  await _changeParameter(tu, "Theme", "Light (Purple and Green)");
+  await _changeParameter(tu, "App language", "English");
+  await _changeParameter(tu, "Text and buttons size", Platform.isIOS ? "Big" : "Small");
 
-  final String LANGUAGE = "English";
-  if (find.text(LANGUAGE).evaluate().isEmpty) {
-    await tu.findAndTap("Change App language1", () => find.text("App language"),
-        ensureAfter: () => find.text(LANGUAGE));
-    await tu.findAndTap("Change App language2", () => find.text(LANGUAGE));
-  }
-
-  final String SIZE = Platform.isIOS ? "Big" : "Small";
-  if (find.text(SIZE).evaluate().isEmpty) {
-    await tu.findAndTap("Change Text and buttons size1", () => find.text("Text and buttons size"),
-        ensureAfter: () => find.text(SIZE));
-    await tu.findAndTap("Change Text and buttons size2", () => find.text(SIZE));
-  }
-
-  await tu.tester.dragUntilVisible(find.text("Sound control"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-  final String SOUND = "Automatic";
-  if (find.text(SOUND).evaluate().isEmpty) {
-    await tu.findAndTap("Change Sound control1", () => find.text("Sound control"), ensureAfter: () => find.text(SOUND));
-    await tu.findAndTap("Change Sound control2", () => find.text(SOUND));
-  }
+  // Audio control
+  await _changeParameter(tu, "Sound control", "Automatic");
+  await _changeParameter(tu, "Master volume unit", "Relative (dB)", pressOk: true);
 
   // RI-USB
   if (Platform.isDesktop) {
-    await tu.tester
-        .dragUntilVisible(find.text("Use USB-RI interface"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-    final String USB_RI = Platform.isWindows? "USB Serial Port" : "OnkioRI FT231X";
-    if (find.textContaining(USB_RI).evaluate().isEmpty) {
-      await tu.findAndTap("Change Use USB-RI interface1", () => find.text("Use USB-RI interface"),
-          ensureAfter: () => find.textContaining(USB_RI));
-      await tu.findAndTap("Change Use USB-RI interface2", () => find.textContaining(USB_RI));
-    }
+    final String USB_RI = Platform.isWindows ? "USB Serial Port" : "OnkioRI FT231X";
+    await _changeParameter(tu, "Use USB-RI interface", USB_RI);
   }
 
-  await tu.tester.dragUntilVisible(
-      find.text("Album's cover click behaviour"), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-  final String MODE = "Audio muting";
-  if (find.text(MODE).evaluate().isEmpty) {
-    await tu.findAndTap("Change cover click behaviour1", () => find.text("Album's cover click behaviour"),
-        ensureAfter: () => find.text(MODE));
-    await tu.findAndTap("Change cover click behaviour2", () => find.text(MODE));
-  }
+  await _changeParameter(tu, "Album's cover click behaviour", "Audio muting");
 
   await tu.previousScreen();
+}
+
+Future<void> _changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_VALUE, {bool pressOk = false}) async {
+  await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+  if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
+    await tu.findAndTap("Change " + PARAM_NAME + "1", () => find.text(PARAM_NAME),
+        ensureAfter: () => find.textContaining(PARAM_VALUE));
+    await tu.findAndTap("Change " + PARAM_NAME + "2", () => find.textContaining(PARAM_VALUE));
+    if (pressOk) {
+      await tu.findAndTap("Change " + PARAM_NAME + "3", () => find.text("OK"));
+    }
+    await tu.stepDelayMs();
+    expect(find.textContaining(PARAM_VALUE), findsOneWidget);
+  }
 }
 
 Future<void> _changeServices(OnpcTestUtils tu, List<Pair<String, bool>> items) async {
@@ -459,8 +441,8 @@ Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>>
     assert(items.length == path.length);
   }
   for (int i = 0; i < items.length; i++) {
-    await tu.ensureVisibleInList(
-        "Ensure " + items[i].item1, find.byType(ReorderableListView), () => find.text(items[i].item1), OnpcTestUtils.LIST_DRAG_OFFSET);
+    await tu.ensureVisibleInList("Ensure " + items[i].item1, find.byType(ReorderableListView),
+        () => find.text(items[i].item1), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu(items[i].item1, "Edit",
         ensureAfter: () => find.text("CANCEL"), checkItems: ["Edit shortcut", "Edit", "Delete", "Copy to clipboard"]);
     if (path.isNotEmpty) {

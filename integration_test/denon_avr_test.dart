@@ -126,34 +126,85 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.ensureAvInfo("MP3 44.1 kHz", "Stereo");
 }
 
+class _AudioSliderParameters {
+  String name = "";
+  String initialValue = "";
+  double initialValueStep = 0;
+  String secondValue = "";
+  double secondValueStep = 0;
+  String buttonUp = "";
+  String buttonUpValue = "";
+  String buttonDown = "";
+}
+
+Future<void> _testAudioSlider(OnpcTestUtils tu, final _AudioSliderParameters p) async {
+  Pair<Finder, Finder> slider;
+  // Stepwise down
+  while (find.text(p.name + " " + p.initialValue).evaluate().isEmpty) {
+    slider = tu.findSliderByName(p.name);
+    await tu.slideByValue(slider.item1, p.initialValueStep);
+  }
+  // Up by value
+  slider = tu.findSliderByName(p.name + " " + p.initialValue);
+  await tu.slideByValue(slider.item1, p.secondValueStep);
+  // Up using button
+  slider = tu.findSliderByName(p.name + " " + p.secondValue, withButtons: true);
+  assert(slider.item2.evaluate().length == 2);
+  assert((slider.item2.evaluate().first.widget as CustomTextButton).text.contains(p.buttonDown));
+  assert((slider.item2.evaluate().last.widget as CustomTextButton).text.contains(p.buttonUp));
+  await tu.findAndTap(p.name + " up", () => slider.item2,
+      num: 2, idx: 1, ensureAfter: () => find.text(p.name + " " + p.buttonUpValue));
+  // Down using button
+  slider = tu.findSliderByName(p.name + " " + p.buttonUpValue, withButtons: true);
+  await tu.findAndTap(p.name + " down", () => slider.item2,
+      num: 2, idx: 0, ensureAfter: () => find.text(p.name + " " + p.secondValue));
+}
+
 Future<void> _audioControl(OnpcTestUtils tu) async {
   await tu.findAndTap("Open audio control", () => find.byTooltip("Audio control"),
       ensureAfter: () => find.text("Audio control"));
 
-  // Balance
-  {
-    Pair<Finder, Finder> balance;
-    // Stepwise down
-    while (find.text("Balance: -12").evaluate().isEmpty) {
-      balance = tu.findSliderByName("Balance:");
-      await tu.slideByValue(balance.item1, -2);
-    }
-    // Up by value
-    balance = tu.findSliderByName("Balance: -12");
-    await tu.slideByValue(balance.item1, 12);
-    // Up using button
-    balance = tu.findSliderByName("Balance: 0", withButtons: true);
-    assert(balance.item2.evaluate().length == 2);
-    assert((balance.item2.evaluate().first.widget as CustomTextButton).text.contains("-12"));
-    assert((balance.item2.evaluate().last.widget as CustomTextButton).text.contains("12"));
-    await tu.findAndTap("Balance up", () => balance.item2, num: 2, idx: 1, ensureAfter: () => find.text("Balance: 1"));
-    // Down using button
-    balance = tu.findSliderByName("Balance: 1", withButtons: true);
-    await tu.findAndTap("Balance down", () => balance.item2,
-        num: 2, idx: 0, ensureAfter: () => find.text("Balance: 0"));
-  }
+  final _AudioSliderParameters p = _AudioSliderParameters();
 
-  await tu.findAndTap("Open audio control", () => find.text("OK"));
+  // Master volume
+  p.name = "Master volume:";
+  p.initialValue = "0.0 (-60.0 dB)";
+  p.initialValueStep = -10;
+  p.secondValue = "9.0 (-51.0 dB)";
+  p.secondValueStep = 15;
+  p.buttonUp = "60";
+  p.buttonUpValue = "9.5 (-50.5 dB)";
+  p.buttonDown = "0";
+  await _testAudioSlider(tu, p);
+
+  // Bass and Treble
+  p.name = "Bass:";
+  p.initialValue = "-6";
+  p.initialValueStep = -4;
+  p.secondValue = "0";
+  p.secondValueStep = 6;
+  p.buttonUp = "6";
+  p.buttonUpValue = "1";
+  p.buttonDown = "-6";
+  await _testAudioSlider(tu, p);
+  p.name = "Treble:";
+  p.secondValue = "3";
+  p.secondValueStep = 9;
+  p.buttonUpValue = "4";
+  await _testAudioSlider(tu, p);
+
+  // Balance
+  p.name = "Balance:";
+  p.initialValue = "-12";
+  p.initialValueStep = -4;
+  p.secondValue = "0";
+  p.secondValueStep = 12;
+  p.buttonUp = "12";
+  p.buttonUpValue = "1";
+  p.buttonDown = "-12";
+  await _testAudioSlider(tu, p);
+
+  await tu.findAndTap("Close audio control", () => find.text("OK"));
 }
 
 Future<void> _playFromQueue(OnpcTestUtils tu) async {
