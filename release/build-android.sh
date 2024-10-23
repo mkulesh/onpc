@@ -11,10 +11,10 @@ echo Build Android app...
 rm -f ../pubspec.yaml
 ln -s pubspec.yaml_mobile ../pubspec.yaml
 
-# Build with: Flutter version 3.16.0, Dart version 3.2.0
+# Build with: Flutter version 3.19.0, Dart version 3.3.0
 flutter clean
 cd ${FLUTTER_PATH}
-git checkout 3.16.0
+git checkout 3.19.0
 cd -
 flutter doctor -v
 

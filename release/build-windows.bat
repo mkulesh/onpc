@@ -17,12 +17,12 @@ call copy ..\pubspec.yaml_desktop ..\pubspec.yaml
 :: Prepare platform-specific files: enable flutter_libserialport
 call copy ..\lib\utils\CompatUtils.dart.desktop ..\lib\utils\CompatUtils.dart
 
-:: Build with: Flutter version 3.16.0, Dart version 3.2.0
+:: Build with: Flutter version 3.19.0, Dart version 3.3.0
 :: Ensure that file:^6.1.4 is used in pubspec.lock file
 call del *.msix
 call flutter clean
 call cd %FLUTTER_PATH%
-call git checkout 3.16.0
+call git checkout 3.19.0
 call cd %myPath%
 call flutter doctor -v
 call flutter build windows --release
