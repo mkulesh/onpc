@@ -59,6 +59,7 @@ import "views/AppBarView.dart";
 import "views/AppTabView.dart";
 import "views/DrawerView.dart";
 import "views/UpdatableView.dart";
+import "widgets/ScaffoldBody.dart";
 
 void main() async
 {
@@ -318,11 +319,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
             controller: _tabController,
             children: _tabs.map((AppTabs tab)
             {
-                return Container(
-                    margin: ActivityDimens.activityMargins(context, Platform.isIOS, Platform.isAndroid),
-                    child: UpdatableWidget(
-                        child: AppTabView(_tabId, _viewContext, _configuration.appSettings.tabSettings(tab))
-                    )
+                return UpdatableWidget(
+                    child: AppTabView(_tabId, _viewContext, _configuration.appSettings.tabSettings(tab))
                 );
             }).toList(),
         );
@@ -349,7 +347,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                         TabLayoutLandscape(_configuration, _configuration.appSettings.tabSettings(_getActiveTab()));
                 },
                 _viewContext)),
-            body: tabBar
+            body: ScaffoldBody(tabBar)
         );
 
         return Theme(data: td,

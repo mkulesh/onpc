@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -62,18 +62,7 @@ class ActivityDimens
     => 1.0 /* divider height*/ + DimensTransform.rotate(context, _tabBarHeightPort, _tabBarHeightLand);
 
     // Activity margins
-    static const EdgeInsets _activityMargins
-    = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 16.0);
-
-    static const EdgeInsets _activityMarginsLandAndroid
-    = EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0);
-
-    static const EdgeInsets _activityMarginsLandIOS
-    = EdgeInsets.only(left: 48.0, right: 48.0, top: 8.0, bottom: 16.0);
-
-    static EdgeInsets activityMargins(BuildContext context, bool isIOS, bool isAndroid)
-    => DimensTransform.rotate(context, _activityMargins,
-        isIOS ? _activityMarginsLandIOS : (isAndroid ? _activityMarginsLandAndroid : _activityMargins));
+    static const double activityMarginStep = 8.0;
 
     // Fonts: title text
     static const double titleFontSize = 18;

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -21,10 +21,10 @@ import "../constants/Strings.dart";
 import "../dialogs/UrlLauncher.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Logging.dart";
-import "../utils/Platform.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomTextButton.dart";
+import "../widgets/ScaffoldBody.dart";
 import "UpdatableView.dart";
 
 enum AboutScreenTabs
@@ -87,7 +87,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
                     switch (tab)
                     {
                         case AboutScreenTabs.ABOUT:
-                            tabContent = _buildMarkdownView(td, Strings.about_text, ActivityDimens.noPadding);
+                            tabContent = _buildMarkdownView(td, Strings.about_text);
                             break;
                         case AboutScreenTabs.RECEIVER:
                             tabContent = _buildTextView(td, state.receiverInformation.xml);
@@ -96,24 +96,20 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
                             tabContent = _buildTextView(td, Logging.getLatestLogging());
                             break;
                     }
-                    return Container(
-                        margin: ActivityDimens.activityMargins(context, Platform.isIOS, Platform.isAndroid),
-                        child: tabContent
-                    );
+                    return tabContent;
                 }).toList(),
             );
         }
         else
         {
-            scaffoldBody = _buildMarkdownView(
-                td, Strings.about_text, ActivityDimens.activityMargins(context, Platform.isIOS, Platform.isAndroid));
+            scaffoldBody = _buildMarkdownView(td, Strings.about_text);
         }
 
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context) + tabBarHeight), // desired height of appBar + tabBar
                 child: _buildAppBar(td, tabBarHeight)),
-            body: scaffoldBody
+            body: ScaffoldBody(scaffoldBody)
         );
 
         return Theme(data: td, child: scaffold);
@@ -188,7 +184,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
         );
     }
 
-    Widget _buildMarkdownView(final ThemeData td, final String data, final EdgeInsets padding)
+    Widget _buildMarkdownView(final ThemeData td, final String data)
     {
         final MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(td).copyWith(
             h1: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
@@ -197,7 +193,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
             a: td.textTheme.bodyMedium!.copyWith(color: td.colorScheme.secondary));
         return Markdown(data: data,
             styleSheet: styleSheet,
-            padding: padding,
+            padding: ActivityDimens.noPadding,
             onTapLink: (String text, String? href, String title)
             {
                 if (href != null)

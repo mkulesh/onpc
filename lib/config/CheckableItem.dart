@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -12,6 +12,8 @@
  * Public License along with this program.
  */
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import "../constants/Dimens.dart";
@@ -19,11 +21,11 @@ import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../dialogs/RenameDialog.dart";
 import "../utils/Pair.dart";
-import "../utils/Platform.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/ReorderableItem.dart";
+import "../widgets/ScaffoldBody.dart";
 import "CfgModule.dart";
 import "Configuration.dart";
 
@@ -127,6 +129,28 @@ class CheckableItem
         return retValue;
     }
 
+    static Widget _proxyDecorator(
+        Widget child, int index, Animation<double> animation) {
+        return AnimatedBuilder(
+            animation: animation,
+            builder: (BuildContext context, Widget? child) {
+                final double animValue = Curves.easeInOut.transform(animation.value);
+                final double elevation = lerpDouble(0, 6, animValue)!;
+                return Material(
+                    elevation: elevation,
+                    child: MediaQuery.removePadding(
+                        context: context,
+                        removeTop: true,
+                        removeBottom: true,
+                        removeLeft: true,
+                        removeRight: true,
+                        child: child!),
+                );
+            },
+            child: child,
+        );
+    }
+
     static Widget buildPanel(List<Widget> rows, ReorderCallback onReorder, {final ScrollController? scrollController})
     {
         final bool primary = scrollController == null;
@@ -137,7 +161,7 @@ class CheckableItem
                 reverse: false,
                 scrollController: scrollController,
                 scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                proxyDecorator: _proxyDecorator,
                 children: rows,
             ),
             controller: scrollController,
@@ -149,20 +173,19 @@ class CheckableItem
         final ThemeData td = BaseAppTheme.getThemeData(
             configuration.appSettings.theme, configuration.appSettings.language, configuration.appSettings.textSize);
 
+        final Widget scaffoldBody = MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            removeBottom: true,
+            removeLeft: true,
+            removeRight: true,
+            child: body);
+
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, title))),
-            body: Container(
-                margin: ActivityDimens.activityMargins(context, Platform.isIOS, Platform.isAndroid),
-                child: MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    removeBottom: true,
-                    removeLeft: true,
-                    removeRight: true,
-                    child: body)
-            )
+            body: ScaffoldBody(scaffoldBody)
         );
 
         return Theme(data: td, child: scaffold);

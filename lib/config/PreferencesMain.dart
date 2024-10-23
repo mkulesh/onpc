@@ -30,6 +30,7 @@ import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/PreferenceTitle.dart";
+import "../widgets/ScaffoldBody.dart";
 import "../widgets/SwitchPreference.dart";
 import "CfgAppSettings.dart";
 import "CfgAudioControl.dart";
@@ -307,16 +308,18 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
             Configuration.DEVELOPER_MODE,
             icon: Drawables.pref_developer_mode));
 
+        final Widget scaffoldBody = DropdownButtonHideUnderline(
+            child: Scrollbar(child: ListView(
+                primary: true,
+                children: (elements))
+            )
+        );
+
         final Widget scaffold = Scaffold(
             appBar: PreferredSize(
                 preferredSize: Size.fromHeight(ActivityDimens.appBarHeight(context)), // desired height of appBar + tabBar
                 child: AppBar(title: CustomActivityTitle(Strings.drawer_app_settings, null))),
-            body: DropdownButtonHideUnderline(
-                child: Scrollbar(child: ListView(
-                    primary: true,
-                    children: (elements))
-                )
-            )
+            body: ScaffoldBody(scaffoldBody, defMargins: false)
         );
 
         return Theme(data: td, child: scaffold);
