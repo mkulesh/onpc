@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -78,7 +78,7 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
                 {
                     final TextEditingController field = TextEditingController();
                     final String? defValue = _getDefaultValue(textBox);
-                    field.text = (defValue != null) ? defValue : attr.text;
+                    field.text = (defValue != null) ? defValue : attr.innerText;
                     _textFields.add(Pair(textBox, field));
                 }
             });

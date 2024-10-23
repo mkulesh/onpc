@@ -92,7 +92,7 @@ class ISCPMessage with ConnectionIf
         String res = "";
         document.findAllElements(name).forEach((xml.XmlElement e)
         {
-            res = ISCPMessage.nonNullString(e.text);
+            res = ISCPMessage.nonNullString(e.innerText);
         });
         return res;
     }
@@ -102,7 +102,7 @@ class ISCPMessage with ConnectionIf
         String? res = defValue;
         element.findAllElements(name).forEach((xml.XmlElement e)
         {
-            res = ISCPMessage.nonNullString(e.text);
+            res = ISCPMessage.nonNullString(e.innerText);
         });
         return res;
     }
