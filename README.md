@@ -21,7 +21,7 @@ This "Premium" version implements exactly the same receiver control functionalit
 * [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus)
 * [macOS](https://apps.apple.com/app/id1490166845)
 * [iOS](https://apps.apple.com/app/id1490166845)
-* [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+* [Windows](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
 ## Project structure and application build
 * android - contains Android-specific code (Java) that implements home widgets, volume keys handling, network state listener.

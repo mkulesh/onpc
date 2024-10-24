@@ -36,7 +36,7 @@ class Strings
     static const String models_integra = "Onkyo/Pioneer/Integra";
     static const String models_denon = "Denon/Marantz";
     static const String drawer_premium_link = "https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus";
-    static const String drawer_desktop_link = "https://www.microsoft.com/store/apps/9P9V57CZ8JG3";
+    static const String drawer_desktop_link = "https://apps.microsoft.com/detail/9p9v57cz8jg3";
     static const String pref_cover_click_default = "display-mode";
     static const String pref_sound_control_default = "device";
     static const String pref_theme_default = "indigo-orange";
@@ -280,7 +280,7 @@ Its two most popular features are music playback and sound profile management.
 
 Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
-Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
 ## License
 
@@ -312,7 +312,7 @@ Copyright © 2019-2024 by __Михаил Кулеш__
 
 Репозиторий с исходным кодом: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
-Версии: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+Версии: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
 ## Лицензия
 
@@ -342,7 +342,7 @@ Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl
 
 Öffentliches repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
-Versionen: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+Versionen: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
 ## Lizenz
 
@@ -372,7 +372,7 @@ Ses deux principales fonctions sont la commande de la musique et la gestion des 
 
 Référentiel public: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
-Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
 ## Licence
 
@@ -401,7 +401,7 @@ Its two most popular features are music playback and sound profile management.
 
 Public repository: [github.com/mkulesh/onpc](https://github.com/mkulesh/onpc)
 
-Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+Versions: [Android](https://play.google.com/store/apps/details?id=com.mkulesh.onpc.plus), [macOS](https://apps.apple.com/app/id1490166845), [iOS](https://apps.apple.com/app/id1490166845), [Windows](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
 ## License
 
