@@ -121,7 +121,7 @@ class ShortcutsView extends UpdatableView
                 Pair(Strings.favorite_copy_to_clipboard, _ShortcutContextMenu.COPY_TO_CLIPBOARD)
             ],
             onItemSelected: (BuildContext c, _ShortcutContextMenu m)
-            => _onContextItemSelected(c, m, s)
+            => _onContextItemSelected(viewContext.getGlobalContext(context), m, s) // use global context here since c is outdated in this case
         );
         return ReorderableItem(key: Key(index.toString()), child: w);
     }

@@ -30,6 +30,7 @@ class ViewContext
     final Configuration configuration;
     final StateManager stateManager;
     final StreamController updateNotifier;
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
     ViewContext(this.configuration, this.stateManager, this.updateNotifier);
 
@@ -38,6 +39,9 @@ class ViewContext
 
     ThemeData getThemeData()
     => BaseAppTheme.getThemeData(configuration.appSettings.theme, configuration.appSettings.language, configuration.appSettings.textSize);
+
+    BuildContext getGlobalContext(BuildContext c)
+    => navigatorKey.currentContext ?? c;
 }
 
 mixin WidgetStreamContext

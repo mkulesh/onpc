@@ -108,7 +108,8 @@ void main() async
             Activities.activity_network_services: (BuildContext context) => NetworkServices(configuration),
             Activities.activity_keyboard_shortcuts: (BuildContext context) => KeyboardShortcuts(configuration),
             Activities.activity_about_screen: (BuildContext context) => AboutScreen(viewContext),
-        }));
+        },
+        navigatorKey: viewContext.navigatorKey));
 }
 
 class MusicControllerApp extends StatefulWidget
