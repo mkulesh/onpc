@@ -148,8 +148,6 @@ class MusicControllerAppState extends State<MusicControllerApp>
     bool _searchDialog = false;
     int _tabBarId = 0, _tabId = 0;
 
-    final _toastKey = GlobalKey<ScaffoldMessengerState>();
-
     // On Android a strange behaviour is observed:
     // 1. A pair of state changes inactive/resumed is triggered twice when app
     //    is started from the widget. As a result, the second call of _onResume
@@ -353,7 +351,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         return Theme(data: td,
             child: ScaffoldMessenger(
-                key: _toastKey,
+                key: _viewContext.toastKey,
                 child: scaffold)
         );
     }
@@ -453,7 +451,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 if (changes.contains(CustomPopupMsg.CODE))
                 {
                     Timer(StateManager.GUI_UPDATE_DELAY, ()
-                    => _popupManager.showPopupDialog(context, _viewContext, toastKey: _toastKey));
+                    => _popupManager.showPopupDialog(context, _viewContext, toastKey: _viewContext.toastKey));
                 }
                 if (!_stateManager.state.mediaListState.isPopupMode)
                 {
@@ -534,7 +532,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
     void _onConnectionError(String result)
     {
-        PopupManager.showToast(result, toastKey: _toastKey);
+        PopupManager.showToast(result, toastKey: _viewContext.toastKey);
         if (_connectionState == ConnectionState.CONNECTING_TO_SAVED)
         {
             Logging.info(this.widget, "Searching for any device to connect");
@@ -562,7 +560,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
             if (!_exitConfirm)
             {
                 _exitConfirm = true;
-                PopupManager.showToast(Strings.action_exit_confirm, toastKey: _toastKey);
+                PopupManager.showToast(Strings.action_exit_confirm, toastKey: _viewContext.toastKey);
                 Timer(Duration(seconds: PopupManager.TOAST_DURATION), ()
                 {
                     _exitConfirm = false;
@@ -585,7 +583,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     {
                         _disconnect();
                     });
-                    PopupManager.showToast(Strings.error_connection_no_network, toastKey: _toastKey);
+                    PopupManager.showToast(Strings.error_connection_no_network, toastKey: _viewContext.toastKey);
                     break;
                 case NetworkState.CELLULAR:
                 case NetworkState.WIFI:

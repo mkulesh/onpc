@@ -31,6 +31,7 @@ class ViewContext
     final StateManager stateManager;
     final StreamController updateNotifier;
     final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+    final GlobalKey<ScaffoldMessengerState> toastKey = GlobalKey<ScaffoldMessengerState>();
 
     ViewContext(this.configuration, this.stateManager, this.updateNotifier);
 

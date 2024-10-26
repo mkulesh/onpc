@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +21,7 @@ import "PopupManager.dart";
 
 class UrlLauncher
 {
-    static void launchURL(final String url, {String? errorMsg, BuildContext? context}) async
+    static void launchURL(final String url, {String? errorMsg, final GlobalKey<ScaffoldMessengerState>? toastKey}) async
     {
         final Uri uri = Uri.parse(url);
         if (await canLaunchUrl(uri))
@@ -29,9 +30,9 @@ class UrlLauncher
             return;
         }
         Logging.info(url, "Cannot launch URL: " + url);
-        if (errorMsg != null && context != null)
+        if (errorMsg != null && toastKey != null)
         {
-            PopupManager.showToast(errorMsg, context: context);
+            PopupManager.showToast(errorMsg, toastKey: toastKey);
         }
     }
 }

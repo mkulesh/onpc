@@ -398,7 +398,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             [ServiceType.SPOTIFY, ServiceType.DCP_SPOTIFY].contains(cmd.getValue.key))
         {
             Logging.info(this.widget, "Selected media item: " + cmd.toString() + " -> launch Spotify app");
-            UrlLauncher.launchURL("spotify://", errorMsg: Strings.service_spotify_missing_app, context: context);
+            UrlLauncher.launchURL("spotify://", errorMsg: Strings.service_spotify_missing_app, toastKey: viewContext.toastKey);
             return;
         }
         state.closeMediaFilter();
@@ -1029,12 +1029,12 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 shortcut.setPathItems(ms.pathItems, ms.serviceType);
             }
             shortcutCfg.updateShortcut(shortcut, shortcut.alias);
-            PopupManager.showToast(Strings.favorite_shortcut_added, context: context);
+            PopupManager.showToast(Strings.favorite_shortcut_added, toastKey: viewContext.toastKey);
             stateManager.triggerStateEvent(StateManager.SHORTCUT_CHANGE_EVENT);
         }
         else
         {
-            PopupManager.showToast(Strings.favorite_shortcut_failed, context: context);
+            PopupManager.showToast(Strings.favorite_shortcut_failed, toastKey: viewContext.toastKey);
         }
     }
 
