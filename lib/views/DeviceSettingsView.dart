@@ -442,7 +442,7 @@ class DeviceSettingsView extends UpdatableView
                     Strings.device_parameter_help,
                     isEnabled: true,
                     onPressed: ()
-                    => _onParameterHelpButton(context, name),
+                    => _onParameterHelpButton(viewContext.getGlobalContext(context), name),
                     isSelected: false,
                 )
             ]

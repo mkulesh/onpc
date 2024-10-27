@@ -182,7 +182,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                             {
                                 if (isData && stateManager.state.isOn)
                                 {
-                                    _onFirmwareUpdateButton(context);
+                                    _onFirmwareUpdateButton(viewContext.getGlobalContext(context));
                                 }
                             },
                             isEnabled: isData && stateManager.state.isOn,
