@@ -418,7 +418,7 @@ class DeviceSettingsView extends UpdatableView
                 if (m == _ParameterContextMenu.EDIT)
                 {
                     showDialog(
-                        context: context,
+                        context: viewContext.getGlobalContext(context),
                         barrierDismissible: true,
                         builder: (BuildContext c)
                         => RenameDialog(newValue.item2, (newName)
