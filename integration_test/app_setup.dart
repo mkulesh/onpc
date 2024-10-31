@@ -285,7 +285,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Music", "My Music | items: 6"]);
     await tu.contextMenu(FLOW.item1, "Create shortcut", waitFor: true);
-    await tu.navigateToMedia(["My Music", "Favourite tracks"], ensureAfter: () => find.text(FAVOURITES.item1));
+    await tu.navigateToMedia(["My Music", "Favourite tracks"], ensureAfter: () => find.text("Lady In Black"));
     await tu.contextMenu(FAVOURITES.item1, "Create shortcut");
     await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), DRAG_OFFSET_UP);
     await tu
@@ -306,7 +306,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.openTab("MEDIA");
     await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "TuneIn Radio", "My Presets"]);
-    await tu.contextMenu("Absolut relax (Easy Listening)", "Create shortcut", waitFor: true);
+    await tu.contextMenu("Absolute Classic Hits (Classic Hits)", "Create shortcut", waitFor: true);
     await tu.contextMenu("PureRock.US (Metal)", "Create shortcut", waitFor: true);
   }
 
