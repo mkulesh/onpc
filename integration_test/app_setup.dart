@@ -56,11 +56,11 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("BLUETOOTH", "BT"),
     Pair("DVD", ""),
     Pair("Blu-ray", ""),
-    Pair("TV Audio", ""),
+    Pair("TV Audio", "PC"),
     Pair("Onkyo", "ONKYO"),
     Pair("Media Player", ""),
     Pair("Game", ""),
-    Pair("C7030", "CD"),
+    Pair("DRS610", "TAPE"),
     Pair("Phono", ""),
   ]);
   await _changeServices(tu, [
