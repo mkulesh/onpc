@@ -144,32 +144,6 @@ class AudioControlView extends UpdatableView
             }
         }
 
-        // Audio balance
-        if (state.protoType == ProtoType.DCP &&
-            state.receiverInformation.balanceRange != null &&
-            soundControl.balance != AudioBalanceMsg.NO_LEVEL)
-        {
-            final Pair<int, int> balanceRange = state.receiverInformation.balanceRange!;
-            controls.add(CustomProgressBar(
-                caption: Strings.audio_balance,
-                minValueStr: balanceRange.item1.toString(),
-                minValueNum: balanceRange.item1,
-                maxValueStr: balanceRange.item2.toString(),
-                maxValueNum: balanceRange.item2,
-                currValue: soundControl.balance,
-                onCaption: (v) {
-                    return soundControl.balance.toString();
-                },
-                onChanged: (v)
-                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.VAL, v)),
-                onDownButton: (v)
-                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.DOWN, AudioBalanceMsg.NO_LEVEL)),
-                onUpButton: (v)
-                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.UP, AudioBalanceMsg.NO_LEVEL)),
-                isInDialog: true
-            ));
-        }
-
         // Subwoofer and Center Level
         if (state.isDefaultZone)
         {
@@ -297,6 +271,31 @@ class AudioControlView extends UpdatableView
         if (trebleControl != null)
         {
             controls.add(trebleControl);
+        }
+        // Audio balance
+        if (state.protoType == ProtoType.DCP &&
+            state.receiverInformation.balanceRange != null &&
+            soundControl.balance != AudioBalanceMsg.NO_LEVEL)
+        {
+            final Pair<int, int> balanceRange = state.receiverInformation.balanceRange!;
+            controls.add(CustomProgressBar(
+                caption: Strings.audio_balance,
+                minValueStr: balanceRange.item1.toString(),
+                minValueNum: balanceRange.item1,
+                maxValueStr: balanceRange.item2.toString(),
+                maxValueNum: balanceRange.item2,
+                currValue: soundControl.balance,
+                onCaption: (v) {
+                    return soundControl.balance.toString();
+                },
+                onChanged: (v)
+                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.VAL, v)),
+                onDownButton: (v)
+                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.DOWN, AudioBalanceMsg.NO_LEVEL)),
+                onUpButton: (v)
+                => stateManager.sendMessage(AudioBalanceMsg.output(AudioBalance.UP, AudioBalanceMsg.NO_LEVEL)),
+                isInDialog: true
+            ));
         }
     }
 
