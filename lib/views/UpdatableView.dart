@@ -43,6 +43,13 @@ class ViewContext
 
     BuildContext getGlobalContext(BuildContext c)
     => navigatorKey.currentContext ?? c;
+
+    void showRootDialog(BuildContext context, final Widget dialog)
+    => showDialog(
+        context: getGlobalContext(context),
+        barrierDismissible: true,
+        builder: (BuildContext c)
+        => Theme(data: getThemeData(), child: dialog));
 }
 
 mixin WidgetStreamContext

@@ -182,7 +182,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                             {
                                 if (isData && stateManager.state.isOn)
                                 {
-                                    _onFirmwareUpdateButton(viewContext.getGlobalContext(context));
+                                    _onFirmwareUpdateButton(context);
                                 }
                             },
                             isEnabled: isData && stateManager.state.isOn,
@@ -271,6 +271,7 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
     {
         Logging.info(this, "Firmware update button pressed");
         final ThemeData td = Theme.of(context);
+        final rootContext = viewContext.getGlobalContext(context); // use global context here since context is outdated in this case
         final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.device_firmware, Drawables.cmd_firmware_update),
             contentPadding: DialogDimens.contentPadding,
@@ -280,23 +281,19 @@ class _DeviceInfoViewState extends WidgetStreamState<DeviceInfoView>
                     child: Text(Strings.action_cancel.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     {
-                        Navigator.of(context).pop();
+                        Navigator.of(rootContext).pop();
                     }
                 ),
                 TextButton(
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     {
-                        Navigator.of(context).pop();
+                        Navigator.of(rootContext).pop();
                         stateManager.sendMessage(FirmwareUpdateMsg.output(FirmwareUpdate.NET));
                     }
                 )
             ]
         );
-
-        showDialog(
-            context: context,
-            builder: (BuildContext context)
-            => dialog);
+        viewContext.showRootDialog(context, dialog);
     }
 }

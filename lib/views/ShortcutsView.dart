@@ -121,7 +121,7 @@ class ShortcutsView extends UpdatableView
                 Pair(Strings.favorite_copy_to_clipboard, _ShortcutContextMenu.COPY_TO_CLIPBOARD)
             ],
             onItemSelected: (BuildContext c, _ShortcutContextMenu m)
-            => _onContextItemSelected(viewContext.getGlobalContext(context), m, s) // use global context here since c is outdated in this case
+            => _onContextItemSelected(context, m, s)
         );
         return ReorderableItem(key: Key(index.toString()), child: w);
     }
@@ -132,12 +132,7 @@ class ShortcutsView extends UpdatableView
         switch (m)
         {
             case _ShortcutContextMenu.EDIT:
-                showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext c)
-                    => FavoriteShortcutEditDialog(viewContext, s)
-                );
+                viewContext.showRootDialog(context, FavoriteShortcutEditDialog(viewContext, s));
                 break;
             case _ShortcutContextMenu.DELETE:
                 configuration.favoriteShortcuts.deleteShortcut(s);

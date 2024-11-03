@@ -417,17 +417,12 @@ class DeviceSettingsView extends UpdatableView
             {
                 if (m == _ParameterContextMenu.EDIT)
                 {
-                    showDialog(
-                        context: viewContext.getGlobalContext(context),
-                        barrierDismissible: true,
-                        builder: (BuildContext c)
-                        => RenameDialog(newValue.item2, (newName)
-                            {
-                                viewContext.configuration.appSettings.saveDeviceSetting(
-                                    Convert.enumToString(type), value.item1, newName);
-                                viewContext.stateManager.triggerStateEvent(DEVICE_SETTING_RENAMED);
-                            })
-                    );
+                    viewContext.showRootDialog(c, RenameDialog(newValue.item2, (newName)
+                    {
+                        viewContext.configuration.appSettings.saveDeviceSetting(
+                            Convert.enumToString(type), value.item1, newName);
+                        viewContext.stateManager.triggerStateEvent(DEVICE_SETTING_RENAMED);
+                    }));
                 }
             }
         );
@@ -442,7 +437,7 @@ class DeviceSettingsView extends UpdatableView
                     Strings.device_parameter_help,
                     isEnabled: true,
                     onPressed: ()
-                    => _onParameterHelpButton(viewContext.getGlobalContext(context), name),
+                    => _onParameterHelpButton(context, name),
                     isSelected: false,
                 )
             ]
@@ -471,6 +466,7 @@ class DeviceSettingsView extends UpdatableView
     {
         Logging.info(this, "Parameter help button pressed");
         final ThemeData td = Theme.of(context);
+        final rootContext = viewContext.getGlobalContext(context); // use global context here since context is outdated in this case
         final Widget dialog = AlertDialog(
             title: CustomDialogTitle(name.item1, Drawables.cmd_help),
             contentPadding: DialogDimens.contentPadding,
@@ -480,16 +476,12 @@ class DeviceSettingsView extends UpdatableView
                     child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
                     {
-                        Navigator.of(context).pop();
+                        Navigator.of(rootContext).pop();
                     }
                 )
             ]
         );
-
-        showDialog(
-            context: context,
-            builder: (BuildContext context)
-            => dialog);
+        viewContext.showRootDialog(context, dialog);
     }
 
     _SpeakerABStatus _getSpeakerABStatus(SpeakerACommand speakerA, SpeakerBCommand speakerB)
