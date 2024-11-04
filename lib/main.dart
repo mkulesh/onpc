@@ -633,10 +633,13 @@ class MusicControllerAppState extends State<MusicControllerApp>
             _stateManager.updateScripts(autoPower: _configuration.autoPower);
         }
 
-        _stateManager.usbSerial.dispose();
-        if (Platform.isDesktop && _stateManager.protoType == ProtoType.ISCP)
+        if (_stateManager.usbSerial.isChanged(_configuration.riCommands.usbPort))
         {
-            _stateManager.usbSerial.openPort(_configuration.riCommands.usbPort);
+            _stateManager.usbSerial.dispose();
+            if (Platform.isDesktop && _stateManager.protoType == ProtoType.ISCP)
+            {
+                _stateManager.usbSerial.openPort(_configuration.riCommands.usbPort);
+            }
         }
     }
 

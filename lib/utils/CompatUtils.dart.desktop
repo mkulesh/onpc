@@ -40,6 +40,10 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior
 class SerialPortWrapper
 {
     SerialPort? _port;
+    String _portName = "";
+
+    bool isChanged(String name)
+    => _portName != name;
 
     static List<Pair<String, String>> getPorts()
     {
@@ -56,6 +60,7 @@ class SerialPortWrapper
 
     void openPort(String name)
     {
+        _portName = "";
         if (name.isEmpty)
         {
             _port = null;
@@ -76,6 +81,7 @@ class SerialPortWrapper
             cfg.xonXoff = 0;
             _port = sp;
             _port!.config = cfg;
+            _portName = name;
             Logging.info(this, "open serial port: " + (_port!.name?? Strings.dashed_string));
         }
         else
