@@ -205,12 +205,14 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
                 context: context,
                 barrierDismissible: true,
                 builder: (BuildContext c)
-                => VolumeUnitDialog(_configuration, (VolumeUnit v) {
-                    setState(()
+                => Theme(data: td, child: VolumeUnitDialog(_configuration, (VolumeUnit v)
                     {
-                        // Nothing to do, just to update the subtitle
-                    });
-                }))));
+                        setState(()
+                        {
+                            // Nothing to do, just to update the subtitle
+                        });
+                    }))
+            )));
 
         // Advanced options
         elements.add(CustomDivider());
