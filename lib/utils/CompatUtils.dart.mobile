@@ -24,6 +24,9 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior
 
 class SerialPortWrapper
 {
+    bool isChanged(String name)
+    => false;
+
     static List<Pair<String, String>> getPorts()
     {
         return [];
