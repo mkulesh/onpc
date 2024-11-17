@@ -63,7 +63,7 @@ On Mac, iPhone, iPad:
 On Windows: 
 
 [<img src="https://github.com/mkulesh/onpc/blob/master/images/badges/badge_windows_store.png"
-      alt="Download on Windows Store" height="110">](https://www.microsoft.com/store/apps/9P9V57CZ8JG3)
+      alt="Download on Windows Store" height="110">](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
 Do you want try the last version in development?
 - [TestFlight on iPhone or iPad](https://testflight.apple.com/join/oV5j2iMh)
