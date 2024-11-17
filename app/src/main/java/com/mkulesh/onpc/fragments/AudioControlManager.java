@@ -520,8 +520,8 @@ class AudioControlManager
         }
         if (soundControl == State.SoundControlType.DEVICE_BTN_ABOVE_SLIDER)
         {
-            layout.addView(createTextView(fragment.getContext(),
-                    null, "0", R.style.SecondaryTextViewStyle));
+            addTextView(fragment.getContext(),
+                    null, "0", R.style.SecondaryTextViewStyle, layout);
         }
         // slider
         {
@@ -566,8 +566,8 @@ class AudioControlManager
             final ReceiverInformationMsg.Zone zone = state.getActiveZoneInfo();
             final int maxVolume = Math.min(getVolumeMax(state, zone),
                     activity.getConfiguration().audioControl.getMasterVolumeMax());
-            layout.addView(createTextView(fragment.getContext(),
-                    VOLUME_LEVEL, State.getVolumeLevelStr(maxVolume, zone), R.style.SecondaryTextViewStyle));
+            addTextView(fragment.getContext(),
+                    VOLUME_LEVEL, State.getVolumeLevelStr(maxVolume, zone), R.style.SecondaryTextViewStyle, layout);
         }
         if (soundControl == State.SoundControlType.DEVICE_BTN_AROUND_SLIDER) // volume up
         {
@@ -585,21 +585,32 @@ class AudioControlManager
     }
 
     @SuppressLint("NewApi")
-    private TextView createTextView(final Context context, @Nullable final String tag, @NonNull final String text, final int style)
+    private void addTextView(final Context context, @Nullable final String tag, @NonNull final String text, final int style, @NonNull final LinearLayout layout)
     {
-        final TextView tv = new TextView(context);
-        tv.setTag(tag);
-        tv.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if (context == null)
         {
-            tv.setTextAppearance(style);
+            return;
         }
-        else
+        try
         {
-            tv.setTextAppearance(context, style);
+            final TextView tv = new TextView(context);
+            tv.setTag(tag);
+            tv.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                tv.setTextAppearance(style);
+            }
+            else
+            {
+                tv.setTextAppearance(context, style);
+            }
+            tv.setText(text);
+            layout.addView(tv);
         }
-        tv.setText(text);
-        return tv;
+        catch (Exception ex)
+        {
+            // nothing to do
+        }
     }
 }
