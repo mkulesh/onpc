@@ -78,7 +78,7 @@ public class ShortcutsFragment extends BaseFragment
     protected void updateActiveView(@NonNull final State state, @NonNull final HashSet<State.ChangeType> eventChanges)
     {
         // Dismiss update if a data change due to receiver input is detected
-        // In this case, the list will be apdated and drag is cancelled
+        // In this case, the list will be updated and drag is cancelled
         if (eventChanges.size() == State.ChangeType.values().length)
         {
             updateList(state);
@@ -157,7 +157,7 @@ public class ShortcutsFragment extends BaseFragment
             {
             case R.id.shortcut_menu_edit:
                 final Dialogs dl = new Dialogs(activity);
-                dl.showEditShortcutDialog(selectedItem, this::updateContent);
+                dl.showEditShortcutDialog(selectedItem, () -> activity.updateActiveFragment());
                 selectedItem = null;
                 return true;
             case R.id.shortcut_menu_delete:

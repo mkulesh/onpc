@@ -847,4 +847,14 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             }
         }
     }
+
+    public void updateActiveFragment()
+    {
+        Logging.info(this, "update active fragment");
+        final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
+        if (f != null)
+        {
+            f.update(getStateManager().getState(), null);
+        }
+    }
 }
