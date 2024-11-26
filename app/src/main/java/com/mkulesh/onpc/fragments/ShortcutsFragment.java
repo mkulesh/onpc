@@ -162,7 +162,7 @@ public class ShortcutsFragment extends BaseFragment
                 return true;
             case R.id.shortcut_menu_delete:
                 activity.getConfiguration().favoriteShortcuts.deleteShortcut(selectedItem);
-                updateContent();
+                activity.updateActiveFragment();
                 selectedItem = null;
                 return true;
             case R.id.shortcut_menu_copy_to_clipboard:
