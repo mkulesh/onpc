@@ -59,5 +59,7 @@
     <false/>
     <key>FLTEnableImpeller</key>
     <false/>
+   	<key>NSLocalNetworkUsageDescription</key>
+   	<string>Music Control uses local network to communicate with audio-video-receivers. After giving consent the app will be able to discover and connect your receiver.</string>
 </dict>
 </plist>
