@@ -70,6 +70,7 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     style="@style/DeviceEditableViewStyle"
                     android:id="@+id/device_edit_friendly_name"
+                    android:layout_marginLeft="-4dp"
                     android:focusable="true" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
