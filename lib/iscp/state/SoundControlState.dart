@@ -318,7 +318,7 @@ class SoundControlState
     static String getRelativeLevelStr(int volumeLevel, Zone? zone, final CfgAudioControl audioControl)
     {
         final double zeroLevel = (audioControl.zeroLevel != null) ? audioControl.zeroLevel! :
-            ((zone != null && zone.getVolMax > 0) ? zone.getVolMax.toDouble() : DEF_VOL_MAX);
+            ((zone != null && zone.zeroDbLevelOrVolMax() > 0) ? zone.zeroDbLevelOrVolMax() : DEF_VOL_MAX);
         final bool doubleStep = zone != null && zone.getVolumeStep == 0;
         final double val = doubleStep ? (volumeLevel / 2.0 - zeroLevel) : (volumeLevel - zeroLevel);
         //Logging.info(audioControl, "relative level: zeroLevel=" + zeroLevel.toString()

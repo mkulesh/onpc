@@ -89,6 +89,7 @@ class Zone
     late String _name;
     late int _volumeStep;
     late int _volMax;
+    double? _zeroDbLevel;
 
     Zone.fromXml(xml.XmlElement e)
     {
@@ -119,9 +120,20 @@ class Zone
         _volMax = value;
     }
 
+    double zeroDbLevelOrVolMax()
+    => _zeroDbLevel != null? _zeroDbLevel! : _volMax.toDouble();
+
+    void setZeroDbLevel(double? value)
+    {
+        _zeroDbLevel = value;
+    }
+
   @override
     String toString()
-    => _id + ": " + _name + ", volumeStep=" + _volumeStep.toString() + ", volMax=" + _volMax.toString();
+    => _id + ": " + _name
+        + ", volumeStep=" + _volumeStep.toString()
+        + ", volMax=" + _volMax.toString()
+        + (_zeroDbLevel != null? ", zeroDbLevel=" + _zeroDbLevel.toString() : "");
 }
 
 
@@ -666,11 +678,13 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
             final String? no = ISCPMessage.getElementProperty(zones.first, "No", null);
             final String? maxVolume = ISCPMessage.getElementProperty(volumes.first, "MaxValue", null);
             final String? step = ISCPMessage.getElementProperty(volumes.first, "StepValue", null);
+            final Iterable<xml.XmlElement> maxVolumeList = volumes.first.findElements("MaxVolumeList");
             if (no != null && step != null && maxVolume != null)
             {
                 final int? noVal = int.tryParse(no);
                 final double? stepVal = double.tryParse(step);
                 final double? maxVolumeVal = double.tryParse(maxVolume);
+                Zone? z;
                 if (noVal != null && stepVal != null && maxVolumeVal != null)
                 {
                     final int noInt = noVal + 1;
@@ -679,7 +693,9 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
                     // Volume for zone 2/3 is **:00 to 98 -> scale shall be 1
                     final int stepInt = noInt == 1 ? stepVal.floor() : 1;
                     final int maxVolumeInt = maxVolumeVal.floor();
-                    this.zones.add(Zone(noInt.toString(), name, stepInt, maxVolumeInt));
+                    z = Zone(noInt.toString(), name, stepInt, maxVolumeInt);
+                    z.setZeroDbLevel(_parseZeroDbLevel(maxVolumeList));
+                    this.zones.add(z);
                 }
             }
         }
@@ -777,5 +793,32 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
                 presetList.add(Preset.fromXml(v, ProtoType.DCP));
             }
         });
+    }
+
+    double? _parseZeroDbLevel(final Iterable<xml.XmlElement> maxVolumeList)
+    {
+        // <MaxVolumeList>
+        //   <Param>
+        //     <Absolute>OFF</Absolute>
+        //     <Relative>OFF</Relative>
+        //     <Value>98.0</Value>
+        //   </Param>
+        //   ....
+        //
+        if (maxVolumeList.isEmpty)
+        {
+            return null;
+        }
+        double? absoluteVal;
+        maxVolumeList.first.findElements("Param").forEach((xml.XmlElement p)
+        {
+            final String? absolute = ISCPMessage.getElementProperty(p, "Absolute", null);
+            final String? relative = ISCPMessage.getElementProperty(p, "Relative", null);
+            if (absolute != null && relative != null && relative == "0.0dB")
+            {
+                absoluteVal = double.tryParse(absolute);
+            }
+        });
+        return absoluteVal;
     }
 }
