@@ -91,6 +91,10 @@ class FirmwareUpdateMsg extends EnumParameterMsg<FirmwareUpdate>
         {
             return "heos://" + _HEOS_COMMAND + "?pid=" + ISCPMessage.DCP_HEOS_PID;
         }
+        else if (getStatus.toString() == "NET")
+        {
+            return '<cmd id=\"3\"><name>SetUpdate</name><list><param name="\start\">1</param></list></cmd>';
+        }
         return null;
     }
 }

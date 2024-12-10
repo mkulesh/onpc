@@ -42,7 +42,8 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
 
     // goform protocol
     static const String DCP_FORM_IPHONE_APP = "formiPhoneApp";
-    static const String DCP_APP_COMMAND = "<cmd id=\"1\">";
+    static const String DCP_APP_COMMAND1 = "<cmd id=\"1\">";
+    static const String DCP_APP_COMMAND3 = "<cmd id=\"3\">";
 
     // HEOS protocol
     static const String DCP_HEOS_REQUEST = "heos://";
@@ -114,9 +115,13 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         {
             _sendDcpHeosRequest(msg);
         }
-        else if (msg.startsWith(DCP_APP_COMMAND))
+        else if (msg.startsWith(DCP_APP_COMMAND1))
         {
-            _sendDcpAppCommand(msg);
+            _sendDcpAppCommand(msg, "AppCommand.xml");
+        }
+        else if (msg.startsWith(DCP_APP_COMMAND3))
+        {
+            _sendDcpAppCommand(msg, "AppCommand0300.xml");
         }
         else
         {
@@ -360,9 +365,9 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         }
     }
 
-    void _sendDcpAppCommand(String msg)
+    void _sendDcpAppCommand(final String msg, final String endpoint)
     {
-        final String url = ISCPMessage.getDcpGoformUrl(getHost, DCP_HTTP_PORT.toString(), "AppCommand.xml");
+        final String url = ISCPMessage.getDcpGoformUrl(getHost, DCP_HTTP_PORT.toString(), endpoint);
         final String json = "{\"body\": \"" + ISCPMessage.getDcpAppCommand(msg) + "\"}";
         Logging.info(this, ">> DCP AppCommand POST request: " + url + json);
         http.post(Uri.parse(url), headers: {"Content-Type": "text/xml; charset=UTF-8"}, body: json).then((http.Response value)
