@@ -23,6 +23,7 @@ import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
+import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/ServiceType.dart";
 import "../iscp/state/MediaListState.dart";
 import "../utils/Convert.dart";
@@ -65,6 +66,11 @@ class Shortcut
     String get alias
     => _alias;
 
+    late ListeningMode _listeningMode;
+
+    ListeningMode get listeningMode
+    => _listeningMode;
+
     late String _actionFlag;
 
     final List<String> _pathItems = [];
@@ -80,11 +86,15 @@ class Shortcut
         _service = Services.ServiceTypeEnum.valueByCode(ISCPMessage.nonNullString(e.getAttribute("service")));
         _item = ISCPMessage.nonNullString(e.getAttribute("item"));
         _alias = ISCPMessage.nonNullString(e.getAttribute("alias"));
+        final String _listeningModeStr = ISCPMessage.nonNullString(e.getAttribute("listeningMode"));
+        _listeningMode = ListeningMode.values.firstWhere(
+                (e) => Convert.enumToString(e).toUpperCase() == _listeningModeStr.toUpperCase(),
+                orElse: () => ListeningMode.NONE);
         _actionFlag = ISCPMessage.nonNullString(e.getAttribute("actionFlag"));
         e.findAllElements("dir").forEach((dir) => _pathItems.add(ISCPMessage.nonNullString(dir.getAttribute("name"))));
     }
 
-    Shortcut.copy(final Shortcut old, final String alias)
+    Shortcut.copy(final Shortcut old, final String alias, ListeningMode listeningMode)
     {
         this._id = old._id;
         this._protoType = old._protoType;
@@ -92,6 +102,7 @@ class Shortcut
         this._service = old._service;
         this._item = old._item;
         this._alias = alias;
+        this._listeningMode = listeningMode;
         this._actionFlag = old._actionFlag;
         this._pathItems.addAll(old._pathItems);
     }
@@ -106,6 +117,7 @@ class Shortcut
         this._service = service;
         this._item = item;
         this._alias = alias;
+        this._listeningMode = ListeningMode.NONE;
         this._actionFlag = actionFlag;
     }
 
@@ -135,6 +147,7 @@ class Shortcut
         label += " service=\"" + _service.getCode + "\"";
         label += " item=\"" + escape(_item) + "\"";
         label += " alias=\"" + escape(_alias) + "\"";
+        label += " listeningMode=\"" + Convert.enumToString(_listeningMode) + "\"";
         label += " actionFlag=\"" + _actionFlag + "\">";
         for (String dir in _pathItems)
         {
@@ -175,6 +188,14 @@ class Shortcut
         data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>";
         data += "<send cmd=\"SLI\" par=\"" + input.getCode
             + "\" wait=\"SLI\" resp=\"" + input.getCode + "\"/>";
+
+        // Apply listening mode
+        final EnumItem<ListeningMode> lm = ListeningModeMsg.ValueEnum.valueByKey(listeningMode);
+        if (lm.key != ListeningMode.NONE)
+        {
+            data += "<send cmd=\"LMD\" par=\"QSTN\" wait=\"LMD\"/>";
+            data += "<send cmd=\"LMD\" par=\"" + lm.getDcpCode + "\" wait=\"100\"/>";
+        }
 
         // Radio input requires a special handling
         if (input.key == InputSelector.FM || input.key == InputSelector.DAB)
@@ -250,6 +271,14 @@ class Shortcut
         data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"SLI\"/>";
         data += "<send cmd=\"SLI\" par=\"" + input.getCode
             + "\" wait=\"SLI\" resp=\"" + input.getCode + "\"/>";
+
+        // Apply listening mode
+        final EnumItem<ListeningMode> lm = ListeningModeMsg.ValueEnum.valueByKey(listeningMode);
+        if (lm.key != ListeningMode.NONE)
+        {
+            data += "<send cmd=\"LMD\" par=\"QSTN\" wait=\"LMD\"/>";
+            data += "<send cmd=\"LMD\" par=\"" + lm.getDcpCode + "\" wait=\"100\"/>";
+        }
 
         // Radio input requires a special handling
         if (input.key == InputSelector.DCP_TUNER)
@@ -389,20 +418,20 @@ class CfgFavoriteShortcuts extends CfgModule
         return -1;
     }
 
-    Shortcut updateShortcut(final Shortcut shortcut, final String alias)
+    Shortcut updateShortcut(final Shortcut shortcut, final String alias, {ListeningMode listeningMode = ListeningMode.NONE})
     {
         Shortcut newMsg;
         final int idx = _find(shortcut._id);
         if (idx >= 0)
         {
             final Shortcut oldMsg = _shortcuts[idx];
-            newMsg = Shortcut.copy(oldMsg, alias);
+            newMsg = Shortcut.copy(oldMsg, alias, listeningMode);
             Logging.info(this, "Update favorite shortcut: " + oldMsg.toString() + " -> " + newMsg.toString());
             _shortcuts[idx] = newMsg;
         }
         else
         {
-            newMsg = Shortcut.copy(shortcut, alias);
+            newMsg = Shortcut.copy(shortcut, alias, listeningMode);
             Logging.info(this, "Add favorite shortcut: " + newMsg.toString());
             _shortcuts.add(newMsg);
         }

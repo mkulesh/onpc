@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2024 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -23,6 +23,7 @@ class CustomTextLabel extends StatelessWidget
     final TextAlign textAlign;
     final int size;
     final bool bold;
+    final bool underline;
     final Color? color;
 
     CustomTextLabel.small(this.description,
@@ -31,6 +32,7 @@ class CustomTextLabel extends StatelessWidget
         this.textAlign = TextAlign.left,
         this.size = 1,
         this.bold = false,
+        this.underline = false,
         this.color
     });
 
@@ -40,6 +42,7 @@ class CustomTextLabel extends StatelessWidget
         this.textAlign = TextAlign.left,
         this.size = 2,
         this.bold = false,
+        this.underline = false,
         this.color
     });
 
@@ -50,16 +53,19 @@ class CustomTextLabel extends StatelessWidget
         final TextStyle style = size == 1 ? td.textTheme.bodyMedium! : td.textTheme.titleMedium!;
         final Color c = this.color ?? style.color!;
         final w = bold ? FontWeight.w700 : FontWeight.w400;
-        if (padding.vertical > 0 || padding.horizontal > 0)
+        final Widget t1 = Text(description,
+            style: style.copyWith(color: c, fontWeight: w), textAlign: textAlign, softWrap: true);
+        final Widget t2 = (padding.vertical > 0 || padding.horizontal > 0) ? Padding(padding: padding, child: t1) : t1;
+        if (underline)
         {
-            return Padding(
-                padding: padding,
-                child: Text(description, style: style.copyWith(color: c, fontWeight: w), textAlign: textAlign, softWrap: true),
-            );
+            return Container(
+                padding: EdgeInsets.symmetric(vertical: DimensTransform.scale(1.0)),
+                decoration: BoxDecoration(border: Border(bottom: BorderSide(color: td.textTheme.titleMedium!.color!))),
+                child: t2);
         }
         else
         {
-            return Text(description, style: style.copyWith(color: c, fontWeight: w), textAlign: textAlign, softWrap: true);
+            return t2;
         }
     }
 }

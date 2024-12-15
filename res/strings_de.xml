@@ -621,6 +621,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Klangprofile durchwechseln</string>
     <string name="listening_mode_down">Klangprofile durchwechseln</string>
+    <string name="listening_mode_apply">Klangprofile anwenden</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">An/Aus</string>

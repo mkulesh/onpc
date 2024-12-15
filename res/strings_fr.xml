@@ -620,6 +620,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Changer mode d\'écoute</string>
     <string name="listening_mode_down">Changer mode d\'écoute</string>
+    <string name="listening_mode_apply">Appliquer le mode d\'écoute</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Marche</string>

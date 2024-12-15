@@ -26,6 +26,7 @@ import "../State.dart";
 import "../messages/DcpMediaContainerMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/ListTitleInfoMsg.dart";
+import "../messages/ListeningModeMsg.dart";
 import "../messages/MessageFactory.dart";
 import "../messages/NetworkServiceMsg.dart";
 import "../messages/OperationCommandMsg.dart";
@@ -317,6 +318,8 @@ class MessageScript with ConnectionIf implements MessageScriptIf
                 return par == state.mediaListState.inputType.getCode;
             case NetworkServiceMsg.CODE:
                 return par == state.mediaListState.serviceType.getCode + "0";
+            case ListeningModeMsg.CODE:
+                return par == state.soundControlState.listeningMode.getCode;
             default:
                 return false;
         }

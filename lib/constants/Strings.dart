@@ -3829,6 +3829,14 @@ Enjoy!"""];
         /*pl*/ "Zmień tryb na poprzedni"];
     static String get listening_mode_down => l_listening_mode_down[_language];
 
+    static const List<String> l_listening_mode_apply = [
+        /*en*/ "Apply listening mode",
+        /*ru*/ "Применить звуковой профиль",
+        /*de*/ "Klangprofile anwenden",
+        /*fr*/ "Appliquer le mode d\'écoute",
+        /*pl*/ "Zastosuj tryb słuchania"];
+    static String get listening_mode_apply => l_listening_mode_apply[_language];
+
     static const List<String> l_remote_interface_power = [
         /*en*/ "Power",
         /*ru*/ "Питание",

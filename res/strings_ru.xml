@@ -619,6 +619,7 @@ Copyright © 2019-2024 by __Михаил Кулеш__
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Следующий звуковой профиль</string>
     <string name="listening_mode_down">Предыдущий звуковой профиль</string>
+    <string name="listening_mode_apply">Применить звуковой профиль</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Питание</string>

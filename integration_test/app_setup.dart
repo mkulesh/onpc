@@ -149,6 +149,30 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
     Pair("Tidal", false),
     Pair("Amazon Music", false),
   ]);
+  await _changeListeningModes(tu, [
+    Pair("Mono", false),
+    Pair("Stereo", false),
+    Pair("Direct", false),
+    Pair("Unplugged", false),
+    Pair("Orchestra", false),
+    Pair("Studio-Mix", false),
+    Pair("Pure Audio", false),
+    Pair("Full Mono", false),
+    Pair("All Ch Stereo", false),
+    Pair("TV Logic", false),
+    Pair("Theater-Dimensional", false),
+    Pair("Dolby Digital", false),
+    Pair("Dolby Surround", false),
+    Pair("Dolby THX Cinema", false),
+    Pair("Dolby THX Music", false),
+    Pair("Dolby THX Games", false),
+    Pair("DTS Neural:X", false),
+    Pair("DTS Virtual:X", false),
+    Pair("Game-RPG", false),
+    Pair("Game-Action", false),
+    Pair("Game-Rock", false),
+    Pair("Game-Sports", false),
+  ]);
   await tu.openTab("SHORTCUTS");
   if (find.text("Deezer Flow").evaluate().isEmpty) {
     await _buildOnkyoFavourites(tu, dlna: true, deezer: true, tuneIn: true, usbMusic: true, radio: true);
@@ -299,7 +323,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
       "NET/Deezer/Flow",
       "NET/Deezer/My Music/Favourite tracks/The Dancer",
       "NET/Deezer/My Music/My Playlists/Onkyo playlist/Personal Jesus / Depeche Mode"
-    ]);
+    ], false);
   }
 
   if (tuneIn) {
@@ -331,7 +355,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.findAndTap("Select FM", () => find.text("FM"), ensureAfter: () => find.text(FM.item1));
     await tu.contextMenu(FM.item1, "Create shortcut", waitFor: true);
     await tu.openTab("SHORTCUTS");
-    await _renameShortcuts(tu, [DAB, FM], []);
+    await _renameShortcuts(tu, [DAB, FM], [], false);
   }
 
   await tu.findAndTap("Start Deezer", () => find.text(FAVOURITES.item2), delay: OnpcTestUtils.NORMAL_DELAY);
@@ -365,7 +389,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     ], [
       "NET/Local Music/Supermicro DLNA Server/Music/Artist",
       "NET/Local Music/Supermicro DLNA Server/Music/Artist/Muse/- All Albums -"
-    ]);
+    ], true);
   }
 
   if (deezer) {
@@ -387,7 +411,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
       "NET/Deezer/My Playlists/Onkyo playlist",
       "NET/Deezer/My Playlists/Favourite tracks",
       "NET/Deezer/Radio Channels/Rock/Rock classics"
-    ]);
+    ], true);
   }
 
   if (tuneIn) {
@@ -429,13 +453,13 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.findAndTap("Select FM", () => find.text("FM"));
     await tu.contextMenu(FM.item1, "Create shortcut", waitFor: true);
     await tu.openTab("SHORTCUTS");
-    await _renameShortcuts(tu, [DAB, FM], []);
+    await _renameShortcuts(tu, [DAB, FM], [], true);
   }
 
   await tu.findAndTap("Start Deezer", () => find.text("Flow"), delay: OnpcTestUtils.NORMAL_DELAY);
 }
 
-Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path) async {
+Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path, final listeningMode) async {
   await tu.openTab("SHORTCUTS");
   if (path.isNotEmpty) {
     assert(items.length == path.length);
@@ -448,6 +472,7 @@ Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>>
     if (path.isNotEmpty) {
       expect(find.text(path[i]), findsOneWidget);
     }
+    expect(find.text("Apply listening mode"), listeningMode ? findsOneWidget : findsNothing);
     await tu.setText(1, 0, items[i].item2);
     await tu.findAndTap("Close edit dialog", () => find.text("OK"));
   }

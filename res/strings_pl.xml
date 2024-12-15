@@ -622,6 +622,7 @@ Enjoy!""</string>
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Zmień tryb na następny</string>
     <string name="listening_mode_down">Zmień tryb na poprzedni</string>
+    <string name="listening_mode_apply">Zastosuj tryb słuchania</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Zasilanie</string>
