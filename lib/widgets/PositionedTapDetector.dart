@@ -218,7 +218,7 @@ class TapPosition
     Offset? relative;
 
     @override
-    bool operator ==(dynamic other)
+    bool operator ==(Object other)
     {
         if (other is! TapPosition) return false;
         final TapPosition typedOther = other;

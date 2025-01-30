@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2024 by Mikhail Kulesh
+  ~ Copyright (C) 2019-2025 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -230,6 +230,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="app_control_ri_cd_player">CD Player (RI)</string>
     <string name="app_control_ri_md_player">MD Player (RI)</string>
     <string name="app_control_ri_tape_deck">Tape Deck (RI)</string>
+    <string name="app_control_device_display">Affichage de l\'appareil</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Mode affichage sur le dispositif</string>

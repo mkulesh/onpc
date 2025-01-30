@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -441,6 +441,7 @@ class CfgAppSettings extends CfgModule
         );
         _tabSettings.add(CfgTabSettings(this, AppTabs.RC,
             controlsPortrait: [
+                AppControl.DEVICE_DISPLAY,
                 AppControl.SETUP_OP_CMD,
                 AppControl.DIVIDER1,
                 AppControl.SETUP_NAV_CMD,
@@ -448,6 +449,7 @@ class CfgAppSettings extends CfgModule
                 AppControl.LISTENING_MODE_SWITCH
             ],
             controlsLandscapeLeft: [
+                AppControl.DEVICE_DISPLAY,
                 AppControl.SETUP_OP_CMD,
                 AppControl.DIVIDER1,
                 AppControl.LISTENING_MODE_SWITCH

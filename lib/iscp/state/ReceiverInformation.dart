@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -30,6 +30,7 @@ import "../messages/GoogleCastVersionMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/ListeningModeMsg.dart";
 import "../messages/PowerStatusMsg.dart";
+import "../messages/DeviceDisplayMsg.dart";
 import "../messages/ReceiverInformationMsg.dart";
 import "../messages/SubwooferLevelCommandMsg.dart";
 import "../messages/ToneCommandMsg.dart";
@@ -103,6 +104,13 @@ class ReceiverInformation
     String get googleCastVersion
     => _googleCastVersion;
 
+    // FL Display Information, from ReceiverDisplayMsg
+    static final String _DEFAULT_DEVICE_DISPLAY = "";
+    String _deviceDisplayValue = _DEFAULT_DEVICE_DISPLAY;
+
+    String get deviceDisplayValue
+    => _deviceDisplayValue;
+
     // Default tone control
     static final ToneControl DEFAULT_BASS_CONTROL = ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2);
     static final ToneControl DEFAULT_TREBLE_CONTROL = ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
@@ -150,6 +158,7 @@ class ReceiverInformation
         _powerStatus = PowerStatus.NONE;
         _firmwareStatus = FirmwareUpdateMsg.ValueEnum.defValue;
         _googleCastVersion = Strings.dashed_string;
+        _deviceDisplayValue = _DEFAULT_DEVICE_DISPLAY;
     }
 
     void createDefaultReceiverInfo(ProtoType protoType)
@@ -261,6 +270,13 @@ class ReceiverInformation
     {
         final bool changed = _googleCastVersion != msg.getData;
         _googleCastVersion = msg.getData;
+        return changed;
+    }
+
+    bool processDeviceDisplay(DeviceDisplayMsg msg)
+    {
+        final bool changed = _deviceDisplayValue != msg.getValue;
+        _deviceDisplayValue = msg.getValue;
         return changed;
     }
 

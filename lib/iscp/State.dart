@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -63,6 +63,7 @@ import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
 import "messages/PresetCommandMsg.dart";
 import "messages/RadioStationNameMsg.dart";
+import "messages/DeviceDisplayMsg.dart";
 import "messages/ReceiverInformationMsg.dart";
 import "messages/ServiceType.dart";
 import "messages/SleepSetCommandMsg.dart";
@@ -282,6 +283,11 @@ class State with ProtoTypeMix
         {
             return _isChange(GoogleCastVersionMsg.CODE,
                 _receiverInformation.processGoogleCastVersion(msg));
+        }
+        else if (msg is DeviceDisplayMsg)
+        {
+            return _isChange(DeviceDisplayMsg.CODE,
+                _receiverInformation.processDeviceDisplay(msg));
         }
 
         // Device settings

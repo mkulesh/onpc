@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -22,6 +22,7 @@ import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
 import "package:flutter/scheduler.dart" show timeDilation;
 import "package:flutter/services.dart";
+import "package:google_fonts/google_fonts.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 import "config/CfgAppSettings.dart";
@@ -71,6 +72,9 @@ void main() async
         HttpOverrides.global = OncpHttpOverrides();
     }
 
+    // we do not want the GoogleFonts library to make any HTTP requests for fonts
+    GoogleFonts.config.allowRuntimeFetching = false;
+
     // Will slow down animations by this factor
     timeDilation = 1.0;
 
@@ -116,6 +120,9 @@ class MusicControllerApp extends StatefulWidget
 {
     final WindowManagerWrapper _windowManager;
     final ViewContext _viewContext;
+
+    ViewContext get viewContext
+    => _viewContext;
 
     MusicControllerApp(this._windowManager, this._viewContext, {Key? key}) : super(key: key);
 

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -19,6 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/constants/Version.dart';
+import 'package:onpc/iscp/StateManager.dart';
+import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
 import 'package:onpc/utils/Platform.dart';
@@ -49,6 +51,13 @@ class OnpcTestUtils {
   final int _stepDelay = 1;
 
   OnpcTestUtils(this.tester);
+
+  StateManager getStateManager() {
+    final Finder fab = find.byType(app.MusicControllerApp);
+    expect(fab, findsOneWidget);
+    final app.MusicControllerApp mainWidget = fab.evaluate().first.widget as app.MusicControllerApp;
+    return mainWidget.viewContext.stateManager;
+  }
 
   Future<void> connect(String device, String searchFor) async {
     await stepDelayMs();

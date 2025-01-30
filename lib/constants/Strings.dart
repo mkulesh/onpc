@@ -1173,6 +1173,14 @@ Enjoy!"""];
         /*pl*/ "Tape Deck (RI)"];
     static String get app_control_ri_tape_deck => l_app_control_ri_tape_deck[_language];
 
+    static const List<String> l_app_control_device_display = [
+        /*en*/ "Device display",
+        /*ru*/ "Дисплей устройства",
+        /*de*/ "Gerätedisplay",
+        /*fr*/ "Affichage de l\'appareil",
+        /*pl*/ "Wyświetlacz urządzenia"];
+    static String get app_control_device_display => l_app_control_device_display[_language];
+
     static const List<String> l_tv_display_mode = [
         /*en*/ "Display mode on device",
         /*ru*/ "Режим отображения на дисплее устройства",

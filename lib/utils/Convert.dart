@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,6 +15,7 @@
 import "dart:ui";
 
 import "../iscp/ConnectionIf.dart";
+import "../iscp/ISCPMessage.dart";
 
 class Convert
 {
@@ -31,4 +32,16 @@ class Convert
 
     static ColorFilter toColorFilter(final Color c)
     => ColorFilter.mode(c, BlendMode.srcIn);
+
+    static List<int> convertRaw(String str)
+    {
+        final int size = (str.length / 2).floor();
+        final List<int> bytes = List.generate(size, (i)
+        {
+            final int j1 = 2 * i;
+            final int j2 = 2 * i + 1;
+            return (j1 < str.length && j2 < str.length) ? ISCPMessage.nonNullInteger(str.substring(j1, j2 + 1), 16, 0) : 0;
+        });
+        return bytes;
+    }
 }

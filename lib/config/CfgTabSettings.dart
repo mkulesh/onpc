@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -49,6 +49,7 @@ enum AppControl
     RI_CD_PLAYER,
     RI_MD_PLAYER,
     RI_TAPE_DECK,
+    DEVICE_DISPLAY
 }
 
 enum AppControlGroup
@@ -86,6 +87,7 @@ class CfgTabSettings
         EnumItem.code(AppControl.RI_CD_PLAYER, "RIC", descrList: Strings.l_app_control_ri_cd_player),
         EnumItem.code(AppControl.RI_MD_PLAYER, "RIM", descrList: Strings.l_app_control_ri_md_player),
         EnumItem.code(AppControl.RI_TAPE_DECK, "RIT", descrList: Strings.l_app_control_ri_tape_deck),
+        EnumItem.code(AppControl.DEVICE_DISPLAY, "DDP", descrList: Strings.l_app_control_device_display),
     ]);
 
     static final String TAB_SETTINGS = "tab_settings";

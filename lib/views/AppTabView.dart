@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -18,6 +18,7 @@ import "package:flutter/material.dart";
 import "../config/CfgTabSettings.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomDivider.dart";
+import "DeviceDisplayView.dart";
 import "DeviceInfoView.dart";
 import "DeviceSettingsView.dart";
 import "InputSelectorView.dart";
@@ -262,6 +263,9 @@ class AppTabView extends UpdatableView
 
             case AppControl.RI_TAPE_DECK:
                 return UpdatableWidget(key: key, child: RiTapeDeckControlView(viewContext));
+
+            case AppControl.DEVICE_DISPLAY:
+                return UpdatableWidget(key: key, child: DeviceDisplayView(viewContext));
         }
     }
 }

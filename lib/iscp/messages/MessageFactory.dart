@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -53,6 +53,7 @@ import "PowerStatusMsg.dart";
 import "PresetCommandMsg.dart";
 import "PresetMemoryMsg.dart";
 import "PrivacyPolicyStatusMsg.dart";
+import "DeviceDisplayMsg.dart";
 import "ReceiverInformationMsg.dart";
 import "SleepSetCommandMsg.dart";
 import "SpeakerACommandMsg.dart";
@@ -214,6 +215,10 @@ class MessageFactory
         // Privacy
             case PrivacyPolicyStatusMsg.CODE:
                 return PrivacyPolicyStatusMsg(raw);
+
+        // Receiver display
+            case DeviceDisplayMsg.CODE:
+                return DeviceDisplayMsg(raw);
 
             default:
                 throw Exception("No factory method for message " + raw.getCode);
