@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -189,18 +189,11 @@ class Shortcut
         data += "<send cmd=\"SLI\" par=\"" + input.getCode
             + "\" wait=\"SLI\" resp=\"" + input.getCode + "\"/>";
 
-        // Apply listening mode
-        final EnumItem<ListeningMode> lm = ListeningModeMsg.ValueEnum.valueByKey(listeningMode);
-        if (lm.key != ListeningMode.NONE)
-        {
-            data += "<send cmd=\"LMD\" par=\"QSTN\" wait=\"LMD\"/>";
-            data += "<send cmd=\"LMD\" par=\"" + lm.getDcpCode + "\" wait=\"100\"/>";
-        }
-
         // Radio input requires a special handling
         if (input.key == InputSelector.FM || input.key == InputSelector.DAB)
         {
             data += "<send cmd=\"PRS\" par=\"" + item + "\" wait=\"PRS\"/>";
+            data += _applyListeningMode();
             data += "</onpcScript>";
             return data;
         }
@@ -208,6 +201,7 @@ class Shortcut
         // #270: Simple inputs do not need additional processing
         if (!input.isMediaList)
         {
+            data += _applyListeningMode();
             data += "</onpcScript>";
             return data;
         }
@@ -258,6 +252,7 @@ class Shortcut
 
         // Select target item
         data += "<send cmd=\"NLA\" par=\"" + item + "\" wait=\"1000\"/>";
+        data += _applyListeningMode();
         data += "</onpcScript>";
         return data;
     }
@@ -272,20 +267,13 @@ class Shortcut
         data += "<send cmd=\"SLI\" par=\"" + input.getCode
             + "\" wait=\"SLI\" resp=\"" + input.getCode + "\"/>";
 
-        // Apply listening mode
-        final EnumItem<ListeningMode> lm = ListeningModeMsg.ValueEnum.valueByKey(listeningMode);
-        if (lm.key != ListeningMode.NONE)
-        {
-            data += "<send cmd=\"LMD\" par=\"QSTN\" wait=\"LMD\"/>";
-            data += "<send cmd=\"LMD\" par=\"" + lm.getDcpCode + "\" wait=\"100\"/>";
-        }
-
         // Radio input requires a special handling
         if (input.key == InputSelector.DCP_TUNER)
         {
             // Additional waiting time since tuner has some initialization period
             data += "<send cmd=\"SLI\" par=\"QSTN\" wait=\"5000\"/>";
             data += "<send cmd=\"PRS\" par=\"" + item + "\" wait=\"PRS\"/>";
+            data += _applyListeningMode();
             data += "</onpcScript>";
             return data;
         }
@@ -293,6 +281,7 @@ class Shortcut
         // #270: Simple inputs do not need additional processing
         if (!input.isMediaList)
         {
+            data += _applyListeningMode();
             data += "</onpcScript>";
             return data;
         }
@@ -325,6 +314,7 @@ class Shortcut
 
         // Select target item with given flag
         data += "<send cmd=\"NLA\" par=\"" + item + "\" flag=\"" + _actionFlag + "\"" + " wait=\"1000\"/>";
+        data += _applyListeningMode();
         data += "</onpcScript>";
         return data;
     }
@@ -351,6 +341,16 @@ class Shortcut
     {
         // this escape method is only important for java widget class CfgFavoriteShortcuts.java
         return str.replaceAll("&", "&#38;").replaceAll("'","&#39;").replaceAll('"', "&#34;");
+    }
+
+    String _applyListeningMode()
+    {
+        final EnumItem<ListeningMode> lm = ListeningModeMsg.ValueEnum.valueByKey(listeningMode);
+        if (lm.key != ListeningMode.NONE)
+        {
+            return "<send cmd=\"LMD\" par=\"QSTN\" wait=\"LMD\"/><send cmd=\"LMD\" par=\"" + lm.getDcpCode + "\" wait=\"100\"/>";
+        }
+        return "";
     }
 }
 
