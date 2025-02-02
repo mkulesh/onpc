@@ -53,20 +53,24 @@ class DeviceDisplayView extends UpdatableView
             Logging.info(this, ex.toString());
         }
 
-        final Widget value = Container(
-            padding: DialogDimens.rowPadding,
+        final Widget text = Container(
+            padding: ActivityDimens.deviceDisplayPadding,
             margin: DialogDimens.rowPadding,
             decoration: BoxDecoration(
                 border: Border.all(color: td.disabledColor)
             ),
-            alignment: Alignment.center,
-            child: Text(state.receiverInformation.deviceDisplayValue, style: textStyle),
+            alignment: Alignment.centerLeft,
+            child: Text(state.receiverInformation.deviceDisplayValue, style: textStyle, textAlign: TextAlign.start),
+        );
+
+        final Widget field = InkWell(child: text,
+            onTap: () => stateManager.sendQueries([DeviceDisplayMsg.CODE])
         );
 
         return Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [ Expanded(child: value, flex: 1) ]
+            children: [ Expanded(child: field, flex: 1) ]
         );
     }
 }

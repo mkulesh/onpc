@@ -94,6 +94,9 @@ class ActivityDimens
     static EdgeInsetsGeometry get headerPaddingTop
     => EdgeInsets.only(top: DimensTransform.scale(10));
 
+    static EdgeInsetsGeometry get deviceDisplayPadding
+    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(24), vertical: DimensTransform.scale(6));
+
     static const EdgeInsets noPadding
     = EdgeInsets.all(0);
 }

@@ -37,7 +37,7 @@ import "../messages/ToneCommandMsg.dart";
 
 class ReceiverInformation
 {
-    static const String BRAND_PIONEER = "Pioneer";
+    static const String _BRAND_PIONEER = "Pioneer";
 
     // From ReceiverInformationMsg
     late String _xml;
@@ -288,6 +288,9 @@ class ReceiverInformation
 
     String get brand
     => _getProperty("brand");
+
+    bool get isPioneer
+    => brand.toUpperCase() == _BRAND_PIONEER.toUpperCase();
 
     String get model
     => _getProperty("model");

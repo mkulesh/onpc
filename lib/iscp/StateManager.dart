@@ -44,6 +44,7 @@ import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpSearchCriteriaMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
+import "messages/DeviceDisplayMsg.dart";
 import "messages/DisplayModeMsg.dart";
 import "messages/EnumParameterMsg.dart";
 import "messages/InputSelectorMsg.dart";
@@ -488,6 +489,11 @@ class StateManager
             sendQueries(_state.deviceSettingsState.getQueriesIscp(state.getActiveZone));
             sendQueries(_state.soundControlState.getQueriesIscp(state.getActiveZone, state.receiverInformation));
             sendQueries(_state.radioState.getQueries(state.getActiveZone));
+            if (state.receiverInformation.isPioneer)
+            {
+                // #336: DeviceDisplayMsg is only available for Pioneer receivers
+                sendQueries([DeviceDisplayMsg.CODE]);
+            }
             _requestListState();
             return changed;
         }
