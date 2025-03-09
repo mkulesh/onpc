@@ -51,6 +51,7 @@ flutter:
     - lib/assets/
     - lib/assets/buttons/
     - lib/assets/ri/
+    - lib/assets/fonts/
 
 msix_config:
   build_windows: false
