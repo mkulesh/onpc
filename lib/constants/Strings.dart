@@ -1741,6 +1741,14 @@ Enjoy!"""];
         /*pl*/ "Equalizer"];
     static String get equalizer => l_equalizer[_language];
 
+    static const List<String> l_channel_level = [
+        /*en*/ "Channel level",
+        /*ru*/ "Уровень каналов",
+        /*de*/ "Kanal-Lautstärke",
+        /*fr*/ "Niveau de canal",
+        /*pl*/ "Poziom kanału"];
+    static String get channel_level => l_channel_level[_language];
+
     static const List<String> l_audio_balance = [
         /*en*/ "Balance",
         /*ru*/ "Баланс",

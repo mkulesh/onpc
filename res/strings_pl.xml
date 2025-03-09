@@ -315,6 +315,7 @@ Enjoy!""</string>
     <string name="master_volume_restrict">Ogranicz poziom głośności</string>
     <string name="master_volume_max">Maksymalny</string>
     <string name="equalizer">Equalizer</string>
+    <string name="channel_level">Poziom kanału</string>
     <string name="audio_balance">Balance</string>
 
     <!-- Preset Command  -->

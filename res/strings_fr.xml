@@ -313,6 +313,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="master_volume_restrict">Restreindre le volume</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
+    <string name="channel_level">Niveau de canal</string>
     <string name="audio_balance">Balance</string>
 
     <!-- Preset Command  -->

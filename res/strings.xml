@@ -370,6 +370,7 @@ Enjoy!""</string>
     <string name="master_volume_restrict">Restrict volume level</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
+    <string name="channel_level">Channel level</string>
     <string name="audio_balance">Balance</string>
 
     <!-- Preset Command  -->

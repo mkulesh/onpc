@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -18,6 +18,7 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../views/AudioControlView.dart";
+import "../views/ChannelLevelView.dart";
 import "../views/EqualizerView.dart";
 import "../views/MasterVolumeMaxView.dart";
 import "../views/UpdatableView.dart";
@@ -27,7 +28,18 @@ enum AudioControlType
 {
     TONE_CONTROL,
     MASTER_VOLUME_MAX,
-    EQUALIZER
+    EQUALIZER,
+    CHANNEL_LEVEL
+}
+
+void showAudioControlDialog(final ViewContext viewContext, final BuildContext context, final AudioControlType type)
+{
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext c)
+        => AudioControlDialog(viewContext, type)
+    );
 }
 
 class AudioControlDialog extends StatefulWidget
@@ -66,6 +78,10 @@ class _AudioControlDialogState extends State<AudioControlDialog>
                 dialogTitle = CustomDialogTitle(Strings.equalizer, Drawables.equalizer);
                 dialogContent = UpdatableWidget(child: EqualizerView(viewContext));
                 break;
+            case AudioControlType.CHANNEL_LEVEL:
+                dialogTitle = CustomDialogTitle(Strings.channel_level, Drawables.equalizer);
+                dialogContent = UpdatableWidget(child: ChannelLevelView(viewContext));
+                break;
         }
 
         if (widget._audioControlType != AudioControlType.MASTER_VOLUME_MAX)
@@ -75,18 +91,28 @@ class _AudioControlDialogState extends State<AudioControlDialog>
                 child: dialogContent);
         }
 
+        final List<Widget> actions = [];
+        if (widget._audioControlType == AudioControlType.TONE_CONTROL &&
+            viewContext.state.soundControlState.isChannelLevelAvailable)
+        {
+            actions.add(TextButton(
+                child: Text(Strings.channel_level.toUpperCase(), style: td.textTheme.labelLarge),
+                onPressed: ()
+                => showAudioControlDialog(viewContext, context, AudioControlType.CHANNEL_LEVEL)
+            ));
+        }
+        actions.add(TextButton(
+            child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
+            onPressed: ()
+            => Navigator.of(context).pop()
+        ));
+
         return AlertDialog(
             title: dialogTitle,
             contentPadding: DialogDimens.contentPadding,
             content: dialogContent,
             insetPadding: DialogDimens.contentPadding,
-            actions: <Widget>[
-                TextButton(
-                    child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
-                    onPressed: ()
-                    => Navigator.of(context).pop()
-                )
-            ]
+            actions: actions
         );
     }
 }

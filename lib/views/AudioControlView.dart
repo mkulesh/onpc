@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -79,7 +79,7 @@ class AudioControlView extends UpdatableView
                 Drawables.volume_max_limit,
                 Strings.master_volume_restrict,
                 onPressed: ()
-                => _showMasterVolumeMaxDialog(context)
+                => showAudioControlDialog(viewContext, context, AudioControlType.MASTER_VOLUME_MAX)
             );
 
             controls.add(CustomProgressBar(
@@ -297,15 +297,5 @@ class AudioControlView extends UpdatableView
                 isInDialog: true
             ));
         }
-    }
-
-    void _showMasterVolumeMaxDialog(final BuildContext context)
-    {
-        showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext c)
-            => AudioControlDialog(viewContext, AudioControlType.MASTER_VOLUME_MAX)
-        );
     }
 }

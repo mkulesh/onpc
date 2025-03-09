@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -143,9 +143,6 @@ class ButtonDimens
 
     static EdgeInsetsGeometry get smallButtonPadding
     => EdgeInsets.all(DimensTransform.scale(4));
-
-    static double get equalizerWidth
-    => DimensTransform.scale(42.0);
 }
 
 class MediaListDimens
@@ -185,4 +182,16 @@ class ControlViewDimens
     // The height of the device image
     static double get imageWidth
     => DimensTransform.scale(300.0);
+}
+
+class VerticalSliderDimens
+{
+    static double get sliderWidth
+    => DimensTransform.scale(42.0);
+
+    static EdgeInsetsGeometry get sliderGroupPaddingAll
+    => EdgeInsets.all(DimensTransform.scale(8.0));
+
+    static EdgeInsetsGeometry get sliderGroupPaddingVer
+    => EdgeInsets.symmetric(vertical: DimensTransform.scale(8.0));
 }

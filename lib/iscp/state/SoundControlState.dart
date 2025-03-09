@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -18,7 +18,9 @@ import "package:sprintf/sprintf.dart";
 
 import "../../config/CfgAudioControl.dart";
 import "../../utils/Logging.dart";
-import "../messages/AllChannelEqMsg.dart";
+import "../messages/AllChannelEqualizerMsg.dart";
+import "../messages/AllChannelLevelMsg.dart";
+import "../messages/AllChannelMsg.dart";
 import "../messages/AudioBalanceMsg.dart";
 import "../messages/AudioMutingMsg.dart";
 import "../messages/CenterLevelCommandMsg.dart";
@@ -44,6 +46,8 @@ enum SoundControlType
 class SoundControlState
 {
     static const double DEF_VOL_MAX = 82.0;
+    static const bool EQUALIZER_ALWAYS_AVAILABLE = false;
+    static const bool CHANNEL_LEVEL_ALWAYS_AVAILABLE = false;
 
     // Audio muting
     late EnumItem<AudioMuting> _audioMuting;
@@ -101,20 +105,40 @@ class SoundControlState
     => _listeningMode;
 
     // All Channel EQ
-    final List<int> _eqValues = [
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL,
-        AllChannelEqMsg.NO_LEVEL
+    final List<int> _equalizerValues = [
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL,
+        AllChannelMsg.NO_LEVEL
     ];
 
-    List<int> get eqValues
-    => _eqValues;
+    List<int> get equalizerValues
+    => _equalizerValues;
+
+    // Channel levels
+    final List<int> _channelLevelValues = [
+        AllChannelMsg.NO_LEVEL, // Front L
+        AllChannelMsg.NO_LEVEL, // Front R
+        AllChannelMsg.NO_LEVEL, // Center
+        AllChannelMsg.NO_LEVEL, // Surr. L
+        AllChannelMsg.NO_LEVEL, // Surr. R
+        AllChannelMsg.NO_LEVEL, // Surr. Back L
+        AllChannelMsg.NO_LEVEL, // Surr. Back R
+        AllChannelMsg.NO_LEVEL, // Subwoofer 1
+        AllChannelMsg.NO_LEVEL, // Height 1 L
+        AllChannelMsg.NO_LEVEL, // Height 1 R
+        AllChannelMsg.NO_LEVEL, // Height 2 L
+        AllChannelMsg.NO_LEVEL, // Height 2 R
+        AllChannelMsg.NO_LEVEL, // Subwoofer 2
+    ];
+
+    List<int> get channelLevelValues
+    => _channelLevelValues;
 
     // Force audio control
     bool _forceAudioControl = false;
@@ -163,7 +187,12 @@ class SoundControlState
         {
             // #216 TX-NR646: listening mode information is sometime missing
             // It seems to be AllChannelEq requests stops the receiver to answer ListeningMode request
-            cmd.add(AllChannelEqMsg.CODE);
+            cmd.add(AllChannelEqualizerMsg.CODE);
+        }
+
+        if (ri.isPioneer)
+        {
+            cmd.add(AllChannelLevelMsg.CODE);
         }
 
         return cmd;
@@ -289,15 +318,29 @@ class SoundControlState
         return changed;
     }
 
-    bool processAllChannelEq(AllChannelEqMsg msg)
+    bool processAllChannelEqualizer(AllChannelEqualizerMsg msg)
     {
         bool changed = false;
-        for (int i = 0; i < AllChannelEqMsg.CHANNELS; i++)
+        for (int i = 0; i < min(_equalizerValues.length, AllChannelEqualizerMsg.CHANNELS.length); i++)
         {
-            if (_eqValues[i] != msg.eqValues[i])
+            if (_equalizerValues[i] != msg.values[i])
             {
                 changed = true;
-                _eqValues[i] = msg.eqValues[i];
+                _equalizerValues[i] = msg.values[i];
+            }
+        }
+        return changed;
+    }
+
+    bool processAllChannelLevel(AllChannelLevelMsg msg)
+    {
+        bool changed = false;
+        for (int i = 0; i < min(_channelLevelValues.length, AllChannelLevelMsg.CHANNELS.length); i++)
+        {
+            if (_channelLevelValues[i] != msg.values[i])
+            {
+                changed = true;
+                _channelLevelValues[i] = msg.values[i];
             }
         }
         return changed;
@@ -367,5 +410,8 @@ class SoundControlState
     }
 
     bool get isEqualizerAvailable
-    => _eqValues.every((e) => e != AllChannelEqMsg.NO_LEVEL);
+    => EQUALIZER_ALWAYS_AVAILABLE || _equalizerValues.every((e) => e != AllChannelMsg.NO_LEVEL);
+
+    bool get isChannelLevelAvailable
+    => CHANNEL_LEVEL_ALWAYS_AVAILABLE || _channelLevelValues.every((e) => e != AllChannelMsg.NO_LEVEL);
 }

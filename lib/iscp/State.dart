@@ -22,7 +22,8 @@ import "../utils/Logging.dart";
 import "ConnectionIf.dart";
 import "ISCPMessage.dart";
 import "messages/AlbumNameMsg.dart";
-import "messages/AllChannelEqMsg.dart";
+import "messages/AllChannelEqualizerMsg.dart";
+import "messages/AllChannelLevelMsg.dart";
 import "messages/ArtistNameMsg.dart";
 import "messages/AudioBalanceMsg.dart";
 import "messages/AudioInformationMsg.dart";
@@ -462,9 +463,13 @@ class State with ProtoTypeMix
         {
             return _isChange(AudioBalanceMsg.CODE, _soundControlState.processAudioBalance(msg));
         }
-        else if (msg is AllChannelEqMsg)
+        else if (msg is AllChannelEqualizerMsg)
         {
-            return _isChange(AllChannelEqMsg.CODE, _soundControlState.processAllChannelEq(msg));
+            return _isChange(AllChannelEqualizerMsg.CODE, _soundControlState.processAllChannelEqualizer(msg));
+        }
+        else if (msg is AllChannelLevelMsg)
+        {
+            return _isChange(AllChannelLevelMsg.CODE, _soundControlState.processAllChannelLevel(msg));
         }
 
         // Radio

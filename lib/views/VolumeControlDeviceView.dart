@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -22,6 +22,7 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/AudioControlDialog.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/AllChannelEqualizerMsg.dart";
 import "../iscp/messages/AudioMutingMsg.dart";
 import "../iscp/messages/MasterVolumeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
@@ -41,7 +42,8 @@ class VolumeControlDeviceView extends UpdatableView
         PowerStatusMsg.CODE,
         MasterVolumeMaxView.VOLUME_MAX_EVENT,
         AudioMutingMsg.CODE,
-        MasterVolumeMsg.CODE
+        MasterVolumeMsg.CODE,
+        AllChannelEqualizerMsg.CODE
     ];
 
     final SoundControlType _soundControlType;
@@ -129,16 +131,6 @@ class VolumeControlDeviceView extends UpdatableView
         return SizedBox.shrink();
     }
 
-    void _showAudioControlDialog(final BuildContext context, final AudioControlType type)
-    {
-        showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext c)
-            => AudioControlDialog(viewContext, type)
-        );
-    }
-
     Widget _masterVolumeBtn(BuildContext context, SoundControlState soundControl, bool volumeValid)
     {
         final int volumeLevel = tmpVolumeLevel < 0 ? soundControl.volumeLevel : tmpVolumeLevel;
@@ -150,7 +142,7 @@ class VolumeControlDeviceView extends UpdatableView
             Strings.app_control_audio_control,
             text: volumeValid ? volumeLevelStr : "",
             onPressed: ()
-            => _showAudioControlDialog(context, AudioControlType.TONE_CONTROL),
+            => showAudioControlDialog(viewContext, context, AudioControlType.TONE_CONTROL),
             isEnabled: volumeValid
         );
     }
@@ -198,7 +190,7 @@ class VolumeControlDeviceView extends UpdatableView
             Drawables.equalizer,
             Strings.equalizer,
             onPressed: ()
-            => _showAudioControlDialog(context, AudioControlType.EQUALIZER)
+            => showAudioControlDialog(viewContext, context, AudioControlType.EQUALIZER)
         );
     }
 

@@ -312,6 +312,7 @@ Copyright © 2019-2024 by __Михаил Кулеш__
     <string name="master_volume_restrict">Ограничить максимальную громкость</string>
     <string name="master_volume_max">Максимум</string>
     <string name="equalizer">Эквалайзер</string>
+    <string name="channel_level">Уровень каналов</string>
     <string name="audio_balance">Баланс</string>
 
     <!-- Preset Command  -->
