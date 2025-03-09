@@ -68,7 +68,7 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   // Search and add second album to the queue
   final String artist2 = "Muse";
   final String album2 = "Absolution";
-  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "onkyo_music", "Pop-Rock", artist2], ensureVisible: true);
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "onkyo_music", "Rock", artist2], ensureVisible: true);
   await tu.contextMenu(album2 + " (2003)", "Add", waitFor: true);
 
   // Inspect queue

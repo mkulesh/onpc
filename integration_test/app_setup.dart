@@ -297,7 +297,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
 
   if (dlna) {
     await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
-    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Music Server (DLNA)", "Supermicro DLNA Server", "Music"]);
+    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Music Server (DLNA)", "Kontron DLNA Server", "Music"]);
     await tu.contextMenu("Artist", "Create shortcut", waitFor: true);
   }
 
@@ -375,20 +375,20 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
   if (dlna) {
     await tu.openTab("MEDIA");
     final Pair<String, String> ARTISTS = Pair<String, String>("Artist", "Artists on DLNA");
-    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music", "Supermicro DLNA Server", "Music"],
+    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music", "Kontron DLNA Server", "Music"],
         ensureVisible: true);
     await tu.contextMenu(ARTISTS.item1, "Create shortcut", waitFor: true);
     final Pair<String, String> MUSE = Pair<String, String>("- All Albums -", "Muse on DLNA");
     await tu.navigateToMedia(
-        [OnpcTestUtils.TOP_LAYER, "Local Music", "Supermicro DLNA Server", "Music", "Artist", "Muse<S>Mylene Farmer"],
+        [OnpcTestUtils.TOP_LAYER, "Local Music", "Kontron DLNA Server", "Music", "Artist", "Muse<S>Mylene Farmer"],
         ensureVisible: true);
     await tu.contextMenu(MUSE.item1, "Create shortcut", waitFor: true);
     await _renameShortcuts(tu, [
       ARTISTS,
       MUSE
     ], [
-      "NET/Local Music/Supermicro DLNA Server/Music/Artist",
-      "NET/Local Music/Supermicro DLNA Server/Music/Artist/Muse/- All Albums -"
+      "NET/Local Music/Kontron DLNA Server/Music/Artist",
+      "NET/Local Music/Kontron DLNA Server/Music/Artist/Muse/- All Albums -"
     ], true);
   }
 
