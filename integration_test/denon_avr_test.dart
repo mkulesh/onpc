@@ -168,12 +168,12 @@ Future<void> _audioControl(OnpcTestUtils tu) async {
 
   // Master volume
   p.name = "Master volume:";
-  p.initialValue = "0.0 (-60.0 dB)";
+  p.initialValue = "0.0 (-80.0 dB)";
   p.initialValueStep = -10;
-  p.secondValue = "9.0 (-51.0 dB)";
+  p.secondValue = "9.0 (-71.0 dB)";
   p.secondValueStep = 15;
   p.buttonUp = "60";
-  p.buttonUpValue = "9.5 (-50.5 dB)";
+  p.buttonUpValue = "9.5 (-70.5 dB)";
   p.buttonDown = "0";
   await _testAudioSlider(tu, p);
 
