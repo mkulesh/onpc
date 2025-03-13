@@ -340,6 +340,8 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "onkyo_music"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
     await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
+    await tu.ensureVisibleInList(
+        "Ensure Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
         "Ensure Эстрада", find.byType(ListView), () => find.text("Эстрада"), OnpcTestUtils.LIST_DRAG_OFFSET);
@@ -428,6 +430,8 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.navigateToMedia(["Genres"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
     await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
+    await tu.ensureVisibleInList(
+        "Ensure Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
         "Ensure Русский рок", find.byType(ListView), () => find.text("Сборники"), OnpcTestUtils.LIST_DRAG_OFFSET);
