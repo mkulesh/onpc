@@ -15,7 +15,9 @@
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
+import "../iscp/ConnectionIf.dart";
 import "../iscp/messages/AllChannelLevelMsg.dart";
+import "../iscp/messages/AllChannelMsg.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "../widgets/CustomTextLabel.dart";
@@ -27,8 +29,6 @@ class ChannelLevelView extends UpdatableView
     static const List<String> UPDATE_TRIGGERS = [
         AllChannelLevelMsg.CODE
     ];
-
-    static int VALUE_SHIFT = (AllChannelLevelMsg.VALUES / 2).floor();
 
     ChannelLevelView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
@@ -61,10 +61,10 @@ class ChannelLevelView extends UpdatableView
             Pair(0, 1),   // Front
             Pair(2, 2),   // Center
             Pair(3, 4),   // Surround
+            Pair(7, 12),  // Subwoofer
             Pair(5, 6),   // Surround Back
             Pair(8, 9),   // Height 1
             Pair(10, 11), // Height 2
-            Pair(7, 12),  // Subwoofer
         ];
 
         for (Pair<int, int> g in groups)
@@ -82,16 +82,30 @@ class ChannelLevelView extends UpdatableView
 
     Widget _createSlider(int i, {String caption = ""})
     {
+        final int valueShift = (AllChannelLevelMsg.getMaxValue(state.protoType) / 2).floor();
         final String cap = caption.isNotEmpty? caption : AllChannelLevelMsg.CHANNELS[i];
+        if (state.soundControlState.channelLevelValues[i] == AllChannelMsg.NO_LEVEL)
+        {
+            // Create a disabled slider since no valid level
+            return VerticalSlider(
+                caption: cap,
+                currValue: valueShift,
+                maxValueNum: AllChannelLevelMsg.getMaxValue(state.protoType),
+                divisions: AllChannelLevelMsg.getMaxValue(state.protoType),
+                onChanged: null);
+        }
+        // Create an enabled slider with a valid value
         return VerticalSlider(
             caption: cap,
-            currValue: state.soundControlState.channelLevelValues[i] + VALUE_SHIFT,
-            maxValueNum: AllChannelLevelMsg.VALUES,
-            divisions: AllChannelLevelMsg.VALUES,
+            currValue: state.soundControlState.channelLevelValues[i] + valueShift,
+            maxValueNum: AllChannelLevelMsg.getMaxValue(state.protoType),
+            divisions: AllChannelLevelMsg.getMaxValue(state.protoType),
             onChanged: (v)
             {
+                final List<int> channelLevelValues = state.protoType == ProtoType.ISCP ?
+                    state.soundControlState.channelLevelValues : AllChannelLevelMsg.defDcpChannelValues();
                 final AllChannelLevelMsg msg = AllChannelLevelMsg.output(
-                    state.soundControlState.channelLevelValues, i, v - VALUE_SHIFT);
+                    channelLevelValues, i, v - valueShift);
                 stateManager.sendMessage(msg);
             });
     }

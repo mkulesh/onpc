@@ -24,7 +24,7 @@ class VerticalSlider extends StatelessWidget
     final int currValue;
     final int maxValueNum;
     final int divisions;
-    final NewValueCallback onChanged;
+    final NewValueCallback? onChanged;
 
     VerticalSlider({
         required this.caption,

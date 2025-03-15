@@ -19,6 +19,7 @@ import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "AlbumNameMsg.dart";
+import "AllChannelLevelMsg.dart";
 import "ArtistNameMsg.dart";
 import "AudioBalanceMsg.dart";
 import "AudioInformationMsg.dart";
@@ -87,6 +88,7 @@ class DCPMessageFactory
         _acceptedCodes.addAll(AudioMutingMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(ListeningModeMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(AudioBalanceMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(AllChannelLevelMsg.getAcceptedDcpCodes());
 
         // Tuner
         _acceptedCodes.addAll(DcpTunerModeMsg.getAcceptedDcpCodes());
@@ -122,6 +124,7 @@ class DCPMessageFactory
         addISCPMsg(AudioMutingMsg.processDcpMessage(dcpMsg));
         addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
         addISCPMsg(AudioBalanceMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(AllChannelLevelMsg.processDcpMessage(dcpMsg));
 
         // Tuner
         addISCPMsg(DcpTunerModeMsg.processDcpMessage(dcpMsg));
@@ -345,6 +348,8 @@ class DCPMessageFactory
             return ListeningModeMsg(raw);
         case AudioBalanceMsg.CODE:
             return AudioBalanceMsg(raw);
+        case AllChannelLevelMsg.CODE:
+            return AllChannelLevelMsg(raw);
         case HdmiCecMsg.CODE:
             return HdmiCecMsg(raw);
         case SleepSetCommandMsg.CODE:

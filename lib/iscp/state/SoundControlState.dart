@@ -18,6 +18,7 @@ import "package:sprintf/sprintf.dart";
 
 import "../../config/CfgAudioControl.dart";
 import "../../utils/Logging.dart";
+import "../ConnectionIf.dart";
 import "../messages/AllChannelEqualizerMsg.dart";
 import "../messages/AllChannelLevelMsg.dart";
 import "../messages/AllChannelMsg.dart";
@@ -205,7 +206,8 @@ class SoundControlState
             AudioMutingMsg.ZONE_COMMANDS[zone],
             MasterVolumeMsg.ZONE_COMMANDS[zone],
             ListeningModeMsg.CODE,
-            AudioBalanceMsg.CODE
+            AudioBalanceMsg.CODE,
+            AllChannelLevelMsg.CODE
         ];
 
         if (zone < ToneCommandMsg.ZONE_COMMANDS.length)
@@ -335,13 +337,21 @@ class SoundControlState
     bool processAllChannelLevel(AllChannelLevelMsg msg)
     {
         bool changed = false;
-        for (int i = 0; i < min(_channelLevelValues.length, AllChannelLevelMsg.CHANNELS.length); i++)
+        if (msg.valueIdx < 0)
         {
-            if (_channelLevelValues[i] != msg.values[i])
+            for (int i = 0; i < min(_channelLevelValues.length, AllChannelLevelMsg.CHANNELS.length); i++)
             {
-                changed = true;
-                _channelLevelValues[i] = msg.values[i];
+                if (_channelLevelValues[i] != msg.values[i])
+                {
+                    changed = true;
+                    _channelLevelValues[i] = msg.values[i];
+                }
             }
+        }
+        else if (msg.valueIdx < _channelLevelValues.length)
+        {
+            changed = _channelLevelValues[msg.valueIdx] != msg.values[msg.valueIdx];
+            _channelLevelValues[msg.valueIdx] = msg.values[msg.valueIdx];
         }
         return changed;
     }
@@ -412,6 +422,12 @@ class SoundControlState
     bool get isEqualizerAvailable
     => EQUALIZER_ALWAYS_AVAILABLE || _equalizerValues.every((e) => e != AllChannelMsg.NO_LEVEL);
 
-    bool get isChannelLevelAvailable
-    => CHANNEL_LEVEL_ALWAYS_AVAILABLE || _channelLevelValues.every((e) => e != AllChannelMsg.NO_LEVEL);
+    bool isChannelLevelAvailable(ProtoType protoType)
+    {
+        if (protoType == ProtoType.ISCP)
+        {
+            return CHANNEL_LEVEL_ALWAYS_AVAILABLE || _channelLevelValues.every((e) => e != AllChannelMsg.NO_LEVEL);
+        }
+        return CHANNEL_LEVEL_ALWAYS_AVAILABLE || _channelLevelValues.any((e) => e != AllChannelMsg.NO_LEVEL);
+    }
 }

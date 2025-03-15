@@ -93,7 +93,7 @@ class _AudioControlDialogState extends State<AudioControlDialog>
 
         final List<Widget> actions = [];
         if (widget._audioControlType == AudioControlType.TONE_CONTROL &&
-            viewContext.state.soundControlState.isChannelLevelAvailable)
+            viewContext.state.soundControlState.isChannelLevelAvailable(widget._viewContext.state.protoType))
         {
             actions.add(TextButton(
                 child: Text(Strings.channel_level.toUpperCase(), style: td.textTheme.labelLarge),
