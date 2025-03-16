@@ -13,7 +13,6 @@
  */
 
 import "../../utils/Pair.dart";
-import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "AllChannelMsg.dart";
@@ -75,7 +74,7 @@ class AllChannelLevelMsg extends AllChannelMsg
         'Height 2/R',
         'Subwoofer/2'
     ];
-    static const Pair<String, String> BOUNDS = Pair("-12dB", "+12dB");
+    static const int VALUES = 48; // [-0x18, ... 0, ... 0x18]
 
     final int _valueIdx;
 
@@ -90,11 +89,6 @@ class AllChannelLevelMsg extends AllChannelMsg
     int get valueIdx
     => _valueIdx;
 
-    // ISCP: [-0x18, ... 0, ... 0x18]
-    // DCP: [-12, ... 0, ... 12]
-    static int getMaxValue(ProtoType protoType)
-    => (protoType == ProtoType.ISCP) ? 48 : 24;
-
     /*
      * Denon control protocol
      * Channel Volume:
@@ -108,6 +102,7 @@ class AllChannelLevelMsg extends AllChannelMsg
      */
     static const String _DCP_COMMAND = "CV";
     static const int _DCB_ZERO_DB_VALUE = 50;
+    static const int _DCB_MAX_DB_VALUE = 62;
 
     static List<String> getAcceptedDcpCodes()
     => [ _DCP_COMMAND ];
@@ -141,8 +136,10 @@ class AllChannelLevelMsg extends AllChannelMsg
                     final int? volumeLevel = int.tryParse(par.substring(c.item1.length).trim());
                     if (volumeLevel != null)
                     {
-                        return AllChannelLevelMsg.output(
-                            defDcpChannelValues(), c.item2, volumeLevel - _DCB_ZERO_DB_VALUE);
+                        final int adjVolumeLevel = volumeLevel <= _DCB_MAX_DB_VALUE ?
+                            2 * (volumeLevel - _DCB_ZERO_DB_VALUE) :
+                            (2.0 * (volumeLevel.toDouble() / 10.0 - _DCB_ZERO_DB_VALUE.toDouble())).floor();
+                        return AllChannelLevelMsg.output(defDcpChannelValues(), c.item2, adjVolumeLevel);
                     }
                 }
             }
@@ -162,8 +159,14 @@ class AllChannelLevelMsg extends AllChannelMsg
         {
             if (idx == c.item2)
             {
-                final int val = (values[idx] + _DCB_ZERO_DB_VALUE);
-                return _DCP_COMMAND + c.item1 + " " + val.toString();
+                final double dVal = 10.0 * (values[idx].toDouble() / 2.0 + _DCB_ZERO_DB_VALUE.toDouble());
+                final int iVal = dVal.toInt();
+                String sVal = iVal.toString();
+                if (sVal.length == 3 && sVal.endsWith("0"))
+                {
+                    sVal = sVal.substring(0,2);
+                }
+                return _DCP_COMMAND + c.item1 + " " + sVal.toString();
             }
         }
         return null;

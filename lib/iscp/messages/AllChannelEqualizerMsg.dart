@@ -12,7 +12,6 @@
  * Public License along with this program.
  */
 
-import "../../utils/Pair.dart";
 import "../EISCPMessage.dart";
 import "AllChannelMsg.dart";
 
@@ -37,7 +36,6 @@ class AllChannelEqualizerMsg extends AllChannelMsg
     static const String CODE = "ACE";
     static const List<String> CHANNELS = ['63', '125', '250', '500', '1k', '2k', '4k', '8k', '16k'];
     static const int VALUES = 48; // [-0x18, ... 0, ... 0x18]
-    static const Pair<String, String> BOUNDS = Pair("-12dB", "+12dB");
 
     AllChannelEqualizerMsg(EISCPMessage raw) :
             super(CODE, CHANNELS.length, raw);

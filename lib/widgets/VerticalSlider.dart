@@ -24,6 +24,7 @@ class VerticalSlider extends StatelessWidget
     final int currValue;
     final int maxValueNum;
     final int divisions;
+    final int minorTicks;
     final NewValueCallback? onChanged;
 
     VerticalSlider({
@@ -31,6 +32,7 @@ class VerticalSlider extends StatelessWidget
         required this.currValue,
         required this.maxValueNum,
         required this.divisions,
+        this.minorTicks = 0,
         required this.onChanged
     });
 
@@ -45,6 +47,8 @@ class VerticalSlider extends StatelessWidget
                 maxValueNum: maxValueNum,
                 currValue: currValue,
                 divisions: divisions,
+                minorTicks: minorTicks,
+                topPadding: 0,
                 onChanged: onChanged
             )
         );
@@ -59,6 +63,27 @@ class VerticalSlider extends StatelessWidget
                     child: CustomTextLabel.small(caption, textAlign: TextAlign.center)
                 )
             ]
+        );
+    }
+
+    static Widget createLabelsPanel(final List<String> labels)
+    {
+        return Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+                Expanded(child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: labels.map((e) => Padding(
+                        padding: VerticalSliderDimens.labelPadding,
+                        child: CustomTextLabel.small(e))).toList()
+                )),
+                SizedBox(
+                    width: 1,
+                    child: CustomTextLabel.small("", textAlign: TextAlign.center))]
         );
     }
 }

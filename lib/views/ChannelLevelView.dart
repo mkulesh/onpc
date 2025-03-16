@@ -30,6 +30,10 @@ class ChannelLevelView extends UpdatableView
         AllChannelLevelMsg.CODE
     ];
 
+    static const List<String> LABELS = ["+12dB", "+8dB", "+4dB", "0dB", "-4dB", "-8dB", "-12dB"];
+    final int VALUE_SHIFT = (AllChannelLevelMsg.VALUES / 2).floor();
+    final int DIVISIONS = (AllChannelLevelMsg.VALUES / 2).floor();
+
     ChannelLevelView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
@@ -39,24 +43,11 @@ class ChannelLevelView extends UpdatableView
 
         final List<Widget> controls = [];
 
-        final Widget bounds = Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-                CustomTextLabel.small(AllChannelLevelMsg.BOUNDS.item2),
-                Expanded(child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [ CustomTextLabel.small("0dB")])),
-                CustomTextLabel.small(AllChannelLevelMsg.BOUNDS.item1),
-                SizedBox(
-                    width: ButtonDimens.normalButtonSize,
-                    child: CustomTextLabel.small("", textAlign: TextAlign.center)),
-            ]
-        );
-        controls.add(_createPanel(bounds, "", defPadding: VerticalSliderDimens.sliderGroupPaddingVer));
+        // labels
+        controls.add(_createPanel(VerticalSlider.createLabelsPanel(LABELS), "",
+            defPadding: VerticalSliderDimens.sliderGroupPaddingVer));
 
+        // sliders
         final List<Pair<int, int>> groups = [
             Pair(0, 1),   // Front
             Pair(2, 2),   // Center
@@ -82,30 +73,31 @@ class ChannelLevelView extends UpdatableView
 
     Widget _createSlider(int i, {String caption = ""})
     {
-        final int valueShift = (AllChannelLevelMsg.getMaxValue(state.protoType) / 2).floor();
         final String cap = caption.isNotEmpty? caption : AllChannelLevelMsg.CHANNELS[i];
         if (state.soundControlState.channelLevelValues[i] == AllChannelMsg.NO_LEVEL)
         {
             // Create a disabled slider since no valid level
             return VerticalSlider(
                 caption: cap,
-                currValue: valueShift,
-                maxValueNum: AllChannelLevelMsg.getMaxValue(state.protoType),
-                divisions: AllChannelLevelMsg.getMaxValue(state.protoType),
+                currValue: VALUE_SHIFT,
+                maxValueNum: AllChannelLevelMsg.VALUES,
+                divisions: DIVISIONS,
+                minorTicks: 1,
                 onChanged: null);
         }
         // Create an enabled slider with a valid value
         return VerticalSlider(
             caption: cap,
-            currValue: state.soundControlState.channelLevelValues[i] + valueShift,
-            maxValueNum: AllChannelLevelMsg.getMaxValue(state.protoType),
-            divisions: AllChannelLevelMsg.getMaxValue(state.protoType),
+            currValue: state.soundControlState.channelLevelValues[i] + VALUE_SHIFT,
+            maxValueNum: AllChannelLevelMsg.VALUES,
+            divisions: DIVISIONS,
+            minorTicks: 1,
             onChanged: (v)
             {
                 final List<int> channelLevelValues = state.protoType == ProtoType.ISCP ?
                     state.soundControlState.channelLevelValues : AllChannelLevelMsg.defDcpChannelValues();
                 final AllChannelLevelMsg msg = AllChannelLevelMsg.output(
-                    channelLevelValues, i, v - valueShift);
+                    channelLevelValues, i, v - VALUE_SHIFT);
                 stateManager.sendMessage(msg);
             });
     }

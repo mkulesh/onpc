@@ -13,6 +13,7 @@ release/MusicControl-v*
 release/manual_test.txt
 release/win-report.xml
 release/config
+release/deploy.sh
 android/.gradle
 android/key.properties
 android/local.properties

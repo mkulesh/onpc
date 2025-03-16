@@ -17,7 +17,6 @@ import 'package:integration_test/integration_test.dart';
 import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/iscp/EISCPMessage.dart';
 import 'package:onpc/iscp/StateManager.dart';
-import 'package:onpc/iscp/messages/AllChannelEqualizerMsg.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Pair.dart';
 
@@ -32,6 +31,10 @@ void main() {
 
     await tu.stepDelayMs();
     await tu.openTab("LISTEN");
+    if (find.text("Onkyo Player (Standby)").evaluate().isNotEmpty) {
+      // Player is off - call power on
+      await tu.findAndTap("Power-off", () => find.byTooltip("On/Standby"));
+    }
 
     final StateManager sm = tu.getStateManager();
 
@@ -55,8 +58,8 @@ void main() {
 Future<void> _testEqualizer(final StateManager sm, final OnpcTestUtils tu) async {
   await tu.findAndTap("Test equalizer", () => find.byTooltip(Strings.equalizer), delay: OnpcTestUtils.NORMAL_DELAY);
   expect(find.text(Strings.equalizer), findsOneWidget);
-  expect(find.text(AllChannelEqualizerMsg.BOUNDS.item1), findsOneWidget);
-  expect(find.text(AllChannelEqualizerMsg.BOUNDS.item2), findsOneWidget);
+  expect(find.text("-12dB"), findsOneWidget);
+  expect(find.text("+12dB"), findsOneWidget);
   final List<Pair<String, String>> messages = [
     Pair("ACE", "-18000000000000000000000000"),
     Pair("ACE", "-18-14000000000000000000000"),

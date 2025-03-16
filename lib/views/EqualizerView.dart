@@ -14,10 +14,8 @@
 
 import "package:flutter/material.dart";
 
-import "../constants/Dimens.dart";
 import "../iscp/messages/AllChannelEqualizerMsg.dart";
 import "../utils/Logging.dart";
-import "../widgets/CustomTextLabel.dart";
 import "../widgets/VerticalSlider.dart";
 import "UpdatableView.dart";
 
@@ -27,7 +25,9 @@ class EqualizerView extends UpdatableView
         AllChannelEqualizerMsg.CODE
     ];
 
+    static const List<String> LABELS = ["+12dB", "+8dB", "+4dB", "0dB", "-4dB", "-8dB", "-12dB"];
     static int VALUE_SHIFT = (AllChannelEqualizerMsg.VALUES / 2).floor();
+    final int DIVISIONS = (AllChannelEqualizerMsg.VALUES / 2).floor();
 
     EqualizerView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
@@ -38,24 +38,8 @@ class EqualizerView extends UpdatableView
 
         final List<Widget> controls = [];
 
-        // caption
-        final Widget caption = Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-                CustomTextLabel.small(AllChannelEqualizerMsg.BOUNDS.item2),
-                Expanded(child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [ CustomTextLabel.small("0dB")])),
-                CustomTextLabel.small(AllChannelEqualizerMsg.BOUNDS.item1),
-                SizedBox(
-                    width: ButtonDimens.normalButtonSize,
-                    child: CustomTextLabel.small("", textAlign: TextAlign.center)),
-            ]
-        );
-        controls.add(caption);
+        // labels
+        controls.add(VerticalSlider.createLabelsPanel(LABELS));
 
         // sliders
         for (int i = 0; i < AllChannelEqualizerMsg.CHANNELS.length; i++)
@@ -64,7 +48,8 @@ class EqualizerView extends UpdatableView
                 caption: AllChannelEqualizerMsg.CHANNELS[i],
                 currValue: state.soundControlState.equalizerValues[i] + VALUE_SHIFT,
                 maxValueNum: AllChannelEqualizerMsg.VALUES,
-                divisions: AllChannelEqualizerMsg.VALUES,
+                divisions: DIVISIONS,
+                minorTicks: 1,
                 onChanged: (v)
                 {
                     final AllChannelEqualizerMsg msg = AllChannelEqualizerMsg.output(

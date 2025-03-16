@@ -36,6 +36,8 @@ class CustomProgressBar extends StatefulWidget
     final NewValueCallback? onDownButton;
     final Widget? extendedCmd;
     final int divisions;
+    final int minorTicks;
+    final double topPadding;
     final bool isInDialog;
 
     CustomProgressBar({
@@ -52,6 +54,8 @@ class CustomProgressBar extends StatefulWidget
         this.onDownButton,
         this.extendedCmd,
         this.divisions = 0,
+        this.minorTicks = 0,
+        this.topPadding = 4,
         this.isInDialog = false
     });
 
@@ -151,6 +155,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
                activeTrackColor: td.colorScheme.secondary,
                inactiveTrackColor: td.disabledColor.withAlpha(125),
                tickSize: Size(1, 5),
+               minorTickSize: Size(1, 2),
                overlayColor: td.hoverColor
                )
            ),
@@ -163,7 +168,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
                showLabels: false,
                enableTooltip: false,
                showDividers: false,
-               minorTicksPerInterval: 0,
+               minorTicksPerInterval: widget.minorTicks,
                onChangeStart: widget.onChanged != null ? _onChangeStart : null,
                onChanged: widget.onChanged != null ? _onChanged : null,
                onChangeEnd: widget.onChanged != null ? _onChangeEnd : null,
@@ -173,7 +178,7 @@ class _CustomProgressBarState extends State<CustomProgressBar>
 
         final Widget sliderBox = Container(
             constraints: BoxConstraints(maxHeight: ActivityDimens.progressBarHeight),
-            padding: EdgeInsets.fromLTRB(1.5 * radius, 4, 1.5 * radius, 0),
+            padding: EdgeInsets.fromLTRB(1.5 * radius, widget.topPadding, 1.5 * radius, 0),
             child: Align(alignment: Alignment.center, child: slider)
         );
 

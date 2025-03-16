@@ -194,4 +194,7 @@ class VerticalSliderDimens
 
     static EdgeInsetsGeometry get sliderGroupPaddingVer
     => EdgeInsets.symmetric(vertical: DimensTransform.scale(8.0));
+
+    static EdgeInsetsGeometry get labelPadding
+    => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0));
 }
