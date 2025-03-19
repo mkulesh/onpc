@@ -30,6 +30,12 @@ void main() {
     await tu.stepDelayMs();
     await tu.openTab("RC");
 
+    final List<String> special = [
+      "83416972506C6179202020202020", // Music note airplay
+      "43656E746572203A202030906442", // Decimal decibel center level
+      "1A4C6F7365722020202020202020" // Arrow song title
+    ];
+
     final List<String> messages = [
       "836F772050616972696E672E2E2E",
       "83772050616972696E672E2E2E20",
@@ -103,6 +109,13 @@ void main() {
     ];
 
     final StateManager sm = tu.getStateManager();
+
+    for(String element in special) {
+      final EISCPMessage raw = EISCPMessage.outputCat("s", "FLD", element);
+      sm.injectIscpMessage(raw);
+      await tu.stepDelayMs(delay: 2000);
+    }
+
     for(String element in messages) {
       final EISCPMessage raw = EISCPMessage.outputCat("s", "FLD", element);
       sm.injectIscpMessage(raw);

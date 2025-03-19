@@ -12,9 +12,8 @@
  * Public License along with this program.
  */
 
-import "dart:convert";
-
 import "../../utils/Convert.dart";
+import "../../utils/Pair.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 
@@ -24,13 +23,26 @@ import "../ISCPMessage.dart";
 class DeviceDisplayMsg extends ISCPMessage
 {
     static const String CODE = "FLD";
+    static const List<Pair<int, int>> _SPECIAL_SYM = [
+        Pair(0x1A, 0x23F5), // right-arrow (triangle)
+        Pair(0x83, 0x1D160), // music note symbol
+        Pair(0x90, 0x2070) // superscript zero
+    ];
 
     late String _value;
 
     DeviceDisplayMsg(EISCPMessage raw) : super(CODE, raw)
     {
         final List<int> s1 = Convert.convertRaw(getData);
-        _value = utf8.decode(s1, allowMalformed: true);
+        // process special symbols
+        _SPECIAL_SYM.forEach((element) {
+            final idx = s1.indexOf(element.item1);
+            if (idx >= 0 && idx < s1.length)
+            {
+                s1[idx] = element.item2;
+            }
+        });
+        _value = String.fromCharCodes(s1);
     }
 
     String get getValue => _value;
