@@ -29,8 +29,9 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 34
+    namespace 'com.mkulesh.onpc.plus'
 
-    lintOptions {
+    lint {
         disable 'InvalidPackage'
     }
 
