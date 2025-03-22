@@ -350,14 +350,14 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
                 builder: (BuildContext c)
                 => Theme(data: td, child: DropdownPreferenceDialog(name, values, displayValues, groupValue, onChange))
             ));
-        return res;
+        return Padding(padding: ListDimens.verticalPadding(_configuration.appSettings.textSize), child: res);
     }
 
     Widget _customSwitchPreference(final ThemeData td, String title, Pair<String, bool> par, {
         required String icon,
         String? desc})
     {
-        return SwitchPreference(
+        final Widget res = SwitchPreference(
             title,
             _configuration.getBool(par),
             icon: _getIcon(td, icon),
@@ -365,19 +365,21 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
             onChanged: (bool val)
             => _configuration.saveBoolParameter(par, val)
         );
+        return Padding(padding: ListDimens.verticalPadding(_configuration.appSettings.textSize), child: res);
     }
 
     Widget _customPreferenceScreen(final ThemeData td, String name, {
         required String icon,
         required String activity})
     {
-        return ListTile(
+        final Widget res = ListTile(
             leading: _getIcon(td, icon),
             title: CustomTextLabel.normal(name),
             trailing: Icon(Icons.keyboard_arrow_right, color: td.textTheme.titleMedium!.color),
             onTap: ()
             => Navigator.pushNamed(context, activity)
         );
+        return Padding(padding: ListDimens.verticalPadding(_configuration.appSettings.textSize), child: res);
     }
 
     Widget? _getIcon(final ThemeData td, String? icon)

@@ -95,7 +95,7 @@ class ShortcutsView extends UpdatableView
 
     Widget _buildRow(final BuildContext context, final int index, final Shortcut s)
     {
-        final Widget w = ContextMenuListener<_ShortcutContextMenu>(
+        final Widget li = ContextMenuListener<_ShortcutContextMenu>(
             child: MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
@@ -103,12 +103,12 @@ class ShortcutsView extends UpdatableView
                 removeLeft: true,
                 removeRight: true,
                 child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
-                    dense: configuration.appSettings.textSize != "huge",
+                    contentPadding: EdgeInsets.symmetric(horizontal: ListDimens.horizontalPadding),
+                    dense: true,
                     leading: CustomImageButton.normal(
                         s.getIcon(), null,
                         isEnabled: false,
-                        padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
+                        padding: ActivityDimens.noPadding,
                     ),
                     title: CustomTextLabel.normal(s.alias),
                     onTap: ()
@@ -123,6 +123,7 @@ class ShortcutsView extends UpdatableView
             onItemSelected: (BuildContext c, _ShortcutContextMenu m)
             => _onContextItemSelected(context, m, s)
         );
+        final Widget w = Padding(padding: ListDimens.verticalPadding(viewContext.configuration.appSettings.textSize), child: li);
         return ReorderableItem(key: Key(index.toString()), child: w);
     }
 

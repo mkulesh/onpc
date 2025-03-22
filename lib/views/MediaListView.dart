@@ -361,10 +361,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 icon, null,
                 isEnabled: iconEnabled || isPlaying,
                 isSelected: isPlaying,
-                padding: EdgeInsets.symmetric(vertical: MediaListDimens.itemPadding),
+                padding: ActivityDimens.noPadding,
             );
 
-        final Widget w = ContextMenuListener(
+        final Widget li = ContextMenuListener(
             key: reorderId != null? Key(reorderId) : null,
             child: MediaQuery.removePadding(
                 context: context,
@@ -373,8 +373,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 removeLeft: true,
                 removeRight: true,
                 child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: MediaListDimens.itemPadding),
-                    dense: configuration.appSettings.textSize != "huge",
+                    contentPadding: EdgeInsets.symmetric(horizontal: ListDimens.horizontalPadding),
+                    dense: true,
                     leading: iconImg,
                     title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
                     onTap: () => _processItemTap(context, cmd, icon)),
@@ -382,6 +382,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             onContextMenu: (position)
             => _onCreateContextMenu(context, position, cmd)
         );
+        final Widget w = Padding(padding: ListDimens.verticalPadding(viewContext.configuration.appSettings.textSize), child: li);
         if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && reorderId != null)
         {
             return ReorderableItem(key: Key(reorderId), child: w);

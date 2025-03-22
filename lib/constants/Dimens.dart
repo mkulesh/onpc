@@ -34,8 +34,8 @@ class DimensTransform
         {
             case "small": scaleFactor = 0.85; break;
             case "normal": scaleFactor = 1.0; break;
-            case "big": scaleFactor = 1.2; break;
-            case "huge": scaleFactor = 1.6; break;
+            case "big": scaleFactor = 1.15; break;
+            case "huge": scaleFactor = 1.3; break;
             default: scaleFactor = 1.0; break;
         }
     }
@@ -62,10 +62,12 @@ class ActivityDimens
     => 1.0 /* divider height*/ + DimensTransform.rotate(context, _tabBarHeightPort, _tabBarHeightLand);
 
     // Activity margins
-    static const double activityMarginStep = 8.0;
+    static double get activityMarginStep
+    => DimensTransform.scale(8.0);
 
     // Fonts: title text
-    static const double titleFontSize = 18;
+    static double get titleFontSize
+    => DimensTransform.scale(18);
 
     // Fonts: primary text
     static double get primaryFontSize
@@ -103,14 +105,14 @@ class ActivityDimens
 
 class DrawerDimens
 {
-    static const EdgeInsetsGeometry iconPadding
-    = EdgeInsets.only(left: 8, right: 16);
+    static EdgeInsetsGeometry get iconPadding
+    => EdgeInsets.only(left: DimensTransform.scale(8), right: DimensTransform.scale(16));
 
-    static const EdgeInsetsGeometry labelPadding
-    = EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+    static EdgeInsetsGeometry get labelPadding
+    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(16), vertical: DimensTransform.scale(8));
 
-    static const EdgeInsetsGeometry itemPadding
-    = EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+    static EdgeInsetsGeometry get itemPadding
+    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(16), vertical: DimensTransform.scale(8));
 }
 
 class ButtonDimens
@@ -145,11 +147,22 @@ class ButtonDimens
     => EdgeInsets.all(DimensTransform.scale(4));
 }
 
-class MediaListDimens
+class ListDimens
 {
     // Padding of media item
-    static double get itemPadding
-    => DimensTransform.scale(5);
+    static double get horizontalPadding
+    => DimensTransform.scale(6);
+
+    static EdgeInsets verticalPadding(final String textSize)
+    {
+        switch (textSize)
+        {
+            case "small": return EdgeInsets.symmetric(vertical: DimensTransform.scale(0));
+            case "big": return EdgeInsets.symmetric(vertical: DimensTransform.scale(5));
+            case "huge": return EdgeInsets.symmetric(vertical: DimensTransform.scale(8));
+            default: return EdgeInsets.symmetric(vertical: DimensTransform.scale(2));
+        }
+    }
 }
 
 class DialogDimens
@@ -159,21 +172,21 @@ class DialogDimens
     => DimensTransform.scale(26.0);
 
     // Icon padding
-    static const EdgeInsetsGeometry iconPadding
-    = EdgeInsets.only(right: 8);
+    static EdgeInsetsGeometry get iconPadding
+    => EdgeInsets.only(right: DimensTransform.scale(8));
 
     // padding of dialog content
     static EdgeInsets get contentPadding
-    => EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0);
+    => EdgeInsets.symmetric(horizontal: DimensTransform.scale(24.0), vertical: DimensTransform.scale(12.0));
 
     // padding of a row
     static EdgeInsetsGeometry get rowPadding
-    => EdgeInsets.symmetric(vertical: DimensTransform.scale(6.0));
+    => EdgeInsets.symmetric(vertical: DimensTransform.scale(8.0));
 
     // Top and bottom padding of TextField
     static EdgeInsetsGeometry get textFieldPadding
     => EdgeInsets.symmetric(
-        vertical: DimensTransform.scale(6.0),
+        vertical: DimensTransform.scale(8.0),
         horizontal: DimensTransform.scale(0));
 }
 
