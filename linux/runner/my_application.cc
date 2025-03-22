@@ -50,8 +50,7 @@ static void my_application_activate(GApplication* application) {
   }
 
   const gchar * exe_name = "Music-Control";
-  if (g_str_has_suffix(self->cmd_arguments[0], exe_name))
-  {
+  if (g_str_has_suffix(self->cmd_arguments[0], exe_name)) {
     gchar * app_path = g_strndup(self->cmd_arguments[0], strlen(self->cmd_arguments[0]) - strlen(exe_name));
     gchar * icon_path = g_strconcat(app_path, "data/flutter_assets/lib/assets/app_icon.png", NULL);
     gtk_window_set_icon_from_file(GTK_WINDOW (window), icon_path, NULL);
@@ -61,7 +60,7 @@ static void my_application_activate(GApplication* application) {
 
   gtk_window_set_default_size(window, 350, 720);
   // Hidden at launch
-  // gtk_widget_show(GTK_WIDGET(window));
+  //gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_realize(GTK_WIDGET(window));
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
@@ -97,6 +96,24 @@ static gboolean my_application_local_command_line(GApplication* application, gch
   return TRUE;
 }
 
+// Implements GApplication::startup.
+static void my_application_startup(GApplication* application) {
+  //MyApplication* self = MY_APPLICATION(object);
+
+  // Perform any actions required at application startup.
+
+  G_APPLICATION_CLASS(my_application_parent_class)->startup(application);
+}
+
+// Implements GApplication::shutdown.
+static void my_application_shutdown(GApplication* application) {
+  //MyApplication* self = MY_APPLICATION(object);
+
+  // Perform any actions required at application shutdown.
+
+  G_APPLICATION_CLASS(my_application_parent_class)->shutdown(application);
+}
+
 // Implements GObject::dispose.
 static void my_application_dispose(GObject* object) {
   MyApplication* self = MY_APPLICATION(object);
@@ -107,12 +124,20 @@ static void my_application_dispose(GObject* object) {
 static void my_application_class_init(MyApplicationClass* klass) {
   G_APPLICATION_CLASS(klass)->activate = my_application_activate;
   G_APPLICATION_CLASS(klass)->local_command_line = my_application_local_command_line;
+  G_APPLICATION_CLASS(klass)->startup = my_application_startup;
+  G_APPLICATION_CLASS(klass)->shutdown = my_application_shutdown;
   G_OBJECT_CLASS(klass)->dispose = my_application_dispose;
 }
 
 static void my_application_init(MyApplication* self) {}
 
 MyApplication* my_application_new() {
+  // Set the program name to the application ID, which helps various systems
+  // like GTK and desktop environments map this running application to its
+  // corresponding .desktop file. This ensures better integration by allowing
+  // the application to be recognized beyond its binary name.
+  g_set_prgname(APPLICATION_ID);
+
   return MY_APPLICATION(g_object_new(my_application_get_type(),
                                      "application-id", APPLICATION_ID,
                                      "flags", G_APPLICATION_NON_UNIQUE,
