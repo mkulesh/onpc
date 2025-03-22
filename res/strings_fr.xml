@@ -25,6 +25,7 @@
     <string name="action_ok">OK</string>
     <string name="action_no">Non</string>
     <string name="action_cancel">Annuler</string>
+    <string name="action_default">Définir par défaut</string>
     <string name="action_context_mobile">en utilisant un clic long</string>
     <string name="action_context_desktop">bouton droit de la souris</string>
 

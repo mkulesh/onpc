@@ -25,6 +25,7 @@
     <string name="action_ok">OK</string>
     <string name="action_no">Nie</string>
     <string name="action_cancel">Wstecz</string>
+    <string name="action_default">Ustaw domyślny</string>
     <string name="action_context_mobile">za pomocą długiego kliknięcia</string>
     <string name="action_context_desktop">prawy przycisk myszy</string>
 

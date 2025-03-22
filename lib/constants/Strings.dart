@@ -249,6 +249,14 @@ class Strings
         /*pl*/ "Wstecz"];
     static String get action_cancel => l_action_cancel[_language];
 
+    static const List<String> l_action_default = [
+        /*en*/ "Set default",
+        /*ru*/ "По умолчанию",
+        /*de*/ "Standard festlegen",
+        /*fr*/ "Définir par défaut",
+        /*pl*/ "Ustaw domyślny"];
+    static String get action_default => l_action_default[_language];
+
     static const List<String> l_action_context_mobile = [
         /*en*/ "using long click",
         /*ru*/ "используя долгое нажатие",

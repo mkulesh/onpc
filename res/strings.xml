@@ -29,6 +29,7 @@
     <string name="action_ok">OK</string>
     <string name="action_no">No</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_default">Set default</string>
     <string name="action_context_mobile">using long click</string>
     <string name="action_context_desktop">right mouse button</string>
 

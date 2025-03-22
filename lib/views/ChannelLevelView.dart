@@ -12,10 +12,12 @@
  * Public License along with this program.
  */
 
+import "package:collection/collection.dart";
 import "package:flutter/material.dart";
 
 import "../constants/Dimens.dart";
 import "../iscp/ConnectionIf.dart";
+import "../iscp/StateManager.dart";
 import "../iscp/messages/AllChannelLevelMsg.dart";
 import "../iscp/messages/AllChannelMsg.dart";
 import "../utils/Logging.dart";
@@ -140,5 +142,24 @@ class ChannelLevelView extends UpdatableView
             children: [_createSlider(idx1, caption: caption1), _createSlider(idx2, caption: caption2)],
         );
         return _createPanel(row, captionG);
+    }
+
+    static void sendDefaultChannelLevel(final StateManager stateManager)
+    {
+        Logging.info(stateManager, "sending default channel level");
+        if (stateManager.state.protoType == ProtoType.ISCP)
+        {
+            final List<int> zeroChannelValues = List.filled(AllChannelLevelMsg.CHANNELS.length, 0);
+            stateManager.sendMessage(AllChannelLevelMsg.output(zeroChannelValues, 0, 0));
+        }
+        else
+        {
+            stateManager.state.soundControlState.channelLevelValues.forEachIndexed((index, element) {
+                if (element != AllChannelMsg.NO_LEVEL)
+                {
+                    stateManager.sendMessage(AllChannelLevelMsg.output(AllChannelLevelMsg.defDcpChannelValues(), index, 0));
+                }
+            });
+        }
     }
 }

@@ -64,11 +64,20 @@ class _AudioControlDialogState extends State<AudioControlDialog>
         final ThemeData td = Theme.of(context);
 
         Widget dialogTitle, dialogContent;
+        final List<Widget> actions = [];
         switch(widget._audioControlType)
         {
             case AudioControlType.TONE_CONTROL:
                 dialogTitle = CustomDialogTitle(Strings.app_control_audio_control, Drawables.volume_audio_control);
                 dialogContent = UpdatableWidget(child: AudioControlView(viewContext));
+                if (viewContext.state.soundControlState.isChannelLevelAvailable(widget._viewContext.state.protoType))
+                {
+                    actions.add(TextButton(
+                        child: Text(Strings.channel_level.toUpperCase(), style: td.textTheme.labelLarge),
+                        onPressed: ()
+                        => showAudioControlDialog(viewContext, context, AudioControlType.CHANNEL_LEVEL)
+                    ));
+                }
                 break;
             case AudioControlType.MASTER_VOLUME_MAX:
                 dialogTitle = CustomDialogTitle(Strings.master_volume_restrict, Drawables.volume_max_limit);
@@ -81,6 +90,11 @@ class _AudioControlDialogState extends State<AudioControlDialog>
             case AudioControlType.CHANNEL_LEVEL:
                 dialogTitle = CustomDialogTitle(Strings.channel_level, Drawables.equalizer);
                 dialogContent = UpdatableWidget(child: ChannelLevelView(viewContext));
+                actions.add(TextButton(
+                    child: Text(Strings.action_default.toUpperCase(), style: td.textTheme.labelLarge),
+                    onPressed: ()
+                    => ChannelLevelView.sendDefaultChannelLevel(viewContext.stateManager)
+                ));
                 break;
         }
 
@@ -91,16 +105,6 @@ class _AudioControlDialogState extends State<AudioControlDialog>
                 child: dialogContent);
         }
 
-        final List<Widget> actions = [];
-        if (widget._audioControlType == AudioControlType.TONE_CONTROL &&
-            viewContext.state.soundControlState.isChannelLevelAvailable(widget._viewContext.state.protoType))
-        {
-            actions.add(TextButton(
-                child: Text(Strings.channel_level.toUpperCase(), style: td.textTheme.labelLarge),
-                onPressed: ()
-                => showAudioControlDialog(viewContext, context, AudioControlType.CHANNEL_LEVEL)
-            ));
-        }
         actions.add(TextButton(
             child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
             onPressed: ()
