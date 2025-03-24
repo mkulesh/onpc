@@ -95,25 +95,28 @@ class ShortcutsView extends UpdatableView
 
     Widget _buildRow(final BuildContext context, final int index, final Shortcut s)
     {
-        final Widget li = ContextMenuListener<_ShortcutContextMenu>(
-            child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                removeBottom: true,
-                removeLeft: true,
-                removeRight: true,
-                child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: ListDimens.horizontalPadding),
-                    dense: true,
-                    leading: CustomImageButton.normal(
-                        s.getIcon(), null,
-                        isEnabled: false,
-                        padding: ActivityDimens.noPadding,
+        final Widget w = ContextMenuListener<_ShortcutContextMenu>(
+            child: Padding(padding: ListDimens.verticalPadding(viewContext.configuration.appSettings.textSize), child:
+                MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                    removeBottom: true,
+                    removeLeft: true,
+                    removeRight: true,
+                    child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: ListDimens.horizontalPadding),
+                        dense: true,
+                        leading: CustomImageButton.normal(
+                            s.getIcon(), null,
+                            isEnabled: false,
+                            padding: ActivityDimens.noPadding,
+                        ),
+                        title: CustomTextLabel.normal(s.alias),
+                        onTap: ()
+                        => _selectShortcut(s)
                     ),
-                    title: CustomTextLabel.normal(s.alias),
-                    onTap: ()
-                    => _selectShortcut(s)),
-                ),
+                )
+            ),
             menuName: Strings.favorite_shortcut_edit,
             menuItems: [
                 Pair(Strings.pref_item_update, _ShortcutContextMenu.EDIT),
@@ -123,7 +126,6 @@ class ShortcutsView extends UpdatableView
             onItemSelected: (BuildContext c, _ShortcutContextMenu m)
             => _onContextItemSelected(context, m, s)
         );
-        final Widget w = Padding(padding: ListDimens.verticalPadding(viewContext.configuration.appSettings.textSize), child: li);
         return ReorderableItem(key: Key(index.toString()), child: w);
     }
 

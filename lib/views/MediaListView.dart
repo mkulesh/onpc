@@ -364,25 +364,27 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 padding: ActivityDimens.noPadding,
             );
 
-        final Widget li = ContextMenuListener(
+        final Widget w = ContextMenuListener(
             key: reorderId != null? Key(reorderId) : null,
-            child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                removeBottom: true,
-                removeLeft: true,
-                removeRight: true,
-                child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: ListDimens.horizontalPadding),
-                    dense: true,
-                    leading: iconImg,
-                    title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
-                    onTap: () => _processItemTap(context, cmd, icon)),
-                ),
+            child: Padding(padding: ListDimens.verticalPadding(viewContext.configuration.appSettings.textSize),
+                child: MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                    removeBottom: true,
+                    removeLeft: true,
+                    removeRight: true,
+                    child: ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: ListDimens.horizontalPadding),
+                        dense: true,
+                        leading: iconImg,
+                        title: CustomTextLabel.normal(title, color: isMoved ? td.disabledColor : null),
+                        onTap: () => _processItemTap(context, cmd, icon)
+                    ),
+                )
+            ),
             onContextMenu: (position)
             => _onCreateContextMenu(context, position, cmd)
         );
-        final Widget w = Padding(padding: ListDimens.verticalPadding(viewContext.configuration.appSettings.textSize), child: li);
         if (cmd is XmlListItemMsg && cmd.iconType != _PLAYBACK_STRING && reorderId != null)
         {
             return ReorderableItem(key: Key(reorderId), child: w);
