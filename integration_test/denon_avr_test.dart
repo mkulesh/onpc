@@ -361,8 +361,8 @@ Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   await tu.changeFriendlyName(tu, "New Player Name");
 
   // Restore friendly name
-  await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"));
-  await tu.openTab("DEVICE", ensureAfter: () => find.byTooltip("Change friendly name"));
+  await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"), swipeLeft: true);
+  await tu.openTab("DEVICE", ensureAfter: () => find.byTooltip("Change friendly name"), swipeRight: true);
   await tu.changeFriendlyName(tu, "Denon AVR");
 
   // Rename dimmer level
@@ -381,7 +381,7 @@ Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
 }
 
 Future<void> _changeListeningMode(OnpcTestUtils tu, String input, String mode) async {
-  await tu.openTab("LISTEN", ensureAfter: () => find.text(mode.toUpperCase()));
+  await tu.openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.text(mode.toUpperCase()));
   await tu.findAndTap("Set " + mode, () => find.text(mode.toUpperCase()), delay: OnpcTestUtils.NORMAL_DELAY);
   await tu.ensureAvInfo(input, mode);
   await tu.openTab("RC", swipeRight: true, ensureAfter: () => find.text("Listening modes"));
