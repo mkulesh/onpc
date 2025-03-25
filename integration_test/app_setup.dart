@@ -339,9 +339,9 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.findAndTap("Select USB Disk", () => find.text("USB Disk"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "onkyo_music"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
-    await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
         "Ensure Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
+    await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
         "Ensure Эстрада", find.byType(ListView), () => find.text("Эстрада"), OnpcTestUtils.LIST_DRAG_OFFSET);
@@ -448,16 +448,23 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
 
   if (radio) {
     final Pair<String, String> DAB = Pair<String, String>("17 - BOB!", "BOB! on DAB");
-    final Pair<String, String> FM = Pair<String, String>("2 - 89.80 MHz", "ENERGY on FM");
+    final Pair<String, String> FM1 = Pair<String, String>("2 - 89.80 MHz", "ENERGY on FM");
+    final Pair<String, String> FM2 = Pair<String, String>("5 - 93.80 MHz", "");
     await tu.openTab("MEDIA");
     await tu.findAndTap("Select TUNER", () => find.text("TUNER"));
     await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("DAB"), DRAG_OFFSET_UP);
     await tu.findAndTap("Select DAB", () => find.text("DAB"));
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
     await tu.findAndTap("Select FM", () => find.text("FM"));
-    await tu.contextMenu(FM.item1, "Create shortcut", waitFor: true);
+    await tu.contextMenu(FM1.item1, "Create shortcut", waitFor: true);
+    await tu.contextMenu(FM2.item1, "Create shortcut", waitFor: true);
     await tu.openTab("SHORTCUTS");
-    await _renameShortcuts(tu, [DAB, FM], [], true);
+    await tu.stepDelaySec(3);
+    await _renameShortcuts(tu, [DAB], [], true);
+    await tu.dragReorderableItem(DAB.item2, DRAG_OFFSET_UP, dragIndex: 2);
+    await _renameShortcuts(tu, [FM1], [], true);
+    await tu.dragReorderableItem(FM1.item2, DRAG_OFFSET_UP, dragIndex: 2);
+    await tu.contextMenu(FM2.item1, "Delete", waitFor: true);
   }
 
   await tu.findAndTap("Start Deezer", () => find.text("Flow"), delay: OnpcTestUtils.NORMAL_DELAY);

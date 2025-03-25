@@ -123,6 +123,7 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   expect(find.text("24/27"), findsOneWidget);
 
   // Audio info dialog
+  await tu.findAndTap("Set Stereo Mode", () => find.text("Stereo".toUpperCase()), delay: OnpcTestUtils.NORMAL_DELAY);
   await tu.ensureAvInfo("MP3 44.1 kHz", "Stereo");
 }
 

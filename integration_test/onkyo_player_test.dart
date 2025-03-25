@@ -15,6 +15,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:onpc/iscp/EISCPMessage.dart';
+import 'package:onpc/iscp/StateManager.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
@@ -41,6 +43,7 @@ void main() {
     await _groupUngroup(tu, true); // group
     await _groupUngroup(tu, false); // ungroup
     await _changeDeviceSettings(tu);
+    await _deviceDisplay(tu);
 
     // Power-off
     await tu.findAndTap("Power-off", () => find.byTooltip("On/Standby"));
@@ -301,4 +304,15 @@ Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   await tu.findAndTap("Dimmer level: confirm change", () => find.text("OK"));
   expect(find.text(DIM_NAME), findsNothing);
   expect(find.text("Bright"), findsOneWidget);
+}
+
+Future<void> _deviceDisplay(OnpcTestUtils tu) async {
+  await tu.openTab("RC", ensureAfter: () => find.text("Setup"), swipeRight: true);
+  expect(find.text("Setup"), findsExactly(1));
+  expect(find.text("Return"), findsExactly(1));
+  final StateManager sm = tu.getStateManager();
+  final EISCPMessage raw = EISCPMessage.outputCat("s", "FLD", "5456206541524320202D34352E30");
+  sm.injectIscpMessage(raw);
+  await tu.stepDelayMs(delay: 2000);
+  expect(find.text("TV eARC  -45.0"), findsExactly(1));
 }
