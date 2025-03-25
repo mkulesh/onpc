@@ -429,9 +429,9 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.findAndTap("Navigate to: " + DENON_AVR, () => find.widgetWithText(ListTile, DENON_AVR));
     await tu.navigateToMedia(["Genres"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
-    await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
         "Ensure Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
+    await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
         "Ensure Русский рок", find.byType(ListView), () => find.text("Сборники"), OnpcTestUtils.LIST_DRAG_OFFSET);
