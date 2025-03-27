@@ -217,7 +217,7 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
   // RI-USB
   if (Platform.isDesktop) {
     final String USB_RI = Platform.isWindows ? "USB Serial Port" : "OnkioRI FT231X";
-    await _changeParameter(tu, "Use USB-RI interface", USB_RI);
+    await _changeParameter(tu, "Use USB-RI interface", USB_RI, ignoreMissing: true);
   }
 
   await _changeParameter(tu, "Album's cover click behaviour", "Audio muting");
@@ -225,11 +225,16 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
   await tu.previousScreen();
 }
 
-Future<void> _changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_VALUE, {bool pressOk = false}) async {
+Future<void> _changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_VALUE,
+    {bool pressOk = false, bool ignoreMissing = false}) async {
   await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
   if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-    await tu.findAndTap("Change " + PARAM_NAME + "1", () => find.text(PARAM_NAME),
-        ensureAfter: () => find.textContaining(PARAM_VALUE));
+    await tu.findAndTap("Change " + PARAM_NAME + "1", () => find.text(PARAM_NAME));
+    await tu.stepDelayMs();
+    if (ignoreMissing && find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
+      await tu.findAndTap("Change " + PARAM_NAME + "4", () => find.text("CANCEL"));
+      return;
+    }
     await tu.findAndTap("Change " + PARAM_NAME + "2", () => find.textContaining(PARAM_VALUE));
     if (pressOk) {
       await tu.findAndTap("Change " + PARAM_NAME + "3", () => find.text("OK"));
