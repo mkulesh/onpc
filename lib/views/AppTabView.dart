@@ -50,6 +50,7 @@ class AppTabView extends UpdatableView
 
     static const List<AppControl> FOCUSABLE = [
         AppControl.DEVICE_INFO,
+        AppControl.SHORTCUTS, // Allows to disable rebuild when context menu is opened
         AppControl.MEDIA_LIST
     ];
 

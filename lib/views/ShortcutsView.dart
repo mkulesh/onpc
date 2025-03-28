@@ -117,7 +117,7 @@ class ShortcutsView extends UpdatableView
                     ),
                 )
             ),
-            menuName: Strings.favorite_shortcut_edit,
+            menuName: s.alias + ":",
             menuItems: [
                 Pair(Strings.pref_item_update, _ShortcutContextMenu.EDIT),
                 Pair(Strings.pref_item_delete, _ShortcutContextMenu.DELETE),
