@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -13,7 +13,6 @@
  */
 
 import "package:collection/collection.dart";
-import "package:draggable_scrollbar/draggable_scrollbar.dart";
 import "package:flutter/material.dart";
 
 import "../config/CfgFavoriteShortcuts.dart";
@@ -294,9 +293,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
         );
 
-        return Platform.isDesktop ? list : DraggableScrollbar.rrect(
+        return Scrollbar(
             controller: _scrollController,
-            backgroundColor: td.colorScheme.secondary,
+            interactive: true,
             child: list);
     }
 
