@@ -82,12 +82,16 @@ class ShortcutsView extends UpdatableView
                 _shortcutIds.add(shortcuts[i].id);
             }
 
-            tab = Scrollbar(child: ReorderableListView(
-                primary: true,
-                onReorder: _onReorder,
-                reverse: false,
-                scrollDirection: Axis.vertical,
-                children: rows));
+            tab = Scrollbar(
+                interactive: true,
+                child: ReorderableListView(
+                    primary: true,
+                    onReorder: _onReorder,
+                    reverse: false,
+                    scrollDirection: Axis.vertical,
+                    children: rows
+                )
+            );
         }
 
         return Expanded(flex: 1, child: tab);

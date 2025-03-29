@@ -260,9 +260,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             controller: _scrollController,
             itemBuilder: (BuildContext itemContext, int index)
             {
-                final ISCPMessage rowMsg = retMsg != null ?
-                    (index == 0 ? retMsg : items[index - 1]) :
-                    (items[index]);
+                final ISCPMessage? rowMsg = retMsg != null ?
+                    (index == 0 ? retMsg : _getItemOrNull(items, index - 1)) :
+                    _getItemOrNull(items, index);
                 if (rowMsg is NetworkServiceMsg)
                 {
                     return _buildNetworkServiceRow(itemContext, rowMsg);
@@ -298,7 +298,10 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             controller: _scrollController,
             backgroundColor: td.colorScheme.secondary,
             child: list);
-        }
+    }
+
+    ISCPMessage? _getItemOrNull(List<ISCPMessage> items, int i) 
+    => i < items.length ? items[i] : null; 
 
     Widget _buildPlayQueueList(BuildContext context, List<ISCPMessage> items)
     {
@@ -325,14 +328,18 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
         });
 
-        return ReorderableListView(
-            onReorder: _onReorder,
-            header: header,
-            reverse: false,
-            padding: ActivityDimens.noPadding,
-            scrollController: _scrollController,
-            scrollDirection: Axis.vertical,
-            children: _rows
+        return Scrollbar(
+            controller: _scrollController,
+            interactive: true,
+            child: ReorderableListView(
+                onReorder: _onReorder,
+                header: header,
+                reverse: false,
+                padding: ActivityDimens.noPadding,
+                scrollController: _scrollController,
+                scrollDirection: Axis.vertical,
+                children: _rows
+            )
         );
     }
 
