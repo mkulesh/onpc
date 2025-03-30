@@ -131,6 +131,7 @@ class Strings
     static const String listening_mode_matrix = "Matrix";
     static const String listening_mode_video_game = "Video Game";
     static const String listening_mode_vitrual = "Virtual";
+    static const String listening_mode_all_zone_stereo = "All Zone Stereo";
 
     /* Non-translatable arrays */
 

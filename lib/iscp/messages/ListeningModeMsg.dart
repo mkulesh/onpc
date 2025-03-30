@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -96,6 +96,7 @@ enum ListeningMode
     MODE_DCP_DIRECT,
     MODE_DCP_PURE_DIRECT,
     MODE_DCP_STEREO,
+    MODE_DCP_ALL_ZONE_STEREO,
     MODE_DCP_AUTO,
     MODE_DCP_DOLBY_DIGITAL,
     MODE_DCP_DTS_SURROUND,
@@ -280,7 +281,9 @@ class ListeningModeMsg extends EnumParameterMsg<ListeningMode>
             descr: Strings.listening_mode_pure_direct),
         EnumItem.code(ListeningMode.MODE_DCP_STEREO, "STEREO", 
             descr: Strings.listening_mode_mode_00),
-        EnumItem.code(ListeningMode.MODE_DCP_AUTO, "AUTO", 
+        EnumItem.code(ListeningMode.MODE_DCP_ALL_ZONE_STEREO, "ALL ZONE STEREO",
+            descr: Strings.listening_mode_all_zone_stereo),
+        EnumItem.code(ListeningMode.MODE_DCP_AUTO, "AUTO",
             descr: Strings.listening_mode_auto),
         EnumItem.code(ListeningMode.MODE_DCP_DOLBY_DIGITAL, "DOLBY DIGITAL", 
             descr: Strings.listening_mode_mode_40),

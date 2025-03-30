@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General License as published by the Free Software Foundation, either version 3 of the License,
@@ -25,6 +25,7 @@ import "AudioBalanceMsg.dart";
 import "AudioInformationMsg.dart";
 import "AudioMutingMsg.dart";
 import "CustomPopupMsg.dart";
+import "DcpAllZoneStereoMsg.dart";
 import "DcpAudioRestorerMsg.dart";
 import "DcpEcoModeMsg.dart";
 import "DcpMediaContainerMsg.dart";
@@ -89,6 +90,7 @@ class DCPMessageFactory
         _acceptedCodes.addAll(ListeningModeMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(AudioBalanceMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(AllChannelLevelMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(DcpAllZoneStereoMsg.getAcceptedDcpCodes());
 
         // Tuner
         _acceptedCodes.addAll(DcpTunerModeMsg.getAcceptedDcpCodes());
@@ -125,6 +127,7 @@ class DCPMessageFactory
         addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
         addISCPMsg(AudioBalanceMsg.processDcpMessage(dcpMsg));
         addISCPMsg(AllChannelLevelMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DcpAllZoneStereoMsg.processDcpMessage(dcpMsg));
 
         // Tuner
         addISCPMsg(DcpTunerModeMsg.processDcpMessage(dcpMsg));
@@ -350,6 +353,8 @@ class DCPMessageFactory
             return AudioBalanceMsg(raw);
         case AllChannelLevelMsg.CODE:
             return AllChannelLevelMsg(raw);
+        case DcpAllZoneStereoMsg.CODE:
+            return DcpAllZoneStereoMsg(raw);
         case HdmiCecMsg.CODE:
             return HdmiCecMsg(raw);
         case SleepSetCommandMsg.CODE:

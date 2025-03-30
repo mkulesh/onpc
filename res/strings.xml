@@ -768,6 +768,7 @@ Enjoy!""</string>
     <string name="listening_mode_matrix" translatable="false">Matrix</string>
     <string name="listening_mode_video_game" translatable="false">Video Game</string>
     <string name="listening_mode_vitrual" translatable="false">Virtual</string>
+    <string name="listening_mode_all_zone_stereo" translatable="false">All Zone Stereo</string>
 
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
     <string name="listening_mode_down">Sets listening mode wrap-around down</string>

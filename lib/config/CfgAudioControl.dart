@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -113,6 +113,7 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_DCP_DIRECT,
         ListeningMode.MODE_DCP_PURE_DIRECT,
         ListeningMode.MODE_DCP_STEREO,
+        ListeningMode.MODE_DCP_ALL_ZONE_STEREO,
         ListeningMode.MODE_DCP_AUTO,
         ListeningMode.MODE_DCP_DOLBY_DIGITAL,
         ListeningMode.MODE_DCP_DTS_SURROUND,

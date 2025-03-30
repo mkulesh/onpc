@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -14,13 +14,16 @@
 
 import "package:flutter/material.dart";
 
+import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
+import "../iscp/messages/DcpAllZoneStereoMsg.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
-import '../widgets/TextButtonScroll.dart';
 import "../widgets/CustomTextButton.dart";
+import '../widgets/TextButtonScroll.dart';
 import "UpdatableView.dart";
 
 
@@ -63,7 +66,13 @@ class ListeningModeListView extends UpdatableView
                 isEnabled: state.isOn,
                 isSelected: isSelected,
                 onPressed: ()
-                => stateManager.sendMessage(cmd)
+                {
+                    if (state.protoType == ProtoType.DCP)
+                    {
+                        _toggleAllZoneStereo(m);
+                    }
+                    stateManager.sendMessage(cmd);
+                }
             );
             if (isSelected)
             {
@@ -73,5 +82,21 @@ class ListeningModeListView extends UpdatableView
         });
 
         return buttons.isEmpty ? SizedBox.shrink() : Center(child: TextButtonScroll(buttons, selectedButton));
+    }
+
+    void _toggleAllZoneStereo(EnumItem<ListeningMode> m)
+    {
+        if (state.soundControlState.listeningMode.key == ListeningMode.MODE_DCP_ALL_ZONE_STEREO &&
+            m.key != ListeningMode.MODE_DCP_ALL_ZONE_STEREO)
+        {
+            Logging.info(this, "Switch OFF all zone stereo");
+            stateManager.sendMessage(DcpAllZoneStereoMsg.output(DcpAllZoneStereo.OFF));
+        }
+        else if (state.soundControlState.listeningMode.key != ListeningMode.MODE_DCP_ALL_ZONE_STEREO &&
+            m.key == ListeningMode.MODE_DCP_ALL_ZONE_STEREO)
+        {
+            Logging.info(this, "Switch ON all zone stereo");
+            stateManager.sendMessage(DcpAllZoneStereoMsg.output(DcpAllZoneStereo.ON));
+        }
     }
 }
