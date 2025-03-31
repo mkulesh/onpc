@@ -77,17 +77,27 @@ class AllChannelLevelMsg extends AllChannelMsg
     static const int VALUES = 48; // [-0x18, ... 0, ... 0x18]
 
     final int _valueIdx;
+    final bool _channelOn;
 
     AllChannelLevelMsg(EISCPMessage raw) :
             _valueIdx = -1,
+            _channelOn = false,
             super(CODE, CHANNELS.length, raw);
 
-    AllChannelLevelMsg.output(final List<int> allValues, final int channel, final int level) :
+    AllChannelLevelMsg.output(final List<int> allValues, final int channel, final int level, {bool channelOn = false}) :
             _valueIdx = channel,
+            _channelOn = channelOn,
             super.output(CODE, CHANNELS.length, allValues, channel, level);
 
     int get valueIdx
     => _valueIdx;
+
+    bool get channelOn
+    => _channelOn;
+
+    @override
+    String toString()
+    => super.toString() + (_channelOn ? "[ON=true]" : "");
 
     /*
      * Denon control protocol
@@ -133,7 +143,12 @@ class AllChannelLevelMsg extends AllChannelMsg
             {
                 if (par.startsWith(c.item1))
                 {
-                    final int? volumeLevel = int.tryParse(par.substring(c.item1.length).trim());
+                    final String valStr = par.substring(c.item1.length).trim();
+                    if (valStr == "ON")
+                    {
+                        return AllChannelLevelMsg.output(defDcpChannelValues(), c.item2, 0, channelOn: true);
+                    }
+                    final int? volumeLevel = int.tryParse(valStr);
                     if (volumeLevel != null)
                     {
                         final int adjVolumeLevel = volumeLevel <= _DCB_MAX_DB_VALUE ?

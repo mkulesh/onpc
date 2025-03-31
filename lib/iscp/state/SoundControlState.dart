@@ -232,6 +232,14 @@ class SoundControlState
         _centerCmdLength = CenterLevelCommandMsg.NO_LEVEL;
         _listeningMode = ListeningModeMsg.ValueEnum.defValue;
         _balance = AudioBalanceMsg.NO_LEVEL;
+        for (int i = 0; i < _equalizerValues.length; i++)
+        {
+            _equalizerValues[i] = AllChannelMsg.NO_LEVEL;
+        }
+        for (int i = 0; i < _channelLevelValues.length; i++)
+        {
+            _channelLevelValues[i] = AllChannelMsg.NO_LEVEL;
+        }
     }
 
     bool processAudioMuting(AudioMutingMsg msg)
@@ -351,8 +359,18 @@ class SoundControlState
         }
         else if (msg.valueIdx < _channelLevelValues.length)
         {
-            changed = _channelLevelValues[msg.valueIdx] != msg.values[msg.valueIdx];
-            _channelLevelValues[msg.valueIdx] = msg.values[msg.valueIdx];
+            if (!msg.channelOn)
+            {
+                // process a valid level value
+                changed = _channelLevelValues[msg.valueIdx] != msg.values[msg.valueIdx];
+                _channelLevelValues[msg.valueIdx] = msg.values[msg.valueIdx];
+            }
+            else if (_channelLevelValues[msg.valueIdx] == AllChannelMsg.NO_LEVEL)
+            {
+                // process an ON state, when the level value is not yet set
+                changed = _channelLevelValues[msg.valueIdx] != msg.values[msg.valueIdx];
+                _channelLevelValues[msg.valueIdx] = msg.values[msg.valueIdx];
+            }
         }
         return changed;
     }
