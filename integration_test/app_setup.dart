@@ -484,7 +484,7 @@ Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>>
     await tu.ensureVisibleInList("Ensure " + items[i].item1, find.byType(ReorderableListView),
         () => find.text(items[i].item1), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu(items[i].item1, "Edit",
-        ensureAfter: () => find.text("CANCEL"), checkItems: ["Edit shortcut", "Edit", "Delete", "Copy to clipboard"]);
+        ensureAfter: () => find.text("CANCEL"), checkItems: [items[i].item1 + ":", "Edit", "Delete", "Copy to clipboard"]);
     if (path.isNotEmpty) {
       expect(find.text(path[i]), findsOneWidget);
     }
