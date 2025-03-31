@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -23,6 +23,7 @@ import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
 import "../MessageChannel.dart";
 import "../State.dart";
+import "../messages/DcpAllZoneStereoMsg.dart";
 import "../messages/DcpMediaContainerMsg.dart";
 import "../messages/InputSelectorMsg.dart";
 import "../messages/ListTitleInfoMsg.dart";
@@ -370,6 +371,17 @@ class MessageScript with ConnectionIf implements MessageScriptIf
         }
         else
         {
+            // DCP all zone stereo mode
+            if (state.protoType == ProtoType.DCP && a.cmd == ListeningModeMsg.CODE)
+            {
+                final DcpAllZoneStereoMsg? allZoneStereoMsg =
+                    state.soundControlState.toggleAllZoneStereo(ListeningModeMsg.ValueEnum.valueByDcpCode(a.par));
+                if (allZoneStereoMsg != null)
+                {
+                    channel.sendMessage(allZoneStereoMsg.getCmdMsg());
+                }
+            }
+            // Media item
             XmlListItemMsg? item;
             if (a.cmd == XmlListInfoMsg.CODE || a.cmd == DcpMediaContainerMsg.CODE)
             {

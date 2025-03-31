@@ -25,6 +25,7 @@ import "../messages/AllChannelMsg.dart";
 import "../messages/AudioBalanceMsg.dart";
 import "../messages/AudioMutingMsg.dart";
 import "../messages/CenterLevelCommandMsg.dart";
+import "../messages/DcpAllZoneStereoMsg.dart";
 import "../messages/DirectCommandMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/ListeningModeMsg.dart";
@@ -429,5 +430,25 @@ class SoundControlState
             return CHANNEL_LEVEL_ALWAYS_AVAILABLE || _channelLevelValues.every((e) => e != AllChannelMsg.NO_LEVEL);
         }
         return CHANNEL_LEVEL_ALWAYS_AVAILABLE || _channelLevelValues.any((e) => e != AllChannelMsg.NO_LEVEL);
+    }
+
+    DcpAllZoneStereoMsg? toggleAllZoneStereo(EnumItem<ListeningMode>? m)
+    {
+        if (m != null)
+        {
+            if (_listeningMode.key == ListeningMode.MODE_DCP_ALL_ZONE_STEREO &&
+                m.key != ListeningMode.MODE_DCP_ALL_ZONE_STEREO)
+            {
+                Logging.info(this, "Switch OFF all zone stereo");
+                return DcpAllZoneStereoMsg.output(DcpAllZoneStereo.OFF);
+            }
+            else if (_listeningMode.key != ListeningMode.MODE_DCP_ALL_ZONE_STEREO &&
+                m.key == ListeningMode.MODE_DCP_ALL_ZONE_STEREO)
+            {
+                Logging.info(this, "Switch ON all zone stereo");
+                return DcpAllZoneStereoMsg.output(DcpAllZoneStereo.ON);
+            }
+        }
+        return null;
     }
 }

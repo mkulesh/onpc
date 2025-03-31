@@ -17,7 +17,6 @@ import "package:flutter/material.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/DcpAllZoneStereoMsg.dart";
-import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/state/SoundControlState.dart";
@@ -67,9 +66,11 @@ class ListeningModeListView extends UpdatableView
                 isSelected: isSelected,
                 onPressed: ()
                 {
-                    if (state.protoType == ProtoType.DCP)
+                    final DcpAllZoneStereoMsg? allZoneStereoMsg =
+                        state.protoType == ProtoType.DCP ? state.soundControlState.toggleAllZoneStereo(m) : null;
+                    if (allZoneStereoMsg != null)
                     {
-                        _toggleAllZoneStereo(m);
+                        stateManager.sendMessage(allZoneStereoMsg);
                     }
                     stateManager.sendMessage(cmd);
                 }
@@ -82,21 +83,5 @@ class ListeningModeListView extends UpdatableView
         });
 
         return buttons.isEmpty ? SizedBox.shrink() : Center(child: TextButtonScroll(buttons, selectedButton));
-    }
-
-    void _toggleAllZoneStereo(EnumItem<ListeningMode> m)
-    {
-        if (state.soundControlState.listeningMode.key == ListeningMode.MODE_DCP_ALL_ZONE_STEREO &&
-            m.key != ListeningMode.MODE_DCP_ALL_ZONE_STEREO)
-        {
-            Logging.info(this, "Switch OFF all zone stereo");
-            stateManager.sendMessage(DcpAllZoneStereoMsg.output(DcpAllZoneStereo.OFF));
-        }
-        else if (state.soundControlState.listeningMode.key != ListeningMode.MODE_DCP_ALL_ZONE_STEREO &&
-            m.key == ListeningMode.MODE_DCP_ALL_ZONE_STEREO)
-        {
-            Logging.info(this, "Switch ON all zone stereo");
-            stateManager.sendMessage(DcpAllZoneStereoMsg.output(DcpAllZoneStereo.ON));
-        }
     }
 }
