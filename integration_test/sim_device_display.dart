@@ -32,8 +32,10 @@ void main() {
 
     final List<String> special = [
       "83416972506C6179202020202020", // Music note airplay
+      "1A4C6F7365722020202020202020", // Arrow song title
       "43656E746572203A202030906442", // Decimal decibel center level
-      "1A4C6F7365722020202020202020" // Arrow song title
+      "432020202020203A2D3131956442", // C   :-11.5dB
+      "824D792050726573657473202020"  // ?My Presets (up down arrows and folder icon)
     ];
 
     final List<String> messages = [

@@ -24,9 +24,11 @@ class DeviceDisplayMsg extends ISCPMessage
 {
     static const String CODE = "FLD";
     static const List<Pair<int, int>> _SPECIAL_SYM = [
-        Pair(0x1A, 0x23F5), // right-arrow (triangle)
-        Pair(0x83, 0x1D160), // music note symbol
-        Pair(0x90, 0x2070) // superscript zero
+        Pair(0x1A, 0x25BA),  // Black Right-Pointing Pointer: https://www.compart.com/en/unicode/U+25BA
+        Pair(0x83, 0x266A),  // Eighth Note: https://www.compart.com/en/unicode/U+266A
+        Pair(0x90, 0x2070),  // superscript zero: https://www.compart.com/en/unicode/U+2070
+        Pair(0x95, 0x2075),  // superscript five: https://www.compart.com/en/unicode/U+2070
+        Pair(0x82, 0x1F4C1)  // File Folder: https://www.compart.com/en/unicode/U+1F4C1
     ];
 
     late String _value;
