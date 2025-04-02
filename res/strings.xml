@@ -240,6 +240,7 @@ Enjoy!""</string>
     <!-- Application settings: Text size -->
     <string name="pref_text_size">Text and buttons size</string>
     <string-array name="pref_text_size_names">
+        <item>System size</item>
         <item>Small</item>
         <item>Normal</item>
         <item>Big</item>
@@ -247,8 +248,9 @@ Enjoy!""</string>
     </string-array>
 
     <!-- Non-Translatable parameters of text size -->
-    <string name="pref_text_size_default" translatable="false">normal</string>
+    <string name="pref_text_size_default" translatable="false">system</string>
     <string-array name="pref_text_size_codes" translatable="false">
+        <item>system</item>
         <item>small</item>
         <item>normal</item>
         <item>big</item>

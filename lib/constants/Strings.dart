@@ -41,7 +41,7 @@ class Strings
     static const String pref_sound_control_default = "device";
     static const String pref_theme_default = "indigo-orange";
     static const String pref_language_default = "system";
-    static const String pref_text_size_default = "normal";
+    static const String pref_text_size_default = "system";
     static const String listening_mode_mode_00 = "Stereo";
     static const String listening_mode_mode_01 = "Direct";
     static const String listening_mode_mode_02 = "Surround";
@@ -163,6 +163,7 @@ class Strings
         "de",
         "pl"];
     static const List<String> pref_text_size_codes = [
+        "system",
         "small",
         "normal",
         "big",
@@ -4160,23 +4161,28 @@ Enjoy!"""];
     static List<String> get pref_language_names => l_pref_language_names[_language];
 
     static const List<List<String>> l_pref_text_size_names = [
-        /*en*/ ["Small",
+        /*en*/ ["System size",
+                "Small",
                 "Normal",
                 "Big",
                 "Huge"],
-        /*ru*/ ["Маленький",
+        /*ru*/ ["Системный размер",
+                "Маленький",
                 "Нормальный",
                 "Большой",
                 "Огромный"],
-        /*de*/ ["Klein",
+        /*de*/ ["Systemgröße",
+                "Klein",
                 "Normal",
                 "Groß",
                 "Riesig"],
-        /*fr*/ ["Petit",
+        /*fr*/ ["Taille du système",
+                "Petit",
                 "Normal",
                 "Grand",
                 "Énorme"],
-        /*pl*/ ["Małe",
+        /*pl*/ ["Rozmiar systemu",
+                "Małe",
                 "Normalne",
                 "Duże",
                 "Ogromne"]];

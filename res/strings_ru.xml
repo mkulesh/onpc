@@ -191,6 +191,7 @@ Copyright © 2019-2024 by __Михаил Кулеш__
     <!-- Application settings: Text size -->
     <string name="pref_text_size">Размер кнопок и текста</string>
     <string-array name="pref_text_size_names">
+        <item>Системный размер</item>
         <item>Маленький</item>
         <item>Нормальный</item>
         <item>Большой</item>

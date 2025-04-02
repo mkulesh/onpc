@@ -193,6 +193,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <!-- Application settings: Text size -->
     <string name="pref_text_size">Beschriftungs- und Tastengröße</string>
     <string-array name="pref_text_size_names">
+        <item>Systemgröße</item>
         <item>Klein</item>
         <item>Normal</item>
         <item>Groß</item>

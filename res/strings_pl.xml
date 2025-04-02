@@ -194,6 +194,7 @@ Enjoy!""</string>
     <!-- Application settings: Text size -->
     <string name="pref_text_size">Rozmiar tekstu i przycisków</string>
     <string-array name="pref_text_size_names">
+        <item>Rozmiar systemu</item>
         <item>Małe</item>
         <item>Normalne</item>
         <item>Duże</item>

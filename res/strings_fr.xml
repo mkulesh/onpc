@@ -192,6 +192,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <!-- Application settings: Text size -->
     <string name="pref_text_size">Taille texte et boutons</string>
     <string-array name="pref_text_size_names">
+        <item>Taille du système</item>
         <item>Petit</item>
         <item>Normal</item>
         <item>Grand</item>

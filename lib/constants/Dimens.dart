@@ -15,6 +15,7 @@ import "package:flutter/material.dart";
 
 class DimensTransform
 {
+    static double deviceScaleFactor = 1.0;
     static double scaleFactor = 1.0;
     static double switchScaleFactor = 1.0;
 
@@ -36,7 +37,7 @@ class DimensTransform
             case "normal": scaleFactor = 1.0; break;
             case "big": scaleFactor = 1.15; break;
             case "huge": scaleFactor = 1.3; break;
-            default: scaleFactor = 1.0; break;
+            default: scaleFactor = deviceScaleFactor; break;
         }
     }
 }
@@ -155,13 +156,8 @@ class ListDimens
 
     static EdgeInsets verticalPadding(final String textSize)
     {
-        switch (textSize)
-        {
-            case "small": return EdgeInsets.symmetric(vertical: DimensTransform.scale(0));
-            case "big": return EdgeInsets.symmetric(vertical: DimensTransform.scale(5));
-            case "huge": return EdgeInsets.symmetric(vertical: DimensTransform.scale(8));
-            default: return EdgeInsets.symmetric(vertical: DimensTransform.scale(2));
-        }
+        final double s = 16 * (DimensTransform.scaleFactor - 0.85);
+        return EdgeInsets.symmetric(vertical: DimensTransform.scale(s));
     }
 }
 

@@ -90,6 +90,10 @@ void main() async
     final ViewContext viewContext = ViewContext(configuration, stateManager, StreamController.broadcast());
 
     runApp(MaterialApp(
+        builder: (context, child) {
+            DimensTransform.deviceScaleFactor = MediaQuery.of(context).textScaler.scale(1);
+            return MediaQuery.withNoTextScaling(child: child!);
+        },
         scrollBehavior: MyCustomScrollBehavior(),
         debugShowCheckedModeBanner: Logging.isDebugBanner,
         title: Strings.app_short_name,
