@@ -131,6 +131,9 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_DCP_VIRTUAL
     ];
 
+    // Manual Listening modes
+    static const String MANUAL_LISTENING_MODES = "manual_listening_modes";
+
     // Master volume hardware keys
     static const Pair<String, bool> VOLUME_KEYS = Pair<String, bool>("volume_keys", true); // For Android only
     bool _volumeKeys = VOLUME_KEYS.item2;
@@ -184,7 +187,20 @@ class CfgAudioControl extends CfgModule
         _zeroLevel = zeroValue;
         saveStringParameter(ZERO_LEVEL, _zeroLevel == null ? "" : _zeroLevel.toString(), prefix: "  ");
     }
-    
+
+    void saveManualListeningMode(final EnumItem<ListeningMode> item, final String name)
+    {
+        final Pair<String, String> par = Pair<String, String>(MANUAL_LISTENING_MODES + "_" + item.getCode, "");
+        name.isNotEmpty ? saveStringParameter(par, name) : deleteParameter(par);
+    }
+
+    String listeningModeName(final EnumItem<ListeningMode> item)
+    {
+        final Pair<String, String> par = Pair<String, String>(MANUAL_LISTENING_MODES + "_" + item.getCode, "");
+        final String manName = getString(par);
+        return manName.isNotEmpty ? manName : item.description;
+    }
+
     List<EnumItem<ListeningMode>> getSortedListeningModes(
         bool allItems, EnumItem<ListeningMode> activeItem, ProtoType protoType)
     {

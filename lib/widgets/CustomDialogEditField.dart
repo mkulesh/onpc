@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -16,6 +16,9 @@ import "package:flutter/material.dart";
 import "package:flutter/widgets.dart";
 
 import "../constants/Dimens.dart";
+import "../constants/Drawables.dart";
+import "../constants/Strings.dart";
+import "CustomImageButton.dart";
 import "CustomTextField.dart";
 import "CustomTextLabel.dart";
 
@@ -26,6 +29,7 @@ class CustomDialogEditField extends StatelessWidget
     final Widget? widgetLabel;
     final bool isFocused;
     final ValueChanged<String>? onChanged;
+    final VoidCallback? onDeleteBtn;
 
     CustomDialogEditField(this.controller,
     {
@@ -33,11 +37,25 @@ class CustomDialogEditField extends StatelessWidget
         this.widgetLabel,
         this.isFocused = false,
         this.onChanged,
+        this.onDeleteBtn
     });
 
     @override
     Widget build(BuildContext context)
     {
+        Widget editor = CustomTextField(controller, isFocused: isFocused, onChanged: onChanged);
+        if (onDeleteBtn != null)
+        {
+            editor = Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                    Expanded(child: editor, flex: 1),
+                    CustomImageButton.small(Drawables.cmd_delete, Strings.pref_item_delete, onPressed: onDeleteBtn)
+                ]
+            );
+        }
         return Padding(
             padding: DialogDimens.rowPadding,
             child: Column(
@@ -45,7 +63,7 @@ class CustomDialogEditField extends StatelessWidget
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                     widgetLabel ?? (textLabel != null ? CustomTextLabel.small(textLabel!) : SizedBox.shrink()),
-                    CustomTextField(controller, isFocused: isFocused, onChanged: onChanged)
+                    editor
                 ]
             )
         );

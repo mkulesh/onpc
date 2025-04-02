@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -48,7 +48,7 @@ class AvInfoView extends UpdatableView
         items.add(CustomTextLabel.normal(Strings.av_info_audio, padding: DialogDimens.rowPadding));
         items.add(CustomTextLabel.small(sprintf(Strings.av_info_input, [state.trackState.avInfoAudioInput]), padding: DialogDimens.rowPadding));
         final String outInfo = state.protoType == ProtoType.ISCP ? state.trackState.avInfoAudioOutput :
-            state.soundControlState.listeningMode.description;
+            configuration.audioControl.listeningModeName(state.soundControlState.listeningMode);
         items.add(CustomTextLabel.small(sprintf(Strings.av_info_output, [outInfo]), padding: DialogDimens.rowPadding));
 
         items.add(CustomTextLabel.normal(Strings.av_info_video, padding: DialogDimens.rowPadding));

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -140,9 +140,10 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
 
         if (_listeningMode.key != ListeningMode.NONE)
         {
+            final String mName = viewContext.configuration.audioControl.listeningModeName(_listeningMode);
             final Widget lm = Padding(
                 padding: DialogDimens.rowPadding,
-                child:  CustomTextLabel.normal(_listeningMode.description, underline: true));
+                child:  CustomTextLabel.normal(mName, underline: true));
             controls.add(InkWell(child: lm,
                 onTap: () => _onSelectListeningMode(context, listening_modes))
             );
@@ -153,13 +154,19 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
     {
         final List<String> listening_modes_keys = [];
         final List<String> listening_modes_names = [];
-        listening_modes.forEach((m)
+        int selectedIdx = -1;
+        for (int i = 0; i < listening_modes.length; i++)
         {
+            final EnumItem<ListeningMode> m = listening_modes[i];
             listening_modes_keys.add(m.getKey);
-            listening_modes_names.add(m.description);
-        });
+            listening_modes_names.add(viewContext.configuration.audioControl.listeningModeName(m));
+            if (m.key == _listeningMode.key)
+            {
+                selectedIdx = i;
+            }
+        };
         final Widget d = DropdownPreferenceDialog(Strings.listening_mode_apply,
-            listening_modes_keys, listening_modes_names, -1,
+            listening_modes_keys, listening_modes_names, selectedIdx,
             (String val)
             {
                 setState(()

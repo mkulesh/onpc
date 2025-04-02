@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -57,7 +57,8 @@ class ListeningModeButtonsView extends UpdatableView
 
         final String currentModeStr =
             state.soundControlState.listeningMode.key == ListeningMode.MODE_40 ?
-                state.trackState.getListeningModeFromAvInfo() : state.soundControlState.listeningMode.description;
+                state.trackState.getListeningModeFromAvInfo() :
+                configuration.audioControl.listeningModeName(state.soundControlState.listeningMode);
         final Widget currentMode = state.isOn ? CustomTextLabel.small(currentModeStr) : SizedBox.shrink();
 
         Widget control;

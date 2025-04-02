@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -49,23 +49,11 @@ class _RenameDialogState extends State<RenameDialog>
         final ThemeData td = Theme.of(context);
         _alias.text = widget.value;
 
-        final Widget editLine = Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-                Expanded(
-                    child: CustomDialogEditField(_alias,
-                        textLabel: Strings.pref_item_name,
-                        isFocused: true),
-                    flex: 1),
-                Transform.translate(
-                    child: CustomImageButton.small(
-                        Drawables.cmd_delete,
-                        Strings.pref_item_delete,
-                        onPressed: () => _alias.text = ""),
-                    offset: Offset(8, 0))
-            ]);
+        final Widget editLine = CustomDialogEditField(_alias,
+            textLabel: Strings.pref_item_name,
+            isFocused: true,
+            onDeleteBtn: () => _alias.text = "",
+        );
 
         final Widget dialog = AlertDialog(
             title: CustomDialogTitle(Strings.pref_item_update, Drawables.drawer_edit_item),
