@@ -114,6 +114,8 @@ class ReceiverInformation
     // Default tone control
     static final ToneControl DEFAULT_BASS_CONTROL = ToneControl(ToneCommandMsg.BASS_KEY, -10, 10, 2);
     static final ToneControl DEFAULT_TREBLE_CONTROL = ToneControl(ToneCommandMsg.TREBLE_KEY, -10, 10, 2);
+    static final ToneControl DEFAULT_SUBWOOFER_LEVEL = ToneControl(SubwooferLevelCommandMsg.KEY, -15, 12, 1);
+    static final ToneControl DEFAULT_CENTER_LEVEL = ToneControl(CenterLevelCommandMsg.KEY, -12, 12, 1);
 
     ReceiverInformation()
     {
@@ -184,10 +186,8 @@ class ReceiverInformation
         _toneControls.clear();
         _toneControls[ToneCommandMsg.BASS_KEY] = DEFAULT_BASS_CONTROL;
         _toneControls[ToneCommandMsg.TREBLE_KEY] = DEFAULT_TREBLE_CONTROL;
-        _toneControls[SubwooferLevelCommandMsg.KEY] =
-            ToneControl(SubwooferLevelCommandMsg.KEY, -15, 12, 1);
-        _toneControls[CenterLevelCommandMsg.KEY] =
-            ToneControl(CenterLevelCommandMsg.KEY, -12, 12, 1);
+        _toneControls[SubwooferLevelCommandMsg.KEY] = DEFAULT_SUBWOOFER_LEVEL;
+        _toneControls[CenterLevelCommandMsg.KEY] = DEFAULT_CENTER_LEVEL;
         // Default zones:
         _zones.clear();
         _zones.addAll(ReceiverInformationMsg.defaultZones);

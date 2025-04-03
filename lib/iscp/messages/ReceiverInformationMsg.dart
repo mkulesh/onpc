@@ -353,6 +353,32 @@ class ToneControl
             _max == other._max &&
             _step == other._step;
     }
+
+    int getLevel(int v)
+    {
+        if (_step == 0)
+        {
+            return v + 2 * _min;
+        }
+        else
+        {
+            // (v.toDouble() * step).floor() + toneControl!.getMin
+            return v * _step + _min;
+        }
+    }
+
+    String getLevelStr(double v)
+    {
+        if (_step == 0)
+        {
+            return sprintf("%1.1f", [v / 2.0 + _min]);
+        }
+        else
+        {
+            // ((v * step).floor() + toneControl!.getMin).toString()
+            return ((v * _step).floor() + _min).toString();
+        }
+    }
 }
 
 typedef OnReceiverInfo = void Function(ReceiverInformationMsg? msg);

@@ -188,10 +188,10 @@ class AudioControlView extends UpdatableView
                 maxValueNum: max,
                 currValue: progress,
                 onCaption: (v)
-                => ((v * step).floor() + toneControl!.getMin).toString(),
+                => toneControl!.getLevelStr(v),
                 onChanged: (v)
                 {
-                    final int newVal = (v.toDouble() * step).floor() + toneControl!.getMin;
+                    final int newVal = toneControl!.getLevel(v);
                     switch (key)
                     {
                         case ToneCommandMsg.BASS_KEY:
