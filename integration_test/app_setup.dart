@@ -206,9 +206,9 @@ Future<void> _aboutScreen(OnpcTestUtils tu) async {
 Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
   await tu.openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
 
-  await _changeParameter(tu, "Theme", "Light (Purple and Green)");
-  await _changeParameter(tu, "App language", "English");
-  await _changeParameter(tu, "Text and buttons size", Platform.isIOS ? "Big" : "Small");
+  await _changeParameter(tu, "Text and buttons size", "Small", scroll: false);
+  await _changeParameter(tu, "Theme", "Light (Purple and Green)", scroll: false);
+  await _changeParameter(tu, "App language", "English", scroll: false);
 
   // Audio control
   await _changeParameter(tu, "Sound control", "Automatic");
@@ -226,8 +226,10 @@ Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
 }
 
 Future<void> _changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_VALUE,
-    {bool pressOk = false, bool ignoreMissing = false}) async {
-  await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+    {bool pressOk = false, bool ignoreMissing = false, bool scroll = true}) async {
+  if (scroll) {
+    await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+  }
   if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
     await tu.findAndTap("Change " + PARAM_NAME + "1", () => find.text(PARAM_NAME));
     await tu.stepDelayMs();
