@@ -132,6 +132,7 @@ Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
     Pair("Game-Action", false),
     Pair("Game-Rock", false),
     Pair("Game-Sports", false),
+    Pair("Auto Surround", false)
   ]);
 }
 
@@ -172,6 +173,7 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
     Pair("Game-Action", false),
     Pair("Game-Rock", false),
     Pair("Game-Sports", false),
+    Pair("Auto Surround", false)
   ]);
   await tu.openTab("SHORTCUTS");
   if (find.text("Deezer Flow").evaluate().isEmpty) {

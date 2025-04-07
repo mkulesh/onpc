@@ -105,7 +105,8 @@ class CfgAudioControl extends CfgModule
         ListeningMode.MODE_03, // Game-RPG
         ListeningMode.MODE_05, // Game-Action
         ListeningMode.MODE_06, // Game-Rock
-        ListeningMode.MODE_0E  // Game-Sports
+        ListeningMode.MODE_0E, // Game-Sports
+        ListeningMode.MODE_FF  // Auto Surround
     ];
 
     // Denon modes
