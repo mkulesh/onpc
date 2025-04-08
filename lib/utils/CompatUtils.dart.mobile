@@ -12,6 +12,8 @@
  * Public License along with this program.
  */
 
+import "dart:ui";
+
 import "package:flutter/material.dart";
 
 import "../config/Configuration.dart";
@@ -19,7 +21,8 @@ import "Pair.dart";
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior
 {
-    // empty
+    final Set<PointerDeviceKind> _dragDevices;
+    MyCustomScrollBehavior(this._dragDevices);
 }
 
 class SerialPortWrapper

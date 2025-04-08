@@ -26,15 +26,14 @@ import "Pair.dart";
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior
 {
+    final Set<PointerDeviceKind> _dragDevices;
+    MyCustomScrollBehavior(this._dragDevices);
+
     // Override behavior methods and getters like dragDevices
     // See https://docs.flutter.dev/release/breaking-changes/default-scroll-behavior-drag
     @override
-    Set<PointerDeviceKind> get dragDevices =>
-    {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        // etc.
-    };
+    Set<PointerDeviceKind> get dragDevices
+    => _dragDevices;
 }
 
 class SerialPortWrapper

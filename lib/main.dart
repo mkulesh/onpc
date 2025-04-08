@@ -14,6 +14,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import "dart:ui";
 
 import "package:back_button_interceptor/back_button_interceptor.dart";
 import "package:collection/collection.dart";
@@ -89,12 +90,16 @@ void main() async
     final StateManager stateManager = StateManager(configuration.favoriteConnections.getDevices);
     final ViewContext viewContext = ViewContext(configuration, stateManager, StreamController.broadcast());
 
+    final Set<PointerDeviceKind> dragDevices = Platform.isMacOS ?
+        {PointerDeviceKind.touch, PointerDeviceKind.mouse, PointerDeviceKind.trackpad} :
+        {PointerDeviceKind.touch, PointerDeviceKind.mouse};
+
     runApp(MaterialApp(
         builder: (context, child) {
             DimensTransform.deviceScaleFactor = MediaQuery.of(context).textScaler.scale(1);
             return MediaQuery.withNoTextScaling(child: child!);
         },
-        scrollBehavior: MyCustomScrollBehavior(),
+        scrollBehavior: MyCustomScrollBehavior(dragDevices),
         debugShowCheckedModeBanner: Logging.isDebugBanner,
         title: Strings.app_short_name,
         theme: viewContext.getThemeData(),

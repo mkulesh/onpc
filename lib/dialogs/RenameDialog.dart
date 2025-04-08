@@ -19,7 +19,6 @@ import '../constants/Drawables.dart';
 import '../constants/Strings.dart';
 import '../widgets/CustomDialogEditField.dart';
 import '../widgets/CustomDialogTitle.dart';
-import '../widgets/CustomImageButton.dart';
 
 class RenameDialog extends StatefulWidget
 {
