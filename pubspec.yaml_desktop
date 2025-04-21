@@ -66,3 +66,4 @@ msix_config:
   architecture: x64
   capabilities: 'internetClient'
   dont_install_cert: true
+  signtool_options: /td sha256
