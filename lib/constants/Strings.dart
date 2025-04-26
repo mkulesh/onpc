@@ -280,7 +280,7 @@ class Strings
 # Enhanced AVR Controller
 Listen to music properly!
 
-Copyright © 2019-2024 by __Mikhail Kulesh__
+Copyright © 2019-2025 by __Mikhail Kulesh__
 
 This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
 The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
@@ -312,7 +312,7 @@ Enjoy!""",
 # Улучшенный AVR-контроллер
 Слушайте музыку правильно!
 
-Copyright © 2019-2024 by __Михаил Кулеш__
+Copyright © 2019-2025 by __Михаил Кулеш__
 
 Это приложение позволяет удаленно управлять сетевым проигрывателем или сетевым AV-ресивером по локальной сети.
 Приложение поддерживает Onkyo/Pioneer/Integra, выпущенные в апреле 2016 года или позже, и Denon/Marantz со встроенной технологией HEOS.
@@ -342,7 +342,7 @@ Copyright © 2019-2024 by __Михаил Кулеш__
 # Verbesserter AVR-Controller
 Musik richtig hören!
 
-Copyright © 2019-2024 by __Mikhail Kulesh__
+Copyright © 2019-2025 by __Mikhail Kulesh__
 
 Diese App ermöglicht die Fernsteuerung eines Netzwerkplayers oder eines Netzwerk-A/V-Receivers über das lokale Netzwerk.
 Die App unterstützt Onkyo/Pioneer/Integra, die im April 2016 oder später veröffentlicht wurden, und Denon/Marantz mit integrierter HEOS-Technologie.
@@ -372,7 +372,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
 # Contrôleur AVR amélioré
 Ecoutez votre musique correctement!
 
-Copyright © 2019-2024 by __Mikhail Kulesh__
+Copyright © 2019-2025 by __Mikhail Kulesh__
 
 Cette application permet le contrôle à distance d\'un lecteur réseau ou d\'un récepteur réseau A/V via le réseau local.
 L\'application prend en charge Onkyo/Pioneer/Integra sorti en avril 2016 ou plus tard et Denon/Marantz avec la technologie HEOS intégrée.
@@ -401,7 +401,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
 # Enhanced AVR Controller
 Listen to music properly!
 
-Copyright © 2019-2024 by __Mikhail Kulesh__
+Copyright © 2019-2025 by __Mikhail Kulesh__
 
 This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
 The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
