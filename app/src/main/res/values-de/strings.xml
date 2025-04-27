@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2024 by Mikhail Kulesh
+  ~ Copyright (C) 2019-2025 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -25,12 +25,13 @@
     <string name="action_ok">OK</string>
     <string name="action_no">Nein</string>
     <string name="action_cancel">Abbrechen</string>
+    <string name="action_default">Standard festlegen</string>
     <string name="action_context_mobile">mit einem langen Klick</string>
     <string name="action_context_desktop">mit rechte Maustaste</string>
 
     <string name="about_text"><![CDATA[
     <p>Verbesserter AVR-Controller: Musik richtig hören!</p>
-    <p>Copyright © 2018-2024 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2025 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Diese App ermöglicht die Fernsteuerung eines Netzwerkplayers oder eines Netzwerk-A/V-Receivers über das lokale Netzwerk.
        Die App unterstützt Onkyo/Pioneer/Integra, die im April 2016 oder später veröffentlicht wurden, und Denon/Marantz mit integrierter HEOS-Technologie.
        Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.</p>
@@ -79,7 +80,7 @@
     <string name="favorite_shortcut_create">Favorit erstellen</string>
     <string name="favorite_shortcut_added">Favorit hinzugefügt</string>
     <string name="favorite_shortcut_failed">Favorit kann nicht erstellt werden: Navigieren Sie von der obersten Ebene zum Medienelement</string>
-    <string name="favorite_shortcut_howto">Bisher kein Favorit gesetzt. So fügen Sie einen Favoriten hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü (%s) und wählen Sie \"%s\".</string>
+    <string name="favorite_shortcut_howto" formatted="false">Bisher kein Favorit gesetzt. So fügen Sie einen Favoriten hinzu: Öffnen Sie die Registerkarte \"%s\", navigieren Sie von der obersten Ebene zu einem Medienelement, öffnen Sie das Kontextmenü (%s) und wählen Sie \"%s\".</string>
     <string name="favorite_copy_to_clipboard">In die Zwischenablage kopieren</string>
 
     <!-- Main menu -->
@@ -182,6 +183,7 @@
     <!-- Application settings: Text size -->
     <string name="pref_text_size">Beschriftungs- und Tastengröße</string>
     <string-array name="pref_text_size_names">
+        <item>Systemgröße</item>
         <item>Klein</item>
         <item>Normal</item>
         <item>Groß</item>
@@ -221,6 +223,7 @@
     <string name="app_control_ri_cd_player">CD Player (RI)</string>
     <string name="app_control_ri_md_player">MD Player (RI)</string>
     <string name="app_control_ri_tape_deck">Tape Deck (RI)</string>
+    <string name="app_control_device_display">Gerätedisplay</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Anzeigemodus am Gerät</string>
@@ -303,6 +306,7 @@
     <string name="master_volume_restrict">Lautstärke einschränken</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
+    <string name="channel_level">Kanal-Lautstärke</string>
     <string name="audio_balance">Balance</string>
 
     <!-- Preset Command  -->
@@ -611,6 +615,7 @@
     <!-- Listening Mode Command -->
     <string name="listening_mode_up">Klangprofile durchwechseln</string>
     <string name="listening_mode_down">Klangprofile durchwechseln</string>
+    <string name="listening_mode_apply">Klangprofile anwenden</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">An/Aus</string>

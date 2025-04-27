@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2024 by Mikhail Kulesh
+  ~ Copyright (C) 2019-2025 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -29,12 +29,13 @@
     <string name="action_ok">OK</string>
     <string name="action_no">No</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_default">Set default</string>
     <string name="action_context_mobile">using long click</string>
     <string name="action_context_desktop">right mouse button</string>
 
     <string name="about_text"><![CDATA[
     <p>Enhanced AVR Controller: listen to music properly!</p>
-    <p>Copyright © 2018-2024 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2025 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
        The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
        Its two most popular features are music playback and sound profile management.</p>
@@ -85,7 +86,7 @@
     <string name="favorite_shortcut_create">Create shortcut</string>
     <string name="favorite_shortcut_added">Shortcut added</string>
     <string name="favorite_shortcut_failed">Cannot create shortcut: navigate to the media item from the top level</string>
-    <string name="favorite_shortcut_howto">To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu (%s) and select \"%s\"</string>
+    <string name="favorite_shortcut_howto" formatted="false">To add shortcut: open \"%s\" tab, navigate to a media item from the top level, open context menu (%s) and select \"%s\"</string>
     <string name="favorite_copy_to_clipboard">Copy to clipboard</string>
 
     <!-- Main menu -->
@@ -247,6 +248,7 @@
     <!-- Application settings: Text size -->
     <string name="pref_text_size">Text and buttons size</string>
     <string-array name="pref_text_size_names">
+        <item>System size</item>
         <item>Small</item>
         <item>Normal</item>
         <item>Big</item>
@@ -254,8 +256,9 @@
     </string-array>
 
     <!-- Non-Translatable parameters of text size -->
-    <string name="pref_text_size_default" translatable="false">normal</string>
+    <string name="pref_text_size_default" translatable="false">system</string>
     <string-array name="pref_text_size_codes" translatable="false">
+        <item>system</item>
         <item>small</item>
         <item>normal</item>
         <item>big</item>
@@ -295,6 +298,7 @@
     <string name="app_control_ri_cd_player">CD Player (RI)</string>
     <string name="app_control_ri_md_player">MD Player (RI)</string>
     <string name="app_control_ri_tape_deck">Tape Deck (RI)</string>
+    <string name="app_control_device_display">Device display</string>
 
     <!-- Playback tab -->
     <string name="tv_display_mode">Display mode on device</string>
@@ -377,6 +381,7 @@
     <string name="master_volume_restrict">Restrict volume level</string>
     <string name="master_volume_max">Maximum</string>
     <string name="equalizer">Equalizer</string>
+    <string name="channel_level">Channel level</string>
     <string name="audio_balance">Balance</string>
 
     <!-- Preset Command  -->
@@ -773,9 +778,11 @@
     <string name="listening_mode_matrix" translatable="false">Matrix</string>
     <string name="listening_mode_video_game" translatable="false">Video Game</string>
     <string name="listening_mode_vitrual" translatable="false">Virtual</string>
+    <string name="listening_mode_all_zone_stereo" translatable="false">All Zone Stereo</string>
 
     <string name="listening_mode_up">Sets listening mode wrap-around up</string>
     <string name="listening_mode_down">Sets listening mode wrap-around down</string>
+    <string name="listening_mode_apply">Apply listening mode</string>
 
     <!-- Remote interface (RI) -->
     <string name="remote_interface_power">Power</string>
