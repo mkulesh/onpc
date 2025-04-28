@@ -17,7 +17,6 @@ package com.mkulesh.onpc.config;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.ConnectionIf;
@@ -75,7 +74,8 @@ public class Configuration
 
     public Configuration(Context context)
     {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final String prefFile = context.getPackageName() + "_preferences";
+        preferences = context.getSharedPreferences(prefFile, Context.MODE_PRIVATE);
 
         deviceName = preferences.getString(Configuration.SERVER_NAME, "");
         devicePort = preferences.getInt(Configuration.SERVER_PORT, ConnectionIf.ISCP_PORT);

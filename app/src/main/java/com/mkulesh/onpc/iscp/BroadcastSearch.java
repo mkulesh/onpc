@@ -125,8 +125,8 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
                     {
                         break;
                     }
-                    getIscpResponce(iscpSocket, response);
-                    getDcpResponce(dcpSocket, response);
+                    getIscpResponse(iscpSocket, response);
+                    getDcpResponse(dcpSocket, response);
                 }
             }
             iscpSocket.close();
@@ -190,7 +190,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
     }
 
-    private void getIscpResponce(final DatagramSocket socket, final byte[] response)
+    private void getIscpResponse(final DatagramSocket socket, final byte[] response)
     {
         try
         {
@@ -250,7 +250,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
     }
 
-    private void getDcpResponce(DatagramSocket socket, final byte[] response)
+    private void getDcpResponse(DatagramSocket socket, final byte[] response)
     {
         final String schema = "schemas-denon-com:device";
         try

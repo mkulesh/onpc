@@ -1087,7 +1087,8 @@ public class State implements ConnectionIf
     {
         if (msg.getImageType() == JacketArtMsg.ImageType.URL)
         {
-            if (protoType == ConnectionIf.ProtoType.DCP && coverUrl != null && coverUrl.equals(msg.getUrl()))
+            if (protoType == ConnectionIf.ProtoType.DCP && coverUrl != null && msg.getUrl() != null &&
+                    coverUrl.toString().equals(msg.getUrl().toString()))
             {
                 Logging.info(msg, "Cover image already loaded, reload skipped");
                 return false;
@@ -2122,6 +2123,7 @@ public class State implements ConnectionIf
         return changed;
     }
 
+    /** @noinspection SameReturnValue*/
     private boolean process(DcpSearchCriteriaMsg msg)
     {
         dcpSearchCriteria.put(msg.getSid(), msg.getCriteria());

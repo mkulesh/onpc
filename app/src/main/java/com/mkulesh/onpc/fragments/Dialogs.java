@@ -52,7 +52,7 @@ public class Dialogs
 {
     private final MainActivity activity;
 
-    interface ButtonListener
+    public interface ButtonListener
     {
         void onPositiveButton();
     }

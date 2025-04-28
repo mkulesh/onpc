@@ -71,6 +71,7 @@ public class ConnectionState extends AppTask
         return context;
     }
 
+    @SuppressWarnings("deprecation")
     boolean isNetwork()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

@@ -313,6 +313,10 @@ class MainNavigationDrawer
             switch (g.getItemId())
             {
             case R.id.drawer_group_zone_id:
+                if (g.getSubMenu() == null)
+                {
+                    break;
+                }
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
                     final MenuItem m = g.getSubMenu().getItem(i);
@@ -341,6 +345,10 @@ class MainNavigationDrawer
                 break;
             case R.id.drawer_multiroom:
                 g.setVisible(devices.size() > 1 || favorites > 0);
+                if (g.getSubMenu() == null)
+                {
+                    break;
+                }
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
                     final MenuItem m = g.getSubMenu().getItem(i);
@@ -356,6 +364,10 @@ class MainNavigationDrawer
                 }
                 break;
             default:
+                if (g.getSubMenu() == null)
+                {
+                    break;
+                }
                 for (int i = 0; i < g.getSubMenu().size(); i++)
                 {
                     final MenuItem m = g.getSubMenu().getItem(i);

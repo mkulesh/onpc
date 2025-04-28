@@ -45,7 +45,7 @@ public class OnpcSocket implements ConnectionIf
     private byte[] packetJoinBuffer = null;
     private final ByteBuffer rawBuffer = ByteBuffer.allocate(SOCKET_BUFFER);
 
-    interface DataListener
+    public interface DataListener
     {
         void onData(ByteBuffer buffer);
     }
