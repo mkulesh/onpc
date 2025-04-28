@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -136,6 +136,10 @@ public class FirmwareUpdateMsg extends ISCPMessage
         if (isQuery)
         {
             return "heos://" + HEOS_COMMAND + "?pid=" + DCP_HEOS_PID;
+        }
+        else if (status == Status.NET)
+        {
+            return "<cmd id=\"3\"><name>SetUpdate</name><list><param name=\"start\">1</param></list></cmd>";
         }
         return null;
     }

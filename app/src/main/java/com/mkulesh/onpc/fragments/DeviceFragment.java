@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -245,7 +245,9 @@ public class DeviceFragment extends BaseFragment
                 {
                     version.append(", ").append(getStringValue(state.firmwareStatus.getDescriptionId()));
                 }
-                if (isValidVersions && state.protoType == ConnectionIf.ProtoType.ISCP)
+                final boolean skipUpdate = state.protoType == ConnectionIf.ProtoType.DCP &&
+                        state.firmwareStatus == FirmwareUpdateMsg.Status.ACTUAL;
+                if (isValidVersions && !skipUpdate)
                 {
                     // Update button
                     final AppCompatImageButton b = rootView.findViewById(R.id.btn_firmware_update);

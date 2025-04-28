@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -43,7 +43,8 @@ import androidx.annotation.NonNull;
 public class MessageChannelDcp extends AppTask implements Runnable, MessageChannel
 {
     private final static String DCP_FORM_IPHONE_APP = "formiPhoneApp";
-    private final static String DCP_APP_COMMAND = "<cmd id=\"1\">";
+    private final static String DCP_APP_COMMAND1 = "<cmd id=\"1\">";
+    private final static String DCP_APP_COMMAND3 = "<cmd id=\"3\">";
 
     private final static String DCP_HEOS_REQUEST = "heos://";
     public final static String DCP_HEOS_RESPONSE = "{\"heos\":";
@@ -185,9 +186,13 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
                         {
                             sendDcpFormIphoneApp(rawCmd);
                         }
-                        else if (rawCmd.startsWith(DCP_APP_COMMAND))
+                        else if (rawCmd.startsWith(DCP_APP_COMMAND1))
                         {
-                            sendDcpAppCommand(rawCmd);
+                            sendDcpAppCommand(rawCmd, "AppCommand.xml");
+                        }
+                        else if (rawCmd.startsWith(DCP_APP_COMMAND3))
+                        {
+                            sendDcpAppCommand(rawCmd, "AppCommand0300.xml");
                         }
                         else if (rawCmd.startsWith(DCP_HEOS_REQUEST))
                         {
@@ -242,14 +247,14 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         }
     }
 
-    private void sendDcpAppCommand(String rawCmd)
+    private void sendDcpAppCommand(final String rawCmd, final String endpoint)
     {
         try
         {
             final String json = "{\"body\": \"" + ISCPMessage.getDcpAppCommand(rawCmd) + "\"}";
             final byte[] out = json.getBytes(Utils.UTF_8);
 
-            final URL url = new URL(ISCPMessage.getDcpGoformUrl(getHost(), DCP_HTTP_PORT, "AppCommand.xml"));
+            final URL url = new URL(ISCPMessage.getDcpGoformUrl(getHost(), DCP_HTTP_PORT, endpoint));
             final URLConnection con = url.openConnection();
             final HttpURLConnection http = (HttpURLConnection) con;
             http.setRequestMethod("POST");
