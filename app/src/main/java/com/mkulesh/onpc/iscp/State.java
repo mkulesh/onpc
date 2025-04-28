@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -28,6 +28,7 @@ import com.mkulesh.onpc.iscp.messages.AutoPowerMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CenterLevelCommandMsg;
 import com.mkulesh.onpc.iscp.messages.CustomPopupMsg;
+import com.mkulesh.onpc.iscp.messages.DcpAllZoneStereoMsg;
 import com.mkulesh.onpc.iscp.messages.DcpAudioRestorerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
@@ -2222,5 +2223,26 @@ public class State implements ConnectionIf
                 }
             }
         }
+    }
+
+    @Nullable
+    public DcpAllZoneStereoMsg toggleAllZoneStereo(ListeningModeMsg.Mode m)
+    {
+        if (m != null)
+        {
+            if (listeningMode == ListeningModeMsg.Mode.DCP_ALL_ZONE_STEREO &&
+                    m != ListeningModeMsg.Mode.DCP_ALL_ZONE_STEREO)
+            {
+                Logging.info(this, "Switch OFF all zone stereo");
+                return new DcpAllZoneStereoMsg(DcpAllZoneStereoMsg.Status.OFF);
+            }
+            else if (listeningMode != ListeningModeMsg.Mode.DCP_ALL_ZONE_STEREO &&
+                    m == ListeningModeMsg.Mode.DCP_ALL_ZONE_STEREO)
+            {
+                Logging.info(this, "Switch ON all zone stereo");
+                return new DcpAllZoneStereoMsg(DcpAllZoneStereoMsg.Status.ON);
+            }
+        }
+        return null;
     }
 }

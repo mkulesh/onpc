@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -110,6 +110,7 @@ public class ListeningModeMsg extends ISCPMessage
         DCP_DIRECT("DIRECT", R.string.listening_mode_mode_01, true),
         DCP_PURE_DIRECT("PURE DIRECT", R.string.listening_mode_pure_direct, true),
         DCP_STEREO("STEREO", R.string.listening_mode_mode_00),
+        DCP_ALL_ZONE_STEREO("ALL ZONE STEREO", R.string.listening_mode_all_zone_stereo),
         DCP_AUTO("AUTO", R.string.listening_mode_auto),
         DCP_DOLBY_DIGITAL("DOLBY DIGITAL", R.string.listening_mode_mode_40),
         DCP_DTS_SURROUND("DTS SURROUND", R.string.listening_mode_dts_surround),

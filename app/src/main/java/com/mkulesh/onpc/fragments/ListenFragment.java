@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
 import com.mkulesh.onpc.iscp.messages.AudioMutingMsg;
 import com.mkulesh.onpc.iscp.messages.CdPlayerOperationCommandMsg;
+import com.mkulesh.onpc.iscp.messages.DcpAllZoneStereoMsg;
 import com.mkulesh.onpc.iscp.messages.DisplayModeMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.ListeningModeMsg;
@@ -335,7 +336,20 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
             {
                 final ListeningModeMsg msg = new ListeningModeMsg(m);
                 final AppCompatButton b = createButton(
-                        msg.getMode().getDescriptionId(), msg, msg.getMode(), null);
+                        msg.getMode().getDescriptionId(), null, msg.getMode(), null);
+                prepareButtonListeners(b, null, () ->
+                {
+                    if (activity.isConnected())
+                    {
+                        final DcpAllZoneStereoMsg allZoneStereoMsg =
+                            state.protoType == ConnectionIf.ProtoType.DCP ? state.toggleAllZoneStereo(m) : null;
+                        if (allZoneStereoMsg != null)
+                        {
+                            activity.getStateManager().sendMessage(allZoneStereoMsg);
+                        }
+                        activity.getStateManager().sendMessage(msg);
+                    }
+                });
                 l.addView(b);
                 b.setVisibility(View.GONE);
                 deviceSoundButtons.add(b);

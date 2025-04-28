@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -48,6 +48,7 @@ public class DCPMessageFactory
         acceptedCodes.addAll(ToneCommandMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(AudioMutingMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(ListeningModeMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(DcpAllZoneStereoMsg.getAcceptedDcpCodes());
 
         // Tuner
         acceptedCodes.addAll(DcpTunerModeMsg.getAcceptedDcpCodes());
@@ -78,6 +79,7 @@ public class DCPMessageFactory
         addISCPMsg(ToneCommandMsg.processDcpMessage(dcpMsg));
         addISCPMsg(AudioMutingMsg.processDcpMessage(dcpMsg));
         addISCPMsg(ListeningModeMsg.processDcpMessage(dcpMsg));
+        addISCPMsg(DcpAllZoneStereoMsg.processDcpMessage(dcpMsg));
 
         // Tuner
         addISCPMsg(DcpTunerModeMsg.processDcpMessage(dcpMsg));
@@ -322,6 +324,8 @@ public class DCPMessageFactory
             return new TuningCommandMsg(raw);
         case ListeningModeMsg.CODE:
             return new ListeningModeMsg(raw);
+        case DcpAllZoneStereoMsg.CODE:
+            return new DcpAllZoneStereoMsg(raw);
         case HdmiCecMsg.CODE:
             return new HdmiCecMsg(raw);
         case SleepSetCommandMsg.CODE:

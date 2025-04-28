@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -65,6 +65,7 @@ public class CfgAudioControl
             ListeningModeMsg.Mode.DCP_DIRECT,
             ListeningModeMsg.Mode.DCP_PURE_DIRECT,
             ListeningModeMsg.Mode.DCP_STEREO,
+            ListeningModeMsg.Mode.DCP_ALL_ZONE_STEREO,
             ListeningModeMsg.Mode.DCP_AUTO,
             ListeningModeMsg.Mode.DCP_DOLBY_DIGITAL,
             ListeningModeMsg.Mode.DCP_DTS_SURROUND,
