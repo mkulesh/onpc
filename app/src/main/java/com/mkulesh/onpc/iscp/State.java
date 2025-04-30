@@ -166,7 +166,7 @@ public class State implements ConnectionIf
         NONE
     }
 
-    public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.MODE_FF;
+    public ListeningModeMsg.Mode listeningMode = ListeningModeMsg.Mode.NONE;
     public int volumeLevel = MasterVolumeMsg.NO_LEVEL;
     public int bassLevel = ToneCommandMsg.NO_LEVEL;
     public int trebleLevel = ToneCommandMsg.NO_LEVEL;

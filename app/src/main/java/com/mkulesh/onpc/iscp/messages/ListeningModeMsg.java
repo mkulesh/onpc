@@ -128,7 +128,8 @@ public class ListeningModeMsg extends ISCPMessage
         DCP_VIRTUAL("VIRTUAL", R.string.listening_mode_vitrual),
 
         UP("UP", R.string.listening_mode_up, R.drawable.cmd_right),
-        DOWN("DOWN", R.string.listening_mode_down, R.drawable.cmd_left);
+        DOWN("DOWN", R.string.listening_mode_down, R.drawable.cmd_left),
+        NONE( "--", R.string.dashed_string);
 
         final String code;
 
@@ -200,7 +201,7 @@ public class ListeningModeMsg extends ISCPMessage
     ListeningModeMsg(EISCPMessage raw) throws Exception
     {
         super(raw);
-        mode = (Mode) searchParameter(data, Mode.values(), Mode.MODE_FF);
+        mode = (Mode) searchParameter(data, Mode.values(), Mode.NONE);
     }
 
     public ListeningModeMsg(Mode mode)

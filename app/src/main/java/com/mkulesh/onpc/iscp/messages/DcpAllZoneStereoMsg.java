@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.iscp.messages;
 
-import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
@@ -23,7 +22,6 @@ import java.util.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 
 /*
  * Denon control protocol - "All Zone Stereo" direct Control
@@ -41,19 +39,15 @@ public class DcpAllZoneStereoMsg extends ISCPMessage
 
     public enum Status implements DcpStringParameterIf
     {
-        NONE("N/A", R.string.device_two_way_switch_none),
-        OFF("OFF", R.string.device_two_way_switch_off),
-        ON("ON", R.string.device_two_way_switch_on);
+        NONE("N/A"),
+        OFF("OFF"),
+        ON("ON");
 
         final String code;
 
-        @StringRes
-        final int descriptionId;
-
-        Status(final String code, @StringRes final int descriptionId)
+        Status(final String code)
         {
             this.code = code;
-            this.descriptionId = descriptionId;
         }
 
         public String getCode()
@@ -65,12 +59,6 @@ public class DcpAllZoneStereoMsg extends ISCPMessage
         public String getDcpCode()
         {
             return code;
-        }
-
-        @StringRes
-        public int getDescriptionId()
-        {
-            return descriptionId;
         }
     }
 
@@ -86,11 +74,6 @@ public class DcpAllZoneStereoMsg extends ISCPMessage
     {
         super(0, null);
         this.status = status;
-    }
-
-    public Status getStatus()
-    {
-        return status;
     }
 
     @NonNull
