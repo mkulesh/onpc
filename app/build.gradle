@@ -11,7 +11,7 @@ android {
         targetSdkVersion 35
         versionCode 48
         versionName "1.35"
-        setProperty("archivesBaseName", "onpc-v" + versionName)
+        base.archivesName = "onpc-v" + versionName
     }
 
     buildTypes {

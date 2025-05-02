@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -163,7 +162,8 @@ public class PopupBuilder
         return alertDialog;
     }
 
-    @SuppressLint("NewApi")
+    /** @noinspection RedundantSuppression*/
+    @SuppressWarnings("deprecation")
     private TextView createTextView(final Element textBox, final int style)
     {
         final TextView tv = new TextView(context);

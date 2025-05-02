@@ -79,8 +79,8 @@ public class Utils
         return newBytes;
     }
 
+    /** @noinspection RedundantSuppression*/
     @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     public static Drawable getDrawable(Context context, int icon)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -313,7 +313,6 @@ public class Utils
     /**
      * Procedure hows toast that contains description of the given button
      */
-    @SuppressLint("RtlHardcoded")
     public static boolean showButtonDescription(Context context, View button)
     {
         final CharSequence contentDesc = button.getContentDescription();

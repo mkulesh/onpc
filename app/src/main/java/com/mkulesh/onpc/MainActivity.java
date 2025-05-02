@@ -139,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         updateToolbar(null);
     }
 
+    /** @noinspection RedundantSuppression*/
+    @SuppressWarnings("deprecation")
     private void allowShowWhenLocked()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)

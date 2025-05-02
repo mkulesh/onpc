@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.fragments;
 
-import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Html;
@@ -378,7 +377,8 @@ public class Dialogs
         Utils.fixDialogLayout(dialog, null);
     }
 
-    @SuppressLint("NewApi")
+    /** @noinspection RedundantSuppression*/
+    @SuppressWarnings("deprecation")
     private AlertDialog buildHtmlDialog(@DrawableRes int icon, @StringRes int title, final String text, final boolean isHtml)
     {
         final FrameLayout frameView = new FrameLayout(activity);
