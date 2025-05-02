@@ -377,7 +377,9 @@ public class Dialogs
         Utils.fixDialogLayout(dialog, null);
     }
 
-    /** @noinspection RedundantSuppression*/
+    /**
+     * @noinspection RedundantSuppression
+     */
     @SuppressWarnings("deprecation")
     private AlertDialog buildHtmlDialog(@DrawableRes int icon, @StringRes int title, final String text, final boolean isHtml)
     {

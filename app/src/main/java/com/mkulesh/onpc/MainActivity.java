@@ -139,7 +139,9 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         updateToolbar(null);
     }
 
-    /** @noinspection RedundantSuppression*/
+    /**
+     * @noinspection RedundantSuppression
+     */
     @SuppressWarnings("deprecation")
     private void allowShowWhenLocked()
     {

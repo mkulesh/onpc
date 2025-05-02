@@ -241,7 +241,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     public void onDeviceFound(BroadcastResponseMsg msg)
     {
         // Run in UI thread
-        activity.runOnUiThread(()->
+        activity.runOnUiThread(() ->
         {
             if (!msg.isValidConnection())
             {
@@ -301,7 +301,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     public void noDevice(ConnectionState.FailureReason reason)
     {
         // Run in UI thread
-        activity.runOnUiThread(()->
+        activity.runOnUiThread(() ->
         {
             if (dialogEventListener != null)
             {

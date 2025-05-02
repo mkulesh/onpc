@@ -582,7 +582,9 @@ class AudioControlManager
         }
     }
 
-    /** @noinspection RedundantSuppression*/
+    /**
+     * @noinspection RedundantSuppression
+     */
     @SuppressWarnings("deprecation")
     private void addTextView(final Context context, @Nullable final String tag, @NonNull final String text, final int style, @NonNull final LinearLayout layout)
     {

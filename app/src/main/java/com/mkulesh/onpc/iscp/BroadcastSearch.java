@@ -16,8 +16,6 @@ package com.mkulesh.onpc.iscp;
 
 import android.os.StrictMode;
 
-import androidx.annotation.NonNull;
-
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
 import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
@@ -28,6 +26,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Calendar;
+
+import androidx.annotation.NonNull;
 
 public class BroadcastSearch extends AppTask implements Runnable
 {

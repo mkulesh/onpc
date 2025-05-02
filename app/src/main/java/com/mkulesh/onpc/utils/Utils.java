@@ -81,7 +81,9 @@ public class Utils
         return newBytes;
     }
 
-    /** @noinspection RedundantSuppression*/
+    /**
+     * @noinspection RedundantSuppression
+     */
     @SuppressWarnings("deprecation")
     public static Drawable getDrawable(Context context, int icon)
     {
@@ -285,7 +287,9 @@ public class Utils
         b.setColorFilter(c, PorterDuff.Mode.SRC_ATOP);
     }
 
-    /** @noinspection RedundantSuppression*/
+    /**
+     * @noinspection RedundantSuppression
+     */
     @SuppressWarnings("deprecation")
     public static void setDrawableColorAttr(Context c, Drawable drawable, @AttrRes int resId)
     {
@@ -309,8 +313,8 @@ public class Utils
      */
     public static void fixDialogLayout(@NonNull AlertDialog dialog, @Nullable @AttrRes Integer resId)
     {
-        final int width = (int)(dialog.getContext().getResources().getDisplayMetrics().widthPixels * 0.95);
-        final int height = (int)(dialog.getContext().getResources().getDisplayMetrics().heightPixels * 0.95);
+        final int width = (int) (dialog.getContext().getResources().getDisplayMetrics().widthPixels * 0.95);
+        final int height = (int) (dialog.getContext().getResources().getDisplayMetrics().heightPixels * 0.95);
         if (dialog.getWindow() != null)
         {
             dialog.getWindow().setLayout(Math.min(width, height), ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -341,7 +345,9 @@ public class Utils
         }
     }
 
-    /** @noinspection RedundantSuppression*/
+    /**
+     * @noinspection RedundantSuppression
+     */
     @SuppressWarnings("deprecation")
     private static boolean showTooltipAsToast(Context context, View button)
     {

@@ -824,7 +824,7 @@ public class StateManager extends AppTask implements Runnable
 
     protected void publishProgress()
     {
-        activity.runOnUiThread(()->
+        activity.runOnUiThread(() ->
         {
             stateListener.onStateChanged(state, eventChanges);
             eventChanges.clear();

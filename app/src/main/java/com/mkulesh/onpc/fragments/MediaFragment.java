@@ -210,21 +210,21 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     {
                         menu.setHeaderTitle(R.string.playlist_options);
                     }
-                    setMenuVisible(menu, R.id.playlist_menu_add, 
+                    setMenuVisible(menu, R.id.playlist_menu_add,
                             !isQueue && addToQueue && !state.isPlaybackMode());
-                    setMenuVisible(menu, R.id.playlist_menu_add_and_play, 
+                    setMenuVisible(menu, R.id.playlist_menu_add_and_play,
                             !isQueue && addToQueue && !state.isPlaybackMode());
-                    setMenuVisible(menu, R.id.playlist_menu_replace, 
+                    setMenuVisible(menu, R.id.playlist_menu_replace,
                             !isQueue && addToQueue && isAdvQueue && !state.isPlaybackMode());
-                    setMenuVisible(menu, R.id.playlist_menu_replace_and_play, 
+                    setMenuVisible(menu, R.id.playlist_menu_replace_and_play,
                             !isQueue && addToQueue && isAdvQueue && !state.isPlaybackMode());
-                    setMenuVisible(menu, R.id.playlist_menu_remove, 
+                    setMenuVisible(menu, R.id.playlist_menu_remove,
                             isQueue && !state.isPlaybackMode());
-                    setMenuVisible(menu, R.id.playlist_menu_remove_all, 
+                    setMenuVisible(menu, R.id.playlist_menu_remove_all,
                             isQueue && !state.isPlaybackMode());
-                    setMenuVisible(menu, R.id.playlist_menu_move_from, 
+                    setMenuVisible(menu, R.id.playlist_menu_move_from,
                             isQueue && !state.isPlaybackMode());
-                    setMenuVisible(menu, R.id.playlist_menu_move_to, 
+                    setMenuVisible(menu, R.id.playlist_menu_move_to,
                             isQueue && isMoveToValid(selectedItem.getMessageId()) && !state.isPlaybackMode());
 
                     final boolean isTrackMenu = state.isTrackMenuActive();
@@ -244,15 +244,15 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     if (isDcpItem)
                     {
                         final List<XmlListItemMsg> menuItems = state.cloneDcpTrackMenuItems(null);
-                        setMenuVisible(menu, R.id.playlist_menu_add_to_heos_favourites, 
+                        setMenuVisible(menu, R.id.playlist_menu_add_to_heos_favourites,
                                 findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_TO_HEOS) != null);
-                        setMenuVisible(menu, R.id.playlist_menu_remove_from_heos_favourites, 
+                        setMenuVisible(menu, R.id.playlist_menu_remove_from_heos_favourites,
                                 findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REMOVE_FROM_HEOS) != null);
-                        setMenuVisible(menu, R.id.playlist_menu_replace_and_play_all, 
+                        setMenuVisible(menu, R.id.playlist_menu_replace_and_play_all,
                                 findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_REPLACE_AND_PLAY_ALL) != null);
-                        setMenuVisible(menu, R.id.playlist_menu_add_all, 
+                        setMenuVisible(menu, R.id.playlist_menu_add_all,
                                 findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_ALL) != null);
-                        setMenuVisible(menu, R.id.playlist_menu_add_and_play_all, 
+                        setMenuVisible(menu, R.id.playlist_menu_add_and_play_all,
                                 findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL) != null);
                     }
                 }

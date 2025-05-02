@@ -17,10 +17,10 @@ package com.mkulesh.onpc.iscp.messages;
 import com.mkulesh.onpc.iscp.EISCPMessage;
 import com.mkulesh.onpc.iscp.ISCPMessage;
 
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.Map;
 
 /*
  * NET/USB Track Info

@@ -129,7 +129,7 @@ public class ListeningModeMsg extends ISCPMessage
 
         UP("UP", R.string.listening_mode_up, R.drawable.cmd_right),
         DOWN("DOWN", R.string.listening_mode_down, R.drawable.cmd_left),
-        NONE( "--", R.string.dashed_string);
+        NONE("--", R.string.dashed_string);
 
         final String code;
 

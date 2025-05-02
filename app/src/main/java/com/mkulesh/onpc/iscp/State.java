@@ -2123,7 +2123,9 @@ public class State implements ConnectionIf
         return changed;
     }
 
-    /** @noinspection SameReturnValue*/
+    /**
+     * @noinspection SameReturnValue
+     */
     private boolean process(DcpSearchCriteriaMsg msg)
     {
         dcpSearchCriteria.put(msg.getSid(), msg.getCriteria());

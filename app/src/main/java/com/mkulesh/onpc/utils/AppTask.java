@@ -14,9 +14,9 @@
 
 package com.mkulesh.onpc.utils;
 
-import androidx.annotation.NonNull;
-
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import androidx.annotation.NonNull;
 
 public class AppTask
 {

@@ -62,7 +62,9 @@ public final class AppLocale
             }
         }
 
-        /** @noinspection RedundantSuppression*/
+        /**
+         * @noinspection RedundantSuppression
+         */
         @SuppressWarnings("deprecation")
         @SuppressLint({ "NewApi", "AppBundleLocaleChanges" })
         public static ContextWrapper wrap(Context context, Locale newLocale)

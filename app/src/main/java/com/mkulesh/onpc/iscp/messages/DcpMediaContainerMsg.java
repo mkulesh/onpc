@@ -238,7 +238,9 @@ public class DcpMediaContainerMsg extends ISCPMessage
         return mid;
     }
 
-    /** @noinspection BooleanMethodIsAlwaysInverted*/
+    /**
+     * @noinspection BooleanMethodIsAlwaysInverted
+     */
     public boolean isContainer()
     {
         return container;

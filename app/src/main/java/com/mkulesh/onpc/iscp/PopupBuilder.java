@@ -162,7 +162,9 @@ public class PopupBuilder
         return alertDialog;
     }
 
-    /** @noinspection RedundantSuppression*/
+    /**
+     * @noinspection RedundantSuppression
+     */
     @SuppressWarnings("deprecation")
     private TextView createTextView(final Element textBox, final int style)
     {
