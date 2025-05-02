@@ -77,13 +77,11 @@ public class HorizontalNumberPicker extends LinearLayout implements OnClickListe
             }
 
             bDecrease = findViewById(R.id.button_decrease);
-            bDecrease.setOnClickListener(this);
-            bDecrease.setOnLongClickListener(v -> Utils.showButtonDescription(getContext(), v));
+            Utils.setTooltip(getContext(), bDecrease, bDecrease.getContentDescription().toString());
             updateViewColor(bDecrease);
 
             bIncrease = findViewById(R.id.button_increase);
-            bIncrease.setOnClickListener(this);
-            bIncrease.setOnLongClickListener(v -> Utils.showButtonDescription(getContext(), v));
+            Utils.setTooltip(getContext(), bIncrease, bIncrease.getContentDescription().toString());
             updateViewColor(bIncrease);
 
             description = findViewById(R.id.label_text);

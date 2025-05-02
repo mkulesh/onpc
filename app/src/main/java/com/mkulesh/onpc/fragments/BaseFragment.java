@@ -208,10 +208,9 @@ abstract public class BaseFragment extends Fragment
             }
         });
 
-        if (b.getContentDescription() != null && b.getContentDescription().length() > 0)
+        if (b.getContentDescription() != null)
         {
-            b.setLongClickable(true);
-            b.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));
+            Utils.setTooltip(activity, b, b.getContentDescription().toString());
         }
     }
 

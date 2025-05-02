@@ -242,9 +242,7 @@ class AudioControlManager
         {
             maxVolumeBtn.setVisibility(View.VISIBLE);
             maxVolumeBtn.setImageResource(R.drawable.volume_max_limit);
-            maxVolumeBtn.setContentDescription(activity.getString(R.string.master_volume_restrict));
-            maxVolumeBtn.setLongClickable(true);
-            maxVolumeBtn.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));
+            Utils.setTooltip(activity, maxVolumeBtn, activity.getString(R.string.master_volume_restrict));
             maxVolumeBtn.setClickable(true);
             maxVolumeBtn.setOnClickListener(v -> showMasterVolumeMaxDialog(state));
             Utils.setButtonEnabled(activity, maxVolumeBtn, true);

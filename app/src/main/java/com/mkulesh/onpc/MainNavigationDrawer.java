@@ -424,6 +424,7 @@ class MainNavigationDrawer
             {
                 editBtn.setVisibility(View.VISIBLE);
                 editBtn.setOnClickListener(v -> editListener.onEditItem());
+                Utils.setTooltip(activity, editBtn, activity.getString(R.string.favorite_connection_edit));
                 Utils.setButtonEnabled(activity, editBtn, true);
             }
             else

@@ -27,6 +27,7 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
@@ -696,7 +697,7 @@ public class DragSortListView extends ListView
                     v = new DragSortItemView(getContext());
                 }
                 v.setLayoutParams(new AbsListView.LayoutParams(
-                        ViewGroup.LayoutParams.FILL_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT));
                 v.addView(child);
             }
@@ -752,6 +753,7 @@ public class DragSortListView extends ListView
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void dispatchDraw(Canvas canvas)
     {
         super.dispatchDraw(canvas);
@@ -799,7 +801,14 @@ public class DragSortListView extends ListView
             canvas.clipRect(0, 0, w, h);
 
             // Log.d("mobeta", "clip rect bounds: " + canvas.getClipBounds());
-            canvas.saveLayerAlpha(0, 0, w, h, alpha, Canvas.ALL_SAVE_FLAG);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                canvas.saveLayerAlpha(0, 0, w, h, alpha);
+            }
+            else
+            {
+                canvas.saveLayerAlpha(0, 0, w, h, alpha, Canvas.ALL_SAVE_FLAG);
+            }
             mFloatView.draw(canvas);
             canvas.restore();
             canvas.restore();
@@ -2241,7 +2250,7 @@ public class DragSortListView extends ListView
         ViewGroup.LayoutParams lp = item.getLayoutParams();
         if (lp == null)
         {
-            lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             item.setLayoutParams(lp);
         }
         int wspec = ViewGroup.getChildMeasureSpec(mWidthMeasureSpec, getListPaddingLeft()

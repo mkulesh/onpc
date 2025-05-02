@@ -1,6 +1,7 @@
 package com.mobeta.android.dslv;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,12 +51,7 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
 
         v.setPressed(false);
 
-        // Create a copy of the drawing cache so that it does not get
-        // recycled by the framework when the list tries to clean up memory
-        //v.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        v.setDrawingCacheEnabled(true);
-        mFloatBitmap = Bitmap.createBitmap(v.getDrawingCache());
-        v.setDrawingCacheEnabled(false);
+        mFloatBitmap = getBitmapFromView(v);
 
         if (mImageView == null)
         {
@@ -70,6 +66,15 @@ public class SimpleFloatViewManager implements DragSortListView.FloatViewManager
         mImageView.setLayoutParams(new ViewGroup.LayoutParams(v.getWidth(), v.getHeight()));
 
         return mImageView;
+    }
+
+    private Bitmap getBitmapFromView(View view)
+    {
+        Bitmap bitmap = Bitmap.createBitmap(
+                view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
     }
 
     /**

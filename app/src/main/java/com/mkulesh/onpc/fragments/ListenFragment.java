@@ -562,7 +562,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
                 }
                 else
                 {
-                    b.setOnLongClickListener(v -> Utils.showButtonDescription(activity, v));
+                    Utils.setTooltip(activity, b, b.getContentDescription().toString());
                 }
             }
             else if (b.getTag() instanceof ListeningModeMsg.Mode)

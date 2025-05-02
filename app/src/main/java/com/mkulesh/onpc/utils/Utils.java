@@ -19,6 +19,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -283,11 +285,21 @@ public class Utils
         b.setColorFilter(c, PorterDuff.Mode.SRC_ATOP);
     }
 
+    /** @noinspection RedundantSuppression*/
+    @SuppressWarnings("deprecation")
     public static void setDrawableColorAttr(Context c, Drawable drawable, @AttrRes int resId)
     {
-        if (drawable != null)
+        if (drawable == null)
         {
-            drawable.clearColorFilter();
+            return;
+        }
+        drawable.clearColorFilter();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        {
+            drawable.setColorFilter(new BlendModeColorFilter(getThemeColorAttr(c, resId), BlendMode.SRC_ATOP));
+        }
+        else
+        {
             drawable.setColorFilter(getThemeColorAttr(c, resId), PorterDuff.Mode.SRC_ATOP);
         }
     }
@@ -310,10 +322,28 @@ public class Utils
         }
     }
 
-    /**
-     * Procedure hows toast that contains description of the given button
-     */
-    public static boolean showButtonDescription(Context context, View button)
+    public static void setTooltip(@NonNull final Context c, @NonNull final View b, @NonNull final String text)
+    {
+        if (text.length() > 0)
+        {
+            b.setContentDescription(text);
+            b.setLongClickable(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+                // For new SDK: use Tooltip API
+                b.setTooltipText(text);
+            }
+            else
+            {
+                // For old SDK: use toast to show the tooltip
+                b.setOnLongClickListener(v -> Utils.showTooltipAsToast(c, v));
+            }
+        }
+    }
+
+    /** @noinspection RedundantSuppression*/
+    @SuppressWarnings("deprecation")
+    private static boolean showTooltipAsToast(Context context, View button)
     {
         final CharSequence contentDesc = button.getContentDescription();
         final ViewGroup dummyView = null;
@@ -417,7 +447,7 @@ public class Utils
         }
         if (flag)
         {
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            imm.showSoftInput(v, 0);
         }
         else
         {
