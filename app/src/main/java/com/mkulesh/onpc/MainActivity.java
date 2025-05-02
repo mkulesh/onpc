@@ -512,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
                 }
             }
 
-            stateHolder.setStateManager(new StateManager(
+            stateHolder.setStateManager(new StateManager(this,
                     deviceList, connectionState, this,
                     device, port, zone,
                     true,
@@ -540,7 +540,8 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         {
             if (Configuration.ENABLE_MOCKUP)
             {
-                stateHolder.setStateManager(new StateManager(connectionState, this, zone));
+                stateHolder.setStateManager(new StateManager(this,
+                        connectionState, this, zone));
                 final State s = stateHolder.getState();
                 s.createDefaultReceiverInfo(this, configuration.audioControl.isForceAudioControl());
                 updateConfiguration(s);

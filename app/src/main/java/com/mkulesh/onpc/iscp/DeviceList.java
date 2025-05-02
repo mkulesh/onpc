@@ -14,9 +14,8 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -42,7 +41,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     private final static int RESPONSE_NUMBER = 5;
 
     // Common properties
-    private final Context context;
+    private final Activity activity;
     private final ConnectionState connectionState;
     private BroadcastSearch searchEngine = null;
 
@@ -91,13 +90,13 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     private final BackgroundEventListener backgroundEventListener;
     private final List<BroadcastResponseMsg> favorites;
 
-    public DeviceList(final Context context,
-                      final ConnectionState connectionState,
-                      final BackgroundEventListener backgroundEventListener,
-                      final List<BroadcastResponseMsg> favorites)
+    public DeviceList(@NonNull final Activity activity,
+                      @NonNull final ConnectionState connectionState,
+                      @NonNull final BackgroundEventListener backgroundEventListener,
+                      @NonNull final List<BroadcastResponseMsg> favorites)
     {
         super(false);
-        this.context = context;
+        this.activity = activity;
         this.connectionState = connectionState;
         this.backgroundEventListener = backgroundEventListener;
         this.favorites = favorites;
@@ -160,7 +159,7 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
             super.start();
             Logging.info(this, "started");
             searchEngine = new BroadcastSearch(connectionState, this);
-            searchEngine.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+            searchEngine.start();
         }
         else
         {
@@ -241,67 +240,75 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
     @Override
     public void onDeviceFound(BroadcastResponseMsg msg)
     {
-        if (!msg.isValidConnection())
+        // Run in UI thread
+        activity.runOnUiThread(()->
         {
-            Logging.info(this, "  invalid response " + msg + ", ignored");
-            return;
-        }
-        Logging.info(this, "  new response " + msg);
+            if (!msg.isValidConnection())
+            {
+                Logging.info(this, "  invalid response " + msg + ", ignored");
+                return;
+            }
+            Logging.info(this, "  new response " + msg);
 
-        synchronized (devices)
-        {
-            final String d = msg.getHostAndPort();
-            final DeviceInfo oldInfo = devices.get(d);
-            DeviceInfo newInfo;
-            if (oldInfo == null)
+            synchronized (devices)
             {
-                newInfo = new DeviceInfo(msg, false, 1);
-                devices.put(d, newInfo);
-            }
-            else
-            {
-                final BroadcastResponseMsg newMsg = oldInfo.isFavorite ? oldInfo.message : msg;
-                newInfo = new DeviceInfo(newMsg, oldInfo.isFavorite, oldInfo.responses + 1);
-                devices.put(d, newInfo);
-            }
-            if (dialogMode)
-            {
-                updateRadioGroup(devices);
-            }
-
-            if (backgroundEventListener != null)
-            {
-                backgroundEventListener.onDeviceFound(newInfo);
-            }
-
-            if (!dialogMode)
-            {
-                int okDevice = 0;
-                for (DeviceInfo di : devices.values())
+                final String d = msg.getHostAndPort();
+                final DeviceInfo oldInfo = devices.get(d);
+                DeviceInfo newInfo;
+                if (oldInfo == null)
                 {
-                    if ((di.isFavorite && di.responses == 0) || di.responses >= RESPONSE_NUMBER)
+                    newInfo = new DeviceInfo(msg, false, 1);
+                    devices.put(d, newInfo);
+                }
+                else
+                {
+                    final BroadcastResponseMsg newMsg = oldInfo.isFavorite ? oldInfo.message : msg;
+                    newInfo = new DeviceInfo(newMsg, oldInfo.isFavorite, oldInfo.responses + 1);
+                    devices.put(d, newInfo);
+                }
+                if (dialogMode)
+                {
+                    updateRadioGroup(devices);
+                }
+
+                if (backgroundEventListener != null)
+                {
+                    backgroundEventListener.onDeviceFound(newInfo);
+                }
+
+                if (!dialogMode)
+                {
+                    int okDevice = 0;
+                    for (DeviceInfo di : devices.values())
                     {
-                        okDevice++;
+                        if ((di.isFavorite && di.responses == 0) || di.responses >= RESPONSE_NUMBER)
+                        {
+                            okDevice++;
+                        }
                     }
+                    if (okDevice < devices.size())
+                    {
+                        return;
+                    }
+                    Logging.info(this, "  -> no more devices");
+                    stop();
                 }
-                if (okDevice < devices.size())
-                {
-                    return;
-                }
-                Logging.info(this, "  -> no more devices");
-                stop();
             }
-        }
+        });
     }
 
     @Override
     public void noDevice(ConnectionState.FailureReason reason)
     {
-        if (dialogEventListener != null)
+        // Run in UI thread
+        activity.runOnUiThread(()->
         {
-            dialogEventListener.noDevice(reason);
-        }
-        stop();
+            if (dialogEventListener != null)
+            {
+                dialogEventListener.noDevice(reason);
+            }
+            stop();
+        });
     }
 
     public void startSearchDialog(DialogEventListener listener)
@@ -317,16 +324,16 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
 
         dialogMode = true;
         dialogEventListener = listener;
-        final FrameLayout frameView = new FrameLayout(context);
+        final FrameLayout frameView = new FrameLayout(activity);
 
-        final Drawable icon = Utils.getDrawable(context, R.drawable.media_item_search);
-        Utils.setDrawableColorAttr(context, icon, android.R.attr.textColorSecondary);
-        dialog = new AlertDialog.Builder(context)
+        final Drawable icon = Utils.getDrawable(activity, R.drawable.media_item_search);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+        dialog = new AlertDialog.Builder(activity)
                 .setTitle(R.string.drawer_device_search)
                 .setIcon(icon)
                 .setCancelable(false)
                 .setView(frameView)
-                .setNegativeButton(context.getResources().getString(R.string.action_cancel), (d, which) -> stop())
+                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (d, which) -> stop())
                 .create();
 
         dialog.getLayoutInflater().inflate(R.layout.dialog_broadcast_layout, frameView);
@@ -355,13 +362,13 @@ public class DeviceList extends AppTask implements BroadcastSearch.EventListener
                 deviceInfo.selected = false;
                 if (deviceInfo.responses > 0)
                 {
-                    final ContextThemeWrapper wrappedContext = new ContextThemeWrapper(context, R.style.RadioButtonStyle);
+                    final ContextThemeWrapper wrappedContext = new ContextThemeWrapper(activity, R.style.RadioButtonStyle);
                     final AppCompatRadioButton b = new AppCompatRadioButton(wrappedContext, null, 0);
                     final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     b.setLayoutParams(lp);
                     b.setText(deviceInfo.message.getDescription());
-                    b.setTextColor(Utils.getThemeColorAttr(context, android.R.attr.textColor));
+                    b.setTextColor(Utils.getThemeColorAttr(activity, android.R.attr.textColor));
                     b.setOnClickListener(v ->
                     {
                         deviceInfo.selected = true;

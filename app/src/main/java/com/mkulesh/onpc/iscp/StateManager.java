@@ -14,8 +14,8 @@
 
 package com.mkulesh.onpc.iscp;
 
+import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.StrictMode;
 
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
@@ -80,6 +80,7 @@ import com.mkulesh.onpc.iscp.messages.VideoInformationMsg;
 import com.mkulesh.onpc.iscp.messages.XmlListInfoMsg;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
+import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class StateManager extends AsyncTask<Void, Void, Void>
+public class StateManager extends AppTask implements Runnable
 {
     private static final long GUI_UPDATE_DELAY = 500;
 
@@ -108,6 +109,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         void onDeviceDisconnected();
     }
 
+    private final Activity activity;
     private final DeviceList deviceList;
     private final ConnectionState connectionState;
     private final Map<String, MessageChannel> multiroomChannels = new HashMap<>();
@@ -150,7 +152,8 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     // MessageScript processor
     private final ArrayList<MessageScriptIf> messageScripts;
 
-    public StateManager(final DeviceList deviceList,
+    public StateManager(final Activity activity,
+                        final DeviceList deviceList,
                         final ConnectionState connectionState,
                         final StateListener stateListener,
                         final String host, final int port,
@@ -159,6 +162,10 @@ public class StateManager extends AsyncTask<Void, Void, Void>
                         final String savedReceiverInformation,
                         final @NonNull ArrayList<MessageScriptIf> messageScripts) throws Exception
     {
+        super(false);
+        setBackgroundTask(this, this.getClass().getSimpleName());
+
+        this.activity = activity;
         this.deviceList = deviceList;
         this.connectionState = connectionState;
         this.stateListener = stateListener;
@@ -198,7 +205,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel.start();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        start();
 
         // initial call of the message scripts
         for (MessageScriptIf script : messageScripts)
@@ -226,8 +233,15 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         }
     }
 
-    public StateManager(final ConnectionState connectionState, final StateListener stateListener, final int zone)
+    public StateManager(final Activity activity,
+                        final ConnectionState connectionState,
+                        final StateListener stateListener,
+                        final int zone)
     {
+        super(false);
+        setBackgroundTask(this, this.getClass().getSimpleName());
+
+        this.activity = activity;
         this.deviceList = null;
         this.connectionState = connectionState;
         this.stateListener = stateListener;
@@ -241,7 +255,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         messageChannel.start();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        start();
     }
 
     public void setPlaybackMode(boolean flag)
@@ -251,6 +265,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
     public void stop()
     {
+        super.stop();
         messageChannel.stop();
         for (MessageChannel m : multiroomChannels.values())
         {
@@ -265,7 +280,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
     }
 
     @Override
-    protected Void doInBackground(Void... params)
+    public void run()
     {
         Logging.info(this, "started: " + this);
 
@@ -374,7 +389,7 @@ public class StateManager extends AsyncTask<Void, Void, Void>
 
         Logging.info(this, "stopped: " + this);
         stateListener.onManagerStopped();
-        return null;
+        onPostExecute();
     }
 
     private void requestInitialIscpState()
@@ -429,11 +444,9 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         return false;
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid)
+    protected void onPostExecute()
     {
-        super.onPostExecute(aVoid);
-        stateListener.onDeviceDisconnected();
+        activity.runOnUiThread(stateListener::onDeviceDisconnected);
     }
 
     private boolean processIscpMessage(@NonNull ISCPMessage msg)
@@ -809,11 +822,13 @@ public class StateManager extends AsyncTask<Void, Void, Void>
         return true;
     }
 
-    @Override
-    protected void onProgressUpdate(Void... result)
+    protected void publishProgress()
     {
-        stateListener.onStateChanged(state, eventChanges);
-        eventChanges.clear();
+        activity.runOnUiThread(()->
+        {
+            stateListener.onStateChanged(state, eventChanges);
+            eventChanges.clear();
+        });
     }
 
     private void requestListState()

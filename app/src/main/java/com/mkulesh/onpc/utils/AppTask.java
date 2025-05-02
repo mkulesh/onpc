@@ -14,22 +14,44 @@
 
 package com.mkulesh.onpc.utils;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AppTask
 {
     private final AtomicBoolean active = new AtomicBoolean();
+    private final AtomicBoolean cancelled = new AtomicBoolean();
+    private Runnable backgroundTask;
+    private String backgroundTaskName;
 
     protected AppTask(boolean a)
     {
         active.set(a);
+        cancelled.set(false);
+    }
+
+    protected void setBackgroundTask(@NonNull Runnable backgroundTask, @NonNull String backgroundTaskName)
+    {
+        this.backgroundTask = backgroundTask;
+        this.backgroundTaskName = backgroundTaskName;
     }
 
     public void start()
     {
+        final boolean alreadyActive = isActive();
         synchronized (active)
         {
             active.set(true);
+        }
+        synchronized (cancelled)
+        {
+            cancelled.set(false);
+        }
+        if (!alreadyActive && backgroundTask != null && backgroundTaskName != null)
+        {
+            final Thread thread = new Thread(backgroundTask, backgroundTaskName);
+            thread.start();
         }
     }
 
@@ -39,6 +61,10 @@ public class AppTask
         {
             active.set(false);
         }
+        synchronized (cancelled)
+        {
+            cancelled.set(true);
+        }
     }
 
     public boolean isActive()
@@ -46,6 +72,14 @@ public class AppTask
         synchronized (active)
         {
             return active.get();
+        }
+    }
+
+    public boolean isCancelled()
+    {
+        synchronized (cancelled)
+        {
+            return cancelled.get();
         }
     }
 }

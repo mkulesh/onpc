@@ -36,7 +36,6 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
 
@@ -51,9 +50,6 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
 
     private final static int CR = 0x0D;
     private final static int LF = 0x0A;
-
-    // thread implementation
-    private final AtomicBoolean threadCancelled = new AtomicBoolean();
 
     // connection state
     private final ConnectionState connectionState;
@@ -71,31 +67,12 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
     MessageChannelDcp(final int zone, final ConnectionState connectionState, final BlockingQueue<ISCPMessage> inputQueue)
     {
         super(false);
+        setBackgroundTask(this, this.getClass().getSimpleName());
         this.connectionState = connectionState;
         this.inputQueue = inputQueue;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         dcpMessageFactory.prepare(zone);
-    }
-
-    public void start()
-    {
-        if (isActive())
-        {
-            return;
-        }
-        super.start();
-        final Thread thread = new Thread(this, this.getClass().getSimpleName());
-        threadCancelled.set(false);
-        thread.start();
-    }
-
-    public void stop()
-    {
-        synchronized (threadCancelled)
-        {
-            threadCancelled.set(true);
-        }
     }
 
     @NonNull
@@ -144,13 +121,10 @@ public class MessageChannelDcp extends AppTask implements Runnable, MessageChann
         {
             try
             {
-                synchronized (threadCancelled)
+                if (isCancelled())
                 {
-                    if (threadCancelled.get())
-                    {
-                        Logging.info(this, "cancelled " + getHostAndPort());
-                        break;
-                    }
+                    Logging.info(this, "cancelled " + getHostAndPort());
+                    break;
                 }
 
                 if (!connectionState.isNetwork())

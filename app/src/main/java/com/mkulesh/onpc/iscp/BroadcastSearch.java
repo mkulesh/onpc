@@ -14,10 +14,12 @@
 
 package com.mkulesh.onpc.iscp;
 
-import android.os.AsyncTask;
 import android.os.StrictMode;
 
+import androidx.annotation.NonNull;
+
 import com.mkulesh.onpc.iscp.messages.BroadcastResponseMsg;
+import com.mkulesh.onpc.utils.AppTask;
 import com.mkulesh.onpc.utils.Logging;
 
 import java.net.DatagramPacket;
@@ -26,9 +28,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
+public class BroadcastSearch extends AppTask implements Runnable
 {
     private final static int TIMEOUT = 3000;
 
@@ -43,36 +44,19 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         void noDevice(ConnectionState.FailureReason reason);
     }
 
-    private EventListener eventListener;
+    private final EventListener eventListener;
 
     // Common properties
-    private final AtomicBoolean active = new AtomicBoolean();
     private ConnectionState.FailureReason failureReason = null;
 
     BroadcastSearch(final ConnectionState connectionState, final EventListener eventListener)
     {
+        super(false);
+        setBackgroundTask(this, this.getClass().getSimpleName());
         this.connectionState = connectionState;
         this.eventListener = eventListener;
-        active.set(false);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-    }
-
-    @Override
-    protected void onPreExecute()
-    {
-        super.onPreExecute();
-        active.set(true);
-    }
-
-    public void stop()
-    {
-        synchronized (active)
-        {
-            active.set(false);
-            eventListener = null;
-        }
     }
 
     private boolean isStopped()
@@ -88,18 +72,11 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
             return true;
         }
         // no reason for events below
-        if (isCancelled() || !connectionState.isActive())
-        {
-            return true;
-        }
-        synchronized (active)
-        {
-            return !active.get();
-        }
+        return (isCancelled() || !connectionState.isActive());
     }
 
     @Override
-    protected Void doInBackground(Void... params)
+    public void run()
     {
         Logging.info(this, "started, network=" + connectionState.isNetwork()
                 + ", wifi=" + connectionState.isWifi());
@@ -138,7 +115,7 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
 
         Logging.info(this, "stopped");
-        return null;
+        onPostExecute();
     }
 
     private DatagramSocket prepareSocket(int port) throws Exception
@@ -280,24 +257,16 @@ public class BroadcastSearch extends AsyncTask<Void, BroadcastResponseMsg, Void>
         }
     }
 
-    @Override
-    protected void onProgressUpdate(BroadcastResponseMsg... result)
+    protected void publishProgress(@NonNull BroadcastResponseMsg msg)
     {
-        if (result == null || result.length == 0)
-        {
-            return;
-        }
-        final BroadcastResponseMsg msg = result[0];
         if (eventListener != null)
         {
             eventListener.onDeviceFound(msg);
         }
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid)
+    protected void onPostExecute()
     {
-        super.onPostExecute(aVoid);
         if (failureReason != null)
         {
             Logging.info(this, "Device not found: " + failureReason);
