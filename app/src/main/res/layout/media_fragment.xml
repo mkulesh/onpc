@@ -116,7 +116,7 @@
             android:clickable="true"
             android:drawSelectorOnTop="false"
             android:fastScrollEnabled="true"
-            android:dividerHeight="1dp"
+            android:divider="@null"
             android:longClickable="true" />
 
         <LinearLayout

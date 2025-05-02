@@ -26,7 +26,7 @@
 
     <com.mobeta.android.dslv.DragSortListView
         android:id="@+id/list"
-        android:dividerHeight="1dip"
+        android:divider="@null"
         android:layout_height="0px"
         android:layout_width="fill_parent"
         android:layout_weight="1"
