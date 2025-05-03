@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 
+import androidx.annotation.NonNull;
+
 /**
  * Class that starts and stops item drags on a {@link DragSortListView}
  * based on touch gestures. This class also inherits from
  * {@link SimpleFloatViewManager}, which provides basic float View
  * creation.
+ *
+ * @noinspection FieldCanBeLocal
  */
 public class DragSortController extends SimpleFloatViewManager implements View.OnTouchListener, GestureDetector.OnGestureListener
 {
@@ -298,7 +302,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     }
 
     @Override
-    public boolean onDown(MotionEvent ev)
+    public boolean onDown(@NonNull MotionEvent ev)
     {
         if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE)
         {
@@ -319,8 +323,11 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
         return true;
     }
 
+    /**
+     * @noinspection ConstantValue
+     */
     @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+    public boolean onScroll(MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY)
     {
 
         // Guard against rare case of null MotionEvents on some devices
@@ -369,7 +376,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
     }
 
     @Override
-    public void onLongPress(MotionEvent e)
+    public void onLongPress(@NonNull MotionEvent e)
     {
         // Log.d("mobeta", "lift listener long pressed");
         if (mHitPos != MISS && mDragInitMode == ON_LONG_PRESS)
@@ -381,14 +388,14 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
 
     // complete the OnGestureListener interface
     @Override
-    public final boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+    public final boolean onFling(MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY)
     {
         return false;
     }
 
     // complete the OnGestureListener interface
     @Override
-    public boolean onSingleTapUp(MotionEvent ev)
+    public boolean onSingleTapUp(@NonNull MotionEvent ev)
     {
         if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE)
         {
@@ -402,7 +409,7 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
 
     // complete the OnGestureListener interface
     @Override
-    public void onShowPress(MotionEvent ev)
+    public void onShowPress(@NonNull MotionEvent ev)
     {
         // do nothing
     }
@@ -411,8 +418,8 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
             new GestureDetector.SimpleOnGestureListener()
             {
                 @Override
-                public final boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                                             float velocityY)
+                public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2, float velocityX,
+                                       float velocityY)
                 {
                     // Log.d("mobeta", "on fling remove called");
                     if (mRemoveEnabled && mIsRemoving)

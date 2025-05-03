@@ -15,9 +15,6 @@ import android.widget.AbsListView;
  * the width MeasureSpec given to ItemView is passed directly
  * to the child, and the ItemView measured width is set to the
  * child's measured width). The height of ItemView can be anything;
- * the
- *
- *
  * The purpose of this class is to optimize slide
  * shuffle animations.
  */
@@ -34,8 +31,6 @@ public class DragSortItemView extends ViewGroup
         setLayoutParams(new AbsListView.LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        //setClipChildren(true);
     }
 
     public void setGravity(int gravity)
@@ -63,9 +58,6 @@ public class DragSortItemView extends ViewGroup
         }
     }
 
-    /**
-     *
-     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
@@ -105,5 +97,4 @@ public class DragSortItemView extends ViewGroup
 
         setMeasuredDimension(width, height);
     }
-
 }
