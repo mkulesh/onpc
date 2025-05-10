@@ -1,0 +1,4 @@
+• Added "Auto Surround" listening mode for Onkyo/Pioneer receivers
+• Added an ability to switch "All Zone Stereo" mode for Denon receivers
+• Added a possibility to trigger a firmware update for Denon receivers
+• Adapted for Android 15
