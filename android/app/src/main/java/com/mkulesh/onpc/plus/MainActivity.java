@@ -28,7 +28,6 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -76,7 +75,7 @@ public class MainActivity extends FlutterActivity
         @SuppressWarnings("deprecation")
         boolean isConnected()
         {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (Utils.isAndroidMorLater())
             {
                 // getActiveNetwork Added in API level 23
                 final Network net = connectivity.getActiveNetwork();
@@ -98,7 +97,7 @@ public class MainActivity extends FlutterActivity
         @SuppressWarnings("deprecation")
         boolean isWifi()
         {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (Utils.isAndroidMorLater())
             {
                 // getActiveNetwork Added in API level 23
                 final Network net = connectivity.getActiveNetwork();
@@ -148,7 +147,6 @@ public class MainActivity extends FlutterActivity
         }
     }
 
-    @SuppressLint("NewApi")
     static class MyNetworkCallback extends ConnectivityManager.NetworkCallback
     {
         private final MainActivity listener;
@@ -209,7 +207,7 @@ public class MainActivity extends FlutterActivity
     @SuppressWarnings("deprecation")
     private void allowShowWhenLocked()
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
+        if (Utils.isAndroidOorLater())
         {
             setShowWhenLocked(true);
             setTurnScreenOn(true);
@@ -286,7 +284,7 @@ public class MainActivity extends FlutterActivity
     protected void onResume()
     {
         super.onResume();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Utils.isLollipopOrLater())
         {
             NetworkRequest.Builder builder = new NetworkRequest.Builder();
             builder.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
@@ -336,7 +334,7 @@ public class MainActivity extends FlutterActivity
         super.onPause();
         // Log.d("onpc", "onPause: invalidate intentData");
         intentData = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && networkCallback != null)
+        if (Utils.isLollipopOrLater() && networkCallback != null)
         {
             connectionState.connectivity.unregisterNetworkCallback(networkCallback);
         }
@@ -373,6 +371,7 @@ public class MainActivity extends FlutterActivity
     {
         boolean newKeepScreenOn = keepScreenOn;
         boolean newShowWhenLocked = showWhenLocked;
+        //noinspection IfCanBeSwitch
         if (methodCall.method.equals(SET_ACTIVITY_STATE))
         {
             if (methodCall.arguments instanceof ArrayList && ((ArrayList<?>) methodCall.arguments).size() == 3)

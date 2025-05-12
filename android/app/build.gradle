@@ -28,7 +28,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
     namespace 'com.mkulesh.onpc.plus'
 
     lint {
@@ -42,7 +42,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 35
         applicationId "com.mkulesh.onpc.plus"
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -69,5 +69,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.preference:preference:1.2.1'
 }

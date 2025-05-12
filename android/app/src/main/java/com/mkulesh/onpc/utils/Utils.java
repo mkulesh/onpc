@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -33,7 +32,7 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -71,6 +70,26 @@ public class Utils
         return ProtoType.ISCP;
     }
 
+    public static boolean isLollipopOrLater()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static boolean isAndroidMorLater()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
+    public static boolean isAndroidOorLater()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1;
+    }
+
+    public static boolean isAndroidSorLater()
+    {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
     /**
      * XML utils
      */
@@ -83,7 +102,7 @@ public class Utils
     {
         try
         {
-            InputStream stream = new ByteArrayInputStream(data.getBytes(Charset.forName("UTF-8")));
+            InputStream stream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             // https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet
             factory.setExpandEntityReferences(false);
@@ -121,10 +140,9 @@ public class Utils
     }
 
     @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     public static Drawable getDrawable(Context context, int icon)
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (Utils.isLollipopOrLater())
         {
             return context.getResources().getDrawable(icon, context.getTheme());
         }
@@ -204,7 +222,6 @@ public class Utils
     }
 
     @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     public static void setColorFilter(@NonNull Drawable drawable, @ColorInt int color)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)

@@ -22,15 +22,17 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-/**
- * The shortcuts widget's AppWidgetProvider.
- */
+import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
+import com.mkulesh.onpc.utils.Utils;
+
+@SuppressWarnings({"RedundantSuppression"})
 public class WidgetShortcutsProvider extends WidgetBase
 {
     // Actions
@@ -52,7 +54,6 @@ public class WidgetShortcutsProvider extends WidgetBase
     {
         final Intent intent = new Intent(context, WidgetShortcutsProvider.class);
         intent.setAction(action);
-        // noinspection NewApi
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
@@ -63,13 +64,16 @@ public class WidgetShortcutsProvider extends WidgetBase
         // content providers, the data is often updated via a background service, or in response to
         // user interaction in the main app.  To ensure that the widget always reflects the current
         // state of the data, we must listen for changes and update ourselves accordingly.
-        final ContentResolver r = context.getContentResolver();
-        if (sDataObserver == null)
+        if (!Utils.isAndroidSorLater())
         {
-            final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-            final ComponentName cn = new ComponentName(context, WidgetShortcutsProvider.class);
-            sDataObserver = new DataProviderObserver(mgr, cn, sWorkerQueue);
-            r.registerContentObserver(WidgetShortcutsDataProvider.CONTENT_URI, true, sDataObserver);
+            final ContentResolver r = context.getContentResolver();
+            if (sDataObserver == null)
+            {
+                final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+                final ComponentName cn = new ComponentName(context, WidgetShortcutsProvider.class);
+                sDataObserver = new DataProviderObserver(mgr, cn, sWorkerQueue);
+                r.registerContentObserver(WidgetShortcutsDataProvider.CONTENT_URI, true, sDataObserver);
+            }
         }
     }
 
@@ -87,35 +91,7 @@ public class WidgetShortcutsProvider extends WidgetBase
             final Context context = ctx;
             sWorkerQueue.removeMessages(0);
             sWorkerQueue.post(() -> {
-                final ContentResolver r = context.getContentResolver();
-
-                // We disable the data changed observer temporarily since each of the updates
-                // will trigger an onChange() in our data observer.
-                try
-                {
-                    r.unregisterContentObserver(sDataObserver);
-                }
-                catch (Exception ex)
-                {
-                    // nothing to do
-                }
-
-                final Uri uri = ContentUris.withAppendedId(WidgetShortcutsDataProvider.CONTENT_URI, 0);
-                final ContentValues values = new ContentValues();
-                r.update(uri, values, null, null);
-                try
-                {
-                    r.registerContentObserver(WidgetShortcutsDataProvider.CONTENT_URI, true, sDataObserver);
-                }
-                catch (Exception ex)
-                {
-                    // nothing to do
-                }
-
-                final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-                final ComponentName cn = new ComponentName(context, WidgetShortcutsProvider.class);
-                mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.shortcuts_list);
-
+                refreshObserver(context);
                 final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 final ComponentName thisWidget = new ComponentName(context, WidgetShortcutsProvider.class);
                 onUpdate(context, appWidgetManager, appWidgetManager.getAppWidgetIds(thisWidget));
@@ -133,23 +109,48 @@ public class WidgetShortcutsProvider extends WidgetBase
         super.onReceive(ctx, intent);
     }
 
+    @SuppressWarnings("deprecation")
+    private void refreshObserver(Context context)
+    {
+        if (!Utils.isAndroidSorLater())
+        {
+            final ContentResolver r = context.getContentResolver();
+
+            // We disable the data changed observer temporarily since each of the updates
+            // will trigger an onChange() in our data observer.
+            try
+            {
+                r.unregisterContentObserver(sDataObserver);
+            }
+            catch (Exception ex)
+            {
+                // nothing to do
+            }
+
+            final Uri uri = ContentUris.withAppendedId(WidgetShortcutsDataProvider.CONTENT_URI, 0);
+            final ContentValues values = new ContentValues();
+            r.update(uri, values, null, null);
+            try
+            {
+                r.registerContentObserver(WidgetShortcutsDataProvider.CONTENT_URI, true, sDataObserver);
+            }
+            catch (Exception ex)
+            {
+                // nothing to do
+            }
+
+            final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+            final ComponentName cn = new ComponentName(context, WidgetShortcutsProvider.class);
+            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.shortcuts_list);
+        }
+    }
+
     @Override
     protected RemoteViews buildLayout(Context context, int appWidgetId)
     {
         readParameters(context);
-        RemoteViews rv;
-
-        // Specify the service to provide data for the collection widget.  Note that we need to
-        // embed the appWidgetId via the data otherwise it will be ignored.
-        final Intent intent = new Intent(context, WidgetShortcutsService.class);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-        rv = new RemoteViews(context.getPackageName(), R.layout.widget_shortcuts_layout);
-        rv.setRemoteAdapter(R.id.shortcuts_list, intent);
-
-        // Set the empty view to be displayed if the collection is empty.  It must be a sibling
-        // view of the collection view.
-        rv.setEmptyView(R.id.shortcuts_list, R.id.empty_view);
+        final RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_shortcuts_layout);
+        fillList(rv, context, appWidgetId);
 
         // Background
         rv.setInt(R.id.widget_background, "setImageResource",
@@ -174,18 +175,50 @@ public class WidgetShortcutsProvider extends WidgetBase
             onClickIntent.setAction(WidgetShortcutsProvider.CLICK_ACTION);
             onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
-            // noinspection NewApi
             final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
                     onClickIntent, PendingIntent.FLAG_MUTABLE);
             rv.setPendingIntentTemplate(R.id.shortcuts_list, onClickPendingIntent);
         }
         return rv;
     }
+
+    @SuppressWarnings("deprecation")
+    private void fillList(RemoteViews rv, Context context, int appWidgetId)
+    {
+        if (Utils.isAndroidSorLater())
+        {
+            final SharedPreferences preferences = context.getSharedPreferences(
+                    Utils.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            final CfgFavoriteShortcuts cfg = new CfgFavoriteShortcuts();
+            cfg.read(preferences);
+            RemoteViews.RemoteCollectionItems.Builder b = new RemoteViews.RemoteCollectionItems.Builder();
+            for (int i = 0; i < cfg.getShortcuts().size(); i++)
+            {
+                final CfgFavoriteShortcuts.Shortcut s = cfg.getShortcuts().get(i);
+                b.addItem(i, StackRemoteViewsFactory.createView(context, s.alias, WidgetShortcutsProvider.WIDGET_SHORTCUT + ":" + s.id));
+            }
+            rv.setRemoteAdapter(R.id.shortcuts_list, b.build());
+        }
+        else
+        {
+            // Specify the service to provide data for the collection widget.  Note that we need to
+            // embed the appWidgetId via the data otherwise it will be ignored.
+            final Intent intent = new Intent(context, WidgetShortcutsService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+            rv.setRemoteAdapter(R.id.shortcuts_list, intent);
+
+            // Set the empty view to be displayed if the collection is empty.  It must be a sibling
+            // view of the collection view.
+            rv.setEmptyView(R.id.shortcuts_list, R.id.empty_view);
+        }
+    }
 }
 
 /**
  * Our data observer just notifies an update for all widgets when it detects a change.
  */
+@SuppressWarnings({"RedundantSuppression"})
 class DataProviderObserver extends ContentObserver
 {
     private final AppWidgetManager mAppWidgetManager;
@@ -198,13 +231,17 @@ class DataProviderObserver extends ContentObserver
         mComponentName = cn;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onChange(boolean selfChange)
     {
         // The data has changed, so notify the widget that the collection view needs to be updated.
         // In response, the factory's onDataSetChanged() will be called which will requery the
         // cursor for the new data.
-        mAppWidgetManager.notifyAppWidgetViewDataChanged(
-                mAppWidgetManager.getAppWidgetIds(mComponentName), R.id.shortcuts_list);
+        if (!Utils.isAndroidSorLater())
+        {
+            mAppWidgetManager.notifyAppWidgetViewDataChanged(
+                    mAppWidgetManager.getAppWidgetIds(mComponentName), R.id.shortcuts_list);
+        }
     }
 }

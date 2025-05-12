@@ -14,7 +14,6 @@
 
 package com.mkulesh.onpc.plus;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -32,7 +31,7 @@ public class WidgetShortcutsService extends RemoteViewsService
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent)
     {
-        return new StackRemoteViewsFactory(this.getApplicationContext(), intent);
+        return new StackRemoteViewsFactory(this.getApplicationContext());
     }
 }
 
@@ -43,13 +42,10 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 {
     private final Context mContext;
     private Cursor mCursor;
-    private final int mAppWidgetId;
 
-    StackRemoteViewsFactory(Context context, Intent intent)
+    StackRemoteViewsFactory(Context context)
     {
         mContext = context;
-        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
     public void onCreate()
@@ -89,6 +85,11 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
             }
         }
 
+        return createView(mContext, alias, script);
+    }
+
+    public static RemoteViews createView(final Context mContext, final String alias, final String script)
+    {
         // Return a proper item with filled data
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_shortcuts_item);
         rv.setTextViewText(R.id.widget_item, alias);
