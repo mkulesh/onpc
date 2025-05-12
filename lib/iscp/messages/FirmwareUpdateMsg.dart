@@ -93,7 +93,7 @@ class FirmwareUpdateMsg extends EnumParameterMsg<FirmwareUpdate>
         }
         else if (getStatus.toString() == "NET")
         {
-            return '<cmd id=\"3\"><name>SetUpdate</name><list><param name="\start\">1</param></list></cmd>';
+            return '<cmd id=\"3\"><name>SetUpdate</name><list><param name=\"start\">1</param></list></cmd>';
         }
         return null;
     }
