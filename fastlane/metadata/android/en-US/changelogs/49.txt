@@ -1,0 +1,1 @@
+• Fixed an overlapping of action bar with the activity contents on Android 15
