@@ -3,10 +3,6 @@
 # Set this parameter to the actual Flutter installation path
 # Call "git fetch" in this directory so that your local Flutter
 # repository gets all the new info from Github
-
-# For gradle-7.5, currently used in the project, Java 17 shall be used:
-# Setup it with the command:
-# flutter config  --jdk-dir /work/android/gradle-java17
 FLUTTER_PATH=/work/android/flutter
 
 echo Build Android app...
@@ -15,10 +11,10 @@ echo Build Android app...
 rm -f ../pubspec.yaml
 ln -s pubspec.yaml_mobile ../pubspec.yaml
 
-# Build with: Flutter version 3.19.0, Dart version 3.3.0
+# Build with: Flutter version 3.29.0, Dart version 3.7.0
 flutter clean
 cd ${FLUTTER_PATH}
-git checkout 3.19.0
+git checkout 3.29.0
 cd -
 flutter doctor -v
 

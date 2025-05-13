@@ -28,5 +28,6 @@ rm -rf macos/Runner.xcworkspace/xcuserdata
 rm -rf macos/Runner.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
 rm -rf macos/Runner.xcworkspace/xcshareddata/swiftpm
 rm -rf android/.gradle
+rm -rf android/app/.cxx
 
 find . -name .DS_Store -exec rm -f {} \;

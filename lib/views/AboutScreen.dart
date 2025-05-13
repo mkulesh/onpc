@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -11,6 +11,8 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
+
+import "dart:io";
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -191,7 +193,7 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
             h2: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
             p: td.textTheme.bodyMedium!.copyWith(color: td.textTheme.titleMedium!.color),
             a: td.textTheme.bodyMedium!.copyWith(color: td.colorScheme.secondary));
-        return Markdown(data: data,
+        return Markdown(data: data.replaceAll("Flutter: ", "Flutter (Dart SDK " + Platform.version + "): "),
             styleSheet: styleSheet,
             padding: ActivityDimens.noPadding,
             onTapLink: (String text, String? href, String title)

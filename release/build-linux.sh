@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Necessary Fedora packages:
+# dnf install clang cmake ninja-build gtk3-devel xz-devel
+
 # Set this parameter to the actual Flutter installation path
 # Call "git fetch" in this directory so that your local Flutter
 # repository gets all the new info from Github
@@ -7,17 +10,14 @@ FLUTTER_PATH=/work/android/flutter
 
 echo Build Linux app...
 
-# Necessary Fedora packages:
-# dnf install clang cmake ninja-build gtk3-devel xz-devel
-
 # Prepare Yaml file
 rm -f ../pubspec.yaml
 ln -s pubspec.yaml_desktop ../pubspec.yaml
 
-# Build with: Flutter version 3.19.0, Dart version 3.3.0
+# Build with: Flutter version 3.29.0, Dart version 3.7.0
 flutter clean
 cd ${FLUTTER_PATH}
-git checkout 3.19.0
+git checkout 3.29.0
 cd -
 flutter doctor -v
 
