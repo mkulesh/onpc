@@ -13,7 +13,7 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:onpc/main.dart' as app;
@@ -201,7 +201,7 @@ Future<void> _saveConnection(final OnpcTestUtils tu, String name, String address
 }
 
 Future<void> _aboutScreen(OnpcTestUtils tu) async {
-  await tu.openDrawerMenu("About", ensureAfter: () => find.byType(Markdown));
+  await tu.openDrawerMenu("About", ensureAfter: () => find.byType(MarkdownWidget));
   await tu.previousScreen();
 }
 
