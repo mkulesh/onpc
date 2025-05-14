@@ -77,8 +77,8 @@ class CfgAppSettings extends CfgModule
         saveStringParameter(WIDGET_THEME, value);
         final BaseAppTheme td = BaseAppTheme.getTheme(value);
         saveBoolParameter(WIDGET_DARK_THEME, td.brightness == Brightness.dark);
-        saveIntegerParameter(WIDGET_H_TEXT, td.accentColor.value);
-        saveIntegerParameter(WIDGET_B_TEXT, td.textColor.value);
+        saveIntegerParameter(WIDGET_H_TEXT, td.accentColor.toARGB32());
+        saveIntegerParameter(WIDGET_B_TEXT, td.textColor.toARGB32());
     }
 
     // System language

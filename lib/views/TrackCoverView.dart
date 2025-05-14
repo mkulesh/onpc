@@ -73,7 +73,7 @@ class TrackCoverView extends UpdatableView
             alignment: Alignment.center,
             child: Material( // with Material
                 elevation: ActivityDimens.elevation,
-                color: td.colorScheme.background,
+                color: td.scaffoldBackgroundColor,
                 shadowColor: td.disabledColor,
                 child: IconButton(
                     icon: cover,
