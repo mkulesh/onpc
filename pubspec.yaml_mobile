@@ -25,12 +25,12 @@ dependencies:
   google_fonts: ^6.1.0
   json_path: ^0.7.0
   syncfusion_flutter_sliders: ^23.1.36
-  syncfusion_flutter_charts: ^23.1.36
+  syncfusion_flutter_core: ^23.1.36
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.4.0
+  lints: ^5.1.1
 
 flutter:
 

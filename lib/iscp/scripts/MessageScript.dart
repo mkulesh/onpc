@@ -415,7 +415,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
             else
             {
                 // ISCP command
-                EISCPMessage? msg = item != null ? item.getCmdMsg() : null;
+                EISCPMessage? msg = item?.getCmdMsg();
                 if (msg == null)
                 {
                     msg = EISCPMessage.output(a.cmd, a.par);

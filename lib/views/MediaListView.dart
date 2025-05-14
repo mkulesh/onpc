@@ -190,8 +190,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         {
             _mediaFilterController.clear();
         }
-        final String? filter = _mediaFilterController.text;
-        final bool applyFilter = _headerButtons.filter && filter != null && filter.isNotEmpty;
+        final String filter = _mediaFilterController.text;
+        final bool applyFilter = _headerButtons.filter && filter.isNotEmpty;
         if (applyFilter)
         {
             Logging.info(this.widget, "apply filter: " + filter);

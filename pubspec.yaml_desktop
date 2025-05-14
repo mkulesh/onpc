@@ -25,7 +25,7 @@ dependencies:
   google_fonts: ^6.1.0
   json_path: ^0.7.0
   syncfusion_flutter_sliders: ^23.1.36
-  syncfusion_flutter_charts: ^23.1.36
+  syncfusion_flutter_core: ^23.1.36
   flutter_libserialport: ^0.4.0
   window_manager: ^0.3.7
 
@@ -34,7 +34,7 @@ dev_dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  pedantic: ^1.4.0
+  lints: ^5.1.1
   msix: 3.16.7
 
 flutter:

@@ -164,7 +164,7 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
             {
                 selectedIdx = i;
             }
-        };
+        }
         final Widget d = DropdownPreferenceDialog(Strings.listening_mode_apply,
             listening_modes_keys, listening_modes_names, selectedIdx,
             (String val)

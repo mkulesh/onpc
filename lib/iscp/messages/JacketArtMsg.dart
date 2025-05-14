@@ -105,10 +105,9 @@ class JacketArtMsg extends ISCPMessage
         }
     }
 
-    JacketArtMsg._dcp(final String url) : super.output(CODE, url)
+    JacketArtMsg._dcp(String this.url) : super.output(CODE, url)
     {
         this.imageType = ImageType.URL;
-        this.url = url;
     }
 
     ImageType get getImageType

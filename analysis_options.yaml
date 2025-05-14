@@ -1,18 +1,23 @@
-include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml
 
 analyzer:
-  exclude: [build/**]
-
+  exclude: [res]
+  errors:
+    avoid_function_literals_in_foreach_calls: ignore
+    constant_identifier_names: ignore
+    file_names: ignore
+    no_leading_underscores_for_local_identifiers: ignore
+    non_constant_identifier_names: ignore
+    prefer_interpolation_to_compose_strings: ignore
+    unnecessary_this: ignore
+    unnecessary_string_escapes: ignore
+    library_private_types_in_public_api: ignore
+    prefer_conditional_assignment: ignore
+    prefer_collection_literals: ignore
+    prefer_if_null_operators: ignore
+    unnecessary_getters_setters: ignore
 
 linter:
   rules:
     prefer_final_fields: true
     prefer_final_locals: true
-    omit_local_variable_types: false
-    prefer_single_quotes: false
-    unnecessary_this: false
-    prefer_collection_literals: false
-    prefer_if_null_operators: false
-    prefer_conditional_assignment: false
-    sort_child_properties_last: false
-    unnecessary_getters_setters: false

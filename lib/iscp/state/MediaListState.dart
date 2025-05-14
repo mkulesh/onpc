@@ -722,7 +722,7 @@ class MediaListState
             {
                 _pathItems.add(isTitleItem ? element.getItems().first.getTitle : "");
             }
-        };
+        }
         Logging.info(this, "media list path: " + _pathItems.toString());
     }
 

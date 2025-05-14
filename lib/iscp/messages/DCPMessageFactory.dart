@@ -252,7 +252,7 @@ class DCPMessageFactory
         {
             final String? toSend = raw1 != null ?
                 createISCPMessage(raw1).buildDcpMsg(raw1.isQuery()) :
-                (raw2 != null ? raw2.buildDcpMsg(false) : null);
+                raw2?.buildDcpMsg(false);
             if (toSend == null)
             {
                 return retValue;

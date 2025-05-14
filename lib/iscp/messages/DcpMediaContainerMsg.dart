@@ -349,7 +349,7 @@ class DcpMediaContainerMsg extends ISCPMessage
     static void readOptions(final DcpMediaContainerMsg parentMsg, final DcpHeosMessage jsonMsg)
     {
         final Iterable<JsonPathMatch> options = jsonMsg.getArray("options[*]");
-        if (options.isEmpty || !(options.first.value is Map<String, dynamic>))
+        if (options.isEmpty || options.first.value is! Map<String, dynamic>)
         {
             return;
         }

@@ -222,10 +222,10 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
 
     String? _getDefaultValue(final xml.XmlElement box)
     {
-        final EnumItem<ServiceType>? _serviceType = viewContext.state.mediaListState.serviceType;
-        final String? _artist = viewContext.state.trackState.artist;
-        if (_serviceType != null && _serviceType.key == ServiceType.DEEZER &&
-            _artist != null && _artist.isNotEmpty &&
+        final EnumItem<ServiceType> _serviceType = viewContext.state.mediaListState.serviceType;
+        final String _artist = viewContext.state.trackState.artist;
+        if (_serviceType.key == ServiceType.DEEZER &&
+            _artist.isNotEmpty &&
             box.getAttribute("text") == "Search")
         {
             return _artist.contains("(") ? _artist.substring(0, _artist.indexOf("(")).trim() : _artist.trim();

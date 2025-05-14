@@ -15,7 +15,7 @@
 import "dart:async";
 import 'dart:ui' as ui;
 
-import "package:flutter/src/services/platform_channel.dart";
+import "package:flutter/services.dart";
 import "package:flutter/widgets.dart";
 
 import "config/CfgAudioControl.dart";

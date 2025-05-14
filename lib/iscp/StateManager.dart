@@ -208,7 +208,7 @@ class StateManager
             while (_messageChannel.isConnected)
             {
                 // empty
-            };
+            }
         }
     }
 
@@ -936,7 +936,7 @@ class StateManager
             while (_multiroomChannels.values.any((c) => c.isConnected))
             {
                 // empty
-            };
+            }
             Logging.info(this, "all multiroom devices disconnected");
         }
         _multiroomChannels.clear();
