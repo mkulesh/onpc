@@ -5,29 +5,28 @@ description: Enhanced Music Controller
 version: 2.14.4+315
 
 environment:
-  sdk: '>=2.14.0 <3.7.1'
+  sdk: '>=2.14.0 <4.0.0'
   flutter: 3.29.0
 
 dependencies:
   flutter:
     sdk: flutter
 
-  collection: ^1.17.0
-  #quiver: ^3.0.1
-  xml: ^6.5.0
-  flutter_svg: ^2.0.9
-  http: ^1.1.2
-  shared_preferences: ^2.2.3
-  back_button_interceptor: ^5.0.0
-  sprintf: ^6.0.0
-  markdown_widget: ^2.3.2
-  url_launcher: ^6.3.1
-  google_fonts: ^6.1.0
-  json_path: ^0.7.0
-  syncfusion_flutter_sliders: ^23.1.36
-  syncfusion_flutter_core: ^23.1.36
-  flutter_libserialport: ^0.4.0
-  window_manager: ^0.3.7
+  collection: 1.19.1
+  xml: 6.5.0
+  flutter_svg: 2.1.0
+  http: 1.4.0
+  shared_preferences: 2.5.3
+  back_button_interceptor: 8.0.4
+  sprintf: 7.0.0
+  markdown_widget: 2.3.2
+  url_launcher: 6.3.1
+  google_fonts: 6.2.1
+  json_path: 0.7.5
+  syncfusion_flutter_sliders: 29.1.38
+  syncfusion_flutter_core: 29.1.38
+  flutter_libserialport: 0.5.0
+  window_manager: 0.4.3
 
 dev_dependencies:
   integration_test:
