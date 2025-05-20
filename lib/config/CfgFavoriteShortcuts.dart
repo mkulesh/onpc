@@ -215,7 +215,7 @@ class Shortcut
         }
 
         // Go to the top level. Response depends on the input type and model
-        String firstPath = pathItems.isEmpty ? item : pathItems.first;
+        String firstPath = escape(pathItems.isEmpty ? item : pathItems.first);
         if (isNetService(input.key) && service.key != ServiceType.UNKNOWN)
         {
             if (model == "TX-8130")
@@ -243,15 +243,15 @@ class Shortcut
         {
             for (int i = 0; i < pathItems.length - 1; i++)
             {
-                firstPath = pathItems[i];
-                final String nextPath = pathItems[i + 1];
+                firstPath = escape(pathItems[i]);
+                final String nextPath = escape(pathItems[i + 1]);
                 data += "<send cmd=\"NLA\" par=\"" + firstPath + "\" wait=\"NLA\" listitem=\"" + nextPath + "\"/>";
             }
-            data += "<send cmd=\"NLA\" par=\"" + pathItems.last + "\" wait=\"NLA\" listitem=\"" + item + "\"/>";
+            data += "<send cmd=\"NLA\" par=\"" + escape(pathItems.last) + "\" wait=\"NLA\" listitem=\"" + escape(item) + "\"/>";
         }
 
         // Select target item
-        data += "<send cmd=\"NLA\" par=\"" + item + "\" wait=\"1000\"/>";
+        data += "<send cmd=\"NLA\" par=\"" + escape(item) + "\" wait=\"1000\"/>";
         data += _applyListeningMode();
         data += "</onpcScript>";
         return data;
@@ -287,7 +287,7 @@ class Shortcut
         }
 
         // Go to the top level. Response depends on the input type and model
-        String firstPath = pathItems.isEmpty ? item : pathItems.first;
+        String firstPath = escape(pathItems.isEmpty ? item : pathItems.first);
         if (isNetService(input.key) && service.key != ServiceType.UNKNOWN)
         {
             data += "<send cmd=\"NTC\" par=\"TOP\" wait=\"D01\" listitem=\"" + service.description + "\"/>";
@@ -305,15 +305,15 @@ class Shortcut
         {
             for (int i = 0; i < pathItems.length - 1; i++)
             {
-                firstPath = pathItems[i];
-                final String nextPath = pathItems[i + 1];
+                firstPath = escape(pathItems[i]);
+                final String nextPath = escape(pathItems[i + 1]);
                 data += "<send cmd=\"NLA\" par=\"" + firstPath + "\" wait=\"D05\" listitem=\"" + nextPath + "\"/>";
             }
-            data += "<send cmd=\"NLA\" par=\"" + pathItems.last + "\" wait=\"D05\" listitem=\"" + item + "\"/>";
+            data += "<send cmd=\"NLA\" par=\"" + escape(pathItems.last) + "\" wait=\"D05\" listitem=\"" + escape(item) + "\"/>";
         }
 
         // Select target item with given flag
-        data += "<send cmd=\"NLA\" par=\"" + item + "\" flag=\"" + _actionFlag + "\"" + " wait=\"1000\"/>";
+        data += "<send cmd=\"NLA\" par=\"" + escape(item) + "\" flag=\"" + _actionFlag + "\"" + " wait=\"1000\"/>";
         data += _applyListeningMode();
         data += "</onpcScript>";
         return data;
