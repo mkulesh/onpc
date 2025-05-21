@@ -24,6 +24,7 @@ import "../config/CfgRiCommands.dart";
 import "../config/CfgTabSettings.dart";
 import "../iscp/BroadcastSearch.dart";
 import "../iscp/CommandHelper.dart";
+import "../iscp/scripts/HandleDcpDuplicates.dart";
 import "../iscp/scripts/MessageScript.dart";
 import "../iscp/state/ScripsState.dart";
 import "../utils/CompatUtils.dart";
@@ -703,7 +704,7 @@ class StateManager
             }
         }
 
-        if (msg is DcpMediaContainerMsg)
+        if (msg is DcpMediaContainerMsg && !msg.isContainerContent)
         {
             final DcpMediaContainerMsg mc = msg;
             final int currItems = mc.getStart() + mc.getItems().length;
@@ -1030,9 +1031,31 @@ class StateManager
     }
 
     void applyShortcut(final Shortcut shortcut)
+    => _state.scripts.applyShortcut(shortcut, _state, _messageChannel);
+
+    void handleDcpDuplicates(final List<DcpMediaContainerMsg> items)
     {
-        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
-        _state.scripts.applyShortcut(shortcut, _state, _messageChannel);
+        _waitingForData = "handleDcpDuplicates";
+        triggerStateEvent(WAITING_FOR_DATA_EVENT);
+        _state.scripts.handleDcpDuplicates(items, _state, _messageChannel, (HandleDcpDuplicates script)
+        {
+            final List<String> toRemove = [];
+            script.items.forEach((c)
+            {
+                Logging.info(this, c.parent.toString() + ": tracks=" + c.tracks.toString());
+                if (c.tracks == 0)
+                {
+                    toRemove.add(c.parent.getCid());
+                }
+            });
+            script.items.clear();
+            if (toRemove.isNotEmpty)
+            {
+                state.mediaListState.removeDcpMediaItems(toRemove);
+            }
+            _waitingForData = "";
+            triggerStateEvent(WAITING_FOR_DATA_EVENT);
+        });
     }
 
     MessageChannel _createChannel(int port, OnConnected _onConnected, OnDisconnected _onDisconnected)

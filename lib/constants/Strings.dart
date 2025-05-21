@@ -2327,6 +2327,14 @@ Enjoy!"""];
         /*pl*/ "Playlist"];
     static String get medialist_search_playlist => l_medialist_search_playlist[_language];
 
+    static const List<String> l_medialist_hide_empty_items = [
+        /*en*/ "Hide empty items",
+        /*ru*/ "Скрыть пустые элементы",
+        /*de*/ "Leere Elemente ausblenden",
+        /*fr*/ "Masquer les éléments vides",
+        /*pl*/ "Ukryj puste elementy"];
+    static String get medialist_hide_empty_items => l_medialist_hide_empty_items[_language];
+
     static const List<String> l_input_selector_vcr_dvr = [
         /*en*/ "VCR/DVR",
         /*ru*/ "VCR/DVR",

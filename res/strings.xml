@@ -453,6 +453,7 @@ Enjoy!""</string>
     <string name="medialist_search_track">Track</string>
     <string name="medialist_search_station">Station</string>
     <string name="medialist_search_playlist">Playlist</string>
+    <string name="medialist_hide_empty_items">Hide empty items</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

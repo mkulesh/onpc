@@ -77,7 +77,9 @@ enum MediaContextMenu
     SO_REMOVE_FROM_HEOS,
     SO_REPLACE_AND_PLAY_ALL,
     SO_ADD_ALL,
-    SO_ADD_AND_PLAY_ALL
+    SO_ADD_AND_PLAY_ALL,
+    // #352 filter out duplicate artists from search results
+    HIDE_EMPTY_ITEMS
 }
 
 class MediaListButtons
@@ -486,6 +488,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         shortcutInfo.item = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
         shortcutInfo.alias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg && cmd.getPresetConfig != null ? cmd.getPresetConfig!.displayedString() : null;
         shortcutInfo.actionFlag = isDcpPlayable? Shortcut.DCP_PLAYABLE_TAG : "";
+        final List<DcpMediaContainerMsg> dcpDuplicates = state.protoType == ProtoType.DCP? state.mediaListState.getDcpDuplicates(cmd) : [];
 
         if (isMediaItem && selector != null)
         {
@@ -503,7 +506,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 ", isDcpPlayable=" + isDcpPlayable.toString() +
                 ", isQueue=" + isQueue.toString() +
                 ", addToQueue=" + addToQueue.toString() +
-                ", isAdvQueue=" + isAdvQueue.toString()
+                ", isAdvQueue=" + isAdvQueue.toString() +
+                ", dcpDuplicates=" + dcpDuplicates.length.toString() +
+                (shortcutInfo.item != null? (", item=" + shortcutInfo.item.toString()) : "")
             );
 
             if (isQueue || addToQueue)
@@ -578,6 +583,14 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                         child: CustomTextLabel.normal(Strings.playlist_add_and_play_all),
                         value: MediaContextMenu.SO_ADD_AND_PLAY_ALL));
                 }
+
+                if (dcpDuplicates.length > 1)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: CustomTextLabel.normal(Strings.medialist_hide_empty_items),
+                        value: MediaContextMenu.HIDE_EMPTY_ITEMS));
+                }
+
                 if (oldLength > 0 && oldLength != contextMenu.length)
                 {
                     contextMenu.insert(oldLength, PopupMenuItem<MediaContextMenu>(
@@ -610,12 +623,16 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 context: context,
                 position: RelativeRect.fromLTRB(position.global.dx, position.global.dy, position.global.dx, position.global.dy),
                 items: contextMenu).then((m)
-            => _onContextItemSelected(context, m, cmd, shortcutInfo)
+            => _onContextItemSelected(context, m, cmd, shortcutInfo, dcpDuplicates)
             );
         }
     }
 
-    void _onContextItemSelected(final BuildContext context, final MediaContextMenu? m, final ISCPMessage cmd, final ShortcutInfo shortcutInfo)
+    void _onContextItemSelected(final BuildContext context, 
+        final MediaContextMenu? m, 
+        final ISCPMessage cmd, 
+        final ShortcutInfo shortcutInfo,
+        final List<DcpMediaContainerMsg> dcpDuplicates)
     {
         if (m == null)
         {
@@ -700,6 +717,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 break;
             case MediaContextMenu.SO_ADD_AND_PLAY_ALL:
                 _callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL);
+                break;
+            case MediaContextMenu.HIDE_EMPTY_ITEMS:
+                stateManager.handleDcpDuplicates(dcpDuplicates);
                 break;
         }
     }

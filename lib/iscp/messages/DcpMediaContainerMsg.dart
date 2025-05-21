@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -48,6 +48,8 @@ class DcpMediaContainerMsg extends ISCPMessage
     static const int SO_ADD_AND_PLAY_ALL = 201;
     static const int SO_ADD_ALL = 203;
     static const int SO_REPLACE_AND_PLAY_ALL = 204;
+    static const int BROWSE_ALL = 9999;
+    static const int CONTAINER_CONTENT = 9998;
 
     late BrowseType _browseType;
     late String _sid;
@@ -63,6 +65,7 @@ class DcpMediaContainerMsg extends ISCPMessage
     String _album = EMPTY;
     String _imageUrl = EMPTY;
     int _start = 0;
+    int _end = BROWSE_ALL;
     int _count = 0;
     String _aid = EMPTY;
     String _qid = EMPTY;
@@ -94,6 +97,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         _album = other._album;
         _imageUrl = other._imageUrl;
         _start = other._start;
+        _end = other._end;
         _count = other._count;
         _aid = other._aid;
         _qid = other._qid;
@@ -115,6 +119,7 @@ class DcpMediaContainerMsg extends ISCPMessage
         if (rangeStr.length == 2)
         {
             _start = ISCPMessage.nonNullInteger(rangeStr.first, 10, 0);
+            _end = ISCPMessage.nonNullInteger(rangeStr.last, 10, 0);
         }
         final String countStr = jsonMsg.getMsgTag("count");
         if (countStr.isNotEmpty)
@@ -193,6 +198,9 @@ class DcpMediaContainerMsg extends ISCPMessage
     bool isContainer()
     => _container;
 
+    bool get isContainerContent
+    => _end == CONTAINER_CONTENT;
+
     bool isPlayable()
     => _playable;
 
@@ -205,6 +213,14 @@ class DcpMediaContainerMsg extends ISCPMessage
     void setStart(int start)
     {
         _start = start;
+    }
+
+    int getEnd()
+    => _end;
+
+    void setEnd(int end)
+    {
+        _end = end;
     }
 
     int getCount()
@@ -243,6 +259,7 @@ class DcpMediaContainerMsg extends ISCPMessage
             + "; CONT=" + _container.toString()
             + "; PLAY=" + _playable.toString()
             + "; START=" + _start.toString()
+            + "; END=" + _end.toString()
             + "; COUNT=" + _count.toString()
             + (_aid.isEmpty ? EMPTY : "; AID=" + _aid)
             + (_qid.isEmpty ? EMPTY : "; QID=" + _qid)
@@ -414,8 +431,8 @@ class DcpMediaContainerMsg extends ISCPMessage
             }
             if (_parentSid.isNotEmpty && _cid.isNotEmpty)
             {
-                return sprintf("heos://browse/browse?sid=%s&cid=%s&range=%d,9999",
-                        [ _parentSid, _cid, _start ]);
+                return sprintf("heos://browse/browse?sid=%s&cid=%s&range=%d,%d",
+                        [ _parentSid, _cid, _start, _end ]);
             }
         }
         else
@@ -424,13 +441,13 @@ class DcpMediaContainerMsg extends ISCPMessage
             {
                 if (_browseType == BrowseType.PLAY_QUEUE)
                 {
-                    return sprintf("heos://player/get_queue?pid=%s&range=%d,9999",
-                            [ ISCPMessage.DCP_HEOS_PID, _start ]);
+                    return sprintf("heos://player/get_queue?pid=%s&range=%d,%d",
+                            [ ISCPMessage.DCP_HEOS_PID, _start, BROWSE_ALL ]);
                 }
                 else if (_browseType == BrowseType.SEARCH_RESULT)
                 {
-                    return sprintf("heos://browse/search?sid=%s&search=%s&scid=%s&range=%d,9999",
-                        [ _sid, _searchStr, _scid, _start]);
+                    return sprintf("heos://browse/search?sid=%s&search=%s&scid=%s&range=%d,%d",
+                        [ _sid, _searchStr, _scid, _start, BROWSE_ALL ]);
                 }
                 else if (_sid.isNotEmpty)
                 {

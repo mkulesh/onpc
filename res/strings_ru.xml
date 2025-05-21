@@ -394,6 +394,7 @@ Copyright © 2019-2025 by __Михаил Кулеш__
     <string name="medialist_search_track">Трек</string>
     <string name="medialist_search_station">Станция</string>
     <string name="medialist_search_playlist">Плейлист</string>
+    <string name="medialist_hide_empty_items">Скрыть пустые элементы</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

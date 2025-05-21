@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -23,7 +23,9 @@ import '../../utils/Platform.dart';
 import '../ISCPMessage.dart';
 import '../MessageChannel.dart';
 import '../State.dart';
+import '../messages/DcpMediaContainerMsg.dart';
 import '../scripts/AutoPower.dart';
+import '../scripts/HandleDcpDuplicates.dart';
 import '../scripts/MessageScript.dart';
 import '../scripts/MessageScriptIf.dart';
 import '../scripts/RequestListeningMode.dart';
@@ -95,8 +97,24 @@ class ScriptsState
 
     void applyShortcut(final Shortcut shortcut, final State state, final MessageChannel channel)
     {
+        Logging.info(this, "selected favorite shortcut: " + shortcut.toString());
         final MessageScript script = MessageScript(shortcut: shortcut);
         _messageScripts.removeWhere((s) => s.item2 is MessageScript);
+        addScript(ScriptType.RUNTIME, script);
+        if (script.initialize(state, channel))
+        {
+            script.start(state, channel);
+        }
+    }
+
+    void handleDcpDuplicates(final List<DcpMediaContainerMsg> items,
+        final State state,
+        final MessageChannel channel,
+        final OnHandleDcpDuplicatesFinished onFinished)
+    {
+        Logging.info(this, "handle DCP duplicates for " + items.length.toString() + " items");
+        final HandleDcpDuplicates script = HandleDcpDuplicates(items, onFinished);
+        _messageScripts.removeWhere((s) => s.item2 is HandleDcpDuplicates);
         addScript(ScriptType.RUNTIME, script);
         if (script.initialize(state, channel))
         {

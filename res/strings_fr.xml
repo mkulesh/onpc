@@ -395,6 +395,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="medialist_search_track">Track</string>
     <string name="medialist_search_station">Station</string>
     <string name="medialist_search_playlist">Playlist</string>
+    <string name="medialist_hide_empty_items">Masquer les éléments vides</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>

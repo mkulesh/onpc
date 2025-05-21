@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -11,6 +11,8 @@
  * GNU General Public License for more details. You should have received a copy of the GNU General
  * Public License along with this program.
  */
+
+import "dart:collection";
 
 import "../../constants/Strings.dart";
 import "../../utils/Logging.dart";
@@ -133,6 +135,9 @@ class MediaListState
 
     String _mediaListMid = "";
     final List<XmlListItemMsg> _dcpTrackMenuItems = [];
+
+    // #352 filter out duplicate artists from search results: ignore container content message
+    final List<Set<String>> _dcpHiddenMediaItems = [];
 
     MediaListState()
     {
@@ -576,6 +581,11 @@ class MediaListState
 
     bool processDcpMediaContainerMsg(DcpMediaContainerMsg msg)
     {
+        if (msg.isContainerContent)
+        {
+            // #352 filter out duplicate artists from search results: ignore container content message
+            return false;
+        }
         // Media items
         if (msg.getStart() == 0)
         {
@@ -642,6 +652,7 @@ class MediaListState
             }
             return val;
         });
+        removeDcpMediaItems([]);
         _setDcpPlayingItem();
 
         // Track menu
@@ -707,6 +718,10 @@ class MediaListState
     void _syncPathItems()
     {
         Logging.info(this, "DCP: dcp media path: " + _dcpMediaPath.toString());
+        while(_dcpHiddenMediaItems.length > _dcpMediaPath.length)
+        {
+            _dcpHiddenMediaItems.removeLast();
+        }
         _pathItems.clear();
         for (int i = 0; i < _dcpMediaPath.length; i++)
         {
@@ -804,4 +819,37 @@ class MediaListState
 
     bool isReturnMsg(ISCPMessage msg)
     => (msg is OperationCommandMsg || msg is DcpMediaContainerMsg);
+
+    List<DcpMediaContainerMsg> getDcpDuplicates(ISCPMessage cmd)
+    {
+        final List<DcpMediaContainerMsg> res = [];
+        final DcpMediaContainerMsg? dcpCmd = getDcpContainerMsg(cmd);
+        if (cmd is XmlListItemMsg && dcpCmd != null && dcpCmd.isContainer())
+        {
+            _mediaItems.forEach((e)
+            {
+                final DcpMediaContainerMsg? dcpE = getDcpContainerMsg(e);
+                if (e is XmlListItemMsg && dcpE != null && dcpE.isContainer() && e.getTitle == cmd.getTitle)
+                {
+                    res.add(dcpE);
+                }
+            });
+        }
+        return res;
+    }
+
+    void removeDcpMediaItems(List<String> hiddenItems)
+    {
+        while(_dcpHiddenMediaItems.length < _numberOfLayers)
+        {
+            _dcpHiddenMediaItems.add(HashSet());
+        }
+        final Set<String> hidden = _dcpHiddenMediaItems[_numberOfLayers - 1];
+        hidden.addAll(hiddenItems);
+        Logging.info(this, "DCP items to be removed=" + hidden.toString());
+        _mediaItems.removeWhere((e) {
+            final DcpMediaContainerMsg? dcpE = getDcpContainerMsg(e);
+            return dcpE != null && hidden.contains(dcpE.getCid());
+        });
+    }
 }
