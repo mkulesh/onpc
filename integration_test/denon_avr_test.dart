@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
@@ -39,6 +40,7 @@ void main() {
     await _playFromQueue(tu);
     await _testHeosFavorites(tu);
     await _playFromDeezer(tu);
+    await _hideEmptyItems(tu);
     await _changeListeningModes(tu, "FLAC 44.1 kHz");
     await _playFromDAB(tu);
     await _changeDeviceSettings(tu);
@@ -314,6 +316,39 @@ Future<void> _playFromDeezer(OnpcTestUtils tu) async {
   // Audio info
   await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"));
   await tu.ensureAvInfo("FLAC 44.1 kHz", "Stereo");
+}
+
+Future<void> _hideEmptyItems(OnpcTestUtils tu) async {
+  await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
+
+  // Search artist
+  final String artist = "Muse";
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer"]);
+  await _openSearchDialog(tu, 0, artist);
+
+  // Filter artist
+  await tu.findAndTap("Open filter", () => find.byTooltip(Strings.medialist_filter));
+  await tu.setText(1, 0, artist);
+  await tu.stepDelayMs();
+  await tu.ensureVisibleInList(
+      "Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+
+  // Get initial number of items
+  final List<Pair<String, String>> list1 = tu.getListContent();
+  final int count1 = list1.where((item) => item.item2 == artist).length;
+  expect(find.widgetWithText(ListTile, artist), findsNWidgets(count1));
+
+  // Hide empty items
+  await tu.contextMenu(artist, Strings.medialist_hide_empty_items, waitFor: true, num: count1 + 1, idx: count1 - 1);
+  await tu.stepDelayMs();
+  await tu.ensureVisible(() => find.byTooltip(Strings.medialist_filter));
+
+  // Get final number of items
+  final List<Pair<String, String>> list2 = tu.getListContent();
+  final int count2 = list2.where((item) => item.item2 == artist).length;
+  Logging.info(tu, "Initial number of items: " + count1.toString());
+  Logging.info(tu, "Final number of items: " + count2.toString());
+  expect(count2 < count1, true);
 }
 
 Future<void> _playFromDAB(final OnpcTestUtils tu) async {
