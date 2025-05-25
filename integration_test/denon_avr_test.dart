@@ -37,6 +37,7 @@ void main() {
     await _playFromUsb(tu);
     await _audioControl(tu);
     await _playFromQueue(tu);
+    await _testHeosFavorites(tu);
     await _playFromDeezer(tu);
     await _changeListeningModes(tu, "FLAC 44.1 kHz");
     await _playFromDAB(tu);
@@ -53,11 +54,12 @@ void main() {
 Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   // Start playing shortcut1
   final String shortcut1 = "В.Высоцкий";
-  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut1));
-  await tu.findAndTap("Start " + shortcut1, () => find.text(shortcut1), delay: OnpcTestUtils.NORMAL_DELAY);
+  final String shortcut1_artist = "Владимир Высоцкий и ансамбль 'Мелодия'";
+  final String shortcut1_track = "Цыганский романс 'Кони привередливые'";
+  await tu.playShortcut(shortcut1, shortcut1_artist, waitPlaying: shortcut1_track);
   await tu.openTab("LISTEN", ensureAfter: () => find.text("Владимир Высоцкий"));
-  expect(find.textContaining("Владимир Высоцкий и ансамбль 'Мелодия'"), findsOneWidget);
-  expect(find.textContaining("Цыганский романс 'Кони привередливые'"), findsOneWidget);
+  expect(find.textContaining(shortcut1_artist), findsOneWidget);
+  expect(find.textContaining(shortcut1_track), findsOneWidget);
 
   // Navigate to USB
   await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
@@ -264,13 +266,11 @@ Future<void> _playFromQueue(OnpcTestUtils tu) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.text("---/---"));
 }
 
-Future<void> _playFromDeezer(OnpcTestUtils tu) async {
+Future<void> _testHeosFavorites(OnpcTestUtils tu) async {
   final String shortcut = "Flow";
 
   // Start playing
-  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
-  await tu.findAndTap("Start " + shortcut, () => find.text(shortcut),
-      ensureAfter: () => find.textContaining("Favorite | items:"));
+  await tu.playShortcut(shortcut, "Favorite");
   expect(find.text(shortcut), findsOneWidget);
 
   // Remove from HEOS
@@ -300,7 +300,9 @@ Future<void> _playFromDeezer(OnpcTestUtils tu) async {
   // Check that item is added
   await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Favorite"]);
   expect(find.text(shortcut), findsOneWidget);
+}
 
+Future<void> _playFromDeezer(OnpcTestUtils tu) async {
   // Play from Deezer favourites
   final String toPlay = "Don't You Believe a Stranger";
   await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Playlists", "Favourite tracks"]);
@@ -318,10 +320,7 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
   final String shortcut = "BOB! on DAB";
 
   // Start playing
-  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
-  await tu.findAndTap("Start " + shortcut, () => find.text(shortcut), ensureAfter: () => find.text("17 - BOB!"));
-  await tu.waitMediaItemPlaying("BOB!");
-  expect(find.text("TUNER"), findsOneWidget);
+  await tu.playShortcut(shortcut, "TUNER", ensureTop: "DAB", waitPlaying: "BOB!");
 
   // Check station data
   await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"));
@@ -413,5 +412,7 @@ Future<void> _openSearchDialog(OnpcTestUtils tu, int type, String search) async 
   await tu.findAndTap("Search for type: " + type.toString(), () => fab.at(type));
   await tu.setText(1, 0, search);
   await tu.findAndTap("Start search for: " + search, () => find.text("OK"),
-      ensureAfter: () => find.widgetWithText(ListTile, search));
+      ensureAfter: () => find.textContaining("Search: " + search + " | items:"));
+  await tu.ensureVisibleInList(
+      "Ensure item " + search, find.byType(ListView), () => find.text(search), Offset(0, -300));
 }

@@ -176,16 +176,16 @@ Future<void> _playFromDeezer(final OnpcTestUtils tu) async {
 
   // Start playing shortcut1
   final String shortcut1 = "В.Высоцкий";
-  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut1));
-  await tu.findAndTap("Start " + shortcut1, () => find.text(shortcut1), delay: OnpcTestUtils.LONG_DELAY);
+  final String shortcut1_artist = 'Владимир Высоцкий и ансамбль "Мелодия"';
+  final String shortcut1_track = 'Цыганский романс "Кони привередливые"';
+  await tu.playShortcut(shortcut1, shortcut1_artist + " / " + "Vladimir Vysotsky", waitPlaying: shortcut1_track);
   await tu.openTab("LISTEN", ensureAfter: () => find.text("Vladimir Vysotsky"));
-  expect(find.textContaining('Владимир Высоцкий и ансамбль "Мелодия"'), findsOneWidget);
-  expect(find.textContaining('Цыганский романс "Кони привередливые"'), findsOneWidget);
+  expect(find.textContaining(shortcut1_artist), findsOneWidget);
+  expect(find.textContaining(shortcut1_track), findsOneWidget);
 
   // Start playing shortcut2
   final String shortcut2 = "Deezer Flow";
-  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut2));
-  await tu.findAndTap("Start " + shortcut2, () => find.text(shortcut2), delay: OnpcTestUtils.LONG_DELAY);
+  await tu.playShortcut(shortcut2, "Deezer", waitPlaying: "Flow");
 
   // Check Feed buttons
   await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip("Negative Feed"));
@@ -229,10 +229,7 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
   final String shortcut = "DAB";
 
   // Start playing
-  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
-  await tu.findAndTap("Start " + shortcut, () => find.text(shortcut));
-  await tu.openTab("MEDIA", ensureAfter: () => find.text("DAB"));
-  await tu.waitMediaItemPlaying("Playback mode");
+  await tu.playShortcut(shortcut, "DAB", waitPlaying: "Playback mode");
   expect(find.text("DAB | items: 1"), findsOneWidget);
 
   // Check station data

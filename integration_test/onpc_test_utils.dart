@@ -195,9 +195,9 @@ class OnpcTestUtils {
   }
 
   Future<void> contextMenu(String item, String menu,
-      {bool waitFor = false, OnFind? ensureAfter, List<String>? checkItems}) async {
+      {bool waitFor = false, OnFind? ensureAfter, List<String>? checkItems, int num = 1, int idx = 0}) async {
     await findAndTap("Select item: " + item, () => find.text(item),
-        waitFor: waitFor, rightClick: true, ensureAfter: () => find.text(menu));
+        waitFor: waitFor, rightClick: true, num: num, idx: idx, ensureAfter: () => find.text(menu));
     if (checkItems != null) {
       checkItems.forEach((element) {
         expect(find.text(element), findsOneWidget);
@@ -382,5 +382,20 @@ class OnpcTestUtils {
     }
     assert(retValue != null);
     return retValue!;
+  }
+
+  Future<void> playShortcut(String shortcut, String statusPanel,
+      {String ensureTop = "", String waitPlaying = ""}) async {
+    await openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
+    await stepDelayMs();
+    await findAndTap("Playing " + shortcut, () => find.text(shortcut),
+        ensureAfter: () => find.textContaining(statusPanel + " | items:"));
+    if (ensureTop.isNotEmpty) {
+      await ensureVisibleInList(
+          "Ensure list top", find.byType(ListView), () => find.text(ensureTop), LIST_DRAG_OFFSET_UP);
+    }
+    if (waitPlaying.isNotEmpty) {
+      await waitMediaItemPlaying(waitPlaying);
+    }
   }
 }

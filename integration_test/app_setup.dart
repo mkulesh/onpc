@@ -301,7 +301,6 @@ Future<void> _changeListenLayout(final OnpcTestUtils tu) async {
 
 Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     {bool dlna = false, bool deezer = false, bool tuneIn = false, bool usbMusic = false, bool radio = false}) async {
-  final DRAG_OFFSET_UP = Offset(0, 300);
   final Pair<String, String> FAVOURITES = Pair<String, String>("The Dancer", "Deezer Favourites");
 
   await tu.openTab("MEDIA");
@@ -326,13 +325,13 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.contextMenu(FAVOURITES.item1, "Create shortcut");
 
     final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
-    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), DRAG_OFFSET_UP);
+    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu
         .navigateToMedia(["Return", "My Playlists", "Onkyo playlist"], ensureAfter: () => find.text("Forever / Y&T"));
     await tu.contextMenu(PLAYLIST.item1, "Create shortcut", waitFor: true);
 
     final Pair<String, String> VYSOTSKY = Pair<String, String>('Цыганский романс "Кони привередливые"', "В.Высоцкий");
-    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), DRAG_OFFSET_UP);
+    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu.navigateToMedia(
         ["Return", "Return", "My Albums", 'Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky'],
         ensureVisible: true);
@@ -380,7 +379,6 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
     await tu.findAndTap("Select FM", () => find.text("FM"), ensureAfter: () => find.text(FM.item1));
     await tu.contextMenu(FM.item1, "Create shortcut", waitFor: true);
-    await tu.openTab("SHORTCUTS");
     await _renameShortcuts(tu, [DAB, FM], [], false);
   }
 
@@ -394,7 +392,6 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     required bool usbMusic,
     required bool favorite,
     required bool radio}) async {
-  final DRAG_OFFSET_UP = Offset(0, 300);
   await tu.openTab("MEDIA");
   await tu.findAndTap("Select NET", () => find.text("NET"));
 
@@ -493,18 +490,16 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     final Pair<String, String> FM2 = Pair<String, String>("5 - 93.80 MHz", "");
     await tu.openTab("MEDIA");
     await tu.findAndTap("Select TUNER", () => find.text("TUNER"));
-    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("DAB"), DRAG_OFFSET_UP);
+    await tu.ensureVisibleInList("Ensure list top", find.byType(ListView), () => find.text("DAB"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu.findAndTap("Select DAB", () => find.text("DAB"));
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
     await tu.findAndTap("Select FM", () => find.text("FM"));
     await tu.contextMenu(FM1.item1, "Create shortcut", waitFor: true);
     await tu.contextMenu(FM2.item1, "Create shortcut", waitFor: true);
-    await tu.openTab("SHORTCUTS");
-    await tu.stepDelaySec(3);
     await _renameShortcuts(tu, [DAB], [], true);
-    await tu.dragReorderableItem(DAB.item2, DRAG_OFFSET_UP, dragIndex: 2);
+    await tu.dragReorderableItem(DAB.item2, OnpcTestUtils.LIST_DRAG_OFFSET_UP, dragIndex: 2);
     await _renameShortcuts(tu, [FM1], [], true);
-    await tu.dragReorderableItem(FM1.item2, DRAG_OFFSET_UP, dragIndex: 2);
+    await tu.dragReorderableItem(FM1.item2, OnpcTestUtils.LIST_DRAG_OFFSET_UP, dragIndex: 2);
     await tu.contextMenu(FM2.item1, "Delete", waitFor: true);
   }
 
@@ -514,6 +509,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
 Future<void> _renameShortcuts(
     OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path, final listeningMode) async {
   await tu.openTab("SHORTCUTS");
+  await tu.stepDelaySec(1);
   if (path.isNotEmpty) {
     assert(items.length == path.length);
   }
