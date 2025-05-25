@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -13,9 +13,9 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:markdown_widget/markdown_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
@@ -64,10 +64,11 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("Phono", ""),
   ]);
   await _changeServices(tu, [
+    Pair("Tidal", true),
+    Pair("TuneIn Radio", true),
     Pair("Deezer", true),
     Pair("Local Music", true),
     Pair("Spotify", false),
-    Pair("Tidal", false),
     Pair("Amazon Music", false),
     Pair("Napster", false),
     Pair("Soundcloud", false),
@@ -144,10 +145,11 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
   }
   await _changeInputs(tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
   await _changeServices(tu, [
+    Pair("Tidal", true),
+    Pair("TuneIn Radio", true),
     Pair("Deezer", true),
     Pair("Music Server (DLNA)", true),
     Pair("Spotify", false),
-    Pair("Tidal", false),
     Pair("Amazon Music", false),
   ]);
   await _changeListeningModes(tu, [
@@ -311,28 +313,41 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
   }
 
   if (deezer) {
-    final Pair<String, String> FLOW = Pair<String, String>("Flow", "Deezer Flow");
-    final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
     await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer"]);
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
-    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Music", "My Music | items: 6"]);
+
+    final Pair<String, String> FLOW = Pair<String, String>("Flow", "Deezer Flow");
+    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Music"]);
+    await tu.findAndTap("Select upper level", () => find.text("My Music | items: 6"),
+        waitFor: true, ensureAfter: () => find.text(FLOW.item1));
     await tu.contextMenu(FLOW.item1, "Create shortcut", waitFor: true);
     await tu.navigateToMedia(["My Music", "Favourite tracks"], ensureAfter: () => find.text("Lady In Black"));
     await tu.contextMenu(FAVOURITES.item1, "Create shortcut");
+
+    final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
     await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), DRAG_OFFSET_UP);
     await tu
         .navigateToMedia(["Return", "My Playlists", "Onkyo playlist"], ensureAfter: () => find.text("Forever / Y&T"));
     await tu.contextMenu(PLAYLIST.item1, "Create shortcut", waitFor: true);
-    await _renameShortcuts(tu, [
-      FLOW,
-      FAVOURITES,
-      PLAYLIST
-    ], [
-      "NET/Deezer/Flow",
-      "NET/Deezer/My Music/Favourite tracks/The Dancer",
-      "NET/Deezer/My Music/My Playlists/Onkyo playlist/Personal Jesus / Depeche Mode"
-    ], false);
+
+    final Pair<String, String> VYSOTSKY = Pair<String, String>('Цыганский романс "Кони привередливые"', "В.Высоцкий");
+    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), DRAG_OFFSET_UP);
+    await tu.navigateToMedia(
+        ["Return", "Return", "My Albums", 'Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky'],
+        ensureVisible: true);
+    await tu.contextMenu(VYSOTSKY.item1, "Create shortcut", waitFor: true);
+
+    await _renameShortcuts(
+        tu,
+        [FLOW, FAVOURITES, PLAYLIST, VYSOTSKY],
+        [
+          "NET/Deezer/" + FLOW.item1,
+          "NET/Deezer/My Music/Favourite tracks/" + FAVOURITES.item1,
+          "NET/Deezer/My Music/My Playlists/Onkyo playlist/" + PLAYLIST.item1,
+          'NET/Deezer/My Music/My Albums/Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky/' + VYSOTSKY.item1,
+        ],
+        false);
   }
 
   if (tuneIn) {
@@ -386,21 +401,38 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
   if (dlna) {
     await tu.openTab("MEDIA");
     final Pair<String, String> ARTISTS = Pair<String, String>("Artist", "Artists on DLNA");
-    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music", "Kontron DLNA Server", "Music"],
-        ensureVisible: true);
+    await tu
+        .navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music", "Kontron DLNA Server", "Music"], ensureVisible: true);
     await tu.contextMenu(ARTISTS.item1, "Create shortcut", waitFor: true);
+
+    final Pair<String, String> VYSOTSKY = Pair<String, String>("Цыганский романс 'Кони привередливые'", "В.Высоцкий");
+    await tu.navigateToMedia([
+      OnpcTestUtils.TOP_LAYER,
+      "Local Music",
+      "Denon AVR",
+      "Genres",
+      "Акустика<S>Эстрада",
+      "Владимир Высоцкий",
+      "Владимир Высоцкий и ансамбль 'Мелодия'"
+    ], ensureVisible: true);
+    await tu.contextMenu(VYSOTSKY.item1, "Create shortcut", waitFor: true);
+
     final Pair<String, String> MUSE = Pair<String, String>("- All Albums -", "Muse on DLNA");
     await tu.navigateToMedia(
         [OnpcTestUtils.TOP_LAYER, "Local Music", "Kontron DLNA Server", "Music", "Artist", "Muse<S>Mylene Farmer"],
         ensureVisible: true);
     await tu.contextMenu(MUSE.item1, "Create shortcut", waitFor: true);
-    await _renameShortcuts(tu, [
-      ARTISTS,
-      MUSE
-    ], [
-      "NET/Local Music/Kontron DLNA Server/Music/Artist",
-      "NET/Local Music/Kontron DLNA Server/Music/Artist/Muse/- All Albums -"
-    ], true);
+
+    await _renameShortcuts(
+        tu,
+        [ARTISTS, MUSE, VYSOTSKY],
+        [
+          "NET/Local Music/Kontron DLNA Server/Music/" + ARTISTS.item1,
+          "NET/Local Music/Kontron DLNA Server/Music/Artist/Muse/" + MUSE.item1,
+          "NET/Local Music/Denon AVR/Genres/Акустика/Владимир Высоцкий/Владимир Высоцкий и ансамбль 'Мелодия'/" +
+              VYSOTSKY.item1
+        ],
+        true);
   }
 
   if (deezer) {
@@ -414,15 +446,15 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.navigateToMedia(["Return", "Radio Channels", "Rock<S>Soul & Funk"],
         ensureVisible: true, ensureAfter: () => find.text(ROCK_STATION.item1));
     await tu.contextMenu(ROCK_STATION.item1, "Create shortcut", waitFor: true);
-    await _renameShortcuts(tu, [
-      PLAYLIST,
-      FAVOURITES,
-      ROCK_STATION
-    ], [
-      "NET/Deezer/My Playlists/Onkyo playlist",
-      "NET/Deezer/My Playlists/Favourite tracks",
-      "NET/Deezer/Radio Channels/Rock/Rock classics"
-    ], true);
+    await _renameShortcuts(
+        tu,
+        [PLAYLIST, FAVOURITES, ROCK_STATION],
+        [
+          "NET/Deezer/My Playlists/" + PLAYLIST.item1,
+          "NET/Deezer/My Playlists/" + FAVOURITES.item1,
+          "NET/Deezer/Radio Channels/Rock/" + ROCK_STATION.item1
+        ],
+        true);
   }
 
   if (tuneIn) {
@@ -479,7 +511,8 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
   await tu.findAndTap("Start Deezer", () => find.text("Flow"), delay: OnpcTestUtils.NORMAL_DELAY);
 }
 
-Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path, final listeningMode) async {
+Future<void> _renameShortcuts(
+    OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path, final listeningMode) async {
   await tu.openTab("SHORTCUTS");
   if (path.isNotEmpty) {
     assert(items.length == path.length);
@@ -488,7 +521,8 @@ Future<void> _renameShortcuts(OnpcTestUtils tu, final List<Pair<String, String>>
     await tu.ensureVisibleInList("Ensure " + items[i].item1, find.byType(ReorderableListView),
         () => find.text(items[i].item1), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu(items[i].item1, "Edit",
-        ensureAfter: () => find.text("CANCEL"), checkItems: [items[i].item1 + ":", "Edit", "Delete", "Copy to clipboard"]);
+        ensureAfter: () => find.text("CANCEL"),
+        checkItems: [items[i].item1 + ":", "Edit", "Delete", "Copy to clipboard"]);
     if (path.isNotEmpty) {
       expect(find.text(path[i]), findsOneWidget);
     }

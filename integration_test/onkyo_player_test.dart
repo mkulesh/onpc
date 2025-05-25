@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -173,11 +173,19 @@ Future<void> _playFromQueue(OnpcTestUtils tu) async {
 
 Future<void> _playFromDeezer(final OnpcTestUtils tu) async {
   final String PL_LIST = "Test Playlist";
-  final String shortcut = "Deezer Flow";
 
-  // Start playing
-  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
-  await tu.findAndTap("Start " + shortcut, () => find.text(shortcut), delay: OnpcTestUtils.LONG_DELAY);
+  // Start playing shortcut1
+  final String shortcut1 = "В.Высоцкий";
+  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut1));
+  await tu.findAndTap("Start " + shortcut1, () => find.text(shortcut1), delay: OnpcTestUtils.LONG_DELAY);
+  await tu.openTab("LISTEN", ensureAfter: () => find.text("Vladimir Vysotsky"));
+  expect(find.textContaining('Владимир Высоцкий и ансамбль "Мелодия"'), findsOneWidget);
+  expect(find.textContaining('Цыганский романс "Кони привередливые"'), findsOneWidget);
+
+  // Start playing shortcut2
+  final String shortcut2 = "Deezer Flow";
+  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut2));
+  await tu.findAndTap("Start " + shortcut2, () => find.text(shortcut2), delay: OnpcTestUtils.LONG_DELAY);
 
   // Check Feed buttons
   await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip("Negative Feed"));

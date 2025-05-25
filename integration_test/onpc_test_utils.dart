@@ -185,7 +185,7 @@ class OnpcTestUtils {
           await ensureVisibleInList(
               "Ensure item " + postItem, find.byType(ListView), () => find.text(postItem), Offset(0, -300));
         }
-        await findAndTap("Navigate to: " + item, () => find.text(item),
+        await findAndTap("Navigate to: " + item, () => find.widgetWithText(ListTile, item),
             waitFor: waitFor, ensureAfter: () => find.text("Return"));
       }
     }

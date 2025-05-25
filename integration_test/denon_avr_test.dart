@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -51,9 +51,16 @@ void main() {
 }
 
 Future<void> _playFromUsb(final OnpcTestUtils tu) async {
-  await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
+  // Start playing shortcut1
+  final String shortcut1 = "В.Высоцкий";
+  await tu.openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut1));
+  await tu.findAndTap("Start " + shortcut1, () => find.text(shortcut1), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.openTab("LISTEN", ensureAfter: () => find.text("Владимир Высоцкий"));
+  expect(find.textContaining("Владимир Высоцкий и ансамбль 'Мелодия'"), findsOneWidget);
+  expect(find.textContaining("Цыганский романс 'Кони привередливые'"), findsOneWidget);
 
   // Navigate to USB
+  await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
   await tu.findAndTap("Select NET", () => find.text("NET"));
   await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music"]);
   await tu.findAndTap("Navigate to: " + DENON_AVR, () => find.widgetWithText(ListTile, DENON_AVR),
