@@ -16,6 +16,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "ConnectionIf.dart";
 import "EISCPMessage.dart";
@@ -129,7 +130,7 @@ class BroadcastSearch
         d.data.forEach((f)
         => buffer.add(f));
 
-        final String response = utf8.decode(buffer);
+        final String response = Convert.decodeUtf8(buffer);
         if (response.contains("schemas-denon-com:device"))
         {
             _processDcpResponse(d, response);

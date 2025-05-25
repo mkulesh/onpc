@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 
+import "dart:convert";
 import "dart:ui";
 
 import "../iscp/ConnectionIf.dart";
@@ -44,4 +45,7 @@ class Convert
         });
         return bytes;
     }
+
+    static String decodeUtf8(final List<int> buffer)
+    => utf8.decode(buffer, allowMalformed: true);
 }

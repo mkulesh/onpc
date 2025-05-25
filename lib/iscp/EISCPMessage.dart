@@ -16,6 +16,7 @@ import "dart:convert";
 import "dart:math";
 import "dart:typed_data";
 
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 
 class EISCPMessage
@@ -208,7 +209,7 @@ class EISCPMessage
                     break;
                 }
             }
-            return utf8.decode(bytes.sublist(_headerSize, endIndex));
+            return Convert.decodeUtf8(bytes.sublist(_headerSize, endIndex));
         }
         return INVALID_MSG;
     }

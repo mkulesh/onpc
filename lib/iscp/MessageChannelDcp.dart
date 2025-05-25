@@ -18,6 +18,7 @@ import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
+import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "ConnectionIf.dart";
 import "DcpHeosMessage.dart";
@@ -222,7 +223,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
 
         if (expectedSize <= 0)
         {
-            final String logMsg = utf8.decode(bytes);
+            final String logMsg = Convert.decodeUtf8(bytes);
             if (logMsg.startsWith(DcpReceiverInformationMsg.DCP_COMMAND_PRESET))
             {
                 // A corner case: OPTPN has some time no end of message symbol
@@ -243,7 +244,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         }
 
         final List<int> stringBytes = expectedSize + 1 == bytes.length ? bytes : bytes.sublist(0, expectedSize);
-        final String dcpMsg = utf8.decode(stringBytes).trim();
+        final String dcpMsg = Convert.decodeUtf8(stringBytes).trim();
         final int remaining = max(0, bytes.length - expectedSize - 1);
 
         bool processed = false;

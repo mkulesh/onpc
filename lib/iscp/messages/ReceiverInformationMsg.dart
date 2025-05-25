@@ -13,7 +13,6 @@
  */
 
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -22,6 +21,7 @@ import 'package:xml/xml.dart' as xml;
 import 'package:flutter/services.dart' show rootBundle;
 
 import "../../constants/Drawables.dart";
+import "../../utils/Convert.dart";
 import "../../utils/Logging.dart";
 import "../../utils/Pair.dart";
 import "../../utils/UrlLoader.dart";
@@ -631,7 +631,7 @@ class ReceiverInformationMsg extends ISCPMessage with ProtoTypeMix
         {
             if (receiverData != null)
             {
-                return utf8.decode(receiverData);
+                return Convert.decodeUtf8(receiverData);
             }
             return null;
         });
