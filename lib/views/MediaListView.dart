@@ -217,11 +217,11 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
         // List items
         final int visibleItems = items.length;
-        final int totalItems = ms.mediaItemsTotal > 0 ? ms.mediaItemsTotal : ms.numberOfItems;
+        final int totalItems = ms.getTotalItems();
 
         // Scroll positions
         _scrollController.removeListener(_saveScrollPosition);
-        if (visibleItems == totalItems)
+        if (!applyFilter && ms.downloadCtrl.downloadFinished)
         {
             _processLayerInfo(ms, dataItems);
         }

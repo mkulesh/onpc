@@ -34,6 +34,7 @@ import "../messages/ReceiverInformationMsg.dart";
 import "../messages/ServiceType.dart";
 import "../messages/XmlListInfoMsg.dart";
 import "../messages/XmlListItemMsg.dart";
+import "MediaDownloadCtrl.dart";
 import "PlaybackState.dart";
 import "ReceiverInformation.dart";
 
@@ -91,6 +92,7 @@ class MediaListState
     => _mediaItems;
 
     int _movedItem = -1;
+
     int get movedItem
     => _movedItem;
 
@@ -108,12 +110,10 @@ class MediaListState
 
     final List<String> listInfoItems = [];
 
-    // Total target number of media items, when media list is
-    // downloaded in several steps like for huge Denon media lists
-    int _mediaItemsTotal = -1;
+    final MediaDownloadCtrl downloadCtrl = MediaDownloadCtrl();
 
-    int get mediaItemsTotal
-    => _mediaItemsTotal;
+    int getTotalItems()
+    => downloadCtrl.total > 0 ? downloadCtrl.total : numberOfItems;
 
     // Denon control protocol
     final List<DcpMediaContainerMsg> _dcpMediaPath = [];
@@ -173,7 +173,7 @@ class MediaListState
             return;
         }
         _mediaItems.clear();
-        _mediaItemsTotal = -1;
+        downloadCtrl.clear();
         _movedItem = -1;
     }
 
@@ -370,7 +370,7 @@ class MediaListState
     void _createServiceItems(final List<NetworkService> networkServices)
     {
         _mediaItems.clear();
-        _mediaItemsTotal = -1;
+        downloadCtrl.clear();
         networkServices.forEach((s)
         {
             final EnumItem<ServiceType> service = Services.ServiceTypeEnum.valueByCode(s.getId);
@@ -611,7 +611,7 @@ class MediaListState
             _numberOfLayers = _dcpMediaPath.length;
             _mediaListSid = msg.getSid();
             _mediaListCid = msg.getCid();
-            _mediaItemsTotal = msg.getCount();
+            downloadCtrl.start(msg);
             if (msg.getBrowseType() == BrowseType.SEARCH_RESULT && msg.getSearchStr().isNotEmpty)
             {
                 _titleBar = Strings.medialist_search + ": " + msg.getSearchStr();
@@ -629,12 +629,12 @@ class MediaListState
         {
             return false;
         }
-        else if (_mediaItemsTotal != msg.getCount())
+        else
         {
-            _mediaItemsTotal = msg.getCount();
-            Logging.info(this, "Changed total number of items: " + _mediaItemsTotal.toString());
+            downloadCtrl.checkTotal(msg);
         }
 
+        downloadCtrl.addBlock(msg);
         _mediaItems.removeWhere((e) => isReturnMsg(e));
         _mediaItems.addAll(msg.getItems());
         _mediaItems.sort((ISCPMessage lhs, ISCPMessage rhs)
