@@ -19,6 +19,7 @@ import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/ListeningModeMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../utils/Convert.dart";
 import "../utils/Pair.dart";
 import "../utils/Platform.dart";
@@ -71,15 +72,18 @@ class CfgAudioControl extends CfgModule
 
     // Master volume maximum
     static const Pair<String, int> MASTER_VOLUME_MAX = Pair<String, int>("master_volume_max", 9999);
-    int _masterVolumeMax = MASTER_VOLUME_MAX.item2;
+    final List<int> _masterVolumeMax = [];
 
-    int get masterVolumeMax
-    => _masterVolumeMax;
+    int getMasterVolumeMax(int zone)
+    => zone < _masterVolumeMax.length ? _masterVolumeMax[zone] : MASTER_VOLUME_MAX.item2;
 
-    set masterVolumeMax(int value)
+    void setMasterVolumeMax(int zone, int value)
     {
-        _masterVolumeMax = value;
-        saveIntegerParameter(getModelDependentInt(MASTER_VOLUME_MAX), value);
+        if (zone < _masterVolumeMax.length)
+        {
+            _masterVolumeMax[zone] = value;
+        }
+        saveIntegerParameter(getModelDependentInt(MASTER_VOLUME_MAX, zone: zone), value);
     }
 
     // Integra modes
@@ -163,6 +167,11 @@ class CfgAudioControl extends CfgModule
                 orElse: () => VolumeUnit.ABSOLUTE);
         _zeroLevel = double.tryParse(getString(ZERO_LEVEL, doLog: true));
         _volumeKeys = Platform.isAndroid ? getBool(VOLUME_KEYS, doLog: true) : false;
+        _masterVolumeMax.clear();
+        for (int i = 0; i < ReceiverInformationMsg.defaultZones.length; i++)
+        {
+            _masterVolumeMax.add(getInt(getModelDependentInt(MASTER_VOLUME_MAX, zone: i), doLog: true));
+        }
         _zoneVolumeMax.clear();
         getString(ZONE_VOLUME_MAX, doLog: true).split(",").forEach((str) => _zoneVolumeMax.add(int.tryParse(str) ?? 0));
     }
@@ -170,14 +179,16 @@ class CfgAudioControl extends CfgModule
     @override
     void setReceiverInformation(StateManager stateManager)
     {
-        _masterVolumeMax = getInt(getModelDependentInt(MASTER_VOLUME_MAX), doLog: true);
+        _masterVolumeMax.clear();
         _zoneVolumeMax.clear();
         String volumeZoneMaxStr = "";
-        stateManager.state.receiverInformation.zones.forEach((z)
+        for (int i = 0; i < stateManager.state.receiverInformation.zones.length; i++)
         {
+            final Zone z = stateManager.state.receiverInformation.zones[i];
+            _masterVolumeMax.add(getInt(getModelDependentInt(MASTER_VOLUME_MAX, zone: i), doLog: true));
             _zoneVolumeMax.add(z.getVolMax);
             volumeZoneMaxStr += ("," + z.getVolMax.toString());
-        });
+        }
         saveStringParameter(ZONE_VOLUME_MAX, volumeZoneMaxStr.startsWith(",") ? volumeZoneMaxStr.substring(1) : volumeZoneMaxStr);
     }
 

@@ -144,6 +144,11 @@ class VolumeControlDeviceView extends UpdatableView
 
     void _showAudioControlDialog(final ViewContext viewContext, final BuildContext context)
     {
+        if (state.isMultiZone)
+        {
+            stateManager.sendQueries(state.allZonesState.getQueries(
+                state.protoType, state.receiverInformation, state.getActiveZone));
+        }
         showDialog(
             context: context,
             barrierDismissible: true,
@@ -194,7 +199,7 @@ class VolumeControlDeviceView extends UpdatableView
         final int zone = state.getActiveZone;
         final Zone? zoneInfo = state.getActiveZoneInfo;
         final int maxVolume = zoneInfo == null ? MasterVolumeMsg.MAX_VOLUME_1_STEP :
-            min(soundControl.getVolumeMax(zoneInfo), configuration.audioControl.masterVolumeMax);
+            min(soundControl.getVolumeMax(zoneInfo), configuration.audioControl.getMasterVolumeMax(zone));
         final Widget slider = CustomProgressBar(
             minValueStr: showMax ? "0" : "",
             maxValueStr: showMax ? SoundControlState.getVolumeLevelStr(maxVolume, zoneInfo) : "",

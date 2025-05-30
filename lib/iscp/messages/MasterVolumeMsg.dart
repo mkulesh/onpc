@@ -129,7 +129,7 @@ class MasterVolumeMsg extends ZonedMessage
     {
         if (isQuery)
         {
-            return _DCP_COMMANDS[0] + ISCPMessage.DCP_MSG_REQ;
+            return ((zoneIndex < _DCP_COMMANDS.length) ? _DCP_COMMANDS[zoneIndex] : _DCP_COMMANDS.first)  + ISCPMessage.DCP_MSG_REQ;
         }
         else if (zoneIndex < _DCP_COMMANDS.length)
         {

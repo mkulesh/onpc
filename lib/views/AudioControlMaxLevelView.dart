@@ -15,13 +15,14 @@
 import "dart:math";
 
 import "package:flutter/material.dart";
-import "package:flutter/widgets.dart";
 
+import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomProgressBar.dart";
+import "../widgets/CustomTextLabel.dart";
 import "UpdatableView.dart";
 
 class AudioControlMaxLevelView extends UpdatableView
@@ -39,34 +40,48 @@ class AudioControlMaxLevelView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final Zone? zoneInfo = state.getActiveZoneInfo;
-        final int maxVolume = state.soundControlState.getVolumeMax(zoneInfo);
+        final List<Widget> controls = [];
 
-        return CustomProgressBar(
-            caption: Strings.master_volume_max,
-            minValueStr: "0",
-            maxValueStr: SoundControlState.getVolumeLevelStr(maxVolume, zoneInfo),
-            maxValueNum: maxVolume,
-            currValue: min(maxVolume, configuration.audioControl.masterVolumeMax),
-            onCaption: (v)
-            => SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo),
-            onChanged: (v)
-            {
-                configuration.audioControl.masterVolumeMax = v;
-                stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
-            },
-            onDownButton: (v)
-            {
-                configuration.audioControl.masterVolumeMax = max(0,
-                    min(maxVolume, configuration.audioControl.masterVolumeMax) - 1);
-                stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
-            },
-            onUpButton: (v)
-            {
-                configuration.audioControl.masterVolumeMax = min(maxVolume, configuration.audioControl.masterVolumeMax + 1);
-                stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
-            },
-            isInDialog: true
+        // Title
+        controls.add(CustomTextLabel.normal(Strings.master_volume_max + ": " + Strings.audio_control_all_zones,
+            padding: DialogDimens.rowPadding));
+
+        for (int i = 0; i < state.receiverInformation.zones.length; i++)
+        {
+            final Zone zoneInfo = state.receiverInformation.zones[i];
+            final int maxVolume = state.soundControlState.getVolumeMax(zoneInfo);
+            final int curr = configuration.audioControl.getMasterVolumeMax(i);
+
+            controls.add(CustomProgressBar(
+                caption: configuration.appSettings.readZoneName(zoneInfo),
+                minValueStr: "0",
+                maxValueStr: SoundControlState.getVolumeLevelStr(maxVolume, zoneInfo),
+                maxValueNum: maxVolume,
+                currValue: min(maxVolume, curr),
+                onCaption: (v)
+                => SoundControlState.getVolumeLevelStr(v.floor(), zoneInfo),
+                onChanged: (v)
+                {
+                    configuration.audioControl.setMasterVolumeMax(i, v);
+                    stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
+                },
+                onDownButton: (v)
+                {
+                    configuration.audioControl.setMasterVolumeMax(i, max(0, min(maxVolume, curr) - 1));
+                    stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
+                },
+                onUpButton: (v)
+                {
+                    configuration.audioControl.setMasterVolumeMax(i, min(maxVolume, curr + 1));
+                    stateManager.triggerStateEvent(VOLUME_MAX_EVENT);
+                },
+                isInDialog: true
+            ));
+        }
+
+        return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: ListBody(children: controls)
         );
     }
 }

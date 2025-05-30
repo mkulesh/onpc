@@ -79,7 +79,7 @@ class AudioControlCurrentZoneView extends UpdatableView
 
         // Master volume
         {
-            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), ac.masterVolumeMax);
+            final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), ac.getMasterVolumeMax(zone));
 
             controls.add(CustomProgressBar(
                 caption: Strings.master_volume,

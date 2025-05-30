@@ -78,6 +78,7 @@ import "messages/TrackInfoMsg.dart";
 import "messages/TuningCommandMsg.dart";
 import "messages/VideoInformationMsg.dart";
 import "messages/XmlListInfoMsg.dart";
+import "state/AllZonesState.dart";
 import "state/DeviceSettingsState.dart";
 import "state/MediaListState.dart";
 import "state/MultiroomState.dart";
@@ -140,6 +141,12 @@ class State with ProtoTypeMix
 
     bool nonActiveZoneMsg(ISCPMessage msg)
     => (msg is ZonedMessage && msg.zoneIndex != getActiveZone);
+
+    // All zones state
+    final AllZonesState _allZonesState = AllZonesState();
+
+    AllZonesState get allZonesState
+    => _allZonesState;
 
     // Device settings
     final DeviceSettingsState _deviceSettingsState = DeviceSettingsState();
@@ -254,9 +261,10 @@ class State with ProtoTypeMix
         // A zoned message
         if (msg is ZonedMessage)
         {
+            final String? changed = allZonesState.processZonedMessage(msg, _receiverInformation, getActiveZone);
             if (nonActiveZoneMsg(msg))
             {
-                return null;
+                return changed;
             }
         }
 
@@ -625,6 +633,7 @@ class State with ProtoTypeMix
     void clear()
     {
         _receiverInformation.clear();
+        _allZonesState.clear();
         _deviceSettingsState.clear();
         _trackState.clear();
         _playbackState.clear();

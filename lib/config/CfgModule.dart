@@ -92,8 +92,11 @@ abstract class CfgModule
     String getModelDependentParameter(final String par)
     => par + "_" + getString(Configuration.MODEL);
 
-    Pair<String, int> getModelDependentInt(final Pair<String, int> par)
-    => Pair<String, int>(getModelDependentParameter(par.item1), par.item2);
+    Pair<String, int> getModelDependentInt(final Pair<String, int> par, {int zone = -1})
+    {
+        final String name = getModelDependentParameter(par.item1);
+        return Pair<String, int>(zone >= 0 ? name + "_" + zone.toString() : name, par.item2);
+    }
 
     void deleteParameter(final Pair<String, String> par, {String prefix = ""}) async
     {

@@ -18,6 +18,7 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
+import "../views/AudioControlAllZonesView.dart";
 import "../views/AudioControlCurrentZoneView.dart";
 import "../views/AudioControlChannelLevelView.dart";
 import "../views/AudioControlEqualizerView.dart";
@@ -29,6 +30,7 @@ import "../widgets/CustomImageButton.dart";
 enum _AudioControlMode
 {
     CURRENT_ZONE,
+    ALL_ZONES,
     CHANNEL_LEVEL,
     EQUALIZER,
     MAX_LEVEL
@@ -54,6 +56,8 @@ class _AudioControlDialogState extends State<AudioControlDialog>
     static const ExtEnum<_AudioControlMode> ValueEnum = ExtEnum<_AudioControlMode>([
             EnumItem(_AudioControlMode.CURRENT_ZONE,
                 descrList: Strings.l_audio_control_current_zone, icon: Drawables.audio_control_current_zone, defValue: true),
+            EnumItem(_AudioControlMode.ALL_ZONES,
+                descrList: Strings.l_audio_control_all_zones, icon: Drawables.audio_control_all_zones),
             EnumItem(_AudioControlMode.CHANNEL_LEVEL,
                 descrList: Strings.l_audio_control_channel_level, icon: Drawables.audio_control_channel_level),
             EnumItem(_AudioControlMode.EQUALIZER,
@@ -101,6 +105,10 @@ class _AudioControlDialogState extends State<AudioControlDialog>
             case _AudioControlMode.CURRENT_ZONE:
                 dialogContent = UpdatableWidget(key: Key(_mode.toString()),
                     child: AudioControlCurrentZoneView(viewContext));
+                break;
+            case _AudioControlMode.ALL_ZONES:
+                dialogContent = UpdatableWidget(key: Key(_mode.toString()),
+                    child: AudioControlAllZonesView(viewContext));
                 break;
             case _AudioControlMode.CHANNEL_LEVEL:
                 dialogContent = UpdatableWidget(key: Key(_mode.toString()),
@@ -155,6 +163,8 @@ class _AudioControlDialogState extends State<AudioControlDialog>
         final bool isDeveloper = viewContext.configuration.developerMode;
         switch (key)
         {
+            case _AudioControlMode.ALL_ZONES:
+                return viewContext.state.isMultiZone;
             case _AudioControlMode.CHANNEL_LEVEL:
                 return isDeveloper || viewContext.state.soundControlState.isChannelLevelAvailable(viewContext.state.protoType);
             case _AudioControlMode.EQUALIZER:
