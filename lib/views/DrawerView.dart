@@ -74,7 +74,6 @@ class DrawerView extends UpdatableView
             // Zones
             drawerItems.add(CustomDivider());
             drawerItems.add(CustomTextLabel.small(Strings.drawer_group_zone, padding: DrawerDimens.labelPadding));
-            final bool isMultiZone = state.receiverInformation.zones.length > 1;
             state.receiverInformation.zones.forEach((z)
             {
                 final bool active = (state.getActiveZoneInfo != null) ?
@@ -82,7 +81,7 @@ class DrawerView extends UpdatableView
                 final String friendlyName = configuration.appSettings.readZoneName(z);
                 drawerItems.add(_buildDrawerItem(
                     context, Drawables.drawerZone(z.getId), friendlyName, isSelected: active,
-                    editButton: isMultiZone ? CustomImageButton.small(
+                    editButton: state.isMultiZone ? CustomImageButton.small(
                         Drawables.drawer_edit_item,
                         Strings.pref_item_update,
                         onPressed: () => _showZoneEditDialog(context, friendlyName, z)
@@ -93,7 +92,7 @@ class DrawerView extends UpdatableView
                     }
                 ));
             });
-            if (isMultiZone)
+            if (state.isMultiZone)
             {
                 drawerItems.add(_buildDrawerItem(
                     context,

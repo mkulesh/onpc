@@ -107,13 +107,13 @@ class State with ProtoTypeMix
     bool get isOn
     => _receiverInformation.isOn;
 
-    // Device settings
-    final DeviceSettingsState _deviceSettingsState = DeviceSettingsState();
+    Selector? get getActualSelector
+    => _receiverInformation.deviceSelectors.firstWhereOrNull((s) => s.getId == mediaListState.inputType.getCode);
 
-    DeviceSettingsState get deviceSettingsState
-    => _deviceSettingsState;
+    NetworkService? get getNetworkService
+    => _receiverInformation.getNetworkService(_mediaListState.serviceType.getCode);
 
-    // Active zone
+    // Zones
     static const int DEFAULT_ACTIVE_ZONE = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
     int _activeZone = DEFAULT_ACTIVE_ZONE;
 
@@ -134,6 +134,18 @@ class State with ProtoTypeMix
 
     bool get isDefaultZone
     => _activeZone == DEFAULT_ACTIVE_ZONE;
+
+    bool get isMultiZone
+    => _receiverInformation.zones.length > 1;
+
+    bool nonActiveZoneMsg(ISCPMessage msg)
+    => (msg is ZonedMessage && msg.zoneIndex != getActiveZone);
+
+    // Device settings
+    final DeviceSettingsState _deviceSettingsState = DeviceSettingsState();
+
+    DeviceSettingsState get deviceSettingsState
+    => _deviceSettingsState;
 
     // Track state
     final TrackState _trackState = TrackState();
@@ -194,14 +206,10 @@ class State with ProtoTypeMix
     => _mediaFilterVisible;
 
     void closeMediaFilter()
-    {
-        _mediaFilterVisible = false;
-    }
+    => _mediaFilterVisible = false;
 
     void toggleMediaFilter()
-    {
-        _mediaFilterVisible = !_mediaFilterVisible;
-    }
+    => _mediaFilterVisible = !_mediaFilterVisible;
 
     // MessageScript state
     final ScriptsState scripts = ScriptsState();
@@ -241,7 +249,16 @@ class State with ProtoTypeMix
     String? update(ISCPMessage msg)
     {
         // Note: Use zone-independent message CODE here
-        // instead od zone-dependent msg.getCode
+        // instead of zone-dependent msg.getCode
+
+        // A zoned message
+        if (msg is ZonedMessage)
+        {
+            if (nonActiveZoneMsg(msg))
+            {
+                return null;
+            }
+        }
 
         // Receiver info
         if (!SKIP_XML_MESSAGES && msg is ReceiverInformationMsg)
@@ -544,16 +561,10 @@ class State with ProtoTypeMix
         return null;
     }
 
-    Selector? get getActualSelector
-    => _receiverInformation.deviceSelectors.firstWhereOrNull((s) => s.getId == mediaListState.inputType.getCode);
-
     bool get isCdInput
     => (mediaListState.inputType.key == InputSelector.CD) &&
             (_receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT1) ||
                 _receiverInformation.isControlExists(CdPlayerOperationCommandMsg.CONTROL_CD_INT2));
-
-    NetworkService? get getNetworkService
-    => _receiverInformation.getNetworkService(_mediaListState.serviceType.getCode);
 
     bool _processCustomPopup(CustomPopupMsg msg)
     {
@@ -629,5 +640,4 @@ class State with ProtoTypeMix
         final bool isMediaList = mediaListState.numberOfLayers > 0 && mediaListState.titleBar.isNotEmpty;
         return !SKIP_XML_MESSAGES && (isMediaList || mediaListState.isSimpleInput);
     }
-
 }

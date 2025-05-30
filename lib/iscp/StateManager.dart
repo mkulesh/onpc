@@ -384,12 +384,6 @@ class StateManager
             return multiroomChange;
         }
 
-        if (msg is ZonedMessage && msg.zoneIndex != state.getActiveZone)
-        {
-            Logging.info(this, "message ignored: non active zone " + msg.zoneIndex.toString());
-            return null;
-        }
-
         // Ignore TimeInfoMsg if device is off
         if (msg is TimeInfoMsg && !state.isOn)
         {
@@ -405,6 +399,10 @@ class StateManager
 
         final PlayStatus playStatus = state.playbackState.playStatus;
         final String? changed = state.update(msg) ?? multiroomChange;
+        if (_state.nonActiveZoneMsg(msg))
+        {
+            return changed;
+        }
 
         // no further message handling, if power off
         if (!state.isOn)
@@ -611,14 +609,12 @@ class StateManager
             return multiroomChange;
         }
 
-        if (msg is ZonedMessage && msg.zoneIndex != state.getActiveZone)
-        {
-            Logging.info(this, "message ignored: non active zone " + msg.zoneIndex.toString());
-            return null;
-        }
-
         final PlayStatus playStatus = state.playbackState.playStatus;
         final String? changed = state.update(msg);
+        if (_state.nonActiveZoneMsg(msg))
+        {
+            return changed;
+        }
 
         if (msg is ReceiverInformationMsg)
         {

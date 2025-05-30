@@ -162,12 +162,11 @@ class WidgetStateManager
 
     void _handleMessage(ISCPMessage msg)
     {
-        if (msg is ZonedMessage && msg.zoneIndex != _state.getActiveZone)
+        _state.update(msg);
+        if (_state.nonActiveZoneMsg(msg))
         {
-            Logging.info(this, "-> message ignored: non active zone " + msg.zoneIndex.toString());
             return;
         }
-        _state.update(msg);
         if (_updateNotifier != null)
         {
             _updateNotifier!.sink.add(msg);
