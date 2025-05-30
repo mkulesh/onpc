@@ -24,7 +24,7 @@ import "../utils/Logging.dart";
 import "../widgets/CustomProgressBar.dart";
 import "UpdatableView.dart";
 
-class MasterVolumeMaxView extends UpdatableView
+class AudioControlMaxLevelView extends UpdatableView
 {
     static const String VOLUME_MAX_EVENT = "VOLUME_MAX_CHANGE";
 
@@ -32,7 +32,7 @@ class MasterVolumeMaxView extends UpdatableView
         VOLUME_MAX_EVENT
     ];
 
-    MasterVolumeMaxView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    AudioControlMaxLevelView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

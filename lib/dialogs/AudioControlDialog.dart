@@ -17,10 +17,10 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
-import "../views/AudioControlView.dart";
-import "../views/ChannelLevelView.dart";
-import "../views/EqualizerView.dart";
-import "../views/MasterVolumeMaxView.dart";
+import "../views/AudioControlCurrentZoneView.dart";
+import "../views/AudioControlChannelLevelView.dart";
+import "../views/AudioControlEqualizerView.dart";
+import "../views/AudioControlMaxLevelView.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomDialogTitle.dart";
 
@@ -69,7 +69,7 @@ class _AudioControlDialogState extends State<AudioControlDialog>
         {
             case AudioControlType.TONE_CONTROL:
                 dialogTitle = CustomDialogTitle(Strings.app_control_audio_control, Drawables.volume_audio_control);
-                dialogContent = UpdatableWidget(child: AudioControlView(viewContext));
+                dialogContent = UpdatableWidget(child: AudioControlCurrentZoneView(viewContext));
                 if (viewContext.state.soundControlState.isChannelLevelAvailable(widget._viewContext.state.protoType))
                 {
                     actions.add(TextButton(
@@ -81,19 +81,19 @@ class _AudioControlDialogState extends State<AudioControlDialog>
                 break;
             case AudioControlType.MASTER_VOLUME_MAX:
                 dialogTitle = CustomDialogTitle(Strings.master_volume_restrict, Drawables.volume_max_limit);
-                dialogContent = UpdatableWidget(child: MasterVolumeMaxView(viewContext));
+                dialogContent = UpdatableWidget(child: AudioControlMaxLevelView(viewContext));
                 break;
             case AudioControlType.EQUALIZER:
                 dialogTitle = CustomDialogTitle(Strings.equalizer, Drawables.equalizer);
-                dialogContent = UpdatableWidget(child: EqualizerView(viewContext));
+                dialogContent = UpdatableWidget(child: AudioControlEqualizerView(viewContext));
                 break;
             case AudioControlType.CHANNEL_LEVEL:
                 dialogTitle = CustomDialogTitle(Strings.channel_level, Drawables.equalizer);
-                dialogContent = UpdatableWidget(child: ChannelLevelView(viewContext));
+                dialogContent = UpdatableWidget(child: AudioControlChannelLevelView(viewContext));
                 actions.add(TextButton(
                     child: Text(Strings.action_default.toUpperCase(), style: td.textTheme.labelLarge),
                     onPressed: ()
-                    => ChannelLevelView.sendDefaultChannelLevel(viewContext.stateManager)
+                    => AudioControlChannelLevelView.sendDefaultChannelLevel(viewContext.stateManager)
                 ));
                 break;
         }

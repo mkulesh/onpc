@@ -26,7 +26,7 @@ import "../widgets/CustomTextLabel.dart";
 import "../widgets/VerticalSlider.dart";
 import "UpdatableView.dart";
 
-class ChannelLevelView extends UpdatableView
+class AudioControlChannelLevelView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         AllChannelLevelMsg.CODE
@@ -36,7 +36,7 @@ class ChannelLevelView extends UpdatableView
     final int VALUE_SHIFT = (AllChannelLevelMsg.VALUES / 2).floor();
     final int DIVISIONS = (AllChannelLevelMsg.VALUES / 2).floor();
 
-    ChannelLevelView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    AudioControlChannelLevelView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

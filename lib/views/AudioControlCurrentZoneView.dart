@@ -39,13 +39,13 @@ import "../utils/Pair.dart";
 import "../widgets/CustomCheckbox.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomProgressBar.dart";
-import "MasterVolumeMaxView.dart";
+import "AudioControlMaxLevelView.dart";
 import "UpdatableView.dart";
 
-class AudioControlView extends UpdatableView
+class AudioControlCurrentZoneView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        MasterVolumeMaxView.VOLUME_MAX_EVENT,
+        AudioControlMaxLevelView.VOLUME_MAX_EVENT,
         StateManager.WAITING_FOR_DATA_EVENT,
         Configuration.CONFIGURATION_EVENT,
         MasterVolumeMsg.CODE,
@@ -57,7 +57,7 @@ class AudioControlView extends UpdatableView
         AudioBalanceMsg.CODE
     ];
 
-    AudioControlView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    AudioControlCurrentZoneView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)

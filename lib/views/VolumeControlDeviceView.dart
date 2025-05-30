@@ -31,7 +31,7 @@ import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomProgressBar.dart";
-import "MasterVolumeMaxView.dart";
+import "AudioControlMaxLevelView.dart";
 import "UpdatableView.dart";
 
 class VolumeControlDeviceView extends UpdatableView
@@ -40,7 +40,7 @@ class VolumeControlDeviceView extends UpdatableView
         StateManager.ZONE_EVENT,
         Configuration.CONFIGURATION_EVENT,
         PowerStatusMsg.CODE,
-        MasterVolumeMaxView.VOLUME_MAX_EVENT,
+        AudioControlMaxLevelView.VOLUME_MAX_EVENT,
         AudioMutingMsg.CODE,
         MasterVolumeMsg.CODE,
         AllChannelEqualizerMsg.CODE

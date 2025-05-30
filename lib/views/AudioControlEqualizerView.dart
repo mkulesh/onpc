@@ -19,7 +19,7 @@ import "../utils/Logging.dart";
 import "../widgets/VerticalSlider.dart";
 import "UpdatableView.dart";
 
-class EqualizerView extends UpdatableView
+class AudioControlEqualizerView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
         AllChannelEqualizerMsg.CODE
@@ -29,7 +29,7 @@ class EqualizerView extends UpdatableView
     static int VALUE_SHIFT = (AllChannelEqualizerMsg.VALUES / 2).floor();
     final int DIVISIONS = (AllChannelEqualizerMsg.VALUES / 2).floor();
 
-    EqualizerView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
+    AudioControlEqualizerView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
