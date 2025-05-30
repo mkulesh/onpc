@@ -19,9 +19,7 @@ import "package:flutter/material.dart";
 import "../config/CfgAudioControl.dart";
 import "../config/Configuration.dart";
 import "../constants/Dimens.dart";
-import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
-import "../dialogs/AudioControlDialog.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AudioBalanceMsg.dart";
@@ -37,8 +35,8 @@ import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "../widgets/CustomCheckbox.dart";
-import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomProgressBar.dart";
+import "../widgets/CustomTextLabel.dart";
 import "AudioControlMaxLevelView.dart";
 import "UpdatableView.dart";
 
@@ -71,16 +69,17 @@ class AudioControlCurrentZoneView extends UpdatableView
         final int zone = state.getActiveZone;
         final Zone? zoneInfo = state.getActiveZoneInfo;
 
+        // Title: zone name if applicable
+        if (state.isMultiZone && state.getActiveZoneInfo != null)
+        {
+            final String zoneName = configuration.appSettings.readZoneName(state.getActiveZoneInfo!);
+            controls.add(CustomTextLabel.normal(Strings.drawer_group_zone + ": " + zoneName,
+                padding: DialogDimens.rowPadding));
+        }
+
         // Master volume
         {
             final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), ac.masterVolumeMax);
-
-            final Widget maxVolumeBtn = CustomImageButton.small(
-                Drawables.audio_control_max_level,
-                Strings.audio_control_max_level,
-                onPressed: ()
-                => showAudioControlDialog(viewContext, context, AudioControlType.MASTER_VOLUME_MAX)
-            );
 
             controls.add(CustomProgressBar(
                 caption: Strings.master_volume,
@@ -100,8 +99,7 @@ class AudioControlCurrentZoneView extends UpdatableView
                 => stateManager.sendMessage(MasterVolumeMsg.output(zone, MasterVolume.DOWN)),
                 onUpButton: (v)
                 => stateManager.sendMessage(MasterVolumeMsg.output(zone, MasterVolume.UP)),
-                isInDialog: true,
-                extendedCmd: maxVolumeBtn
+                isInDialog: true
             ));
         }
 

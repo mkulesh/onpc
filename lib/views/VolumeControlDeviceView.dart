@@ -58,7 +58,6 @@ class VolumeControlDeviceView extends UpdatableView
 
         final SoundControlState soundControl = state.soundControlState;
         final bool volumeValid = state.isOn && soundControl.volumeLevel != MasterVolumeMsg.NO_LEVEL;
-        final bool isEqualizerAvailable = state.isOn && state.soundControlState.isEqualizerAvailable;
 
         if (_soundControlType == SoundControlType.DEVICE_BUTTONS)
         {
@@ -69,8 +68,7 @@ class VolumeControlDeviceView extends UpdatableView
                     _audioMutingBtn(soundControl),
                     _volumeDownBtn(),
                     _masterVolumeBtn(context, soundControl, volumeValid),
-                    _volumeUpBtn(),
-                    isEqualizerAvailable? _equalizerBtn(context) : SizedBox.shrink()
+                    _volumeUpBtn()
                 ]
             );
         }
@@ -82,8 +80,7 @@ class VolumeControlDeviceView extends UpdatableView
                 children: [
                     _masterVolumeBtn(context, soundControl, volumeValid),
                     _slider(soundControl, volumeValid, updateCallback, false),
-                    _audioMutingBtn(soundControl),
-                    isEqualizerAvailable? _equalizerBtn(context) : SizedBox.shrink()
+                    _audioMutingBtn(soundControl)
                 ],
             );
         }
@@ -97,8 +94,7 @@ class VolumeControlDeviceView extends UpdatableView
                     _volumeDownBtn(),
                     _slider(soundControl, volumeValid, updateCallback, false),
                     _volumeUpBtn(),
-                    _audioMutingBtn(soundControl),
-                    isEqualizerAvailable? _equalizerBtn(context) : SizedBox.shrink()
+                    _audioMutingBtn(soundControl)
                 ],
             );
         }
@@ -115,8 +111,7 @@ class VolumeControlDeviceView extends UpdatableView
                             _audioMutingBtn(soundControl),
                             _volumeDownBtn(),
                             _masterVolumeBtn(context, soundControl, volumeValid),
-                            _volumeUpBtn(),
-                            isEqualizerAvailable? _equalizerBtn(context) : SizedBox.shrink()
+                            _volumeUpBtn()
                         ]
                     ),
                     Row(
@@ -142,8 +137,18 @@ class VolumeControlDeviceView extends UpdatableView
             Strings.audio_control,
             text: volumeValid ? volumeLevelStr : "",
             onPressed: ()
-            => showAudioControlDialog(viewContext, context, AudioControlType.TONE_CONTROL),
+            => _showAudioControlDialog(viewContext, context),
             isEnabled: volumeValid
+        );
+    }
+
+    void _showAudioControlDialog(final ViewContext viewContext, final BuildContext context)
+    {
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => AudioControlDialog(viewContext)
         );
     }
 
@@ -181,16 +186,6 @@ class VolumeControlDeviceView extends UpdatableView
             => stateManager.sendMessage(cmd),
             isEnabled: state.isOn,
             isSelected: state.isOn && soundControl.audioMuting.key == AudioMuting.ON
-        );
-    }
-
-    Widget _equalizerBtn(BuildContext context)
-    {
-        return CustomImageButton.normal(
-            Drawables.audio_control_equalizer,
-            Strings.audio_control_equalizer,
-            onPressed: ()
-            => showAudioControlDialog(viewContext, context, AudioControlType.EQUALIZER)
         );
     }
 

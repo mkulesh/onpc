@@ -17,37 +17,28 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
+import "../iscp/messages/EnumParameterMsg.dart";
 import "../views/AudioControlCurrentZoneView.dart";
 import "../views/AudioControlChannelLevelView.dart";
 import "../views/AudioControlEqualizerView.dart";
 import "../views/AudioControlMaxLevelView.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/CustomDialogTitle.dart";
+import "../widgets/CustomImageButton.dart";
 
-enum AudioControlType
+enum _AudioControlMode
 {
-    TONE_CONTROL,
-    MASTER_VOLUME_MAX,
+    CURRENT_ZONE,
+    CHANNEL_LEVEL,
     EQUALIZER,
-    CHANNEL_LEVEL
-}
-
-void showAudioControlDialog(final ViewContext viewContext, final BuildContext context, final AudioControlType type)
-{
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext c)
-        => AudioControlDialog(viewContext, type)
-    );
+    MAX_LEVEL
 }
 
 class AudioControlDialog extends StatefulWidget
 {
     final ViewContext _viewContext;
-    final AudioControlType _audioControlType;
 
-    AudioControlDialog(this._viewContext, this._audioControlType);
+    AudioControlDialog(this._viewContext);
 
     @override _AudioControlDialogState createState()
     => _AudioControlDialogState();
@@ -55,68 +46,121 @@ class AudioControlDialog extends StatefulWidget
 
 class _AudioControlDialogState extends State<AudioControlDialog>
 {
+    _AudioControlMode _mode = _AudioControlMode.CURRENT_ZONE;
+
     ViewContext get viewContext
     => widget._viewContext;
+
+    static const ExtEnum<_AudioControlMode> ValueEnum = ExtEnum<_AudioControlMode>([
+            EnumItem(_AudioControlMode.CURRENT_ZONE,
+                descrList: Strings.l_audio_control_current_zone, icon: Drawables.audio_control_current_zone, defValue: true),
+            EnumItem(_AudioControlMode.CHANNEL_LEVEL,
+                descrList: Strings.l_audio_control_channel_level, icon: Drawables.audio_control_channel_level),
+            EnumItem(_AudioControlMode.EQUALIZER,
+                descrList: Strings.l_audio_control_equalizer, icon: Drawables.audio_control_equalizer),
+            EnumItem(_AudioControlMode.MAX_LEVEL,
+                descrList: Strings.l_audio_control_max_level, icon: Drawables.audio_control_max_level)
+        ]);
 
     @override
     Widget build(BuildContext context)
     {
         final ThemeData td = Theme.of(context);
 
-        Widget dialogTitle, dialogContent;
-        final List<Widget> actions = [];
-        switch(widget._audioControlType)
+        final List<Widget> buttons = [];
+        ValueEnum.values.forEach((item)
         {
-            case AudioControlType.TONE_CONTROL:
-                dialogTitle = CustomDialogTitle(Strings.audio_control, Drawables.audio_control);
-                dialogContent = UpdatableWidget(child: AudioControlCurrentZoneView(viewContext));
-                if (viewContext.state.soundControlState.isChannelLevelAvailable(widget._viewContext.state.protoType))
-                {
-                    actions.add(TextButton(
-                        child: Text(Strings.audio_control_channel_level.toUpperCase(), style: td.textTheme.labelLarge),
-                        onPressed: ()
-                        => showAudioControlDialog(viewContext, context, AudioControlType.CHANNEL_LEVEL)
-                    ));
-                }
-                break;
-            case AudioControlType.MASTER_VOLUME_MAX:
-                dialogTitle = CustomDialogTitle(Strings.audio_control_max_level, Drawables.audio_control_max_level);
-                dialogContent = UpdatableWidget(child: AudioControlMaxLevelView(viewContext));
-                break;
-            case AudioControlType.EQUALIZER:
-                dialogTitle = CustomDialogTitle(Strings.audio_control_equalizer, Drawables.audio_control_equalizer);
-                dialogContent = UpdatableWidget(child: AudioControlEqualizerView(viewContext));
-                break;
-            case AudioControlType.CHANNEL_LEVEL:
-                dialogTitle = CustomDialogTitle(Strings.audio_control_channel_level, Drawables.audio_control_channel_level);
-                dialogContent = UpdatableWidget(child: AudioControlChannelLevelView(viewContext));
-                actions.add(TextButton(
-                    child: Text(Strings.action_default.toUpperCase(), style: td.textTheme.labelLarge),
+            if (_isBtnAvailable(item.key))
+            {
+                Widget btn = CustomImageButton.normal(
+                    item.icon!,
+                    item.description,
+                    isSelected: _mode == item.key,
                     onPressed: ()
-                    => AudioControlChannelLevelView.sendDefaultChannelLevel(viewContext.stateManager)
-                ));
-                break;
-        }
+                    {
+                        setState(()
+                        {
+                            _mode = item.key;
+                        });
+                    });
+                if (_mode == item.key)
+                {
+                    btn = Container(
+                        decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(color: td.indicatorColor, width: 2.0))),
+                        child: btn);
+                }
+                buttons.add(btn);
+            }
+        });
 
-        if (widget._audioControlType != AudioControlType.MASTER_VOLUME_MAX)
+        final List<Widget> actions = [];
+        Widget dialogContent;
+        switch (_mode)
         {
-            dialogContent = SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: dialogContent);
+            case _AudioControlMode.CURRENT_ZONE:
+                dialogContent = UpdatableWidget(key: Key(_mode.toString()),
+                    child: AudioControlCurrentZoneView(viewContext));
+                break;
+            case _AudioControlMode.CHANNEL_LEVEL:
+                dialogContent = UpdatableWidget(key: Key(_mode.toString()),
+                    child: AudioControlChannelLevelView(viewContext));
+                actions.add(TextButton(
+                        child: Text(Strings.action_default.toUpperCase(), style: td.textTheme.labelLarge),
+                        onPressed: ()
+                        => AudioControlChannelLevelView.sendDefaultChannelLevel(viewContext.stateManager)
+                    ));
+                break;
+            case _AudioControlMode.EQUALIZER:
+                dialogContent = UpdatableWidget(key: Key(_mode.toString()),
+                    child: AudioControlEqualizerView(viewContext));
+                break;
+            case _AudioControlMode.MAX_LEVEL:
+                dialogContent = UpdatableWidget(key: Key(_mode.toString()),
+                    child: AudioControlMaxLevelView(viewContext));
+                break;
         }
 
         actions.add(TextButton(
-            child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
-            onPressed: ()
-            => Navigator.of(context).pop()
-        ));
+                child: Text(Strings.action_ok.toUpperCase(), style: td.textTheme.labelLarge),
+                onPressed: ()
+                => Navigator.of(context).pop()
+            )
+        );
 
         return AlertDialog(
-            title: dialogTitle,
+            title: CustomDialogTitle(Strings.audio_control, Drawables.audio_control),
             contentPadding: DialogDimens.contentPadding,
-            content: dialogContent,
+            content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                    Container(
+                        padding: DialogDimens.rowPadding,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: buttons)),
+                    Expanded(
+                        child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: dialogContent))
+                ]
+            ),
             insetPadding: DialogDimens.contentPadding,
             actions: actions
         );
+    }
+
+    bool _isBtnAvailable(_AudioControlMode key)
+    {
+        final bool isDeveloper = viewContext.configuration.developerMode;
+        switch (key)
+        {
+            case _AudioControlMode.CHANNEL_LEVEL:
+                return isDeveloper || viewContext.state.soundControlState.isChannelLevelAvailable(viewContext.state.protoType);
+            case _AudioControlMode.EQUALIZER:
+                return isDeveloper || viewContext.state.soundControlState.isEqualizerAvailable;
+            default:
+                return true;
+        }
     }
 }
