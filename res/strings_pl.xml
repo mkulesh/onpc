@@ -314,11 +314,16 @@ Enjoy!""</string>
     <string name="master_volume_up1">Głośniej o 1dB</string>
     <string name="master_volume_down1">Ciszej o 1dB</string>
     <string name="tone_direct">Tone Direct</string>
-    <string name="master_volume_restrict">Ogranicz poziom głośności</string>
     <string name="master_volume_max">Maksymalny</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="channel_level">Poziom kanału</string>
     <string name="audio_balance">Balance</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Sterowanie dźwiękiem</string>
+    <string name="audio_control_current_zone">Obecna strefa</string>
+    <string name="audio_control_all_zones">Wszystkie strefy</string>
+    <string name="audio_control_channel_level">Poziom kanału</string>
+    <string name="audio_control_equalizer">Equalizer</string>
+    <string name="audio_control_max_level">Ogranicz poziom głośności</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>

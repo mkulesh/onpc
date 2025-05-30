@@ -138,8 +138,8 @@ class VolumeControlDeviceView extends UpdatableView
             SoundControlState.getRelativeLevelStr(volumeLevel, state.getActiveZoneInfo, configuration.audioControl)
             : SoundControlState.getVolumeLevelStr( volumeLevel, state.getActiveZoneInfo);
         return CustomImageButton.normal(
-            Drawables.volume_audio_control,
-            Strings.app_control_audio_control,
+            Drawables.audio_control,
+            Strings.audio_control,
             text: volumeValid ? volumeLevelStr : "",
             onPressed: ()
             => showAudioControlDialog(viewContext, context, AudioControlType.TONE_CONTROL),
@@ -187,8 +187,8 @@ class VolumeControlDeviceView extends UpdatableView
     Widget _equalizerBtn(BuildContext context)
     {
         return CustomImageButton.normal(
-            Drawables.equalizer,
-            Strings.equalizer,
+            Drawables.audio_control_equalizer,
+            Strings.audio_control_equalizer,
             onPressed: ()
             => showAudioControlDialog(viewContext, context, AudioControlType.EQUALIZER)
         );

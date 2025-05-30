@@ -194,7 +194,7 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         elements.add(_customSwitchPreference(td,
             Strings.pref_force_audio_control,
             CfgAudioControl.FORCE_AUDIO_CONTROL,
-            icon: Drawables.volume_audio_control));
+            icon: Drawables.audio_control));
         elements.add(ListTile(
             leading: _getIcon(td, Drawables.pref_volume_unit),
             title: CustomTextLabel.normal(Strings.pref_volume_unit),

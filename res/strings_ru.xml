@@ -311,11 +311,16 @@ Copyright © 2019-2025 by __Михаил Кулеш__
     <string name="master_volume_up1">Повысить громкость на 1dB</string>
     <string name="master_volume_down1">Понизить громкость на 1dB</string>
     <string name="tone_direct">DIRECT</string>
-    <string name="master_volume_restrict">Ограничить максимальную громкость</string>
     <string name="master_volume_max">Максимум</string>
-    <string name="equalizer">Эквалайзер</string>
-    <string name="channel_level">Уровень каналов</string>
     <string name="audio_balance">Баланс</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Контроль звука</string>
+    <string name="audio_control_current_zone">Текущая зона</string>
+    <string name="audio_control_all_zones">Все зоны</string>
+    <string name="audio_control_channel_level">Уровень каналов</string>
+    <string name="audio_control_equalizer">Эквалайзер</string>
+    <string name="audio_control_max_level">Ограничить максимальную громкость</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Следующий канал</string>

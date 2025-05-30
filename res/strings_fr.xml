@@ -312,11 +312,16 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="master_volume_up1">Augmentation volume d\'1dB</string>
     <string name="master_volume_down1">Diminution volume d\'1dB</string>
     <string name="tone_direct">DIRECT</string>
-    <string name="master_volume_restrict">Restreindre le volume</string>
     <string name="master_volume_max">Maximum</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="channel_level">Niveau de canal</string>
     <string name="audio_balance">Balance</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Réglages Audio</string>
+    <string name="audio_control_current_zone">Zone actuelle</string>
+    <string name="audio_control_all_zones">Toutes les zones</string>
+    <string name="audio_control_channel_level">Niveau de canal</string>
+    <string name="audio_control_equalizer">Equalizer</string>
+    <string name="audio_control_max_level">Restreindre le volume</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Présélection haut</string>

@@ -76,8 +76,8 @@ class AudioControlCurrentZoneView extends UpdatableView
             final int maxVolume = min(soundControl.getVolumeMax(zoneInfo), ac.masterVolumeMax);
 
             final Widget maxVolumeBtn = CustomImageButton.small(
-                Drawables.volume_max_limit,
-                Strings.master_volume_restrict,
+                Drawables.audio_control_max_level,
+                Strings.audio_control_max_level,
                 onPressed: ()
                 => showAudioControlDialog(viewContext, context, AudioControlType.MASTER_VOLUME_MAX)
             );

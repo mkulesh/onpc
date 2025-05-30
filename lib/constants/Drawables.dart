@@ -166,9 +166,13 @@ class Drawables
     static const String volume_amp_down = BUTTONS_PATH + "volume_amp_down.svg";
     static const String volume_amp_muting = BUTTONS_PATH + "volume_amp_muting.svg";
     static const String volume_amp_up = BUTTONS_PATH + "volume_amp_up.svg";
-    static const String volume_audio_control = BUTTONS_PATH + "volume_audio_control.svg";
-    static const String volume_max_limit = BUTTONS_PATH + "volume_max_limit.svg";
-    static const String equalizer = BUTTONS_PATH + "equalizer.svg";
+
+    static const String audio_control = BUTTONS_PATH + "audio_control.svg";
+    static const String audio_control_current_zone = BUTTONS_PATH + "audio_control_current_zone.svg";
+    static const String audio_control_all_zones = BUTTONS_PATH + "audio_control_all_zones.svg";
+    static const String audio_control_channel_level = BUTTONS_PATH + "audio_control_channel_level.svg";
+    static const String audio_control_equalizer = BUTTONS_PATH + "audio_control_equalizer.svg";
+    static const String audio_control_max_level = BUTTONS_PATH + "audio_control_max_level.svg";
 
     static const String numeric_0 = BUTTONS_PATH + "numeric_0.svg";
     static const String numeric_1 = BUTTONS_PATH + "numeric_1.svg";

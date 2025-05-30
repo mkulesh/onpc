@@ -1727,14 +1727,6 @@ Enjoy!"""];
         /*pl*/ "Tone Direct"];
     static String get tone_direct => l_tone_direct[_language];
 
-    static const List<String> l_master_volume_restrict = [
-        /*en*/ "Restrict volume level",
-        /*ru*/ "Ограничить максимальную громкость",
-        /*de*/ "Lautstärke einschränken",
-        /*fr*/ "Restreindre le volume",
-        /*pl*/ "Ogranicz poziom głośności"];
-    static String get master_volume_restrict => l_master_volume_restrict[_language];
-
     static const List<String> l_master_volume_max = [
         /*en*/ "Maximum",
         /*ru*/ "Максимум",
@@ -1743,22 +1735,6 @@ Enjoy!"""];
         /*pl*/ "Maksymalny"];
     static String get master_volume_max => l_master_volume_max[_language];
 
-    static const List<String> l_equalizer = [
-        /*en*/ "Equalizer",
-        /*ru*/ "Эквалайзер",
-        /*de*/ "Equalizer",
-        /*fr*/ "Equalizer",
-        /*pl*/ "Equalizer"];
-    static String get equalizer => l_equalizer[_language];
-
-    static const List<String> l_channel_level = [
-        /*en*/ "Channel level",
-        /*ru*/ "Уровень каналов",
-        /*de*/ "Kanal-Lautstärke",
-        /*fr*/ "Niveau de canal",
-        /*pl*/ "Poziom kanału"];
-    static String get channel_level => l_channel_level[_language];
-
     static const List<String> l_audio_balance = [
         /*en*/ "Balance",
         /*ru*/ "Баланс",
@@ -1766,6 +1742,54 @@ Enjoy!"""];
         /*fr*/ "Balance",
         /*pl*/ "Balance"];
     static String get audio_balance => l_audio_balance[_language];
+
+    static const List<String> l_audio_control = [
+        /*en*/ "Audio control",
+        /*ru*/ "Контроль звука",
+        /*de*/ "Audiosteuerung",
+        /*fr*/ "Réglages Audio",
+        /*pl*/ "Sterowanie dźwiękiem"];
+    static String get audio_control => l_audio_control[_language];
+
+    static const List<String> l_audio_control_current_zone = [
+        /*en*/ "Current zone",
+        /*ru*/ "Текущая зона",
+        /*de*/ "Aktuelle Zone",
+        /*fr*/ "Zone actuelle",
+        /*pl*/ "Obecna strefa"];
+    static String get audio_control_current_zone => l_audio_control_current_zone[_language];
+
+    static const List<String> l_audio_control_all_zones = [
+        /*en*/ "All zones",
+        /*ru*/ "Все зоны",
+        /*de*/ "Alle Zonen",
+        /*fr*/ "Toutes les zones",
+        /*pl*/ "Wszystkie strefy"];
+    static String get audio_control_all_zones => l_audio_control_all_zones[_language];
+
+    static const List<String> l_audio_control_channel_level = [
+        /*en*/ "Channel level",
+        /*ru*/ "Уровень каналов",
+        /*de*/ "Kanal-Lautstärke",
+        /*fr*/ "Niveau de canal",
+        /*pl*/ "Poziom kanału"];
+    static String get audio_control_channel_level => l_audio_control_channel_level[_language];
+
+    static const List<String> l_audio_control_equalizer = [
+        /*en*/ "Equalizer",
+        /*ru*/ "Эквалайзер",
+        /*de*/ "Equalizer",
+        /*fr*/ "Equalizer",
+        /*pl*/ "Equalizer"];
+    static String get audio_control_equalizer => l_audio_control_equalizer[_language];
+
+    static const List<String> l_audio_control_max_level = [
+        /*en*/ "Restrict volume level",
+        /*ru*/ "Ограничить максимальную громкость",
+        /*de*/ "Lautstärke einschränken",
+        /*fr*/ "Restreindre le volume",
+        /*pl*/ "Ogranicz poziom głośności"];
+    static String get audio_control_max_level => l_audio_control_max_level[_language];
 
     static const List<String> l_preset_command_up = [
         /*en*/ "Sets preset wrap-around up",

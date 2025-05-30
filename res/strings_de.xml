@@ -313,11 +313,16 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="master_volume_up1">1dB lauter</string>
     <string name="master_volume_down1">1dB leiser</string>
     <string name="tone_direct">Ton Direct</string>
-    <string name="master_volume_restrict">Lautstärke einschränken</string>
     <string name="master_volume_max">Maximum</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="channel_level">Kanal-Lautstärke</string>
     <string name="audio_balance">Balance</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Audiosteuerung</string>
+    <string name="audio_control_current_zone">Aktuelle Zone</string>
+    <string name="audio_control_all_zones">Alle Zonen</string>
+    <string name="audio_control_channel_level">Kanal-Lautstärke</string>
+    <string name="audio_control_equalizer">Equalizer</string>
+    <string name="audio_control_max_level">Lautstärke einschränken</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Nächster gespeicherter Sender</string>

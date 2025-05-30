@@ -370,11 +370,16 @@ Enjoy!""</string>
     <string name="master_volume_up1">Sets volume level up 1dB step</string>
     <string name="master_volume_down1">Sets volume level down 1dB step</string>
     <string name="tone_direct">Tone Direct</string>
-    <string name="master_volume_restrict">Restrict volume level</string>
     <string name="master_volume_max">Maximum</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="channel_level">Channel level</string>
     <string name="audio_balance">Balance</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Audio control</string>
+    <string name="audio_control_current_zone">Current zone</string>
+    <string name="audio_control_all_zones">All zones</string>
+    <string name="audio_control_channel_level">Channel level</string>
+    <string name="audio_control_equalizer">Equalizer</string>
+    <string name="audio_control_max_level">Restrict volume level</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Sets preset wrap-around up</string>

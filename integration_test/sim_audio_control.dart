@@ -56,8 +56,8 @@ void main() {
 }
 
 Future<void> _testEqualizer(final StateManager sm, final OnpcTestUtils tu) async {
-  await tu.findAndTap("Test equalizer", () => find.byTooltip(Strings.equalizer), delay: OnpcTestUtils.NORMAL_DELAY);
-  expect(find.text(Strings.equalizer), findsOneWidget);
+  await tu.findAndTap("Test equalizer", () => find.byTooltip(Strings.audio_control_equalizer), delay: OnpcTestUtils.NORMAL_DELAY);
+  expect(find.text(Strings.audio_control_equalizer), findsOneWidget);
   expect(find.text("-12dB"), findsOneWidget);
   expect(find.text("+12dB"), findsOneWidget);
   final List<Pair<String, String>> messages = [
@@ -84,8 +84,8 @@ Future<void> _testChannelLevel(final StateManager sm, final OnpcTestUtils tu) as
       delay: OnpcTestUtils.NORMAL_DELAY);
   expect(find.text(Strings.app_control_audio_control), findsOneWidget);
   expect(find.textContaining(Strings.master_volume), findsOneWidget);
-  expect(find.text(Strings.channel_level.toUpperCase()), findsOneWidget);
-  await tu.findAndTap("Test channel level2", () => find.text(Strings.channel_level.toUpperCase()),
+  expect(find.text(Strings.audio_control_channel_level.toUpperCase()), findsOneWidget);
+  await tu.findAndTap("Test channel level2", () => find.text(Strings.audio_control_channel_level.toUpperCase()),
       delay: OnpcTestUtils.NORMAL_DELAY);
   final List<Pair<String, String>> messages = [
     Pair("TCL", "-18000000000000000000000000000000000000"),
