@@ -163,6 +163,13 @@ class ListDimens
 
 class DialogDimens
 {
+    // Tab bar
+    static EdgeInsetsGeometry get tabBarPaddingHor
+    => EdgeInsets.only(right: DimensTransform.scale(24));
+
+    static EdgeInsetsGeometry get tabBarPaddingVert
+    => EdgeInsets.only(bottom: DimensTransform.scale(24));
+
     // Icon size
     static double get iconSize
     => DimensTransform.scale(26.0);

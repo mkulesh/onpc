@@ -136,23 +136,32 @@ class _AudioControlDialogState extends State<AudioControlDialog>
             )
         );
 
+        final bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+        final Widget dialogPanel = isPortrait ?
+            Column(mainAxisSize: MainAxisSize.max,
+                children: [
+                    Container(padding: DialogDimens.tabBarPaddingVert,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: buttons)),
+                    Expanded(child: dialogContent)
+                ]
+            ) :
+            Row(mainAxisSize: MainAxisSize.max, crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    Container(padding: DialogDimens.tabBarPaddingHor,
+                        child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: buttons)),
+                    Expanded(child: dialogContent)
+                ]
+            );
+
+        final EdgeInsetsGeometry panelPadding = isPortrait ?
+            DialogDimens.contentPadding : DialogDimens.contentPadding.copyWith(bottom: 0);
+
         return AlertDialog(
             title: CustomDialogTitle(Strings.audio_control, Drawables.audio_control),
-            contentPadding: DialogDimens.contentPadding,
-            content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                    Container(
-                        padding: DialogDimens.rowPadding,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: buttons)),
-                    Expanded(
-                        child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: dialogContent))
-                ]
-            ),
+            contentPadding: panelPadding,
+            content: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: dialogPanel),
             insetPadding: DialogDimens.contentPadding,
             actions: actions
         );
