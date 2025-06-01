@@ -496,7 +496,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.findAndTap("Select FM", () => find.text("FM"));
     await tu.contextMenu(FM1.item1, "Create shortcut", waitFor: true);
     await tu.contextMenu(FM2.item1, "Create shortcut", waitFor: true);
-    await _renameShortcuts(tu, [DAB], [], true);
+    await _renameShortcuts(tu, [DAB], [], true, ensureItem: FM2.item1);
     await tu.dragReorderableItem(DAB.item2, OnpcTestUtils.LIST_DRAG_OFFSET_UP, dragIndex: 2);
     await _renameShortcuts(tu, [FM1], [], true);
     await tu.dragReorderableItem(FM1.item2, OnpcTestUtils.LIST_DRAG_OFFSET_UP, dragIndex: 2);
@@ -507,9 +507,15 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
 }
 
 Future<void> _renameShortcuts(
-    OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path, final listeningMode) async {
+    OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path,
+    final listeningMode, {String ensureItem = ""}) async {
   await tu.openTab("SHORTCUTS");
   await tu.stepDelaySec(1);
+  if (ensureItem.isNotEmpty) {
+    await tu.ensureVisibleInList(
+        "Ensure " + ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem),
+        OnpcTestUtils.LIST_DRAG_OFFSET);
+  }
   if (path.isNotEmpty) {
     assert(items.length == path.length);
   }
