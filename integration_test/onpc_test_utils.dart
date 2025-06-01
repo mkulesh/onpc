@@ -385,9 +385,17 @@ class OnpcTestUtils {
   }
 
   Future<void> playShortcut(String shortcut, String statusPanel,
-      {String ensureTop = "", String waitPlaying = ""}) async {
-    await openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
-    await stepDelayMs();
+      {String ensureTop = "", String waitPlaying = "", String ensureItem = ""}) async {
+    if (ensureItem.isNotEmpty) {
+      await openTab("SHORTCUTS");
+      await stepDelayMs();
+      await ensureVisibleInList(
+          "Ensure " + ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem),
+          OnpcTestUtils.LIST_DRAG_OFFSET);
+    } else {
+      await openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
+      await stepDelayMs();
+    }
     await findAndTap("Playing " + shortcut, () => find.text(shortcut),
         ensureAfter: () => find.textContaining(statusPanel + " | items:"));
     if (ensureTop.isNotEmpty) {

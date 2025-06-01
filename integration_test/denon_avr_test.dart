@@ -355,7 +355,7 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
   final String shortcut = "BOB! on DAB";
 
   // Start playing
-  await tu.playShortcut(shortcut, "TUNER", ensureTop: "DAB", waitPlaying: "BOB!");
+  await tu.playShortcut(shortcut, "TUNER", ensureItem: "ENERGY on FM", ensureTop: "DAB", waitPlaying: "BOB!");
 
   // Check station data
   await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"));
