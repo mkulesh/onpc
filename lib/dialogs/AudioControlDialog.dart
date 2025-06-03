@@ -54,17 +54,17 @@ class _AudioControlDialogState extends State<AudioControlDialog>
     => widget._viewContext;
 
     static const ExtEnum<_AudioControlMode> ValueEnum = ExtEnum<_AudioControlMode>([
-            EnumItem(_AudioControlMode.CURRENT_ZONE,
-                descrList: Strings.l_audio_control_current_zone, icon: Drawables.audio_control_current_zone, defValue: true),
-            EnumItem(_AudioControlMode.ALL_ZONES,
-                descrList: Strings.l_audio_control_all_zones, icon: Drawables.audio_control_all_zones),
-            EnumItem(_AudioControlMode.CHANNEL_LEVEL,
-                descrList: Strings.l_audio_control_channel_level, icon: Drawables.audio_control_channel_level),
-            EnumItem(_AudioControlMode.EQUALIZER,
-                descrList: Strings.l_audio_control_equalizer, icon: Drawables.audio_control_equalizer),
-            EnumItem(_AudioControlMode.MAX_LEVEL,
-                descrList: Strings.l_audio_control_max_level, icon: Drawables.audio_control_max_level)
-        ]);
+        EnumItem(_AudioControlMode.CURRENT_ZONE,
+            descrList: Strings.l_audio_control_current_zone, icon: Drawables.audio_control_current_zone, defValue: true),
+        EnumItem(_AudioControlMode.ALL_ZONES,
+            descrList: Strings.l_audio_control_all_zones, icon: Drawables.audio_control_all_zones),
+        EnumItem(_AudioControlMode.CHANNEL_LEVEL,
+            descrList: Strings.l_audio_control_channel_level, icon: Drawables.audio_control_channel_level),
+        EnumItem(_AudioControlMode.EQUALIZER,
+            descrList: Strings.l_audio_control_equalizer, icon: Drawables.audio_control_equalizer),
+        EnumItem(_AudioControlMode.MAX_LEVEL,
+            descrList: Strings.l_audio_control_max_level, icon: Drawables.audio_control_max_level)
+    ]);
 
     @override
     Widget build(BuildContext context)
@@ -157,7 +157,7 @@ class _AudioControlDialogState extends State<AudioControlDialog>
             DialogDimens.contentPadding : DialogDimens.contentPadding.copyWith(bottom: 0);
 
         return AlertDialog(
-            title: CustomDialogTitle(Strings.audio_control, Drawables.audio_control),
+            title: CustomDialogTitle(ValueEnum.valueByKey(_mode).description, Drawables.audio_control),
             contentPadding: panelPadding,
             content: SizedBox(
                 width: MediaQuery.of(context).size.width,

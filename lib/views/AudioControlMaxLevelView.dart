@@ -43,8 +43,7 @@ class AudioControlMaxLevelView extends UpdatableView
         final List<Widget> controls = [];
 
         // Title
-        controls.add(CustomTextLabel.normal(Strings.master_volume_max + ": " + Strings.audio_control_all_zones,
-            padding: DialogDimens.rowPadding));
+        controls.add(CustomTextLabel.normal(Strings.master_volume_max, padding: DialogDimens.rowPadding));
 
         for (int i = 0; i < state.receiverInformation.zones.length; i++)
         {
@@ -54,7 +53,8 @@ class AudioControlMaxLevelView extends UpdatableView
 
             controls.add(CustomProgressBar(
                 caption: configuration.appSettings.readZoneName(zoneInfo),
-                minValueStr: "0",
+                minValueNum: 1,
+                minValueStr: "1",
                 maxValueStr: SoundControlState.getVolumeLevelStr(maxVolume, zoneInfo),
                 maxValueNum: maxVolume,
                 currValue: min(maxVolume, curr),

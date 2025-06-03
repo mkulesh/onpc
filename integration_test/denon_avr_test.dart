@@ -19,7 +19,7 @@ import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
-import 'package:onpc/widgets/CustomTextButton.dart';
+import 'package:onpc/views/AudioControlChannelLevelView.dart';
 
 import 'onpc_test_utils.dart';
 
@@ -36,7 +36,7 @@ void main() {
     await tu.connect(FRIENDLY_NAME, DENON_AVR);
 
     await _playFromUsb(tu);
-    await _audioControl(tu);
+    await _audioControl(tu, true);
     await _playFromQueue(tu);
     await _testHeosFavorites(tu);
     await _playFromDeezer(tu);
@@ -44,9 +44,11 @@ void main() {
     await _changeListeningModes(tu, "FLAC 44.1 kHz");
     await _playFromDAB(tu);
     await _changeDeviceSettings(tu);
+    await _allZoneStereo(tester, tu);
 
     // Power-off
-    await tu.findAndTap("Power-off", () => find.byTooltip("On/Standby"));
+    await tu.openDrawerMenu(Strings.drawer_all_standby, ensureAfter: () => find.text(DENON_AVR + "/" + "To Onkyo (Standby)"));
+    await tu.openDrawerMenu("Main", ensureAfter: () => find.text(DENON_AVR + " (Standby)"));
 
     // Write log
     await tu.writeLog("auto-test-denon");
@@ -138,75 +140,56 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.ensureAvInfo("MP3 44.1 kHz", "Stereo");
 }
 
-class _AudioSliderParameters {
-  String name = "";
-  String initialValue = "";
-  double initialValueStep = 0;
-  String secondValue = "";
-  double secondValueStep = 0;
-  String buttonUp = "";
-  String buttonUpValue = "";
-  String buttonDown = "";
-}
+Future<void> _audioControl(OnpcTestUtils tu, bool mainZone) async {
+  await tu.findAndTap("Open audio control", () => find.byTooltip(Strings.audio_control),
+      ensureAfter: () => find.text(Strings.audio_control_current_zone));
 
-Future<void> _testAudioSlider(OnpcTestUtils tu, final _AudioSliderParameters p) async {
-  Pair<Finder, Finder> slider;
-  // Stepwise down
-  while (find.text(p.name + " " + p.initialValue).evaluate().isEmpty) {
-    slider = tu.findSliderByName(p.name);
-    await tu.slideByValue(slider.item1, p.initialValueStep);
+  expect(find.byTooltip(Strings.audio_control_current_zone), findsOneWidget);
+  expect(find.byTooltip(Strings.audio_control_all_zones), findsOneWidget);
+  expect(find.byTooltip(Strings.audio_control_equalizer), findsNothing);
+  expect(find.byTooltip(Strings.audio_control_channel_level), findsOneWidget);
+  expect(find.byTooltip(Strings.audio_control_max_level), findsOneWidget);
+
+  final AudioSliderParameters p = AudioSliderParameters();
+
+  // Current zone
+  final String zone = mainZone ? ": Main" : ": To Onkyo";
+  expect(find.text(Strings.drawer_group_zone + zone), findsOneWidget);
+
+  if (mainZone) {
+    // Master volume
+    p.name = Strings.master_volume + ":";
+    p.initialValue = "0.0 (-80.0 dB)";
+    p.initialValueStep = -10;
+    p.secondValue = "8.0 (-72.0 dB)";
+    p.secondValueStep = 15;
+    p.buttonUp = "30.0";
+    p.buttonUpValue = "8.5 (-71.5 dB)";
+    p.buttonDown = "0";
+    await tu.testAudioSlider(p);
+
+    // Bass and Treble
+    p.name = Strings.tone_bass + ":";
+    p.initialValue = "-6";
+    p.initialValueStep = -4;
+    p.secondValue = "0";
+    p.secondValueStep = 6;
+    p.buttonUp = "6";
+    p.buttonUpValue = "1";
+    p.buttonDown = "-6";
+    await tu.testAudioSlider(p);
+    p.name = Strings.tone_treble + ":";
+    p.secondValue = "3";
+    p.secondValueStep = 9;
+    p.buttonUpValue = "4";
+    await tu.testAudioSlider(p);
+  } else {
+    expect(find.textContaining(Strings.tone_bass), findsNothing);
+    expect(find.textContaining(Strings.tone_treble), findsNothing);
   }
-  // Up by value
-  slider = tu.findSliderByName(p.name + " " + p.initialValue);
-  await tu.slideByValue(slider.item1, p.secondValueStep);
-  // Up using button
-  slider = tu.findSliderByName(p.name + " " + p.secondValue, withButtons: true);
-  assert(slider.item2.evaluate().length == 2);
-  assert((slider.item2.evaluate().first.widget as CustomTextButton).text.contains(p.buttonDown));
-  assert((slider.item2.evaluate().last.widget as CustomTextButton).text.contains(p.buttonUp));
-  await tu.findAndTap(p.name + " up", () => slider.item2,
-      num: 2, idx: 1, ensureAfter: () => find.text(p.name + " " + p.buttonUpValue));
-  // Down using button
-  slider = tu.findSliderByName(p.name + " " + p.buttonUpValue, withButtons: true);
-  await tu.findAndTap(p.name + " down", () => slider.item2,
-      num: 2, idx: 0, ensureAfter: () => find.text(p.name + " " + p.secondValue));
-}
-
-Future<void> _audioControl(OnpcTestUtils tu) async {
-  await tu.findAndTap("Open audio control", () => find.byTooltip("Audio control"),
-      ensureAfter: () => find.text("Audio control"));
-
-  final _AudioSliderParameters p = _AudioSliderParameters();
-
-  // Master volume
-  p.name = "Master volume:";
-  p.initialValue = "0.0 (-80.0 dB)";
-  p.initialValueStep = -10;
-  p.secondValue = "9.0 (-71.0 dB)";
-  p.secondValueStep = 15;
-  p.buttonUp = "60";
-  p.buttonUpValue = "9.5 (-70.5 dB)";
-  p.buttonDown = "0";
-  await _testAudioSlider(tu, p);
-
-  // Bass and Treble
-  p.name = "Bass:";
-  p.initialValue = "-6";
-  p.initialValueStep = -4;
-  p.secondValue = "0";
-  p.secondValueStep = 6;
-  p.buttonUp = "6";
-  p.buttonUpValue = "1";
-  p.buttonDown = "-6";
-  await _testAudioSlider(tu, p);
-  p.name = "Treble:";
-  p.secondValue = "3";
-  p.secondValueStep = 9;
-  p.buttonUpValue = "4";
-  await _testAudioSlider(tu, p);
 
   // Balance
-  p.name = "Balance:";
+  p.name = Strings.audio_balance + ":";
   p.initialValue = "-12";
   p.initialValueStep = -4;
   p.secondValue = "0";
@@ -214,7 +197,53 @@ Future<void> _audioControl(OnpcTestUtils tu) async {
   p.buttonUp = "12";
   p.buttonUpValue = "1";
   p.buttonDown = "-12";
-  await _testAudioSlider(tu, p);
+  await tu.testAudioSlider(p);
+
+  // All zones
+  await tu.findAndTap("Open all zones", () => find.byTooltip(Strings.audio_control_all_zones),
+      ensureAfter: () => find.text(Strings.audio_control_all_zones));
+
+  expect(find.text(Strings.master_volume), findsOneWidget);
+  expect(find.textContaining("Main:"), findsOneWidget);
+  expect(find.textContaining("To Onkyo:"), findsOneWidget);
+
+  // master volume
+  p.name = "Main:";
+  p.initialValue = "0.0 (-80.0 dB)";
+  p.initialValueStep = -10;
+  p.secondValue = "8.0 (-72.0 dB)";
+  p.secondValueStep = 15;
+  p.buttonUp = "30.0";
+  p.buttonUpValue = "8.5 (-71.5 dB)";
+  p.buttonDown = "0";
+  await tu.testAudioSlider(p);
+
+  if (!mainZone) {
+    p.name = "To Onkyo:";
+    p.initialValue = "0 (-80.0 dB)";
+    p.initialValueStep = -22;
+    p.secondValue = "50 (-30.0 dB)";
+    p.secondValueStep = 51;
+    p.buttonUp = "60";
+    p.buttonUpValue = "51 (-29.0 dB)";
+    p.buttonDown = "0";
+    await tu.testAudioSlider(p);
+  }
+
+  // Channel level
+  await tu.findAndTap("Open channel level", () => find.byTooltip(Strings.audio_control_channel_level),
+      ensureAfter: () => find.text(Strings.audio_control_channel_level));
+  expect(find.text("Front"), findsOneWidget);
+  expect(find.text("Center"), findsOneWidget);
+  AudioControlChannelLevelView.LABELS.forEach((label) => expect(find.text(label), findsOneWidget));
+  expect(find.text(Strings.action_default.toUpperCase()), findsOneWidget);
+
+  // Maximum level
+  await tu.findAndTap("Open maximum volume", () => find.byTooltip(Strings.audio_control_max_level),
+      ensureAfter: () => find.text(Strings.audio_control_max_level));
+  expect(find.text(Strings.master_volume_max), findsOneWidget);
+  expect(find.textContaining("Main:"), findsOneWidget);
+  expect(find.textContaining("To Onkyo:"), findsOneWidget);
 
   await tu.findAndTap("Close audio control", () => find.text("OK"));
 }
@@ -419,6 +448,38 @@ Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   await tu.findAndTap("Dimmer level: confirm change", () => find.text("OK"));
   expect(find.text(DIM_NAME), findsNothing);
   expect(find.text("Bright"), findsOneWidget);
+}
+
+Future<void> _allZoneStereo(final WidgetTester tester, OnpcTestUtils tu) async {
+  final String lm1 = Strings.listening_mode_pure_direct.toUpperCase();
+  final String lm2 = Strings.listening_mode_all_zone_stereo.toUpperCase();
+  final String artist = "Metallica";
+  final String album = "Reload";
+  final String zone = "To Onkyo";
+
+  // Set listening mode
+  await tu.openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.text(lm1));
+  await tester.drag(find.text(lm1), Offset(-200, 0), warnIfMissed: false);
+  await tu.stepDelayMs();
+  await tu.findAndTap("Set all zone stereo", () => find.text(lm2));
+  // Start playing
+  await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
+  await tu.findAndTap("Select NET", () => find.text("NET"));
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music"]);
+  await tu.findAndTap("Navigate to: " + DENON_AVR, () => find.widgetWithText(ListTile, DENON_AVR),
+      ensureAfter: () => find.byTooltip("Search"));
+  await _openSearchDialog(tu, 1, album);
+  await tu.contextMenu(album, "Replace and play",
+      checkItems: ["Play queue", "Replace and play", "Add", "Add and play", "Create shortcut"]);
+  // Check that playing started
+  await tu.openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.text(lm2));
+  await tu.findAndTap("Ensure artist", () => find.text(artist), waitFor: true);
+  expect(find.text(album), findsOneWidget);
+  // Open Zone2
+  await tu.openDrawerMenu(zone, ensureAfter: () => find.text(DENON_AVR + "/" + zone));
+  await tu.findAndTap("Ensure artist", () => find.text(artist), waitFor: true);
+  expect(find.text(album), findsOneWidget);
+  await _audioControl(tu, false);
 }
 
 Future<void> _changeListeningMode(OnpcTestUtils tu, String input, String mode) async {

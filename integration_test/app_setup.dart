@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
@@ -98,11 +99,25 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     await _buildDenonFavourites(tu,
         dlna: true, deezer: true, tuneIn: true, usbMusic: true, favorite: true, radio: true);
   }
+  final AudioSliderParameters p = AudioSliderParameters();
+  p.name = "Main:";
+  p.initialValue = "0.5";
+  p.initialValueStep = -65;
+  p.secondValue = "30.0";
+  p.secondValueStep = 59;
+  p.buttonUp = "60.0";
+  p.buttonUpValue = "30.5";
+  p.buttonDown = "1";
+  await _setMaxVolume(tu, p);
   await _renameZone(tu, 1, "To Onkyo");
 }
 
 Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
   await _saveConnection(tu, "My Onkyo Box", "192.168.1.81");
+  if (find.text("Onkyo Box (Standby)").evaluate().isNotEmpty) {
+    // Player is off - call power on
+    await tu.findAndTap("Power-off", () => find.byTooltip("On/Standby"));
+  }
   await _changeServices(tu, [
     Pair("Deezer", true),
     Pair("Music Server (DLNA)", true),
@@ -135,6 +150,16 @@ Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
     Pair("Game-Sports", false),
     Pair("Auto Surround", false)
   ]);
+  final AudioSliderParameters p = AudioSliderParameters();
+  p.name = "Main:";
+  p.initialValue = "1";
+  p.initialValueStep = -12;
+  p.secondValue = "25";
+  p.secondValueStep = 24;
+  p.buttonUp = "35";
+  p.buttonUpValue = "26";
+  p.buttonDown = "1";
+  await _setMaxVolume(tu, p);
 }
 
 Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
@@ -549,6 +574,17 @@ Future<void> _addRiDevices(OnpcTestUtils tu) async {
   await tu.changeReorderableItem(MD, state: true);
   await tu.changeReorderableItem(TD, state: true);
   await tu.previousScreen();
+}
+
+Future<void> _setMaxVolume(OnpcTestUtils tu, final AudioSliderParameters p) async {
+  await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip(Strings.audio_control));
+  await tu.findAndTap("Open audio control", () => find.byTooltip(Strings.audio_control),
+      ensureAfter: () => find.byTooltip(Strings.audio_control_max_level));
+  await tu.findAndTap("Open max level", () => find.byTooltip(Strings.audio_control_max_level),
+      ensureAfter: () => find.text(Strings.master_volume_max));
+  await tu.stepDelayMs();
+  await tu.testAudioSlider(p);
+  await tu.findAndTap("Close audio control", () => find.text("OK"));
 }
 
 Future<void> _renameZone(OnpcTestUtils tu, int zone, String newName) async {

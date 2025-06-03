@@ -33,6 +33,17 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 typedef OnFind = Finder Function();
 
+class AudioSliderParameters {
+  String name = "";
+  String initialValue = "";
+  double initialValueStep = 0;
+  String secondValue = "";
+  double secondValueStep = 0;
+  String buttonUp = "";
+  String buttonUpValue = "";
+  String buttonDown = "";
+}
+
 class OnpcTestUtils {
   static const String STEP_HEADER = "=================================> ";
 
@@ -405,5 +416,28 @@ class OnpcTestUtils {
     if (waitPlaying.isNotEmpty) {
       await waitMediaItemPlaying(waitPlaying);
     }
+  }
+
+  Future<void> testAudioSlider(final AudioSliderParameters p) async {
+    Pair<Finder, Finder> slider;
+    // Stepwise down
+    while (find.text(p.name + " " + p.initialValue).evaluate().isEmpty) {
+      slider = findSliderByName(p.name);
+      await slideByValue(slider.item1, p.initialValueStep);
+    }
+    // Up by value
+    slider = findSliderByName(p.name + " " + p.initialValue);
+    await slideByValue(slider.item1, p.secondValueStep);
+    // Up using button
+    slider = findSliderByName(p.name + " " + p.secondValue, withButtons: true);
+    assert(slider.item2.evaluate().length == 2);
+    assert((slider.item2.evaluate().first.widget as CustomTextButton).text.contains(p.buttonDown));
+    assert((slider.item2.evaluate().last.widget as CustomTextButton).text.contains(p.buttonUp));
+    await findAndTap(p.name + " up", () => slider.item2,
+        num: 2, idx: 1, ensureAfter: () => find.text(p.name + " " + p.buttonUpValue));
+    // Down using button
+    slider = findSliderByName(p.name + " " + p.buttonUpValue, withButtons: true);
+    await findAndTap(p.name + " down", () => slider.item2,
+        num: 2, idx: 0, ensureAfter: () => find.text(p.name + " " + p.secondValue));
   }
 }

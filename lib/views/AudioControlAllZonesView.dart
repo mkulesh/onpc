@@ -51,8 +51,7 @@ class AudioControlAllZonesView extends UpdatableView
         final List<Widget> controls = [];
 
         // Title
-        controls.add(CustomTextLabel.normal(Strings.master_volume + ": " + Strings.audio_control_all_zones,
-            padding: DialogDimens.rowPadding));
+        controls.add(CustomTextLabel.normal(Strings.master_volume, padding: DialogDimens.rowPadding));
 
         for (ZoneState zs in state.allZonesState.zoneState)
         {
