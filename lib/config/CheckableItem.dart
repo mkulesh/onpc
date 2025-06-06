@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
-import "../dialogs/RenameDialog.dart";
+import "../dialogs/TextEditDialog.dart";
 import "../utils/Pair.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomActivityTitle.dart";
@@ -227,7 +227,7 @@ class CheckableItem
                             context: context,
                             barrierDismissible: true,
                             builder: (BuildContext c)
-                            => Theme(data: theme, child: RenameDialog(text, (newName) => onRename!(newName)))
+                            => Theme(data: theme, child: TextEditDialog(text, (newName) => onRename!(newName)))
                         );
                     }
                 });

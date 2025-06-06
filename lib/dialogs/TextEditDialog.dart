@@ -20,18 +20,18 @@ import '../constants/Strings.dart';
 import '../widgets/CustomDialogEditField.dart';
 import '../widgets/CustomDialogTitle.dart';
 
-class RenameDialog extends StatefulWidget
+class TextEditDialog extends StatefulWidget
 {
     final String value;
     final void Function(String name) onRename;
 
-    RenameDialog(this.value, this.onRename);
+    TextEditDialog(this.value, this.onRename);
 
-    @override _RenameDialogState createState()
-    => _RenameDialogState();
+    @override _TextEditDialogState createState()
+    => _TextEditDialogState();
 }
 
-class _RenameDialogState extends State<RenameDialog>
+class _TextEditDialogState extends State<TextEditDialog>
 {
     final _alias = TextEditingController();
 

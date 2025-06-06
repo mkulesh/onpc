@@ -17,7 +17,7 @@ import "package:flutter/material.dart";
 import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
-import "../dialogs/RenameDialog.dart";
+import "../dialogs/TextEditDialog.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/messages/AutoPowerMsg.dart";
 import "../iscp/messages/DcpAudioRestorerMsg.dart";
@@ -417,7 +417,7 @@ class DeviceSettingsView extends UpdatableView
             {
                 if (m == _ParameterContextMenu.EDIT)
                 {
-                    viewContext.showRootDialog(c, RenameDialog(newValue.item2, (newName)
+                    viewContext.showRootDialog(c, TextEditDialog(newValue.item2, (newName)
                     {
                         viewContext.configuration.appSettings.saveDeviceSetting(
                             Convert.enumToString(type), value.item1, newName);

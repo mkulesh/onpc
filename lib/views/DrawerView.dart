@@ -22,7 +22,7 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/DeviceConnectDialog.dart";
 import "../dialogs/FavoriteConnectionEditDialog.dart";
-import "../dialogs/RenameDialog.dart";
+import "../dialogs/TextEditDialog.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/BroadcastResponseMsg.dart";
 import "../iscp/messages/FriendlyNameMsg.dart";
@@ -274,7 +274,7 @@ class DrawerView extends UpdatableView
             context: context,
             barrierDismissible: true,
             builder: (BuildContext c)
-            => RenameDialog(friendlyName, (newName)
+            => TextEditDialog(friendlyName, (newName)
             {
                 configuration.appSettings.saveZoneName(z, newName);
                 stateManager.triggerStateEvent(StateManager.ZONE_RENAMED);
