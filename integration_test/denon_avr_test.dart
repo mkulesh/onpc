@@ -420,9 +420,9 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
 }
 
 Future<void> _changeListeningModes(OnpcTestUtils tu, String input) async {
-  await _changeListeningMode(tu, input, "Pure Direct");
-  await _changeListeningMode(tu, input, "Direct");
-  await _changeListeningMode(tu, input, "Stereo");
+  await _changeListeningMode(tu, input, Strings.listening_mode_pure_direct, false);
+  await _changeListeningMode(tu, input, Strings.listening_mode_mode_01, false); // Direct
+  await _changeListeningMode(tu, input, Strings.listening_mode_mode_00, true); // Stereo
 }
 
 Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
@@ -482,16 +482,24 @@ Future<void> _allZoneStereo(final WidgetTester tester, OnpcTestUtils tu) async {
   await _audioControl(tu, false);
 }
 
-Future<void> _changeListeningMode(OnpcTestUtils tu, String input, String mode) async {
+Future<void> _changeListeningMode(OnpcTestUtils tu, String input, String mode, bool isToneCtrl) async {
   await tu.openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.text(mode.toUpperCase()));
   await tu.findAndTap("Set " + mode, () => find.text(mode.toUpperCase()), delay: OnpcTestUtils.NORMAL_DELAY);
   await tu.ensureAvInfo(input, mode);
-  await tu.openTab("RC", swipeRight: true, ensureAfter: () => find.text("Listening modes"));
+  await tu.findAndTap("Open audio control", () => find.byTooltip(Strings.audio_control),
+      ensureAfter: () => find.text(Strings.audio_control_current_zone));
+  expect(find.textContaining(Strings.master_volume), findsOneWidget);
+  expect(find.textContaining(Strings.tone_bass), isToneCtrl ? findsOneWidget : findsNothing);
+  expect(find.textContaining(Strings.tone_treble), isToneCtrl ? findsOneWidget : findsNothing);
+  expect(find.textContaining(Strings.audio_balance), isToneCtrl ? findsOneWidget : findsNothing);
+  expect(find.textContaining(Strings.tone_direct), isToneCtrl ? findsNothing : findsOneWidget);
+  await tu.findAndTap("Close audio control", () => find.text("OK"));
+  await tu.openTab("RC", swipeRight: true, ensureAfter: () => find.text(Strings.pref_listening_modes));
   expect(find.text(mode), findsOneWidget);
   if (mode == "Stereo") {
-    await tu.findAndTap("Mode Up", () => find.byTooltip("Sets listening mode wrap-around up"),
-        ensureAfter: () => find.text("Pure Direct"));
-    await tu.findAndTap("Mode Down", () => find.byTooltip("Sets listening mode wrap-around down"),
+    await tu.findAndTap("Mode Up", () => find.byTooltip(Strings.listening_mode_up),
+        ensureAfter: () => find.text(Strings.listening_mode_pure_direct));
+    await tu.findAndTap("Mode Down", () => find.byTooltip(Strings.listening_mode_down),
         ensureAfter: () => find.text("Stereo"));
   }
 }
