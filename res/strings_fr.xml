@@ -513,6 +513,9 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="playlist_replace_and_play_all">Remplacez et jouez tous</string>
     <string name="playlist_add_to_heos_favourites">Ajouter aux favoris HEOS</string>
     <string name="playlist_remove_from_heos_favourites">Supprimer des favoris HEOS</string>
+    <string name="playlist_save_queue_as">Créer une playlist</string>
+    <string name="playlist_rename">Renommer la playlist</string>
+    <string name="playlist_delete">Supprimer la playlist</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Nom personnalisé</string>

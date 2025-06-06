@@ -13,7 +13,6 @@
  */
 import "dart:io";
 import "package:collection/collection.dart";
-import "package:xml/xml.dart" as xml;
 import "package:args/args.dart";
 import 'package:xml/xml.dart';
 
@@ -41,16 +40,16 @@ void main(List<String> arguments) async
 
     print("xml2strings: " + inFile + " -> " + outFile);
 
-    final Map<String, xml.XmlDocument> inTranslations = Map();
+    final Map<String, XmlDocument> inTranslations = Map();
     for(String tName in TRANSLATIONS)
     {
         final tFile = inFile.split(".")[0] + "_" + tName + "." + inFile.split(".")[1];
         await File(tFile).readAsString().then((String inContent)
         {
             print("    transtation " + tFile + ": " + inContent.length.toString() + "B");
-            inTranslations[tName] = xml.XmlDocument.parse(inContent);
+            inTranslations[tName] = XmlDocument.parse(inContent);
         });
-    };
+    }
 
     final StringBuffer outContent = StringBuffer();
     await File(inFile).readAsString().then((String inContent)
@@ -62,7 +61,7 @@ void main(List<String> arguments) async
         outContent.writeln("class Strings");
         outContent.writeln("{");
 
-        final xml.XmlDocument document = xml.XmlDocument.parse(inContent);
+        final XmlDocument document = XmlDocument.parse(inContent);
 
         outContent.writeln("    /* All supported languages */");
         outContent.writeln("");
@@ -150,7 +149,7 @@ void main(List<String> arguments) async
                     outContent.writeln('        /*' + tName + '*/ "' + tNode.toString()
                         + (tName == TRANSLATIONS.last ? '"];' : '",'));
                 }
-            };
+            }
             outContent.writeln('    static String get ' + name + ' => l_' + name + '[_language];');
         });
 
@@ -186,7 +185,7 @@ void main(List<String> arguments) async
    await File(outFile).writeAsString(outContent.toString());
 }
 
-void _writeArray(StringBuffer outContent, final String lan, final xml.XmlElement element, bool isLast)
+void _writeArray(StringBuffer outContent, final String lan, final XmlElement element, bool isLast)
 {
     int idx = 1;
     element.children.forEach((node)

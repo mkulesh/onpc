@@ -512,6 +512,9 @@ Copyright © 2019-2025 by __Михаил Кулеш__
     <string name="playlist_replace_and_play_all">Заменить и воспроизвести все</string>
     <string name="playlist_add_to_heos_favourites">Добавить в Любимые HEOS</string>
     <string name="playlist_remove_from_heos_favourites">Удалить из Любимых HEOS</string>
+    <string name="playlist_save_queue_as">Создать плейлист</string>
+    <string name="playlist_rename">Переименовать плейлист</string>
+    <string name="playlist_delete">Удалить плейлист</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Удобное название</string>

@@ -571,6 +571,9 @@ Enjoy!""</string>
     <string name="playlist_replace_and_play_all">Replace and play all</string>
     <string name="playlist_add_to_heos_favourites">Add to HEOS Favorites</string>
     <string name="playlist_remove_from_heos_favourites">Remove from HEOS Favorites</string>
+    <string name="playlist_save_queue_as">Create playlist</string>
+    <string name="playlist_rename">Rename playlist</string>
+    <string name="playlist_delete">Delete playlist</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Friendly name</string>

@@ -399,6 +399,9 @@ class MediaListState
     bool get isQueue
     => [ServiceType.PLAYQUEUE, ServiceType.DCP_PLAYQUEUE].contains(serviceType.key);
 
+    bool get isPlaylist
+    => serviceType.key == ServiceType.DCP_PLAYLIST;
+
     bool get isTuneIn
     => serviceType.key == ServiceType.TUNEIN_RADIO;
 

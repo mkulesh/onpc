@@ -24,8 +24,9 @@ class TextEditDialog extends StatefulWidget
 {
     final String value;
     final void Function(String name) onRename;
+    final Widget? title;
 
-    TextEditDialog(this.value, this.onRename);
+    TextEditDialog(this.value, this.onRename, { this.title });
 
     @override _TextEditDialogState createState()
     => _TextEditDialogState();
@@ -55,7 +56,7 @@ class _TextEditDialogState extends State<TextEditDialog>
         );
 
         final Widget dialog = AlertDialog(
-            title: CustomDialogTitle(Strings.pref_item_update, Drawables.drawer_edit_item),
+            title: widget.title ?? CustomDialogTitle(Strings.pref_item_update, Drawables.drawer_edit_item),
             contentPadding: DialogDimens.contentPadding,
             content: editLine,
             actions: <Widget>[

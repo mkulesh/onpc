@@ -20,12 +20,14 @@ import "../constants/Dimens.dart";
 import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../dialogs/DcpSearchDialog.dart";
+import "../dialogs/TextEditDialog.dart";
 import "../dialogs/UrlLauncher.dart";
 import "../iscp/ConnectionIf.dart";
 import "../iscp/ISCPMessage.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/DcpMediaContainerMsg.dart";
 import "../iscp/messages/DcpMediaItemMsg.dart";
+import "../iscp/messages/DcpPlaylistCmdMsg.dart";
 import "../iscp/messages/DcpSearchCriteriaMsg.dart";
 import "../iscp/messages/DcpTunerModeMsg.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
@@ -47,6 +49,7 @@ import "../iscp/state/MediaListState.dart";
 import "../utils/Logging.dart";
 import "../utils/Platform.dart";
 import "../widgets/ContextMenuListener.dart";
+import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
 import "../widgets/CustomTextField.dart";
@@ -62,6 +65,7 @@ class MediaListButtons
     bool appSort = false;
     bool progress = false;
     bool dcpSearch = false;
+    bool dcpPlaylist = false;
 }
 
 class MediaListView extends StatefulWidget
@@ -151,6 +155,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         _headerButtons.dcpSearch = state.isOn &&
             state.protoType == ProtoType.DCP &&
             ms.getDcpSearchCriteria().isNotEmpty;
+        _headerButtons.dcpPlaylist = state.mediaListState.isQueue;
         
         // Apply filter
         if (ms.numberOfLayers != _currentLayer)
@@ -195,7 +200,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         final bool isAdvancedQueue = ms.isQueue && configuration.isAdvancedQueue;
         final Widget mediaList = isAdvancedQueue ? _buildPlayQueueList(context, items) : _buildMediaList(td, items);
         final List<Widget> elements = [
-            _buildHeaderLine(td, _headerButtons, _buildTitle(visibleItems, totalItems)),
+            _buildHeaderLine(context, td, _headerButtons, _buildTitle(visibleItems, totalItems)),
             CustomDivider(),
             Expanded(child: mediaList, flex: 1)
         ];
@@ -578,7 +583,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
     }
 
-    Widget _buildHeaderLine(final ThemeData td, final MediaListButtons buttons, final String titleStr)
+    Widget _buildHeaderLine(final BuildContext context, final ThemeData td, final MediaListButtons buttons, final String titleStr)
     {
         final List<Widget> elements = [];
 
@@ -643,6 +648,28 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                         );
                     }
                 }));
+        }
+
+        // DCP playlist button
+        if (!buttons.progress && buttons.dcpPlaylist)
+        {
+            elements.add(CustomImageButton.small(
+                Drawables.media_item_playlist,
+                Strings.playlist_save_queue_as,
+                onPressed: ()
+                {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext c)
+                        => TextEditDialog("", (newName)
+                        {
+                            stateManager.sendMessage(DcpPlaylistCmdMsg.create(newName));
+                        },
+                        title: CustomDialogTitle(Strings.playlist_save_queue_as, Drawables.media_item_playlist))
+                    );
+                }
+            ));
         }
 
         // Filter button

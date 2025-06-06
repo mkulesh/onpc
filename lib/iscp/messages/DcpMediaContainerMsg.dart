@@ -150,9 +150,12 @@ class DcpMediaContainerMsg extends ISCPMessage
         _type = getElement(heosMsg, "type");
         _container = YES == getElement(heosMsg, "container").toUpperCase();
         _playable = YES == getElement(heosMsg, "playable").toUpperCase();
-        _name = getNameElement(getElement(heosMsg, "name"));
         _artist = getNameElement(getElement(heosMsg, "artist"));
         _album = getNameElement(getElement(heosMsg, "album"));
+        final EnumItem<ServiceType>? st = Services.ServiceTypeEnum.valueByDcpCode("HS" + _parentSid);
+        final bool isPlaylist = st != null && st.key == ServiceType.DCP_PLAYLIST;
+        final String nm = getNameElement(getElement(heosMsg, "name"));
+        _name = isPlaylist && _type == "song" && _artist.isNotEmpty ? _artist + " - " +  nm : nm;
         _imageUrl = getElement(heosMsg, "image_url");
     }
 
@@ -182,6 +185,9 @@ class DcpMediaContainerMsg extends ISCPMessage
 
     String getSid()
     => _sid;
+
+    String getParentSid()
+    => _parentSid;
 
     EnumItem<ServiceType> getServiceType()
     {

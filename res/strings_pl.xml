@@ -515,6 +515,9 @@ Enjoy!""</string>
     <string name="playlist_replace_and_play_all">Wymień i zagraj we wszystko</string>
     <string name="playlist_add_to_heos_favourites">Dodaj do ulubionych HEOS</string>
     <string name="playlist_remove_from_heos_favourites">Usuń z Ulubionych HEOS</string>
+    <string name="playlist_save_queue_as">Utwórz playlistę</string>
+    <string name="playlist_rename">Zmień nazwę playlistę</string>
+    <string name="playlist_delete">Usuń playlistę</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Nazwa</string>

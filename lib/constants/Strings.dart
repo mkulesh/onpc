@@ -3199,6 +3199,30 @@ Enjoy!"""];
         /*pl*/ "Usuń z Ulubionych HEOS"];
     static String get playlist_remove_from_heos_favourites => l_playlist_remove_from_heos_favourites[_language];
 
+    static const List<String> l_playlist_save_queue_as = [
+        /*en*/ "Create playlist",
+        /*ru*/ "Создать плейлист",
+        /*de*/ "Playlist erstellen",
+        /*fr*/ "Créer une playlist",
+        /*pl*/ "Utwórz playlistę"];
+    static String get playlist_save_queue_as => l_playlist_save_queue_as[_language];
+
+    static const List<String> l_playlist_rename = [
+        /*en*/ "Rename playlist",
+        /*ru*/ "Переименовать плейлист",
+        /*de*/ "Playlist umbenennen",
+        /*fr*/ "Renommer la playlist",
+        /*pl*/ "Zmień nazwę playlistę"];
+    static String get playlist_rename => l_playlist_rename[_language];
+
+    static const List<String> l_playlist_delete = [
+        /*en*/ "Delete playlist",
+        /*ru*/ "Удалить плейлист",
+        /*de*/ "Playlist löschen",
+        /*fr*/ "Supprimer la playlist",
+        /*pl*/ "Usuń playlistę"];
+    static String get playlist_delete => l_playlist_delete[_language];
+
     static const List<String> l_device_friendly_name = [
         /*en*/ "Friendly name",
         /*ru*/ "Удобное название",

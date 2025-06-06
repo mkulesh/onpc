@@ -104,6 +104,7 @@ class Drawables
     static const String media_item_pandora = BUTTONS_PATH + "media_item_pandora.svg";
     static const String media_item_lastfm = BUTTONS_PATH + "media_item_lastfm.svg";
     static const String media_item_play_fi = BUTTONS_PATH + "media_item_play_fi.svg";
+    static const String media_item_playlist = BUTTONS_PATH + "media_item_playlist.svg";
     static const String media_item_playqueue = BUTTONS_PATH + "media_item_playqueue.svg";
     static const String media_item_play = BUTTONS_PATH + "media_item_play.svg";
     static const String media_item_radio_am = BUTTONS_PATH + "media_item_radio_am.svg";

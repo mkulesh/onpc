@@ -237,7 +237,7 @@ class Services
             descrList: Strings.l_service_local_music, icon: Drawables.media_item_folder),
         EnumItem.code(ServiceType.DCP_PLAYLIST, "HS1025",
             name: "Playlists",
-            descrList: Strings.l_service_playlist, icon: Drawables.media_item_playqueue),
+            descrList: Strings.l_service_playlist, icon: Drawables.media_item_playlist),
         EnumItem.code(ServiceType.DCP_HISTORY, "HS1026",
             name: "History",
             descrList: Strings.l_service_history, icon: Drawables.media_item_history),

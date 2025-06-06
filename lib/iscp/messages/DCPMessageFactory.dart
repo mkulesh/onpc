@@ -31,6 +31,7 @@ import "DcpEcoModeMsg.dart";
 import "DcpMediaContainerMsg.dart";
 import "DcpMediaEventMsg.dart";
 import "DcpMediaItemMsg.dart";
+import "DcpPlaylistCmdMsg.dart";
 import "DcpReceiverInformationMsg.dart";
 import "DcpSearchCriteriaMsg.dart";
 import "DcpSearchMsg.dart";
@@ -82,6 +83,7 @@ class DCPMessageFactory
         _acceptedCodes.addAll(FriendlyNameMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(PowerStatusMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(InputSelectorMsg.getAcceptedDcpCodes());
+        _acceptedCodes.addAll(DcpPlaylistCmdMsg.getAcceptedDcpCodes());
 
         // Tone control
         _acceptedCodes.addAll(MasterVolumeMsg.getAcceptedDcpCodes());
@@ -161,6 +163,7 @@ class DCPMessageFactory
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(jsonMsg));
             addISCPMsg(FirmwareUpdateMsg.processHeosMessage(jsonMsg));
             addISCPMsg(FriendlyNameMsg.processHeosMessage(jsonMsg));
+            addISCPMsg(DcpPlaylistCmdMsg.processHeosMessage(jsonMsg));
 
             // Playback
             addISCPMsg(ArtistNameMsg.processHeosMessage(jsonMsg));
@@ -302,6 +305,8 @@ class DCPMessageFactory
         case InputSelectorMsg.ZONE3_CODE:
         case InputSelectorMsg.ZONE4_CODE:
             return InputSelectorMsg(raw);
+        case DcpPlaylistCmdMsg.CODE:
+            return DcpPlaylistCmdMsg(raw);
         case TimeInfoMsg.CODE:
             return TimeInfoMsg(raw);
         case TrackInfoMsg.CODE:

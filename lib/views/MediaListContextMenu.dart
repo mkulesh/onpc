@@ -20,11 +20,13 @@ import '../config/Configuration.dart';
 import '../constants/Dimens.dart';
 import '../constants/Strings.dart';
 import '../dialogs/PopupManager.dart';
+import '../dialogs/TextEditDialog.dart';
 import '../iscp/ConnectionIf.dart';
 import '../iscp/ISCPMessage.dart';
 import "../iscp/State.dart" as remote_state;
 import '../iscp/StateManager.dart';
 import '../iscp/messages/DcpMediaContainerMsg.dart';
+import '../iscp/messages/DcpPlaylistCmdMsg.dart';
 import '../iscp/messages/OperationCommandMsg.dart';
 import '../iscp/messages/PlayQueueAddMsg.dart';
 import '../iscp/messages/PlayQueueRemoveMsg.dart';
@@ -57,7 +59,9 @@ enum MediaContextMenu
     SO_ADD_ALL,
     SO_ADD_AND_PLAY_ALL,
     // #352 filter out duplicate artists from search results
-    HIDE_EMPTY_ITEMS
+    HIDE_EMPTY_ITEMS,
+    RENAME_PLAYLIST,
+    DELETE_PLAYLIST,
 }
 
 class ShortcutInfo
@@ -97,6 +101,8 @@ class MediaListContextMenu
         final bool isDcpItem = dcpCmd != null;
         final bool isDcpPlayable = dcpCmd != null && dcpCmd.isPlayable();
         final bool isQueue = state.mediaListState.isQueue;
+        final bool isPlaylist = state.mediaListState.isPlaylist && dcpCmd != null && dcpCmd.isContainer();
+
         final ShortcutInfo shortcutInfo = ShortcutInfo();
         shortcutInfo.item = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg ? cmd.getData : null;
         shortcutInfo.alias = cmd is XmlListItemMsg ? cmd.getTitle : cmd is PresetCommandMsg && cmd.getPresetConfig != null ? cmd.getPresetConfig!.displayedString() : null;
@@ -118,6 +124,7 @@ class MediaListContextMenu
                 ", isDcpItem=" + isDcpItem.toString() +
                 ", isDcpPlayable=" + isDcpPlayable.toString() +
                 ", isQueue=" + isQueue.toString() +
+                ", isPlaylist=" + isPlaylist.toString() +
                 ", addToQueue=" + addToQueue.toString() +
                 ", isAdvQueue=" + isAdvQueue.toString() +
                 ", dcpDuplicates=" + dcpDuplicates.length.toString() +
@@ -162,6 +169,17 @@ class MediaListContextMenu
             {
                 final List<XmlListItemMsg> menuItems = state.mediaListState.cloneDcpTrackMenuItems(null);
                 final oldLength = contextMenu.length;
+
+                if (isPlaylist)
+                {
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: CustomTextLabel.normal(Strings.playlist_rename),
+                        value: MediaContextMenu.RENAME_PLAYLIST));
+                    contextMenu.add(PopupMenuItem<MediaContextMenu>(
+                        child: CustomTextLabel.normal(Strings.playlist_delete),
+                        value: MediaContextMenu.DELETE_PLAYLIST));
+                }
+
                 if (_findDcpMenuItem(menuItems, DcpMediaContainerMsg.SO_ADD_TO_HEOS) != null)
                 {
                     contextMenu.add(PopupMenuItem<MediaContextMenu>(
@@ -334,6 +352,19 @@ class MediaListContextMenu
             case MediaContextMenu.HIDE_EMPTY_ITEMS:
                 stateManager.handleDcpDuplicates(dcpDuplicates);
                 break;
+            case MediaContextMenu.RENAME_PLAYLIST:
+                if (cmd is XmlListItemMsg && dcpCmd != null)
+                {
+                    _renamePlaylist(context, cmd, dcpCmd);
+                }
+                break;
+            case MediaContextMenu.DELETE_PLAYLIST:
+                if (dcpCmd != null)
+                {
+                    stateManager.sendMessage(DcpPlaylistCmdMsg.delete(
+                        dcpCmd.getParentSid(), dcpCmd.getCid()), waitingForMsg: DcpMediaContainerMsg.CODE);
+                }
+                break;
         }
     }
 
@@ -379,5 +410,20 @@ class MediaListContextMenu
         {
             stateManager.sendMessage(item);
         }
+    }
+
+    void _renamePlaylist(final BuildContext context, final XmlListItemMsg cmd, final DcpMediaContainerMsg dcpCmd)
+    {
+        showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext c)
+            => TextEditDialog(cmd.getTitle, (newName)
+            {
+                Logging.info(this, "rename command for playlist: " + dcpCmd.toString());
+                stateManager.sendMessage(DcpPlaylistCmdMsg.rename(
+                    dcpCmd.getParentSid(), dcpCmd.getCid(), newName), waitingForMsg: DcpMediaContainerMsg.CODE);
+            })
+        );
     }
 }

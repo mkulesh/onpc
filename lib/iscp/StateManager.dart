@@ -42,6 +42,7 @@ import "messages/BroadcastResponseMsg.dart";
 import "messages/DcpMediaContainerMsg.dart";
 import "messages/DcpMediaEventMsg.dart";
 import "messages/DcpMediaItemMsg.dart";
+import "messages/DcpPlaylistCmdMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpSearchCriteriaMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
@@ -652,6 +653,12 @@ class StateManager
                 Logging.info(this, "DCP: requesting media list...");
                 sendMessage(ms.dcpMediaPath[ms.dcpMediaPath.length - 1]);
             }
+        }
+        if (msg is DcpPlaylistCmdMsg && state.mediaListState.isPlaylist)
+        {
+            Logging.info(this, "DCP: requesting playlist...");
+            final MediaListState ms = state.mediaListState;
+            sendMessage(ms.dcpMediaPath[ms.dcpMediaPath.length - 1]);
         }
 
         // no further message handling, if no changes are detected
