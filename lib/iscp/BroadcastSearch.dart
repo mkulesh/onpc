@@ -135,6 +135,10 @@ class BroadcastSearch
         {
             _processDcpResponse(d, response);
         }
+        else if (response.contains("upnp:rootdevice"))
+        {
+            // ignore any general UPnP device
+        }
         else
         {
             _processIscpResponse(d, buffer, response);
