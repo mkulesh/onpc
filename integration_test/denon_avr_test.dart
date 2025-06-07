@@ -479,6 +479,7 @@ Future<void> _allZoneStereo(final WidgetTester tester, OnpcTestUtils tu) async {
   expect(find.text(album), findsOneWidget);
   // Open Zone2
   await tu.openDrawerMenu(zone, ensureAfter: () => find.text(DENON_AVR + "/" + zone));
+  await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
   await tu.findAndTap("Ensure artist", () => find.text(artist), waitFor: true);
   expect(find.text(album), findsOneWidget);
   await _audioControl(tu, false);
