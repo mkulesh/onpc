@@ -516,6 +516,7 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="playlist_save_queue_as">Créer une playlist</string>
     <string name="playlist_rename">Renommer la playlist</string>
     <string name="playlist_delete">Supprimer la playlist</string>
+    <string name="playlist_created">Liste de lecture créée avec succès</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Nom personnalisé</string>

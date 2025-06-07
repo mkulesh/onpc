@@ -517,6 +517,7 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
     <string name="playlist_save_queue_as">Playlist erstellen</string>
     <string name="playlist_rename">Playlist umbenennen</string>
     <string name="playlist_delete">Playlist löschen</string>
+    <string name="playlist_created">Playlist erfolgreich erstellt</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Gewählter Name</string>

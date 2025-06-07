@@ -155,7 +155,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         _headerButtons.dcpSearch = state.isOn &&
             state.protoType == ProtoType.DCP &&
             ms.getDcpSearchCriteria().isNotEmpty;
-        _headerButtons.dcpPlaylist = state.mediaListState.isQueue;
+        _headerButtons.dcpPlaylist = state.protoType == ProtoType.DCP && state.mediaListState.isQueue;
         
         // Apply filter
         if (ms.numberOfLayers != _currentLayer)
@@ -640,11 +640,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 {
                     if (state.mediaListState.getDcpSearchCriteria().isNotEmpty)
                     {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (BuildContext c) =>
-                                DcpSearchDialog(viewContext, state.mediaListState.getDcpSearchCriteria())
+                        viewContext.showRootDialog(context,
+                            DcpSearchDialog(viewContext, state.mediaListState.getDcpSearchCriteria())
                         );
                     }
                 }));
@@ -658,11 +655,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 Strings.playlist_save_queue_as,
                 onPressed: ()
                 {
-                    showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext c)
-                        => TextEditDialog("", (newName)
+                    viewContext.showRootDialog(context,
+                        TextEditDialog("", (newName)
                         {
                             stateManager.sendMessage(DcpPlaylistCmdMsg.create(newName));
                         },

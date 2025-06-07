@@ -45,9 +45,11 @@ void main() {
     await _playFromDAB(tu);
     await _changeDeviceSettings(tu);
     await _allZoneStereo(tester, tu);
+    await _createPlayList(tu);
 
     // Power-off
-    await tu.openDrawerMenu(Strings.drawer_all_standby, ensureAfter: () => find.text(DENON_AVR + "/" + "To Onkyo (Standby)"));
+    await tu.openDrawerMenu(Strings.drawer_all_standby,
+        ensureAfter: () => find.text(DENON_AVR + "/" + "To Onkyo (Standby)"));
     await tu.openDrawerMenu("Main", ensureAfter: () => find.text(DENON_AVR + " (Standby)"));
 
     // Write log
@@ -480,6 +482,85 @@ Future<void> _allZoneStereo(final WidgetTester tester, OnpcTestUtils tu) async {
   await tu.findAndTap("Ensure artist", () => find.text(artist), waitFor: true);
   expect(find.text(album), findsOneWidget);
   await _audioControl(tu, false);
+}
+
+Future<void> _createPlayList(OnpcTestUtils tu) async {
+  final String playlist = "My test playlist";
+  final String playlist1 = "My test playlist1";
+  final String artist = "Ayo";
+  final String album = "Joyful";
+  final String song1 = "Without You";
+  final String song2 = "Letter By Letter";
+  final String items = "items: 12";
+
+  // Start playing
+  await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
+  await tu.findAndTap("Select NET", () => find.text("NET"));
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music"]);
+  await tu.findAndTap("Navigate to: " + DENON_AVR, () => find.widgetWithText(ListTile, DENON_AVR),
+      ensureAfter: () => find.byTooltip("Search"));
+  await _openSearchDialog(tu, 1, album);
+  await tu.contextMenu(album, "Replace and play",
+      checkItems: ["Play queue", "Replace and play", "Add", "Add and play", "Create shortcut"]);
+
+  // Check queue state
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Play Queue"]);
+  await tu.ensureVisible(() => find.text(artist + " - " + song1));
+  expect(find.byTooltip(Strings.medialist_filter), findsOneWidget);
+  expect(find.byTooltip(Strings.playlist_save_queue_as), findsOneWidget);
+  expect(find.text("Play Queue | " + items), findsOneWidget);
+  await tu.findAndTap("Ensure song1", () => find.text(artist + " - " + song1), waitFor: true);
+
+  // Create playlist
+  await tu.findAndTap("Open playlist creation dialog", () => find.byTooltip(Strings.playlist_save_queue_as),
+      waitFor: true);
+  expect(find.text(Strings.playlist_save_queue_as), findsOneWidget);
+  await tu.setText(1, 0, playlist);
+  await tu.findAndTap("Create playlist: " + playlist, () => find.text("OK"));
+  await tu.ensureVisible(() => find.text(Strings.playlist_created));
+
+  // Check playlist state
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Play List"]);
+  await tu.ensureVisible(() => find.text(playlist));
+  expect(find.byTooltip(Strings.medialist_filter), findsOneWidget);
+  expect(find.byTooltip(Strings.playlist_save_queue_as), findsNothing);
+  await tu.findAndTap("Ensure playlist", () => find.text(playlist), waitFor: true);
+  await tu.findAndTap("Ensure song2", () => find.text(artist + " - " + song2), waitFor: true);
+  await tu.findAndTap("Ensure top level", () => find.text(playlist + " | " + items), waitFor: true);
+  await tu.ensureVisible(() => find.text(playlist));
+
+  // Rename playlist
+  await tu.contextMenu(playlist, "Rename playlist", checkItems: [
+    "Play queue",
+    "Replace and play",
+    "Add",
+    "Add and play",
+    "Rename playlist",
+    "Delete playlist",
+    "Create shortcut"
+  ]);
+  await tu.setText(1, 0, playlist1);
+  await tu.findAndTap("Rename playlist1: " + playlist1, () => find.text("OK"));
+  await tu.findAndTap("Ensure playlist1", () => find.text(playlist1), waitFor: true);
+  await tu.findAndTap("Ensure song1", () => find.text(artist + " - " + song1), waitFor: true);
+  await tu.findAndTap("Ensure top level", () => find.text(playlist1 + " | " + items), waitFor: true);
+  await tu.ensureVisible(() => find.text(playlist1));
+
+  // Delete playlist
+  await tu.contextMenu(playlist1, "Delete playlist", checkItems: [
+    "Play queue",
+    "Replace and play",
+    "Add",
+    "Add and play",
+    "Rename playlist",
+    "Delete playlist",
+    "Create shortcut"
+  ]);
+  await tu.ensureDeleted(() => find.text(playlist1));
+  await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Play List"]);
+  await tu.ensureVisible(() => find.textContaining("Play List | items"));
+  expect(find.text(playlist), findsNothing);
+  expect(find.text(playlist1), findsNothing);
 }
 
 Future<void> _changeListeningMode(OnpcTestUtils tu, String input, String mode, bool isToneCtrl) async {

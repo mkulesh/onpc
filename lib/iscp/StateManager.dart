@@ -85,6 +85,7 @@ class StateManager
     static const String START_SEARCH_EVENT = "START_SEARCH";
     static const String ANY_DATA = "ANY_DATA";
     static const String SHORTCUT_CHANGE_EVENT = "SHORTCUT_CHANGE";
+    static const String PLAYLIST_CREATE_EVENT = "PLAYLIST_CREATED";
 
     static const Duration GUI_UPDATE_DELAY = Duration(milliseconds: 500);
 
@@ -654,11 +655,18 @@ class StateManager
                 sendMessage(ms.dcpMediaPath[ms.dcpMediaPath.length - 1]);
             }
         }
-        if (msg is DcpPlaylistCmdMsg && state.mediaListState.isPlaylist)
+        if (msg is DcpPlaylistCmdMsg)
         {
-            Logging.info(this, "DCP: requesting playlist...");
-            final MediaListState ms = state.mediaListState;
-            sendMessage(ms.dcpMediaPath[ms.dcpMediaPath.length - 1]);
+            if (state.mediaListState.isPlaylist)
+            {
+                Logging.info(this, "DCP: requesting playlist...");
+                final MediaListState ms = state.mediaListState;
+                sendMessage(ms.dcpMediaPath[ms.dcpMediaPath.length - 1]);
+            }
+            else if (state.mediaListState.isQueue && msg.getData == DcpPlaylistCmdMsg.HEOS_CREATE_EVENT)
+            {
+                triggerStateEvent(PLAYLIST_CREATE_EVENT);
+            }
         }
 
         // no further message handling, if no changes are detected

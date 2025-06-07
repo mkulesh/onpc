@@ -65,6 +65,7 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("Phono", ""),
   ]);
   await _changeServices(tu, [
+    Pair("Play List", true),
     Pair("Tidal", true),
     Pair("TuneIn Radio", true),
     Pair("Deezer", true),
@@ -73,7 +74,6 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("Amazon Music", false),
     Pair("Napster", false),
     Pair("Soundcloud", false),
-    Pair("Play List", false),
     Pair("History", false),
   ]);
   await _changeListeningModes(tu, [
@@ -350,13 +350,15 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.contextMenu(FAVOURITES.item1, "Create shortcut");
 
     final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
-    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+    await tu.ensureVisibleInList(
+        "Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu
         .navigateToMedia(["Return", "My Playlists", "Onkyo playlist"], ensureAfter: () => find.text("Forever / Y&T"));
     await tu.contextMenu(PLAYLIST.item1, "Create shortcut", waitFor: true);
 
     final Pair<String, String> VYSOTSKY = Pair<String, String>('Цыганский романс "Кони привередливые"', "В.Высоцкий");
-    await tu.ensureVisibleInList("Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+    await tu.ensureVisibleInList(
+        "Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu.navigateToMedia(
         ["Return", "Return", "My Albums", 'Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky'],
         ensureVisible: true);
@@ -515,7 +517,8 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     final Pair<String, String> FM2 = Pair<String, String>("5 - 93.80 MHz", "");
     await tu.openTab("MEDIA");
     await tu.findAndTap("Select TUNER", () => find.text("TUNER"));
-    await tu.ensureVisibleInList("Ensure list top", find.byType(ListView), () => find.text("DAB"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+    await tu.ensureVisibleInList(
+        "Ensure list top", find.byType(ListView), () => find.text("DAB"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu.findAndTap("Select DAB", () => find.text("DAB"));
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
     await tu.findAndTap("Select FM", () => find.text("FM"));
@@ -532,13 +535,12 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
 }
 
 Future<void> _renameShortcuts(
-    OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path,
-    final listeningMode, {String ensureItem = ""}) async {
+    OnpcTestUtils tu, final List<Pair<String, String>> items, final List<String> path, final listeningMode,
+    {String ensureItem = ""}) async {
   await tu.openTab("SHORTCUTS");
   await tu.stepDelaySec(1);
   if (ensureItem.isNotEmpty) {
-    await tu.ensureVisibleInList(
-        "Ensure " + ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem),
+    await tu.ensureVisibleInList("Ensure " + ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem),
         OnpcTestUtils.LIST_DRAG_OFFSET);
   }
   if (path.isNotEmpty) {

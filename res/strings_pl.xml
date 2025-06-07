@@ -518,6 +518,7 @@ Enjoy!""</string>
     <string name="playlist_save_queue_as">Utwórz playlistę</string>
     <string name="playlist_rename">Zmień nazwę playlistę</string>
     <string name="playlist_delete">Usuń playlistę</string>
+    <string name="playlist_created">Lista odtwarzania utworzona pomyślnie</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Nazwa</string>

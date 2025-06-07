@@ -3223,6 +3223,14 @@ Enjoy!"""];
         /*pl*/ "Usuń playlistę"];
     static String get playlist_delete => l_playlist_delete[_language];
 
+    static const List<String> l_playlist_created = [
+        /*en*/ "Playlist created successfully",
+        /*ru*/ "Плейлист успешно создан",
+        /*de*/ "Playlist erfolgreich erstellt",
+        /*fr*/ "Liste de lecture créée avec succès",
+        /*pl*/ "Lista odtwarzania utworzona pomyślnie"];
+    static String get playlist_created => l_playlist_created[_language];
+
     static const List<String> l_device_friendly_name = [
         /*en*/ "Friendly name",
         /*ru*/ "Удобное название",

@@ -414,11 +414,8 @@ class MediaListContextMenu
 
     void _renamePlaylist(final BuildContext context, final XmlListItemMsg cmd, final DcpMediaContainerMsg dcpCmd)
     {
-        showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext c)
-            => TextEditDialog(cmd.getTitle, (newName)
+        viewContext.showRootDialog(context,
+            TextEditDialog(cmd.getTitle, (newName)
             {
                 Logging.info(this, "rename command for playlist: " + dcpCmd.toString());
                 stateManager.sendMessage(DcpPlaylistCmdMsg.rename(

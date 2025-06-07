@@ -574,6 +574,7 @@ Enjoy!""</string>
     <string name="playlist_save_queue_as">Create playlist</string>
     <string name="playlist_rename">Rename playlist</string>
     <string name="playlist_delete">Delete playlist</string>
+    <string name="playlist_created">Playlist created successfully</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Friendly name</string>

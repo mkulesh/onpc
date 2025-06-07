@@ -439,6 +439,8 @@ class MusicControllerAppState extends State<MusicControllerApp>
                     _configuration.saveDeviceFriendlyName(_stateManager.state.receiverInformation);
                     Platform.updateWidgets(_methodChannel);
                     break;
+                case StateManager.PLAYLIST_CREATE_EVENT:
+                    PopupManager.showToast(Strings.playlist_created, toastKey: _viewContext.toastKey);
             }
         });
         // update dialogs
