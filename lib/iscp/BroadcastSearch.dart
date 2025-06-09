@@ -135,13 +135,17 @@ class BroadcastSearch
         {
             _processDcpResponse(d, response);
         }
+        else if (response.startsWith("HTTP/1.1"))
+        {
+            // ignore any general HTTP requests
+        }
         else
         {
-            _processIscpResponse(d, buffer);
+            _processIscpResponse(d, buffer, response);
         }
     }
 
-    void _processIscpResponse(final Datagram d, List<int> buffer)
+    void _processIscpResponse(final Datagram d, List<int> buffer, final String response)
     {
         // remove unused prefix
         final int startIndex = EISCPMessage.getMsgStartIndex(buffer);
@@ -168,7 +172,7 @@ class BroadcastSearch
         }
         on Exception catch (e)
         {
-            Logging.info(this, "<< error: invalid raw message: " + e.toString());
+            Logging.info(this, "<< error: invalid raw message: " + e.toString() + ": " + response);
             return;
         }
 
