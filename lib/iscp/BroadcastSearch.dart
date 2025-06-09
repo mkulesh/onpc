@@ -135,17 +135,13 @@ class BroadcastSearch
         {
             _processDcpResponse(d, response);
         }
-        else if (response.contains("upnp:rootdevice"))
-        {
-            // ignore any general UPnP device
-        }
         else
         {
-            _processIscpResponse(d, buffer, response);
+            _processIscpResponse(d, buffer);
         }
     }
 
-    void _processIscpResponse(final Datagram d, List<int> buffer, final String response)
+    void _processIscpResponse(final Datagram d, List<int> buffer)
     {
         // remove unused prefix
         final int startIndex = EISCPMessage.getMsgStartIndex(buffer);
@@ -172,7 +168,7 @@ class BroadcastSearch
         }
         on Exception catch (e)
         {
-            Logging.info(this, "<< error: invalid raw message: " + e.toString() + ": " + response);
+            Logging.info(this, "<< error: invalid raw message: " + e.toString());
             return;
         }
 
