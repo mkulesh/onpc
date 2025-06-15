@@ -19,7 +19,7 @@ dependencies:
   shared_preferences: 2.5.3
   back_button_interceptor: 8.0.4
   sprintf: 7.0.0
-  markdown_widget: 2.3.2
+  flutter_markdown: 0.7.7
   url_launcher: 6.3.1
   google_fonts: 6.2.1
   json_path: 0.7.5

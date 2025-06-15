@@ -16,7 +16,7 @@ import "dart:io";
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:markdown_widget/markdown_widget.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import "../constants/Dimens.dart";
 import "../constants/Strings.dart";
@@ -188,16 +188,20 @@ class AboutScreenState extends WidgetStreamState<AboutScreen>
 
     Widget _buildMarkdownView(final ThemeData td, final String data)
     {
-        final MarkdownConfig styleSheet = MarkdownConfig(configs: [
-            H1Config(style: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
-            H2Config(style: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
-            PConfig(textStyle: td.textTheme.bodyMedium!.copyWith(color: td.textTheme.titleMedium!.color)),
-            LinkConfig(style: td.textTheme.bodyMedium!.copyWith(color: td.colorScheme.secondary),
-                onTap: UrlLauncher.launchURL)
-        ]);
-        return MarkdownWidget(
-            data: data.replaceAll("Flutter: ", "Flutter (Dart SDK " + Platform.version + "): "),
-            config: styleSheet,
-            padding: ActivityDimens.noPadding);
+        final MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(td).copyWith(
+            h1: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+            h2: td.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+            p: td.textTheme.bodyMedium!.copyWith(color: td.textTheme.titleMedium!.color),
+            a: td.textTheme.bodyMedium!.copyWith(color: td.colorScheme.secondary));
+        return Markdown(data: data.replaceAll("Flutter: ", "Flutter (Dart SDK " + Platform.version + "): "),
+            styleSheet: styleSheet,
+            padding: ActivityDimens.noPadding,
+            onTapLink: (String text, String? href, String title)
+            {
+                if (href != null)
+                {
+                    UrlLauncher.launchURL(href);
+                }
+            });
     }
 }
