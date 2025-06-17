@@ -13,9 +13,9 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:markdown_widget/markdown_widget.dart';
 import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
@@ -228,7 +228,8 @@ Future<void> _saveConnection(final OnpcTestUtils tu, String name, String address
 }
 
 Future<void> _aboutScreen(OnpcTestUtils tu) async {
-  await tu.openDrawerMenu("About", ensureAfter: () => find.byType(MarkdownWidget));
+  await tu.openDrawerMenu("About", ensureAfter: () => find.byType(Markdown));
+  expect(find.textContaining("Enhanced AVR Controller"), findsOneWidget);
   await tu.previousScreen();
 }
 
