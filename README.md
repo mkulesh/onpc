@@ -73,7 +73,8 @@ Do you want try the last version in development?
 - Please note that the app does not support the music streaming from your phone to the network player or the receiver
 - In order to login into Deezer, Tidal, or Spotify, you need the official Onkyo/Denon app additionally to this app
 - Pioneer models before year 2016 are NOT supported, for example: VSX-424, VSX-529, VSX-830, VSX-920K, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, SC-LX79, N-50, N-50a, N-70A
-- Following Denon models are not supported: AVR-X1000, DNP-730AE, Heos Link 2
+- Following Denon models are not supported: AVR-X1000, DNP-730AE, Heos Link 2, Denon Home 150
+- Following Marantz models are not supported: Marantz n40
 - Following models do not support "Play Queue" feature (that is a limitation of the Onkyo firmware): CR-N765, DTR-40.5, HM76, HT-R693, HT-R695, TX-8130, TX-8150, TX-NR626, TX-NR636, TX-NR646, TX-RZ900
 
 ## Supported devices
@@ -103,8 +104,10 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [ONKYO TX-8130](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8130/index.html)
 - [ONKYO TX-8150](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8150/index.html)
 - [ONKYO TX-8250](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8250/index.html)
+- [ONKYO TX-8260](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8260/index.html)
 - [ONKYO TX-8270](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8270/index.html)
 - [ONKYO TX-8390](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8390/index.html)
+- [ONKYO TX-8470](https://www.intl.onkyo.com/products/hi-fi_components/receivers/tx-8470/index.html)
 - [ONKYO R-N855](https://www.intl.onkyo.com/products/hi-fi_components/compact_hi-fi/r-n855/index.html)
 - [ONKYO CS-N575D](https://www.intl.onkyo.com/products/system_components/mini_systems/cs-n575d/index.html)
 - [ONKYO CR-N755](https://www.intl.onkyo.com/products/system_components/mini_systems/cr-n755/index.html)
@@ -128,9 +131,12 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Pioneer VSX-LX503](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx503)
 - [Pioneer VSX-LX504](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-lx504)
 - [Pioneer VSX-S520D](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-s520d)
+- [Pioneer VSX-831](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-831)
 - [Pioneer VSX-832](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-832)
 - [Pioneer VSX-932](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-932)
 - [Pioneer VSX-933](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-933)
+- [Pioneer VSX-935](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-935)
+- [Pioneer VSX-1131](https://intl.pioneer-audiovisual.com/products/av_receiver/vsx-1131)
 - [Pioneer SC-LX701](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx701)
 - [Pioneer SC-LX901](https://intl.pioneer-audiovisual.com/products/av_receiver/sc-lx901)
 - [Pioneer SX-N30](https://intl.pioneer-audiovisual.com/products/2ch_components/sx-n30)
@@ -148,20 +154,30 @@ This list is based on the user feedback from Google Play and github. Not all fro
 - [Denon DRA-800H](https://www.denon.com/de-ch/shop/avreceiver/dra800h)
 - [Denon AVR-S750H](https://www.denon.com/de-ch/shop/avreceiver/avrs750h)
 - [Denon AVR-S760H](https://www.denon.com/de-de/product/av-receivers/avr-s760h/AVRS760H.html)
-- [Denon AVR-X2400H](https://www.denon.com/de-ch/shop/avreceiver/avrx2400h)
-- [Denon AVR-X2600H](https://www.denon.com/de-ch/shop/avreceiver/avrx2600h)
-- [Denon AVR-X2800H](https://www.denon.com/de-ch/shop/avreceiver/avrx2800h)
-- [Denon AVR-X3700H](https://www.denon.com/de-ch/shop/avreceiver/avcx3700h)
+- [Denon AVR-X1500H](https://www.denon.com/de-de/product/av-receivers/avr-x1500h/AVRX1500H.html)
+- [Denon AVR-X1800H](https://www.denon.com/de-de/product/av-receivers/avr-x1800h/AVRX1800H.html)
+- [Denon AVR-X2400H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x2400h/AVRX2400H.html)
+- [Denon AVR-X2600H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x2600h/AVRX2600H.html)
+- [Denon AVR-X2700H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x2700h/AVRX2700H.html)
+- [Denon AVR-X2800H](https://www.denon.com/de-de/product/av-receivers/avr-x2800h/AVRX2800H.html)
+- [Denon AVR-X3700H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x3700h/AVRX3700H.html)
 - [Denon AVR-X3800H](https://www.denon.com/de-ch/shop/avreceiver/avcx3800h)
-- [Denon AVR-X4300H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x4300h/800218.html)
-- [Denon AVR-X4500H](https://www.denon.com/de-ch/shop/avreceiver/avrx4500h)
+- [Denon AVR-X4300H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x4300h/AVRX4300H.html)
+- [Denon AVR-X4400H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x4400h/AVRX4400H.html)
+- [Denon AVR-X4500H](https://www.denon.com/de-de/product/archive-av-receivers/avr-x4500h/AVRX4500H.html)
 - [Denon AVR-X6300H](https://www.denon.com/de-ch/shop/avreceiver/avrx6300h)
+- [Denon AVR-X6400H](https://www.denon.com/de-ch/shop/avreceiver/avrx6400h)
 ### Marantz with build-in HEOS
 - [Marantz NR1200](https://www.marantz.com/de-de/product/av-receivers/nr1200)
+- [Marantz NR1508](https://www.marantz.com/de-de/product/av-receivers/nr1508)
 - [Marantz NR1510](https://www.marantz.com/de-de/product/av-receivers/nr1510)
 - [Marantz NR1711](https://www.marantz.com/de-de/product/av-receivers/nr1711)
 - [Marantz SR5015](https://www.marantz.com/de-de/product/av-receivers/sr5015)
 - [Marantz SR6015](https://www.marantz.com/de-de/product/av-receivers/sr6015)
+- [Marantz SR7015](https://www.marantz.com/de-de/product/av-receivers/sr7015)
+- [Marantz Cinema 40](https://www.marantz.com/de-de/product/av-receivers/cinema-40/CINEMA40.html)
+- [Marantz Cinema 50](https://www.marantz.com/de-de/product/av-receivers/cinema-50/CINEMA50.html)
+- [Marantz Cinema 60](https://www.marantz.com/de-de/product/av-receivers/cinema-60/CINEMA60.html)
 
 ## Documentation
 Documents from Onkyo describing the protocol, including lists of supported commands, are stored in 'doc' directory.
