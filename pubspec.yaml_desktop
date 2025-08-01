@@ -2,7 +2,7 @@
 name: onpc
 description: Enhanced Music Controller
 
-version: 2.15.0+315
+version: 2.15.1+316
 
 environment:
   sdk: '>=2.14.0 <4.0.0'
@@ -56,7 +56,7 @@ msix_config:
   publisher_display_name: Mikhail Kulesh
   identity_name: 25529MikhailKulesh.EnhancedMusicController
   publisher: CN=9D09E66E-B667-4A38-BC96-E7825A87B8DB
-  msix_version: 2.15.0.0
+  msix_version: 2.15.1.0
   logo_path: windows\runner\resources\app_icon_512.png
   start_menu_icon_path: windows\runner\resources\app_icon_512.png
   tile_icon_path: windows\runner\resources\app_icon_512.png

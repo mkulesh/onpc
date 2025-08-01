@@ -14,5 +14,5 @@
 
 class Version
 {
-    static const String NAME = "2.15.0";
+    static const String NAME = "2.15.1";
 }
