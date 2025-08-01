@@ -50,6 +50,10 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode">
+            <!-- Disable Impeller (see #360 Black Screen Issue in Flutter SDK 3.27.0+ on Oppo Devices) -->
+            <meta-data
+                android:name="io.flutter.embedding.android.EnableImpeller"
+                android:value="false" />
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
                  there is no splash screen (such as the default splash screen
