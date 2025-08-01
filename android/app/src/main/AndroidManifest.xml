@@ -50,10 +50,6 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode">
-            <!-- Disable Impeller (see #360 Black Screen Issue in Flutter SDK 3.27.0+ on Oppo Devices) -->
-            <meta-data
-                android:name="io.flutter.embedding.android.EnableImpeller"
-                android:value="false" />
             <!-- This keeps the window background of the activity showing
                  until Flutter renders its first frame. It can be removed if
                  there is no splash screen (such as the default splash screen
@@ -67,6 +63,12 @@
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
         </activity>
+
+        <!-- Disable Impeller (see #360 Black Screen Issue in Flutter SDK 3.27.0+ on Oppo Devices) -->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="false" />
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
