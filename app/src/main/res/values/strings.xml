@@ -378,11 +378,16 @@
     <string name="master_volume_up1">Sets volume level up 1dB step</string>
     <string name="master_volume_down1">Sets volume level down 1dB step</string>
     <string name="tone_direct">Tone Direct</string>
-    <string name="master_volume_restrict">Restrict volume level</string>
     <string name="master_volume_max">Maximum</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="channel_level">Channel level</string>
     <string name="audio_balance">Balance</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Audio control</string>
+    <string name="audio_control_current_zone">Current zone</string>
+    <string name="audio_control_all_zones">All zones</string>
+    <string name="audio_control_channel_level">Channel level</string>
+    <string name="audio_control_equalizer">Equalizer</string>
+    <string name="audio_control_max_level">Restrict volume level</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Sets preset wrap-around up</string>
@@ -461,6 +466,7 @@
     <string name="medialist_search_track">Track</string>
     <string name="medialist_search_station">Station</string>
     <string name="medialist_search_playlist">Playlist</string>
+    <string name="medialist_hide_empty_items">Hide empty items</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
@@ -573,6 +579,10 @@
     <string name="playlist_replace_and_play_all">Replace and play all</string>
     <string name="playlist_add_to_heos_favourites">Add to HEOS Favorites</string>
     <string name="playlist_remove_from_heos_favourites">Remove from HEOS Favorites</string>
+    <string name="playlist_save_queue_as">Create playlist</string>
+    <string name="playlist_rename">Rename playlist</string>
+    <string name="playlist_delete">Delete playlist</string>
+    <string name="playlist_created">Playlist created successfully</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Friendly name</string>

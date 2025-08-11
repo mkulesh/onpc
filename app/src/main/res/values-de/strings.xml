@@ -303,11 +303,16 @@
     <string name="master_volume_up1">1dB lauter</string>
     <string name="master_volume_down1">1dB leiser</string>
     <string name="tone_direct">Ton Direct</string>
-    <string name="master_volume_restrict">Lautstärke einschränken</string>
     <string name="master_volume_max">Maximum</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="channel_level">Kanal-Lautstärke</string>
     <string name="audio_balance">Balance</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Audiosteuerung</string>
+    <string name="audio_control_current_zone">Aktuelle Zone</string>
+    <string name="audio_control_all_zones">Alle Zonen</string>
+    <string name="audio_control_channel_level">Kanal-Lautstärke</string>
+    <string name="audio_control_equalizer">Equalizer</string>
+    <string name="audio_control_max_level">Lautstärke einschränken</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Nächster gespeicherter Sender</string>
@@ -386,6 +391,7 @@
     <string name="medialist_search_track">Track</string>
     <string name="medialist_search_station">Station</string>
     <string name="medialist_search_playlist">Wiedergabeliste</string>
+    <string name="medialist_hide_empty_items">Leere Elemente ausblenden</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
@@ -498,6 +504,10 @@
     <string name="playlist_replace_and_play_all">Alle ersetzen und abspielen</string>
     <string name="playlist_add_to_heos_favourites">Zu HEOS Favoriten hinzufügen</string>
     <string name="playlist_remove_from_heos_favourites">Aus HEOS Favoriten entfernen</string>
+    <string name="playlist_save_queue_as">Playlist erstellen</string>
+    <string name="playlist_rename">Playlist umbenennen</string>
+    <string name="playlist_delete">Playlist löschen</string>
+    <string name="playlist_created">Playlist erfolgreich erstellt</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Gewählter Name</string>

@@ -131,7 +131,7 @@
             android:summary="@string/pref_volume_summary" />
 
         <SwitchPreferenceCompat
-            app:icon="@drawable/volume_audio_control"
+            app:icon="@drawable/audio_control"
             app:singleLineTitle="false"
             android:defaultValue="false"
             android:key="force_audio_control"

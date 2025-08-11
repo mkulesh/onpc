@@ -302,11 +302,16 @@
     <string name="master_volume_up1">Głośniej o 1dB</string>
     <string name="master_volume_down1">Ciszej o 1dB</string>
     <string name="tone_direct">Tone Direct</string>
-    <string name="master_volume_restrict">Ogranicz poziom głośności</string>
     <string name="master_volume_max">Maksymalny</string>
-    <string name="equalizer">Equalizer</string>
-    <string name="channel_level">Poziom kanału</string>
     <string name="audio_balance">Balance</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Sterowanie dźwiękiem</string>
+    <string name="audio_control_current_zone">Obecna strefa</string>
+    <string name="audio_control_all_zones">Wszystkie strefy</string>
+    <string name="audio_control_channel_level">Poziom kanału</string>
+    <string name="audio_control_equalizer">Equalizer</string>
+    <string name="audio_control_max_level">Ogranicz poziom głośności</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Zapamiętane \"+\"</string>
@@ -385,6 +390,7 @@
     <string name="medialist_search_track">Track</string>
     <string name="medialist_search_station">Station</string>
     <string name="medialist_search_playlist">Playlist</string>
+    <string name="medialist_hide_empty_items">Ukryj puste elementy</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
@@ -497,6 +503,10 @@
     <string name="playlist_replace_and_play_all">Wymień i zagraj we wszystko</string>
     <string name="playlist_add_to_heos_favourites">Dodaj do ulubionych HEOS</string>
     <string name="playlist_remove_from_heos_favourites">Usuń z Ulubionych HEOS</string>
+    <string name="playlist_save_queue_as">Utwórz playlistę</string>
+    <string name="playlist_rename">Zmień nazwę playlistę</string>
+    <string name="playlist_delete">Usuń playlistę</string>
+    <string name="playlist_created">Lista odtwarzania utworzona pomyślnie</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Nazwa</string>

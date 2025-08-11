@@ -303,11 +303,16 @@
     <string name="master_volume_up1">Повысить громкость на 1dB</string>
     <string name="master_volume_down1">Понизить громкость на 1dB</string>
     <string name="tone_direct">DIRECT</string>
-    <string name="master_volume_restrict">Ограничить максимальную громкость</string>
     <string name="master_volume_max">Максимум</string>
-    <string name="equalizer">Эквалайзер</string>
-    <string name="channel_level">Уровень каналов</string>
     <string name="audio_balance">Баланс</string>
+
+    <!-- Audio control modes  -->
+    <string name="audio_control">Контроль звука</string>
+    <string name="audio_control_current_zone">Текущая зона</string>
+    <string name="audio_control_all_zones">Все зоны</string>
+    <string name="audio_control_channel_level">Уровень каналов</string>
+    <string name="audio_control_equalizer">Эквалайзер</string>
+    <string name="audio_control_max_level">Ограничить максимальную громкость</string>
 
     <!-- Preset Command  -->
     <string name="preset_command_up">Следующий канал</string>
@@ -386,6 +391,7 @@
     <string name="medialist_search_track">Трек</string>
     <string name="medialist_search_station">Станция</string>
     <string name="medialist_search_playlist">Плейлист</string>
+    <string name="medialist_hide_empty_items">Скрыть пустые элементы</string>
 
     <!-- Input selectors -->
     <string name="input_selector_vcr_dvr">VCR/DVR</string>
@@ -498,6 +504,10 @@
     <string name="playlist_replace_and_play_all">Заменить и воспроизвести все</string>
     <string name="playlist_add_to_heos_favourites">Добавить в Любимые HEOS</string>
     <string name="playlist_remove_from_heos_favourites">Удалить из Любимых HEOS</string>
+    <string name="playlist_save_queue_as">Создать плейлист</string>
+    <string name="playlist_rename">Переименовать плейлист</string>
+    <string name="playlist_delete">Удалить плейлист</string>
+    <string name="playlist_created">Плейлист успешно создан</string>
 
     <!-- Device tab -->
     <string name="device_friendly_name">Удобное название</string>

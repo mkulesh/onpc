@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -155,7 +155,7 @@ class AudioControlManager
                 state, CenterLevelCommandMsg.KEY, centerLevelGroup, R.string.center_level);
 
         final Dialogs dl = new Dialogs(activity);
-        audioControlDialog = dl.createOkDialog(frameView, R.drawable.volume_audio_control, R.string.app_control_audio_control);
+        audioControlDialog = dl.createOkDialog(frameView, R.drawable.audio_control, R.string.app_control_audio_control);
         audioControlDialog.setOnDismissListener((d) ->
         {
             Logging.info(this, "closing audio control dialog");
@@ -241,8 +241,8 @@ class AudioControlManager
         final AppCompatImageButton maxVolumeBtn = group.findViewWithTag("tone_extended_cmd");
         {
             maxVolumeBtn.setVisibility(View.VISIBLE);
-            maxVolumeBtn.setImageResource(R.drawable.volume_max_limit);
-            Utils.setTooltip(activity, maxVolumeBtn, activity.getString(R.string.master_volume_restrict));
+            maxVolumeBtn.setImageResource(R.drawable.audio_control_max_level);
+            Utils.setTooltip(activity, maxVolumeBtn, activity.getString(R.string.audio_control_max_level));
             maxVolumeBtn.setClickable(true);
             maxVolumeBtn.setOnClickListener(v -> showMasterVolumeMaxDialog(state));
             Utils.setButtonEnabled(activity, maxVolumeBtn, true);
@@ -344,7 +344,7 @@ class AudioControlManager
                 activity.getConfiguration().audioControl.getMasterVolumeMax()));
 
         final Dialogs dl = new Dialogs(activity);
-        final AlertDialog masterVolumeMaxDialog = dl.createOkDialog(frameView, R.drawable.volume_max_limit, R.string.master_volume_restrict);
+        final AlertDialog masterVolumeMaxDialog = dl.createOkDialog(frameView, R.drawable.audio_control_max_level, R.string.audio_control_max_level);
         masterVolumeMaxDialog.setOnDismissListener((d) ->
         {
             if (volumeGroup != null)

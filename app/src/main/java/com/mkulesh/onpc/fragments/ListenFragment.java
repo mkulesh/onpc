@@ -834,7 +834,7 @@ public class ListenFragment extends BaseFragment implements AudioControlManager.
         if (view instanceof AppCompatButton)
         {
             final AppCompatButton b = (AppCompatButton) view;
-            final Drawable icon = Utils.getDrawable(activity, R.drawable.volume_audio_control);
+            final Drawable icon = Utils.getDrawable(activity, R.drawable.audio_control);
             b.setText(volumeValid ?
                     State.getVolumeLevelStr(state.volumeLevel, state.getActiveZoneInfo()) : "");
             setButtonEnabled(b, volumeValid);
