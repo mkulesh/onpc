@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -356,7 +356,7 @@ public class DcpMediaContainerMsg extends ISCPMessage
     private void addJsonParameter(@NonNull final StringBuilder sb,
                                   @NonNull final String name, @NonNull final String value, boolean intermediate)
     {
-        sb.append("\"").append(name).append("\": \"").append(value).append("\"");
+        sb.append("\"").append(name).append("\": \"").append(value.replace("\"", "\\\"")).append("\"");
         if (intermediate)
         {
             sb.append(", ");
