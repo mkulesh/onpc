@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2018-2023 by Mikhail Kulesh
+  ~ Copyright (C) 2018-2025 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -65,6 +65,12 @@
         <item
             android:id="@+id/playlist_menu_add_and_play_all"
             android:title="@string/playlist_add_and_play_all" />
+        <item
+            android:id="@+id/playlist_menu_rename"
+            android:title="@string/playlist_rename" />
+        <item
+            android:id="@+id/playlist_menu_delete"
+            android:title="@string/playlist_delete" />
         <item
             android:id="@+id/playlist_menu_add_to_heos_favourites"
             android:title="@string/playlist_add_to_heos_favourites" />

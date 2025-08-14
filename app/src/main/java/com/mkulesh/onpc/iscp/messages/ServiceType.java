@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -90,7 +90,7 @@ public enum ServiceType implements ISCPMessage.DcpStringParameterIf
     DCP_TIDAL("HS10", "Tidal", R.string.service_tidal, R.drawable.media_item_tidal),
     DCP_AMAZON_MUSIC("HS13", "Amazon Music", R.string.service_amazon_music, R.drawable.media_item_amazon),
     DCP_LOCAL("HS1024", "Local Music", R.string.service_local_music, R.drawable.media_item_folder),
-    DCP_PLAYLIST("HS1025", "Playlists", R.string.service_playlist, R.drawable.media_item_playqueue),
+    DCP_PLAYLIST("HS1025", "Playlists", R.string.service_playlist, R.drawable.media_item_playlist),
     DCP_HISTORY("HS1026", "History", R.string.service_history, R.drawable.media_item_history),
     DCP_AUX("HS1027", "AUX Input", R.string.service_aux_input, R.drawable.media_item_aux),
     DCP_FAVORITE("HS1028", "Favorites", R.string.service_favorite, R.drawable.media_item_favorite),

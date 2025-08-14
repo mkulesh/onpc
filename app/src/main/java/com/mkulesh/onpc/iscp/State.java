@@ -343,6 +343,16 @@ public class State implements ConnectionIf
         return uiType == ListTitleInfoMsg.UIType.POPUP || uiType == ListTitleInfoMsg.UIType.KEYBOARD;
     }
 
+    public boolean isQueue()
+    {
+        return serviceType == ServiceType.PLAYQUEUE || serviceType == ServiceType.DCP_PLAYQUEUE;
+    }
+
+    public boolean isPlaylist()
+    {
+        return serviceType == ServiceType.DCP_PLAYLIST;
+    }
+
     public boolean isMenuMode()
     {
         return uiType == ListTitleInfoMsg.UIType.MENU || uiType == ListTitleInfoMsg.UIType.MENU_LIST;
@@ -1352,8 +1362,7 @@ public class State implements ConnectionIf
             {
                 Logging.info(msg, "processing XmlListInfoMsg");
                 msg.parseXml(mediaItems, numberOfLayers);
-                if (serviceType == ServiceType.PLAYQUEUE &&
-                        (currentTrack == null || maxTrack == null))
+                if (isQueue() && (currentTrack == null || maxTrack == null))
                 {
                     trackInfoFromList(mediaItems);
                 }

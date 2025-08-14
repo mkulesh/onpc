@@ -42,6 +42,7 @@ public class DCPMessageFactory
         acceptedCodes.addAll(FriendlyNameMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(PowerStatusMsg.getAcceptedDcpCodes());
         acceptedCodes.addAll(InputSelectorMsg.getAcceptedDcpCodes());
+        acceptedCodes.addAll(DcpPlaylistCmdMsg.getAcceptedDcpCodes());
 
         // Tone control
         acceptedCodes.addAll(MasterVolumeMsg.getAcceptedDcpCodes());
@@ -133,6 +134,7 @@ public class DCPMessageFactory
             addISCPMsg(DcpReceiverInformationMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(FirmwareUpdateMsg.processHeosMessage(cmd, heosMsg));
             addISCPMsg(FriendlyNameMsg.processHeosMessage(cmd, heosMsg));
+            addISCPMsg(DcpPlaylistCmdMsg.processHeosMessage(cmd));
 
             // Playback
             addISCPMsg(ArtistNameMsg.processHeosMessage(cmd, heosMsg));
@@ -277,6 +279,8 @@ public class DCPMessageFactory
         case InputSelectorMsg.ZONE3_CODE:
         case InputSelectorMsg.ZONE4_CODE:
             return new InputSelectorMsg(raw);
+        case DcpPlaylistCmdMsg.CODE:
+            return new DcpPlaylistCmdMsg(raw);
         case TimeInfoMsg.CODE:
             return new TimeInfoMsg(raw);
         case TrackInfoMsg.CODE:

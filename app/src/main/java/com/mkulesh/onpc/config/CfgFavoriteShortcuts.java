@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -203,7 +203,7 @@ public class CfgFavoriteShortcuts
 
             // Issue #248: Shortcuts not working when an empty play queue is selected in MEDIA tab:
             // when an empty play queue is selected in MEDIA tab, NLT message is not answered by receiver
-            final boolean emptyQueue = state.serviceType == ServiceType.PLAYQUEUE && state.numberOfItems == 0;
+            final boolean emptyQueue = state.isQueue() && state.numberOfItems == 0;
             if (!emptyQueue)
             {
                 data.append("<send cmd=\"NLT\" par=\"QSTN\" wait=\"NLT\"/>");

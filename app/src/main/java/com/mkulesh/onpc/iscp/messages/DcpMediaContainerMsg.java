@@ -182,9 +182,13 @@ public class DcpMediaContainerMsg extends ISCPMessage
         this.type = getElement(heosMsg, "type");
         this.container = YES.equalsIgnoreCase(getElement(heosMsg, "container"));
         this.playable = YES.equalsIgnoreCase(getElement(heosMsg, "playable"));
-        this.name = getNameElement(getElement(heosMsg, "name"));
         this.artist = getNameElement(getElement(heosMsg, "artist"));
         this.album = getNameElement(getElement(heosMsg, "album"));
+        final ServiceType st = (ServiceType) ISCPMessage.searchDcpParameter(
+                "HS" + parentSid, ServiceType.values(), ServiceType.UNKNOWN);
+        final boolean isPlaylist = st == ServiceType.DCP_PLAYLIST;
+        final String nm = getNameElement(getElement(heosMsg, "name"));
+        this.name = isPlaylist && "song".equals(type) && !artist.isEmpty() ? artist + " - " + nm : nm;
         this.imageUrl = getElement(heosMsg, "image_url");
     }
 
@@ -220,6 +224,11 @@ public class DcpMediaContainerMsg extends ISCPMessage
     public String getSid()
     {
         return sid;
+    }
+
+    public String getParentSid()
+    {
+        return parentSid;
     }
 
     public ServiceType getServiceType()

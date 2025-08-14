@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2018-2023 by Mikhail Kulesh
+  ~ Copyright (C) 2018-2025 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -89,6 +89,13 @@
                 android:src="@drawable/cmd_search"
                 android:visibility="gone"
                 android:contentDescription="@string/medialist_search" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/ImageButtonSecondaryStyle"
+                android:id="@+id/cmd_create_playlist"
+                android:src="@drawable/media_item_playlist"
+                android:visibility="gone"
+                android:contentDescription="@string/playlist_save_queue_as" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/ImageButtonSecondaryStyle"

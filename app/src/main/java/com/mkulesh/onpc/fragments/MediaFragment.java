@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -36,6 +36,7 @@ import com.mkulesh.onpc.iscp.ISCPMessage;
 import com.mkulesh.onpc.iscp.State;
 import com.mkulesh.onpc.iscp.StateManager;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
+import com.mkulesh.onpc.iscp.messages.DcpPlaylistCmdMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
 import com.mkulesh.onpc.iscp.messages.InputSelectorMsg;
 import com.mkulesh.onpc.iscp.messages.NetworkServiceMsg;
@@ -198,8 +199,7 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     final boolean isDcpItem = dcpMsg != null;
                     final boolean isDcpPlayable = dcpMsg != null && dcpMsg.isPlayable();
 
-                    final boolean isQueue = state.serviceType == ServiceType.PLAYQUEUE ||
-                            (isDcpItem && state.serviceType == ServiceType.DCP_PLAYQUEUE);
+                    final boolean isQueue = state.isQueue();
                     final boolean addToQueue = selector.isAddToQueue() ||
                             (networkService != null && networkService.isAddToQueue()) ||
                             isDcpPlayable;
@@ -241,6 +241,9 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                     setMenuVisible(menu, R.id.playlist_menu_replace_and_play_all, isDcpItem);
                     setMenuVisible(menu, R.id.playlist_menu_add_all, isDcpItem);
                     setMenuVisible(menu, R.id.playlist_menu_add_and_play_all, isDcpItem);
+                    final boolean isPlaylist = state.isPlaylist() && isDcpItem && dcpMsg.isContainer();
+                    setMenuVisible(menu, R.id.playlist_menu_rename, isPlaylist);
+                    setMenuVisible(menu, R.id.playlist_menu_delete, isPlaylist);
                     if (isDcpItem)
                     {
                         final List<XmlListItemMsg> menuItems = state.cloneDcpTrackMenuItems(null);
@@ -375,6 +378,19 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_ALL);
             case R.id.playlist_menu_add_and_play_all:
                 return callDcpMenuItem(dcpCmd, DcpMediaContainerMsg.SO_ADD_AND_PLAY_ALL);
+            case R.id.playlist_menu_rename:
+                if (dcpCmd != null)
+                {
+                    renamePlaylist(shortcutInfo.item, dcpCmd);
+                }
+                break;
+            case R.id.playlist_menu_delete:
+                if (dcpCmd != null)
+                {
+                    activity.getStateManager().sendMessage(new DcpPlaylistCmdMsg(
+                            DcpPlaylistCmdMsg.HEOS_DELETE_EVENT, dcpCmd.getParentSid(), dcpCmd.getCid(), ""));
+                }
+                break;
             }
         }
         else if (selectedStation != null && activity.isConnected() && item.getItemId() == R.id.cmd_shortcut_create)
@@ -888,6 +904,29 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
             }
         }
 
+        // DCP playlist button
+        {
+            final AppCompatImageButton btn = rootView.findViewById(R.id.cmd_create_playlist);
+            btn.setVisibility(View.GONE);
+            if (!showProgress && state != null && state.protoType == ConnectionIf.ProtoType.DCP && state.isQueue())
+            {
+                btn.setVisibility(View.VISIBLE);
+                prepareButtonListeners(btn, null, () -> {
+                    final Dialogs d = new Dialogs(activity);
+                    d.showTextEditDialog(R.string.playlist_save_queue_as, R.drawable.media_item_playlist, "",
+                            (final String newName) -> {
+                                if (activity.isConnected())
+                                {
+                                    activity.getStateManager().sendMessage(new DcpPlaylistCmdMsg(
+                                            DcpPlaylistCmdMsg.HEOS_CREATE_EVENT, "", "", newName));
+                                }
+                            }
+                    );
+                });
+                setButtonEnabled(btn, true);
+            }
+        }
+
         // Filter button
         {
             final AppCompatImageButton btn = rootView.findViewById(R.id.cmd_filter);
@@ -920,6 +959,20 @@ public class MediaFragment extends BaseFragment implements AdapterView.OnItemCli
                 }
             }
         }
+    }
+
+    private void renamePlaylist(@NonNull final String title, @NonNull final DcpMediaContainerMsg dcpCmd)
+    {
+        final Dialogs d = new Dialogs(activity);
+        d.showTextEditDialog(R.string.playlist_rename, R.drawable.media_item_playlist, title,
+                (final String newName) -> {
+                    if (activity.isConnected())
+                    {
+                        activity.getStateManager().sendMessage(new DcpPlaylistCmdMsg(
+                                DcpPlaylistCmdMsg.HEOS_RENAME_EVENT, dcpCmd.getParentSid(), dcpCmd.getCid(), newName));
+                    }
+                }
+        );
     }
 
     private void setTitleLayout(boolean titleVisible)

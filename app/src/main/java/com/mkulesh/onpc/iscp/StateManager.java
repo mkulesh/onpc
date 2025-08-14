@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -17,7 +17,9 @@ package com.mkulesh.onpc.iscp;
 import android.app.Activity;
 import android.content.Context;
 import android.os.StrictMode;
+import android.widget.Toast;
 
+import com.mkulesh.onpc.R;
 import com.mkulesh.onpc.config.CfgFavoriteShortcuts;
 import com.mkulesh.onpc.iscp.messages.AlbumNameMsg;
 import com.mkulesh.onpc.iscp.messages.AmpOperationCommandMsg;
@@ -32,6 +34,7 @@ import com.mkulesh.onpc.iscp.messages.DcpEcoModeMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaContainerMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaEventMsg;
 import com.mkulesh.onpc.iscp.messages.DcpMediaItemMsg;
+import com.mkulesh.onpc.iscp.messages.DcpPlaylistCmdMsg;
 import com.mkulesh.onpc.iscp.messages.DcpReceiverInformationMsg;
 import com.mkulesh.onpc.iscp.messages.DcpSearchCriteriaMsg;
 import com.mkulesh.onpc.iscp.messages.DcpTunerModeMsg;
@@ -705,6 +708,19 @@ public class StateManager extends AppTask implements Runnable
             {
                 Logging.info(this, "DCP: requesting media list...");
                 sendMessage(state.dcpMediaPath.get(state.dcpMediaPath.size() - 1));
+            }
+        }
+        if (msg instanceof DcpPlaylistCmdMsg)
+        {
+            if (state.isPlaylist())
+            {
+                Logging.info(this, "DCP: requesting playlist...");
+                sendMessage(state.dcpMediaPath.get(state.dcpMediaPath.size() - 1));
+            }
+            else if (state.isQueue() && DcpPlaylistCmdMsg.HEOS_CREATE_EVENT.equals(msg.getData()))
+            {
+                activity.runOnUiThread(() ->
+                        Toast.makeText(activity, R.string.playlist_created, Toast.LENGTH_LONG).show());
             }
         }
 

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -54,6 +54,11 @@ public class Dialogs
     public interface ButtonListener
     {
         void onPositiveButton();
+    }
+
+    public interface TextEditListener
+    {
+        void onRename(final String text);
     }
 
     public Dialogs(final MainActivity activity)
@@ -172,6 +177,41 @@ public class Dialogs
             }
         }
         return item;
+    }
+
+    public void showTextEditDialog(@StringRes int titleId, @DrawableRes int iconId, final String oldText, final TextEditListener bl)
+    {
+        final FrameLayout frameView = new FrameLayout(activity);
+        activity.getLayoutInflater().inflate(R.layout.dialog_text_edit_layout, frameView);
+
+        final EditText textField = frameView.findViewById(R.id.text_field);
+        textField.setText(oldText);
+
+        final Drawable icon = Utils.getDrawable(activity, iconId);
+        Utils.setDrawableColorAttr(activity, icon, android.R.attr.textColorSecondary);
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setTitle(titleId)
+                .setIcon(icon)
+                .setCancelable(false)
+                .setView(frameView)
+                .setNegativeButton(activity.getResources().getString(R.string.action_cancel), (dialog1, which) ->
+                {
+                    Utils.showSoftKeyboard(activity, textField, false);
+                    dialog1.dismiss();
+                })
+                .setPositiveButton(activity.getResources().getString(R.string.action_ok), (dialog2, which) ->
+                {
+                    Utils.showSoftKeyboard(activity, textField, false);
+                    if (bl != null)
+                    {
+                        bl.onRename(textField.getText().toString());
+                    }
+                    dialog2.dismiss();
+                })
+                .create();
+
+        dialog.show();
+        Utils.fixDialogLayout(dialog, android.R.attr.textColorSecondary);
     }
 
     public void showFirmwareUpdateDialog()
