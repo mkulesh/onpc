@@ -1,0 +1,2 @@
+• Denon: Added a possibility to create, rename, or delete a playlist
+• Fixed a bug: Shortcuts with special characters cannot be handled

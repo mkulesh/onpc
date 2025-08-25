@@ -25,13 +25,13 @@ Known limitations:
 * Please note that the app does not support the music streaming from your phone to the network player or the receiver
 * In order to login into Deezer, Tidal, or Spotify, you need the official Onkyo/Denon app additionally to this app
 * Pioneer models before year 2016 are NOT supported, for example: VSX-424, VSX-529, VSX-830, VSX-920K, VSX-923, VSX-924, VSX-1021, VSX-1121, SC-95, SC-LX79, N-50, N-50a, N-70A
-* Following Denon models are not supported: AVR-X1000, DNP-730AE, Heos Link 2
+* Following Denon models are not supported: AVR-X1000, DNP-730AE, Heos Link 2, Denon Home 150, Marantz n40
 * Following models do not support "Play Queue" feature (that is a limitation of the Onkyo firmware): CR-N765, DTR-40.5, HM76, HT-R693, HT-R695, TX-8130, TX-8150, TX-NR626, TX-NR636, TX-NR646, TX-RZ900
 
 At the moment, the app is tested and works with following devices:
-* Onkyo: TX-L20D, TX-L50, TX-NR414, TX-NR509, TX-NR525, TX-NR535, TX-NR575E, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-NR696, TX-NR818, TX-RZ50, TX-RZ810, TX-RZ830, TX-RZ900, TX-RZ1100, TX-8130, TX-8150, TX-8250, TX-8270, TX-8390, R-N855, CS-N575D, CR-N765, CR-N775D, HT-S7805, NS-6130, NS-6170, Wireless Audio System NCP-302
+* Onkyo: TX-L20D, TX-L50, TX-NR414, TX-NR509, TX-NR525, TX-NR535, TX-NR575E, TX-NR616, TX-NR636, TX-NR646, TX-NR656, TX-NR676E, TX-NR686, TX-NR696, TX-NR818, TX-RZ50, TX-RZ70, TX-RZ810, TX-RZ830, TX-RZ900, TX-RZ1100, TX-8130, TX-8150, TX-8250, TX-8260, TX-8270, TX-8390, TX-8470, R-N855, CS-N575D, CR-N755, CR-N765, CR-N775D, HT-S7805, NS-6130, NS-6170, NCP-302
 * Integra: DTM-6, DRX-5.2, DTR 30.7, DTR 40.7
-* Pioneer (models after 2016): VSX-LX101, VSX-LX103, VSX-LX104, VSX-LX302, VSX-LX303, VSX-LX503, VSX-LX504, VSX-S520D, VSX-832, VSX-932, VSX-933, SC-LX701, SC-LX901, SX-N30, NC-50DAB, N-50AE, N-70AE, XC-HM86D, MRX-3, MRX-5
+* Pioneer (models after 2016): VSX-LX101, VSX-LX103, VSX-LX104, VSX-LX302, VSX-LX303, VSX-LX503, VSX-LX504, VSX-S520D, VSX-831, VSX-832, VSX-932, VSX-933, VSX-935, VSX-1131, SC-LX701, SC-LX901, SX-N30, SX-S30DAB, NC-50DAB, N-50AE, N-70AE, XC-HM86D, MRX-3, MRX-5
 * Teac: NT-503, AG-D500
-* Denon with build-in HEOS: DRA-800H, AVR-S750H, AVR-S760H, AVR-X2400H, AVR-X2600H, AVR-X3700H, AVR-X3800H, AVR-X4300H, AVR-X4500H, AVR-X6300H
-* Marantz with build-in HEOS: NR1200, NR1510, NR1711, SR5015, SR6015
+* Denon with build-in HEOS: DRA-800H, AVR-S750H, AVR-S760H, AVR-X1500H, AVR-X1800H, AVR-X2400H, AVR-X2600H, AVR-X2700H, AVR-X2800H, AVR-X3700H, AVR-X3800H, AVR-X4300H, AVR-X4400H, AVR-X4500H, AVR-X6300H, AVR-X6400H
+* Marantz with build-in HEOS: NR1200, NR1508, NR1510, NR1711, SR5015, SR6015, SR7015, Cinema 40, Cinema 50, Cinema 60
