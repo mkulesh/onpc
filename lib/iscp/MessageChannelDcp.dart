@@ -150,7 +150,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
 
     void _onDcpConnected(MessageChannel channel, ConnectionIf connection)
     {
-        Logging.info(this, "Connected to DCP channel: " + connection.getHostAndPort + ", waiting fot HEOS");
+        Logging.info(this, "Connected to DCP channel: " + connection.getHostAndPort + ", waiting for HEOS");
         _heosSocket.start(getHost, DCP_HEOS_PORT, keepConnection : false);
     }
 
@@ -162,7 +162,12 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
 
     void _onHeosDisconnected(ConnectionErrorType errorType, String result)
     {
-        Logging.info(this, result);
+        Logging.info(this, Convert.enumToString(errorType) + ": " + result);
+        if (errorType == ConnectionErrorType.HOST_NOT_AVAILABLE)
+        {
+            Logging.info(this, "HEOS not available, continue in DCP mode only");
+            _onConnected(this, _dcpSocket);
+        }
     }
 
     void _onHeosData(List<dynamic> data)
