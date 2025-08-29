@@ -155,6 +155,10 @@ class Drawables
     static const String pref_sound_control = BUTTONS_PATH + "pref_sound_control.svg";
     static const String pref_volume_unit = BUTTONS_PATH + "pref_volume_unit.svg";
     static const String pref_text_size = BUTTONS_PATH + "pref_text_size.svg";
+    static const String pref_text_bold = BUTTONS_PATH + "pref_text_bold.svg";
+    static const String pref_text_italic = BUTTONS_PATH + "pref_text_italic.svg";
+    static const String pref_text_underline = BUTTONS_PATH + "pref_text_underline.svg";
+    static const String pref_text_shadow = BUTTONS_PATH + "pref_text_shadow.svg";
     static const String pref_volume_keys = BUTTONS_PATH + "pref_volume_keys.svg";
     static const String pref_advanced_queue = BUTTONS_PATH + "pref_advanced_queue.svg";
     static const String pref_cover_click = BUTTONS_PATH + "pref_cover_click.svg";

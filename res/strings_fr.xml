@@ -199,6 +199,14 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
         <item>Énorme</item>
     </string-array>
 
+    <string name="pref_text_style">Style du texte</string>
+    <string name="pref_text_scale">Échelle du texte (%)</string>
+    <string name="pref_text_font_style">Style de police</string>
+    <string name="pref_text_bold">Gras</string>
+    <string name="pref_text_italic">Italique</string>
+    <string name="pref_text_underline">Souligné</string>
+    <string name="pref_text_shadow">Ombre</string>
+
     <!-- Application settings: Tabs -->
     <string name="pref_visible_tabs">Onglets visibles</string>
     <string-array name="pref_visible_tabs_names">

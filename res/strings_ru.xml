@@ -198,6 +198,14 @@ Copyright © 2019-2025 by __Михаил Кулеш__
         <item>Огромный</item>
     </string-array>
 
+    <string name="pref_text_style">Стиль текста</string>
+    <string name="pref_text_scale">Масштаб текста (%)</string>
+    <string name="pref_text_font_style">Стиль шрифта</string>
+    <string name="pref_text_bold">Полужирный</string>
+    <string name="pref_text_italic">Курсив</string>
+    <string name="pref_text_underline">Подчеркнутый</string>
+    <string name="pref_text_shadow">Тень</string>
+
     <!-- Application settings: Tabs -->
     <string name="pref_visible_tabs">Видимые вкладки</string>
     <string-array name="pref_visible_tabs_names">

@@ -1007,6 +1007,62 @@ Enjoy!"""];
         /*pl*/ "Rozmiar tekstu i przycisków"];
     static String get pref_text_size => l_pref_text_size[_language];
 
+    static const List<String> l_pref_text_style = [
+        /*en*/ "Text style",
+        /*ru*/ "Стиль текста",
+        /*de*/ "Textstil",
+        /*fr*/ "Style du texte",
+        /*pl*/ "Styl tekstu"];
+    static String get pref_text_style => l_pref_text_style[_language];
+
+    static const List<String> l_pref_text_scale = [
+        /*en*/ "Text scale (%)",
+        /*ru*/ "Масштаб текста (%)",
+        /*de*/ "Textskalierung (%)",
+        /*fr*/ "Échelle du texte (%)",
+        /*pl*/ "Skala tekstu (%)"];
+    static String get pref_text_scale => l_pref_text_scale[_language];
+
+    static const List<String> l_pref_text_font_style = [
+        /*en*/ "Font style",
+        /*ru*/ "Стиль шрифта",
+        /*de*/ "Schriftstil",
+        /*fr*/ "Style de police",
+        /*pl*/ "Styl czcionki"];
+    static String get pref_text_font_style => l_pref_text_font_style[_language];
+
+    static const List<String> l_pref_text_bold = [
+        /*en*/ "Bold",
+        /*ru*/ "Полужирный",
+        /*de*/ "Fett",
+        /*fr*/ "Gras",
+        /*pl*/ "Pogrubiony"];
+    static String get pref_text_bold => l_pref_text_bold[_language];
+
+    static const List<String> l_pref_text_italic = [
+        /*en*/ "Italic",
+        /*ru*/ "Курсив",
+        /*de*/ "Kursiv",
+        /*fr*/ "Italique",
+        /*pl*/ "Kursywa"];
+    static String get pref_text_italic => l_pref_text_italic[_language];
+
+    static const List<String> l_pref_text_underline = [
+        /*en*/ "Underline",
+        /*ru*/ "Подчеркнутый",
+        /*de*/ "Unterstrichen",
+        /*fr*/ "Souligné",
+        /*pl*/ "Podkreślenie"];
+    static String get pref_text_underline => l_pref_text_underline[_language];
+
+    static const List<String> l_pref_text_shadow = [
+        /*en*/ "Shadow",
+        /*ru*/ "Тень",
+        /*de*/ "Schatten",
+        /*fr*/ "Ombre",
+        /*pl*/ "Cień"];
+    static String get pref_text_shadow => l_pref_text_shadow[_language];
+
     static const List<String> l_pref_visible_tabs = [
         /*en*/ "Visible tabs",
         /*ru*/ "Видимые вкладки",

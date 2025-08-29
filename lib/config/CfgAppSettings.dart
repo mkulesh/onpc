@@ -29,6 +29,7 @@ import "../utils/Platform.dart";
 import "CfgModule.dart";
 import "CfgTabSettings.dart";
 import "CheckableItem.dart";
+import "TextLabelStyle.dart";
 
 // Tabs
 enum AppTabs
@@ -122,6 +123,27 @@ class CfgAppSettings extends CfgModule
     {
         _textSize = value;
         saveStringParameter(TEXT_SIZE, value);
+    }
+
+    // Text Label style
+    static const Pair<String, String> TEXT_LABEL_STYLE = Pair<String, String>("text_label_style", "");
+    final List<TextLabelStyle> _textLabelStyle = [];
+
+    static String _getTextLabelStyleParName(TextLabelParName p)
+    => TEXT_LABEL_STYLE.item1 + "_" + Convert.enumToString(p).toLowerCase();
+
+    TextLabelStyle? getTextLabelStyle(TextLabelParName item)
+    {
+        return item.index < _textLabelStyle.length ? _textLabelStyle[item.index] : null;
+    }
+
+    void setTextLabelStyle(TextLabelParName item, TextLabelStyle style)
+    {
+        if (item.index < _textLabelStyle.length)
+        {
+            _textLabelStyle[item.index] = style;
+            saveStringParameter(Pair<String, String>(_getTextLabelStyleParName(item),""), style.toString());
+        }
     }
 
     // The latest opened tab
@@ -326,6 +348,7 @@ class CfgAppSettings extends CfgModule
         _theme = getString(THEME, doLog: true);
         _language = getString(LANGUAGE, doLog: true);
         _textSize = getString(TEXT_SIZE, doLog: true);
+        _readTextLabelStyle();
         final String tab = getString(OPENED_TAB_NAME, doLog: true);
         _openedTab = AppTabs.values.firstWhere((t)
             => Convert.enumToString(t) == tab, orElse: () => AppTabs.values.first);
@@ -474,6 +497,24 @@ class CfgAppSettings extends CfgModule
         _tabSettings.forEach((c)
         {
             c.read();
+        });
+    }
+
+    void _readTextLabelStyle()
+    {
+        _textLabelStyle.clear();
+        TextLabelParName.values.forEach((p)
+        {
+            final String parName = _getTextLabelStyleParName(p);
+            final List<String>? tokens = getTokens(parName);
+            TextLabelStyle defStyle = TextLabelStyle();
+            if (p == TextLabelParName.ARTIST)
+            {
+                defStyle = TextLabelStyle(bold: true);
+            }
+            final TextLabelStyle style = tokens == null ? defStyle : TextLabelStyle.tokens(tokens);
+            _textLabelStyle.add(style);
+            Logging.info(this, "  " + parName + ": " + style.toString());
         });
     }
 

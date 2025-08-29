@@ -201,6 +201,14 @@ Enjoy!""</string>
         <item>Ogromne</item>
     </string-array>
 
+    <string name="pref_text_style">Styl tekstu</string>
+    <string name="pref_text_scale">Skala tekstu (%)</string>
+    <string name="pref_text_font_style">Styl czcionki</string>
+    <string name="pref_text_bold">Pogrubiony</string>
+    <string name="pref_text_italic">Kursywa</string>
+    <string name="pref_text_underline">Podkreślenie</string>
+    <string name="pref_text_shadow">Cień</string>
+
     <!-- Application settings: Tabs -->
     <string name="pref_visible_tabs">Widoczne zakładki</string>
     <string-array name="pref_visible_tabs_names">

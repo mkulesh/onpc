@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -14,6 +14,7 @@
 
 import "package:flutter/material.dart";
 
+import "../config/TextLabelStyle.dart";
 import "../constants/Strings.dart";
 import "../iscp/messages/AlbumNameMsg.dart";
 import "../iscp/messages/ArtistNameMsg.dart";
@@ -52,8 +53,8 @@ class TrackCaptionView extends UpdatableView
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
         // Artist and album
-        final Widget artist = CustomTextLabel.normal(_buildTrackArtist(), bold: true, textAlign: TextAlign.center);
-        final Widget album = CustomTextLabel.normal(_buildTrackAlbum(), textAlign: TextAlign.center);
+        final Widget artist = CustomTextLabel.adaptive(_buildTrackArtist(), viewContext, TextLabelParName.ARTIST);
+        final Widget album = CustomTextLabel.adaptive(_buildTrackAlbum(), viewContext, TextLabelParName.ALBUM);
 
         // Song title with feed buttons
         final List<Widget> titleItems = [];
@@ -67,7 +68,10 @@ class TrackCaptionView extends UpdatableView
                 isEnabled: true
             ));
         }
-        titleItems.add(Expanded(child: CustomTextLabel.normal(_buildTrackTitle(), textAlign: TextAlign.center)));
+
+        final Widget title = CustomTextLabel.adaptive(_buildTrackTitle(), viewContext, TextLabelParName.TRACK_TITLE);
+        titleItems.add(Expanded(child: title));
+
         if (state.playbackState.positiveFeed.isImageValid)
         {
             final FeedType feed = state.playbackState.positiveFeed.key;

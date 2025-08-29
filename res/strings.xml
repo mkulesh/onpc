@@ -247,6 +247,14 @@ Enjoy!""</string>
         <item>Huge</item>
     </string-array>
 
+    <string name="pref_text_style">Text style</string>
+    <string name="pref_text_scale">Text scale (%)</string>
+    <string name="pref_text_font_style">Font style</string>
+    <string name="pref_text_bold">Bold</string>
+    <string name="pref_text_italic">Italic</string>
+    <string name="pref_text_underline">Underline</string>
+    <string name="pref_text_shadow">Shadow</string>
+
     <!-- Non-Translatable parameters of text size -->
     <string name="pref_text_size_default" translatable="false">system</string>
     <string-array name="pref_text_size_codes" translatable="false">

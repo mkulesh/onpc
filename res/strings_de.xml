@@ -200,6 +200,14 @@ If not, see [www.gnu.org/licenses](https://www.gnu.org/licenses)
         <item>Riesig</item>
     </string-array>
 
+    <string name="pref_text_style">Textstil</string>
+    <string name="pref_text_scale">Textskalierung (%)</string>
+    <string name="pref_text_font_style">Schriftstil</string>
+    <string name="pref_text_bold">Fett</string>
+    <string name="pref_text_italic">Kursiv</string>
+    <string name="pref_text_underline">Unterstrichen</string>
+    <string name="pref_text_shadow">Schatten</string>
+
     <!-- Application settings: Tabs -->
     <string name="pref_visible_tabs">Sichtbare Registerkarten</string>
     <string-array name="pref_visible_tabs_names">
