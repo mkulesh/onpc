@@ -3,6 +3,11 @@
 # Necessary Fedora packages:
 # dnf install clang cmake ninja-build gtk3-devel xz-devel
 
+# Sometimes Wayland has problems. To solve, run the app with X11:
+# - in terminal: bash -c 'GDK_BACKEND=x11 Music-Control'
+# - in Android Studio: Go to Run > Edit Configurations..., select run configuration and add an
+#   Environment variable: Name GDK_BACKEND and Value x11
+
 # Set this parameter to the actual Flutter installation path
 # Call "git fetch" in this directory so that your local Flutter
 # repository gets all the new info from Github
