@@ -105,7 +105,8 @@ class DrawerView extends UpdatableView
             // Multiroom
             final List<DeviceInfo> devices = state.multiroomState.getSortedDevices();
             final int favorites = devices.where((d) => d.isFavorite).length;
-            if (devices.length > 1 || favorites > 0)
+            final bool isDifferentMaster = devices.length == 1 && !stateManager.isMasterDevice(devices.first);
+            if (devices.length > 1 || favorites > 0 || isDifferentMaster)
             {
                 drawerItems.add(CustomDivider());
                 drawerItems.add(CustomTextLabel.small(Strings.drawer_multiroom, padding: DrawerDimens.labelPadding));

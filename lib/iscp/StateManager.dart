@@ -22,7 +22,6 @@ import "../config/CfgAudioControl.dart";
 import "../config/CfgFavoriteShortcuts.dart";
 import "../config/CfgRiCommands.dart";
 import "../config/CfgTabSettings.dart";
-import "../iscp/BroadcastSearch.dart";
 import "../iscp/CommandHelper.dart";
 import "../iscp/scripts/HandleDcpDuplicates.dart";
 import "../iscp/scripts/MessageScript.dart";
@@ -31,6 +30,7 @@ import "../utils/CompatUtils.dart";
 import "../utils/Logging.dart";
 import "../utils/Platform.dart";
 import "ConnectionIf.dart";
+import "DeviceSearch.dart";
 import "EISCPMessage.dart";
 import "ISCPMessage.dart";
 import "MessageChannel.dart";
@@ -90,7 +90,7 @@ class StateManager
     static const Duration GUI_UPDATE_DELAY = Duration(milliseconds: 500);
 
     // Broadcast search engine will be created on demand
-    BroadcastSearch? _searchEngine;
+    DeviceSearch? _searchEngine;
 
     bool get isSearching
     => _searchEngine != null;
@@ -965,13 +965,14 @@ class StateManager
             return;
         }
         Logging.info(this, "Starting device search: limited=" + limited.toString() + ", restart=" + restart.toString());
-        _state.multiroomState.startSearch(limited: limited);
+        _state.multiroomState.startSearch();
         _state.multiroomState.updateFavorites();
         if (_searchEngine == null || (_searchEngine!.isStopped && restart))
         {
-            _searchEngine = BroadcastSearch(_processDeviceResponse);
-            triggerStateEvent(BROADCAST_SEARCH_EVENT);
+            _searchEngine = DeviceSearch(_processDeviceResponse, stopSearch, iscp: true, ssdp: true);
         }
+        _searchEngine?.limited = limited;
+        triggerStateEvent(BROADCAST_SEARCH_EVENT);
     }
 
     void stopSearch()
@@ -994,10 +995,6 @@ class StateManager
             {
                 _messageChannel.sendQueries(state.multiroomState.getQueries(_messageChannel, _messageChannel.getProtoType));
             }
-        }
-        if (_searchEngine != null && state.multiroomState.isSearchFinished())
-        {
-            stopSearch();
         }
         if (!isSourceHost(msg) && !_multiroomChannels.containsKey(msg.getHostAndPort))
         {

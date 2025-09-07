@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -28,28 +28,25 @@ class DeviceInfo
     final BroadcastResponseMsg responseMsg;
     final bool _favorite;
     int _responses;
-    String? _friendlyName;
     MultiroomDeviceInformationMsg? groupMsg;
     late EnumItem<ChannelType> _channelType;
 
     DeviceInfo(this.responseMsg, this._favorite, this._responses)
     {
-        _friendlyName = null;
         groupMsg = null;
         _channelType = MultiroomZone.ChannelTypeEnum.defValue;
     }
 
     DeviceInfo.fromDevice(this.responseMsg, this._favorite, this._responses, DeviceInfo di)
     {
-        _friendlyName = di._friendlyName;
         groupMsg = di.groupMsg;
         _channelType = di._channelType;
     }
 
     bool processFriendlyName(FriendlyNameMsg msg)
     {
-        final bool changed = _friendlyName != msg.getFriendlyName;
-        _friendlyName = msg.getFriendlyName;
+        final bool changed = responseMsg.friendlyName != msg.getFriendlyName;
+        responseMsg.friendlyName = msg.getFriendlyName;
         return changed;
     }
 
@@ -76,14 +73,7 @@ class DeviceInfo
     => responseMsg.getHostAndPort;
 
     String getDeviceName(bool useFriendlyName)
-    {
-        if (isFavorite && responseMsg.alias != null)
-        {
-            return responseMsg.alias!;
-        }
-        final String? name = (useFriendlyName) ? _friendlyName : null;
-        return (name != null) ? name : responseMsg.getDescription();
-    }
+    => responseMsg.getDescription(isFavorite, useFriendlyName);
 
     EnumItem<ChannelType> getChannelType(int zone)
     => _channelType.key != MultiroomZone.ChannelTypeEnum.defValue.key ? _channelType :
@@ -102,10 +92,6 @@ class DeviceInfo
 
 class MultiroomState
 {
-    // search limit
-    static const int MAX_DEVICE_RESPONSE_NUMBER = 5;
-    int _searchLimit = MAX_DEVICE_RESPONSE_NUMBER;
-
     // Multiroom: list of devices
     final Map<String, DeviceInfo> _deviceList = Map();
 
@@ -190,27 +176,9 @@ class MultiroomState
         return deviceInfo._responses == 1;
     }
 
-    void startSearch({bool limited = true})
+    void startSearch()
     {
-        _searchLimit = limited ? MAX_DEVICE_RESPONSE_NUMBER : -1;
         _deviceList.clear();
-    }
-
-    bool isSearchFinished()
-    {
-        if (_searchLimit < 0)
-        {
-            return false;
-        }
-        int okDevice = 0;
-        for (DeviceInfo di in _deviceList.values)
-        {
-            if ((di.isFavorite && di._responses == 0) || di._responses >= MAX_DEVICE_RESPONSE_NUMBER)
-            {
-                okDevice++;
-            }
-        }
-        return (okDevice == _deviceList.length);
     }
 
     List<DeviceInfo> getSortedDevices()

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -13,31 +13,40 @@
  */
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "ConnectionIf.dart";
+import "DeviceSearch.dart";
 import "EISCPMessage.dart";
 import "messages/BroadcastResponseMsg.dart";
 
-class BroadcastSearch
+class DeviceSearchIscp implements SearchEngineIf
 {
-    static const int TIMEOUT = 3;
+    // Broadcast address for ISCP Discovery Protocol
+    final String V4_BROADCAST = "255.255.255.255";
 
-    OnDeviceFound? onDeviceFound;
+    final int _id;
+    final OnDeviceFound onDeviceFound;
+    final OnRequest onRequest;
+
     RawDatagramSocket? _socket;
-
-    bool get isStopped
-    => _socket == null;
-
+    int _requestCount = 0;
     final EISCPMessage _mX = EISCPMessage.outputCat("x", "ECN", "QSTN");
     final EISCPMessage _mP = EISCPMessage.outputCat("p", "ECN", "QSTN");
 
-    BroadcastSearch(this.onDeviceFound)
+    DeviceSearchIscp(this._id, this.onDeviceFound, this.onRequest);
+
+    @override
+    int get id
+    => _id;
+
+    @override
+    void start(int retryDelay)
     {
-        Logging.info(this, "Starting...");
+        Logging.info(this, "Starting. Retry delay = " + retryDelay.toString() + "s.");
+        _requestCount = 0;
         RawDatagramSocket.bind(InternetAddress.anyIPv4, ISCP_PORT).then((RawDatagramSocket sock)
         {
             _socket = sock;
@@ -47,13 +56,14 @@ class BroadcastSearch
                 onDone: _onDone,
                 cancelOnError: false);
 
-            Timer.periodic(Duration(seconds: TIMEOUT), (Timer t)
+            Timer.periodic(Duration(seconds: retryDelay), (Timer t)
             {
                 if (_socket != null)
                 {
                     _requestIscp(_mX, "x");
                     _requestIscp(_mP, "p");
-                    _requestDcp();
+                    _requestCount++;
+                    onRequest(id, _requestCount);
                 }
                 else
                 {
@@ -64,9 +74,9 @@ class BroadcastSearch
         {
             _onError(e);
         });
-        // empty
     }
 
+    @override
     void stop()
     {
         if (_socket != null)
@@ -75,9 +85,13 @@ class BroadcastSearch
         }
     }
 
+    @override
+    bool get isStopped
+    => _socket == null;
+
     void _requestIscp(final EISCPMessage m, final String modelCategoryId)
     {
-        final InternetAddress target = InternetAddress("255.255.255.255");
+        final InternetAddress target = InternetAddress(V4_BROADCAST);
         if (_socket != null)
         {
             final List<int>? bytes = m.getBytes();
@@ -88,28 +102,7 @@ class BroadcastSearch
             _socket!.send(bytes, target, ISCP_PORT);
             Logging.info(this, "message " + m.toString()
                 + " for category \'" + modelCategoryId
-                + "\' send to " + target.toString()
-                + ", wait response for " + TIMEOUT.toString() + "s");
-        }
-    }
-
-    void _requestDcp()
-    {
-        final String host = "239.255.255.250";
-        final String schema = "schemas-denon-com:device";
-        final String request =
-            "M-SEARCH * HTTP/1.1\r\n"
-                "HOST: " + host + ":" + DCP_UDP_PORT.toString() + "\r\n"
-                "MAN: \"ssdp:discover\"\r\n"
-                "MX: 10\r\n"
-                "ST: urn:" + schema + ":ACT-Denon:1\r\n\r\n";
-        final InternetAddress target = InternetAddress(host);
-        if (_socket != null)
-        {
-            final List<int> bytes = utf8.encode(request);
-            _socket!.send(bytes, target, DCP_UDP_PORT);
-            Logging.info(this, "message M-SEARCH send to " + target.toString()
-                + ", wait response for " + TIMEOUT.toString() + "s");
+                + "\' send to " + target.toString());
         }
     }
 
@@ -131,21 +124,10 @@ class BroadcastSearch
         => buffer.add(f));
 
         final String response = Convert.decodeUtf8(buffer);
-        if (response.contains("schemas-denon-com:device"))
-        {
-            _processDcpResponse(d, response);
-        }
-        else if (response.startsWith("HTTP/1.1"))
-        {
-            // ignore any general HTTP requests
-        }
-        else
-        {
-            _processIscpResponse(d, buffer, response);
-        }
+        _processResponse(d, buffer, response);
     }
 
-    void _processIscpResponse(final Datagram d, List<int> buffer, final String response)
+    void _processResponse(final Datagram d, List<int> buffer, final String response)
     {
         // remove unused prefix
         final int startIndex = EISCPMessage.getMsgStartIndex(buffer);
@@ -182,21 +164,10 @@ class BroadcastSearch
         }
 
         final BroadcastResponseMsg responseMessage = BroadcastResponseMsg(d.address, raw);
-        if (onDeviceFound != null && responseMessage.isValidConnection())
+        if (responseMessage.isValidConnection())
         {
             Logging.info(this, "<< ISCP device response " + responseMessage.toString());
-            onDeviceFound!(responseMessage);
-        }
-    }
-
-    void _processDcpResponse(final Datagram d, String response)
-    {
-        final BroadcastResponseMsg responseMessage =
-            BroadcastResponseMsg.dcp(d.address, DCP_PORT, "Denon-Heos AVR");
-        if (onDeviceFound != null && responseMessage.isValidConnection())
-        {
-            Logging.info(this, "<< DCP device response " + responseMessage.toString());
-            onDeviceFound!(responseMessage);
+            onDeviceFound(responseMessage);
         }
     }
 

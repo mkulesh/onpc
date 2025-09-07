@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -39,8 +39,15 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
 
     String? _model;
     String? _destinationArea;
+
+    // Used to store optional MAC address
     String? _identifier;
+
+    // Used to store optional favourite name
     String? _alias;
+
+    // Used to store optional friendly name
+    String? _friendlyName;
 
     BroadcastResponseMsg(InternetAddress hostAddress, EISCPMessage raw) : super(CODE, raw)
     {
@@ -63,7 +70,7 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
             _identifier = _trim(tokens[3]);
         }
         setProtoType(ProtoType.ISCP);
-        // _alias still be null
+        // _alias and _friendlyName still be null - not presented in ISCP
     }
 
     BroadcastResponseMsg.alias(final String host, final String port, final String alias, final String? identifier) : super.output(CODE, "")
@@ -85,12 +92,13 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
         // all other fields still be null
     }
 
-    BroadcastResponseMsg.dcp(InternetAddress hostAddress, final int port, final String model) : super.output(CODE, "")
+    BroadcastResponseMsg.ssdp(InternetAddress hostAddress, ProtoType p, final String model, final String friendlyName) : super.output(CODE, "")
     {
         setHost(hostAddress.address);
-        setPort(port);
+        setPort(p == ProtoType.ISCP? ISCP_PORT : DCP_PORT);
+        setProtoType(p);
         this._model = model;
-        setProtoType(ProtoType.DCP);
+        this._friendlyName = friendlyName;
         // all other fields still be null
     }
 
@@ -115,10 +123,21 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
             + (_model != null ? "; MODEL=" + _model! : "")
             + (_destinationArea != null ? "; DST=" + _destinationArea! : "")
             + (_identifier != null ? "; ID=" + _identifier! : "")
-            + (_alias != null ? "; ALIAS=" + _alias! : "") + "]";
+            + (_alias != null ? "; ALIAS=" + _alias! : "")
+            + (_friendlyName != null ? "; FRIENDLY_NAME=" + _friendlyName! : "") + "]";
 
-    String getDescription()
-    => getHost + "/" + (_alias != null ? _alias! : (_model != null ? _model! : "unknown"));
+    String getDescription(bool useFavoriteName, bool useFriendlyName)
+    {
+        if (useFavoriteName && _alias != null)
+        {
+            return _alias!;
+        }
+        if (useFriendlyName && _friendlyName != null)
+        {
+            return _friendlyName!;
+        }
+        return getHost + "/" + (_model != null ? _model! : "unknown");
+    }
 
     String get getIdentifier
     => _identifier ?? "";
@@ -126,8 +145,11 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
     String? get alias
     => _alias;
 
-    set alias(String? value)
+    String? get friendlyName
+    => _friendlyName;
+
+    set friendlyName(String? value)
     {
-        _alias = value;
+        _friendlyName = value;
     }
 }

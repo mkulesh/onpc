@@ -48,7 +48,7 @@ class DeviceSearchView extends UpdatableView
         {
             final String titleStr = d.getDeviceName(configuration.friendlyNames);
             final Widget title = CustomTextLabel.normal(titleStr);
-            final Widget? subTitle = d.getHostAndPort() != titleStr ? CustomTextLabel.small(d.getHostAndPort()) : null;
+            final Widget? subTitle = !titleStr.contains(d.responseMsg.getHost) ? CustomTextLabel.small(d.getHostAndPort()) : null;
 
             final Widget item = ListTile(
                 contentPadding: ActivityDimens.noPadding,
