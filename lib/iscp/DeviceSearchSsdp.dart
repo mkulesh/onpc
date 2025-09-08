@@ -17,8 +17,6 @@ import "dart:convert";
 import 'dart:io';
 import 'dart:typed_data';
 
-import "package:onpc/iscp/upnp/DeviceDescription.dart";
-import "package:onpc/iscp/upnp/MSearch.dart";
 import "package:xml/xml.dart";
 
 import "../utils/Convert.dart";
@@ -28,6 +26,8 @@ import "../utils/UrlLoader.dart";
 import "ConnectionIf.dart";
 import "DeviceSearch.dart";
 import "messages/BroadcastResponseMsg.dart";
+import "upnp/DeviceDescription.dart";
+import "upnp/MSearch.dart";
 
 // Search using Simple Service Discovery Protocol
 class DeviceSearchSsdp implements SearchEngineIf
@@ -57,7 +57,9 @@ class DeviceSearchSsdp implements SearchEngineIf
     {
         Logging.info(this, "Starting. Retry delay = " + retryDelay.toString() + "s.");
         _requestCount = 0;
-        RawDatagramSocket.bind(InternetAddress.anyIPv4, SSDP_PORT).then((RawDatagramSocket sock)
+        // Note: On Windows, SSDP service is running and blocks SSDP_PORT.
+        // As workaround, use any other port here:
+        RawDatagramSocket.bind(InternetAddress.anyIPv4, Platform.isWindows? DCP_WEB_GUI : SSDP_PORT).then((RawDatagramSocket sock)
         {
             _socket = sock;
             _socket!.multicastLoopback = true;
