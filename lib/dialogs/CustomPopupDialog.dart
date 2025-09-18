@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -22,8 +22,8 @@ import "../iscp/messages/ServiceType.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
 import "../views/UpdatableView.dart";
+import "../widgets/CustomDialogEditField.dart";
 import "../widgets/CustomDialogTitle.dart";
-import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
 
 class CustomPopupDialog extends StatefulWidget
@@ -146,8 +146,19 @@ class _CustomPopupDialogState extends WidgetStreamState<CustomPopupDialog>
         bool isFocused = true;
         _textFields.forEach((t)
         {
-            elements.add(CustomTextLabel.small(t.item1.getAttribute("text")?? ""));
-            elements.add(CustomTextField(t.item2, isFocused: isFocused));
+            final String label = t.item1.getAttribute("text")?? "";
+            final String type = t.item1.getAttribute("type")?? "";
+            final bool autoCorrect = type.toUpperCase() == "PLAIN";
+            if (autoCorrect)
+            {
+                Logging.info(this.widget, "enable auto-correct for field: " + label);
+            }
+            elements.add(CustomDialogEditField(
+                t.item2,
+                isFocused: isFocused,
+                textLabel: label,
+                autoCorrect: autoCorrect
+            ));
             uiType = PopupUiType.KEYBOARD;
             isFocused = false;
         });

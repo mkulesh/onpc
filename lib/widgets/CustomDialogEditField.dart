@@ -28,6 +28,7 @@ class CustomDialogEditField extends StatelessWidget
     final String? textLabel;
     final Widget? widgetLabel;
     final bool isFocused;
+    final bool autoCorrect;
     final ValueChanged<String>? onChanged;
     final VoidCallback? onDeleteBtn;
 
@@ -36,6 +37,7 @@ class CustomDialogEditField extends StatelessWidget
         this.textLabel,
         this.widgetLabel,
         this.isFocused = false,
+        this.autoCorrect = false,
         this.onChanged,
         this.onDeleteBtn
     });
@@ -43,7 +45,7 @@ class CustomDialogEditField extends StatelessWidget
     @override
     Widget build(BuildContext context)
     {
-        Widget editor = CustomTextField(controller, isFocused: isFocused, onChanged: onChanged);
+        Widget editor = CustomTextField(controller, isFocused: isFocused, autoCorrect: autoCorrect, onChanged: onChanged);
         if (onDeleteBtn != null)
         {
             editor = Row(

@@ -71,7 +71,8 @@ class _FavoriteShortcutEditDialogState extends State<FavoriteShortcutEditDialog>
 
         controls.add(CustomDialogEditField(_alias,
             textLabel: Strings.pref_item_name,
-            isFocused: true)
+            isFocused: true,
+            autoCorrect: true)
         );
 
         final List<EnumItem<ListeningMode>> listening_modes =
