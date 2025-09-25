@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,6 +15,7 @@
 import "dart:math";
 
 import "../ISCPMessage.dart";
+import "../state/UpnpState.dart";
 
 enum TimeFormat
 {
@@ -80,5 +81,22 @@ class TimeSeekMsg extends ISCPMessage
     bool hasImpactOnMediaList()
     {
         return false;
+    }
+
+    /*
+     * Denon control protocol: UPnP Seek message
+     */
+    @override
+    ActionRequest? buildUpnpMsg(final UpnpState? upnpState)
+    {
+        if (upnpState != null && upnpState.seek != null)
+        {
+            final Map<String, dynamic> params = {};
+            params["InstanceID"] = 0;
+            params["Unit"] = "REL_TIME";
+            params["Target"] = getData;
+            return ActionRequest(headers: upnpState.seek!.buildXmlHeader(), body: upnpState.seek!.buildXmlBody(params));
+        }
+        return null;
     }
 }

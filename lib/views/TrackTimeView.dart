@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -38,13 +38,16 @@ class TrackTimeView extends UpdatableView
     {
         int currTime = _timeToSeconds(state.trackState.currentTime);
         int maxTime = _timeToSeconds(state.trackState.maxTime);
+
+        final bool enabledDcp = state.isPlaying && state.upnpState.seek != null && maxTime > 0;
+        final bool enabledIscp = state.isPlaying && state.playbackState.timeSeek == TimeSeek.ENABLE;
+        final bool enabled = enabledDcp || enabledIscp;
+
         if (currTime < 0 || maxTime < 0)
         {
             currTime = 0;
             maxTime = 300;
         }
-
-        final bool enabled = state.isPlaying && state.playbackState.timeSeek == TimeSeek.ENABLE;
 
         return CustomProgressBar(
             minValueStr: state.trackState.currentTime,
