@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0" xmlns:DMH="http://www.dmglobal.com"
+    xmlns:qq="http://www.tencent.com"
+    xmlns:avega_media_server="urn:schemas-avegasystems-com:media-server:metadata-1-0:DIDL-Lite">
+    <specVersion>
+        <major>1</major>
+        <minor>0</minor>
+    </specVersion>
+    <device>
+        <deviceType>urn:schemas-denon-com:device:AiosDevice:1</deviceType>
+        <friendlyName>Denon AVR</friendlyName>
+        <manufacturer>Denon</manufacturer>
+        <manufacturerURL>http://www.denon.com</manufacturerURL>
+        <modelName>Denon DRA-800H</modelName>
+        <modelNumber>Aios 4.025</modelNumber>
+        <serialNumber></serialNumber>
+        <UDN>uuid:528c4b93-12b6-1592-0080-0005cdb3bd62</UDN>
+        <DMH:X_WebAPIPort>8080</DMH:X_WebAPIPort>
+        <deviceList>
+            <device>
+                <deviceType>urn:schemas-upnp-org:device:MediaRenderer:1</deviceType>
+                <friendlyName>Denon AVR</friendlyName>
+                <manufacturer>Denon</manufacturer>
+                <manufacturerURL>http://www.denon.com</manufacturerURL>
+                <modelName>Denon DRA-800H</modelName>
+                <modelNumber>Aios 4.025</modelNumber>
+                <UDN>uuid:d8d54739-e88a-1c15-0080-0005cdb3bd62</UDN>
+                <X_Play_Queue_Capacity>1000</X_Play_Queue_Capacity>
+                <qq:X_QPlay_SoftwareCapability>QPlay:2</qq:X_QPlay_SoftwareCapability>
+                <serviceList>
+                    <service>
+                        <serviceType>urn::1</serviceType>
+                        <serviceId>urn:upnp-org:serviceId:AVTransport</serviceId>
+                        <SCPDURL>/upnp/scpd/renderer_dvc/AVTransport.xml</SCPDURL>
+                        <controlURL>/upnp/control/renderer_dvc/AVTransport</controlURL>
+                        <eventSubURL>/upnp/event/renderer_dvc/AVTransport</eventSubURL>
+                    </service>
+                    <service>
+                        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:1</serviceType>
+                        <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
+                        <SCPDURL>/upnp/scpd/renderer_dvc/ConnectionManager.xml</SCPDURL>
+                        <controlURL>/upnp/control/renderer_dvc/ConnectionManager</controlURL>
+                        <eventSubURL>/upnp/event/renderer_dvc/ConnectionManager</eventSubURL>
+                    </service>
+                    <service>
+                        <serviceType>urn:schemas-upnp-org:service:RenderingControl:1</serviceType>
+                        <serviceId>urn:upnp-org:serviceId:RenderingControl</serviceId>
+                        <SCPDURL>/upnp/scpd/renderer_dvc/RenderingControl.xml</SCPDURL>
+                        <controlURL>/upnp/control/renderer_dvc/RenderingControl</controlURL>
+                        <eventSubURL>/upnp/event/renderer_dvc/RenderingControl</eventSubURL>
+                    </service>
+                    <service>
+                        <serviceType>urn:schemas-tencent-com:service:QPlay:1</serviceType>
+                        <serviceId>urn:tencent-com:serviceId:QPlay</serviceId>
+                        <SCPDURL>/upnp/scpd/renderer_dvc/QPlay.xml</SCPDURL>
+                        <controlURL>/upnp/control/renderer_dvc/QPlay</controlURL>
+                        <eventSubURL>/upnp/event/renderer_dvc/QPlay</eventSubURL>
+                    </service>
+                </serviceList>
+            </device>
+            <device>
+                <deviceType>urn:schemas-denon-com:device:AiosServices:1</deviceType>
+                <friendlyName>AiosServices</friendlyName>
+                <manufacturer>Denon</manufacturer>
+                <manufacturerURL>http://www.denon.com</manufacturerURL>
+                <modelName>Denon DRA-800H</modelName>
+                <modelNumber>Aios 4.025</modelNumber>
+                <UDN>uuid:44a65d10-d615-1078-0080-0005cdb3bd62</UDN>
+                <serviceList>
+                    <service>
+                        <serviceType>urn:schemas-denon-com:service:ErrorHandler:1</serviceType>
+                        <serviceId>urn:denon-com:serviceId:ErrorHandler</serviceId>
+                        <SCPDURL>/upnp/scpd/AiosServicesDvc/ErrorHandler.xml</SCPDURL>
+                        <controlURL>/upnp/control/AiosServicesDvc/ErrorHandler</controlURL>
+                        <eventSubURL>/upnp/event/AiosServicesDvc/ErrorHandler</eventSubURL>
+                    </service>
+                    <service>
+                        <serviceType>urn:schemas-denon-com:service:ZoneControl:2</serviceType>
+                        <serviceId>urn:denon-com:serviceId:ZoneControl</serviceId>
+                        <SCPDURL>/upnp/scpd/AiosServicesDvc/ZoneControl.xml</SCPDURL>
+                        <controlURL>/upnp/control/AiosServicesDvc/ZoneControl</controlURL>
+                        <eventSubURL>/upnp/event/AiosServicesDvc/ZoneControl</eventSubURL>
+                    </service>
+                    <service>
+                        <serviceType>urn:schemas-denon-com:service:GroupControl:1</serviceType>
+                        <serviceId>urn:denon-com:serviceId:GroupControl</serviceId>
+                        <SCPDURL>/upnp/scpd/AiosServicesDvc/GroupControl.xml</SCPDURL>
+                        <controlURL>/upnp/control/AiosServicesDvc/GroupControl</controlURL>
+                        <eventSubURL>/upnp/event/AiosServicesDvc/GroupControl</eventSubURL>
+                    </service>
+                </serviceList>
+            </device>
+            <device>
+                <deviceType>urn:schemas-upnp-org:device:MediaServer:1</deviceType>
+                <friendlyName>Denon AVR</friendlyName>
+                <manufacturer>Denon</manufacturer>
+                <manufacturerURL>http://www.denon.com</manufacturerURL>
+                <modelDescription>Shares User defined folders and files to other Universal Plug and
+                    Play media devices.
+                </modelDescription>
+                <modelName>Denon DRA-800H</modelName>
+                <modelNumber>Aios 4.025</modelNumber>
+                <serialNumber></serialNumber>
+                <UDN>uuid:d0ac67e8-65b1-b460-eac8-0648ee4e630c</UDN>
+                <avega_media_server:X_VirtualServersSupported>True
+                </avega_media_server:X_VirtualServersSupported>
+                <serviceList>
+                    <service>
+                        <serviceType>urn:schemas-upnp-org:service:ContentDirectory:1</serviceType>
+                        <serviceId>urn:upnp-org:serviceId:ContentDirectory</serviceId>
+                        <SCPDURL>/upnp/scpd/ams_dvc/ContentDirectory.xml</SCPDURL>
+                        <controlURL>/upnp/control/ams_dvc/ContentDirectory</controlURL>
+                        <eventSubURL>/upnp/event/ams_dvc/ContentDirectory</eventSubURL>
+                    </service>
+                    <service>
+                        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:1</serviceType>
+                        <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
+                        <SCPDURL>/upnp/scpd/ams_dvc/ConnectionManager.xml</SCPDURL>
+                        <controlURL>/upnp/control/ams_dvc/ConnectionManager</controlURL>
+                        <eventSubURL>/upnp/event/ams_dvc/ConnectionManager</eventSubURL>
+                    </service>
+                </serviceList>
+            </device>
+            <device>
+                <deviceType>urn:schemas-denon-com:device:ACT-Denon:1</deviceType>
+                <friendlyName>Denon AVR</friendlyName>
+                <manufacturer>Denon</manufacturer>
+                <manufacturerURL>http://www.denon.com</manufacturerURL>
+                <modelName>Denon DRA-800H</modelName>
+                <modelNumber>Aios 4.025</modelNumber>
+                <serialNumber></serialNumber>
+                <UDN>uuid:d2c00069-d9b5-c288-4214-016c66943b94</UDN>
+                <DeviceID>AIOS:0001</DeviceID>
+                <capability_version>4</capability_version>
+                <firmwareRevision>1754002381</firmwareRevision>
+                <firmware_date>Fri 2025-08-01 10:28:17</firmware_date>
+                <firmware_version>3.88.192</firmware_version>
+                <lanMac>00:05:CD:B3:BD:60</lanMac>
+                <locale>en_EU</locale>
+                <moduleRevision>4</moduleRevision>
+                <moduleType>Aios 4.025</moduleType>
+                <productRevision>1</productRevision>
+                <releaseType>Production</releaseType>
+                <wlanMac>00:05:CD:B3:BD:62</wlanMac>
+                <serviceList>
+                    <service>
+                        <serviceType>urn:schemas-denon-com:service:ACT:1</serviceType>
+                        <serviceId>urn:denon-com:serviceId:ACT</serviceId>
+                        <SCPDURL>/ACT/SCPD.xml</SCPDURL>
+                        <controlURL>/ACT/control</controlURL>
+                        <eventSubURL>/ACT/event</eventSubURL>
+                    </service>
+                </serviceList>
+            </device>
+        </deviceList>
+    </device>
+</root>

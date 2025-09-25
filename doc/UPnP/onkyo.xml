@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0" xmlns:dlna="urn:schemas-dlna-org:device-1-0">
+    <specVersion>
+        <major>1</major>
+        <minor>0</minor>
+    </specVersion>
+    <device>
+        <deviceType>urn:schemas-upnp-org:device:MediaRenderer:2</deviceType>
+        <friendlyName>Onkyo Player</friendlyName>
+        <manufacturer>Onkyo &amp; Pioneer Corporation</manufacturer>
+        <manufacturerURL>http://www.onkyo.com</manufacturerURL>
+        <modelName>NS-6170</modelName>
+        <modelNumber>Digital Media Client</modelNumber>
+        <modelURL>http://www.onkyo.com</modelURL>
+        <UDN>uuid:b0f154e5-00e5-54FF-b000-0009b0f154e5</UDN>
+        <iconList>
+            <icon>
+                <mimetype>image/png</mimetype>
+                <width>120</width>
+                <height>120</height>
+                <depth>24</depth>
+                <url>http://192.168.1.80:8888/oap-120x120x24.png</url>
+            </icon>
+            <icon>
+                <mimetype>image/png</mimetype>
+                <width>48</width>
+                <height>48</height>
+                <depth>24</depth>
+                <url>http://192.168.1.80:8888/oap-48x48x24.png</url>
+            </icon>
+            <icon>
+                <mimetype>image/jpeg</mimetype>
+                <width>120</width>
+                <height>120</height>
+                <depth>24</depth>
+                <url>http://192.168.1.80:8888/oap-120x120x24.jpg</url>
+            </icon>
+            <icon>
+                <mimetype>image/jpeg</mimetype>
+                <width>48</width>
+                <height>48</height>
+                <depth>24</depth>
+                <url>http://192.168.1.80:8888/oap-48x48x24.jpg</url>
+            </icon>
+        </iconList>
+        <serviceList>
+            <service>
+                <serviceType>urn:schemas-upnp-org:service:ConnectionManager:2</serviceType>
+                <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
+                <SCPDURL>/xml/ConnectionManager.xml</SCPDURL>
+                <controlURL>/Control/oap/SinkConnectionManager</controlURL>
+                <eventSubURL>/Event/oap/SinkConnectionManager</eventSubURL>
+            </service>
+            <service>
+                <serviceType>urn:schemas-upnp-org:service:AVTransport:2</serviceType>
+                <serviceId>urn:upnp-org:serviceId:AVTransport</serviceId>
+                <SCPDURL>/xml/AVTransport2.xml</SCPDURL>
+                <controlURL>/Control/oap/AVTransport</controlURL>
+                <eventSubURL>/Event/oap/AVTransport</eventSubURL>
+            </service>
+            <service>
+                <serviceType>urn:schemas-upnp-org:service:RenderingControl:2</serviceType>
+                <serviceId>urn:upnp-org:serviceId:RenderingControl</serviceId>
+                <SCPDURL>/xml/RenderingControl2.xml</SCPDURL>
+                <controlURL>/Control/oap/RenderingControl</controlURL>
+                <eventSubURL>/Event/oap/RenderingControl</eventSubURL>
+            </service>
+        </serviceList>
+        <dlna:X_DLNADOC>DMR-1.50</dlna:X_DLNADOC>
+    </device>
+</root>
