@@ -18,6 +18,7 @@ import "../../utils/Convert.dart";
 import "../ConnectionIf.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "../upnp/DeviceDescription.dart";
 
 /*
  * Broadcast Response Message
@@ -48,6 +49,9 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
 
     // Used to store optional friendly name
     String? _friendlyName;
+
+    // Optional UPnP device description message
+    DeviceDescription? _upnpDescription;
 
     BroadcastResponseMsg(InternetAddress hostAddress, EISCPMessage raw) : super(CODE, raw)
     {
@@ -92,13 +96,14 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
         // all other fields still be null
     }
 
-    BroadcastResponseMsg.ssdp(InternetAddress hostAddress, ProtoType p, final String model, final String friendlyName) : super.output(CODE, "")
+    BroadcastResponseMsg.ssdp(InternetAddress hostAddress, ProtoType p, final DeviceDescription d) : super.output(CODE, "")
     {
         setHost(hostAddress.address);
         setPort(p == ProtoType.ISCP? ISCP_PORT : DCP_PORT);
         setProtoType(p);
-        this._model = model;
-        this._friendlyName = friendlyName;
+        this._upnpDescription = d;
+        this._model = d.modelName;
+        this._friendlyName = d.friendlyName;
         // all other fields still be null
     }
 
@@ -152,4 +157,7 @@ class BroadcastResponseMsg extends ISCPMessage with ProtoTypeMix
     {
         _friendlyName = value;
     }
+
+    DeviceDescription? get upnpDescription
+    => _upnpDescription;
 }

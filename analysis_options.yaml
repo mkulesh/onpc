@@ -16,6 +16,7 @@ analyzer:
     prefer_collection_literals: ignore
     prefer_if_null_operators: ignore
     unnecessary_getters_setters: ignore
+    use_super_parameters: ignore
 
 linter:
   rules:

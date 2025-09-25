@@ -14,9 +14,15 @@
  * This class is inspired by https://pub.dev/packages/upnped - A Dart library for discovering and controlling UPnP devices.
  */
 
-import 'dart:collection';
+import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:xml/xml.dart';
+
+import '../../utils/Convert.dart';
+import '../../utils/UrlLoader.dart';
+import 'MSearch.dart';
+import 'MapperUtils.dart';
 
 /// Utility class that separates a UPnP device type string into its component parts.
 class DeviceType
@@ -79,7 +85,7 @@ class DeviceIcon
             width: int.parse(xml.getElement('width')!.innerText),
             height: int.parse(xml.getElement('height')!.innerText),
             depth: xml.getElement('depth')!.innerText,
-            url: Uri.parse(xml.getElement('url')!.innerText),
+            url: Uri.parse(xml.getElement('url')!.innerText)
         );
     }
 
@@ -153,6 +159,14 @@ class ServiceData
             eventSubUrl: Uri.parse(eventSubUrl!)
         );
     }
+
+    @override
+    String toString()
+    => "serviceId: " + serviceId.toString()
+        + ", serviceVersion: " + serviceVersion
+        + ", scpdurl: " + scpdurl.toString()
+        + ", controlUrl: " + controlUrl.toString()
+        + ", eventSubUrl: " + eventSubUrl.toString();
 }
 
 /// A collection of vendor-specific information, definitions of all embedded
@@ -160,6 +174,9 @@ class ServiceData
 /// including URLs for control and eventing
 class DeviceDescription
 {
+    /// Optional initial M-Search request.
+    MSearch? mSearch;
+
     /// UPnP device type.
     final DeviceType deviceType;
 
@@ -265,17 +282,49 @@ class DeviceDescription
             serialNumber: xml.getElement('serialNumber')?.innerText,
             udn: xml.getElement('UDN')!.innerText,
             upc: xml.getElement('UPC')?.innerText,
-            iconList: _elementMapper(xml.getElement('iconList'), 'icon', DeviceIcon.parse),
-            services: _nodeMapper(xml.getElement('serviceList'), 'service', ServiceData.parse),
-            devices: _nodeMapper(xml.getElement('deviceList'), 'device', DeviceDescription.parse),
+            iconList: MapperUtils.elementMapper(xml.getElement('iconList'), 'icon', DeviceIcon.parse),
+            services: MapperUtils.nodeMapper(xml.getElement('serviceList'), 'service', ServiceData.parse),
+            devices: MapperUtils.nodeMapper(xml.getElement('deviceList'), 'device', DeviceDescription.parse),
             presentationUrl: presentationUrl != null ? Uri.parse(presentationUrl.innerText) : null,
             extensions: UnmodifiableListView(extensions)
         );
     }
 
-    static _elementMapper<T>(XmlNode? xml, String elementType, T Function(XmlElement) buildFn)
-    => xml?.findAllElements(elementType).map<T>(buildFn).toList() ?? [];
+    static Future<DeviceDescription?> request(final String url)
+    {
+        return UrlLoader().loadFromUrl(url).then((Uint8List? receiverData)
+            {
+                if (receiverData != null)
+                {
+                    try
+                    {
+                        final String xml = Convert.decodeUtf8(receiverData);
+                        final XmlNode? node = XmlDocument.parse(xml).rootElement.getElement('device');
+                        return node != null ? DeviceDescription.parse(node) : null;
+                    }
+                    on Exception
+                    {
+                        return null;
+                    }
+                }
+                return null;
+            }
+        );
+    }
 
-    static _nodeMapper<T>(XmlNode? xml,String elementType, T Function(XmlNode) buildFn)
-    => xml?.findAllElements(elementType).map<T>(buildFn).toList() ?? [];
+    ServiceData? findServiceById(final String serviceId)
+    {
+        // Check services on the current device using firstWhereOrNull
+        final localService = services.firstWhereOrNull((s) => s.serviceId.serviceId == serviceId);
+        if (localService != null)
+        {
+            return localService;
+        }
+
+        // Recursively check child devices using a combination of map and firstWhereOrNull
+        // We map each child device to the result of calling findServiceById on it,
+        // then find the first non-null result.
+        return devices.map((device) => device.findServiceById(serviceId))
+            .firstWhereOrNull((foundService) => foundService != null);
+    }
 }

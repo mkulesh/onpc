@@ -15,14 +15,9 @@
 import 'dart:async';
 import "dart:convert";
 import 'dart:io';
-import 'dart:typed_data';
 
-import "package:xml/xml.dart";
-
-import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
-import "../utils/UrlLoader.dart";
 import "ConnectionIf.dart";
 import "DeviceSearch.dart";
 import "messages/BroadcastResponseMsg.dart";
@@ -143,10 +138,11 @@ class DeviceSearchSsdp implements SearchEngineIf
             if(!_responses.containsKey(url))
             {
                 _responses[url] = Pair<MSearch, DeviceDescription?>(m, null);
-                _requestDeviceDescription(url).then((DeviceDescription? description)
+                DeviceDescription.request(url).then((DeviceDescription? description)
                 {
                     if (description != null)
                     {
+                        description.mSearch = m;
                         Logging.info(this, "new SSDP device description: {" + description.toString() + "}");
                         _responses[url] = Pair<MSearch, DeviceDescription?>(m, description);
                     }
@@ -167,34 +163,13 @@ class DeviceSearchSsdp implements SearchEngineIf
         }
     }
 
-    static Future<DeviceDescription?> _requestDeviceDescription(final String url)
-    {
-        return UrlLoader().loadFromUrl(url).then((Uint8List? receiverData)
-        {
-            if (receiverData != null)
-            {
-                try
-                {
-                    final String xml = Convert.decodeUtf8(receiverData);
-                    final XmlNode? node = XmlDocument.parse(xml).rootElement.getElement('device');
-                    return node != null ? DeviceDescription.parse(node) : null;
-                }
-                on Exception
-                {
-                    return null;
-                }
-            }
-            return null;
-        });
-    }
-
     void _processResponse(final Datagram d, final DeviceDescription description)
     {
         if (description.isISCP || description.isDCP)
         {
             final ProtoType p = description.isISCP? ProtoType.ISCP : ProtoType.DCP;
             final BroadcastResponseMsg responseMessage =
-            BroadcastResponseMsg.ssdp(d.address, p, description.modelName, description.friendlyName);
+            BroadcastResponseMsg.ssdp(d.address, p, description);
             if (responseMessage.isValidConnection())
             {
                 Logging.info(this, "<< SSDP device response " + responseMessage.toString());

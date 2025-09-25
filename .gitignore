@@ -25,3 +25,4 @@ macos/Flutter/ephemeral
 macos/Podfile
 *.iml
 android/*.iml
+doc

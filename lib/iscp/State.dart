@@ -39,6 +39,7 @@ import "messages/DcpMediaItemMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/DcpSearchCriteriaMsg.dart";
 import "messages/DcpTunerModeMsg.dart";
+import "messages/DeviceDisplayMsg.dart";
 import "messages/DeviceNameMsg.dart";
 import "messages/DigitalFilterMsg.dart";
 import "messages/DimmerLevelMsg.dart";
@@ -64,7 +65,6 @@ import "messages/PlayStatusMsg.dart";
 import "messages/PowerStatusMsg.dart";
 import "messages/PresetCommandMsg.dart";
 import "messages/RadioStationNameMsg.dart";
-import "messages/DeviceDisplayMsg.dart";
 import "messages/ReceiverInformationMsg.dart";
 import "messages/ServiceType.dart";
 import "messages/SleepSetCommandMsg.dart";
@@ -88,6 +88,7 @@ import "state/ReceiverInformation.dart";
 import "state/ScripsState.dart";
 import "state/SoundControlState.dart";
 import "state/TrackState.dart";
+import "state/UpnpState.dart";
 
 class State with ProtoTypeMix
 {
@@ -186,6 +187,12 @@ class State with ProtoTypeMix
 
     RadioState get radioState
     => _radioState;
+
+    // UPnP State
+    final UpnpState _upnpState = UpnpState();
+
+    UpnpState get upnpState
+    => _upnpState;
 
     // Popup
     xml.XmlDocument? _popupDocument;
@@ -640,6 +647,7 @@ class State with ProtoTypeMix
         _mediaListState.clear();
         _soundControlState.clear();
         _radioState.clear();
+        _upnpState.clear();
         _popupDocument = null;
         mediaListPosition.clear();
     }

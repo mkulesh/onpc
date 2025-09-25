@@ -18,6 +18,7 @@ import "../../utils/Logging.dart";
 import "../DcpHeosMessage.dart";
 import "../EISCPMessage.dart";
 import "../ISCPMessage.dart";
+import "../state/UpnpState.dart";
 import "AlbumNameMsg.dart";
 import "AllChannelLevelMsg.dart";
 import "ArtistNameMsg.dart";
@@ -71,14 +72,17 @@ class DCPMessageFactory
     int _zone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
     final List<ISCPMessage> _messages = [];
     final Set<String> _acceptedCodes = Set();
+    late UpnpState? _upnpState;
 
     set zone(int value)
     {
         _zone = value;
     }
 
-    void prepare()
+    void prepare(UpnpState? us)
     {
+        _upnpState = us;
+
         _acceptedCodes.addAll(DcpReceiverInformationMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(FriendlyNameMsg.getAcceptedDcpCodes());
         _acceptedCodes.addAll(PowerStatusMsg.getAcceptedDcpCodes());
@@ -244,18 +248,31 @@ class DCPMessageFactory
         return dcpMsg;
     }
 
-    List<String> convertOutputMsg(EISCPMessage? raw1, ISCPMessage? raw2, final String dest)
+    List<dynamic> convertOutputMsg(EISCPMessage? raw1, ISCPMessage? raw2, final String dest)
     {
-        final List<String> retValue = [];
+        final List<dynamic> retValue = [];
         if (raw1 == null && raw2 == null)
         {
             return retValue;
         }
         try
         {
-            final String? toSend = raw1 != null ?
-                createISCPMessage(raw1).buildDcpMsg(raw1.isQuery()) :
-                raw2?.buildDcpMsg(false);
+            final ISCPMessage iscpMsg = raw1 != null ? createISCPMessage(raw1) : raw2!;
+
+            // First, try to process as UPnP message
+            if (_upnpState != null)
+            {
+                final ActionRequest? a = iscpMsg.buildUpnpMsg(_upnpState);
+                if (a != null)
+                {
+                    retValue.add(a);
+                    return retValue;
+                }
+            }
+
+            // Finally, try to process as DCP/HEOS message
+            final bool isQuery = raw1 != null ? raw1.isQuery() : false;
+            final String? toSend = iscpMsg.buildDcpMsg(isQuery);
             if (toSend == null)
             {
                 return retValue;

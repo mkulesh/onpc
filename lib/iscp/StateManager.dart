@@ -828,7 +828,7 @@ class StateManager
     void sendQueries(final List<String> queries)
     => _messageChannel.sendQueries(queries);
 
-    void sendMessage(final ISCPMessage msg, {bool waitingForData = false, String waitingForMsg = ""})
+    void sendMessage(final ISCPMessage msg, {bool waitingForData = false, String waitingForMsg = "", bool sendRaw = false})
     {
         Logging.info(this, "sending message: " + msg.toString() + ", waiting for response: " + waitingForData.toString());
         _circlePlayRemoveMsg = null;
@@ -840,6 +840,10 @@ class StateManager
         if (dcpContainerMsg != null)
         {
             _messageChannel.sendIscp(dcpContainerMsg);
+        }
+        else if (sendRaw)
+        {
+            _messageChannel.sendIscp(msg);
         }
         else
         {
@@ -877,7 +881,7 @@ class StateManager
     void sendTimeMsg(final TimeSeekMsg msg, final int number)
     {
         _skipNextTimeMsg = number;
-        sendMessage(msg);
+        sendMessage(msg, sendRaw: true);
         state.trackState.currentTime = msg.getData;
     }
 
@@ -1004,6 +1008,10 @@ class StateManager
             MultiroomState.MESSAGE_SCOPE.forEach((code) => m.addAllowedMessage(code));
             m.start(msg.getHost, msg.getPort);
         }
+        if (protoType == ProtoType.DCP && isSourceHost(msg) && msg.upnpDescription != null)
+        {
+            state.upnpState.processDeviceDescription(msg.upnpDescription!);
+        }
     }
 
     void _onMultiroomDeviceConnected(MessageChannel channel, ConnectionIf connection)
@@ -1071,7 +1079,7 @@ class StateManager
         if (port == DCP_PORT)
         {
             final MessageChannelDcp c =
-                MessageChannelDcp(_onConnected, _onNewDCPMessage, _onDisconnected);
+                MessageChannelDcp(_onConnected, _onNewDCPMessage, _onDisconnected, state.upnpState);
             c.zone = state.getActiveZone;
             return c;
         }

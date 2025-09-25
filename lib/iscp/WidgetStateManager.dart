@@ -77,7 +77,7 @@ class WidgetStateManager
         if (configuration!.getDevicePort == DCP_PORT)
         {
             final MessageChannelDcp c =
-            MessageChannelDcp(_onConnected, _onNewDCPMessage, _onDisconnected);
+            MessageChannelDcp(_onConnected, _onNewDCPMessage, _onDisconnected, _state.upnpState);
             c.zone = configuration!.activeZone;
             return c;
         }

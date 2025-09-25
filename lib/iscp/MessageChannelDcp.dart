@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2025 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -30,6 +30,7 @@ import "messages/DCPMessageFactory.dart";
 import "messages/DcpMediaContainerMsg.dart";
 import "messages/DcpReceiverInformationMsg.dart";
 import "messages/TimeInfoMsg.dart";
+import "state/UpnpState.dart";
 
 typedef OnNewISCPMessage = void Function(ISCPMessage message, MessageChannel channel);
 
@@ -56,6 +57,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
     // callbacks
     final OnConnected _onConnected;
     final OnNewISCPMessage _onNewISCPMessage;
+    final UpnpState upnpState;
 
     // connection state
     late OnpcSocket _dcpSocket;
@@ -66,11 +68,11 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
     final DCPMessageFactory _dcpMessageFactory = DCPMessageFactory();
     int? _heosPid;
 
-    MessageChannelDcp(this._onConnected, this._onNewISCPMessage, OnDisconnected _onDisconnected)
+    MessageChannelDcp(this._onConnected, this._onNewISCPMessage, OnDisconnected _onDisconnected, this.upnpState)
     {
         _heosSocket = OnpcSocket(this, _onHeosConnected, _onHeosDisconnected, _onHeosData);
         _dcpSocket = OnpcSocket(this, _onDcpConnected, _onDisconnected, _onDcpData);
-        _dcpMessageFactory.prepare();
+        _dcpMessageFactory.prepare(upnpState);
     }
 
     @override
@@ -110,23 +112,30 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
     => _dcpMessageFactory.convertOutputMsg(null, raw, getHost).forEach((msg)
         => _processOutMessage(raw, msg));
 
-    void _processOutMessage(Object raw, String msg)
+    void _processOutMessage(Object raw, dynamic msg)
     {
-        if (msg.startsWith(DCP_HEOS_REQUEST))
+        if (msg is String)
         {
-            _sendDcpHeosRequest(msg);
+            if (msg.startsWith(DCP_HEOS_REQUEST))
+            {
+                _sendDcpHeosRequest(msg);
+            }
+            else if (msg.startsWith(DCP_APP_COMMAND1))
+            {
+                _sendDcpAppCommand(msg, "AppCommand.xml");
+            }
+            else if (msg.startsWith(DCP_APP_COMMAND3))
+            {
+                _sendDcpAppCommand(msg, "AppCommand0300.xml");
+            }
+            else
+            {
+                _sendDcpRawMsg(raw, msg);
+            }
         }
-        else if (msg.startsWith(DCP_APP_COMMAND1))
+        else if (msg is ActionRequest)
         {
-            _sendDcpAppCommand(msg, "AppCommand.xml");
-        }
-        else if (msg.startsWith(DCP_APP_COMMAND3))
-        {
-            _sendDcpAppCommand(msg, "AppCommand0300.xml");
-        }
-        else
-        {
-            _sendDcpRawMsg(raw, msg);
+            _sendUpnpRequest(msg);
         }
         sleep(const Duration(milliseconds: DCP_SEND_DELAY));
     }
@@ -350,7 +359,7 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
         }
         on Exception catch (ex)
         {
-        Logging.info(this, "DCP HEOS error: " + ex.toString());
+            Logging.info(this, "DCP HEOS error: " + ex.toString());
         }
     }
 
@@ -386,6 +395,29 @@ class MessageChannelDcp with ConnectionIf implements MessageChannel
             if (error != null)
             {
                 Logging.info(this, "DCP AppCommand error: " + error.toString());
+            }
+        });
+    }
+
+    void _sendUpnpRequest(ActionRequest request)
+    {
+        if (upnpState.aVTransportHost() == null)
+        {
+            return;
+        }
+        final String url = upnpState.aVTransportHost().toString();
+        final Map<String, String> headers = Map.from(request.headers);
+        headers[HttpHeaders.contentLengthHeader] = request.body.length.toString();
+        Logging.info(this, ">> UPnP action POST request: " + url + headers.toString());
+        http.post(Uri.parse(url), headers: headers, body: request.body).then((http.Response value)
+        {
+            final String resp = value.statusCode.toString() + " " + value.reasonPhrase.toString();
+            Logging.info(this, "UPnP action POST response: " + resp);
+        }).onError((Object? error, stackTrace)
+        {
+            if (error != null)
+            {
+                Logging.info(this, "UPnP action error: " + error.toString());
             }
         });
     }
