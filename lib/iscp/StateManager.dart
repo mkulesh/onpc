@@ -744,6 +744,7 @@ class StateManager
         {
             Logging.info(this, "DCP: requesting track state...");
             sendQueries([DcpMediaItemMsg.CODE]);
+            state.upnpState.allowDeviceDescriptionHandling();
         }
 
         return changed;
@@ -1010,7 +1011,7 @@ class StateManager
         }
         if (protoType == ProtoType.DCP && isSourceHost(msg) && msg.upnpDescription != null)
         {
-            state.upnpState.processDeviceDescription(msg.upnpDescription!);
+            state.upnpState.upnpDescription = msg.upnpDescription!;
         }
     }
 

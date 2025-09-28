@@ -28,10 +28,32 @@ class ActionRequest
     });
 }
 
+enum DeviceDescriptionHandling
+{
+    INIT,
+    ALLOWED,
+    PROCESSED
+}
+
 class UpnpState
 {
+    // State of DeviceDescription`s handling
+    DeviceDescriptionHandling _ddHandling = DeviceDescriptionHandling.INIT;
+
+    void allowDeviceDescriptionHandling()
+    {
+        _ddHandling = DeviceDescriptionHandling.ALLOWED;
+        _processDeviceDescription();
+    }
+
     // UPnP device description
     DeviceDescription? _upnpDescription;
+
+    set upnpDescription(DeviceDescription value)
+    {
+        _upnpDescription = value;
+        _processDeviceDescription();
+    }
 
     // AVTransport service
     ServiceDescription? _aVTransport;
@@ -59,33 +81,34 @@ class UpnpState
 
     void clear()
     {
+        _ddHandling = DeviceDescriptionHandling.INIT;
         _upnpDescription = null;
         _aVTransport = null;
         _seek = null;
     }
 
-    bool processDeviceDescription(DeviceDescription d)
+    bool _processDeviceDescription()
     {
-        if (_upnpDescription == null)
+        if (_upnpDescription == null || _ddHandling != DeviceDescriptionHandling.ALLOWED)
         {
-            Logging.info(this, "Processing UPnP device description: " + d.toString());
-            _upnpDescription = d;
-            ServiceDescription.requestService(_upnpDescription, "AVTransport").then((ServiceDescription? s)
-                {
-                    if (s != null)
-                    {
-                        Logging.info(this, "new service description: " + s.toString());
-                        _aVTransport = s;
-                        _seek = s.action(SEEK_NAME);
-                        if (_seek != null)
-                        {
-                            Logging.info(this, _seek!.name + " action available");
-                        }
-                    }
-                }
-            );
-            return true;
+            Logging.info(this, "Processing UPnP device description skipped: " + _ddHandling.toString());
+            return false;
         }
-        return false;
+        _ddHandling = DeviceDescriptionHandling.PROCESSED;
+        Logging.info(this, "Processing UPnP device description: " + _upnpDescription.toString());
+        ServiceDescription.requestService(_upnpDescription, "AVTransport").then((ServiceDescription? s)
+        {
+            if (s != null)
+            {
+                Logging.info(this, "new service description: " + s.toString());
+                _aVTransport = s;
+                _seek = s.action(SEEK_NAME);
+                if (_seek != null)
+                {
+                    Logging.info(this, _seek!.name + " action available");
+                }
+            }
+        });
+        return true;
     }
 }
