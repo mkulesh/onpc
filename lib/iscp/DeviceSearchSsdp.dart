@@ -53,7 +53,9 @@ class DeviceSearchSsdp implements SearchEngineIf
         Logging.info(this, "Starting. Retry delay = " + retryDelay.toString() + "s.");
         _requestCount = 0;
         // Note: On Windows, SSDP service is running and blocks SSDP_PORT.
-        // As workaround, use any other port here:
+        // As workaround, use any other port here.
+        // Additionally, no "Metered Connection" should be used - UDP does not work
+        // when "Metered Connection" is set
         RawDatagramSocket.bind(InternetAddress.anyIPv4, Platform.isWindows? DCP_WEB_GUI : SSDP_PORT).then((RawDatagramSocket sock)
         {
             _socket = sock;
@@ -135,23 +137,24 @@ class DeviceSearchSsdp implements SearchEngineIf
             }
             _lastMSearch.add(url);
             Logging.info(this, "new M-Search response: " + url);
-            if(!_responses.containsKey(url))
+            final DeviceDescription? d1 = _responses[url]?.item2;
+            if (d1 != null)
+            {
+                _processResponse(d, d1);
+            }
+            else
             {
                 _responses[url] = Pair<MSearch, DeviceDescription?>(m, null);
-                DeviceDescription.request(url).then((DeviceDescription? description)
+                DeviceDescription.request(url).then((DeviceDescription? d2)
                 {
-                    if (description != null)
+                    if (d2 != null)
                     {
-                        description.mSearch = m;
-                        Logging.info(this, "new SSDP device description: {" + description.toString() + "}");
-                        _responses[url] = Pair<MSearch, DeviceDescription?>(m, description);
+                        d2.mSearch = m;
+                        Logging.info(this, "new SSDP device description: {" + d2.toString() + "}");
+                        _responses[url] = Pair<MSearch, DeviceDescription?>(m, d2);
+                        _processResponse(d, d2);
                     }
                 });
-            }
-            final DeviceDescription? description = _responses[url]?.item2;
-            if (description != null)
-            {
-                _processResponse(d, description);
             }
         }
         on Exception catch(e)
