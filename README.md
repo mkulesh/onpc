@@ -23,6 +23,15 @@ This "Premium" version implements exactly the same receiver control functionalit
 * [iOS](https://apps.apple.com/app/id1490166845)
 * [Windows](https://apps.microsoft.com/detail/9p9v57cz8jg3)
 
+## Running on...
+### Windows 11
+* Network Type: Private network
+* Metered Connection: false (in other case UDP does not work)
+### Linux
+Sometimes Wayland has problems. To solve, run the app with X11:
+* in Terminal: bash -c 'GDK_BACKEND=x11 Music-Control'
+* in Android Studio: Go to Run > Edit Configurations..., select run configuration and add an Environment variable: Name GDK_BACKEND and Value x11
+
 ## Project structure and application build
 * android - contains Android-specific code (Java) that implements home widgets, volume keys handling, network state listener.
 The build script contains a signing parameter section in order to sign the target APK with a personal Google Play developer certificate that is not available on github.

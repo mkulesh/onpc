@@ -54,8 +54,6 @@ class DeviceSearchSsdp implements SearchEngineIf
         _requestCount = 0;
         // Note: On Windows, SSDP service is running and blocks SSDP_PORT.
         // As workaround, use any other port here.
-        // Additionally, no "Metered Connection" should be used - UDP does not work
-        // when "Metered Connection" is set
         RawDatagramSocket.bind(InternetAddress.anyIPv4, Platform.isWindows? DCP_WEB_GUI : SSDP_PORT).then((RawDatagramSocket sock)
         {
             _socket = sock;
