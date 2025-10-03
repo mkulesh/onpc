@@ -401,7 +401,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
 
   if (radio) {
     final Pair<String, String> DAB = Pair<String, String>("Playback mode", "DAB");
-    final Pair<String, String> FM = Pair<String, String>("2 - ENERGY - 89.80 MHz", "ENERGY");
+    final Pair<String, String> FM = Pair<String, String>("2 - EnrgyBRE - 89.80 MHz", "ENERGY");
     await tu.openTab("MEDIA");
     await tu.findAndTap("Select DAB", () => find.text("DAB"), ensureAfter: () => find.text(DAB.item1));
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
