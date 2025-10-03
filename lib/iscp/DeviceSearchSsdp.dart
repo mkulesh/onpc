@@ -14,10 +14,11 @@
 
 import 'dart:async';
 import "dart:convert";
-import 'dart:io';
+import "dart:io";
 
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
+import "../utils/Platform.dart";
 import "ConnectionIf.dart";
 import "DeviceSearch.dart";
 import "messages/BroadcastResponseMsg.dart";
@@ -52,12 +53,24 @@ class DeviceSearchSsdp implements SearchEngineIf
     {
         Logging.info(this, "Starting. Retry delay = " + retryDelay.toString() + "s.");
         _requestCount = 0;
-        // Note: On Windows, SSDP service is running and blocks SSDP_PORT.
-        // As workaround, use any other port here.
-        RawDatagramSocket.bind(InternetAddress.anyIPv4, Platform.isWindows? DCP_WEB_GUI : SSDP_PORT).then((RawDatagramSocket sock)
+        RawDatagramSocket.bind(
+            InternetAddress.anyIPv4,
+            // Note: On iOS, HEOS and Spotify apps block the SSDP_PORT. As workaround, use any other port for iOS.
+            Platform.isIOS? DCP_WEB_GUI : SSDP_PORT,
+            reuseAddress: true,
+            reusePort: !(Platform.isAndroid || Platform.isWindows)).then((RawDatagramSocket sock)
         {
             _socket = sock;
-            _socket!.multicastLoopback = true;
+            _socket!.broadcastEnabled = true;
+            _socket!.multicastLoopback = false;
+            try
+            {
+                _socket!.joinMulticast(InternetAddress.anyIPv4);
+            }
+            on Exception
+            {
+                Logging.info(this, "Socket failed to join multicast group. So long as a single socket joins, this is not a critical error.");
+            }
             _socket!.listen(_onData,
                 onError: _onError,
                 onDone: _onDone,
@@ -87,6 +100,14 @@ class DeviceSearchSsdp implements SearchEngineIf
     {
         if (_socket != null)
         {
+            try
+            {
+                _socket!.leaveMulticast(InternetAddress.anyIPv4);
+            }
+            on Exception
+            {
+                Logging.info(this, "Socket failed to leave multicast group.");
+            }
             _socket!.close();
         }
     }
