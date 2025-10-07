@@ -54,7 +54,11 @@ class CustomDialogEditField extends StatelessWidget
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                     Expanded(child: editor, flex: 1),
-                    CustomImageButton.small(Drawables.cmd_delete, Strings.pref_item_delete, onPressed: onDeleteBtn)
+                    Transform.translate(
+                        offset: Offset(DimensTransform.scale(4), 0.0),
+                        child: CustomImageButton.small(
+                            Drawables.numeric_clean, Strings.pref_item_delete, onPressed: onDeleteBtn),
+                    )
                 ]
             );
         }
