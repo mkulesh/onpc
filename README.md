@@ -27,6 +27,7 @@ This "Premium" version implements exactly the same receiver control functionalit
 ### Windows 11
 * Network Type: Private network
 * Metered Connection: false (in other case UDP does not work)
+* Windows VM: disable SSDP Discovery service when possible to get SSDP working
 ### Linux
 Sometimes Wayland has problems. To solve, run the app with X11:
 * in Terminal: bash -c 'GDK_BACKEND=x11 Music-Control'
