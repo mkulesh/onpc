@@ -3,7 +3,7 @@
 # Set this parameter to the actual Flutter installation path
 # Call "git fetch" in this directory so that your local Flutter
 # repository gets all the new info from Github
-FLUTTER_PATH=/Volumes/work/android/flutter
+FLUTTER_PATH=/Users/family/work/android/flutter
 
 echo Build macOS app...
 
@@ -12,6 +12,7 @@ rm -f ../pubspec.yaml
 ln -s pubspec.yaml_desktop ../pubspec.yaml
 
 # Build with: Flutter version 3.29.0, Dart version 3.7.0
+# To supress git warning: git config advice.detachedHead false
 flutter clean
 cd ${FLUTTER_PATH}
 git checkout 3.29.0
@@ -34,6 +35,8 @@ mv ../build/macos/Build/Products/Release/Music\ Control.app .
 # Use create-dmg in order to create installation image
 # https://github.com/create-dmg/create-dmg
 # brew install create-dmg
+# If an error "Not authorized to send Apple events to Finder" appears: reset permissions:
+# tccutil reset AppleEvents com.google.android.studio
 
 create-dmg \
   --volname "MusicControl-v${VER}" \

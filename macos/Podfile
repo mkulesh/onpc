@@ -38,5 +38,14 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
+    # --- Suppress warnings for libserialport ---
+    if target.name == 'libserialport'
+      target.build_configurations.each do |config|
+        # Suppress "implicit conversion loses integer precision" specifically
+        config.build_settings['GCC_WARN_64_TO_32_BIT_CONVERSION'] = 'NO'
+        # Fix the deployment target warning
+        config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.14'
+      end
+    end
   end
 end

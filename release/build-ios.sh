@@ -9,7 +9,7 @@
 # Set this parameter to the actual Flutter installation path
 # Call "git fetch" in this directory so that your local Flutter
 # repository gets all the new info from Github
-FLUTTER_PATH=/Volumes/work/android/flutter
+FLUTTER_PATH=/Users/family/work/android/flutter
 
 echo Build iOS app...
 
