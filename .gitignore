@@ -14,6 +14,7 @@ release/manual_test.txt
 release/win-report.xml
 release/config
 release/deploy.*
+release/apple-id.xcconfig
 android/.gradle
 android/key.properties
 android/local.properties
