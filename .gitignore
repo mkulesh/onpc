@@ -20,9 +20,7 @@ android/local.properties
 android/gen
 ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
-ios/Podfile
 macos/Flutter/ephemeral
-macos/Podfile
 *.iml
 android/*.iml
 doc
