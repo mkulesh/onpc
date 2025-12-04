@@ -16,6 +16,7 @@ import "package:flutter/material.dart";
 
 import "../iscp/messages/AllChannelEqualizerMsg.dart";
 import "../utils/Logging.dart";
+import "../widgets/CustomScrollbar.dart";
 import "../widgets/VerticalSlider.dart";
 import "UpdatableView.dart";
 
@@ -59,11 +60,14 @@ class AudioControlEqualizerView extends UpdatableView
             );
         }
 
-        return Center(child: Scrollbar(child: ListView(
-            primary: true,
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            children:  controls))
+        return Center(
+            child: CustomScrollbar(
+                child: ListView(
+                    primary: true,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children:  controls)
+            )
         );
     }
 }

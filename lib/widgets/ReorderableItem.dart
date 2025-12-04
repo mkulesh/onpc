@@ -35,7 +35,11 @@ class ReorderableItem extends StatelessWidget
         }
         else
         {
-            items.add(Container(margin: EdgeInsets.only(right: 8), child: Icon(Icons.drag_handle)));
+            final ThemeData td = Theme.of(context);
+            items.add(Container(
+                margin: EdgeInsets.only(right: 8),
+                child: Icon(Icons.drag_handle, color: td.textTheme.labelLarge!.color)
+            ));
         }
         return Row(
             mainAxisSize: MainAxisSize.max,

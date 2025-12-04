@@ -28,6 +28,7 @@ import "../utils/Pair.dart";
 import "../utils/Platform.dart";
 import "../widgets/CustomActivityTitle.dart";
 import "../widgets/CustomDivider.dart";
+import "../widgets/CustomScrollbar.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/PreferenceTitle.dart";
 import "../widgets/ScaffoldBody.dart";
@@ -311,9 +312,8 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
             icon: Drawables.pref_developer_mode));
 
         final Widget scaffoldBody = DropdownButtonHideUnderline(
-            child: Scrollbar(child: ListView(
-                primary: true,
-                children: (elements))
+            child: CustomScrollbar(
+                child: ListView(primary: true, children: (elements))
             )
         );
 

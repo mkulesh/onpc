@@ -52,6 +52,7 @@ import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomDialogTitle.dart";
 import "../widgets/CustomDivider.dart";
 import "../widgets/CustomImageButton.dart";
+import "../widgets/CustomScrollbar.dart";
 import "../widgets/CustomTextField.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/ReorderableItem.dart";
@@ -265,10 +266,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
         );
 
-        return Scrollbar(
-            controller: _scrollController,
-            interactive: true,
-            child: list);
+        return CustomScrollbar(controller: _scrollController, child: list);
     }
 
     ISCPMessage? _getItemOrNull(List<ISCPMessage> items, int i) 
@@ -299,9 +297,8 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
             }
         });
 
-        return Scrollbar(
+        return CustomScrollbar(
             controller: _scrollController,
-            interactive: true,
             child: ReorderableListView(
                 onReorder: _onReorder,
                 header: header,

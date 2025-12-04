@@ -23,6 +23,7 @@ import "../dialogs/TextEditDialog.dart";
 import "../utils/Pair.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomActivityTitle.dart";
+import "../widgets/CustomScrollbar.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/ReorderableItem.dart";
 import "../widgets/ScaffoldBody.dart";
@@ -154,7 +155,7 @@ class CheckableItem
     static Widget buildPanel(List<Widget> rows, ReorderCallback onReorder, {final ScrollController? scrollController})
     {
         final bool primary = scrollController == null;
-        return Scrollbar(
+        return CustomScrollbar(
             child: ReorderableListView(
                 primary: primary,
                 onReorder: onReorder,

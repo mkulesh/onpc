@@ -172,15 +172,6 @@ class BaseAppTheme
 
             tooltipTheme: TooltipThemeData(
                 waitDuration: Duration(seconds: 2)
-            ),
-
-            scrollbarTheme: ScrollbarThemeData(
-                thumbColor: WidgetStateProperty.resolveWith((states) {
-                    if (states.contains(WidgetState.dragged)) {
-                        return accentColor;
-                    }
-                    return accentColor.withAlpha((255.0 * 0.7).round()); // Default color for all scrollbars
-                })
             )
         );
     }

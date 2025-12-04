@@ -28,6 +28,7 @@ import "../utils/Platform.dart";
 import "../views/UpdatableView.dart";
 import "../widgets/ContextMenuListener.dart";
 import "../widgets/CustomImageButton.dart";
+import "../widgets/CustomScrollbar.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/ReorderableItem.dart";
 
@@ -82,8 +83,7 @@ class ShortcutsView extends UpdatableView
                 _shortcutIds.add(shortcuts[i].id);
             }
 
-            tab = Scrollbar(
-                interactive: true,
+            tab = CustomScrollbar(
                 child: ReorderableListView(
                     primary: true,
                     onReorder: _onReorder,

@@ -22,6 +22,7 @@ import "../iscp/messages/AllChannelLevelMsg.dart";
 import "../iscp/messages/AllChannelMsg.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
+import "../widgets/CustomScrollbar.dart";
 import "../widgets/CustomTextLabel.dart";
 import "../widgets/VerticalSlider.dart";
 import "UpdatableView.dart";
@@ -65,11 +66,14 @@ class AudioControlChannelLevelView extends UpdatableView
             controls.add(g.item1 != g.item2 ? _createGroup(g.item1, g.item2) : _createSingle(g.item1));
         }
 
-        return Center(child: Scrollbar(child: ListView(
-            primary: true,
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            children:  controls))
+        return Center(
+            child: CustomScrollbar(
+                child: ListView(
+                    primary: true,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children:  controls)
+            )
         );
     }
 
