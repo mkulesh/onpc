@@ -1,33 +1,50 @@
 #!/bin/bash
+#
+# Android Build Script
+# --------------------
+# Automates the build process for the Music Control Android app.
+# Uses shared logic (prepare_build.sh) to setup the environment/symlinks,
+# builds the release APK, and handles optional deployment.
+#
+# Usage:
+#   ./build-android.sh           # Builds the release APK
+#   ./build-android.sh --deploy  # Builds and installs to a connected Android device
+#
+# Requirements:
+#   - 'flutter' must be in your PATH
+#   - Call 'git fetch' in the Flutter directory so that the local Flutter
+#     repository gets all the new info from Github
+#   - 'adb' (Android Debug Bridge) is required for the --deploy flag
 
-# Set this parameter to the actual Flutter installation path
-# Call "git fetch" in this directory so that your local Flutter
-# repository gets all the new info from Github
-FLUTTER_PATH=/work/android/flutter
+# Exit immediately if any command exits with a non-zero status
+set -e
 
-echo Build Android app...
+# Get the directory where this script is located to find the prepare script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Prepare Yaml file
-rm -f ../pubspec.yaml
-ln -s pubspec.yaml_mobile ../pubspec.yaml
+# Call common preparation script
+# Args: Version, App Suffix, Platform Type
+source "${SCRIPT_DIR}/prepare_build.sh" "3.29.0" "android.apk" "mobile" "$@"
 
-# Build with: Flutter version 3.29.0, Dart version 3.7.0
-flutter clean
-cd ${FLUTTER_PATH}
-git checkout 3.29.0
-cd -
-flutter doctor -v
-
-# Prepare platform-specific files: disable flutter_libserialport
-rm -f ../lib/utils/CompatUtils.dart
-ln -s CompatUtils.dart.mobile ../lib/utils/CompatUtils.dart
-
-# Build APK
-VER=`cat VERSION.txt`
-APP_NAME=MusicControl-v${VER}-android.apk
-echo Building $APP_NAME
-
-rm -rf ./$APP_NAME
+# Build
+echo "Building Android application..."
 flutter build apk --release
 
-mv ../build/app/outputs/apk/release/app-release.apk ./$APP_NAME
+GENERATED_APK=$(find build/app/outputs/flutter-apk -maxdepth 1 -name "app-release.apk" | head -n 1)
+if [ -f "$GENERATED_APK" ]; then
+    mv "$GENERATED_APK" "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+    echo "✅ Success! APK available at: ${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+
+    # Deploy if requested
+    if [ "$DEPLOY_TO_DEVICE" = true ]; then
+        if ! command -v adb &> /dev/null; then
+            echo "❌ Error: 'adb' command not found. Cannot deploy."
+            exit 1
+        fi
+        echo "Deploying to connected device..."
+        adb install -r "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+    fi
+else
+    echo "❌ Error: APK file was not generated."
+    exit 1
+fi
