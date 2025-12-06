@@ -43,6 +43,8 @@ if [ -f "$GENERATED_APK" ]; then
         fi
         echo "Deploying to connected device..."
         adb install -r "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+        echo "Starting application..."
+        adb shell am start -n "com.mkulesh.onpc.plus/com.mkulesh.onpc.plus.MainActivity"
     fi
 else
     echo "❌ Error: APK file was not generated."

@@ -61,20 +61,20 @@ export ONPC_APP_VER
 ONPC_APP_NAME="MusicControl-v${ONPC_APP_VER}-${TARGET_SUFFIX}"
 export ONPC_APP_NAME
 
-# 4. Setup Project Files (Symlinks)
-echo "Preparing project files for ${TARGET_PLATFORM}..."
-cd "${ONPC_RELEASE_DIR}" || exit
-
 # Remove previous build artifact
 rm -f "${ONPC_APP_NAME}"
 
+# 4. Setup Project Files (Symlinks)
+echo "Preparing project files for ${TARGET_PLATFORM}..."
+cd "${ONPC_PROJECT_ROOT}" || exit
+
 # Update pubspec.yaml
-rm -f "${ONPC_PROJECT_ROOT}/pubspec.yaml"
-ln -s "${ONPC_PROJECT_ROOT}/pubspec.yaml_${TARGET_PLATFORM}" "${ONPC_PROJECT_ROOT}/pubspec.yaml"
+rm -f "pubspec.yaml"
+ln -s "pubspec.yaml_${TARGET_PLATFORM}" "pubspec.yaml"
 
 # Update CompatUtils.dart
-rm -f "${ONPC_PROJECT_ROOT}/lib/utils/CompatUtils.dart"
-ln -s "${ONPC_PROJECT_ROOT}/lib/utils/CompatUtils.dart.${TARGET_PLATFORM}" "${ONPC_PROJECT_ROOT}/lib/utils/CompatUtils.dart"
+rm -f "lib/utils/CompatUtils.dart"
+ln -s "CompatUtils.dart.${TARGET_PLATFORM}" "lib/utils/CompatUtils.dart"
 
 # 5. Info & Clean
 echo "------------------------------------------------"
@@ -82,10 +82,10 @@ echo "Starting build for: ${ONPC_APP_NAME}"
 echo "Flutter SDK: ${ONPC_FLUTTER_PATH}"
 echo "Project root: ${ONPC_PROJECT_ROOT}"
 echo "Release dir: ${ONPC_RELEASE_DIR}"
+echo "Target platform: ${TARGET_PLATFORM}"
 echo "------------------------------------------------"
 
 echo "Cleaning project..."
-cd "${ONPC_PROJECT_ROOT}" || exit
 flutter clean && flutter doctor
 
 echo "Resolving dependencies..."

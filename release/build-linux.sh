@@ -1,39 +1,58 @@
 #!/bin/bash
+#
+# Linux Build Script
+# ------------------
+# Automates the build process for the Music Control Linux app.
+# Uses shared logic to setup the environment, builds the app bundle,
+# and wraps it into a distributable .zip file.
+#
+# Usage:
+#   ./build-linux.sh           # Builds the release ZIP
+#
+# Requirements:
+#   - Install Fedora packages:
+#     dnf install clang cmake ninja-build gtk3-devel xz-devel
+#   - 'flutter' must be in your PATH
+#   - Call 'git fetch' in the Flutter directory so that the local Flutter
+#     repository gets all the new info from Github
 
-# Necessary Fedora packages:
-# dnf install clang cmake ninja-build gtk3-devel xz-devel
+# Exit immediately if any command exits with a non-zero status
+set -e
 
-# Set this parameter to the actual Flutter installation path
-# Call "git fetch" in this directory so that your local Flutter
-# repository gets all the new info from Github
-FLUTTER_PATH=/work/android/flutter
+# Get the directory where this script is located to find the prepare script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-echo Build Linux app...
+# Call common preparation script
+# Args: Version, App Suffix, Platform Type
+source "${SCRIPT_DIR}/prepare_build.sh" "3.29.0" "linux-x86_64.zip" "desktop" "$@"
 
-# Prepare Yaml file
-rm -f ../pubspec.yaml
-ln -s pubspec.yaml_desktop ../pubspec.yaml
-
-# Build with: Flutter version 3.29.0, Dart version 3.7.0
-flutter clean
-cd ${FLUTTER_PATH}
-git checkout 3.29.0
-cd -
-flutter doctor -v
-
-# Prepare platform-specific files: enable flutter_libserialport
-rm -f ../lib/utils/CompatUtils.dart
-ln -s CompatUtils.dart.desktop ../lib/utils/CompatUtils.dart
+# Remove the old build
+ONPC_DIR_NAME="${ONPC_RELEASE_DIR}/${ONPC_APP_NAME%.*}"
+rm -rf "${ONPC_DIR_NAME}"
 
 # Build app
-VER=`cat VERSION.txt`
-APP_NAME=MusicControl-v${VER}-linux-x86_64
-echo Building $APP_NAME
-
-rm -rf ./$APP_NAME
-rm -rf ${APP_NAME}.zip
 flutter build linux --release
 
-mv ../build/linux/x64/release/bundle ./$APP_NAME
-cp ./$APP_NAME/data/flutter_assets/lib/assets/app_icon.png ./$APP_NAME/Music-Control.png
-zip -r ${APP_NAME}.zip ./$APP_NAME
+# Check the generated application bundle
+APP_BUNDLE_PATH="build/linux/x64/release/bundle"
+APP_BUNDLE_NAME="${APP_BUNDLE_PATH}/Music-Control"
+if [ ! -d "${APP_BUNDLE_PATH}" ]; then
+    echo "❌ Error: application bundle was not generated in ${APP_BUNDLE_PATH}"
+    exit 1
+fi
+echo "✅ Found application bundle: ${APP_BUNDLE_NAME}"
+
+# Move the application bundle
+mv ${APP_BUNDLE_PATH} "${ONPC_DIR_NAME}"
+cp "${ONPC_DIR_NAME}/data/flutter_assets/lib/assets/app_icon.png" "${ONPC_DIR_NAME}/Music-Control.png"
+
+# Archive the new build
+cd "${ONPC_RELEASE_DIR}"
+zip -qr "${ONPC_APP_NAME}" "$(basename "${ONPC_DIR_NAME}")"
+
+# Check if the archive was actually created
+if [ ! -f "${ONPC_APP_NAME}" ]; then
+    echo "❌ Error: archive ${ONPC_APP_NAME} was not generated."
+    exit 1
+fi
+echo "✅ Archive generated successfully: ${ONPC_APP_NAME}"
