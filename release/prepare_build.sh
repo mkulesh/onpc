@@ -88,6 +88,5 @@ echo "------------------------------------------------"
 echo "Cleaning project..."
 flutter clean && flutter doctor
 
-echo "Resolving dependencies..."
 set -o pipefail
-flutter pub get | grep -vE "^\+ |^\- |available\)"
+flutter pub get | grep -vE "^\+ |^- |available\)"
