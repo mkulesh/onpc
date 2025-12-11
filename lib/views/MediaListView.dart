@@ -381,9 +381,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         }
         state.closeMediaFilter();
         final rowMsg = (cmd is XmlListItemMsg && cmd.iconType == _PLAYBACK_STRING) ? StateManager.DISPLAY_MSG : cmd;
-        if (state.protoType == ProtoType.DCP && rowMsg is XmlListItemMsg)
+        if (rowMsg is XmlListItemMsg)
         {
-            state.mediaListState.storeSelectedDcpItem(rowMsg);
+            state.mediaListState.storeNextPathItem(state.protoType, rowMsg);
         }
         stateManager.sendMessage(rowMsg, waitingForData: rowMsg != StateManager.DISPLAY_MSG && icon != Drawables.media_item_unknown);
     }

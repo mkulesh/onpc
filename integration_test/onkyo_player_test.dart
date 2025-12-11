@@ -35,6 +35,7 @@ void main() {
     app.main();
     await tu.connect(FRIENDLY_NAME, "Onkyo Player");
 
+    await _playFromDlna(tu);
     await _playFromUsb(tu);
     await _playFromQueue(tu);
     await _playFromDeezer(tu);
@@ -51,6 +52,20 @@ void main() {
     // Write log
     await tu.writeLog("auto-test-onkyo");
   });
+}
+
+Future<void> _playFromDlna(final OnpcTestUtils tu) async {
+  final String F_FER = "Franz Ferdinand on DLNA";
+  final String album = "Always Ascending";
+  await tu.openTab("SHORTCUTS");
+  await tu.stepDelaySec(1);
+  await tu.findAndTap("Start playing", () => find.text(F_FER), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.waitMediaItemPlaying(album);
+  // Inspect playing
+  await tu.openTab("LISTEN", ensureAfter: () => find.text("Franz Ferdinand"));
+  await tu.ensureVisible(() => find.textContaining("MP3/192kbps"));
+  await tu.ensureVisible(() => find.text(album));
+  expect(find.text(album), findsExactly(2));
 }
 
 Future<void> _playFromUsb(final OnpcTestUtils tu) async {

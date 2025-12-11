@@ -407,7 +407,7 @@ class MessageScript with ConnectionIf implements MessageScriptIf
                 }
                 else
                 {
-                    state.mediaListState.prepareDcpNextLayer(item);
+                    state.mediaListState.storeNextPathItem(state.protoType, item, clearList: true);
                     channel.sendIscp(dcpMsg);
                     Logging.info(this, a.toString() + ": sent DCP media container message " + dcpMsg.toString());
                 }
@@ -419,6 +419,10 @@ class MessageScript with ConnectionIf implements MessageScriptIf
                 if (msg == null)
                 {
                     msg = EISCPMessage.output(a.cmd, a.par);
+                }
+                if (item != null)
+                {
+                    state.mediaListState.storeNextPathItem(state.protoType, item, clearList: true);
                 }
                 channel.sendMessage(msg);
                 Logging.info(this, a.toString() + ": sent message " + msg.toString());

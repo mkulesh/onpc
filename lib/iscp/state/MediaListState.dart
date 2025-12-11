@@ -230,24 +230,36 @@ class MediaListState
             _currentCursorPosition = msg.getCurrentCursorPosition;
             changed = true;
         }
-        // Update path items
-        if (_layerInfo != LayerInfo.UNDER_2ND_LAYER)
+        _updateIscpPatch(_layerInfo, _uiType, _numberOfLayers, _titleBar);
+        return changed;
+    }
+
+    void _updateIscpPatch(LayerInfo? layerInfo, UIType? uiType, int numberOfLayers, String titleBar)
+    {
+        if (layerInfo != LayerInfo.UNDER_2ND_LAYER)
         {
             _pathItems.clear();
-            _pathIndexOffset = _numberOfLayers;
+            _pathIndexOffset = numberOfLayers;
         }
         // Issue #233: For some receivers like TX-8130, the LAYERS value for the top of service is 0 instead 1.
         // Therefore, we shift it by one in this case
-        final int pathIndex = _numberOfLayers + 1 - _pathIndexOffset;
+        final int pathIndex = numberOfLayers + 1 - _pathIndexOffset;
         for (int i = _pathItems.length; i < pathIndex; i++)
         {
             _pathItems.add("");
         }
-        if (_uiType != UIType.PLAYBACK)
+        if (uiType != UIType.PLAYBACK)
         {
             if (pathIndex > 0)
             {
-                _pathItems[pathIndex - 1] = _titleBar;
+                if (_pathItems[pathIndex - 1].isEmpty)
+                {
+                    _pathItems[pathIndex - 1] = titleBar;
+                }
+                else
+                {
+                    Logging.info(this, "skipped media list path update: " + titleBar);
+                }
                 while (_pathItems.length > pathIndex)
                 {
                     _pathItems.removeLast();
@@ -255,7 +267,6 @@ class MediaListState
             }
             Logging.info(this, "media list path = " + _pathItems.toString() + "(offset = " + _pathIndexOffset.toString() + ")");
         }
-        return changed;
     }
 
     bool processXmlListInfo(XmlListInfoMsg msg)
@@ -698,23 +709,40 @@ class MediaListState
         return [];
     }
 
-    void storeSelectedDcpItem(XmlListItemMsg rowMsg)
+    void storeNextPathItem(ProtoType protoType, XmlListItemMsg rowMsg, {bool clearList = false})
     {
-        if (_dcpMediaPath.isNotEmpty)
+        if (protoType == ProtoType.ISCP)
+        {
+            if (rowMsg.getIcon.key != ListItemIcon.FOLDER || _layerInfo != LayerInfo.UNDER_2ND_LAYER)
+            {
+                Logging.info(this, "Skipped next ISCP path item: " + rowMsg.toString());
+            }
+            else
+            {
+                Logging.info(this, "Stored next DCP path item: " + rowMsg.toString());
+                _updateIscpPatch(_layerInfo, _uiType, _numberOfLayers + 1, rowMsg.getTitle);
+            }
+        }
+        else if (protoType == ProtoType.DCP && _dcpMediaPath.isNotEmpty)
         {
             final DcpMediaContainerMsg last = _dcpMediaPath.last;
             last.getItems().clear();
             final DcpMediaContainerMsg? cntMsg = getDcpContainerMsg(rowMsg);
             if (cntMsg != null && !cntMsg.isContainer() && cntMsg.isPlayable())
             {
-                Logging.info(this, "Skipped save of selected DCP item: " + rowMsg.toString() + ": is a stream");
+                Logging.info(this, "Skipped next DCP path item: " + rowMsg.toString() + ": is a stream");
             }
             else
             {
                 last.getItems().add(rowMsg);
-                Logging.info(this, "Stored selected DCP item: " + rowMsg.toString() + " in container " + last.toString());
+                Logging.info(this, "Stored next DCP path item: " + rowMsg.toString() + " in container " + last.toString());
             }
             _syncPathItems();
+        }
+        if (clearList)
+        {
+            clearItems();
+            _mediaListCid = "";
         }
     }
 
@@ -782,13 +810,6 @@ class MediaListState
             }
         }
         return retValue;
-    }
-
-    void prepareDcpNextLayer(XmlListItemMsg item)
-    {
-        storeSelectedDcpItem(item);
-        clearItems();
-        _mediaListCid = "";
     }
 
     void _setDcpPlayingItem()
