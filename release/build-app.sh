@@ -9,6 +9,7 @@
 #   ./build-app.sh --ios [--deploy | --store]
 #   ./build-app.sh --linux|--linux-remote
 #   ./build-app.sh --macos [--deploy]
+#   ./build-app.sh --all
 #
 # Requirements:
 #   - 'flutter' must be in PATH variable
@@ -35,6 +36,9 @@ set -e
 
 # Get the directory where this script is located
 ONPC_RELEASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Common parameters
+USAGE="Usage: $0 --android|--linux|--linux-remote|--ios|--macos|--all [options]"
 REMOTE_HOST_Linux="pm-dev-fedora"
 
 # Shared logic for preparing the application name.
@@ -47,14 +51,13 @@ prepare-app-name() {
         exit 1
     fi
     ONPC_APP_VER=$(cat "$VERSION_FILE")
-    ONPC_APP_NAME="MusicControl-v${ONPC_APP_VER}-$1"
+    ONPC_APP_NAME="MusicControl-v$ONPC_APP_VER-$1"
 }
 
 # Shared logic for preparing the Flutter build environment.
 # Usage:
 #   prepare-build <FLUTTER_VERSION> <APP_SUFFIX> <PLATFORM_TYPE>
 prepare-build() {
-
     # Check arguments
     if [ "$#" -lt 3 ]; then
         echo "Error: prepare-build requires at least 3 arguments: <FLUTTER_VERSION> <APP_SUFFIX> <PLATFORM_TYPE>"
@@ -75,7 +78,7 @@ prepare-build() {
     done
 
     # Navigate to release dir to ensure relative paths work
-    cd "${ONPC_RELEASE_DIR}" || exit 1
+    cd "$ONPC_RELEASE_DIR" || exit 1
     ONPC_PROJECT_ROOT="$(cd .. && pwd)"
 
     # Setup Flutter Environment
@@ -86,39 +89,39 @@ prepare-build() {
     fi
     ONPC_FLUTTER_PATH="$(dirname "$(dirname "$FLUTTER_BIN")")"
 
-    echo "Setting up Flutter ${TARGET_FLUTTER_VER}..."
-    cd "${ONPC_FLUTTER_PATH}" || exit
-    git checkout -f "${TARGET_FLUTTER_VER}"
+    echo "Setting up Flutter $TARGET_FLUTTER_VER..."
+    cd "$ONPC_FLUTTER_PATH" || exit
+    git checkout -f "$TARGET_FLUTTER_VER"
     export FLUTTER_GIT_URL="https://github.com/flutter/flutter.git"
 
     # Setup the APP name with version
     prepare-app-name "$TARGET_SUFFIX"
 
     # Remove previous build artifact
-    cd "${ONPC_RELEASE_DIR}" || exit
-    rm -f "${ONPC_APP_NAME}"
+    cd "$ONPC_RELEASE_DIR" || exit
+    rm -f "$ONPC_APP_NAME"
 
     # Setup Project Files (Symlinks)
-    echo "Preparing project files for ${TARGET_PLATFORM}..."
-    cd "${ONPC_PROJECT_ROOT}" || exit
+    echo "Preparing project files for $TARGET_PLATFORM..."
+    cd "$ONPC_PROJECT_ROOT" || exit
     flutter clean
 
     # Update pubspec.yaml
     rm -f "pubspec.yaml"
-    ln -s "pubspec.yaml_${TARGET_PLATFORM}" "pubspec.yaml"
+    ln -s "pubspec.yaml_$TARGET_PLATFORM" "pubspec.yaml"
 
     # Update CompatUtils.dart
     rm -f "lib/utils/CompatUtils.dart"
-    ln -s "CompatUtils.dart.${TARGET_PLATFORM}" "lib/utils/CompatUtils.dart"
+    ln -s "CompatUtils.dart.$TARGET_PLATFORM" "lib/utils/CompatUtils.dart"
 
     # Info & Clean
     echo "------------------------------------------------"
-    echo "Starting build for: ${ONPC_APP_NAME}"
-    echo "Flutter SDK: ${ONPC_FLUTTER_PATH}"
-    echo "Project root: ${ONPC_PROJECT_ROOT}"
-    echo "Release dir: ${ONPC_RELEASE_DIR}"
-    echo "Target platform: ${TARGET_PLATFORM}"
-    echo "Deploy to device: ${DEPLOY_TO_DEVICE}"
+    echo "Starting build for: $ONPC_APP_NAME"
+    echo "Flutter SDK: $ONPC_FLUTTER_PATH"
+    echo "Project root: $ONPC_PROJECT_ROOT"
+    echo "Release dir: $ONPC_RELEASE_DIR"
+    echo "Target platform: $TARGET_PLATFORM"
+    echo "Deploy to device: $DEPLOY_TO_DEVICE"
     echo "------------------------------------------------"
 
     flutter doctor
@@ -138,8 +141,8 @@ build-android() {
 
     GENERATED_APK=$(find build/app/outputs/flutter-apk -maxdepth 1 -name "app-release.apk" | head -n 1)
     if [ -f "$GENERATED_APK" ]; then
-        mv "$GENERATED_APK" "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
-        echo "✅ Success! APK available at: ${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+        mv "$GENERATED_APK" "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+        echo "✅ Success! APK available at: $ONPC_RELEASE_DIR/$ONPC_APP_NAME"
 
         # Deploy if requested
         if [ "$DEPLOY_TO_DEVICE" = true ]; then
@@ -148,7 +151,7 @@ build-android() {
                 exit 1
             fi
             echo "Deploying to connected device..."
-            adb install -r "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+            adb install -r "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
             echo "Starting application..."
             adb shell am start -n "com.mkulesh.onpc.plus/com.mkulesh.onpc.plus.MainActivity"
         fi
@@ -178,12 +181,12 @@ build-ios() {
         flutter build ios --release
     else
         echo "Building for Distribution/Ad-Hoc..."
-        flutter build ipa --release --export-options-plist="${ONPC_RELEASE_DIR}/build-ios-options.plist"
+        flutter build ipa --release --export-options-plist="$ONPC_RELEASE_DIR/build-ios-options.plist"
 
         GENERATED_IPA=$(find build/ios/ipa -maxdepth 1 -name "*.ipa" | head -n 1)
         if [ -f "$GENERATED_IPA" ]; then
-            mv "$GENERATED_IPA" "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
-            echo "✅ Success! IPA available at: ${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+            mv "$GENERATED_IPA" "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+            echo "✅ Success! IPA available at: $ONPC_RELEASE_DIR/$ONPC_APP_NAME"
 
             # Deploy if requested
             if [ "$DEPLOY_TO_DEVICE" = true ]; then
@@ -192,7 +195,7 @@ build-ios() {
                     exit 1
                 fi
                 echo "Deploying to connected device..."
-                ios-deploy --bundle "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}" --no-wifi > /dev/null
+                ios-deploy --bundle "$ONPC_RELEASE_DIR/$ONPC_APP_NAME" --no-wifi > /dev/null
             fi
         else
             echo "❌ Error: IPA file was not generated."
@@ -207,40 +210,40 @@ build-linux() {
     prepare-build "3.29.0" "linux-x86_64.zip" "desktop" "$@"
 
     # Remove the old build
-    ONPC_DIR_NAME="${ONPC_RELEASE_DIR}/${ONPC_APP_NAME%.*}"
-    rm -rf "${ONPC_DIR_NAME}"
+    ONPC_DIR_NAME="$ONPC_RELEASE_DIR/${ONPC_APP_NAME%.*}"
+    rm -rf "$ONPC_DIR_NAME"
 
     # Build app
     flutter build linux --release
 
     # Check the generated application bundle
     APP_BUNDLE_PATH="build/linux/x64/release/bundle"
-    APP_BUNDLE_NAME="${APP_BUNDLE_PATH}/Music-Control"
-    if [ ! -d "${APP_BUNDLE_PATH}" ]; then
-        echo "❌ Error: application bundle was not generated in ${APP_BUNDLE_PATH}"
+    APP_BUNDLE_NAME="$APP_BUNDLE_PATH/Music-Control"
+    if [ ! -d "$APP_BUNDLE_PATH" ]; then
+        echo "❌ Error: application bundle was not generated in $APP_BUNDLE_PATH"
         exit 1
     fi
-    echo "✅ Found application bundle: ${APP_BUNDLE_NAME}"
+    echo "✅ Found application bundle: $APP_BUNDLE_NAME"
 
     # Move the application bundle
-    mv "${APP_BUNDLE_PATH}" "${ONPC_DIR_NAME}"
-    ICON_SRC="${ONPC_DIR_NAME}/data/flutter_assets/lib/assets/app_icon.png"
+    mv "$APP_BUNDLE_PATH" "$ONPC_DIR_NAME"
+    ICON_SRC="$ONPC_DIR_NAME/data/flutter_assets/lib/assets/app_icon.png"
     if [ -f "$ICON_SRC" ]; then
-        cp "$ICON_SRC" "${ONPC_DIR_NAME}/Music-Control.png"
+        cp "$ICON_SRC" "$ONPC_DIR_NAME/Music-Control.png"
     else
         echo "⚠️ Warning: App Icon not found at $ICON_SRC"
     fi
 
     # Archive the new build
-    cd "${ONPC_RELEASE_DIR}"
-    zip -qr "${ONPC_APP_NAME}" "$(basename "${ONPC_DIR_NAME}")"
+    cd "$ONPC_RELEASE_DIR"
+    zip -qr "$ONPC_APP_NAME" "$(basename "$ONPC_DIR_NAME")"
 
     # Check if the archive was actually created
-    if [ ! -f "${ONPC_APP_NAME}" ]; then
-        echo "❌ Error: archive ${ONPC_APP_NAME} was not generated."
+    if [ ! -f "$ONPC_APP_NAME" ]; then
+        echo "❌ Error: archive $ONPC_APP_NAME was not generated."
         exit 1
     fi
-    echo "✅ Archive generated successfully: ${ONPC_APP_NAME}"
+    echo "✅ Archive generated successfully: $ONPC_APP_NAME"
 }
 
 # Linux Build Method on a remote host
@@ -322,28 +325,28 @@ build-macos() {
         exit 1
     fi
     APP_BUNDLE_NAME=$(basename "$APP_BUNDLE_PATH")
-    echo "✅ Found application bundle: ${APP_BUNDLE_NAME}"
+    echo "✅ Found application bundle: $APP_BUNDLE_NAME"
 
     # Create DMG image
-    rm -f "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+    rm -f "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
     echo "Creating DMG image..."
     if ! command -v create-dmg &> /dev/null; then
         echo "❌ Error: 'create-dmg' not found. Please run: brew install create-dmg"
         exit 1
     fi
     create-dmg \
-      --volname "MusicControl-v${ONPC_APP_VER}" \
+      --volname "MusicControl-v$ONPC_APP_VER" \
       --window-pos 200 120 \
       --window-size 800 400 \
       --icon-size 100 \
-      --icon "${APP_BUNDLE_NAME}" 200 190 \
-      --hide-extension "${APP_BUNDLE_NAME}" \
+      --icon "$APP_BUNDLE_NAME" 200 190 \
+      --hide-extension "$APP_BUNDLE_NAME" \
       --app-drop-link 600 185 \
       --hdiutil-quiet \
-      "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}" \
-      "${APP_BUNDLE_PATH}"
+      "$ONPC_RELEASE_DIR/$ONPC_APP_NAME" \
+      "$APP_BUNDLE_PATH"
 
-    echo "✅ Success! DMG available at: ${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}"
+    echo "✅ Success! DMG available at: $ONPC_RELEASE_DIR/$ONPC_APP_NAME"
 
     # Install if requested
     if [ "$DEPLOY_TO_DEVICE" = true ]; then
@@ -355,30 +358,28 @@ build-macos() {
         MOUNT_POINT="/tmp/MusicControl_Install"
         mkdir -p "$MOUNT_POINT"
 
-        hdiutil attach "${ONPC_RELEASE_DIR}/${ONPC_APP_NAME}" -mountpoint "$MOUNT_POINT" -noverify -quiet
+        hdiutil attach "$ONPC_RELEASE_DIR/$ONPC_APP_NAME" -mountpoint "$MOUNT_POINT" -noverify -quiet
 
         # Remove existing app from /Applications to prevent permission errors
-        if [ -d "/Applications/${APP_BUNDLE_NAME}" ]; then
+        if [ -d "/Applications/$APP_BUNDLE_NAME" ]; then
             echo "Removing existing version from /Applications..."
-            rm -rf "/Applications/${APP_BUNDLE_NAME}"
+            rm -rf "/Applications/$APP_BUNDLE_NAME"
         fi
 
         # Copy the App
-        echo "Copying ${APP_BUNDLE_NAME}..."
-        cp -R "${MOUNT_POINT}/${APP_BUNDLE_NAME}" "/Applications/"
+        echo "Copying $APP_BUNDLE_NAME..."
+        cp -R "$MOUNT_POINT/$APP_BUNDLE_NAME" "/Applications/"
 
         # Unmount (Detach)
         hdiutil detach "$MOUNT_POINT" -quiet
         rmdir "$MOUNT_POINT"
 
-        echo "✅ Installed ${APP_BUNDLE_NAME} to /Applications"
+        echo "✅ Installed $APP_BUNDLE_NAME to /Applications"
     fi
 }
 
 # Main function to parse arguments and call appropriate build function
 main() {
-    USAGE="Usage: $0 --android|--linux|--linux-remote|--ios|--macos [options]"
-
     if [ $# -eq 0 ]; then
         echo "$USAGE"
         exit 1
@@ -402,6 +403,16 @@ main() {
             ;;
         --macos)
             build-macos "$@"
+            ;;
+        --all)
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+                 build-android "$@"
+                 build-ios "$@"
+                 build-macos "$@"
+                 build-linux-remote "$@"
+            else
+                 echo "⚠️ Warning: --all is not applicable on this OS. Only macOS supports building all targets."
+            fi
             ;;
         *)
             echo "Unknown parameter: $MODE"
