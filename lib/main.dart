@@ -210,11 +210,11 @@ class MusicControllerAppState extends State<MusicControllerApp>
     void dispose()
     {
         WidgetsBinding.instance.removeObserver(this);
+        _stateManager.dispose();
         _viewContext.updateNotifier.close();
         _tabController?.dispose();
         BackButtonInterceptor.remove(_onBackPressed);
         _windowManager.dispose();
-        _stateManager.usbSerial.dispose();
         super.dispose();
     }
 

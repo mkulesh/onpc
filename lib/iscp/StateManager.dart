@@ -184,6 +184,13 @@ class StateManager
         _onConnectionError = onConnectionError;
     }
 
+    void dispose()
+    {
+        usbSerial.dispose();
+        _onStateChanged = null;
+        _onConnectionError = null;
+    }
+
     void connect(String host, int port, {String? manualHost, String? manualAlias, bool clearScripts = false})
     {
         if (clearScripts)
