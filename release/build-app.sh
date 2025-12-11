@@ -37,6 +37,19 @@ set -e
 ONPC_RELEASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 REMOTE_HOST_Linux="pm-dev-fedora"
 
+# Shared logic for preparing the application name.
+# Usage:
+#   prepare-app-name <APP_SUFFIX>
+prepare-app-name() {
+    VERSION_FILE="$ONPC_RELEASE_DIR/VERSION.txt"
+    if [ ! -f "$VERSION_FILE" ]; then
+        echo "❌ Error: VERSION.txt not found in $ONPC_RELEASE_DIR"
+        exit 1
+    fi
+    ONPC_APP_VER=$(cat "$VERSION_FILE")
+    ONPC_APP_NAME="MusicControl-v${ONPC_APP_VER}-$1"
+}
+
 # Shared logic for preparing the Flutter build environment.
 # Usage:
 #   prepare-build <FLUTTER_VERSION> <APP_SUFFIX> <PLATFORM_TYPE>
@@ -79,15 +92,10 @@ prepare-build() {
     export FLUTTER_GIT_URL="https://github.com/flutter/flutter.git"
 
     # Setup the APP name with version
-    cd "${ONPC_RELEASE_DIR}" || exit
-    if [ ! -f "VERSION.txt" ]; then
-        echo "Error: VERSION.txt not found in ${ONPC_RELEASE_DIR}"
-        exit 1
-    fi
-    ONPC_APP_VER=$(cat VERSION.txt)
-    ONPC_APP_NAME="MusicControl-v${ONPC_APP_VER}-${TARGET_SUFFIX}"
+    prepare-app-name "$TARGET_SUFFIX"
 
     # Remove previous build artifact
+    cd "${ONPC_RELEASE_DIR}" || exit
     rm -f "${ONPC_APP_NAME}"
 
     # Setup Project Files (Symlinks)
@@ -272,6 +280,7 @@ build-linux-remote() {
 EOF
 
     # Check if the SSH command succeeded
+    # shellcheck disable=SC2181
     if [ $? -eq 0 ]; then
         echo "✅ Remote build finished successfully."
     else
@@ -281,19 +290,15 @@ EOF
 
     # Define the filename on the remote host
     echo "📦 Locating artifact on remote..."
-    VERSION_FILE="$SCRIPT_DIR/VERSION.txt"
-    if [ ! -f "$VERSION_FILE" ]; then
-        echo "❌ Error: VERSION.txt not found locally at $VERSION_FILE"
-        exit 1
-    fi
-    ONPC_APP_NAME="MusicControl-v$(cat "$VERSION_FILE")-linux-x86_64.zip"
+    prepare-app-name "linux-x86_64.zip"
     REMOTE_FULL_PATH="$REMOTE_HOME/release/$ONPC_APP_NAME"
     echo "   Remote archive: $REMOTE_FULL_PATH"
 
     # Copy the file back
     echo "📦 Copying archive from remote..."
-    scp -p "$REMOTE_HOST_Linux:$REMOTE_FULL_PATH" "$SCRIPT_DIR"
+    scp -p "$REMOTE_HOST_Linux:$REMOTE_FULL_PATH" "$ONPC_RELEASE_DIR"
 
+    # shellcheck disable=SC2181
     if [ $? -eq 0 ]; then
         echo "✅ Success! Archive copied to current directory."
     else
