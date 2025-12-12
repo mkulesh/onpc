@@ -5,12 +5,23 @@
 # Automates the build process for the Music Control app across all platforms.
 #
 # Usage:
-#   ./build-app.sh --android [--install]
-#   ./build-app.sh --ios [--install | --store]
-#   ./build-app.sh --linux|--linux-remote
-#   ./build-app.sh --macos [--install]
-#   ./build-app.sh --windows [--store | --install]
-#   ./build-app.sh --all
+#   ./build-app.sh mode [flags]
+#
+# Modes:
+#   --android           Build for Android locally.
+#   --ios               Build for iOS locally.
+#   --linux             Build for Linux locally.
+#   --linux-remote      Build for Linux on a remote host.
+#   --macos             Build for macOS locally.
+#   --windows           Build for Windows locally.
+#   --windows-remote    Build for Windows on a remote host.
+#   --all               Build for all platforms.
+#
+# Flags:
+#   --install           Install the application to the connected device or local machine.
+#                       Supported modes: --android, --ios, --macos, --windows.
+#   --store             Build for store distribution.
+#                       Supported modes: --ios, --windows.
 #
 # Requirements:
 #   - 'flutter' must be in PATH variable
@@ -28,7 +39,15 @@
 #        tccutil reset AppleEvents com.google.android.studio
 #     -- Windows: Visual Studio 2019 or later with "Desktop development with C++" workload.
 #   - Requirement for the remote build:
-#     -- SSH password-less access to the remote host (setup in ~/.ssh/config recommended).
+#     -- SSH password-less access to the Linux host
+#        cd ~/.ssh
+#        ssh-keygen (linux host) or
+#        ssh-copy-id -i ./id_rsa.pub user@host
+#        scp ./id_ecdsa.pub family@pm-dev-windows:C:/ProgramData/ssh/administrators_authorized_keys
+#     -- SSH password-less access to the Windows host
+#        cd ~/.ssh
+#        ssh-keygen -t ecdsa
+#        scp ./id_ecdsa.pub user@host:C:/ProgramData/ssh/administrators_authorized_keys
 #     -- The remote host must have the project repository checked out.
 #     -- The 'ONPC_HOME' environment variable must be set on the remote host, pointing
 #        to the project root.
@@ -40,8 +59,9 @@ set -e
 ONPC_RELEASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Common parameters
-USAGE="Usage: $0 --android|--linux|--linux-remote|--ios|--macos|--windows|--all [options]"
-REMOTE_HOST_Linux="pm-dev-fedora"
+USAGE="Usage: $0 <mode> [flags]\nTry '$0 --help' for more information."
+REMOTE_HOST_LINUX="pm-dev-fedora"
+REMOTE_HOST_WINDOWS="pm-dev-windows"
 
 # Shared logic for preparing the application name.
 # Usage:
@@ -152,6 +172,22 @@ move-bundle() {
     fi
 }
 
+# Shared logic for copying generated application bundle from remote host.
+# Usage:
+#   move-remote-bundle <REMOTE_HOST> <REMOTE_FULL_PATH>
+move-remote-bundle() {
+    REMOTE_HOST="$1"
+    REMOTE_FULL_PATH="$2"
+    echo "📦 Copying remote archive $REMOTE_FULL_PATH..."
+    scp -p "$REMOTE_HOST:$REMOTE_FULL_PATH" "$ONPC_RELEASE_DIR"
+    # shellcheck disable=SC2181
+    if [ $? -eq 0 ]; then
+        echo "✅ Success! Archive copied to current directory."
+    else
+        echo "❌ SCP failed. Please check if the remote archive $REMOTE_FULL_PATH exists on the remote host $REMOTE_HOST"
+    fi
+}
+
 # Android Build Method
 build-android() {
     echo "Building Android application..."
@@ -243,15 +279,15 @@ build-linux() {
 # Linux Build Method on a remote host
 build-linux-remote() {
     echo "🔍 Resolving remote configuration..."
-    REMOTE_HOME=$(ssh "$REMOTE_HOST_Linux" 'echo $ONPC_HOME')
+    REMOTE_HOME=$(ssh "$REMOTE_HOST_LINUX" 'echo $ONPC_HOME')
     if [ -z "$REMOTE_HOME" ]; then
-        echo "❌ Error: ONPC_HOME environment variable is not set on $REMOTE_HOST_Linux or connection failed."
+        echo "❌ Error: ONPC_HOME environment variable is not set on $REMOTE_HOST_LINUX or connection failed."
         exit 1
     fi
 
     # Execute commands on the remote host
-    echo "🚀 Connecting to $REMOTE_HOST_Linux to start build..."
-    ssh "$REMOTE_HOST_Linux" /bin/bash << 'EOF'
+    echo "🚀 Connecting to $REMOTE_HOST_LINUX to start build..."
+    ssh "$REMOTE_HOST_LINUX" /bin/bash << 'EOF'
         # Stop on error
         set -e
 
@@ -263,9 +299,6 @@ build-linux-remote() {
 
         echo "📂 Navigating to project root: $ONPC_HOME"
         cd "$ONPC_HOME" || { echo "❌ Directory not found"; exit 1; }
-
-        # echo "🧹 Cleaning..."
-        ./clean.sh
 
         echo "🔄 Updating source..."
         git fetch --all
@@ -279,28 +312,14 @@ EOF
     # Check if the SSH command succeeded
     # shellcheck disable=SC2181
     if [ $? -eq 0 ]; then
-        echo "✅ Remote build finished successfully."
+        echo "✅ Remote build finished successfully in $REMOTE_HOME"
     else
         echo "❌ Remote build failed."
         exit 1
     fi
 
-    # Define the filename on the remote host
-    echo "📦 Locating artifact on remote..."
     prepare-app-name "linux-x86_64.zip"
-    REMOTE_FULL_PATH="$REMOTE_HOME/release/$ONPC_APP_NAME"
-    echo "   Remote archive: $REMOTE_FULL_PATH"
-
-    # Copy the file back
-    echo "📦 Copying archive from remote..."
-    scp -p "$REMOTE_HOST_Linux:$REMOTE_FULL_PATH" "$ONPC_RELEASE_DIR"
-
-    # shellcheck disable=SC2181
-    if [ $? -eq 0 ]; then
-        echo "✅ Success! Archive copied to current directory."
-    else
-        echo "❌ SCP failed. Please check if the remote archive $REMOTE_FULL_PATH exists on the remote host $REMOTE_HOST_Linux"
-    fi
+    move-remote-bundle $REMOTE_HOST_LINUX "$REMOTE_HOME/release/$ONPC_APP_NAME"
 }
 
 # macOS Build Method
@@ -414,10 +433,64 @@ build-windows() {
     fi
 }
 
+# Windows Build Method on a remote host
+build-windows-remote() {
+    echo "🔍 Resolving remote configuration..."
+    REMOTE_HOME=$(ssh "$REMOTE_HOST_WINDOWS" "powershell.exe -Command \"Write-Output \$env:ONPC_HOME\"")
+    REMOTE_HOME=$(echo "$REMOTE_HOME" | tr -d '\r')
+    if [ -z "$REMOTE_HOME" ]; then
+        echo "❌ Error: ONPC_HOME environment variable is not set on $REMOTE_HOST_WINDOWS or connection failed."
+        exit 1
+    fi
+
+    # Execute commands on the remote host
+    echo "🚀 Connecting to $REMOTE_HOST_WINDOWS to start build..."
+    ssh "$REMOTE_HOST_WINDOWS" "C:/PROGRA~1/Git/bin/bash.exe --login" << 'EOF'
+        # Stop on error
+        set -e
+
+        # Check if ONPC_HOME is set
+        if [ -z "$ONPC_HOME" ]; then
+            echo "❌ Error: ONPC_HOME environment variable is not set on remote host."
+            exit 1
+        fi
+
+        echo "📂 Navigating to project root: $ONPC_HOME"
+        cd "$ONPC_HOME" || { echo "❌ Directory not found"; exit 1; }
+
+        echo "🔄 Updating source..."
+        git checkout .
+        git pull
+
+        echo "🔨 Building..."
+        release/build-app.sh --windows
+EOF
+
+    # Check if the SSH command succeeded
+    # shellcheck disable=SC2181
+    if [ $? -eq 0 ]; then
+        echo "✅ Remote build finished successfully in $REMOTE_HOME"
+    else
+        echo "❌ Remote build failed."
+        exit 1
+    fi
+
+    prepare-app-name "windows-x86_64.msix"
+    
+    # We need to correctly format the path for SCP.
+    REMOTE_HOME_FWD=$(echo "$REMOTE_HOME" | sed 's/\\/\//g')
+    if [[ "$REMOTE_HOME_FWD" =~ ^/[a-zA-Z]/ ]]; then
+       # shellcheck disable=SC2001
+       REMOTE_HOME_FWD=$(echo "$REMOTE_HOME_FWD" | sed 's|^/\([a-zA-Z]\)/|\1:/|')
+    fi
+
+    move-remote-bundle $REMOTE_HOST_WINDOWS "$REMOTE_HOME_FWD/release/$ONPC_APP_NAME"
+}
+
 # Main function to parse arguments and call appropriate build function
 main() {
     if [ $# -eq 0 ]; then
-        echo "$USAGE"
+        echo -e "$USAGE"
         exit 1
     fi
 
@@ -443,19 +516,28 @@ main() {
         --windows)
             build-windows "$@"
             ;;
+        --windows-remote)
+            build-windows-remote "$@"
+            ;;
         --all)
             if [[ "$OSTYPE" == "darwin"* ]]; then
                  build-android "$@"
                  build-ios "$@"
                  build-macos "$@"
                  build-linux-remote "$@"
+                 build-windows-remote "$@"
             else
                  echo "⚠️ Warning: --all is not applicable on this OS. Only macOS supports building all targets."
             fi
             ;;
+        --help)
+            # Print the header comments (skip shebang and blank lines in header)
+            sed -n '2,/^$/p' "$0" | sed 's/^# //;s/^#//'
+            exit 0
+            ;;
         *)
             echo "Unknown parameter: $MODE"
-            echo "$USAGE"
+            echo -e "$USAGE"
             exit 1
             ;;
     esac
