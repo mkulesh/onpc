@@ -301,9 +301,9 @@ build-linux-remote() {
         cd "$ONPC_HOME" || { echo "❌ Directory not found"; exit 1; }
 
         echo "🔄 Updating source..."
-        git fetch --all
-        git reset --hard "@{u}"
-        git clean -fd
+        ./clean.sh
+        git checkout .
+        git pull
 
         echo "🔨 Building..."
         release/build-app.sh --linux
@@ -459,6 +459,7 @@ build-windows-remote() {
         cd "$ONPC_HOME" || { echo "❌ Directory not found"; exit 1; }
 
         echo "🔄 Updating source..."
+        ./clean.sh
         git checkout .
         git pull
 
