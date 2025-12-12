@@ -5,10 +5,11 @@
 # Automates the build process for the Music Control app across all platforms.
 #
 # Usage:
-#   ./build-app.sh --android [--deploy]
-#   ./build-app.sh --ios [--deploy | --store]
+#   ./build-app.sh --android [--install]
+#   ./build-app.sh --ios [--install | --store]
 #   ./build-app.sh --linux|--linux-remote
-#   ./build-app.sh --macos [--deploy]
+#   ./build-app.sh --macos [--install]
+#   ./build-app.sh --windows [--store | --install]
 #   ./build-app.sh --all
 #
 # Requirements:
@@ -16,8 +17,8 @@
 #   - Call 'git fetch' in the Flutter directory so that the local Flutter
 #     repository gets all the new info from Github
 #   - Platform specific requirements:
-#     -- Android: 'adb' (Android Debug Bridge) is required for the --deploy flag
-#     -- iOS: 'ios-deploy' (via brew) is required for the --deploy flag:
+#     -- Android: 'adb' (Android Debug Bridge) is required for the --install flag
+#     -- iOS: 'ios-deploy' (via brew) is required for the --install flag:
 #        brew install ios-deploy
 #     -- Linux: Install additional packages:
 #        dnf install clang cmake ninja-build gtk3-devel xz-devel
@@ -25,6 +26,7 @@
 #        brew install create-dmg
 #        If "Not authorized to send Apple events to Finder" appears:
 #        tccutil reset AppleEvents com.google.android.studio
+#     -- Windows: Visual Studio 2019 or later with "Desktop development with C++" workload.
 #   - Requirement for the remote build:
 #     -- SSH password-less access to the remote host (setup in ~/.ssh/config recommended).
 #     -- The remote host must have the project repository checked out.
@@ -38,7 +40,7 @@ set -e
 ONPC_RELEASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Common parameters
-USAGE="Usage: $0 --android|--linux|--linux-remote|--ios|--macos|--all [options]"
+USAGE="Usage: $0 --android|--linux|--linux-remote|--ios|--macos|--windows|--all [options]"
 REMOTE_HOST_Linux="pm-dev-fedora"
 
 # Shared logic for preparing the application name.
@@ -68,12 +70,16 @@ prepare-build() {
     TARGET_PLATFORM="$3"
 
     # Common input parameters
-    DEPLOY_TO_DEVICE=false
+    INSTALL_TO_DEVICE=false
+    BUILD_FOR_STORE=false
     shift 3
     for arg in "$@"
     do
-        if [ "$arg" == "--deploy" ]; then
-            DEPLOY_TO_DEVICE=true
+        if [ "$arg" == "--install" ]; then
+            INSTALL_TO_DEVICE=true
+        fi
+        if [ "$arg" == "--store" ]; then
+            BUILD_FOR_STORE=true
         fi
     done
 
@@ -121,92 +127,80 @@ prepare-build() {
     echo "Project root: $ONPC_PROJECT_ROOT"
     echo "Release dir: $ONPC_RELEASE_DIR"
     echo "Target platform: $TARGET_PLATFORM"
-    echo "Deploy to device: $DEPLOY_TO_DEVICE"
+    echo "Build for store: $BUILD_FOR_STORE"
+    echo "Install to device: $INSTALL_TO_DEVICE"
     echo "------------------------------------------------"
 
+    flutter config --no-enable-web &> /dev/null
     flutter doctor
 
     set -o pipefail
     flutter pub get | grep -vE "^\+ |^- |available\)"
 }
 
+# Shared logic for moving generated application bundle.
+# Usage:
+#   move-bundle <APP_BUNDLE_NAME>
+move-bundle() {
+    APP_BUNDLE_NAME="$1"
+    if [ -f "$APP_BUNDLE_NAME" ]; then
+        mv "$APP_BUNDLE_NAME" "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+        echo "✅ Success! application bundle available at: $ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+    else
+        echo "❌ Error: application bundle was not generated."
+        exit 1
+    fi
+}
+
 # Android Build Method
 build-android() {
-    # Call common preparation script
-    prepare-build "3.29.0" "android.apk" "mobile" "$@"
-
-    # Build
     echo "Building Android application..."
+    prepare-build "3.29.0" "android.apk" "mobile" "$@"
     flutter build apk --release
 
-    GENERATED_APK=$(find build/app/outputs/flutter-apk -maxdepth 1 -name "app-release.apk" | head -n 1)
-    if [ -f "$GENERATED_APK" ]; then
-        mv "$GENERATED_APK" "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
-        echo "✅ Success! APK available at: $ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+    move-bundle "$(find build/app/outputs/flutter-apk -maxdepth 1 -name "app-release.apk" | head -n 1)"
 
-        # Deploy if requested
-        if [ "$DEPLOY_TO_DEVICE" = true ]; then
-            if ! command -v adb &> /dev/null; then
-                echo "❌ Error: 'adb' command not found. Cannot deploy."
-                exit 1
-            fi
-            echo "Deploying to connected device..."
-            adb install -r "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
-            echo "Starting application..."
-            adb shell am start -n "com.mkulesh.onpc.plus/com.mkulesh.onpc.plus.MainActivity"
+    # Install if requested
+    if [ "$INSTALL_TO_DEVICE" = true ]; then
+        echo "Installing to connected Android device..."
+        if ! command -v adb &> /dev/null; then
+            echo "❌ Error: 'adb' command not found. Cannot deploy."
+            exit 1
         fi
-    else
-        echo "❌ Error: APK file was not generated."
-        exit 1
+        adb install -r "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+        echo "Starting application..."
+        adb shell am start -n "com.mkulesh.onpc.plus/com.mkulesh.onpc.plus.MainActivity"
     fi
 }
 
 # iOS Build Method
 build-ios() {
-    # Call common preparation script
+    echo "Building iOS application..."
     prepare-build "3.29.0" "ios.ipa" "mobile" "$@"
-
-    # Check for input parameters
-    BUILD_FOR_STORE=false
-    for arg in "$@"
-    do
-        if [ "$arg" == "--store" ]; then
-            BUILD_FOR_STORE=true
-        fi
-    done
-
-    # Build
     if [ "$BUILD_FOR_STORE" = true ]; then
         echo "Building for Store (creating .app/.xcarchive)..."
         flutter build ios --release
     else
         echo "Building for Distribution/Ad-Hoc..."
         flutter build ipa --release --export-options-plist="$ONPC_RELEASE_DIR/build-ios-options.plist"
+    fi
 
-        GENERATED_IPA=$(find build/ios/ipa -maxdepth 1 -name "*.ipa" | head -n 1)
-        if [ -f "$GENERATED_IPA" ]; then
-            mv "$GENERATED_IPA" "$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
-            echo "✅ Success! IPA available at: $ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+    move-bundle "$(find build/ios/ipa -maxdepth 1 -name "*.ipa" | head -n 1)"
 
-            # Deploy if requested
-            if [ "$DEPLOY_TO_DEVICE" = true ]; then
-                if ! command -v ios-deploy &> /dev/null; then
-                    echo "❌ Error: 'ios-deploy' not found. Please run: brew install ios-deploy"
-                    exit 1
-                fi
-                echo "Deploying to connected device..."
-                ios-deploy --bundle "$ONPC_RELEASE_DIR/$ONPC_APP_NAME" --no-wifi > /dev/null
-            fi
-        else
-            echo "❌ Error: IPA file was not generated."
+    # Install if requested
+    if [ "$INSTALL_TO_DEVICE" = true ]; then
+        echo "Installing to connected iOS device..."
+        if ! command -v ios-deploy &> /dev/null; then
+            echo "❌ Error: 'ios-deploy' not found. Please run: brew install ios-deploy"
             exit 1
         fi
+        ios-deploy --bundle "$ONPC_RELEASE_DIR/$ONPC_APP_NAME" --no-wifi > /dev/null
     fi
 }
 
 # Linux Build Method
 build-linux() {
-    # Call common preparation script
+    echo "Building Linux application..."
     prepare-build "3.29.0" "linux-x86_64.zip" "desktop" "$@"
 
     # Remove the old build
@@ -311,11 +305,8 @@ EOF
 
 # macOS Build Method
 build-macos() {
-    # Call common preparation script
-    prepare-build "3.29.0" "macos.dmg" "desktop" "$@"
-
-    # Build app
     echo "Building macOS application..."
+    prepare-build "3.29.0" "macos.dmg" "desktop" "$@"
     flutter build macos --release
 
     # Locate the generated .app bundle dynamically
@@ -349,8 +340,8 @@ build-macos() {
     echo "✅ Success! DMG available at: $ONPC_RELEASE_DIR/$ONPC_APP_NAME"
 
     # Install if requested
-    if [ "$DEPLOY_TO_DEVICE" = true ]; then
-        echo "Installing application to /Applications..."
+    if [ "$INSTALL_TO_DEVICE" = true ]; then
+        echo "Installing to local machine..."
 
         # Mount the DMG
         # -noverify: Skip verification for speed
@@ -374,7 +365,52 @@ build-macos() {
         hdiutil detach "$MOUNT_POINT" -quiet
         rmdir "$MOUNT_POINT"
 
-        echo "✅ Installed $APP_BUNDLE_NAME to /Applications"
+        echo "✅ $ONPC_APP_NAME installed successfully."
+    fi
+}
+
+# Windows Build Method
+build-windows() {
+    echo "Building Windows application..."
+    prepare-build "3.29.0" "windows-x86_64.msix" "desktop" "$@"
+    flutter build windows --release
+
+    # Create MSIX
+    if [ "$BUILD_FOR_STORE" = true ]; then
+        echo "Generating MSIX for Store (non signed)..."
+        flutter pub run msix:create --store
+    else
+        echo "Generating MSIX for ad-hoc distribution (signed)..."
+        flutter pub run msix:create
+    fi
+    echo ""
+
+    move-bundle "build/windows/x64/runner/Release/onpc.msix"
+
+    # Install if requested
+    if [ "$INSTALL_TO_DEVICE" = true ]; then
+        echo "Installing to local machine..."
+        
+        # Convert path to Windows format if cygpath is available
+        MSIX_PATH="$ONPC_RELEASE_DIR/$ONPC_APP_NAME"
+        if command -v cygpath &> /dev/null; then
+            MSIX_PATH=$(cygpath -w "$MSIX_PATH")
+        fi
+        
+        # Avoid "The provided package is already installed" error
+        PACKAGE_NAME="25529MikhailKulesh.EnhancedMusicController"
+        echo "Checking for existing installation of $PACKAGE_NAME..."
+        powershell.exe -command "if (Get-AppxPackage -Name '$PACKAGE_NAME') { Write-Host 'Removing existing package...'; Get-AppxPackage -Name '$PACKAGE_NAME' | Remove-AppxPackage }"
+
+        echo "Installing $MSIX_PATH..."
+        powershell.exe -command "Add-AppxPackage -Path '$MSIX_PATH' -ForceUpdateFromAnyVersion"
+        # shellcheck disable=SC2181
+        if [ $? -eq 0 ]; then
+             echo "✅ $ONPC_APP_NAME installed successfully."
+        else
+             echo "❌ Error: Failed to install application."
+             exit 1
+        fi
     fi
 }
 
@@ -403,6 +439,9 @@ main() {
             ;;
         --macos)
             build-macos "$@"
+            ;;
+        --windows)
+            build-windows "$@"
             ;;
         --all)
             if [[ "$OSTYPE" == "darwin"* ]]; then
