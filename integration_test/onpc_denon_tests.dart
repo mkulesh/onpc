@@ -51,9 +51,6 @@ void main() {
     await tu.openDrawerMenu(Strings.drawer_all_standby,
         ensureAfter: () => find.text(DENON_AVR + "/" + "To Onkyo (Standby)"));
     await tu.openDrawerMenu("Main", ensureAfter: () => find.text(DENON_AVR + " (Standby)"));
-
-    // Write log
-    await tu.writeLog("auto-test-denon");
   });
 }
 

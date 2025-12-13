@@ -18,7 +18,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/iscp/StateManager.dart';
 import 'package:onpc/main.dart' as app;
-import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
 import 'package:onpc/utils/Platform.dart';
 import 'package:onpc/widgets/CustomImageButton.dart';
@@ -28,10 +27,11 @@ import 'package:onpc/widgets/CustomTextLabel.dart';
 import 'package:onpc/widgets/ReorderableItem.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import 'onpc_test_log.dart';
+
 typedef OnFind = Finder Function();
 
-class OnpcGuiActions {
-  static const String STEP_HEADER = "=================================> ";
+class OnpcGuiActions extends OnpcTestLog {
   static const int _DEFAULT_DELAY_MS = 500;
   static const int _WAITING_DURATION = 1000 * 60; // 60 seconds waiting duration
   final int _stepDelay = 1;
@@ -68,7 +68,7 @@ class OnpcGuiActions {
   }
 
   Future<void> ensureVisibleInList(String title, final Finder list, OnFind finder, Offset dragOffset) async {
-    Logging.info(this, STEP_HEADER + title);
+    log("Ensure item in list: " + title);
     expect(list, findsOneWidget);
     while (finder().evaluate().isEmpty) {
       await tester.drag(list, dragOffset, warnIfMissed: false);
@@ -113,10 +113,10 @@ class OnpcGuiActions {
       await ensureVisible(finder);
     }
     final Finder fab = finder();
-    //log("Tap: " +
-    //    cleanFinderDescription(fab) +
-    //    (num > 1 ? ", index " + idx.toString() : "") +
-    //    (delay != null ? ", delay = " + delay.toString() : ""));
+    log("Tap: " +
+        cleanFinderDescription(fab) +
+        (num > 1 ? ", index " + idx.toString() : "") +
+        (delay != null ? ", delay = " + delay.toString() : ""));
     expect(fab, findsExactly(num));
     if (rightClick && Platform.isDesktop) {
       await tester.tap(fab.at(idx), buttons: 0x02, warnIfMissed: false);
@@ -163,14 +163,12 @@ class OnpcGuiActions {
   Future<void> slideByValue(Finder slider, double value) async {
     final widget = slider.evaluate().first.widget;
     if (widget is SfSlider) {
-      Logging.info(
-          widget,
-          "SfSlider: min = " +
-              widget.min.toString() +
-              ", max = " +
-              widget.max.toString() +
-              ", value = " +
-              widget.value.toString());
+      log("Move slider: min = " +
+          widget.min.toString() +
+          ", max = " +
+          widget.max.toString() +
+          ", value = " +
+          widget.value.toString());
 
       final double totalWidth = tester.getSize(slider).width - (2 * ActivityDimens.progressBarRadius);
       final double start = totalWidth * (widget.value - widget.min) / (widget.max - widget.min);
@@ -184,6 +182,7 @@ class OnpcGuiActions {
   }
 
   Future<void> setText(int num, int idx, String name) async {
+    log("Setting text: \"" + name + "\", number of fields = " + num.toString() + ", field index = " + idx.toString());
     final Finder fab = find.byWidgetPredicate((widget) => widget is TextFormField);
     expect(fab, findsNWidgets(num));
     await tester.enterText(fab.at(idx), name);
@@ -207,7 +206,7 @@ class OnpcGuiActions {
         if (val != null) {
           final bool newVal = key == name ? state : val;
           if (newVal != val) {
-            Logging.info(widget, " " + name + ", " + val.toString() + " -> " + newVal.toString());
+            log("Change checkbox: " + name + ", " + val.toString() + " -> " + newVal.toString());
             taps.add(checkbox);
           }
         }
@@ -231,7 +230,7 @@ class OnpcGuiActions {
         expect(text, findsOneWidget);
         final name = (text.evaluate().first.widget as CustomTextLabel).description;
         if (name == drag) {
-          Logging.info(widget, " " + name + " -> drag " + dragOffset.toString());
+          log("Drag item: " + name + " -> drag " + dragOffset.toString());
           drags.add(dragHandle.at(dragIndex));
         }
       }
@@ -259,6 +258,7 @@ class OnpcGuiActions {
   }
 
   Future<void> waitMediaItemPlaying(String name) async {
+    log("Waiting \"" + name + "\" is playing...");
     final int start = DateTime.now().millisecondsSinceEpoch;
     while (true) {
       await tester.pumpAndSettle();

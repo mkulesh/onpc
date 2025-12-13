@@ -43,9 +43,6 @@ void main() {
     await _setupDenon(tu);
     await _setupOnkyoBox(tu);
     await _setupOnkyoPlayer(tu);
-
-    // Write log
-    await tu.writeLog("auto-test-setup");
   });
 }
 

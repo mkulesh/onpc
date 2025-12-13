@@ -48,9 +48,6 @@ void main() {
 
     // Power-off
     await tu.findAndTap(() => find.byTooltip("On/Standby"));
-
-    // Write log
-    await tu.writeLog("auto-test-onkyo");
   });
 }
 
