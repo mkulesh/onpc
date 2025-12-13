@@ -154,10 +154,10 @@ class OnpcTestUtils extends OnpcGuiActions {
     await findAndTap(() => find.text(menu), ensureAfter: ensureAfter);
   }
 
-  Future<void> changeFriendlyName(OnpcTestUtils tu, String name) async {
-    await tu.setText(1, 0, name);
-    await tu.findAndTap(() => find.byTooltip("Change friendly name"));
-    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
+  Future<void> changeFriendlyName(String name) async {
+    await setText(1, 0, name);
+    await findAndTap(() => find.byTooltip("Change friendly name"));
+    await stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     expect(find.text(name), findsExactly(2));
   }
 
@@ -215,103 +215,103 @@ class OnpcTestUtils extends OnpcGuiActions {
     await findAndTap(() => slider.item2, num: 2, idx: 0, ensureAfter: () => find.text(p.name + " " + p.secondValue));
   }
 
-  Future<void> changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_VALUE,
+  Future<void> changeParameter(String PARAM_NAME, String PARAM_VALUE,
       {bool pressOk = false, bool ignoreMissing = false, bool scroll = true}) async {
     if (scroll) {
-      await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+      await tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
     }
     if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-      await tu.findAndTap(() => find.text(PARAM_NAME));
-      await tu.stepDelayMs();
+      await findAndTap(() => find.text(PARAM_NAME));
+      await stepDelayMs();
       if (ignoreMissing && find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-        await tu.findAndTap(() => find.text("CANCEL"));
+        await findAndTap(() => find.text("CANCEL"));
         return;
       }
-      await tu.findAndTap(() => find.textContaining(PARAM_VALUE));
+      await findAndTap(() => find.textContaining(PARAM_VALUE));
       if (pressOk) {
-        await tu.findAndTap(() => find.text("OK"));
+        await findAndTap(() => find.text("OK"));
       }
-      await tu.stepDelayMs();
+      await stepDelayMs();
       expect(find.textContaining(PARAM_VALUE), findsOneWidget);
     }
   }
 
-  Future<void> saveConnection(final OnpcTestUtils tu, String name, String address, {bool isDCP = false}) async {
-    await tu.openDrawerMenu("Connect", ensureAfter: () => find.text("Onkyo/Pioneer/Integra"));
+  Future<void> saveConnection(final String name, String address, {bool isDCP = false}) async {
+    await openDrawerMenu("Connect", ensureAfter: () => find.text("Onkyo/Pioneer/Integra"));
     expect(find.text("Connect"), findsOneWidget);
     expect(find.text("Denon/Marantz"), findsOneWidget);
     expect(find.text("Address"), findsOneWidget);
     expect(find.text("Port (optional)"), findsOneWidget);
-    await tu.setText(3, 0, address);
+    await setText(3, 0, address);
     final Finder fab = find.byWidgetPredicate((widget) => widget is Radio);
     expect(fab, findsNWidgets(2));
-    await tu.findAndTap(() => fab.at(isDCP ? 1 : 0));
-    await tu.findAndTap(() => find.text("Save connection"));
-    await tu.setText(3, 2, name);
-    await tu.findAndTap(() => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
+    await findAndTap(() => fab.at(isDCP ? 1 : 0));
+    await findAndTap(() => find.text("Save connection"));
+    await setText(3, 2, name);
+    await findAndTap(() => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
     Logging.logSize = 5000; // After reconnect, increase log size
   }
 
-  Future<void> changeServices(OnpcTestUtils tu, List<Pair<String, bool>> items) async {
-    await tu.openSettings("Network services");
+  Future<void> changeServices(List<Pair<String, bool>> items) async {
+    await openSettings("Network services");
     for (int i = 0; i < items.length; i++) {
       final Pair<String, bool> item = items[i];
-      await tu.changeReorderableItem(item.item1, state: item.item2);
-      await tu.dragReorderableItem(item.item1, Offset(0, item.item2 ? -600 : 600));
+      await changeReorderableItem(item.item1, state: item.item2);
+      await dragReorderableItem(item.item1, Offset(0, item.item2 ? -600 : 600));
     }
-    await tu.previousScreen();
-    await tu.previousScreen();
+    await previousScreen();
+    await previousScreen();
   }
 
-  Future<void> changeInputs(OnpcTestUtils tu, List<Pair<String, String>> items) async {
-    await tu.openSettings("Input selectors");
+  Future<void> changeInputs(List<Pair<String, String>> items) async {
+    await openSettings("Input selectors");
     for (int i = 0; i < items.length; i++) {
       final Pair<String, String> item = items[i];
       if (item.item2.isEmpty) {
-        await tu.changeReorderableItem(item.item1);
-        await tu.dragReorderableItem(item.item1, Offset(0, 600));
+        await changeReorderableItem(item.item1);
+        await dragReorderableItem(item.item1, Offset(0, 600));
       } else {
-        await tu.contextMenu(item.item1, "Edit", ensureAfter: () => find.text("CANCEL"));
-        await tu.setText(1, 0, item.item2);
-        await tu.findAndTap(() => find.text("OK"));
+        await contextMenu(item.item1, "Edit", ensureAfter: () => find.text("CANCEL"));
+        await setText(1, 0, item.item2);
+        await findAndTap(() => find.text("OK"));
       }
     }
-    await tu.previousScreen();
-    await tu.previousScreen();
+    await previousScreen();
+    await previousScreen();
   }
 
-  Future<void> changeListeningModes(OnpcTestUtils tu, List<Pair<String, bool>> items) async {
-    await tu.openSettings("Listening modes");
+  Future<void> changeListeningModes(List<Pair<String, bool>> items) async {
+    await openSettings("Listening modes");
     for (int i = 0; i < items.length; i++) {
       final Pair<String, bool> item = items[i];
-      await tu.tester.ensureVisible(find.text(item.item1));
-      await tu.changeReorderableItem(item.item1, state: item.item2);
+      await tester.ensureVisible(find.text(item.item1));
+      await changeReorderableItem(item.item1, state: item.item2);
       if (item.item2) {
-        await tu.dragReorderableItem(item.item1, Offset(0, -600));
+        await dragReorderableItem(item.item1, Offset(0, -600));
       }
     }
-    await tu.previousScreen();
-    await tu.previousScreen();
+    await previousScreen();
+    await previousScreen();
   }
 
-  Future<void> setMaxVolume(OnpcTestUtils tu, final AudioSliderParameters p) async {
-    await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip(Strings.audio_control));
-    await tu.findAndTap(() => find.byTooltip(Strings.audio_control),
+  Future<void> setMaxVolume(final AudioSliderParameters p) async {
+    await openTab("LISTEN", ensureAfter: () => find.byTooltip(Strings.audio_control));
+    await findAndTap(() => find.byTooltip(Strings.audio_control),
         ensureAfter: () => find.byTooltip(Strings.audio_control_max_level));
-    await tu.findAndTap(() => find.byTooltip(Strings.audio_control_max_level),
+    await findAndTap(() => find.byTooltip(Strings.audio_control_max_level),
         ensureAfter: () => find.text(Strings.master_volume_max));
-    await tu.stepDelayMs();
-    await tu.testAudioSlider(p);
-    await tu.findAndTap(() => find.text("OK"));
+    await stepDelayMs();
+    await testAudioSlider(p);
+    await findAndTap(() => find.text("OK"));
   }
 
-  Future<void> renameZone(OnpcTestUtils tu, int zone, String newName) async {
-    await tu.openDrawer();
-    await tu.findAndTap(() => find.byTooltip("Edit"), num: 2, idx: zone);
+  Future<void> renameZone(int zone, String newName) async {
+    await openDrawer();
+    await findAndTap(() => find.byTooltip("Edit"), num: 2, idx: zone);
     expect(find.text("Edit"), findsOneWidget);
-    await tu.setText(1, 0, newName);
-    await tu.findAndTap(() => find.text("OK"));
-    await tu.previousScreen();
-    await tu.openDrawerMenu(newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
+    await setText(1, 0, newName);
+    await findAndTap(() => find.text("OK"));
+    await previousScreen();
+    await openDrawerMenu(newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
   }
 }

@@ -50,8 +50,8 @@ void main() {
 }
 
 Future<void> _setupDenon(OnpcTestUtils tu) async {
-  await tu.saveConnection(tu, "My Denon AVR", "192.168.1.82", isDCP: true);
-  await tu.changeInputs(tu, [
+  await tu.saveConnection("My Denon AVR", "192.168.1.82", isDCP: true);
+  await tu.changeInputs([
     Pair("HEOS MUSIC", "NET"),
     Pair("BLUETOOTH", "BT"),
     Pair("DVD", ""),
@@ -63,7 +63,7 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("DRS610", "TAPE"),
     Pair("Phono", ""),
   ]);
-  await tu.changeServices(tu, [
+  await tu.changeServices([
     Pair("Play List", true),
     Pair("Tidal", true),
     Pair("TuneIn Radio", true),
@@ -75,7 +75,7 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("Soundcloud", false),
     Pair("History", false),
   ]);
-  await tu.changeListeningModes(tu, [
+  await tu.changeListeningModes([
     Pair("Stereo", true),
     Pair("Auto", false),
     Pair("Dolby Digital", false),
@@ -107,24 +107,24 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
   p.buttonUp = "60.0";
   p.buttonUpValue = "30.5";
   p.buttonDown = "1";
-  await tu.setMaxVolume(tu, p);
-  await tu.renameZone(tu, 1, "To Onkyo");
+  await tu.setMaxVolume(p);
+  await tu.renameZone(1, "To Onkyo");
 }
 
 Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
-  await tu.saveConnection(tu, "My Onkyo Box", "192.168.1.81");
+  await tu.saveConnection("My Onkyo Box", "192.168.1.81");
   if (find.text("Onkyo Box (Standby)").evaluate().isNotEmpty) {
     // Player is off - call power on
     await tu.findAndTap(() => find.byTooltip("On/Standby"));
   }
-  await tu.changeServices(tu, [
+  await tu.changeServices([
     Pair("Deezer", true),
     Pair("Music Server (DLNA)", true),
     Pair("Spotify", false),
     Pair("Tidal", false),
     Pair("Amazon Music", false),
   ]);
-  await tu.changeListeningModes(tu, [
+  await tu.changeListeningModes([
     Pair("Mono", false),
     Pair("Stereo", false),
     Pair("Direct", false),
@@ -158,17 +158,17 @@ Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
   p.buttonUp = "35";
   p.buttonUpValue = "26";
   p.buttonDown = "1";
-  await tu.setMaxVolume(tu, p);
+  await tu.setMaxVolume(p);
 }
 
 Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
-  await tu.saveConnection(tu, "My Onkyo Player", "192.168.1.80");
+  await tu.saveConnection("My Onkyo Player", "192.168.1.80");
   if (find.text("Onkyo Player (Standby)").evaluate().isNotEmpty) {
     // Player is off - call power on
     await tu.findAndTap(() => find.byTooltip("On/Standby"));
   }
-  await tu.changeInputs(tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
-  await tu.changeServices(tu, [
+  await tu.changeInputs([Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
+  await tu.changeServices([
     Pair("Tidal", true),
     Pair("TuneIn Radio", true),
     Pair("Deezer", true),
@@ -176,7 +176,7 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
     Pair("Spotify", false),
     Pair("Amazon Music", false),
   ]);
-  await tu.changeListeningModes(tu, [
+  await tu.changeListeningModes([
     Pair("Mono", false),
     Pair("Stereo", false),
     Pair("Direct", false),
@@ -219,21 +219,21 @@ Future<void> _aboutScreen(OnpcTestUtils tu) async {
 Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
   await tu.openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
 
-  await tu.changeParameter(tu, "Text and buttons size", "Small", scroll: false);
-  await tu.changeParameter(tu, "Theme", "Light (Purple and Green)", scroll: false);
-  await tu.changeParameter(tu, "App language", "English", scroll: false);
+  await tu.changeParameter("Text and buttons size", "Small", scroll: false);
+  await tu.changeParameter("Theme", "Light (Purple and Green)", scroll: false);
+  await tu.changeParameter("App language", "English", scroll: false);
 
   // Audio control
-  await tu.changeParameter(tu, "Sound control", "Automatic");
-  await tu.changeParameter(tu, "Master volume unit", "Relative (dB)", pressOk: true);
+  await tu.changeParameter("Sound control", "Automatic");
+  await tu.changeParameter("Master volume unit", "Relative (dB)", pressOk: true);
 
   // RI-USB
   if (Platform.isDesktop) {
     final String USB_RI = Platform.isWindows ? "USB Serial Port" : "OnkioRI FT231X";
-    await tu.changeParameter(tu, "Use USB-RI interface", USB_RI, ignoreMissing: true);
+    await tu.changeParameter("Use USB-RI interface", USB_RI, ignoreMissing: true);
   }
 
-  await tu.changeParameter(tu, "Album's cover click behaviour", "Audio muting");
+  await tu.changeParameter("Album's cover click behaviour", "Audio muting");
 
   await tu.previousScreen();
 }

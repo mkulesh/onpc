@@ -426,12 +426,12 @@ Future<void> _changeListeningModes(OnpcTestUtils tu, String input) async {
 Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   // New friendly name
   await tu.openTab("DEVICE", ensureAfter: () => find.byTooltip("Change friendly name"));
-  await tu.changeFriendlyName(tu, "New Player Name");
+  await tu.changeFriendlyName("New Player Name");
 
   // Restore friendly name
   await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"), swipeLeft: true);
   await tu.openTab("DEVICE", ensureAfter: () => find.byTooltip("Change friendly name"), swipeRight: true);
-  await tu.changeFriendlyName(tu, "Denon AVR");
+  await tu.changeFriendlyName("Denon AVR");
 
   // Rename dimmer level
   final String DIM_NAME = "Super-Bright";

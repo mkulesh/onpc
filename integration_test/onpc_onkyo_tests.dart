@@ -292,12 +292,12 @@ Future<void> _groupUngroup(final OnpcTestUtils tu, bool group) async {
 Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   // New friendly name
   await tu.openTab("DEVICE", ensureAfter: () => find.byTooltip("Change friendly name"));
-  await tu.changeFriendlyName(tu, "New Player Name");
+  await tu.changeFriendlyName("New Player Name");
 
   // Restore friendly name
   await tu.openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.byTooltip("Volume level down"));
   await tu.openTab("DEVICE", swipeRight: true, ensureAfter: () => find.byTooltip("Change friendly name"));
-  await tu.changeFriendlyName(tu, "Onkyo Player");
+  await tu.changeFriendlyName("Onkyo Player");
 
   // Rename dimmer level
   final String DIM_NAME = "Super-Bright";
