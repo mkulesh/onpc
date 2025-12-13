@@ -14,24 +14,14 @@
 
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/constants/Version.dart';
-import 'package:onpc/iscp/StateManager.dart';
-import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
-import 'package:onpc/utils/Platform.dart';
-import 'package:onpc/widgets/CustomImageButton.dart';
-import 'package:onpc/widgets/CustomProgressBar.dart';
 import 'package:onpc/widgets/CustomTextButton.dart';
-import 'package:onpc/widgets/CustomTextLabel.dart';
-import 'package:onpc/widgets/ReorderableItem.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-typedef OnFind = Finder Function();
+import 'onpc_gui_actions.dart';
 
 class AudioSliderParameters {
   String name = "";
@@ -44,12 +34,9 @@ class AudioSliderParameters {
   String buttonDown = "";
 }
 
-class OnpcTestUtils {
-  static const String STEP_HEADER = "=================================> ";
-
+class OnpcTestUtils extends OnpcGuiActions {
   static const String TOP_LAYER = "_MEDIA_LIST_TOP_LAYER";
-  static const int _DEFAULT_DELAY_MS = 500;
-  static const int _WAITING_DURATION = 1000 * 60; // 60 seconds waiting duration
+  static const String STEP_HEADER = "=================================> ";
 
   static const int NORMAL_DELAY = 5;
   static const int LONG_DELAY = 10;
@@ -58,17 +45,7 @@ class OnpcTestUtils {
   static const Offset LIST_DRAG_OFFSET = Offset(0, -200);
   static const Offset LIST_DRAG_OFFSET_UP = Offset(0, 300);
 
-  final WidgetTester tester;
-  final int _stepDelay = 1;
-
-  OnpcTestUtils(this.tester);
-
-  StateManager getStateManager() {
-    final Finder fab = find.byType(app.MusicControllerApp);
-    expect(fab, findsOneWidget);
-    final app.MusicControllerApp mainWidget = fab.evaluate().first.widget as app.MusicControllerApp;
-    return mainWidget.viewContext.stateManager;
-  }
+  OnpcTestUtils(final WidgetTester tester) : super(tester);
 
   Future<void> connect(String device, String searchFor) async {
     await stepDelayMs();
@@ -77,35 +54,6 @@ class OnpcTestUtils {
       await findAndTap("Find and connect", () => find.text(device), delay: OnpcTestUtils.HUGE_DELAY);
     }
     Logging.logSize = 5000; // After reconnect, increase log size
-  }
-
-  Future<void> stepDelaySec(int delay) async {
-    await stepDelayMs(delay: 1000 * delay);
-  }
-
-  Future<void> stepDelayMs({int? delay}) async {
-    for (int i = 0; i < (delay ?? _DEFAULT_DELAY_MS); i += 100) {
-      await tester.pumpAndSettle();
-      await Future.delayed(Duration(milliseconds: 100));
-    }
-  }
-
-  Future<void> ensureVisible(OnFind finder) async {
-    final int start = DateTime.now().millisecondsSinceEpoch;
-    while (finder().evaluate().isEmpty) {
-      await tester.pumpAndSettle();
-      await Future.delayed(Duration(milliseconds: 100));
-      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
-    }
-  }
-
-  Future<void> ensureDeleted(OnFind finder) async {
-    final int start = DateTime.now().millisecondsSinceEpoch;
-    while (finder().evaluate().isNotEmpty) {
-      await tester.pumpAndSettle();
-      await Future.delayed(Duration(milliseconds: 100));
-      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
-    }
   }
 
   Future<void> openDrawer() async {
@@ -142,36 +90,6 @@ class OnpcTestUtils {
       await stepDelayMs();
     }
     await findAndTap("Open " + s + " tab", () => find.widgetWithText(Tab, s), ensureAfter: ensureAfter);
-  }
-
-  Future<void> findAndTap(String title, OnFind finder,
-      {bool rightClick = false,
-      bool waitFor = false,
-      int num = 1,
-      int idx = 0,
-      int? delay,
-      OnFind? ensureAfter}) async {
-    if (waitFor) {
-      await ensureVisible(finder);
-    }
-    Logging.info(this, STEP_HEADER + title);
-    final Finder fab = finder();
-    expect(fab, findsExactly(num));
-    if (rightClick && Platform.isDesktop) {
-      await tester.tap(fab.at(idx), buttons: 0x02, warnIfMissed: false);
-    } else if (rightClick && Platform.isMobile) {
-      await tester.longPress(fab.at(idx), warnIfMissed: false);
-    } else {
-      await tester.tap(fab.at(idx), buttons: 0x01, warnIfMissed: false);
-    }
-    if (ensureAfter != null) {
-      await ensureVisible(ensureAfter);
-    } else {
-      for (int i = 0; i < (delay ?? _stepDelay); i++) {
-        await tester.pumpAndSettle();
-        await Future.delayed(Duration(milliseconds: 900));
-      }
-    }
   }
 
   Future<void> navigateToMedia(List<String> list,
@@ -217,98 +135,6 @@ class OnpcTestUtils {
     await findAndTap("Open context menu: " + menu, () => find.text(menu), ensureAfter: ensureAfter);
   }
 
-  Future<void> slideByValue(Finder slider, double value) async {
-    final widget = slider.evaluate().first.widget;
-    if (widget is SfSlider) {
-      Logging.info(
-          widget,
-          "SfSlider: min = " +
-              widget.min.toString() +
-              ", max = " +
-              widget.max.toString() +
-              ", value = " +
-              widget.value.toString());
-
-      final double totalWidth = tester.getSize(slider).width - (2 * ActivityDimens.progressBarRadius);
-      final double start = totalWidth * (widget.value - widget.min) / (widget.max - widget.min);
-      final double end = totalWidth * (widget.value + value - widget.min) / (widget.max - widget.min);
-
-      final zeroPoint = tester.getTopLeft(slider) +
-          Offset(ActivityDimens.progressBarRadius + start, tester.getSize(slider).height / 2);
-      await tester.flingFrom(zeroPoint, Offset(end - start, 0), 80);
-      await stepDelayMs();
-    }
-  }
-
-  Future<void> setText(int num, int idx, String name) async {
-    final Finder fab = find.byWidgetPredicate((widget) => widget is TextFormField);
-    expect(fab, findsNWidgets(num));
-    await tester.enterText(fab.at(idx), name);
-    await stepDelayMs();
-  }
-
-  Future<void> changeReorderableItem(key, {bool state = false}) async {
-    final Finder list = find.byType(ReorderableItem);
-    final List<Finder> taps = [];
-    list.evaluate().forEach((element) {
-      final widget = element.widget;
-      if (widget is ReorderableItem) {
-        final Finder checkbox = find.descendant(of: find.byWidget(widget), matching: find.byType(Checkbox));
-        expect(checkbox, findsOneWidget);
-        final Finder text = find.descendant(of: find.byWidget(widget), matching: find.byType(CustomTextLabel));
-        expect(text, findsOneWidget);
-        final Finder dragHandle = find.descendant(of: find.byWidget(widget), matching: find.byType(SizedBox));
-        expect(dragHandle, findsOneWidget);
-        final name = (text.evaluate().first.widget as CustomTextLabel).description;
-        final bool? val = (checkbox.evaluate().first.widget as Checkbox).value;
-        if (val != null) {
-          final bool newVal = key == name ? state : val;
-          if (newVal != val) {
-            Logging.info(widget, " " + name + ", " + val.toString() + " -> " + newVal.toString());
-            taps.add(checkbox);
-          }
-        }
-      }
-    });
-    for (int i = 0; i < taps.length; i++) {
-      await findAndTap("Change checkbox", () => taps[i], delay: 0);
-      await stepDelayMs();
-    }
-  }
-
-  Future<void> dragReorderableItem(String drag, Offset dragOffset, {int dragIndex = 0}) async {
-    final Finder list = find.byType(ReorderableItem);
-    final List<Finder> drags = [];
-    list.evaluate().forEach((element) {
-      final widget = element.widget;
-      if (widget is ReorderableItem) {
-        final Finder dragHandle = find.descendant(of: find.byWidget(widget), matching: find.byType(SizedBox));
-        expect(dragHandle, findsNWidgets(dragIndex + 1));
-        final Finder text = find.descendant(of: find.byWidget(widget), matching: find.byType(CustomTextLabel));
-        expect(text, findsOneWidget);
-        final name = (text.evaluate().first.widget as CustomTextLabel).description;
-        if (name == drag) {
-          Logging.info(widget, " " + name + " -> drag " + dragOffset.toString());
-          drags.add(dragHandle.at(dragIndex));
-        }
-      }
-    });
-    for (int i = 0; i < drags.length; i++) {
-      await tester.drag(drags[i], dragOffset, warnIfMissed: false);
-      await stepDelayMs();
-    }
-  }
-
-  Future<void> ensureVisibleInList(String title, final Finder list, OnFind finder, Offset dragOffset) async {
-    Logging.info(this, STEP_HEADER + title);
-    expect(list, findsOneWidget);
-    while (finder().evaluate().isEmpty) {
-      await tester.drag(list, dragOffset, warnIfMissed: false);
-      await tester.pumpAndSettle();
-    }
-    await stepDelayMs();
-  }
-
   Future<void> writeLog(String tName) async {
     Logging.logSize = 5000;
     await stepDelaySec(NORMAL_DELAY);
@@ -318,36 +144,6 @@ class OnpcTestUtils {
     Logging.latestLogging.forEach((str) => outContent.writeln(str.substring(6)));
     final String fName = tName + "_" + Version.NAME + "_" + now.toString().replaceAll(":", "-") + ".log";
     await File(fName).writeAsString(outContent.toString());
-  }
-
-  List<Pair<String, String>> getListContent() {
-    final List<Pair<String, String>> retValue = [];
-    final Finder list = find.byWidgetPredicate((widget) => widget is ListTile);
-    list.evaluate().forEach((element) {
-      if (element.widget is ListTile) {
-        final ListTile widget = element.widget as ListTile;
-        if (widget.leading is CustomImageButton && widget.title is CustomTextLabel) {
-          final String icon = (widget.leading as CustomImageButton).icon;
-          final String title = (widget.title as CustomTextLabel).description;
-          retValue.add(Pair(icon, title));
-        }
-      }
-    });
-    return retValue;
-  }
-
-  Future<void> waitMediaItemPlaying(String name) async {
-    final int start = DateTime.now().millisecondsSinceEpoch;
-    while (true) {
-      await tester.pumpAndSettle();
-      final Pair<String, String>? bob =
-          getListContent().firstWhereOrNull((s) => s.item1.contains("media_item_play") && s.item2.contains(name));
-      if (bob != null) {
-        break;
-      }
-      await Future.delayed(Duration(milliseconds: 100));
-      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
-    }
   }
 
   Future<void> changeFriendlyName(OnpcTestUtils tu, String name) async {
@@ -370,38 +166,12 @@ class OnpcTestUtils {
     await findAndTap("Close AV info", () => find.text("OK"));
   }
 
-  Pair<Finder, Finder> findSliderByName(String s, {bool withButtons = false}) {
-    Pair<Finder, Finder>? retValue;
-    final Finder list = find.byType(CustomProgressBar);
-    for (var element in list.evaluate()) {
-      final widget = element.widget;
-      if (widget is CustomProgressBar) {
-        final Finder slider = find.descendant(of: find.byWidget(widget), matching: find.byType(SfSlider));
-        expect(slider, findsOneWidget);
-        final Finder text = find.descendant(of: find.byWidget(widget), matching: find.byType(CustomTextLabel));
-        if (text.evaluate().isNotEmpty) {
-          final String name = (text.evaluate().first.widget as CustomTextLabel).description;
-          if (name.startsWith(s)) {
-            final Finder buttons = find.descendant(of: find.byWidget(widget), matching: find.byType(CustomTextButton));
-            if (withButtons) {
-              expect(buttons, findsNWidgets(2));
-            }
-            retValue = Pair(slider, buttons);
-          }
-        }
-      }
-    }
-    assert(retValue != null);
-    return retValue!;
-  }
-
   Future<void> playShortcut(String shortcut, String statusPanel,
       {String ensureTop = "", String waitPlaying = "", String ensureItem = ""}) async {
     if (ensureItem.isNotEmpty) {
       await openTab("SHORTCUTS");
       await stepDelayMs();
-      await ensureVisibleInList(
-          "Ensure " + ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem),
+      await ensureVisibleInList("Ensure " + ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem),
           OnpcTestUtils.LIST_DRAG_OFFSET);
     } else {
       await openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
