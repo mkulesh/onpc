@@ -35,7 +35,7 @@ void main() {
     if (find.text("Search").evaluate().isNotEmpty) {
       // Device search is opened
       expect(find.text("Not connected"), findsOneWidget);
-      await tu.findAndTap("Connect to Onkyo Player", () => find.text("192.168.1.80:60128"), waitFor: true);
+      await tu.findAndTap(() => find.text("192.168.1.80:60128"), waitFor: true);
     }
 
     await _aboutScreen(tu);
@@ -116,7 +116,7 @@ Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
   await _saveConnection(tu, "My Onkyo Box", "192.168.1.81");
   if (find.text("Onkyo Box (Standby)").evaluate().isNotEmpty) {
     // Player is off - call power on
-    await tu.findAndTap("Power-off", () => find.byTooltip("On/Standby"));
+    await tu.findAndTap(() => find.byTooltip("On/Standby"));
   }
   await _changeServices(tu, [
     Pair("Deezer", true),
@@ -166,7 +166,7 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
   await _saveConnection(tu, "My Onkyo Player", "192.168.1.80");
   if (find.text("Onkyo Player (Standby)").evaluate().isNotEmpty) {
     // Player is off - call power on
-    await tu.findAndTap("Power-off", () => find.byTooltip("On/Standby"));
+    await tu.findAndTap(() => find.byTooltip("On/Standby"));
   }
   await _changeInputs(tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
   await _changeServices(tu, [
@@ -220,10 +220,10 @@ Future<void> _saveConnection(final OnpcTestUtils tu, String name, String address
   await tu.setText(3, 0, address);
   final Finder fab = find.byWidgetPredicate((widget) => widget is Radio);
   expect(fab, findsNWidgets(2));
-  await tu.findAndTap("Set protocol", () => fab.at(isDCP ? 1 : 0));
-  await tu.findAndTap("Save connection", () => find.text("Save connection"));
+  await tu.findAndTap(() => fab.at(isDCP ? 1 : 0));
+  await tu.findAndTap(() => find.text("Save connection"));
   await tu.setText(3, 2, name);
-  await tu.findAndTap("Close connect dialog", () => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
+  await tu.findAndTap(() => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
   Logging.logSize = 5000; // After reconnect, increase log size
 }
 
@@ -261,15 +261,15 @@ Future<void> _changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_
     await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
   }
   if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-    await tu.findAndTap("Change " + PARAM_NAME + "1", () => find.text(PARAM_NAME));
+    await tu.findAndTap(() => find.text(PARAM_NAME));
     await tu.stepDelayMs();
     if (ignoreMissing && find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-      await tu.findAndTap("Change " + PARAM_NAME + "4", () => find.text("CANCEL"));
+      await tu.findAndTap(() => find.text("CANCEL"));
       return;
     }
-    await tu.findAndTap("Change " + PARAM_NAME + "2", () => find.textContaining(PARAM_VALUE));
+    await tu.findAndTap(() => find.textContaining(PARAM_VALUE));
     if (pressOk) {
-      await tu.findAndTap("Change " + PARAM_NAME + "3", () => find.text("OK"));
+      await tu.findAndTap(() => find.text("OK"));
     }
     await tu.stepDelayMs();
     expect(find.textContaining(PARAM_VALUE), findsOneWidget);
@@ -297,7 +297,7 @@ Future<void> _changeInputs(OnpcTestUtils tu, List<Pair<String, String>> items) a
     } else {
       await tu.contextMenu(item.item1, "Edit", ensureAfter: () => find.text("CANCEL"));
       await tu.setText(1, 0, item.item2);
-      await tu.findAndTap("Close edit dialog", () => find.text("OK"));
+      await tu.findAndTap(() => find.text("OK"));
     }
   }
   await tu.previousScreen();
@@ -333,7 +333,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
   if (dlna) {
     // DLNA Artists
     final Pair<String, String> ARTISTS = Pair<String, String>("Artist", "DLNA Artists");
-    await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
+    await tu.findAndTap(() => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Music Server (DLNA)", "Kontron DLNA Server", "Music"]);
     await tu.contextMenu(ARTISTS.item1, "Create shortcut",
         waitFor: true, ensureAfter: () => find.text(Strings.favorite_shortcut_added));
@@ -342,11 +342,11 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.navigateToMedia(["Genre", "Rock<S>Rock Opera", "Franz Ferdinand<S>Geordie"],
         ensureVisible: true, ensureAfter: () => find.text(F_FER.item1));
     await tu.ensureVisible(() => find.textContaining("Franz Ferdinand | items:"));
-    await tu.findAndTap("Sort1", () => find.byTooltip(Strings.cmd_description_sort),
+    await tu.findAndTap(() => find.byTooltip(Strings.cmd_description_sort),
         waitFor: true, ensureAfter: () => find.textContaining("Track Number | items:"));
-    await tu.findAndTap("Sort2", () => find.byTooltip(Strings.cmd_description_sort),
+    await tu.findAndTap(() => find.byTooltip(Strings.cmd_description_sort),
         waitFor: true, ensureAfter: () => find.textContaining("Title | items:"));
-    await tu.findAndTap("Sort3", () => find.byTooltip(Strings.cmd_description_sort),
+    await tu.findAndTap(() => find.byTooltip(Strings.cmd_description_sort),
         waitFor: true, ensureAfter: () => find.textContaining("Franz Ferdinand | items:"));
     await tu.contextMenu(F_FER.item1, "Create shortcut", waitFor: true);
 
@@ -362,14 +362,14 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
 
   if (deezer) {
     await tu.openTab("MEDIA");
-    await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
+    await tu.findAndTap(() => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer"]);
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
 
     // Flow
     final Pair<String, String> FLOW = Pair<String, String>("Flow", "Deezer Flow");
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Music"]);
-    await tu.findAndTap("Select upper level", () => find.text("My Music | items: 6"),
+    await tu.findAndTap(() => find.text("My Music | items: 6"),
         waitFor: true, ensureAfter: () => find.text(FLOW.item1));
     await tu.contextMenu(FLOW.item1, "Create shortcut", waitFor: true);
 
@@ -417,7 +417,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
 
   if (tuneIn) {
     await tu.openTab("MEDIA");
-    await tu.findAndTap("Select NET", () => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
+    await tu.findAndTap(() => find.text("NET"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "TuneIn Radio", "My Presets"]);
     await tu.contextMenu("Absolute Classic Hits (Classic Hits)", "Create shortcut", waitFor: true);
     await tu.contextMenu("PureRock.US (Metal)", "Create shortcut", waitFor: true);
@@ -425,7 +425,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
 
   if (usbMusic) {
     await tu.openTab("MEDIA");
-    await tu.findAndTap("Select USB Disk", () => find.text("USB Disk"), delay: OnpcTestUtils.NORMAL_DELAY);
+    await tu.findAndTap(() => find.text("USB Disk"), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "onkyo_music"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
@@ -441,14 +441,14 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     final Pair<String, String> DAB = Pair<String, String>("Playback mode", "DAB");
     final Pair<String, String> FM = Pair<String, String>("2 - EnrgyBRE - 89.80 MHz", "ENERGY");
     await tu.openTab("MEDIA");
-    await tu.findAndTap("Select DAB", () => find.text("DAB"), ensureAfter: () => find.text(DAB.item1));
+    await tu.findAndTap(() => find.text("DAB"), ensureAfter: () => find.text(DAB.item1));
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
-    await tu.findAndTap("Select FM", () => find.text("FM"), ensureAfter: () => find.text(FM.item1));
+    await tu.findAndTap(() => find.text("FM"), ensureAfter: () => find.text(FM.item1));
     await tu.contextMenu(FM.item1, "Create shortcut", waitFor: true);
     await _renameShortcuts(tu, [DAB, FM], [], false);
   }
 
-  await tu.findAndTap("Start playing", () => find.text(F_FER.item2), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.text(F_FER.item2), delay: OnpcTestUtils.NORMAL_DELAY);
 }
 
 Future<void> _buildDenonFavourites(OnpcTestUtils tu,
@@ -459,7 +459,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     required bool favorite,
     required bool radio}) async {
   await tu.openTab("MEDIA");
-  await tu.findAndTap("Select NET", () => find.text("NET"));
+  await tu.findAndTap(() => find.text("NET"));
 
   if (dlna) {
     await tu.openTab("MEDIA");
@@ -530,7 +530,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     final String DENON_AVR = "Denon AVR";
     await tu.openTab("MEDIA");
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music"]);
-    await tu.findAndTap("Navigate to: " + DENON_AVR, () => find.widgetWithText(ListTile, DENON_AVR));
+    await tu.findAndTap(() => find.widgetWithText(ListTile, DENON_AVR));
     await tu.navigateToMedia(["Genres"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
@@ -555,12 +555,12 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     final Pair<String, String> FM1 = Pair<String, String>("2 - 89.80 MHz", "ENERGY on FM");
     final Pair<String, String> FM2 = Pair<String, String>("5 - 93.80 MHz", "");
     await tu.openTab("MEDIA");
-    await tu.findAndTap("Select TUNER", () => find.text("TUNER"));
+    await tu.findAndTap(() => find.text("TUNER"));
     await tu.ensureVisibleInList(
         "Ensure list top", find.byType(ListView), () => find.text("DAB"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
-    await tu.findAndTap("Select DAB", () => find.text("DAB"));
+    await tu.findAndTap(() => find.text("DAB"));
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
-    await tu.findAndTap("Select FM", () => find.text("FM"));
+    await tu.findAndTap(() => find.text("FM"));
     await tu.contextMenu(FM1.item1, "Create shortcut", waitFor: true);
     await tu.contextMenu(FM2.item1, "Create shortcut", waitFor: true);
     await _renameShortcuts(tu, [DAB], [], true, ensureItem: FM2.item1);
@@ -570,7 +570,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.contextMenu(FM2.item1, "Delete", waitFor: true);
   }
 
-  await tu.findAndTap("Start Deezer", () => find.text("Flow"), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.text("Flow"), delay: OnpcTestUtils.NORMAL_DELAY);
 }
 
 Future<void> _renameShortcuts(
@@ -596,7 +596,7 @@ Future<void> _renameShortcuts(
     }
     expect(find.text("Apply listening mode"), listeningMode ? findsOneWidget : findsNothing);
     await tu.setText(1, 0, items[i].item2);
-    await tu.findAndTap("Close edit dialog", () => find.text("OK"));
+    await tu.findAndTap(() => find.text("OK"));
   }
 }
 
@@ -619,21 +619,21 @@ Future<void> _addRiDevices(OnpcTestUtils tu) async {
 
 Future<void> _setMaxVolume(OnpcTestUtils tu, final AudioSliderParameters p) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip(Strings.audio_control));
-  await tu.findAndTap("Open audio control", () => find.byTooltip(Strings.audio_control),
+  await tu.findAndTap(() => find.byTooltip(Strings.audio_control),
       ensureAfter: () => find.byTooltip(Strings.audio_control_max_level));
-  await tu.findAndTap("Open max level", () => find.byTooltip(Strings.audio_control_max_level),
+  await tu.findAndTap(() => find.byTooltip(Strings.audio_control_max_level),
       ensureAfter: () => find.text(Strings.master_volume_max));
   await tu.stepDelayMs();
   await tu.testAudioSlider(p);
-  await tu.findAndTap("Close audio control", () => find.text("OK"));
+  await tu.findAndTap(() => find.text("OK"));
 }
 
 Future<void> _renameZone(OnpcTestUtils tu, int zone, String newName) async {
   await tu.openDrawer();
-  await tu.findAndTap("Search Edit Button", () => find.byTooltip("Edit"), num: 2, idx: zone);
+  await tu.findAndTap(() => find.byTooltip("Edit"), num: 2, idx: zone);
   expect(find.text("Edit"), findsOneWidget);
   await tu.setText(1, 0, newName);
-  await tu.findAndTap("Close Rename dialog", () => find.text("OK"));
+  await tu.findAndTap(() => find.text("OK"));
   await tu.previousScreen();
   await tu.openDrawerMenu(newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
 }

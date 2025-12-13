@@ -51,7 +51,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     await stepDelayMs();
     if (find.textContaining(searchFor).evaluate().isEmpty) {
       await openDrawer();
-      await findAndTap("Find and connect", () => find.text(device), delay: OnpcTestUtils.HUGE_DELAY);
+      await findAndTap(() => find.text(device), delay: OnpcTestUtils.HUGE_DELAY);
     }
     Logging.logSize = 5000; // After reconnect, increase log size
   }
@@ -65,13 +65,13 @@ class OnpcTestUtils extends OnpcGuiActions {
   Future<void> openDrawerMenu(String text, {OnFind? ensureAfter}) async {
     await openDrawer();
     await tester.dragUntilVisible(find.text(text), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-    await findAndTap("Open drawer menu: " + text, () => find.text(text), ensureAfter: ensureAfter);
+    await findAndTap(() => find.text(text), ensureAfter: ensureAfter);
   }
 
   Future<void> openSettings(String text) async {
     await openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
     await tester.ensureVisible(find.text(text));
-    await findAndTap("Change setting " + text, () => find.text(text));
+    await findAndTap(() => find.text(text));
   }
 
   Future<void> previousScreen() async {
@@ -89,7 +89,7 @@ class OnpcTestUtils extends OnpcGuiActions {
       await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(-200, 0), warnIfMissed: false);
       await stepDelayMs();
     }
-    await findAndTap("Open " + s + " tab", () => find.widgetWithText(Tab, s), ensureAfter: ensureAfter);
+    await findAndTap(() => find.widgetWithText(Tab, s), ensureAfter: ensureAfter);
   }
 
   Future<void> navigateToMedia(List<String> list,
@@ -97,10 +97,9 @@ class OnpcTestUtils extends OnpcGuiActions {
     for (int i = 0; i < list.length; i++) {
       if (list[i] == TOP_LAYER) {
         if (i + 1 < list.length) {
-          await findAndTap("Select top level", () => find.byTooltip("Top Menu"),
-              ensureAfter: () => find.text(list[i + 1]));
+          await findAndTap(() => find.byTooltip("Top Menu"), ensureAfter: () => find.text(list[i + 1]));
         } else {
-          await findAndTap("Select top level", () => find.byTooltip("Top Menu"));
+          await findAndTap(() => find.byTooltip("Top Menu"));
         }
         await stepDelaySec(1);
       } else {
@@ -114,7 +113,7 @@ class OnpcTestUtils extends OnpcGuiActions {
           await ensureVisibleInList(
               "Ensure item " + postItem, find.byType(ListView), () => find.text(postItem), Offset(0, -300));
         }
-        await findAndTap("Navigate to: " + item, () => find.widgetWithText(ListTile, item),
+        await findAndTap(() => find.widgetWithText(ListTile, item),
             waitFor: waitFor, ensureAfter: () => find.text("Return"));
       }
     }
@@ -125,14 +124,14 @@ class OnpcTestUtils extends OnpcGuiActions {
 
   Future<void> contextMenu(String item, String menu,
       {bool waitFor = false, OnFind? ensureAfter, List<String>? checkItems, int num = 1, int idx = 0}) async {
-    await findAndTap("Select item: " + item, () => find.text(item),
+    await findAndTap(() => find.text(item),
         waitFor: waitFor, rightClick: true, num: num, idx: idx, ensureAfter: () => find.text(menu));
     if (checkItems != null) {
       checkItems.forEach((element) {
         expect(find.text(element), findsOneWidget);
       });
     }
-    await findAndTap("Open context menu: " + menu, () => find.text(menu), ensureAfter: ensureAfter);
+    await findAndTap(() => find.text(menu), ensureAfter: ensureAfter);
   }
 
   Future<void> writeLog(String tName) async {
@@ -148,14 +147,13 @@ class OnpcTestUtils extends OnpcGuiActions {
 
   Future<void> changeFriendlyName(OnpcTestUtils tu, String name) async {
     await tu.setText(1, 0, name);
-    await tu.findAndTap("Change friendly name", () => find.byTooltip("Change friendly name"));
+    await tu.findAndTap(() => find.byTooltip("Change friendly name"));
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     expect(find.text(name), findsExactly(2));
   }
 
   Future<void> ensureAvInfo(String input, String output, {bool video = true}) async {
-    await findAndTap("Open AV info", () => find.byTooltip("Audio/Video info"),
-        ensureAfter: () => find.text("Audio/Video info"));
+    await findAndTap(() => find.byTooltip("Audio/Video info"), ensureAfter: () => find.text("Audio/Video info"));
     await stepDelayMs();
     await ensureVisible(() => find.textContaining("Input: " + input));
     await ensureVisible(() => find.textContaining("Output: " + output));
@@ -163,7 +161,7 @@ class OnpcTestUtils extends OnpcGuiActions {
       expect(find.text("Input: ---"), findsOneWidget);
       expect(find.text("Output: ---"), findsOneWidget);
     }
-    await findAndTap("Close AV info", () => find.text("OK"));
+    await findAndTap(() => find.text("OK"));
   }
 
   Future<void> playShortcut(String shortcut, String statusPanel,
@@ -177,8 +175,7 @@ class OnpcTestUtils extends OnpcGuiActions {
       await openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
       await stepDelayMs();
     }
-    await findAndTap("Playing " + shortcut, () => find.text(shortcut),
-        ensureAfter: () => find.textContaining(statusPanel + " | items:"));
+    await findAndTap(() => find.text(shortcut), ensureAfter: () => find.textContaining(statusPanel + " | items:"));
     if (ensureTop.isNotEmpty) {
       await ensureVisibleInList(
           "Ensure list top", find.byType(ListView), () => find.text(ensureTop), LIST_DRAG_OFFSET_UP);
@@ -203,11 +200,9 @@ class OnpcTestUtils extends OnpcGuiActions {
     assert(slider.item2.evaluate().length == 2);
     assert((slider.item2.evaluate().first.widget as CustomTextButton).text.contains(p.buttonDown));
     assert((slider.item2.evaluate().last.widget as CustomTextButton).text.contains(p.buttonUp));
-    await findAndTap(p.name + " up", () => slider.item2,
-        num: 2, idx: 1, ensureAfter: () => find.text(p.name + " " + p.buttonUpValue));
+    await findAndTap(() => slider.item2, num: 2, idx: 1, ensureAfter: () => find.text(p.name + " " + p.buttonUpValue));
     // Down using button
     slider = findSliderByName(p.name + " " + p.buttonUpValue, withButtons: true);
-    await findAndTap(p.name + " down", () => slider.item2,
-        num: 2, idx: 0, ensureAfter: () => find.text(p.name + " " + p.secondValue));
+    await findAndTap(() => slider.item2, num: 2, idx: 0, ensureAfter: () => find.text(p.name + " " + p.secondValue));
   }
 }

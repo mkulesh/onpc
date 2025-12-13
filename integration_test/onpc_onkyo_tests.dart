@@ -47,7 +47,7 @@ void main() {
     await _deviceDisplay(tu);
 
     // Power-off
-    await tu.findAndTap("Power-off", () => find.byTooltip("On/Standby"));
+    await tu.findAndTap(() => find.byTooltip("On/Standby"));
 
     // Write log
     await tu.writeLog("auto-test-onkyo");
@@ -59,7 +59,7 @@ Future<void> _playFromDlna(final OnpcTestUtils tu) async {
   final String album = "Always Ascending";
   await tu.openTab("SHORTCUTS");
   await tu.stepDelaySec(1);
-  await tu.findAndTap("Start playing", () => find.text(F_FER), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.text(F_FER), delay: OnpcTestUtils.NORMAL_DELAY);
   await tu.waitMediaItemPlaying(album);
   // Inspect playing
   await tu.openTab("LISTEN", ensureAfter: () => find.text("Franz Ferdinand"));
@@ -72,7 +72,7 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.openTab("MEDIA", ensureAfter: () => find.text("USB Disk"));
 
   // Navigate to USB
-  await tu.findAndTap("Select USB Disk", () => find.text("USB Disk"));
+  await tu.findAndTap(() => find.text("USB Disk"));
 
   // Search Accept
   final String artist1 = "Accept";
@@ -90,9 +90,8 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.contextMenu(album2 + " (2003)", "Add", waitFor: true);
 
   // Inspect queue
-  await tu.findAndTap("Select Net", () => find.text("NET"), ensureAfter: () => find.text("Play Queue"));
-  await tu.findAndTap("Open Play Queue", () => find.text("Play Queue"),
-      ensureAfter: () => find.text("Play Queue | items: 27"));
+  await tu.findAndTap(() => find.text("NET"), ensureAfter: () => find.text("Play Queue"));
+  await tu.findAndTap(() => find.text("Play Queue"), ensureAfter: () => find.text("Play Queue | items: 27"));
   await tu.waitMediaItemPlaying("01-Metal Heart.flac");
 
   // Inspect playing
@@ -101,10 +100,10 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   expect(find.text("FLAC/44.1kHz/16bit"), findsOneWidget);
 
   // Play mode
-  await tu.findAndTap("Random", () => find.byTooltip("Random"), delay: OnpcTestUtils.NORMAL_DELAY);
-  await tu.findAndTap("Repeat", () => find.byTooltip("Repeat"), delay: OnpcTestUtils.NORMAL_DELAY);
-  await tu.findAndTap("Repeat", () => find.byTooltip("Repeat"), delay: OnpcTestUtils.NORMAL_DELAY);
-  await tu.findAndTap("Random", () => find.byTooltip("Random"), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.byTooltip("Random"), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.byTooltip("Repeat"), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.byTooltip("Repeat"), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.byTooltip("Random"), delay: OnpcTestUtils.NORMAL_DELAY);
 
   // Time seek slider
   final Finder pBar = find.byType(SfSlider);
@@ -113,18 +112,18 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.slideByValue(pBar, -60);
 
   // New track
-  await tu.findAndTap("Next track", () => find.byTooltip("Track Up"), ensureAfter: () => find.text("Midnight Mover"));
+  await tu.findAndTap(() => find.byTooltip("Track Up"), ensureAfter: () => find.text("Midnight Mover"));
   expect(find.text(artist1), findsOneWidget);
   expect(find.text(album1), findsOneWidget);
 
   // Pause
   await tu.ensureVisible(() => find.byTooltip("Pause"));
-  await tu.findAndTap("Pause", () => find.byTooltip("Pause"), ensureAfter: () => find.byTooltip("Play"));
+  await tu.findAndTap(() => find.byTooltip("Pause"), ensureAfter: () => find.byTooltip("Play"));
   expect(find.byTooltip("Pause"), findsNothing);
-  await tu.findAndTap("Play", () => find.byTooltip("Play"));
+  await tu.findAndTap(() => find.byTooltip("Play"));
 
   // Stop
-  await tu.findAndTap("Stop playback", () => find.byTooltip("Stop"), ensureAfter: () => find.byTooltip("Play"));
+  await tu.findAndTap(() => find.byTooltip("Stop"), ensureAfter: () => find.byTooltip("Play"));
   await tu.ensureDeleted(() => find.text(artist1));
   await tu.ensureDeleted(() => find.text(album1));
 
@@ -132,7 +131,7 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   await tu.openTab("MEDIA", ensureAfter: () => find.text("Play Queue | items: 27"));
   await tu.ensureVisibleInList("Ensure " + artist2, find.byType(ReorderableListView),
       () => find.textContaining("Endlessly"), OnpcTestUtils.LIST_DRAG_OFFSET);
-  await tu.findAndTap("Start " + artist2, () => find.textContaining("Fury"));
+  await tu.findAndTap(() => find.textContaining("Fury"));
   await tu.openTab("LISTEN", ensureAfter: () => find.text(artist2));
   expect(find.text(album2), findsOneWidget);
   expect(find.text("Fury"), findsOneWidget);
@@ -154,7 +153,7 @@ Future<void> _playFromQueue(OnpcTestUtils tu) async {
   final String toPlay = "01-Metal Heart.flac";
   assert(list.elementAt(1).item1.contains("media_item_music.svg"));
   assert(list.elementAt(1).item2 == toPlay);
-  await tu.findAndTap("Start " + toPlay, () => find.text(list.elementAt(1).item2));
+  await tu.findAndTap(() => find.text(list.elementAt(1).item2));
   await tu.waitMediaItemPlaying(toPlay);
 
   // Reorder list
@@ -182,8 +181,7 @@ Future<void> _playFromQueue(OnpcTestUtils tu) async {
       ensureAfter: () => find.text("Play Queue | items: 0"));
   await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
 
-  await tu.findAndTap("Return to top layer", () => find.text("Return"),
-      ensureAfter: () => find.textContaining("NET | items:"));
+  await tu.findAndTap(() => find.text("Return"), ensureAfter: () => find.textContaining("NET | items:"));
 }
 
 Future<void> _playFromDeezer(final OnpcTestUtils tu) async {
@@ -208,10 +206,9 @@ Future<void> _playFromDeezer(final OnpcTestUtils tu) async {
 
   // Add to Test Playlist
   await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
-  await tu.findAndTap("Open Track Menu", () => find.byTooltip("Track menu"),
-      ensureAfter: () => find.text("Add to a playlist"));
-  await tu.findAndTap("Add to a playlist", () => find.text("Add to a playlist"), ensureAfter: () => find.text(PL_LIST));
-  await tu.findAndTap("Add to " + PL_LIST, () => find.text(PL_LIST));
+  await tu.findAndTap(() => find.byTooltip("Track menu"), ensureAfter: () => find.text("Add to a playlist"));
+  await tu.findAndTap(() => find.text("Add to a playlist"), ensureAfter: () => find.text(PL_LIST));
+  await tu.findAndTap(() => find.text(PL_LIST));
   expect(find.text("Track menu"), findsNothing);
 
   // Navigate to newly added item
@@ -221,22 +218,21 @@ Future<void> _playFromDeezer(final OnpcTestUtils tu) async {
   expect(find.text(PL_LIST + " | items: 1"), findsOneWidget);
 
   // Playback mode and context menu
-  await tu.findAndTap("Start playing", () => find.byType(ListTile), num: 2, idx: 1, delay: OnpcTestUtils.NORMAL_DELAY);
-  await tu.findAndTap("Select context menu", () => find.byType(ListTile),
+  await tu.findAndTap(() => find.byType(ListTile), num: 2, idx: 1, delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.byType(ListTile),
       num: 2, idx: 1, rightClick: true, ensureAfter: () => find.text("Playback mode"));
-  await tu.findAndTap("Select Playback mode", () => find.text("Playback mode"),
+  await tu.findAndTap(() => find.text("Playback mode"),
       ensureAfter: () => find.widgetWithText(ListTile, "Playback mode"));
-  await tu.findAndTap("Select context menu", () => find.widgetWithText(ListTile, "Playback mode"),
+  await tu.findAndTap(() => find.widgetWithText(ListTile, "Playback mode"),
       rightClick: true, ensureAfter: () => find.text("Track menu"));
-  await tu.findAndTap("Select Track menu", () => find.text("Track menu"),
+  await tu.findAndTap(() => find.text("Track menu"),
       ensureAfter: () => find.widgetWithText(ListTile, "Remove from My Playlists"));
-  await tu.findAndTap(
-      "Select Remove from My Playlists", () => find.widgetWithText(ListTile, "Remove from My Playlists"),
+  await tu.findAndTap(() => find.widgetWithText(ListTile, "Remove from My Playlists"),
       ensureAfter: () => find.text("Back"));
-  await tu.findAndTap("Confirm", () => find.text("OK"));
+  await tu.findAndTap(() => find.text("OK"));
   await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
   if (find.text("Back").evaluate().isNotEmpty && find.text("OK").evaluate().isNotEmpty) {
-    await tu.findAndTap("Confirm", () => find.text("Back"));
+    await tu.findAndTap(() => find.text("Back"));
   }
 }
 
@@ -256,48 +252,40 @@ Future<void> _playFromDAB(final OnpcTestUtils tu) async {
   await tu.ensureAvInfo("ANALOG, All Ch Stereo", "", video: false);
 
   // Change station
-  await tu.findAndTap("Next station", () => find.byTooltip("Sets tuning frequency wrap-around up"),
-      delay: OnpcTestUtils.LONG_DELAY);
-  await tu.findAndTap("Previous station", () => find.byTooltip("Sets tuning frequency wrap-around down"),
-      delay: OnpcTestUtils.LONG_DELAY);
-  await tu.findAndTap("Change RDS info", () => find.byTooltip("RDS info"));
+  await tu.findAndTap(() => find.byTooltip("Sets tuning frequency wrap-around up"), delay: OnpcTestUtils.LONG_DELAY);
+  await tu.findAndTap(() => find.byTooltip("Sets tuning frequency wrap-around down"), delay: OnpcTestUtils.LONG_DELAY);
+  await tu.findAndTap(() => find.byTooltip("RDS info"));
 }
 
 Future<void> _changeVolume(final OnpcTestUtils tu) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip("Volume level down"));
-  await tu.findAndTap("Volume mute", () => find.byTooltip("Sets amplifier audio muting wrap-around"),
+  await tu.findAndTap(() => find.byTooltip("Sets amplifier audio muting wrap-around"),
       delay: OnpcTestUtils.NORMAL_DELAY, num: 2);
-  await tu.findAndTap("Volume down", () => find.byTooltip("Volume level down"), delay: OnpcTestUtils.NORMAL_DELAY);
-  await tu.findAndTap("Volume up", () => find.byTooltip("Volume level up"), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.byTooltip("Volume level down"), delay: OnpcTestUtils.NORMAL_DELAY);
+  await tu.findAndTap(() => find.byTooltip("Volume level up"), delay: OnpcTestUtils.NORMAL_DELAY);
 }
 
 Future<void> _groupUngroup(final OnpcTestUtils tu, bool group) async {
   await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip("Group/Ungroup devices"));
-  await tu.findAndTap("Open group dialog", () => find.byTooltip("Group/Ungroup devices"));
+  await tu.findAndTap(() => find.byTooltip("Group/Ungroup devices"));
   final bool isGrouped = find.text("Not attached").evaluate().isEmpty;
   if (group && isGrouped) {
-    await tu.findAndTap("Select Onkyo Box", () => find.text("My Onkyo Box"),
-        ensureAfter: () => find.text("Not attached"));
+    await tu.findAndTap(() => find.text("My Onkyo Box"), ensureAfter: () => find.text("Not attached"));
   }
   if (group) {
-    await tu.findAndTap("Select Onkyo Box", () => find.text("My Onkyo Box"),
-        ensureAfter: () => find.textContaining("Group 1"));
+    await tu.findAndTap(() => find.text("My Onkyo Box"), ensureAfter: () => find.textContaining("Group 1"));
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     expect(find.text("Group 1: Master, Channel ST"), findsOneWidget);
   } else {
-    await tu.findAndTap("Select Onkyo Box", () => find.text("My Onkyo Box"),
-        ensureAfter: () => find.text("Not attached"));
+    await tu.findAndTap(() => find.text("My Onkyo Box"), ensureAfter: () => find.text("Not attached"));
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     expect(find.text("Not attached"), findsExactly(2));
   }
-  await tu.findAndTap("Close group dialog", () => find.text("OK"));
+  await tu.findAndTap(() => find.text("OK"));
   if (group) {
-    await tu.findAndTap("Change speakers", () => find.byTooltip("Change speaker channel"),
-        ensureAfter: () => find.text("FL"));
-    await tu.findAndTap("Change speakers", () => find.byTooltip("Change speaker channel"),
-        ensureAfter: () => find.text("FR"));
-    await tu.findAndTap("Change speakers", () => find.byTooltip("Change speaker channel"),
-        ensureAfter: () => find.text("ST"));
+    await tu.findAndTap(() => find.byTooltip("Change speaker channel"), ensureAfter: () => find.text("FL"));
+    await tu.findAndTap(() => find.byTooltip("Change speaker channel"), ensureAfter: () => find.text("FR"));
+    await tu.findAndTap(() => find.byTooltip("Change speaker channel"), ensureAfter: () => find.text("ST"));
   }
 }
 
@@ -315,13 +303,13 @@ Future<void> _changeDeviceSettings(OnpcTestUtils tu) async {
   final String DIM_NAME = "Super-Bright";
   await tu.contextMenu("Bright", "Edit");
   await tu.setText(2, 1, DIM_NAME);
-  await tu.findAndTap("Dimmer level: confirm change", () => find.text("OK"));
+  await tu.findAndTap(() => find.text("OK"));
   expect(find.text(DIM_NAME), findsOneWidget);
 
   // Restore dimmer level name
   await tu.contextMenu(DIM_NAME, "Edit");
-  await tu.findAndTap("Dimmer level: delete", () => find.byTooltip("Delete"));
-  await tu.findAndTap("Dimmer level: confirm change", () => find.text("OK"));
+  await tu.findAndTap(() => find.byTooltip("Delete"));
+  await tu.findAndTap(() => find.text("OK"));
   expect(find.text(DIM_NAME), findsNothing);
   expect(find.text("Bright"), findsOneWidget);
 }

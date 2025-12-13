@@ -86,7 +86,23 @@ class OnpcGuiActions {
     }
   }
 
-  Future<void> findAndTap(String title, OnFind finder,
+  // Extract and clean the finder description
+  String cleanFinderDescription(final Finder fab) {
+    String fabDesc = fab.toString();
+    if (fabDesc.startsWith("Found ")) {
+      fabDesc = fabDesc.substring(6); // Remove "Found "
+    }
+    if (fabDesc.startsWith("1 ")) {
+      fabDesc = fabDesc.substring(2); // Remove "1 "
+    }
+    final int endIdx = fabDesc.indexOf(": [");
+    if (endIdx != -1) {
+      fabDesc = fabDesc.substring(0, endIdx); // Remove everything starting from ": ["
+    }
+    return fabDesc;
+  }
+
+  Future<void> findAndTap(OnFind finder,
       {bool rightClick = false,
       bool waitFor = false,
       int num = 1,
@@ -96,8 +112,11 @@ class OnpcGuiActions {
     if (waitFor) {
       await ensureVisible(finder);
     }
-    Logging.info(this, STEP_HEADER + title);
     final Finder fab = finder();
+    //log("Tap: " +
+    //    cleanFinderDescription(fab) +
+    //    (num > 1 ? ", index " + idx.toString() : "") +
+    //    (delay != null ? ", delay = " + delay.toString() : ""));
     expect(fab, findsExactly(num));
     if (rightClick && Platform.isDesktop) {
       await tester.tap(fab.at(idx), buttons: 0x02, warnIfMissed: false);
@@ -195,7 +214,7 @@ class OnpcGuiActions {
       }
     });
     for (int i = 0; i < taps.length; i++) {
-      await findAndTap("Change checkbox", () => taps[i], delay: 0);
+      await findAndTap(() => taps[i], delay: 0);
       await stepDelayMs();
     }
   }
