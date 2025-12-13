@@ -18,7 +18,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/main.dart' as app;
-import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
 import 'package:onpc/utils/Platform.dart';
 
@@ -51,8 +50,8 @@ void main() {
 }
 
 Future<void> _setupDenon(OnpcTestUtils tu) async {
-  await _saveConnection(tu, "My Denon AVR", "192.168.1.82", isDCP: true);
-  await _changeInputs(tu, [
+  await tu.saveConnection(tu, "My Denon AVR", "192.168.1.82", isDCP: true);
+  await tu.changeInputs(tu, [
     Pair("HEOS MUSIC", "NET"),
     Pair("BLUETOOTH", "BT"),
     Pair("DVD", ""),
@@ -64,7 +63,7 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("DRS610", "TAPE"),
     Pair("Phono", ""),
   ]);
-  await _changeServices(tu, [
+  await tu.changeServices(tu, [
     Pair("Play List", true),
     Pair("Tidal", true),
     Pair("TuneIn Radio", true),
@@ -76,7 +75,7 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
     Pair("Soundcloud", false),
     Pair("History", false),
   ]);
-  await _changeListeningModes(tu, [
+  await tu.changeListeningModes(tu, [
     Pair("Stereo", true),
     Pair("Auto", false),
     Pair("Dolby Digital", false),
@@ -108,24 +107,24 @@ Future<void> _setupDenon(OnpcTestUtils tu) async {
   p.buttonUp = "60.0";
   p.buttonUpValue = "30.5";
   p.buttonDown = "1";
-  await _setMaxVolume(tu, p);
-  await _renameZone(tu, 1, "To Onkyo");
+  await tu.setMaxVolume(tu, p);
+  await tu.renameZone(tu, 1, "To Onkyo");
 }
 
 Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
-  await _saveConnection(tu, "My Onkyo Box", "192.168.1.81");
+  await tu.saveConnection(tu, "My Onkyo Box", "192.168.1.81");
   if (find.text("Onkyo Box (Standby)").evaluate().isNotEmpty) {
     // Player is off - call power on
     await tu.findAndTap(() => find.byTooltip("On/Standby"));
   }
-  await _changeServices(tu, [
+  await tu.changeServices(tu, [
     Pair("Deezer", true),
     Pair("Music Server (DLNA)", true),
     Pair("Spotify", false),
     Pair("Tidal", false),
     Pair("Amazon Music", false),
   ]);
-  await _changeListeningModes(tu, [
+  await tu.changeListeningModes(tu, [
     Pair("Mono", false),
     Pair("Stereo", false),
     Pair("Direct", false),
@@ -159,17 +158,17 @@ Future<void> _setupOnkyoBox(OnpcTestUtils tu) async {
   p.buttonUp = "35";
   p.buttonUpValue = "26";
   p.buttonDown = "1";
-  await _setMaxVolume(tu, p);
+  await tu.setMaxVolume(tu, p);
 }
 
 Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
-  await _saveConnection(tu, "My Onkyo Player", "192.168.1.80");
+  await tu.saveConnection(tu, "My Onkyo Player", "192.168.1.80");
   if (find.text("Onkyo Player (Standby)").evaluate().isNotEmpty) {
     // Player is off - call power on
     await tu.findAndTap(() => find.byTooltip("On/Standby"));
   }
-  await _changeInputs(tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
-  await _changeServices(tu, [
+  await tu.changeInputs(tu, [Pair("USB(R)", "USB Disk"), Pair("USB(F)", "")]);
+  await tu.changeServices(tu, [
     Pair("Tidal", true),
     Pair("TuneIn Radio", true),
     Pair("Deezer", true),
@@ -177,7 +176,7 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
     Pair("Spotify", false),
     Pair("Amazon Music", false),
   ]);
-  await _changeListeningModes(tu, [
+  await tu.changeListeningModes(tu, [
     Pair("Mono", false),
     Pair("Stereo", false),
     Pair("Direct", false),
@@ -211,22 +210,6 @@ Future<void> _setupOnkyoPlayer(OnpcTestUtils tu) async {
   }
 }
 
-Future<void> _saveConnection(final OnpcTestUtils tu, String name, String address, {bool isDCP = false}) async {
-  await tu.openDrawerMenu("Connect", ensureAfter: () => find.text("Onkyo/Pioneer/Integra"));
-  expect(find.text("Connect"), findsOneWidget);
-  expect(find.text("Denon/Marantz"), findsOneWidget);
-  expect(find.text("Address"), findsOneWidget);
-  expect(find.text("Port (optional)"), findsOneWidget);
-  await tu.setText(3, 0, address);
-  final Finder fab = find.byWidgetPredicate((widget) => widget is Radio);
-  expect(fab, findsNWidgets(2));
-  await tu.findAndTap(() => fab.at(isDCP ? 1 : 0));
-  await tu.findAndTap(() => find.text("Save connection"));
-  await tu.setText(3, 2, name);
-  await tu.findAndTap(() => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
-  Logging.logSize = 5000; // After reconnect, increase log size
-}
-
 Future<void> _aboutScreen(OnpcTestUtils tu) async {
   await tu.openDrawerMenu("About", ensureAfter: () => find.byType(Markdown));
   expect(find.textContaining("Enhanced AVR Controller"), findsOneWidget);
@@ -236,85 +219,22 @@ Future<void> _aboutScreen(OnpcTestUtils tu) async {
 Future<void> _changeAppSettings(final OnpcTestUtils tu) async {
   await tu.openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
 
-  await _changeParameter(tu, "Text and buttons size", "Small", scroll: false);
-  await _changeParameter(tu, "Theme", "Light (Purple and Green)", scroll: false);
-  await _changeParameter(tu, "App language", "English", scroll: false);
+  await tu.changeParameter(tu, "Text and buttons size", "Small", scroll: false);
+  await tu.changeParameter(tu, "Theme", "Light (Purple and Green)", scroll: false);
+  await tu.changeParameter(tu, "App language", "English", scroll: false);
 
   // Audio control
-  await _changeParameter(tu, "Sound control", "Automatic");
-  await _changeParameter(tu, "Master volume unit", "Relative (dB)", pressOk: true);
+  await tu.changeParameter(tu, "Sound control", "Automatic");
+  await tu.changeParameter(tu, "Master volume unit", "Relative (dB)", pressOk: true);
 
   // RI-USB
   if (Platform.isDesktop) {
     final String USB_RI = Platform.isWindows ? "USB Serial Port" : "OnkioRI FT231X";
-    await _changeParameter(tu, "Use USB-RI interface", USB_RI, ignoreMissing: true);
+    await tu.changeParameter(tu, "Use USB-RI interface", USB_RI, ignoreMissing: true);
   }
 
-  await _changeParameter(tu, "Album's cover click behaviour", "Audio muting");
+  await tu.changeParameter(tu, "Album's cover click behaviour", "Audio muting");
 
-  await tu.previousScreen();
-}
-
-Future<void> _changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_VALUE,
-    {bool pressOk = false, bool ignoreMissing = false, bool scroll = true}) async {
-  if (scroll) {
-    await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
-  }
-  if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-    await tu.findAndTap(() => find.text(PARAM_NAME));
-    await tu.stepDelayMs();
-    if (ignoreMissing && find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-      await tu.findAndTap(() => find.text("CANCEL"));
-      return;
-    }
-    await tu.findAndTap(() => find.textContaining(PARAM_VALUE));
-    if (pressOk) {
-      await tu.findAndTap(() => find.text("OK"));
-    }
-    await tu.stepDelayMs();
-    expect(find.textContaining(PARAM_VALUE), findsOneWidget);
-  }
-}
-
-Future<void> _changeServices(OnpcTestUtils tu, List<Pair<String, bool>> items) async {
-  await tu.openSettings("Network services");
-  for (int i = 0; i < items.length; i++) {
-    final Pair<String, bool> item = items[i];
-    await tu.changeReorderableItem(item.item1, state: item.item2);
-    await tu.dragReorderableItem(item.item1, Offset(0, item.item2 ? -600 : 600));
-  }
-  await tu.previousScreen();
-  await tu.previousScreen();
-}
-
-Future<void> _changeInputs(OnpcTestUtils tu, List<Pair<String, String>> items) async {
-  await tu.openSettings("Input selectors");
-  for (int i = 0; i < items.length; i++) {
-    final Pair<String, String> item = items[i];
-    if (item.item2.isEmpty) {
-      await tu.changeReorderableItem(item.item1);
-      await tu.dragReorderableItem(item.item1, Offset(0, 600));
-    } else {
-      await tu.contextMenu(item.item1, "Edit", ensureAfter: () => find.text("CANCEL"));
-      await tu.setText(1, 0, item.item2);
-      await tu.findAndTap(() => find.text("OK"));
-    }
-  }
-  await tu.previousScreen();
-  await tu.previousScreen();
-}
-
-Future<void> _changeListeningModes(OnpcTestUtils tu, List<Pair<String, bool>> items) async {
-  await tu.openSettings("Listening modes");
-  for (int i = 0; i < items.length; i++) {
-    final Pair<String, bool> item = items[i];
-    await tu.tester.ensureVisible(find.text(item.item1));
-    await tu.changeReorderableItem(item.item1, state: item.item2);
-    if (item.item2) {
-      await tu.dragReorderableItem(item.item1, Offset(0, -600));
-    }
-  }
-  await tu.previousScreen();
   await tu.previousScreen();
 }
 
@@ -615,25 +535,4 @@ Future<void> _addRiDevices(OnpcTestUtils tu) async {
   await tu.changeReorderableItem(MD, state: true);
   await tu.changeReorderableItem(TD, state: true);
   await tu.previousScreen();
-}
-
-Future<void> _setMaxVolume(OnpcTestUtils tu, final AudioSliderParameters p) async {
-  await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip(Strings.audio_control));
-  await tu.findAndTap(() => find.byTooltip(Strings.audio_control),
-      ensureAfter: () => find.byTooltip(Strings.audio_control_max_level));
-  await tu.findAndTap(() => find.byTooltip(Strings.audio_control_max_level),
-      ensureAfter: () => find.text(Strings.master_volume_max));
-  await tu.stepDelayMs();
-  await tu.testAudioSlider(p);
-  await tu.findAndTap(() => find.text("OK"));
-}
-
-Future<void> _renameZone(OnpcTestUtils tu, int zone, String newName) async {
-  await tu.openDrawer();
-  await tu.findAndTap(() => find.byTooltip("Edit"), num: 2, idx: zone);
-  expect(find.text("Edit"), findsOneWidget);
-  await tu.setText(1, 0, newName);
-  await tu.findAndTap(() => find.text("OK"));
-  await tu.previousScreen();
-  await tu.openDrawerMenu(newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
 }

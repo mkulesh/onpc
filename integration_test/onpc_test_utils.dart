@@ -16,6 +16,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/constants/Version.dart';
 import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
@@ -47,6 +48,37 @@ class OnpcTestUtils extends OnpcGuiActions {
 
   OnpcTestUtils(final WidgetTester tester) : super(tester);
 
+  Future<void> writeLog(String tName) async {
+    Logging.logSize = 5000;
+    await stepDelaySec(NORMAL_DELAY);
+    Logging.info(this, STEP_HEADER + "Test PASSED");
+    final StringBuffer outContent = StringBuffer();
+    final DateTime now = DateTime.now();
+    Logging.latestLogging.forEach((str) => outContent.writeln(str.substring(6)));
+    final String fName = tName + "_" + Version.NAME + "_" + now.toString().replaceAll(":", "-") + ".log";
+    await File(fName).writeAsString(outContent.toString());
+  }
+
+  //***********************************
+  // Simple actions
+  //***********************************
+
+  Future<void> openDrawer() async {
+    Logging.info(this, STEP_HEADER + "Open application drawer");
+    await tester.tapAt(Offset(30, 30));
+    await ensureVisible(() => find.text("Enhanced Music Controller"));
+  }
+
+  Future<void> previousScreen() async {
+    Logging.info(this, STEP_HEADER + "Open previous screen");
+    await tester.tapAt(Offset(30, 30));
+    await stepDelayMs();
+  }
+
+  //***********************************
+  // Methods
+  //***********************************
+
   Future<void> connect(String device, String searchFor) async {
     await stepDelayMs();
     if (find.textContaining(searchFor).evaluate().isEmpty) {
@@ -54,12 +86,6 @@ class OnpcTestUtils extends OnpcGuiActions {
       await findAndTap(() => find.text(device), delay: OnpcTestUtils.HUGE_DELAY);
     }
     Logging.logSize = 5000; // After reconnect, increase log size
-  }
-
-  Future<void> openDrawer() async {
-    Logging.info(this, STEP_HEADER + "Open application drawer");
-    await tester.tapAt(Offset(30, 30));
-    await ensureVisible(() => find.text("Enhanced Music Controller"));
   }
 
   Future<void> openDrawerMenu(String text, {OnFind? ensureAfter}) async {
@@ -72,12 +98,6 @@ class OnpcTestUtils extends OnpcGuiActions {
     await openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
     await tester.ensureVisible(find.text(text));
     await findAndTap(() => find.text(text));
-  }
-
-  Future<void> previousScreen() async {
-    Logging.info(this, STEP_HEADER + "Open previous screen");
-    await tester.tapAt(Offset(30, 30));
-    await stepDelayMs();
   }
 
   Future<void> openTab(String s, {bool swipeLeft = false, bool swipeRight = false, OnFind? ensureAfter}) async {
@@ -132,17 +152,6 @@ class OnpcTestUtils extends OnpcGuiActions {
       });
     }
     await findAndTap(() => find.text(menu), ensureAfter: ensureAfter);
-  }
-
-  Future<void> writeLog(String tName) async {
-    Logging.logSize = 5000;
-    await stepDelaySec(NORMAL_DELAY);
-    Logging.info(this, STEP_HEADER + "Test PASSED");
-    final StringBuffer outContent = StringBuffer();
-    final DateTime now = DateTime.now();
-    Logging.latestLogging.forEach((str) => outContent.writeln(str.substring(6)));
-    final String fName = tName + "_" + Version.NAME + "_" + now.toString().replaceAll(":", "-") + ".log";
-    await File(fName).writeAsString(outContent.toString());
   }
 
   Future<void> changeFriendlyName(OnpcTestUtils tu, String name) async {
@@ -204,5 +213,105 @@ class OnpcTestUtils extends OnpcGuiActions {
     // Down using button
     slider = findSliderByName(p.name + " " + p.buttonUpValue, withButtons: true);
     await findAndTap(() => slider.item2, num: 2, idx: 0, ensureAfter: () => find.text(p.name + " " + p.secondValue));
+  }
+
+  Future<void> changeParameter(OnpcTestUtils tu, String PARAM_NAME, String PARAM_VALUE,
+      {bool pressOk = false, bool ignoreMissing = false, bool scroll = true}) async {
+    if (scroll) {
+      await tu.tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+    }
+    if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
+      await tu.findAndTap(() => find.text(PARAM_NAME));
+      await tu.stepDelayMs();
+      if (ignoreMissing && find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
+        await tu.findAndTap(() => find.text("CANCEL"));
+        return;
+      }
+      await tu.findAndTap(() => find.textContaining(PARAM_VALUE));
+      if (pressOk) {
+        await tu.findAndTap(() => find.text("OK"));
+      }
+      await tu.stepDelayMs();
+      expect(find.textContaining(PARAM_VALUE), findsOneWidget);
+    }
+  }
+
+  Future<void> saveConnection(final OnpcTestUtils tu, String name, String address, {bool isDCP = false}) async {
+    await tu.openDrawerMenu("Connect", ensureAfter: () => find.text("Onkyo/Pioneer/Integra"));
+    expect(find.text("Connect"), findsOneWidget);
+    expect(find.text("Denon/Marantz"), findsOneWidget);
+    expect(find.text("Address"), findsOneWidget);
+    expect(find.text("Port (optional)"), findsOneWidget);
+    await tu.setText(3, 0, address);
+    final Finder fab = find.byWidgetPredicate((widget) => widget is Radio);
+    expect(fab, findsNWidgets(2));
+    await tu.findAndTap(() => fab.at(isDCP ? 1 : 0));
+    await tu.findAndTap(() => find.text("Save connection"));
+    await tu.setText(3, 2, name);
+    await tu.findAndTap(() => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
+    Logging.logSize = 5000; // After reconnect, increase log size
+  }
+
+  Future<void> changeServices(OnpcTestUtils tu, List<Pair<String, bool>> items) async {
+    await tu.openSettings("Network services");
+    for (int i = 0; i < items.length; i++) {
+      final Pair<String, bool> item = items[i];
+      await tu.changeReorderableItem(item.item1, state: item.item2);
+      await tu.dragReorderableItem(item.item1, Offset(0, item.item2 ? -600 : 600));
+    }
+    await tu.previousScreen();
+    await tu.previousScreen();
+  }
+
+  Future<void> changeInputs(OnpcTestUtils tu, List<Pair<String, String>> items) async {
+    await tu.openSettings("Input selectors");
+    for (int i = 0; i < items.length; i++) {
+      final Pair<String, String> item = items[i];
+      if (item.item2.isEmpty) {
+        await tu.changeReorderableItem(item.item1);
+        await tu.dragReorderableItem(item.item1, Offset(0, 600));
+      } else {
+        await tu.contextMenu(item.item1, "Edit", ensureAfter: () => find.text("CANCEL"));
+        await tu.setText(1, 0, item.item2);
+        await tu.findAndTap(() => find.text("OK"));
+      }
+    }
+    await tu.previousScreen();
+    await tu.previousScreen();
+  }
+
+  Future<void> changeListeningModes(OnpcTestUtils tu, List<Pair<String, bool>> items) async {
+    await tu.openSettings("Listening modes");
+    for (int i = 0; i < items.length; i++) {
+      final Pair<String, bool> item = items[i];
+      await tu.tester.ensureVisible(find.text(item.item1));
+      await tu.changeReorderableItem(item.item1, state: item.item2);
+      if (item.item2) {
+        await tu.dragReorderableItem(item.item1, Offset(0, -600));
+      }
+    }
+    await tu.previousScreen();
+    await tu.previousScreen();
+  }
+
+  Future<void> setMaxVolume(OnpcTestUtils tu, final AudioSliderParameters p) async {
+    await tu.openTab("LISTEN", ensureAfter: () => find.byTooltip(Strings.audio_control));
+    await tu.findAndTap(() => find.byTooltip(Strings.audio_control),
+        ensureAfter: () => find.byTooltip(Strings.audio_control_max_level));
+    await tu.findAndTap(() => find.byTooltip(Strings.audio_control_max_level),
+        ensureAfter: () => find.text(Strings.master_volume_max));
+    await tu.stepDelayMs();
+    await tu.testAudioSlider(p);
+    await tu.findAndTap(() => find.text("OK"));
+  }
+
+  Future<void> renameZone(OnpcTestUtils tu, int zone, String newName) async {
+    await tu.openDrawer();
+    await tu.findAndTap(() => find.byTooltip("Edit"), num: 2, idx: zone);
+    expect(find.text("Edit"), findsOneWidget);
+    await tu.setText(1, 0, newName);
+    await tu.findAndTap(() => find.text("OK"));
+    await tu.previousScreen();
+    await tu.openDrawerMenu(newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
   }
 }
