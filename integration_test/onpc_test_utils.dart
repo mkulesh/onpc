@@ -240,7 +240,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     endMethod();
   }
 
-  Future<void> saveConnection(final String name, String address, {bool isDCP = false}) async {
+  Future<void> saveConnection(String name, String address, {bool isDCP = false}) async {
     startMethod("Save connection: " + name + "/" + address);
     await openDrawerMenu("Connect", ensureAfter: () => find.text("Onkyo/Pioneer/Integra"));
     expect(find.text("Connect"), findsOneWidget);
@@ -330,6 +330,34 @@ class OnpcTestUtils extends OnpcGuiActions {
     await stepDelaySec(NORMAL_DELAY);
     await openDrawerMenu("Main", ensureAfter: () => find.textContaining("Denon AVR"));
     await stepDelaySec(NORMAL_DELAY);
+    endMethod();
+  }
+
+  Future<void> renameShortcuts(final List<Pair<String, String>> items, final List<String> path, final listeningMode,
+      {String ensureItem = ""}) async {
+    startMethod("Rename shortcuts");
+    await openTab("SHORTCUTS");
+    await stepDelaySec(1);
+    if (ensureItem.isNotEmpty) {
+      await ensureVisibleInList(
+          ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem), LIST_DRAG_OFFSET);
+    }
+    if (path.isNotEmpty) {
+      assert(items.length == path.length);
+    }
+    for (int i = 0; i < items.length; i++) {
+      await ensureVisibleInList(
+          items[i].item1, find.byType(ReorderableListView), () => find.text(items[i].item1), LIST_DRAG_OFFSET);
+      await contextMenu(items[i].item1, "Edit",
+          ensureAfter: () => find.text("CANCEL"),
+          checkItems: [items[i].item1 + ":", "Edit", "Delete", "Copy to clipboard"]);
+      if (path.isNotEmpty) {
+        expect(find.text(path[i]), findsOneWidget);
+      }
+      expect(find.text("Apply listening mode"), listeningMode ? findsOneWidget : findsNothing);
+      await setText(1, 0, items[i].item2);
+      await findAndTap(() => find.text("OK"));
+    }
     endMethod();
   }
 }
