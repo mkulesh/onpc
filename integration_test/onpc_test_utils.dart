@@ -68,7 +68,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     await stepDelayMs();
     if (find.textContaining(searchFor).evaluate().isEmpty) {
       await openDrawer();
-      await findAndTap(() => find.text(device), delay: OnpcTestUtils.HUGE_DELAY);
+      await findAndTap(() => find.text(device), delay: HUGE_DELAY);
     }
     endMethod();
   }
@@ -76,7 +76,7 @@ class OnpcTestUtils extends OnpcGuiActions {
   Future<void> openDrawerMenu(String text, {OnFind? ensureAfter}) async {
     startMethod("Open driver menu: " + text);
     await openDrawer();
-    await tester.dragUntilVisible(find.text(text), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+    await tester.dragUntilVisible(find.text(text), find.byType(ListView), LIST_DRAG_OFFSET);
     await findAndTap(() => find.text(text), ensureAfter: ensureAfter);
     endMethod();
   }
@@ -130,7 +130,7 @@ class OnpcTestUtils extends OnpcGuiActions {
       }
     }
     if (ensureAfter != null) {
-      await ensureVisibleInList("Final item", find.byType(ListView), ensureAfter, OnpcTestUtils.LIST_DRAG_OFFSET);
+      await ensureVisibleInList("Final item", find.byType(ListView), ensureAfter, LIST_DRAG_OFFSET);
     }
     endMethod();
   }
@@ -153,7 +153,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     startMethod("Change friendly name: " + name);
     await setText(1, 0, name);
     await findAndTap(() => find.byTooltip("Change friendly name"));
-    await stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
+    await stepDelaySec(NORMAL_DELAY);
     expect(find.text(name), findsExactly(2));
     endMethod();
   }
@@ -179,7 +179,7 @@ class OnpcTestUtils extends OnpcGuiActions {
       await openTab("SHORTCUTS");
       await stepDelayMs();
       await ensureVisibleInList(
-          ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem), OnpcTestUtils.LIST_DRAG_OFFSET);
+          ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem), LIST_DRAG_OFFSET);
     } else {
       await openTab("SHORTCUTS", ensureAfter: () => find.text(shortcut));
       await stepDelayMs();
@@ -217,25 +217,25 @@ class OnpcTestUtils extends OnpcGuiActions {
     endMethod();
   }
 
-  Future<void> changeParameter(String PARAM_NAME, String PARAM_VALUE,
+  Future<void> changeParameter(String paramName, String paramValue,
       {bool pressOk = false, bool ignoreMissing = false, bool scroll = true}) async {
-    startMethod("Change parameter: " + PARAM_NAME);
+    startMethod("Change parameter: " + paramName);
     if (scroll) {
-      await tester.dragUntilVisible(find.text(PARAM_NAME), find.byType(ListView), OnpcTestUtils.LIST_DRAG_OFFSET);
+      await tester.dragUntilVisible(find.text(paramName), find.byType(ListView), LIST_DRAG_OFFSET);
     }
-    if (find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
-      await findAndTap(() => find.text(PARAM_NAME));
+    if (find.textContaining(paramValue).evaluate().isEmpty) {
+      await findAndTap(() => find.text(paramName));
       await stepDelayMs();
-      if (ignoreMissing && find.textContaining(PARAM_VALUE).evaluate().isEmpty) {
+      if (ignoreMissing && find.textContaining(paramValue).evaluate().isEmpty) {
         await findAndTap(() => find.text("CANCEL"));
         return;
       }
-      await findAndTap(() => find.textContaining(PARAM_VALUE));
+      await findAndTap(() => find.textContaining(paramValue));
       if (pressOk) {
         await findAndTap(() => find.text("OK"));
       }
       await stepDelayMs();
-      expect(find.textContaining(PARAM_VALUE), findsOneWidget);
+      expect(find.textContaining(paramValue), findsOneWidget);
     }
     endMethod();
   }
@@ -253,7 +253,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     await findAndTap(() => fab.at(isDCP ? 1 : 0));
     await findAndTap(() => find.text("Save connection"));
     await setText(3, 2, name);
-    await findAndTap(() => find.text("OK"), delay: OnpcTestUtils.LONG_DELAY);
+    await findAndTap(() => find.text("OK"), delay: LONG_DELAY);
     endMethod();
   }
 
@@ -327,6 +327,9 @@ class OnpcTestUtils extends OnpcGuiActions {
     await findAndTap(() => find.text("OK"));
     await previousScreen();
     await openDrawerMenu(newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
+    await stepDelaySec(NORMAL_DELAY);
+    await openDrawerMenu("Main", ensureAfter: () => find.textContaining("Denon AVR"));
+    await stepDelaySec(NORMAL_DELAY);
     endMethod();
   }
 }
