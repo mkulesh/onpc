@@ -1,0 +1,1668 @@
+Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 2025-12-14 12:19:34.765056
+[START - Initial Search]
+    Tap: widget with text "192.168.1.80:60128"
+    Result: PASSED in 5 seconds
+[END - Initial Search]
+[START - About Screen]
+    [START - Open driver menu: About]
+        Open application drawer
+        Tap: widget with text "About"
+    [END - Open driver menu: About]
+    Open previous screen
+    Result: PASSED in 2 seconds
+[END - About Screen]
+[START - Change Basic Settings]
+    [START - Open driver menu: Settings]
+        Open application drawer
+        Tap: widget with text "Settings"
+    [END - Open driver menu: Settings]
+    [START - Change parameter: Text and buttons size]
+        Tap: widget with text "Text and buttons size"
+        Tap: widget with text containing Small
+    [END - Change parameter: Text and buttons size]
+    [START - Change parameter: Theme]
+        Tap: widget with text "Theme"
+        Tap: widget with text containing Light (Purple and Green)
+    [END - Change parameter: Theme]
+    [START - Change parameter: App language]
+        Tap: widget with text "App language"
+        Tap: widget with text containing English
+    [END - Change parameter: App language]
+    [START - Change parameter: Sound control]
+        Tap: widget with text "Sound control"
+        Tap: widget with text containing Automatic
+    [END - Change parameter: Sound control]
+    [START - Change parameter: Master volume unit]
+        Tap: widget with text "Master volume unit"
+        Tap: widget with text containing Relative (dB)
+        Tap: widget with text "OK"
+    [END - Change parameter: Master volume unit]
+    [START - Change parameter: Use USB-RI interface]
+        Tap: widget with text "Use USB-RI interface"
+        Tap: widget with text containing OnkioRI FT231X
+    [END - Change parameter: Use USB-RI interface]
+    [START - Change parameter: Album's cover click behaviour]
+        Tap: widget with text "Album's cover click behaviour"
+        Tap: widget with text containing Audio muting
+    [END - Change parameter: Album's cover click behaviour]
+    Open previous screen
+    Result: PASSED in 35 seconds
+[END - Change Basic Settings]
+[START - Change Tab Layout]
+    [START - Open driver menu: Tab layout]
+        Open application drawer
+        Tap: widget with text "Tab layout"
+    [END - Open driver menu: Tab layout]
+    Drag item: File information -> drag Offset(0.0, -600.0)
+    Open previous screen
+    Result: PASSED in 3 seconds
+[END - Change Tab Layout]
+[START - Initial Setup of Denon AVR]
+    [START - Save connection: My Denon AVR/192.168.1.82]
+        [START - Open driver menu: Connect]
+            Open application drawer
+            Tap: widget with text "Connect"
+        [END - Open driver menu: Connect]
+        Setting text: "192.168.1.82", number of fields = 3, field index = 0
+        Tap: widget with widget matching predicate (ignoring all but index 1)
+        Tap: widget with text "Save connection"
+        Setting text: "My Denon AVR", number of fields = 3, field index = 2
+        Tap: widget with text "OK", delay = 10
+    [END - Save connection: My Denon AVR/192.168.1.82]
+    [START - Change inputs]
+        [START - Open settings: Input selectors]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Input selectors"
+        [END - Open settings: Input selectors]
+        [START - Open context menu: HEOS MUSIC]
+            Tap: widget with text "HEOS MUSIC"
+            Tap: widget with text "Edit"
+        [END - Open context menu: HEOS MUSIC]
+        Setting text: "NET", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        [START - Open context menu: BLUETOOTH]
+            Tap: widget with text "BLUETOOTH"
+            Tap: widget with text "Edit"
+        [END - Open context menu: BLUETOOTH]
+        Setting text: "BT", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Change checkbox: Blu-ray, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'BD'>]), delay = 0
+        Drag item: Blu-ray -> drag Offset(0.0, 600.0)
+        [START - Open context menu: TV Audio]
+            Tap: widget with text "TV Audio"
+            Tap: widget with text "Edit"
+        [END - Open context menu: TV Audio]
+        Setting text: "PC", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        [START - Open context menu: Onkyo]
+            Tap: widget with text "Onkyo"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Onkyo]
+        Setting text: "ONKYO", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Change checkbox: Media Player, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'MPLAY'>]), delay = 0
+        Drag item: Media Player -> drag Offset(0.0, 600.0)
+        Change checkbox: Game, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'GAME'>]), delay = 0
+        Drag item: Game -> drag Offset(0.0, 600.0)
+        [START - Open context menu: DRS610]
+            Tap: widget with text "DRS610"
+            Tap: widget with text "Edit"
+        [END - Open context menu: DRS610]
+        Setting text: "TAPE", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Change checkbox: Phono, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'PHONO'>]), delay = 0
+        Drag item: Phono -> drag Offset(0.0, 600.0)
+        Open previous screen
+        Open previous screen
+    [END - Change inputs]
+    [START - Change services]
+        [START - Open settings: Network services]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Network services"
+        [END - Open settings: Network services]
+        Drag item: Play List -> drag Offset(0.0, -600.0)
+        Drag item: Tidal -> drag Offset(0.0, -600.0)
+        Drag item: TuneIn Radio -> drag Offset(0.0, -600.0)
+        Drag item: Deezer -> drag Offset(0.0, -600.0)
+        Drag item: Local Music -> drag Offset(0.0, -600.0)
+        Change checkbox: Amazon Music, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'HS13'>]), delay = 0
+        Drag item: Amazon Music -> drag Offset(0.0, 600.0)
+        Change checkbox: Soundcloud, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'HS9'>]), delay = 0
+        Drag item: Soundcloud -> drag Offset(0.0, 600.0)
+        Change checkbox: History, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'HS1026'>]), delay = 0
+        Drag item: History -> drag Offset(0.0, 600.0)
+        Open previous screen
+        Open previous screen
+    [END - Change services]
+    [START - Change listening modes]
+        [START - Open settings: Listening modes]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Listening modes"
+        [END - Open settings: Listening modes]
+        Drag item: Stereo -> drag Offset(0.0, -600.0)
+        Change checkbox: Auto, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'AUTO'>]), delay = 0
+        Change checkbox: Dolby Digital, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'DOLBY DIGITAL'>]), delay = 0
+        Change checkbox: DTS Surround, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'DTS SURROUND'>]), delay = 0
+        Change checkbox: Auro 3D, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'AURO3D'>]), delay = 0
+        Change checkbox: Auro 2D SURR, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'AURO2DSURR'>]), delay = 0
+        Change checkbox: MCH Stereo, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'MCH STEREO'>]), delay = 0
+        Change checkbox: Wide Screen, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'WIDE SCREEN'>]), delay = 0
+        Change checkbox: Super Stadium, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'SUPER STADIUM'>]), delay = 0
+        Change checkbox: Rock Arena, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'ROCK ARENA'>]), delay = 0
+        Change checkbox: Jazz Club, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'JAZZ CLUB'>]), delay = 0
+        Change checkbox: Classic Concert, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'CLASSIC CONCERT'>]), delay = 0
+        Change checkbox: Mono Movie, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'MONO MOVIE'>]), delay = 0
+        Change checkbox: Matrix, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'MATRIX'>]), delay = 0
+        Change checkbox: Video Game, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'VIDEO GAME'>]), delay = 0
+        Change checkbox: Virtual, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'VIRTUAL'>]), delay = 0
+        Open previous screen
+        Open previous screen
+    [END - Change listening modes]
+    [START - Set maximum volume]
+        [START - Open tab: LISTEN]
+            Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+        [END - Open tab: LISTEN]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate
+        [START - Test slider: Main:]
+            Move slider: min = 1.0, max = 120.0, value = 120.0
+            Move slider: min = 1.0, max = 120.0, value = 55.0
+            Move slider: min = 1.0, max = 120.0, value = 1.0
+            Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+            Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+        [END - Test slider: Main:]
+        Tap: widget with text "OK"
+    [END - Set maximum volume]
+    [START - Rename zone[1] to To Onkyo]
+        Open application drawer
+        Tap: 2 widgets with widget matching predicate, index 1
+        Setting text: "To Onkyo", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Open previous screen
+        [START - Open driver menu: To Onkyo]
+            Open application drawer
+            Tap: widget with text "To Onkyo"
+        [END - Open driver menu: To Onkyo]
+        [START - Open driver menu: Main]
+            Open application drawer
+            Tap: widget with text "Main"
+        [END - Open driver menu: Main]
+    [END - Rename zone[1] to To Onkyo]
+    Result: PASSED in 139 seconds
+[END - Initial Setup of Denon AVR]
+[START - Building Favourites for Denon AVR]
+    [START - Open tab: SHORTCUTS]
+        Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+    [END - Open tab: SHORTCUTS]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET"
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Local Music, Kontron DLNA Server, Music]
+        Tap: widget with widget matching predicate
+        Ensure item in list: Local Music
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Ensure item in list: Kontron DLNA Server
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server"
+        Ensure item in list: Music
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music"
+    [END - Navigate to media]
+    [START - Open context menu: Artist]
+        Tap: widget with text "Artist"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Artist]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Local Music, Denon AVR, Genres, Акустика<S>Эстрада, Владимир Высоцкий, Владимир Высоцкий и ансамбль 'Мелодия']
+        Tap: widget with widget matching predicate
+        Ensure item in list: Local Music
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Ensure item in list: Denon AVR
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
+        Ensure item in list: Genres
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Genres"
+        Split: [Акустика, Эстрада]
+        Ensure item in list: Эстрада
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Акустика"
+        Ensure item in list: Владимир Высоцкий
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий"
+        Ensure item in list: Владимир Высоцкий и ансамбль 'Мелодия'
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий и ансамбль 'Мелодия'"
+    [END - Navigate to media]
+    [START - Open context menu: Цыганский романс 'Кони привередливые']
+        Tap: widget with text "Цыганский романс 'Кони привередливые'"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Цыганский романс 'Кони привередливые']
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Local Music, Kontron DLNA Server, Music, Artist, Muse<S>Mylene Farmer]
+        Tap: widget with widget matching predicate
+        Ensure item in list: Local Music
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Ensure item in list: Kontron DLNA Server
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server"
+        Ensure item in list: Music
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music"
+        Ensure item in list: Artist
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Artist"
+        Split: [Muse, Mylene Farmer]
+        Ensure item in list: Mylene Farmer
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Muse"
+    [END - Navigate to media]
+    [START - Open context menu: - All Albums -]
+        Tap: widget with text "- All Albums -"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: - All Albums -]
+    [START - Rename shortcuts]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: Artist
+        [START - Open context menu: Artist]
+            Tap: widget with text "Artist"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Artist]
+        Setting text: "Artists on DLNA", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: - All Albums -
+        [START - Open context menu: - All Albums -]
+            Tap: widget with text "- All Albums -"
+            Tap: widget with text "Edit"
+        [END - Open context menu: - All Albums -]
+        Setting text: "Muse on DLNA", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Цыганский романс 'Кони привередливые'
+        [START - Open context menu: Цыганский романс 'Кони привередливые']
+            Tap: widget with text "Цыганский романс 'Кони привередливые'"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Цыганский романс 'Кони привередливые']
+        Setting text: "В.Высоцкий", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+    [END - Rename shortcuts]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Playlists]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
+    [END - Navigate to media]
+    [START - Open context menu: Onkyo playlist]
+        Tap: widget with text "Onkyo playlist"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Onkyo playlist]
+    [START - Open context menu: Favourite tracks]
+        Tap: widget with text "Favourite tracks"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Favourite tracks]
+    [START - Navigate to media]
+        Path: [Return, Radio Channels, Rock<S>Soul & Funk]
+        Ensure item in list: Return
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
+        Ensure item in list: Radio Channels
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Radio Channels"
+        Split: [Rock, Soul & Funk]
+        Ensure item in list: Soul & Funk
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+        Ensure item in list: Final item
+    [END - Navigate to media]
+    [START - Open context menu: Rock classics]
+        Tap: widget with text "Rock classics"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Rock classics]
+    [START - Rename shortcuts]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: Onkyo playlist
+        [START - Open context menu: Onkyo playlist]
+            Tap: widget with text "Onkyo playlist"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Onkyo playlist]
+        Setting text: "Deezer Playlist", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Favourite tracks
+        [START - Open context menu: Favourite tracks]
+            Tap: widget with text "Favourite tracks"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Favourite tracks]
+        Setting text: "Deezer Favourites", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Rock classics
+        [START - Open context menu: Rock classics]
+            Tap: widget with text "Rock classics"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Rock classics]
+        Setting text: "Deezer Classic Rock", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+    [END - Rename shortcuts]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, TuneIn Radio, Favorites]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "TuneIn Radio"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorites"
+    [END - Navigate to media]
+    [START - Open context menu: Absolute Classic Hits (Classic Hits)]
+        Tap: widget with text "Absolute Classic Hits (Classic Hits)"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Absolute Classic Hits (Classic Hits)]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+    [END - Navigate to media]
+    Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
+    [START - Navigate to media]
+        Path: [Genres]
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Genres"
+    [END - Navigate to media]
+    [START - Open context menu: Disco]
+        Tap: widget with text "Disco"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Disco]
+    Ensure item in list: Rock
+    [START - Open context menu: Power Metall]
+        Tap: widget with text "Power Metall"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Power Metall]
+    [START - Open context menu: Rock]
+        Tap: widget with text "Rock"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Rock]
+    Ensure item in list: Русский рок
+    [START - Open context menu: Русский рок]
+        Tap: widget with text "Русский рок"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Русский рок]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Favorite]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite"
+    [END - Navigate to media]
+    [START - Open context menu: Flow]
+        Tap: widget with text "Flow"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Flow]
+    [START - Open context menu: Hard Rock]
+        Tap: widget with text "Hard Rock"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Hard Rock]
+    [START - Open context menu: PureRock.US (Metal)]
+        Tap: widget with text "PureRock.US (Metal)"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: PureRock.US (Metal)]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "TUNER"
+    Ensure item in list: List top
+    Tap: widget with text "DAB"
+    [START - Open context menu: 17 - BOB!]
+        Tap: widget with text "17 - BOB!"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: 17 - BOB!]
+    Tap: widget with text "FM"
+    [START - Open context menu: 2 - 89.80 MHz]
+        Tap: widget with text "2 - 89.80 MHz"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: 2 - 89.80 MHz]
+    [START - Open context menu: 5 - 93.80 MHz]
+        Tap: widget with text "5 - 93.80 MHz"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: 5 - 93.80 MHz]
+    [START - Rename shortcuts]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: 5 - 93.80 MHz
+        Ensure item in list: 17 - BOB!
+        [START - Open context menu: 17 - BOB!]
+            Tap: widget with text "17 - BOB!"
+            Tap: widget with text "Edit"
+        [END - Open context menu: 17 - BOB!]
+        Setting text: "BOB! on DAB", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+    [END - Rename shortcuts]
+    Drag item: BOB! on DAB -> drag Offset(0.0, 300.0)
+    [START - Rename shortcuts]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: 2 - 89.80 MHz
+        [START - Open context menu: 2 - 89.80 MHz]
+            Tap: widget with text "2 - 89.80 MHz"
+            Tap: widget with text "Edit"
+        [END - Open context menu: 2 - 89.80 MHz]
+        Setting text: "ENERGY on FM", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+    [END - Rename shortcuts]
+    Drag item: ENERGY on FM -> drag Offset(0.0, 300.0)
+    [START - Open context menu: 5 - 93.80 MHz]
+        Tap: widget with text "5 - 93.80 MHz"
+        Tap: widget with text "Delete"
+    [END - Open context menu: 5 - 93.80 MHz]
+    Tap: widget with text "Deezer Classic Rock", delay = 5
+    Result: PASSED in 178 seconds
+[END - Building Favourites for Denon AVR]
+[START - Initial Setup of Onkyo Box]
+    [START - Save connection: My Onkyo Box/192.168.1.81]
+        [START - Open driver menu: Connect]
+            Open application drawer
+            Tap: widget with text "Connect"
+        [END - Open driver menu: Connect]
+        Setting text: "192.168.1.81", number of fields = 3, field index = 0
+        Tap: widget with widget matching predicate (ignoring all but index 0)
+        Tap: widget with text "Save connection"
+        Setting text: "My Onkyo Box", number of fields = 3, field index = 2
+        Tap: widget with text "OK", delay = 10
+    [END - Save connection: My Onkyo Box/192.168.1.81]
+    Tap: widget with widget matching predicate
+    [START - Change services]
+        [START - Open settings: Network services]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Network services"
+        [END - Open settings: Network services]
+        Drag item: Deezer -> drag Offset(0.0, -600.0)
+        Drag item: Music Server (DLNA) -> drag Offset(0.0, -600.0)
+        Change checkbox: Spotify, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0A'>]), delay = 0
+        Drag item: Spotify -> drag Offset(0.0, 600.0)
+        Change checkbox: Tidal, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'1B'>]), delay = 0
+        Drag item: Tidal -> drag Offset(0.0, 600.0)
+        Change checkbox: Amazon Music, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'1C'>]), delay = 0
+        Drag item: Amazon Music -> drag Offset(0.0, 600.0)
+        Open previous screen
+        Open previous screen
+    [END - Change services]
+    [START - Change listening modes]
+        [START - Open settings: Listening modes]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Listening modes"
+        [END - Open settings: Listening modes]
+        Change checkbox: Mono, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0F'>]), delay = 0
+        Change checkbox: Stereo, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'00'>]), delay = 0
+        Change checkbox: Direct, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'01'>]), delay = 0
+        Change checkbox: Unplugged, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'09'>]), delay = 0
+        Change checkbox: Orchestra, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'08'>]), delay = 0
+        Change checkbox: Studio-Mix, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0A'>]), delay = 0
+        Change checkbox: Pure Audio, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'11'>]), delay = 0
+        Change checkbox: Full Mono, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'13'>]), delay = 0
+        Change checkbox: All Ch Stereo, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0C'>]), delay = 0
+        Change checkbox: TV Logic, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0B'>]), delay = 0
+        Change checkbox: Theater-Dimensional, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0D'>]), delay = 0
+        Change checkbox: Dolby Digital, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'40'>]), delay = 0
+        Change checkbox: Dolby Surround, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'80'>]), delay = 0
+        Change checkbox: Dolby THX Cinema, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'84'>]), delay = 0
+        Change checkbox: Dolby THX Music, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'8B'>]), delay = 0
+        Change checkbox: Dolby THX Games, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'89'>]), delay = 0
+        Change checkbox: DTS Neural:X, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'82'>]), delay = 0
+        Change checkbox: DTS Virtual:X, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'17'>]), delay = 0
+        Change checkbox: Game-RPG, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'03'>]), delay = 0
+        Change checkbox: Game-Action, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'05'>]), delay = 0
+        Change checkbox: Game-Rock, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'06'>]), delay = 0
+        Change checkbox: Game-Sports, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0E'>]), delay = 0
+        Change checkbox: Auto Surround, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'FF'>]), delay = 0
+        Open previous screen
+        Open previous screen
+    [END - Change listening modes]
+    [START - Set maximum volume]
+        [START - Open tab: LISTEN]
+            Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+        [END - Open tab: LISTEN]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate
+        [START - Test slider: Main:]
+            Move slider: min = 1.0, max = 35.0, value = 35.0
+            Move slider: min = 1.0, max = 35.0, value = 23.0
+            Move slider: min = 1.0, max = 35.0, value = 11.0
+            Move slider: min = 1.0, max = 35.0, value = 1.0
+            Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+            Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+        [END - Test slider: Main:]
+        Tap: widget with text "OK"
+    [END - Set maximum volume]
+    Result: PASSED in 86 seconds
+[END - Initial Setup of Onkyo Box]
+[START - Initial Setup of Onkyo Player]
+    [START - Save connection: My Onkyo Player/192.168.1.80]
+        [START - Open driver menu: Connect]
+            Open application drawer
+            Tap: widget with text "Connect"
+        [END - Open driver menu: Connect]
+        Setting text: "192.168.1.80", number of fields = 3, field index = 0
+        Tap: widget with widget matching predicate (ignoring all but index 0)
+        Tap: widget with text "Save connection"
+        Setting text: "My Onkyo Player", number of fields = 3, field index = 2
+        Tap: widget with text "OK", delay = 10
+    [END - Save connection: My Onkyo Player/192.168.1.80]
+    [START - Change inputs]
+        [START - Open settings: Input selectors]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Input selectors"
+        [END - Open settings: Input selectors]
+        [START - Open context menu: USB(R)]
+            Tap: widget with text "USB(R)"
+            Tap: widget with text "Edit"
+        [END - Open context menu: USB(R)]
+        Setting text: "USB Disk", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Change checkbox: USB(F), true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'29'>]), delay = 0
+        Drag item: USB(F) -> drag Offset(0.0, 600.0)
+        Open previous screen
+        Open previous screen
+    [END - Change inputs]
+    [START - Change services]
+        [START - Open settings: Network services]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Network services"
+        [END - Open settings: Network services]
+        Drag item: Tidal -> drag Offset(0.0, -600.0)
+        Drag item: TuneIn Radio -> drag Offset(0.0, -600.0)
+        Drag item: Deezer -> drag Offset(0.0, -600.0)
+        Drag item: Music Server (DLNA) -> drag Offset(0.0, -600.0)
+        Change checkbox: Spotify, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0A'>]), delay = 0
+        Drag item: Spotify -> drag Offset(0.0, 600.0)
+        Change checkbox: Amazon Music, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'1C'>]), delay = 0
+        Drag item: Amazon Music -> drag Offset(0.0, 600.0)
+        Open previous screen
+        Open previous screen
+    [END - Change services]
+    [START - Change listening modes]
+        [START - Open settings: Listening modes]
+            [START - Open driver menu: Settings]
+                Open application drawer
+                Tap: widget with text "Settings"
+            [END - Open driver menu: Settings]
+            Tap: widget with text "Listening modes"
+        [END - Open settings: Listening modes]
+        Change checkbox: Mono, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0F'>]), delay = 0
+        Change checkbox: Stereo, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'00'>]), delay = 0
+        Change checkbox: Direct, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'01'>]), delay = 0
+        Change checkbox: Unplugged, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'09'>]), delay = 0
+        Change checkbox: Orchestra, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'08'>]), delay = 0
+        Change checkbox: Studio-Mix, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0A'>]), delay = 0
+        Change checkbox: Pure Audio, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'11'>]), delay = 0
+        Change checkbox: Full Mono, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'13'>]), delay = 0
+        Change checkbox: All Ch Stereo, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0C'>]), delay = 0
+        Change checkbox: TV Logic, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0B'>]), delay = 0
+        Change checkbox: Theater-Dimensional, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0D'>]), delay = 0
+        Change checkbox: Dolby Digital, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'40'>]), delay = 0
+        Change checkbox: Dolby Surround, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'80'>]), delay = 0
+        Change checkbox: Dolby THX Cinema, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'84'>]), delay = 0
+        Change checkbox: Dolby THX Music, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'8B'>]), delay = 0
+        Change checkbox: Dolby THX Games, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'89'>]), delay = 0
+        Change checkbox: DTS Neural:X, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'82'>]), delay = 0
+        Change checkbox: DTS Virtual:X, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'17'>]), delay = 0
+        Change checkbox: Game-RPG, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'03'>]), delay = 0
+        Change checkbox: Game-Action, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'05'>]), delay = 0
+        Change checkbox: Game-Rock, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'06'>]), delay = 0
+        Change checkbox: Game-Sports, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'0E'>]), delay = 0
+        Change checkbox: Auto Surround, true -> false
+        Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'FF'>]), delay = 0
+        Open previous screen
+        Open previous screen
+    [END - Change listening modes]
+    Result: PASSED in 79 seconds
+[END - Initial Setup of Onkyo Player]
+[START - Building Favourites for Onkyo Player]
+    [START - Open tab: SHORTCUTS]
+        Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+    [END - Open tab: SHORTCUTS]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET", delay = 5
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Music Server (DLNA), Kontron DLNA Server, Music]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music Server (DLNA)"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music"
+    [END - Navigate to media]
+    [START - Open context menu: Artist]
+        Tap: widget with text "Artist"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Artist]
+    [START - Navigate to media]
+        Path: [Genre, Rock<S>Rock Opera, Franz Ferdinand<S>Geordie]
+        Ensure item in list: Genre
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Genre"
+        Split: [Rock, Rock Opera]
+        Ensure item in list: Rock Opera
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+        Split: [Franz Ferdinand, Geordie]
+        Ensure item in list: Geordie
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Franz Ferdinand"
+        Ensure item in list: Final item
+    [END - Navigate to media]
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    [START - Open context menu: Always Ascending]
+        Tap: widget with text "Always Ascending"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Always Ascending]
+    [START - Rename shortcuts]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: Artist
+        [START - Open context menu: Artist]
+            Tap: widget with text "Artist"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Artist]
+        Setting text: "DLNA Artists", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Always Ascending
+        [START - Open context menu: Always Ascending]
+            Tap: widget with text "Always Ascending"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Always Ascending]
+        Setting text: "Franz Ferdinand on DLNA", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+    [END - Rename shortcuts]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET", delay = 5
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+    [END - Navigate to media]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Music]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music"
+    [END - Navigate to media]
+    Tap: widget with text "My Music | items: 6"
+    [START - Open context menu: Flow]
+        Tap: widget with text "Flow"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Flow]
+    [START - Navigate to media]
+        Path: [My Music, Favourite tracks]
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favourite tracks"
+        Ensure item in list: Final item
+    [END - Navigate to media]
+    [START - Open context menu: The Dancer]
+        Tap: widget with text "The Dancer"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: The Dancer]
+    Ensure item in list: Return
+    [START - Navigate to media]
+        Path: [Return, My Playlists, Onkyo playlist]
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Onkyo playlist"
+        Ensure item in list: Final item
+    [END - Navigate to media]
+    [START - Open context menu: Personal Jesus / Depeche Mode]
+        Tap: widget with text "Personal Jesus / Depeche Mode"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Personal Jesus / Depeche Mode]
+    Ensure item in list: Return
+    [START - Navigate to media]
+        Path: [Return, Return, My Albums, Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky]
+        Ensure item in list: Return
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
+        Ensure item in list: Return
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
+        Ensure item in list: My Albums
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Albums"
+        Ensure item in list: Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky"
+    [END - Navigate to media]
+    [START - Open context menu: Цыганский романс "Кони привередливые"]
+        Tap: widget with text "Цыганский романс "Кони привередливые""
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Цыганский романс "Кони привередливые"]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer, Mixes, Rock<S>Soul & Funk]
+        Tap: widget with widget matching predicate
+        Ensure item in list: Deezer
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Ensure item in list: Mixes
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Mixes"
+        Split: [Rock, Soul & Funk]
+        Ensure item in list: Soul & Funk
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+    [END - Navigate to media]
+    Ensure item in list: Rock & Roll
+    [START - Open context menu: Rock & Roll]
+        Tap: widget with text "Rock & Roll"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Rock & Roll]
+    [START - Rename shortcuts]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: Flow
+        [START - Open context menu: Flow]
+            Tap: widget with text "Flow"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Flow]
+        Setting text: "Deezer Flow", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: The Dancer
+        [START - Open context menu: The Dancer]
+            Tap: widget with text "The Dancer"
+            Tap: widget with text "Edit"
+        [END - Open context menu: The Dancer]
+        Setting text: "Deezer Favourites", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Personal Jesus / Depeche Mode
+        [START - Open context menu: Personal Jesus / Depeche Mode]
+            Tap: widget with text "Personal Jesus / Depeche Mode"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Personal Jesus / Depeche Mode]
+        Setting text: "Deezer Playlist", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Цыганский романс "Кони привередливые"
+        [START - Open context menu: Цыганский романс "Кони привередливые"]
+            Tap: widget with text "Цыганский романс "Кони привередливые""
+            Tap: widget with text "Edit"
+        [END - Open context menu: Цыганский романс "Кони привередливые"]
+        Setting text: "В.Высоцкий", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Rock & Roll
+        [START - Open context menu: Rock & Roll]
+            Tap: widget with text "Rock & Roll"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Rock & Roll]
+        Setting text: "Deezer Rock & Roll", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+    [END - Rename shortcuts]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET", delay = 5
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, TuneIn Radio, My Presets]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "TuneIn Radio"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Presets"
+    [END - Navigate to media]
+    [START - Open context menu: Absolute Classic Hits (Classic Hits)]
+        Tap: widget with text "Absolute Classic Hits (Classic Hits)"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Absolute Classic Hits (Classic Hits)]
+    [START - Open context menu: PureRock.US (Metal)]
+        Tap: widget with text "PureRock.US (Metal)"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: PureRock.US (Metal)]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "USB Disk", delay = 5
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, onkyo_music]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music"
+    [END - Navigate to media]
+    [START - Open context menu: Disco]
+        Tap: widget with text "Disco"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Disco]
+    Ensure item in list: Rock
+    [START - Open context menu: Power Metall]
+        Tap: widget with text "Power Metall"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Power Metall]
+    [START - Open context menu: Rock]
+        Tap: widget with text "Rock"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Rock]
+    Ensure item in list: Эстрада
+    [START - Open context menu: Русский рок]
+        Tap: widget with text "Русский рок"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Русский рок]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "DAB"
+    [START - Open context menu: Playback mode]
+        Tap: widget with text "Playback mode"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: Playback mode]
+    Tap: widget with text "FM"
+    [START - Open context menu: 2 - EnrgyBRE - 89.80 MHz]
+        Tap: widget with text "2 - EnrgyBRE - 89.80 MHz"
+        Tap: widget with text "Create shortcut"
+    [END - Open context menu: 2 - EnrgyBRE - 89.80 MHz]
+    [START - Rename shortcuts]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: Playback mode
+        [START - Open context menu: Playback mode]
+            Tap: widget with text "Playback mode"
+            Tap: widget with text "Edit"
+        [END - Open context menu: Playback mode]
+        Setting text: "DAB", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: 2 - EnrgyBRE - 89.80 MHz
+        [START - Open context menu: 2 - EnrgyBRE - 89.80 MHz]
+            Tap: widget with text "2 - EnrgyBRE - 89.80 MHz"
+            Tap: widget with text "Edit"
+        [END - Open context menu: 2 - EnrgyBRE - 89.80 MHz]
+        Setting text: "ENERGY", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+    [END - Rename shortcuts]
+    Tap: widget with text "Franz Ferdinand on DLNA", delay = 5
+    Result: PASSED in 214 seconds
+[END - Building Favourites for Onkyo Player]
+[START - Set Onkyo RI devices]
+    [START - Open tab: RI]
+        Tap: widget with type "Tab" that are ancestors of widget with text "RI"
+    [END - Open tab: RI]
+    [START - Open driver menu: Tab layout]
+        Open application drawer
+        Tap: widget with text "Tab layout"
+    [END - Open driver menu: Tab layout]
+    Change checkbox: Divider, true -> false
+    Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'DV1'>]), delay = 0
+    Ensure item in list: Tape Deck (RI)
+    Change checkbox: MD Player (RI), false -> true
+    Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'RIM'>]), delay = 0
+    Change checkbox: Tape Deck (RI), false -> true
+    Tap: widget with type "Checkbox" descending from widget with the given widget (ReorderableItem-[<'RIT'>]), delay = 0
+    Open previous screen
+    Result: PASSED in 14 seconds
+[END - Set Onkyo RI devices]
+[START - Onkyo: Play from DLNA]
+    [START - Connect to: My Onkyo Player]
+    [END - Connect to: My Onkyo Player]
+    [START - Open tab: SHORTCUTS]
+        Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+    [END - Open tab: SHORTCUTS]
+    Tap: widget with text "Franz Ferdinand on DLNA", delay = 5
+    Waiting "Always Ascending" is playing...
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Result: PASSED in 13 seconds
+[END - Onkyo: Play from DLNA]
+[START - Onkyo: Play from USB]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "USB Disk"
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, onkyo_music, Hard Rock, Accept]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Hard Rock"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Accept"
+    [END - Navigate to media]
+    [START - Open context menu: Metal Heart (1985)]
+        Tap: widget with text "Metal Heart (1985)"
+        Tap: widget with text "Replace and play"
+    [END - Open context menu: Metal Heart (1985)]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, onkyo_music, Rock, Muse]
+        Tap: widget with widget matching predicate
+        Ensure item in list: onkyo_music
+        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music"
+        Ensure item in list: Rock
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+        Ensure item in list: Muse
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Muse"
+    [END - Navigate to media]
+    [START - Open context menu: Absolution (2003)]
+        Tap: widget with text "Absolution (2003)"
+        Tap: widget with text "Add"
+    [END - Open context menu: Absolution (2003)]
+    Tap: widget with text "NET"
+    Tap: widget with text "Play Queue"
+    Waiting "01-Metal Heart.flac" is playing...
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Move slider: min = 0.0, max = 324.0, value = 35.0
+    Move slider: min = 0.0, max = 324.0, value = 155.0
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Ensure item in list: Muse
+    Tap: widget with text containing Fury
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+    [END - Ensure Audio/Video info]
+    Result: PASSED in 67 seconds
+[END - Onkyo: Play from USB]
+[START - Onkyo: Play from Queue]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Ensure item in list: Return
+    Initial list: [[lib/assets/buttons/cmd_return.svg, Return], [lib/assets/buttons/media_item_music.svg, 01-Metal Heart.flac], [lib/assets/buttons/media_item_music.svg, 02-Midnight Mover.flac], [lib/assets/buttons/media_item_music.svg, 03-Up To The Limit.flac], [lib/assets/buttons/media_item_music.svg, 04-Wrong Is Right.flac], [lib/assets/buttons/media_item_music.svg, 05-Screaming For A Love-Bite.flac], [lib/assets/buttons/media_item_music.svg, 06-Too High To Get It Right.flac], [lib/assets/buttons/media_item_music.svg, 07-Dogs On Leads.flac], [lib/assets/buttons/media_item_music.svg, 08-Teach Us To Survive.flac], [lib/assets/buttons/media_item_music.svg, 09-Living For Tonite.flac], [lib/assets/buttons/media_item_music.svg, 10-Bound To Fail.flac], [lib/assets/buttons/media_item_music.svg, 11-Love Child (Live).flac], [lib/assets/buttons/media_item_music.svg, 12-Living For Tonite (Live).flac]]
+    Tap: widget with text "01-Metal Heart.flac"
+    Waiting "01-Metal Heart.flac" is playing...
+    Drag item: 06-Too High To Get It Right.flac -> drag Offset(0.0, -600.0)
+    [START - Open context menu: 03-Up To The Limit.flac]
+        Tap: widget with text "03-Up To The Limit.flac"
+        Tap: widget with text "Remove item"
+    [END - Open context menu: 03-Up To The Limit.flac]
+    [START - Open context menu: 07-Dogs On Leads.flac]
+        Tap: widget with text "07-Dogs On Leads.flac"
+        Tap: widget with text "Remove all"
+    [END - Open context menu: 07-Dogs On Leads.flac]
+    Tap: widget with text "Return"
+    Result: PASSED in 44 seconds
+[END - Onkyo: Play from Queue]
+[START - Onkyo: Play from Deezer]
+    [START - Play shortcut: В.Высоцкий]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Tap: widget with text "В.Высоцкий"
+        Waiting "Цыганский романс "Кони привередливые"" is playing...
+    [END - Play shortcut: В.Высоцкий]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Play shortcut: Deezer Flow]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Tap: widget with text "Deezer Flow"
+        Waiting "Flow" is playing...
+    [END - Play shortcut: Deezer Flow]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with widget matching predicate
+    Tap: widget with text "Add to a playlist"
+    Tap: widget with text "Test Playlist"
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Music, My Playlists, Test Playlist]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Test Playlist"
+        Ensure item in list: Final item
+    [END - Navigate to media]
+    Tap: 2 widgets with type "ListTile", index 1, delay = 5
+    Tap: 2 widgets with type "ListTile", index 1
+    Tap: widget with text "Playback mode"
+    Tap: widget with type "ListTile" that are ancestors of widget with text "Playback mode"
+    Tap: widget with text "Track menu"
+    Tap: widget with type "ListTile" that are ancestors of widget with text "Remove from My Playlists"
+    Tap: widget with text "OK"
+    Result: PASSED in 61 seconds
+[END - Onkyo: Play from Deezer]
+[START - Onkyo: Play from DAB]
+    [START - Play shortcut: DAB]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Tap: widget with text "DAB"
+        Waiting "Playback mode" is playing...
+    [END - Play shortcut: DAB]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+    [END - Ensure Audio/Video info]
+    Tap: widget with widget matching predicate, delay = 10
+    Tap: widget with widget matching predicate, delay = 10
+    Tap: widget with widget matching predicate
+    Result: PASSED in 71 seconds
+[END - Onkyo: Play from DAB]
+[START - Onkyo: Change volume]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: 2 widgets with widget matching predicate, index 0, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Result: PASSED in 15 seconds
+[END - Onkyo: Change volume]
+[START - Onkyo: Group/Ingroup]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with widget matching predicate
+    Tap: widget with text "My Onkyo Box"
+    Tap: widget with text "OK"
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with widget matching predicate
+    Tap: widget with text "My Onkyo Box"
+    Tap: widget with text "OK"
+    Result: PASSED in 32 seconds
+[END - Onkyo: Group/Ingroup]
+[START - Onkyo: Device settings]
+    [START - Open tab: DEVICE]
+        Tap: widget with type "Tab" that are ancestors of widget with text "DEVICE"
+    [END - Open tab: DEVICE]
+    [START - Change friendly name: New Player Name]
+        Setting text: "New Player Name", number of fields = 1, field index = 0
+        Tap: widget with widget matching predicate
+    [END - Change friendly name: New Player Name]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Open tab: DEVICE]
+        Tap: widget with type "Tab" that are ancestors of widget with text "DEVICE"
+    [END - Open tab: DEVICE]
+    [START - Change friendly name: Onkyo Player]
+        Setting text: "Onkyo Player", number of fields = 1, field index = 0
+        Tap: widget with widget matching predicate
+    [END - Change friendly name: Onkyo Player]
+    [START - Open context menu: Bright]
+        Tap: widget with text "Bright"
+        Tap: widget with text "Edit"
+    [END - Open context menu: Bright]
+    Setting text: "Super-Bright", number of fields = 2, field index = 1
+    Tap: widget with text "OK"
+    [START - Open context menu: Super-Bright]
+        Tap: widget with text "Super-Bright"
+        Tap: widget with text "Edit"
+    [END - Open context menu: Super-Bright]
+    Tap: widget with widget matching predicate
+    Tap: widget with text "OK"
+    Result: PASSED in 40 seconds
+[END - Onkyo: Device settings]
+[START - Onkyo: Device display]
+    [START - Open tab: RC]
+        Tap: widget with type "Tab" that are ancestors of widget with text "RC"
+    [END - Open tab: RC]
+    Result: PASSED in 6 seconds
+[END - Onkyo: Device display]
+[START - Denon: Play from USB]
+    [START - Connect to: My Denon AVR]
+        Open application drawer
+        Tap: widget with text "My Denon AVR", delay = 10
+    [END - Connect to: My Denon AVR]
+    [START - Play shortcut: В.Высоцкий]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Tap: widget with text "В.Высоцкий"
+        Waiting "Цыганский романс 'Кони привередливые'" is playing...
+    [END - Play shortcut: В.Высоцкий]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET"
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+    [END - Navigate to media]
+    Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
+    [START - Search dialog]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate (ignoring all but index 0)
+        Setting text: "Accept", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Accept
+    [END - Search dialog]
+    Tap: widget with type "ListTile" that are ancestors of widget with text "Accept"
+    [START - Open context menu: Metal Heart]
+        Tap: widget with text "Metal Heart"
+        Tap: widget with text "Replace and play"
+    [END - Open context menu: Metal Heart]
+    [START - Search dialog]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate (ignoring all but index 1)
+        Setting text: "Absolution", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Absolution
+    [END - Search dialog]
+    [START - Open context menu: Absolution]
+        Tap: widget with text "Absolution"
+        Tap: widget with text "Add"
+    [END - Open context menu: Absolution]
+    Tap: widget with widget matching predicate
+    Tap: widget with text "Play Queue"
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate, delay = 5
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Ensure item in list: Muse
+    Tap: widget with text "Muse - Fury"
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with text "STEREO", delay = 5
+    [START - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+    [END - Ensure Audio/Video info]
+    Result: PASSED in 82 seconds
+[END - Denon: Play from USB]
+[START - Denon: Audio Control for main zone]
+    Tap: widget with widget matching predicate
+    [START - Test slider: Master volume:]
+        Move slider: min = 0.0, max = 60.0, value = 16.0
+        Move slider: min = 0.0, max = 60.0, value = 8.0
+        Move slider: min = 0.0, max = 60.0, value = 0.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: Master volume:]
+    [START - Test slider: Bass:]
+        Move slider: min = 0.0, max = 12.0, value = 6.0
+        Move slider: min = 0.0, max = 12.0, value = 2.0
+        Move slider: min = 0.0, max = 12.0, value = 0.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: Bass:]
+    [START - Test slider: Treble:]
+        Move slider: min = 0.0, max = 12.0, value = 9.0
+        Move slider: min = 0.0, max = 12.0, value = 5.0
+        Move slider: min = 0.0, max = 12.0, value = 1.0
+        Move slider: min = 0.0, max = 12.0, value = 0.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: Treble:]
+    [START - Test slider: Balance:]
+        Move slider: min = -12.0, max = 12.0, value = 0.0
+        Move slider: min = -12.0, max = 12.0, value = -4.0
+        Move slider: min = -12.0, max = 12.0, value = -7.0
+        Move slider: min = -12.0, max = 12.0, value = -10.0
+        Move slider: min = -12.0, max = 12.0, value = -12.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: Balance:]
+    Tap: widget with widget matching predicate
+    [START - Test slider: Main:]
+        Move slider: min = 0.0, max = 60.0, value = 16.0
+        Move slider: min = 0.0, max = 60.0, value = 8.0
+        Move slider: min = 0.0, max = 60.0, value = 0.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: Main:]
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with text "OK"
+    Result: PASSED in 57 seconds
+[END - Denon: Audio Control for main zone]
+[START - Denon: Play from Queue]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET"
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Play Queue]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play Queue"
+    [END - Navigate to media]
+    Initial list: [[lib/assets/buttons/cmd_return.svg, Return], [lib/assets/buttons/media_item_music.svg, Accept - Metal Heart], [lib/assets/buttons/media_item_music.svg, Accept - Midnight Mover], [lib/assets/buttons/media_item_music.svg, Accept - Up To The Limit], [lib/assets/buttons/media_item_music.svg, Accept - Wrong Is Right], [lib/assets/buttons/media_item_music.svg, Accept - Screaming For A Love-Bite], [lib/assets/buttons/media_item_music.svg, Accept - Too High To Get It Right], [lib/assets/buttons/media_item_music.svg, Accept - Dogs On Leads], [lib/assets/buttons/media_item_music.svg, Accept - Teach Us To Survive], [lib/assets/buttons/media_item_music.svg, Accept - Living For Tonite], [lib/assets/buttons/media_item_music.svg, Accept - Bound To Fail], [lib/assets/buttons/media_item_music.svg, Accept - Love Child (Live)], [lib/assets/buttons/media_item_music.svg, Accept - Living For Tonite (Live)]]
+    Tap: widget with text "Accept - Metal Heart"
+    Waiting "Accept - Metal Heart" is playing...
+    Drag item: Accept - Too High To Get It Right -> drag Offset(0.0, -600.0)
+    [START - Open context menu: Accept - Up To The Limit]
+        Tap: widget with text "Accept - Up To The Limit"
+        Tap: widget with text "Remove item"
+    [END - Open context menu: Accept - Up To The Limit]
+    [START - Open context menu: Accept - Dogs On Leads]
+        Tap: widget with text "Accept - Dogs On Leads"
+        Tap: widget with text "Remove all"
+    [END - Open context menu: Accept - Dogs On Leads]
+    Tap: widget with text "Return"
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Result: PASSED in 45 seconds
+[END - Denon: Play from Queue]
+[START - Denon: Test HEOS favorites]
+    [START - Play shortcut: Flow]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Tap: widget with text "Flow"
+    [END - Play shortcut: Flow]
+    [START - Open context menu: Flow]
+        Tap: widget with text "Flow"
+        Tap: widget with text "Remove from HEOS Favorites"
+    [END - Open context menu: Flow]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer, Flow]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Flow"
+    [END - Navigate to media]
+    [START - Open context menu: Flow]
+        Tap: widget with text "Flow"
+        Tap: widget with text "Add to HEOS Favorites"
+    [END - Open context menu: Flow]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Favorite]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite"
+    [END - Navigate to media]
+    Result: PASSED in 15 seconds
+[END - Denon: Test HEOS favorites]
+[START - Denon: Play from Deezer]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Playlists, Favourite tracks]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favourite tracks"
+    [END - Navigate to media]
+    Tap: widget with text "Don't You Believe a Stranger"
+    Waiting "Don't You Believe a Stranger" is playing...
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+    [END - Ensure Audio/Video info]
+    Result: PASSED in 18 seconds
+[END - Denon: Play from Deezer]
+[START - Denon: Hide empty items]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Deezer]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+    [END - Navigate to media]
+    [START - Search dialog]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate (ignoring all but index 0)
+        Setting text: "Muse", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Muse
+    [END - Search dialog]
+    Tap: widget with widget matching predicate
+    Setting text: "Muse", number of fields = 1, field index = 0
+    Ensure item in list: Return
+    [START - Open context menu: Muse]
+        Tap: 10 widgets with text "Muse", index 8
+        Tap: widget with text "Hide empty items"
+    [END - Open context menu: Muse]
+    Initial number of items: 9
+    Final number of items: 3
+    Result: PASSED in 23 seconds
+[END - Denon: Hide empty items]
+[START - Denon: Change listening modes]
+    [START - Change listening mode]
+        [START - Open tab: LISTEN]
+            Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+        [END - Open tab: LISTEN]
+        Tap: widget with text "PURE DIRECT", delay = 5
+        [START - Ensure Audio/Video info]
+            Tap: widget with widget matching predicate
+            Tap: widget with text "OK"
+        [END - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+        [START - Open tab: RC]
+            Tap: widget with type "Tab" that are ancestors of widget with text "RC"
+        [END - Open tab: RC]
+    [END - Change listening mode]
+    [START - Change listening mode]
+        [START - Open tab: LISTEN]
+            Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+        [END - Open tab: LISTEN]
+        Tap: widget with text "DIRECT", delay = 5
+        [START - Ensure Audio/Video info]
+            Tap: widget with widget matching predicate
+            Tap: widget with text "OK"
+        [END - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+        [START - Open tab: RC]
+            Tap: widget with type "Tab" that are ancestors of widget with text "RC"
+        [END - Open tab: RC]
+    [END - Change listening mode]
+    [START - Change listening mode]
+        [START - Open tab: LISTEN]
+            Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+        [END - Open tab: LISTEN]
+        Tap: widget with text "STEREO", delay = 5
+        [START - Ensure Audio/Video info]
+            Tap: widget with widget matching predicate
+            Tap: widget with text "OK"
+        [END - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+        [START - Open tab: RC]
+            Tap: widget with type "Tab" that are ancestors of widget with text "RC"
+        [END - Open tab: RC]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate
+    [END - Change listening mode]
+    Result: PASSED in 48 seconds
+[END - Denon: Change listening modes]
+[START - Denon: Play from DAB]
+    [START - Play shortcut: BOB! on DAB]
+        [START - Open tab: SHORTCUTS]
+            Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
+        [END - Open tab: SHORTCUTS]
+        Ensure item in list: ENERGY on FM
+        Tap: widget with text "BOB! on DAB"
+        Ensure item in list: List top
+        Waiting "BOB!" is playing...
+    [END - Play shortcut: BOB! on DAB]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Ensure Audio/Video info]
+        Tap: widget with widget matching predicate
+        Tap: widget with text "OK"
+    [END - Ensure Audio/Video info]
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text containing OLDIEANT
+    Waiting "OLDIEANT" is playing...
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Result: PASSED in 37 seconds
+[END - Denon: Play from DAB]
+[START - Denon: Device settings]
+    [START - Open tab: DEVICE]
+        Tap: widget with type "Tab" that are ancestors of widget with text "DEVICE"
+    [END - Open tab: DEVICE]
+    [START - Change friendly name: New Player Name]
+        Setting text: "New Player Name", number of fields = 1, field index = 0
+        Tap: widget with widget matching predicate
+    [END - Change friendly name: New Player Name]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    [START - Open tab: DEVICE]
+        Tap: widget with type "Tab" that are ancestors of widget with text "DEVICE"
+    [END - Open tab: DEVICE]
+    [START - Change friendly name: Denon AVR]
+        Setting text: "Denon AVR", number of fields = 1, field index = 0
+        Tap: widget with widget matching predicate
+    [END - Change friendly name: Denon AVR]
+    [START - Open context menu: Bright]
+        Tap: widget with text "Bright"
+        Tap: widget with text "Edit"
+    [END - Open context menu: Bright]
+    Setting text: "Super-Bright", number of fields = 2, field index = 1
+    Tap: widget with text "OK"
+    [START - Open context menu: Super-Bright]
+        Tap: widget with text "Super-Bright"
+        Tap: widget with text "Edit"
+    [END - Open context menu: Super-Bright]
+    Tap: widget with widget matching predicate
+    Tap: widget with text "OK"
+    Result: PASSED in 40 seconds
+[END - Denon: Device settings]
+[START - Denon: All zone stereo]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with text "ALL ZONE STEREO"
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET"
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+    [END - Navigate to media]
+    Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
+    [START - Search dialog]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate (ignoring all but index 1)
+        Setting text: "Reload", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Reload
+    [END - Search dialog]
+    [START - Open context menu: Reload]
+        Tap: widget with text "Reload"
+        Tap: widget with text "Replace and play"
+    [END - Open context menu: Reload]
+    [START - Open tab: LISTEN]
+        Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
+    [END - Open tab: LISTEN]
+    Tap: widget with text "Metallica"
+    [START - Open driver menu: To Onkyo]
+        Open application drawer
+        Tap: widget with text "To Onkyo"
+    [END - Open driver menu: To Onkyo]
+    Tap: widget with text "Metallica"
+    Tap: widget with widget matching predicate
+    [START - Test slider: Balance:]
+        Move slider: min = -12.0, max = 12.0, value = 0.0
+        Move slider: min = -12.0, max = 12.0, value = -4.0
+        Move slider: min = -12.0, max = 12.0, value = -7.0
+        Move slider: min = -12.0, max = 12.0, value = -10.0
+        Move slider: min = -12.0, max = 12.0, value = -12.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: Balance:]
+    Tap: widget with widget matching predicate
+    [START - Test slider: Main:]
+        Move slider: min = 0.0, max = 60.0, value = 16.0
+        Move slider: min = 0.0, max = 60.0, value = 8.0
+        Move slider: min = 0.0, max = 60.0, value = 0.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: Main:]
+    [START - Test slider: To Onkyo:]
+        Move slider: min = 0.0, max = 60.0, value = 50.0
+        Move slider: min = 0.0, max = 60.0, value = 28.0
+        Move slider: min = 0.0, max = 60.0, value = 8.0
+        Move slider: min = 0.0, max = 60.0, value = 0.0
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
+        Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
+    [END - Test slider: To Onkyo:]
+    Tap: widget with widget matching predicate
+    Tap: widget with widget matching predicate
+    Tap: widget with text "OK"
+    Result: PASSED in 76 seconds
+[END - Denon: All zone stereo]
+[START - Denon: Create playlist]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET"
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+    [END - Navigate to media]
+    Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
+    [START - Search dialog]
+        Tap: widget with widget matching predicate
+        Tap: widget with widget matching predicate (ignoring all but index 1)
+        Setting text: "Joyful", number of fields = 1, field index = 0
+        Tap: widget with text "OK"
+        Ensure item in list: Joyful
+    [END - Search dialog]
+    [START - Open context menu: Joyful]
+        Tap: widget with text "Joyful"
+        Tap: widget with text "Replace and play"
+    [END - Open context menu: Joyful]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Play Queue]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play Queue"
+    [END - Navigate to media]
+    Tap: widget with text "Ayo - Without You"
+    Tap: widget with widget matching predicate
+    Setting text: "My test playlist", number of fields = 1, field index = 0
+    Tap: widget with text "OK"
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Play List]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play List"
+    [END - Navigate to media]
+    Tap: widget with text "My test playlist"
+    Tap: widget with text "Ayo - Letter By Letter"
+    Tap: widget with text "My test playlist | items: 12"
+    [START - Open context menu: My test playlist]
+        Tap: widget with text "My test playlist"
+        Tap: widget with text "Rename playlist"
+    [END - Open context menu: My test playlist]
+    Setting text: "My test playlist1", number of fields = 1, field index = 0
+    Tap: widget with text "OK"
+    Tap: widget with text "My test playlist1"
+    Tap: widget with text "Ayo - Without You"
+    Tap: widget with text "My test playlist1 | items: 12"
+    [START - Open context menu: My test playlist1]
+        Tap: widget with text "My test playlist1"
+        Tap: widget with text "Delete playlist"
+    [END - Open context menu: My test playlist1]
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Play List]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play List"
+    [END - Navigate to media]
+    Result: PASSED in 47 seconds
+[END - Denon: Create playlist]
+[START - Summary]
+    Executed 30 procedures
+    Total duration: 26 minutes
+    PASSED: 30
+    FAILED: []
+[END - Summary]

@@ -24,11 +24,22 @@ class OnpcTestLog {
 
   void setFile(String tName) {
     final DateTime now = DateTime.now();
-    _fName = File(tName + "_" + Version.NAME + "_" + now.toString().replaceAll(":", "-") + ".log");
+    _fName = File(tName);
+    log("Test platform: " +
+        Platform.operatingSystem +
+        "/" +
+        Platform.operatingSystemVersion +
+        ", app version " +
+        Version.NAME +
+        ", test date: " +
+        now.toString());
   }
 
-  void startMethod(final String name) {
+  void startMethod(final String name, {bool clearStack = false}) {
     log("[START - " + name + "]");
+    if (clearStack) {
+      _stack.clear();
+    }
     _stack.add(name);
   }
 

@@ -17,7 +17,7 @@ test_mac() {
         echo "Deleted configuration file: $CFG_FILE_MACOS"
     fi
 
-    TEST_FILES=("app_setup.dart" "onkyo_player_test.dart" "denon_avr_test.dart")
+    TEST_FILES=("test_session.dart")
     for TEST_FILE in "${TEST_FILES[@]}"; do
         if flutter test -d macos "integration_test/$TEST_FILE"; then
             echo "✅ $TEST_FILE finished successfully"
@@ -27,10 +27,11 @@ test_mac() {
         fi
     done
     echo "Application logs:"
-    ls -l "$HOME"/Library/Containers/com.mkulesh.onpc/Data/*.log
+    mv "$HOME"/Library/Containers/com.mkulesh.onpc/Data/release-test.log release
 }
 
 main() {
+    clear
     cd "${SCRIPT_DIR}"
     cd ..
 

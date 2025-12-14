@@ -31,12 +31,42 @@ class AudioSliderParameters {
   String buttonDown = "";
 }
 
+class OnpcTestProcedure {
+  final Future<void> Function(OnpcTestUtils tu) procedure;
+  final String name;
+
+  OnpcTestProcedure(this.procedure, this.name);
+
+  @override
+  String toString() {
+    return name;
+  }
+
+  Future<bool> run(OnpcTestUtils tu) async {
+    tu.startMethod(name, clearStack: true);
+    bool result = false;
+    try {
+      final DateTime startTime = DateTime.now();
+      await procedure(tu);
+      final DateTime endTime = DateTime.now();
+      result = true;
+      tu.log("Result: PASSED in " + endTime.difference(startTime).inSeconds.toString() + " seconds");
+    } catch (e, stackTrace) {
+      tu.log("Result: FAILED");
+      tu.log(e.toString());
+      tu.log(stackTrace.toString());
+      result = false;
+    }
+    tu.endMethod();
+    return result;
+  }
+}
+
 class OnpcTestUtils extends OnpcGuiActions {
   static const String TOP_LAYER = "_MEDIA_LIST_TOP_LAYER";
 
   static const int NORMAL_DELAY = 5;
   static const int LONG_DELAY = 10;
-  static const int HUGE_DELAY = 15;
 
   static const Offset LIST_DRAG_OFFSET = Offset(0, -200);
   static const Offset LIST_DRAG_OFFSET_UP = Offset(0, 300);
@@ -68,7 +98,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     await stepDelayMs();
     if (find.textContaining(searchFor).evaluate().isEmpty) {
       await openDrawer();
-      await findAndTap(() => find.text(device), delay: HUGE_DELAY);
+      await findAndTap(() => find.text(device), delay: LONG_DELAY);
     }
     endMethod();
   }
@@ -357,6 +387,46 @@ class OnpcTestUtils extends OnpcGuiActions {
       expect(find.text("Apply listening mode"), listeningMode ? findsOneWidget : findsNothing);
       await setText(1, 0, items[i].item2);
       await findAndTap(() => find.text("OK"));
+    }
+    endMethod();
+  }
+
+  Future<void> openSearchDialog(int type, String search) async {
+    startMethod("Search dialog");
+    await findAndTap(() => find.byTooltip("Search"), ensureAfter: () => find.text("OK"));
+    expect(find.text("Search"), findsOneWidget);
+    expect(find.text("Artist"), findsOneWidget);
+    expect(find.text("Album"), findsOneWidget);
+    expect(find.text("Track"), findsOneWidget);
+    expect(find.text("CANCEL"), findsOneWidget);
+    final Finder fab = find.byWidgetPredicate((widget) => widget is Radio);
+    expect(fab, findsNWidgets(3));
+    await findAndTap(() => fab.at(type));
+    await setText(1, 0, search);
+    await findAndTap(() => find.text("OK"), ensureAfter: () => find.textContaining("Search: " + search + " | items:"));
+    await ensureVisibleInList(search, find.byType(ListView), () => find.text(search), Offset(0, -300));
+    endMethod();
+  }
+
+  Future<void> changeListeningMode(String input, String mode, bool isToneCtrl) async {
+    startMethod("Change listening mode");
+    await openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.text(mode.toUpperCase()));
+    await findAndTap(() => find.text(mode.toUpperCase()), delay: NORMAL_DELAY);
+    await ensureAvInfo(input, mode);
+    await findAndTap(() => find.byTooltip(Strings.audio_control),
+        ensureAfter: () => find.text(Strings.audio_control_current_zone));
+    expect(find.textContaining(Strings.master_volume), findsOneWidget);
+    expect(find.textContaining(Strings.tone_bass), isToneCtrl ? findsOneWidget : findsNothing);
+    expect(find.textContaining(Strings.tone_treble), isToneCtrl ? findsOneWidget : findsNothing);
+    expect(find.textContaining(Strings.audio_balance), isToneCtrl ? findsOneWidget : findsNothing);
+    expect(find.textContaining(Strings.tone_direct), isToneCtrl ? findsNothing : findsOneWidget);
+    await findAndTap(() => find.text("OK"));
+    await openTab("RC", swipeRight: true, ensureAfter: () => find.text(Strings.pref_listening_modes));
+    expect(find.text(mode), findsOneWidget);
+    if (mode == "Stereo") {
+      await findAndTap(() => find.byTooltip(Strings.listening_mode_up),
+          ensureAfter: () => find.text(Strings.listening_mode_pure_direct));
+      await findAndTap(() => find.byTooltip(Strings.listening_mode_down), ensureAfter: () => find.text("Stereo"));
     }
     endMethod();
   }
