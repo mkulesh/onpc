@@ -226,11 +226,11 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.navigateToMedia(["Genres"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
-        "Ensure Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
+        "Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
-        "Ensure Русский рок", find.byType(ListView), () => find.text("Сборники"), OnpcTestUtils.LIST_DRAG_OFFSET);
+        "Русский рок", find.byType(ListView), () => find.text("Сборники"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu("Русский рок", "Create shortcut", waitFor: true);
   }
 
@@ -249,7 +249,7 @@ Future<void> _buildDenonFavourites(OnpcTestUtils tu,
     await tu.openTab("MEDIA");
     await tu.findAndTap(() => find.text("TUNER"));
     await tu.ensureVisibleInList(
-        "Ensure list top", find.byType(ListView), () => find.text("DAB"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+        "List top", find.byType(ListView), () => find.text("DAB"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu.findAndTap(() => find.text("DAB"));
     await tu.contextMenu(DAB.item1, "Create shortcut", waitFor: true);
     await tu.findAndTap(() => find.text("FM"));
@@ -419,7 +419,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     // Deezer Playlist
     final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
     await tu.ensureVisibleInList(
-        "Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+        "Return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu
         .navigateToMedia(["Return", "My Playlists", "Onkyo playlist"], ensureAfter: () => find.text("Forever / Y&T"));
     await tu.contextMenu(PLAYLIST.item1, "Create shortcut", waitFor: true);
@@ -427,7 +427,7 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     // В.Высоцкий
     final Pair<String, String> VYSOTSKY = Pair<String, String>('Цыганский романс "Кони привередливые"', "В.Высоцкий");
     await tu.ensureVisibleInList(
-        "Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+        "Return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
     await tu.navigateToMedia(
         ["Return", "Return", "My Albums", 'Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky'],
         ensureVisible: true);
@@ -436,8 +436,8 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     // Rock & Roll
     final Pair<String, String> ROCK_N_ROLL = Pair<String, String>("Rock & Roll", "Deezer Rock & Roll");
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "Mixes", "Rock<S>Soul & Funk"], ensureVisible: true);
-    await tu.ensureVisibleInList("Ensure " + ROCK_N_ROLL.item1, find.byType(ListView),
-        () => find.text(ROCK_N_ROLL.item1), OnpcTestUtils.LIST_DRAG_OFFSET);
+    await tu.ensureVisibleInList(
+        ROCK_N_ROLL.item1, find.byType(ListView), () => find.text(ROCK_N_ROLL.item1), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu(ROCK_N_ROLL.item1, "Create shortcut");
 
     await tu.renameShortcuts([
@@ -469,11 +469,11 @@ Future<void> _buildOnkyoFavourites(final OnpcTestUtils tu,
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "onkyo_music"]);
     await tu.contextMenu("Disco", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
-        "Ensure Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
+        "Rock", find.byType(ListView), () => find.text("Synthpop"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu("Power Metall", "Create shortcut", waitFor: true);
     await tu.contextMenu("Rock", "Create shortcut", waitFor: true);
     await tu.ensureVisibleInList(
-        "Ensure Эстрада", find.byType(ListView), () => find.text("Эстрада"), OnpcTestUtils.LIST_DRAG_OFFSET);
+        "Эстрада", find.byType(ListView), () => find.text("Эстрада"), OnpcTestUtils.LIST_DRAG_OFFSET);
     await tu.contextMenu("Русский рок", "Create shortcut", waitFor: true);
   }
 
@@ -500,7 +500,7 @@ Future<void> _addRiDevices(OnpcTestUtils tu) async {
   await tu.openDrawerMenu("Tab layout", ensureAfter: () => find.text("Divider"));
   await tu.changeReorderableItem("Divider");
   await tu.ensureVisibleInList(
-      "Ensure " + TD, find.byType(ReorderableListView), () => find.text(TD), OnpcTestUtils.LIST_DRAG_OFFSET);
+      TD, find.byType(ReorderableListView), () => find.text(TD), OnpcTestUtils.LIST_DRAG_OFFSET);
   await tu.tester.drag(find.text(MD), OnpcTestUtils.LIST_DRAG_OFFSET, warnIfMissed: false);
   await tu.stepDelayMs();
   await tu.changeReorderableItem(MD, state: true);

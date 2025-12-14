@@ -17,7 +17,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/main.dart' as app;
-import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
 import 'package:onpc/views/AudioControlChannelLevelView.dart';
 
@@ -124,8 +123,8 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
   // Start from play queue
   await tu.findAndTap(() => find.byTooltip("Play Queue"),
       ensureAfter: () => find.textContaining("Play Queue | items: 27"));
-  await tu.ensureVisibleInList("Ensure " + artist2, find.byType(ReorderableListView),
-      () => find.text("Muse - Endlessly"), OnpcTestUtils.LIST_DRAG_OFFSET);
+  await tu.ensureVisibleInList(
+      artist2, find.byType(ReorderableListView), () => find.text("Muse - Endlessly"), OnpcTestUtils.LIST_DRAG_OFFSET);
   await tu.findAndTap(() => find.text("Muse - Fury"));
   await tu.openTab("LISTEN", ensureAfter: () => find.text(artist2));
   expect(find.text("Fury"), findsOneWidget);
@@ -255,7 +254,7 @@ Future<void> _playFromQueue(OnpcTestUtils tu) async {
 
   // Get initial list
   List<Pair<String, String>> list = tu.getListContent();
-  Logging.info(tu, "Initial list: " + list.toString());
+  tu.log("Initial list: " + list.toString());
 
   // Start playing first item
   final String toPlay = "Accept - Metal Heart";
@@ -356,7 +355,7 @@ Future<void> _hideEmptyItems(OnpcTestUtils tu) async {
   await tu.setText(1, 0, artist);
   await tu.stepDelayMs();
   await tu.ensureVisibleInList(
-      "Ensure return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+      "Return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
 
   // Get initial number of items
   final List<Pair<String, String>> list1 = tu.getListContent();
@@ -371,8 +370,8 @@ Future<void> _hideEmptyItems(OnpcTestUtils tu) async {
   // Get final number of items
   final List<Pair<String, String>> list2 = tu.getListContent();
   final int count2 = list2.where((item) => item.item2 == artist).length;
-  Logging.info(tu, "Initial number of items: " + count1.toString());
-  Logging.info(tu, "Final number of items: " + count2.toString());
+  tu.log("Initial number of items: " + count1.toString());
+  tu.log("Final number of items: " + count2.toString());
   expect(count2 < count1, true);
 }
 
@@ -587,6 +586,5 @@ Future<void> _openSearchDialog(OnpcTestUtils tu, int type, String search) async 
   await tu.findAndTap(() => fab.at(type));
   await tu.setText(1, 0, search);
   await tu.findAndTap(() => find.text("OK"), ensureAfter: () => find.textContaining("Search: " + search + " | items:"));
-  await tu.ensureVisibleInList(
-      "Ensure item " + search, find.byType(ListView), () => find.text(search), Offset(0, -300));
+  await tu.ensureVisibleInList(search, find.byType(ListView), () => find.text(search), Offset(0, -300));
 }

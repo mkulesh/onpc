@@ -18,7 +18,6 @@ import 'package:integration_test/integration_test.dart';
 import 'package:onpc/iscp/EISCPMessage.dart';
 import 'package:onpc/iscp/StateManager.dart';
 import 'package:onpc/main.dart' as app;
-import 'package:onpc/utils/Logging.dart';
 import 'package:onpc/utils/Pair.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -126,8 +125,8 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
 
   // Start from play queue
   await tu.openTab("MEDIA", ensureAfter: () => find.text("Play Queue | items: 27"));
-  await tu.ensureVisibleInList("Ensure " + artist2, find.byType(ReorderableListView),
-      () => find.textContaining("Endlessly"), OnpcTestUtils.LIST_DRAG_OFFSET);
+  await tu.ensureVisibleInList(artist2, find.byType(ReorderableListView), () => find.textContaining("Endlessly"),
+      OnpcTestUtils.LIST_DRAG_OFFSET);
   await tu.findAndTap(() => find.textContaining("Fury"));
   await tu.openTab("LISTEN", ensureAfter: () => find.text(artist2));
   expect(find.text(album2), findsOneWidget);
@@ -140,11 +139,11 @@ Future<void> _playFromUsb(final OnpcTestUtils tu) async {
 Future<void> _playFromQueue(OnpcTestUtils tu) async {
   await tu.openTab("MEDIA", ensureAfter: () => find.text("Play Queue | items: 27"));
   await tu.ensureVisibleInList(
-      "Ensure Return", find.byType(ReorderableListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+      "Return", find.byType(ReorderableListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
 
   // Get initial list
   List<Pair<String, String>> list = tu.getListContent();
-  Logging.info(tu, "Initial list: " + list.toString());
+  tu.log("Initial list: " + list.toString());
 
   // Start playing first item
   final String toPlay = "01-Metal Heart.flac";
