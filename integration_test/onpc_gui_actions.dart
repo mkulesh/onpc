@@ -12,10 +12,14 @@
  * Public License along with this program.
  */
 
+import 'dart:io' as io;
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Dimens.dart';
+import 'package:onpc/constants/Version.dart';
 import 'package:onpc/iscp/StateManager.dart';
 import 'package:onpc/main.dart' as app;
 import 'package:onpc/utils/Pair.dart';
@@ -34,7 +38,7 @@ typedef OnFind = Finder Function();
 class OnpcGuiActions extends OnpcTestLog {
   static const int _DEFAULT_DELAY_MS = 500;
   static const int _WAITING_DURATION = 1000 * 60; // 60 seconds waiting duration
-  final int _stepDelay = 1;
+  final int _defaultTapDelay = 1;
 
   final WidgetTester tester;
 
@@ -45,6 +49,18 @@ class OnpcGuiActions extends OnpcTestLog {
     expect(fab, findsOneWidget);
     final app.MusicControllerApp mainWidget = fab.evaluate().first.widget as app.MusicControllerApp;
     return mainWidget.viewContext.stateManager;
+  }
+
+  void preparePlatform(final String logFile) {
+    setLogFile(logFile);
+    log("Test platform: " +
+        io.Platform.operatingSystem +
+        "/" +
+        io.Platform.operatingSystemVersion +
+        ", app version " +
+        Version.NAME +
+        ", test date: " +
+        DateTime.now().toString());
   }
 
   Future<void> stepDelaySec(int delay) async {
@@ -128,7 +144,7 @@ class OnpcGuiActions extends OnpcTestLog {
     if (ensureAfter != null) {
       await ensureVisible(ensureAfter);
     } else {
-      for (int i = 0; i < (delay ?? _stepDelay); i++) {
+      for (int i = 0; i < (delay ?? _defaultTapDelay); i++) {
         await tester.pumpAndSettle();
         await Future.delayed(Duration(milliseconds: 900));
       }
@@ -270,5 +286,16 @@ class OnpcGuiActions extends OnpcTestLog {
       await Future.delayed(Duration(milliseconds: 100));
       assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
     }
+  }
+
+  String getTitleString() {
+    final Finder finder = find.textContaining("| items:");
+    if (finder.evaluate().length == 1) {
+      final widget = finder.evaluate().first.widget;
+      if (widget is Text && widget.data != null) {
+        return widget.data!;
+      }
+    }
+    return "";
   }
 }

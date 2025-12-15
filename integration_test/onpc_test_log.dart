@@ -14,7 +14,6 @@
 
 import 'dart:io';
 
-import 'package:onpc/constants/Version.dart';
 import 'package:onpc/utils/Logging.dart';
 
 class OnpcTestLog {
@@ -22,17 +21,8 @@ class OnpcTestLog {
   final List<String> _stack = [];
   File? _fName;
 
-  void setFile(String tName) {
-    final DateTime now = DateTime.now();
+  void setLogFile(String tName) {
     _fName = File(tName);
-    log("Test platform: " +
-        Platform.operatingSystem +
-        "/" +
-        Platform.operatingSystemVersion +
-        ", app version " +
-        Version.NAME +
-        ", test date: " +
-        now.toString());
   }
 
   void startMethod(final String name, {bool clearStack = false}) {

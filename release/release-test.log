@@ -1,7 +1,7 @@
-Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 2025-12-14 12:19:34.765056
+Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 2025-12-15 11:09:55.919036
 [START - Initial Search]
     Tap: widget with text "192.168.1.80:60128"
-    Result: PASSED in 5 seconds
+    Result: PASSED in 6 seconds
 [END - Initial Search]
 [START - About Screen]
     [START - Open driver menu: About]
@@ -17,36 +17,43 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with text "Settings"
     [END - Open driver menu: Settings]
     [START - Change parameter: Text and buttons size]
+        Ensure item in list: Text and buttons size
         Tap: widget with text "Text and buttons size"
         Tap: widget with text containing Small
     [END - Change parameter: Text and buttons size]
     [START - Change parameter: Theme]
+        Ensure item in list: Theme
         Tap: widget with text "Theme"
         Tap: widget with text containing Light (Purple and Green)
     [END - Change parameter: Theme]
     [START - Change parameter: App language]
+        Ensure item in list: App language
         Tap: widget with text "App language"
         Tap: widget with text containing English
     [END - Change parameter: App language]
     [START - Change parameter: Sound control]
+        Ensure item in list: Sound control
         Tap: widget with text "Sound control"
         Tap: widget with text containing Automatic
     [END - Change parameter: Sound control]
     [START - Change parameter: Master volume unit]
+        Ensure item in list: Master volume unit
         Tap: widget with text "Master volume unit"
         Tap: widget with text containing Relative (dB)
         Tap: widget with text "OK"
     [END - Change parameter: Master volume unit]
     [START - Change parameter: Use USB-RI interface]
+        Ensure item in list: Use USB-RI interface
         Tap: widget with text "Use USB-RI interface"
         Tap: widget with text containing OnkioRI FT231X
     [END - Change parameter: Use USB-RI interface]
     [START - Change parameter: Album's cover click behaviour]
+        Ensure item in list: Album's cover click behaviour
         Tap: widget with text "Album's cover click behaviour"
         Tap: widget with text containing Audio muting
     [END - Change parameter: Album's cover click behaviour]
     Open previous screen
-    Result: PASSED in 35 seconds
+    Result: PASSED in 23 seconds
 [END - Change Basic Settings]
 [START - Change Tab Layout]
     [START - Open driver menu: Tab layout]
@@ -67,14 +74,16 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate (ignoring all but index 1)
         Tap: widget with text "Save connection"
         Setting text: "My Denon AVR", number of fields = 3, field index = 2
-        Tap: widget with text "OK", delay = 10
+        Tap: widget with text "OK", delay = 5
     [END - Save connection: My Denon AVR/192.168.1.82]
+    Tap: widget with widget matching predicate
     [START - Change inputs]
         [START - Open settings: Input selectors]
             [START - Open driver menu: Settings]
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Input selectors
             Tap: widget with text "Input selectors"
         [END - Open settings: Input selectors]
         [START - Open context menu: HEOS MUSIC]
@@ -128,6 +137,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Network services
             Tap: widget with text "Network services"
         [END - Open settings: Network services]
         Drag item: Play List -> drag Offset(0.0, -600.0)
@@ -153,6 +163,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Listening modes
             Tap: widget with text "Listening modes"
         [END - Open settings: Listening modes]
         Drag item: Stereo -> drag Offset(0.0, -600.0)
@@ -219,7 +230,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
             Tap: widget with text "Main"
         [END - Open driver menu: Main]
     [END - Rename zone[1] to To Onkyo]
-    Result: PASSED in 139 seconds
+    Result: PASSED in 138 seconds
 [END - Initial Setup of Denon AVR]
 [START - Building Favourites for Denon AVR]
     [START - Open tab: SHORTCUTS]
@@ -236,11 +247,11 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Path: [_MEDIA_LIST_TOP_LAYER, Local Music, Kontron DLNA Server, Music]
         Tap: widget with widget matching predicate
         Ensure item in list: Local Music
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music", delay = 0
         Ensure item in list: Kontron DLNA Server
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server", delay = 0
         Ensure item in list: Music
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Artist]
         Tap: widget with text "Artist"
@@ -250,18 +261,18 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Path: [_MEDIA_LIST_TOP_LAYER, Local Music, Denon AVR, Genres, Акустика<S>Эстрада, Владимир Высоцкий, Владимир Высоцкий и ансамбль 'Мелодия']
         Tap: widget with widget matching predicate
         Ensure item in list: Local Music
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music", delay = 0
         Ensure item in list: Denon AVR
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR", delay = 0
         Ensure item in list: Genres
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Genres"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Genres", delay = 0
         Split: [Акустика, Эстрада]
         Ensure item in list: Эстрада
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Акустика"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Акустика", delay = 0
         Ensure item in list: Владимир Высоцкий
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий", delay = 0
         Ensure item in list: Владимир Высоцкий и ансамбль 'Мелодия'
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий и ансамбль 'Мелодия'"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий и ансамбль 'Мелодия'", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Цыганский романс 'Кони привередливые']
         Tap: widget with text "Цыганский романс 'Кони привередливые'"
@@ -271,16 +282,16 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Path: [_MEDIA_LIST_TOP_LAYER, Local Music, Kontron DLNA Server, Music, Artist, Muse<S>Mylene Farmer]
         Tap: widget with widget matching predicate
         Ensure item in list: Local Music
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music", delay = 0
         Ensure item in list: Kontron DLNA Server
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server", delay = 0
         Ensure item in list: Music
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music", delay = 0
         Ensure item in list: Artist
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Artist"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Artist", delay = 0
         Split: [Muse, Mylene Farmer]
         Ensure item in list: Mylene Farmer
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Muse"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Muse", delay = 0
     [END - Navigate to media]
     [START - Open context menu: - All Albums -]
         Tap: widget with text "- All Albums -"
@@ -318,8 +329,8 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Playlists]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Onkyo playlist]
         Tap: widget with text "Onkyo playlist"
@@ -332,12 +343,12 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [Return, Radio Channels, Rock<S>Soul & Funk]
         Ensure item in list: Return
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return", delay = 0
         Ensure item in list: Radio Channels
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Radio Channels"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Radio Channels", delay = 0
         Split: [Rock, Soul & Funk]
         Ensure item in list: Soul & Funk
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock", delay = 0
         Ensure item in list: Final item
     [END - Navigate to media]
     [START - Open context menu: Rock classics]
@@ -376,8 +387,8 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, TuneIn Radio, Favorites]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "TuneIn Radio"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorites"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "TuneIn Radio", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorites", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Absolute Classic Hits (Classic Hits)]
         Tap: widget with text "Absolute Classic Hits (Classic Hits)"
@@ -389,12 +400,12 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music", delay = 0
     [END - Navigate to media]
     Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
     [START - Navigate to media]
         Path: [Genres]
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Genres"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Genres", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Disco]
         Tap: widget with text "Disco"
@@ -420,7 +431,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Favorite]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Flow]
         Tap: widget with text "Flow"
@@ -485,7 +496,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with text "Delete"
     [END - Open context menu: 5 - 93.80 MHz]
     Tap: widget with text "Deezer Classic Rock", delay = 5
-    Result: PASSED in 178 seconds
+    Result: PASSED in 200 seconds
 [END - Building Favourites for Denon AVR]
 [START - Initial Setup of Onkyo Box]
     [START - Save connection: My Onkyo Box/192.168.1.81]
@@ -497,7 +508,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate (ignoring all but index 0)
         Tap: widget with text "Save connection"
         Setting text: "My Onkyo Box", number of fields = 3, field index = 2
-        Tap: widget with text "OK", delay = 10
+        Tap: widget with text "OK", delay = 5
     [END - Save connection: My Onkyo Box/192.168.1.81]
     Tap: widget with widget matching predicate
     [START - Change services]
@@ -506,6 +517,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Network services
             Tap: widget with text "Network services"
         [END - Open settings: Network services]
         Drag item: Deezer -> drag Offset(0.0, -600.0)
@@ -528,6 +540,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Listening modes
             Tap: widget with text "Listening modes"
         [END - Open settings: Listening modes]
         Change checkbox: Mono, true -> false
@@ -595,7 +608,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         [END - Test slider: Main:]
         Tap: widget with text "OK"
     [END - Set maximum volume]
-    Result: PASSED in 86 seconds
+    Result: PASSED in 84 seconds
 [END - Initial Setup of Onkyo Box]
 [START - Initial Setup of Onkyo Player]
     [START - Save connection: My Onkyo Player/192.168.1.80]
@@ -607,14 +620,16 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate (ignoring all but index 0)
         Tap: widget with text "Save connection"
         Setting text: "My Onkyo Player", number of fields = 3, field index = 2
-        Tap: widget with text "OK", delay = 10
+        Tap: widget with text "OK", delay = 5
     [END - Save connection: My Onkyo Player/192.168.1.80]
+    Tap: widget with widget matching predicate
     [START - Change inputs]
         [START - Open settings: Input selectors]
             [START - Open driver menu: Settings]
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Input selectors
             Tap: widget with text "Input selectors"
         [END - Open settings: Input selectors]
         [START - Open context menu: USB(R)]
@@ -635,6 +650,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Network services
             Tap: widget with text "Network services"
         [END - Open settings: Network services]
         Drag item: Tidal -> drag Offset(0.0, -600.0)
@@ -656,6 +672,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
                 Open application drawer
                 Tap: widget with text "Settings"
             [END - Open driver menu: Settings]
+            Ensure item in list: Listening modes
             Tap: widget with text "Listening modes"
         [END - Open settings: Listening modes]
         Change checkbox: Mono, true -> false
@@ -720,9 +737,9 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Music Server (DLNA), Kontron DLNA Server, Music]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Music Server (DLNA)"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music Server (DLNA)", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Kontron DLNA Server", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Music", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Artist]
         Tap: widget with text "Artist"
@@ -731,13 +748,13 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [Genre, Rock<S>Rock Opera, Franz Ferdinand<S>Geordie]
         Ensure item in list: Genre
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Genre"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Genre", delay = 0
         Split: [Rock, Rock Opera]
         Ensure item in list: Rock Opera
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock", delay = 0
         Split: [Franz Ferdinand, Geordie]
         Ensure item in list: Geordie
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Franz Ferdinand"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Franz Ferdinand", delay = 0
         Ensure item in list: Final item
     [END - Navigate to media]
     Tap: widget with widget matching predicate
@@ -773,13 +790,13 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
     [END - Navigate to media]
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Music]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music", delay = 0
     [END - Navigate to media]
     Tap: widget with text "My Music | items: 6"
     [START - Open context menu: Flow]
@@ -788,8 +805,8 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [END - Open context menu: Flow]
     [START - Navigate to media]
         Path: [My Music, Favourite tracks]
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Favourite tracks"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favourite tracks", delay = 0
         Ensure item in list: Final item
     [END - Navigate to media]
     [START - Open context menu: The Dancer]
@@ -799,9 +816,9 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     Ensure item in list: Return
     [START - Navigate to media]
         Path: [Return, My Playlists, Onkyo playlist]
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Onkyo playlist"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Onkyo playlist", delay = 0
         Ensure item in list: Final item
     [END - Navigate to media]
     [START - Open context menu: Personal Jesus / Depeche Mode]
@@ -812,13 +829,13 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [Return, Return, My Albums, Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky]
         Ensure item in list: Return
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return", delay = 0
         Ensure item in list: Return
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Return"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Return", delay = 0
         Ensure item in list: My Albums
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Albums"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Albums", delay = 0
         Ensure item in list: Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Цыганский романс "Кони привередливые"]
         Tap: widget with text "Цыганский романс "Кони привередливые""
@@ -828,12 +845,12 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer, Mixes, Rock<S>Soul & Funk]
         Tap: widget with widget matching predicate
         Ensure item in list: Deezer
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
         Ensure item in list: Mixes
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Mixes"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Mixes", delay = 0
         Split: [Rock, Soul & Funk]
         Ensure item in list: Soul & Funk
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock", delay = 0
     [END - Navigate to media]
     Ensure item in list: Rock & Roll
     [START - Open context menu: Rock & Roll]
@@ -887,8 +904,8 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, TuneIn Radio, My Presets]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "TuneIn Radio"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Presets"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "TuneIn Radio", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Presets", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Absolute Classic Hits (Classic Hits)]
         Tap: widget with text "Absolute Classic Hits (Classic Hits)"
@@ -905,7 +922,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, onkyo_music]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Disco]
         Tap: widget with text "Disco"
@@ -958,7 +975,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with text "OK"
     [END - Rename shortcuts]
     Tap: widget with text "Franz Ferdinand on DLNA", delay = 5
-    Result: PASSED in 214 seconds
+    Result: PASSED in 230 seconds
 [END - Building Favourites for Onkyo Player]
 [START - Set Onkyo RI devices]
     [START - Open tab: RI]
@@ -999,9 +1016,9 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, onkyo_music, Hard Rock, Accept]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Hard Rock"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Accept"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Hard Rock", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Accept", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Metal Heart (1985)]
         Tap: widget with text "Metal Heart (1985)"
@@ -1011,11 +1028,11 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Path: [_MEDIA_LIST_TOP_LAYER, onkyo_music, Rock, Muse]
         Tap: widget with widget matching predicate
         Ensure item in list: onkyo_music
-        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "onkyo_music", delay = 0
         Ensure item in list: Rock
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Rock", delay = 0
         Ensure item in list: Muse
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Muse"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Muse", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Absolution (2003)]
         Tap: widget with text "Absolution (2003)"
@@ -1031,8 +1048,8 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     Tap: widget with widget matching predicate, delay = 5
     Tap: widget with widget matching predicate, delay = 5
     Tap: widget with widget matching predicate, delay = 5
-    Move slider: min = 0.0, max = 324.0, value = 35.0
-    Move slider: min = 0.0, max = 324.0, value = 155.0
+    Move slider: min = 0.0, max = 324.0, value = 36.0
+    Move slider: min = 0.0, max = 324.0, value = 156.0
     Tap: widget with widget matching predicate
     Tap: widget with widget matching predicate
     Tap: widget with widget matching predicate
@@ -1049,7 +1066,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 67 seconds
+    Result: PASSED in 70 seconds
 [END - Onkyo: Play from USB]
 [START - Onkyo: Play from Queue]
     [START - Open tab: MEDIA]
@@ -1101,10 +1118,10 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Music, My Playlists, Test Playlist]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Test Playlist"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Music", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Test Playlist", delay = 0
         Ensure item in list: Final item
     [END - Navigate to media]
     Tap: 2 widgets with type "ListTile", index 1, delay = 5
@@ -1114,7 +1131,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     Tap: widget with text "Track menu"
     Tap: widget with type "ListTile" that are ancestors of widget with text "Remove from My Playlists"
     Tap: widget with text "OK"
-    Result: PASSED in 61 seconds
+    Result: PASSED in 62 seconds
 [END - Onkyo: Play from Deezer]
 [START - Onkyo: Play from DAB]
     [START - Play shortcut: DAB]
@@ -1134,7 +1151,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     Tap: widget with widget matching predicate, delay = 10
     Tap: widget with widget matching predicate, delay = 10
     Tap: widget with widget matching predicate
-    Result: PASSED in 71 seconds
+    Result: PASSED in 27 seconds
 [END - Onkyo: Play from DAB]
 [START - Onkyo: Change volume]
     [START - Open tab: LISTEN]
@@ -1199,12 +1216,12 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Open tab: RC]
         Tap: widget with type "Tab" that are ancestors of widget with text "RC"
     [END - Open tab: RC]
-    Result: PASSED in 6 seconds
+    Result: PASSED in 4 seconds
 [END - Onkyo: Device display]
 [START - Denon: Play from USB]
     [START - Connect to: My Denon AVR]
         Open application drawer
-        Tap: widget with text "My Denon AVR", delay = 10
+        Tap: widget with text "My Denon AVR", delay = 5
     [END - Connect to: My Denon AVR]
     [START - Play shortcut: В.Высоцкий]
         [START - Open tab: SHORTCUTS]
@@ -1223,7 +1240,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music", delay = 0
     [END - Navigate to media]
     Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
     [START - Search dialog]
@@ -1274,7 +1291,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 82 seconds
+    Result: PASSED in 79 seconds
 [END - Denon: Play from USB]
 [START - Denon: Audio Control for main zone]
     Tap: widget with widget matching predicate
@@ -1330,7 +1347,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Play Queue]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Play Queue"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play Queue", delay = 0
     [END - Navigate to media]
     Initial list: [[lib/assets/buttons/cmd_return.svg, Return], [lib/assets/buttons/media_item_music.svg, Accept - Metal Heart], [lib/assets/buttons/media_item_music.svg, Accept - Midnight Mover], [lib/assets/buttons/media_item_music.svg, Accept - Up To The Limit], [lib/assets/buttons/media_item_music.svg, Accept - Wrong Is Right], [lib/assets/buttons/media_item_music.svg, Accept - Screaming For A Love-Bite], [lib/assets/buttons/media_item_music.svg, Accept - Too High To Get It Right], [lib/assets/buttons/media_item_music.svg, Accept - Dogs On Leads], [lib/assets/buttons/media_item_music.svg, Accept - Teach Us To Survive], [lib/assets/buttons/media_item_music.svg, Accept - Living For Tonite], [lib/assets/buttons/media_item_music.svg, Accept - Bound To Fail], [lib/assets/buttons/media_item_music.svg, Accept - Love Child (Live)], [lib/assets/buttons/media_item_music.svg, Accept - Living For Tonite (Live)]]
     Tap: widget with text "Accept - Metal Heart"
@@ -1364,8 +1381,8 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer, Flow]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Flow"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Flow", delay = 0
     [END - Navigate to media]
     [START - Open context menu: Flow]
         Tap: widget with text "Flow"
@@ -1374,17 +1391,17 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Favorite]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite", delay = 0
     [END - Navigate to media]
-    Result: PASSED in 15 seconds
+    Result: PASSED in 17 seconds
 [END - Denon: Test HEOS favorites]
 [START - Denon: Play from Deezer]
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer, My Playlists, Favourite tracks]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists"
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Favourite tracks"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "My Playlists", delay = 0
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favourite tracks", delay = 0
     [END - Navigate to media]
     Tap: widget with text "Don't You Believe a Stranger"
     Waiting "Don't You Believe a Stranger" is playing...
@@ -1395,7 +1412,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 18 seconds
+    Result: PASSED in 19 seconds
 [END - Denon: Play from Deezer]
 [START - Denon: Hide empty items]
     [START - Open tab: MEDIA]
@@ -1404,7 +1421,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Deezer]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Deezer", delay = 0
     [END - Navigate to media]
     [START - Search dialog]
         Tap: widget with widget matching predicate
@@ -1422,7 +1439,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [END - Open context menu: Muse]
     Initial number of items: 9
     Final number of items: 3
-    Result: PASSED in 23 seconds
+    Result: PASSED in 25 seconds
 [END - Denon: Hide empty items]
 [START - Denon: Change listening modes]
     [START - Change listening mode]
@@ -1547,7 +1564,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music", delay = 0
     [END - Navigate to media]
     Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
     [START - Search dialog]
@@ -1599,7 +1616,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     Tap: widget with widget matching predicate
     Tap: widget with widget matching predicate
     Tap: widget with text "OK"
-    Result: PASSED in 76 seconds
+    Result: PASSED in 75 seconds
 [END - Denon: All zone stereo]
 [START - Denon: Create playlist]
     [START - Open tab: MEDIA]
@@ -1609,7 +1626,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Local Music]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Local Music", delay = 0
     [END - Navigate to media]
     Tap: widget with type "ListTile" that are ancestors of widget with text "Denon AVR"
     [START - Search dialog]
@@ -1626,7 +1643,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Play Queue]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Play Queue"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play Queue", delay = 0
     [END - Navigate to media]
     Tap: widget with text "Ayo - Without You"
     Tap: widget with widget matching predicate
@@ -1635,7 +1652,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Play List]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Play List"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play List", delay = 0
     [END - Navigate to media]
     Tap: widget with text "My test playlist"
     Tap: widget with text "Ayo - Letter By Letter"
@@ -1656,9 +1673,9 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Play List]
         Tap: widget with widget matching predicate
-        Tap: widget with type "ListTile" that are ancestors of widget with text "Play List"
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Play List", delay = 0
     [END - Navigate to media]
-    Result: PASSED in 47 seconds
+    Result: PASSED in 51 seconds
 [END - Denon: Create playlist]
 [START - Summary]
     Executed 30 procedures

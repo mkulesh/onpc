@@ -62,10 +62,10 @@ void main() {
 
   testWidgets('Music Control Test', (tester) async {
     final OnpcTestUtils tu = OnpcTestUtils(tester);
+    tu.preparePlatform("release-test.log");
 
     app.main();
 
-    tu.setFile("release-test.log");
     int count = 0, passed = 0;
     final List<String> failed = [];
     final DateTime startTime = DateTime.now();

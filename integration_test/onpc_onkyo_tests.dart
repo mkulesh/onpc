@@ -30,7 +30,7 @@ class OnpcOnkyoTests {
     final String F_FER = "Franz Ferdinand on DLNA";
     final String album = "Always Ascending";
     await tu.openTab("SHORTCUTS");
-    await tu.stepDelaySec(1);
+    await tu.stepDelaySec(OnpcTestUtils.SHORT_DELAY);
     await tu.findAndTap(() => find.text(F_FER), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.waitMediaItemPlaying(album);
     // Inspect playing
@@ -299,7 +299,7 @@ class OnpcOnkyoTests {
     final StateManager sm = tu.getStateManager();
     final EISCPMessage raw = EISCPMessage.outputCat("s", "FLD", "5456206541524320202D34352E30");
     sm.injectIscpMessage(raw);
-    await tu.stepDelayMs(delay: 2000);
+    await tu.stepDelaySec(OnpcTestUtils.SHORT_DELAY);
     expect(find.text("TV eARC  -45.0"), findsExactly(1));
   }
 }

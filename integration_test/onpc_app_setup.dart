@@ -50,13 +50,13 @@ class OnpcAppSetup {
   static Future<void> changeAppSettings(final OnpcTestUtils tu) async {
     await tu.openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
     try {
-      await tu.changeParameter("Text and buttons size", "Small", scroll: false);
-      await tu.changeParameter("Theme", "Light (Purple and Green)", scroll: false);
-      await tu.changeParameter("App language", "English", scroll: false);
+      await tu.changeParameter("Text and buttons size", "Small");
+      await tu.changeParameter("Theme", "Light (Purple and Green)");
+      await tu.changeParameter("App language", "English");
 
       // Audio control
       await tu.changeParameter("Sound control", "Automatic");
-      await tu.changeParameter("Master volume unit", "Relative (dB)", pressOk: true);
+      await tu.changeParameter("Master volume unit", "Relative (dB)", pressOk: true, scrollTo: "Developer options");
 
       // RI-USB
       if (Platform.isDesktop) {

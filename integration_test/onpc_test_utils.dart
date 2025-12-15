@@ -65,6 +65,7 @@ class OnpcTestProcedure {
 class OnpcTestUtils extends OnpcGuiActions {
   static const String TOP_LAYER = "_MEDIA_LIST_TOP_LAYER";
 
+  static const int SHORT_DELAY = 1;
   static const int NORMAL_DELAY = 5;
   static const int LONG_DELAY = 10;
 
@@ -98,7 +99,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     await stepDelayMs();
     if (find.textContaining(searchFor).evaluate().isEmpty) {
       await openDrawer();
-      await findAndTap(() => find.text(device), delay: LONG_DELAY);
+      await findAndTap(() => find.text(device), delay: NORMAL_DELAY);
     }
     endMethod();
   }
@@ -111,10 +112,10 @@ class OnpcTestUtils extends OnpcGuiActions {
     endMethod();
   }
 
-  Future<void> openSettings(String text) async {
+  Future<void> openSettings(String text, {String? scrollTo}) async {
     startMethod("Open settings: " + text);
     await openDrawerMenu("Settings", ensureAfter: () => find.text("Theme"));
-    await tester.ensureVisible(find.text(text));
+    await ensureVisibleInList(text, find.byType(ListView), () => find.text(scrollTo ?? text), LIST_DRAG_OFFSET);
     await findAndTap(() => find.text(text));
     endMethod();
   }
@@ -129,7 +130,7 @@ class OnpcTestUtils extends OnpcGuiActions {
       await tester.drag(find.widgetWithText(Tab, "SHORTCUTS"), Offset(-200, 0), warnIfMissed: false);
       await stepDelayMs();
     }
-    await findAndTap(() => find.widgetWithText(Tab, s), ensureAfter: ensureAfter);
+    await findAndTap(() => find.widgetWithText(Tab, s), ensureAfter: ensureAfter, waitFor: true);
     endMethod();
   }
 
@@ -144,7 +145,7 @@ class OnpcTestUtils extends OnpcGuiActions {
         } else {
           await findAndTap(() => find.byTooltip("Top Menu"));
         }
-        await stepDelaySec(1);
+        await stepDelaySec(SHORT_DELAY);
       } else {
         final List<String> tags = list[i].split("<S>");
         if (tags.length == 2) {
@@ -155,8 +156,16 @@ class OnpcTestUtils extends OnpcGuiActions {
         if (ensureVisible) {
           await ensureVisibleInList(postItem, find.byType(ListView), () => find.text(postItem), Offset(0, -300));
         }
-        await findAndTap(() => find.widgetWithText(ListTile, item),
-            waitFor: waitFor, ensureAfter: () => find.text("Return"));
+        // Wait until title is changed
+        final String titleBefore = getTitleString();
+        await findAndTap(() => find.widgetWithText(ListTile, item), waitFor: waitFor, delay: 0);
+        while (true) {
+          await stepDelayMs();
+          final String titleAfter = getTitleString();
+          if (titleAfter.isNotEmpty && titleAfter != titleBefore) {
+            break;
+          }
+        }
       }
     }
     if (ensureAfter != null) {
@@ -248,14 +257,11 @@ class OnpcTestUtils extends OnpcGuiActions {
   }
 
   Future<void> changeParameter(String paramName, String paramValue,
-      {bool pressOk = false, bool ignoreMissing = false, bool scroll = true}) async {
+      {bool pressOk = false, bool ignoreMissing = false, String? scrollTo}) async {
     startMethod("Change parameter: " + paramName);
-    if (scroll) {
-      await tester.dragUntilVisible(find.text(paramName), find.byType(ListView), LIST_DRAG_OFFSET);
-    }
+    await ensureVisibleInList(paramName, find.byType(ListView), () => find.text(scrollTo ?? paramName), LIST_DRAG_OFFSET);
     if (find.textContaining(paramValue).evaluate().isEmpty) {
-      await findAndTap(() => find.text(paramName));
-      await stepDelayMs();
+      await findAndTap(() => find.text(paramName), ensureAfter: () => find.text("CANCEL"));
       if (ignoreMissing && find.textContaining(paramValue).evaluate().isEmpty) {
         await findAndTap(() => find.text("CANCEL"));
         return;
@@ -264,7 +270,6 @@ class OnpcTestUtils extends OnpcGuiActions {
       if (pressOk) {
         await findAndTap(() => find.text("OK"));
       }
-      await stepDelayMs();
       expect(find.textContaining(paramValue), findsOneWidget);
     }
     endMethod();
@@ -283,7 +288,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     await findAndTap(() => fab.at(isDCP ? 1 : 0));
     await findAndTap(() => find.text("Save connection"));
     await setText(3, 2, name);
-    await findAndTap(() => find.text("OK"), delay: LONG_DELAY);
+    await findAndTap(() => find.text("OK"), delay: NORMAL_DELAY);
     endMethod();
   }
 
@@ -321,7 +326,7 @@ class OnpcTestUtils extends OnpcGuiActions {
 
   Future<void> changeListeningModes(List<Pair<String, bool>> items) async {
     startMethod("Change listening modes");
-    await openSettings("Listening modes");
+    await openSettings("Listening modes", scrollTo: "Master volume unit");
     for (int i = 0; i < items.length; i++) {
       final Pair<String, bool> item = items[i];
       await tester.ensureVisible(find.text(item.item1));
@@ -367,7 +372,7 @@ class OnpcTestUtils extends OnpcGuiActions {
       {String ensureItem = ""}) async {
     startMethod("Rename shortcuts");
     await openTab("SHORTCUTS");
-    await stepDelaySec(1);
+    await stepDelaySec(SHORT_DELAY);
     if (ensureItem.isNotEmpty) {
       await ensureVisibleInList(
           ensureItem, find.byType(ReorderableListView), () => find.text(ensureItem), LIST_DRAG_OFFSET);
