@@ -18,6 +18,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Dimens.dart';
+import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/constants/Version.dart';
 import 'package:onpc/iscp/StateManager.dart';
 import 'package:onpc/main.dart' as app;
@@ -48,6 +49,8 @@ class OnpcGuiActions extends OnpcTestLog {
     final app.MusicControllerApp mainWidget = fab.evaluate().first.widget as app.MusicControllerApp;
     return mainWidget.viewContext.stateManager;
   }
+
+  String getReturnString() => Strings.cmd_description_return;
 
   bool isTimedOut(int startTime, {int? timeout}) {
     final int d = timeout ?? 1000 * 60; // 60 seconds default timeout;
@@ -98,6 +101,12 @@ class OnpcGuiActions extends OnpcTestLog {
         assert(!isTimedOut(start));
       }
     }
+    await stepDelayMs();
+  }
+
+  Future<void> scrollListToTop(final Finder list) async {
+    await tester.drag(list, Offset(0, 600), warnIfMissed: false);
+    await tester.pumpAndSettle();
     await stepDelayMs();
   }
 

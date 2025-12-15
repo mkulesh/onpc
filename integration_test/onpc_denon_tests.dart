@@ -258,14 +258,15 @@ class OnpcDenonTests {
     expect(find.text(toDelete), findsNothing);
 
     // Remove all
+    final String emptyQueue = "Play Queue | items: 0";
     final String toDeleteAll = "Accept - Dogs On Leads";
     expect(find.text(toDeleteAll), findsOneWidget);
     await tu.contextMenu(toDeleteAll, "Remove all",
         checkItems: ["Play queue", "Remove item", "Remove all", "Create shortcut"],
-        ensureAfter: () => find.text("Play Queue | items: 0"));
+        ensureAfter: () => find.text(emptyQueue));
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
 
-    await tu.findAndTap(() => find.text("Return"), ensureAfter: () => find.textContaining("HEOS MUSIC | items:"));
+    await tu.findAndTap(() => find.text(emptyQueue), ensureAfter: () => find.textContaining("HEOS MUSIC | items:"));
     await tu.openTab("LISTEN", ensureAfter: () => find.text("---/---"));
   }
 
@@ -331,8 +332,7 @@ class OnpcDenonTests {
     await tu.findAndTap(() => find.byTooltip(Strings.medialist_filter));
     await tu.setText(1, 0, artist);
     await tu.stepDelayMs();
-    await tu.ensureVisibleInList(
-        "Return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+    await tu.scrollListToTop(find.byType(ListView));
 
     // Get initial number of items
     final List<Pair<String, String>> list1 = tu.getListContent();

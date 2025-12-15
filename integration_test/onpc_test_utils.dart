@@ -163,7 +163,11 @@ class OnpcTestUtils extends OnpcGuiActions {
         }
         final String item = tags.length == 2 ? tags.first : list[i];
         final String postItem = tags.length == 2 ? tags.last : list[i];
-        if (ensureVisible) {
+        // Ensure postItem
+        if (postItem == getReturnString()) {
+          await ensureVisibleInList(
+              postItem, find.byType(ListView), () => find.text(postItem), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+        } else if (ensureVisible) {
           await ensureVisibleInList(postItem, find.byType(ListView), () => find.text(postItem), Offset(0, -300));
         }
         // Select item

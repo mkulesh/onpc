@@ -114,8 +114,7 @@ class OnpcOnkyoTests {
 
   static Future<void> playFromQueue(OnpcTestUtils tu) async {
     await tu.openTab("MEDIA", ensureAfter: () => find.text("Play Queue | items: 27"));
-    await tu.ensureVisibleInList(
-        "Return", find.byType(ReorderableListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
+    await tu.scrollListToTop(find.byType(ReorderableListView));
 
     // Get initial list
     List<Pair<String, String>> list = tu.getListContent();
@@ -146,14 +145,15 @@ class OnpcOnkyoTests {
     expect(find.text(toDelete), findsNothing);
 
     // Remove all
+    final String emptyQueue = "Play Queue | items: 0";
     final String toDeleteAll = "07-Dogs On Leads.flac";
     expect(find.text(toDeleteAll), findsOneWidget);
     await tu.contextMenu(toDeleteAll, "Remove all",
         checkItems: ["Play queue", "Remove item", "Remove all", "Create shortcut"],
-        ensureAfter: () => find.text("Play Queue | items: 0"));
+        ensureAfter: () => find.text(emptyQueue));
     await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
 
-    await tu.findAndTap(() => find.text("Return"), ensureAfter: () => find.textContaining("NET | items:"));
+    await tu.findAndTap(() => find.text(emptyQueue), ensureAfter: () => find.textContaining("NET | items:"));
   }
 
   static Future<void> playFromDeezer(final OnpcTestUtils tu) async {

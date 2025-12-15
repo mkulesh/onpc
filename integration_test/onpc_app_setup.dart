@@ -201,7 +201,7 @@ class OnpcAppSetup {
       await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer", "My Playlists"]);
       await tu.contextMenu(PLAYLIST.item1, "Create shortcut", waitFor: true);
       await tu.contextMenu(FAVOURITES.item1, "Create shortcut", waitFor: true);
-      await tu.navigateToMedia(["Return", "Radio Channels", "Rock<S>Soul & Funk"],
+      await tu.navigateToMedia([tu.getReturnString(), "Radio Channels", "Rock<S>Soul & Funk"],
           ensureVisible: true, ensureAfter: () => find.text(ROCK_STATION.item1));
       await tu.contextMenu(ROCK_STATION.item1, "Create shortcut", waitFor: true);
       await tu.renameShortcuts([
@@ -421,19 +421,18 @@ class OnpcAppSetup {
 
       // Deezer Playlist
       final Pair<String, String> PLAYLIST = Pair<String, String>("Personal Jesus / Depeche Mode", "Deezer Playlist");
-      await tu.ensureVisibleInList(
-          "Return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
-      await tu
-          .navigateToMedia(["Return", "My Playlists", "Onkyo playlist"], ensureAfter: () => find.text("Forever / Y&T"));
+      await tu.navigateToMedia([tu.getReturnString(), "My Playlists", "Onkyo playlist"],
+          ensureAfter: () => find.text("Forever / Y&T"));
       await tu.contextMenu(PLAYLIST.item1, "Create shortcut", waitFor: true);
 
       // В.Высоцкий
       final Pair<String, String> VYSOTSKY = Pair<String, String>('Цыганский романс "Кони привередливые"', "В.Высоцкий");
-      await tu.ensureVisibleInList(
-          "Return", find.byType(ListView), () => find.text("Return"), OnpcTestUtils.LIST_DRAG_OFFSET_UP);
-      await tu.navigateToMedia(
-          ["Return", "Return", "My Albums", 'Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky'],
-          ensureVisible: true);
+      await tu.navigateToMedia([
+        tu.getReturnString(),
+        tu.getReturnString(),
+        "My Albums",
+        'Владимир Высоцкий и ансамбль "Мелодия" / Vladimir Vysotsky'
+      ], ensureVisible: true);
       await tu.contextMenu(VYSOTSKY.item1, "Create shortcut", waitFor: true);
 
       // Rock & Roll
