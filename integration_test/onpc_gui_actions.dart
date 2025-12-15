@@ -16,7 +16,6 @@ import 'dart:io' as io;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/constants/Version.dart';
@@ -37,8 +36,7 @@ typedef OnFind = Finder Function();
 
 class OnpcGuiActions extends OnpcTestLog {
   static const int _DEFAULT_DELAY_MS = 500;
-  static const int _WAITING_DURATION = 1000 * 60; // 60 seconds waiting duration
-  final int _defaultTapDelay = 1;
+  static const int _DEFAULT_TAP_DELAY = 1;
 
   final WidgetTester tester;
 
@@ -49,6 +47,11 @@ class OnpcGuiActions extends OnpcTestLog {
     expect(fab, findsOneWidget);
     final app.MusicControllerApp mainWidget = fab.evaluate().first.widget as app.MusicControllerApp;
     return mainWidget.viewContext.stateManager;
+  }
+
+  bool isTimedOut(int startTime, {int? timeout}) {
+    final int d = timeout ?? 1000 * 60; // 60 seconds default timeout;
+    return DateTime.now().millisecondsSinceEpoch >= startTime + d;
   }
 
   void preparePlatform(final String logFile) {
@@ -79,16 +82,21 @@ class OnpcGuiActions extends OnpcTestLog {
     while (finder().evaluate().isEmpty) {
       await tester.pumpAndSettle();
       await Future.delayed(Duration(milliseconds: 100));
-      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
+      assert(!isTimedOut(start));
     }
   }
 
   Future<void> ensureVisibleInList(String title, final Finder list, OnFind finder, Offset dragOffset) async {
     log("Ensure item in list: " + title);
     expect(list, findsOneWidget);
+    final int start = DateTime.now().millisecondsSinceEpoch;
     while (finder().evaluate().isEmpty) {
       await tester.drag(list, dragOffset, warnIfMissed: false);
       await tester.pumpAndSettle();
+      if (isTimedOut(start)) {
+        log("Item " + title + " not found in list: " + getListContent().toString() + ", title: " + getTitleString());
+        assert(!isTimedOut(start));
+      }
     }
     await stepDelayMs();
   }
@@ -98,7 +106,7 @@ class OnpcGuiActions extends OnpcTestLog {
     while (finder().evaluate().isNotEmpty) {
       await tester.pumpAndSettle();
       await Future.delayed(Duration(milliseconds: 100));
-      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
+      assert(!isTimedOut(start));
     }
   }
 
@@ -144,7 +152,7 @@ class OnpcGuiActions extends OnpcTestLog {
     if (ensureAfter != null) {
       await ensureVisible(ensureAfter);
     } else {
-      for (int i = 0; i < (delay ?? _defaultTapDelay); i++) {
+      for (int i = 0; i < (delay ?? _DEFAULT_TAP_DELAY); i++) {
         await tester.pumpAndSettle();
         await Future.delayed(Duration(milliseconds: 900));
       }
@@ -278,13 +286,17 @@ class OnpcGuiActions extends OnpcTestLog {
     final int start = DateTime.now().millisecondsSinceEpoch;
     while (true) {
       await tester.pumpAndSettle();
+      final List<Pair<String, String>> listContent = getListContent();
       final Pair<String, String>? bob =
-          getListContent().firstWhereOrNull((s) => s.item1.contains("media_item_play") && s.item2.contains(name));
+          listContent.firstWhereOrNull((s) => s.item1.contains("media_item_play") && s.item2.contains(name));
       if (bob != null) {
         break;
       }
       await Future.delayed(Duration(milliseconds: 100));
-      assert(DateTime.now().millisecondsSinceEpoch < start + _WAITING_DURATION);
+      if (isTimedOut(start)) {
+        log("Playing item not found. List content: " + listContent.toString());
+        assert(!isTimedOut(start));
+      }
     }
   }
 

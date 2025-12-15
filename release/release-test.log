@@ -1,4 +1,4 @@
-Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 2025-12-15 11:09:55.919036
+Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 2025-12-15 21:43:08.962839
 [START - Initial Search]
     Tap: widget with text "192.168.1.80:60128"
     Result: PASSED in 6 seconds
@@ -76,7 +76,6 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Setting text: "My Denon AVR", number of fields = 3, field index = 2
         Tap: widget with text "OK", delay = 5
     [END - Save connection: My Denon AVR/192.168.1.82]
-    Tap: widget with widget matching predicate
     [START - Change inputs]
         [START - Open settings: Input selectors]
             [START - Open driver menu: Settings]
@@ -220,7 +219,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: 2 widgets with widget matching predicate, index 1
         Setting text: "To Onkyo", number of fields = 1, field index = 0
         Tap: widget with text "OK"
-        Open previous screen
+        Close application drawer
         [START - Open driver menu: To Onkyo]
             Open application drawer
             Tap: widget with text "To Onkyo"
@@ -975,7 +974,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with text "OK"
     [END - Rename shortcuts]
     Tap: widget with text "Franz Ferdinand on DLNA", delay = 5
-    Result: PASSED in 230 seconds
+    Result: PASSED in 222 seconds
 [END - Building Favourites for Onkyo Player]
 [START - Set Onkyo RI devices]
     [START - Open tab: RI]
@@ -1006,7 +1005,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Open tab: LISTEN]
         Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
     [END - Open tab: LISTEN]
-    Result: PASSED in 13 seconds
+    Result: PASSED in 12 seconds
 [END - Onkyo: Play from DLNA]
 [START - Onkyo: Play from USB]
     [START - Open tab: MEDIA]
@@ -1151,7 +1150,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     Tap: widget with widget matching predicate, delay = 10
     Tap: widget with widget matching predicate, delay = 10
     Tap: widget with widget matching predicate
-    Result: PASSED in 27 seconds
+    Result: PASSED in 28 seconds
 [END - Onkyo: Play from DAB]
 [START - Onkyo: Change volume]
     [START - Open tab: LISTEN]
@@ -1291,7 +1290,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 79 seconds
+    Result: PASSED in 78 seconds
 [END - Denon: Play from USB]
 [START - Denon: Audio Control for main zone]
     Tap: widget with widget matching predicate
@@ -1393,7 +1392,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite", delay = 0
     [END - Navigate to media]
-    Result: PASSED in 17 seconds
+    Result: PASSED in 18 seconds
 [END - Denon: Test HEOS favorites]
 [START - Denon: Play from Deezer]
     [START - Navigate to media]
@@ -1412,7 +1411,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 19 seconds
+    Result: PASSED in 15 seconds
 [END - Denon: Play from Deezer]
 [START - Denon: Hide empty items]
     [START - Open tab: MEDIA]
@@ -1439,7 +1438,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [END - Open context menu: Muse]
     Initial number of items: 9
     Final number of items: 3
-    Result: PASSED in 25 seconds
+    Result: PASSED in 24 seconds
 [END - Denon: Hide empty items]
 [START - Denon: Change listening modes]
     [START - Change listening mode]
@@ -1616,7 +1615,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     Tap: widget with widget matching predicate
     Tap: widget with widget matching predicate
     Tap: widget with text "OK"
-    Result: PASSED in 75 seconds
+    Result: PASSED in 76 seconds
 [END - Denon: All zone stereo]
 [START - Denon: Create playlist]
     [START - Open tab: MEDIA]
@@ -1675,7 +1674,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with type "ListTile" that are ancestors of widget with text "Play List", delay = 0
     [END - Navigate to media]
-    Result: PASSED in 51 seconds
+    Result: PASSED in 50 seconds
 [END - Denon: Create playlist]
 [START - Summary]
     Executed 30 procedures

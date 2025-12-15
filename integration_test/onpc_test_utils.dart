@@ -12,6 +12,7 @@
  * Public License along with this program.
  */
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Strings.dart';
@@ -72,6 +73,9 @@ class OnpcTestUtils extends OnpcGuiActions {
   static const Offset LIST_DRAG_OFFSET = Offset(0, -200);
   static const Offset LIST_DRAG_OFFSET_UP = Offset(0, 300);
 
+  // Screen offsets
+  static const Offset _TOP_LEFT = Offset(30, 30);
+
   OnpcTestUtils(final WidgetTester tester) : super(tester);
 
   //***********************************
@@ -80,13 +84,19 @@ class OnpcTestUtils extends OnpcGuiActions {
 
   Future<void> openDrawer() async {
     log("Open application drawer");
-    await tester.tapAt(Offset(30, 30));
+    await tester.tapAt(_TOP_LEFT);
     await ensureVisible(() => find.text("Enhanced Music Controller"));
   }
 
-  Future<void> previousScreen() async {
+  Future<void> closeDriver() async {
+    log("Close application drawer");
+    await tester.tapAt(_TOP_LEFT);
+    await stepDelayMs();
+  }
+
+  Future<void> previousScreen({bool pressReturn = false}) async {
     log("Open previous screen");
-    await tester.tapAt(Offset(30, 30));
+    await tester.tapAt(_TOP_LEFT);
     await stepDelayMs();
   }
 
@@ -156,14 +166,26 @@ class OnpcTestUtils extends OnpcGuiActions {
         if (ensureVisible) {
           await ensureVisibleInList(postItem, find.byType(ListView), () => find.text(postItem), Offset(0, -300));
         }
-        // Wait until title is changed
+        // Select item
         final String titleBefore = getTitleString();
+        final List<Pair<String, String>> listBefore = getListContent();
         await findAndTap(() => find.widgetWithText(ListTile, item), waitFor: waitFor, delay: 0);
+        // Wait until title or list is changed
+        final int start = DateTime.now().millisecondsSinceEpoch;
         while (true) {
           await stepDelayMs();
           final String titleAfter = getTitleString();
           if (titleAfter.isNotEmpty && titleAfter != titleBefore) {
             break;
+          }
+          final List<Pair<String, String>> listAfter = getListContent();
+          if (!listEquals(listBefore, listAfter)) {
+            break;
+          }
+          if (isTimedOut(start)) {
+            log("Title is not changed: " + titleBefore + " -> " + titleAfter);
+            log("List is not changed: " + listBefore.length.toString() + " -> " + listAfter.length.toString());
+            assert(!isTimedOut(start));
           }
         }
       }
@@ -259,7 +281,8 @@ class OnpcTestUtils extends OnpcGuiActions {
   Future<void> changeParameter(String paramName, String paramValue,
       {bool pressOk = false, bool ignoreMissing = false, String? scrollTo}) async {
     startMethod("Change parameter: " + paramName);
-    await ensureVisibleInList(paramName, find.byType(ListView), () => find.text(scrollTo ?? paramName), LIST_DRAG_OFFSET);
+    await ensureVisibleInList(
+        paramName, find.byType(ListView), () => find.text(scrollTo ?? paramName), LIST_DRAG_OFFSET);
     if (find.textContaining(paramValue).evaluate().isEmpty) {
       await findAndTap(() => find.text(paramName), ensureAfter: () => find.text("CANCEL"));
       if (ignoreMissing && find.textContaining(paramValue).evaluate().isEmpty) {
@@ -360,7 +383,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     expect(find.text("Edit"), findsOneWidget);
     await setText(1, 0, newName);
     await findAndTap(() => find.text("OK"));
-    await previousScreen();
+    await closeDriver();
     await openDrawerMenu(newName, ensureAfter: () => find.textContaining("Denon AVR/" + newName));
     await stepDelaySec(NORMAL_DELAY);
     await openDrawerMenu("Main", ensureAfter: () => find.textContaining("Denon AVR"));
