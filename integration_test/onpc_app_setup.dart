@@ -64,6 +64,10 @@ class OnpcAppSetup {
         await tu.changeParameter("Use USB-RI interface", USB_RI, ignoreMissing: true);
       }
 
+      if (Platform.isAndroid) {
+        await tu.findAndTap(() => find.textContaining(Strings.pref_back_as_return), waitFor: true);
+      }
+
       await tu.changeParameter("Album's cover click behaviour", "Audio muting");
     } finally {
       await tu.previousScreen();

@@ -14,9 +14,11 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Strings.dart';
 import 'package:onpc/utils/Pair.dart';
+import 'package:onpc/utils/Platform.dart';
 import 'package:onpc/widgets/CustomTextButton.dart';
 
 import 'onpc_gui_actions.dart';
@@ -94,9 +96,18 @@ class OnpcTestUtils extends OnpcGuiActions {
     await stepDelayMs();
   }
 
-  Future<void> previousScreen({bool pressReturn = false}) async {
-    log("Open previous screen");
-    await tester.tapAt(_TOP_LEFT);
+  Future<void> previousScreen() async {
+    if (Platform.isAndroid) {
+      log("Press Android System \"Back\" button");
+      // Simulate the Android System "Back" button signal.
+      // This sends a message from the "OS" to Flutter saying "Pop the current route".
+      final ByteData message = const JSONMethodCodec().encodeMethodCall(const MethodCall('popRoute'));
+      await tester.binding.defaultBinaryMessenger.handlePlatformMessage('flutter/navigation', message, (_) {});
+      await tester.pumpAndSettle();
+    } else {
+      log("Open previous screen");
+      await tester.tapAt(_TOP_LEFT);
+    }
     await stepDelayMs();
   }
 

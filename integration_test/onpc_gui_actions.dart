@@ -16,6 +16,7 @@ import 'dart:io' as io;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onpc/constants/Dimens.dart';
 import 'package:onpc/constants/Strings.dart';
@@ -58,7 +59,11 @@ class OnpcGuiActions extends OnpcTestLog {
   }
 
   void preparePlatform(final String logFile) {
-    setLogFile(logFile);
+    if (Platform.isAndroid) {
+      _disableSoftKeyboard();
+    } else if (Platform.isDesktop) {
+      setLogFile(logFile);
+    }
     log("Test platform: " +
         io.Platform.operatingSystem +
         "/" +
@@ -149,12 +154,14 @@ class OnpcGuiActions extends OnpcTestLog {
     log("Tap: " +
         cleanFinderDescription(fab) +
         (num > 1 ? ", index " + idx.toString() : "") +
-        (delay != null ? ", delay = " + delay.toString() : ""));
+        (delay != null ? ", delay = " + delay.toString() : "") +
+        (rightClick && Platform.isMobile ? ", long press" : ""));
     expect(fab, findsExactly(num));
     if (rightClick && Platform.isDesktop) {
       await tester.tap(fab.at(idx), buttons: 0x02, warnIfMissed: false);
     } else if (rightClick && Platform.isMobile) {
-      await tester.longPress(fab.at(idx), warnIfMissed: false);
+      await tester.longPress(fab.at(idx), warnIfMissed: true);
+      await tester.pumpAndSettle();
     } else {
       await tester.tap(fab.at(idx), buttons: 0x01, warnIfMissed: false);
     }
@@ -269,7 +276,17 @@ class OnpcGuiActions extends OnpcTestLog {
       }
     });
     for (int i = 0; i < drags.length; i++) {
-      await tester.drag(drags[i], dragOffset, warnIfMissed: false);
+      if (Platform.isDesktop) {
+        await tester.drag(drags[i], dragOffset, warnIfMissed: false);
+      } else {
+        // Mobile: Requires long press to pick up the item before dragging
+        final Offset startLocation = tester.getCenter(drags[i]);
+        final TestGesture gesture = await tester.startGesture(startLocation);
+        await tester.pump(Duration(milliseconds: 1000));
+        await gesture.moveBy(dragOffset);
+        await tester.pumpAndSettle();
+        await gesture.up();
+      }
       await stepDelayMs();
     }
   }
@@ -318,5 +335,20 @@ class OnpcGuiActions extends OnpcTestLog {
       }
     }
     return "";
+  }
+
+  void _disableSoftKeyboard() {
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      SystemChannels.textInput,
+      (MethodCall methodCall) async {
+        // If the framework asks to show the keyboard, we ignore it.
+        if (methodCall.method == 'TextInput.show') {
+          return;
+        }
+        // For other methods (like setting client, editing state), we generally
+        // just return null to keep the channel open without errors.
+        return null;
+      },
+    );
   }
 }

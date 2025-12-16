@@ -15,14 +15,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:onpc/main.dart' as app;
+import 'package:onpc/utils/Platform.dart';
 
 import 'onpc_app_setup.dart';
 import 'onpc_denon_tests.dart';
 import 'onpc_onkyo_tests.dart';
 import 'onpc_test_utils.dart';
 
-final List<OnpcTestProcedure> procedures = [
-  // Application setup
+// Categorized test lists selected via dart parameters:
+// flutter test integration_test/test_session.dart --dart-define=GROUP=setup
+final List<OnpcTestProcedure> setupProcedures = [
   OnpcTestProcedure(OnpcAppSetup.initialSearch, "Initial Search"),
   OnpcTestProcedure(OnpcAppSetup.aboutScreen, "About Screen"),
   OnpcTestProcedure(OnpcAppSetup.changeAppSettings, "Change Basic Settings"),
@@ -33,7 +35,9 @@ final List<OnpcTestProcedure> procedures = [
   OnpcTestProcedure(OnpcAppSetup.setupOnkyoPlayer, "Initial Setup of Onkyo Player"),
   OnpcTestProcedure(OnpcAppSetup.buildOnkyoFavourites, "Building Favourites for Onkyo Player"),
   OnpcTestProcedure(OnpcAppSetup.addOnkyoRiDevices, "Set Onkyo RI devices"),
-  // Onkyo test
+];
+
+final List<OnpcTestProcedure> onkyoProcedures = [
   OnpcTestProcedure(OnpcOnkyoTests.playFromDlna, "Onkyo: Play from DLNA"),
   OnpcTestProcedure(OnpcOnkyoTests.playFromUsb, "Onkyo: Play from USB"),
   OnpcTestProcedure(OnpcOnkyoTests.playFromQueue, "Onkyo: Play from Queue"),
@@ -43,7 +47,9 @@ final List<OnpcTestProcedure> procedures = [
   OnpcTestProcedure(OnpcOnkyoTests.groupUngroup, "Onkyo: Group/Ingroup"),
   OnpcTestProcedure(OnpcOnkyoTests.changeDeviceSettings, "Onkyo: Device settings"),
   OnpcTestProcedure(OnpcOnkyoTests.deviceDisplay, "Onkyo: Device display"),
-  // Denon test
+];
+
+final List<OnpcTestProcedure> denonProcedures = [
   OnpcTestProcedure(OnpcDenonTests.playFromUsb, "Denon: Play from USB"),
   OnpcTestProcedure(OnpcDenonTests.audioControlMain, "Denon: Audio Control for main zone"),
   OnpcTestProcedure(OnpcDenonTests.playFromQueue, "Denon: Play from Queue"),
@@ -60,6 +66,37 @@ final List<OnpcTestProcedure> procedures = [
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  // Read the environment variable passed via --dart-define
+  const String testGroup = String.fromEnvironment('GROUP', defaultValue: '');
+
+  final List<OnpcTestProcedure> procedures = [];
+
+  if (testGroup.isEmpty) {
+    // If no argument provided, run everything
+    procedures.addAll(setupProcedures);
+    procedures.addAll(onkyoProcedures);
+    procedures.addAll(denonProcedures);
+  } else {
+    // Handle comma-separated values if you want to support multiple groups at once
+    // e.g. GROUP=setup,onkyo
+    final groups = testGroup.split(',').map((s) => s.trim().toLowerCase());
+
+    for (String group in groups) {
+      if (group == 'setup') {
+        procedures.addAll(setupProcedures);
+      } else if (group == 'onkyo') {
+        procedures.addAll(onkyoProcedures);
+      } else if (group == 'denon') {
+        procedures.addAll(denonProcedures);
+      } else {
+        testWidgets('Invalid Configuration', (tester) async {
+          fail('Invalid GROUP: $group. Allowed values are: setup, onkyo, denon');
+        });
+        return;
+      }
+    }
+  }
+
   testWidgets('Music Control Test', (tester) async {
     final OnpcTestUtils tu = OnpcTestUtils(tester);
     tu.preparePlatform("release-test.log");
@@ -69,6 +106,9 @@ void main() {
     int count = 0, passed = 0;
     final List<String> failed = [];
     final DateTime startTime = DateTime.now();
+    if (Platform.isMobile) {
+      await tu.ensureVisible(() => find.text("Music Control"));
+    }
     for (OnpcTestProcedure procedure in procedures) {
       count++;
       if (await procedure.run(tu)) {
