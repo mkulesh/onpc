@@ -38,6 +38,7 @@
 #        If "Not authorized to send Apple events to Finder" appears:
 #        tccutil reset AppleEvents com.google.android.studio
 #     -- Windows: Visual Studio 2019 or later with "Desktop development with C++" workload.
+#        "git config --global http.sslBackend schannel" - use Windows certificate chain
 #   - Requirement for the remote build:
 #     -- SSH password-less access to the Linux host
 #        cd ~/.ssh
@@ -219,9 +220,8 @@ build-ios() {
     else
         echo "Building for Distribution/Ad-Hoc..."
         flutter build ipa --release --export-options-plist="$ONPC_RELEASE_DIR/build-ios-options.plist"
+        move-bundle "$(find build/ios/ipa -maxdepth 1 -name "*.ipa" | head -n 1)"
     fi
-
-    move-bundle "$(find build/ios/ipa -maxdepth 1 -name "*.ipa" | head -n 1)"
 
     # Install if requested
     if [ "$INSTALL_TO_DEVICE" = true ]; then

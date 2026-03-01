@@ -1,7 +1,7 @@
-Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 2025-12-15 22:30:57.608426
+Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date: 2026-03-01 11:38:35.373716
 [START - Initial Search]
     Tap: widget with text "192.168.1.80:60128"
-    Result: PASSED in 5 seconds
+    Result: PASSED in 7 seconds
 [END - Initial Search]
 [START - About Screen]
     [START - Open driver menu: About]
@@ -229,7 +229,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
             Tap: widget with text "Main"
         [END - Open driver menu: Main]
     [END - Rename zone[1] to To Onkyo]
-    Result: PASSED in 139 seconds
+    Result: PASSED in 138 seconds
 [END - Initial Setup of Denon AVR]
 [START - Building Favourites for Denon AVR]
     [START - Open tab: SHORTCUTS]
@@ -495,7 +495,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with text "Delete"
     [END - Open context menu: 5 - 93.80 MHz]
     Tap: widget with text "Deezer Classic Rock", delay = 5
-    Result: PASSED in 198 seconds
+    Result: PASSED in 197 seconds
 [END - Building Favourites for Denon AVR]
 [START - Initial Setup of Onkyo Box]
     [START - Save connection: My Onkyo Box/192.168.1.81]
@@ -972,7 +972,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with text "OK"
     [END - Rename shortcuts]
     Tap: widget with text "Franz Ferdinand on DLNA", delay = 5
-    Result: PASSED in 224 seconds
+    Result: PASSED in 223 seconds
 [END - Building Favourites for Onkyo Player]
 [START - Set Onkyo RI devices]
     [START - Open tab: RI]
@@ -1003,7 +1003,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Open tab: LISTEN]
         Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
     [END - Open tab: LISTEN]
-    Result: PASSED in 13 seconds
+    Result: PASSED in 12 seconds
 [END - Onkyo: Play from DLNA]
 [START - Onkyo: Play from USB]
     [START - Open tab: MEDIA]
@@ -1063,7 +1063,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 70 seconds
+    Result: PASSED in 69 seconds
 [END - Onkyo: Play from USB]
 [START - Onkyo: Play from Queue]
     [START - Open tab: MEDIA]
@@ -1082,7 +1082,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
         Tap: widget with text "Remove all"
     [END - Open context menu: 07-Dogs On Leads.flac]
     Tap: widget with text "Play Queue | items: 0"
-    Result: PASSED in 43 seconds
+    Result: PASSED in 44 seconds
 [END - Onkyo: Play from Queue]
 [START - Onkyo: Play from Deezer]
     [START - Play shortcut: В.Высоцкий]
@@ -1513,7 +1513,7 @@ Test platform: macos/Version 26.1 (Build 25B78), app version 2.15.3, test date: 
     [START - Open tab: LISTEN]
         Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
     [END - Open tab: LISTEN]
-    Result: PASSED in 37 seconds
+    Result: PASSED in 36 seconds
 [END - Denon: Play from DAB]
 [START - Denon: Device settings]
     [START - Open tab: DEVICE]
