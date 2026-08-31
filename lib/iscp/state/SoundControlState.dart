@@ -42,6 +42,7 @@ enum SoundControlType
     DEVICE_BTN_AROUND_SLIDER,
     DEVICE_BTN_ABOVE_SLIDER,
     RI_AMP,
+    NET_AMP,
     NONE
 }
 
@@ -432,9 +433,20 @@ class SoundControlState
                 return SoundControlType.DEVICE_BTN_ABOVE_SLIDER;
             case "external-amplifier":
                 return SoundControlType.RI_AMP;
+            case "network-amplifier":
+                return SoundControlType.NET_AMP;
             default:
                 return SoundControlType.NONE;
         }
+    }
+
+    static bool isNetworkAmplifier(final CfgAudioControl audioControl, final ConnectionIf device)
+    {
+        if (soundControlType(audioControl, ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE) == SoundControlType.NET_AMP)
+        {
+            return device.getHost == audioControl.soundControlHost && device.getPort == audioControl.soundControlPort;
+        }
+        return false;
     }
 
     int getVolumeMax(final Zone? zoneInfo)

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -21,6 +21,7 @@ import "../constants/Drawables.dart";
 import "../constants/Strings.dart";
 import "../constants/Themes.dart";
 import "../dialogs/DropdownPreferenceDialog.dart";
+import "../dialogs/SoundCtrlTypeDialog.dart";
 import "../dialogs/VolumeUnitDialog.dart";
 import "../iscp/ConnectionIf.dart";
 import "../utils/Convert.dart";
@@ -167,19 +168,23 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
         // Audio control
         elements.add(CustomDivider());
         elements.add(PreferenceTitle(Strings.app_control_audio_control));
-        elements.add(_customDropdownPreference(td,
-            Strings.pref_sound_control,
-            CfgAudioControl.SOUND_CONTROL,
-            icon: Drawables.pref_sound_control,
-            values: Strings.pref_sound_control_codes,
-            displayValues: Strings.pref_sound_control_names,
-            onChange: (String val)
-            {
-                setState(()
-                {
-                    _configuration.audioControl.soundControl = val;
-                });
-            }));
+        elements.add(ListTile(
+            leading: _getIcon(td, Drawables.pref_sound_control),
+            title: CustomTextLabel.normal(Strings.pref_sound_control),
+            subtitle: CustomTextLabel.small(Strings.pref_sound_control_names[_configuration.audioControl.getSoundControlIdx()]),
+            trailing: Icon(Icons.keyboard_arrow_right, color: td.textTheme.titleMedium!.color),
+            onTap: () => showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext c)
+                => Theme(data: td, child: SoundCtrlTypeDialog(_configuration, (String type, String address, int port)
+                    {
+                        setState(()
+                        {
+                            _configuration.audioControl.setSoundControl(type, address, port);
+                        });
+                    }))
+            )));
         elements.add(_customPreferenceScreen(td,
             Strings.pref_listening_modes,
             icon: Drawables.pref_listening_modes,

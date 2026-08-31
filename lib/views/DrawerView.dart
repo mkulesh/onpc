@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -29,6 +29,7 @@ import "../iscp/messages/FriendlyNameMsg.dart";
 import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/MultiroomState.dart";
+import "../iscp/state/SoundControlState.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Platform.dart";
@@ -113,7 +114,9 @@ class DrawerView extends UpdatableView
                 for (final DeviceInfo di in devices)
                 {
                     final BroadcastResponseMsg msg = di.responseMsg;
-                    final String icon = di.isFavorite ? Drawables.drawer_favorite_device : Drawables.drawer_found_device;
+                    final bool isNetworkAmplifier = SoundControlState.isNetworkAmplifier(configuration.audioControl, msg);
+                    final String icon = isNetworkAmplifier ? Drawables.audio_control_current_zone :
+                        (di.isFavorite ? Drawables.drawer_favorite_device : Drawables.drawer_found_device);
                     drawerItems.add(_buildDrawerItem(
                         context, icon, di.getDeviceName(configuration.friendlyNames),
                         isSelected: stateManager.isMasterDevice(di),

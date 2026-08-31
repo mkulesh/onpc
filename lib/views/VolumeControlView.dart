@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -52,6 +52,7 @@ class VolumeControlView extends UpdatableView
             case SoundControlType.DEVICE_BTN_ABOVE_SLIDER:
                 return UpdatableWidget(child: VolumeControlDeviceView(viewContext, soundControl));
             case SoundControlType.RI_AMP:
+            case SoundControlType.NET_AMP:
                 return UpdatableWidget(child: VolumeControlAmpView(viewContext));
             default:
                 return SizedBox.shrink();

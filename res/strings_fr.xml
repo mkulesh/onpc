@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Enhanced Music Controller
-  ~ Copyright (C) 2019-2025 by Mikhail Kulesh
+  ~ Copyright (C) 2019-2026 by Mikhail Kulesh
   ~
   ~ This program is free software: you can redistribute it and/or modify it under the terms of the GNU
   ~ General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -157,12 +157,13 @@ Ce programme est publié dans l\'espoir qu\'il soit utile, mais SANS GARANTIE; s
     <string name="pref_sound_control">Contrôle du son</string>
     <string-array name="pref_sound_control_names">
         <item>Aucun</item>
-        <item>Amplificateur Externe (RI)</item>
+        <item>Automatique</item>
         <item>Dispositif (Boutons)</item>
         <item>Dispositif (Glissière)</item>
         <item>Dispositif (Boutons autour du Glissière)</item>
         <item>Dispositif (Boutons au-dessus du Glissière)</item>
-        <item>Automatique</item>
+        <item>Amplificateur Externe (RI)</item>
+        <item>Amplificateur réseau</item>
     </string-array>
 
     <!-- App themes -->

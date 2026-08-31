@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2025 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -41,10 +41,44 @@ class CfgAudioControl extends CfgModule
     String get soundControl
     => _soundControl;
 
-    set soundControl(String value)
+    static const Pair<String, String> SOUND_CONTROL_HOST = Pair<String, String>("sound_control_host", "");
+    String _soundControlHost = SOUND_CONTROL_HOST.item2;
+
+    String get soundControlHost
+    => _soundControlHost;
+
+    static const Pair<String, int> SOUND_CONTROL_PORT = Pair<String, int>("sound_control_port", ISCP_PORT);
+    int _soundControlPort = SOUND_CONTROL_PORT.item2;
+
+    int get soundControlPort
+    => _soundControlPort;
+
+    int getSoundControlIdx()
+    {
+        int groupValue = Strings.pref_sound_control_codes.indexOf(_soundControl);
+        if (groupValue < 0)
+        {
+            groupValue = Strings.pref_sound_control_codes.indexOf(SOUND_CONTROL.item2);
+        }
+        return groupValue;
+    }
+
+    void setSoundControl(String value, String host, int port)
     {
         _soundControl = value;
-        saveStringParameter(SOUND_CONTROL, value);
+        saveStringParameter(getModelDependentString(SOUND_CONTROL), value);
+        _soundControlHost = host;
+        saveStringParameter(getModelDependentString(SOUND_CONTROL_HOST), host);
+        _soundControlPort = port;
+        saveIntegerParameter(getModelDependentInt(SOUND_CONTROL_PORT), port);
+    }
+
+    void _readSoundControl()
+    {
+        _soundControl = getString(SOUND_CONTROL, doLog: true); // backward compatibility to old versions
+        _soundControl = getStringDef(getModelDependentString(SOUND_CONTROL).item1, _soundControl, doLog: true);
+        _soundControlHost = getString(getModelDependentString(SOUND_CONTROL_HOST), doLog: true);
+        _soundControlPort = getInt(getModelDependentInt(SOUND_CONTROL_PORT), doLog: true);
     }
 
     // Force audio control
@@ -159,7 +193,7 @@ class CfgAudioControl extends CfgModule
     @override
     void read()
     {
-        _soundControl = getString(SOUND_CONTROL, doLog: true);
+        _readSoundControl();
         _forceAudioControl = getBool(FORCE_AUDIO_CONTROL, doLog: true);
         final _volumeUnitStr = getString(VOLUME_UNIT, doLog: true).toUpperCase();
         _volumeUnit = VolumeUnit.values.firstWhere(
@@ -179,6 +213,7 @@ class CfgAudioControl extends CfgModule
     @override
     void setReceiverInformation(StateManager stateManager)
     {
+        _readSoundControl();
         _masterVolumeMax.clear();
         _zoneVolumeMax.clear();
         String volumeZoneMaxStr = "";

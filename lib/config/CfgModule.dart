@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -48,8 +48,8 @@ abstract class CfgModule
         return val;
     }
 
-    String getStringDef(String name, String def)
-    => getString(Pair<String, String>(name, def));
+    String getStringDef(String name, String def, {doLog = false})
+    => getString(Pair<String, String>(name, def), doLog: doLog);
 
     int getInt(Pair<String, int> par, {doLog = false})
     {
@@ -91,6 +91,12 @@ abstract class CfgModule
 
     String getModelDependentParameter(final String par)
     => par + "_" + getString(Configuration.MODEL);
+
+    Pair<String, String> getModelDependentString(final Pair<String, String> par, {int zone = -1})
+    {
+        final String name = getModelDependentParameter(par.item1);
+        return Pair<String, String>(zone >= 0 ? name + "_" + zone.toString() : name, par.item2);
+    }
 
     Pair<String, int> getModelDependentInt(final Pair<String, int> par, {int zone = -1})
     {

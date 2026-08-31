@@ -141,12 +141,13 @@ class Strings
         "audio-mute"];
     static const List<String> pref_sound_control_codes = [
         "none",
-        "external-amplifier",
+        "auto",
         "device",
         "device-slider",
         "device-btn-slider",
         "device-btn-above-slider",
-        "auto"];
+        "external-amplifier",
+        "network-amplifier"];
     static const List<String> pref_theme_codes = [
         "black-lime",
         "dim-gray-cyan",
@@ -4173,40 +4174,45 @@ Enjoy!"""];
 
     static const List<List<String>> l_pref_sound_control_names = [
         /*en*/ ["None",
-                "External amplifier (RI)",
+                "Automatic",
                 "Device (Buttons)",
                 "Device (Slider)",
                 "Device (Buttons around Slider)",
                 "Device (Buttons above Slider)",
-                "Automatic"],
+                "External amplifier (RI)",
+                "Network amplifier"],
         /*ru*/ ["Нет",
-                "Внешний усилитель (RI)",
+                "Выбрать автоматически",
                 "Устройство (Кнопки)",
                 "Устройство (Слайдер)",
                 "Устройство (Слайдер между кнопками)",
                 "Устройство (Кнопки над слайдером)",
-                "Выбрать автоматически"],
+                "Внешний усилитель (RI)",
+                "Сетевой усилитель"],
         /*de*/ ["Keine",
-                "Externer Verstärker (RI)",
+                "Automatisch",
                 "Gerät (Tasten)",
                 "Gerät (Slider)",
                 "Gerät (Tasten rund um den Slider)",
                 "Gerät (Tasten über den Slider)",
-                "Automatisch"],
+                "Externer Verstärker (RI)",
+                "Netzwerkverstärker"],
         /*fr*/ ["Aucun",
-                "Amplificateur Externe (RI)",
+                "Automatique",
                 "Dispositif (Boutons)",
                 "Dispositif (Glissière)",
                 "Dispositif (Boutons autour du Glissière)",
                 "Dispositif (Boutons au-dessus du Glissière)",
-                "Automatique"],
+                "Amplificateur Externe (RI)",
+                "Amplificateur réseau"],
         /*pl*/ ["Brak",
-                "Wzmacniacz zewnętrzny (RI)",
+                "Automatyczna",
                 "Urządzenie (Przyciski)",
                 "Urządzenie (Suwak)",
                 "Urządzenie (Przyciski wokół Slidera)",
                 "Urządzenie (Przyciski nad Sliderem)",
-                "Automatyczna"]];
+                "Wzmacniacz zewnętrzny (RI)",
+                "Wzmacniacz sieciowy"]];
     static List<String> get pref_sound_control_names => l_pref_sound_control_names[_language];
 
     static const List<List<String>> l_pref_theme_names = [

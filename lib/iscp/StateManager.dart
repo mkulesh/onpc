@@ -939,7 +939,14 @@ class StateManager
 
     void changeMasterVolume(final CfgAudioControl audioControl, MasterVolumeCmd cmd)
     {
-        final CommandHelper helper = CommandHelper(_state, _messageChannel);
+        MessageChannel targetChannel = _messageChannel;
+        _multiroomChannels.values.forEach((c) {
+            if (SoundControlState.isNetworkAmplifier(audioControl, c))
+            {
+                targetChannel = c;
+            }
+        });
+        final CommandHelper helper = CommandHelper(_state, targetChannel);
         helper.changeMasterVolume(audioControl, cmd);
     }
 

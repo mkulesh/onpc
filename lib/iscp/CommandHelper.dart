@@ -43,12 +43,13 @@ class CommandHelper
             case SoundControlType.DEVICE_SLIDER:
             case SoundControlType.DEVICE_BTN_AROUND_SLIDER:
             case SoundControlType.DEVICE_BTN_ABOVE_SLIDER:
+            case SoundControlType.NET_AMP:
                 {
                     final List<ISCPMessage> cmds = [
                         MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP),
                         MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN),
                         AudioMutingMsg.toggle(state.getActiveZone,
-                            state.soundControlState.audioMuting, state.protoType)
+                            state.soundControlState.audioMuting, _messageChannel.getProtoType)
                     ];
                     return sendMessage(cmds[cmd.index]);
                 }

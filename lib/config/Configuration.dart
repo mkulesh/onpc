@@ -44,7 +44,7 @@ class Configuration extends CfgModule
     String get getDeviceName
     => _deviceName;
 
-    static const Pair<String, int> SERVER_PORT = Pair<String, int>("server_port", 60128);
+    static const Pair<String, int> SERVER_PORT = Pair<String, int>("server_port", ISCP_PORT);
     int _devicePort = SERVER_PORT.item2;
 
     int get getDevicePort
