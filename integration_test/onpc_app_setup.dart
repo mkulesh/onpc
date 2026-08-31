@@ -60,7 +60,7 @@ class OnpcAppSetup {
 
       // RI-USB
       if (Platform.isDesktop) {
-        final String USB_RI = Platform.isWindows ? "USB Serial Port" : "OnkioRI FT231X";
+        final String USB_RI = Platform.isWindows ? "USB Serial Port" : "OnkyoRI FT231X";
         await tu.changeParameter("Use USB-RI interface", USB_RI, ignoreMissing: true);
       }
 
