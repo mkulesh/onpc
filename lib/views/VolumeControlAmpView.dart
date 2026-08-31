@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -16,7 +16,9 @@ import "package:flutter/material.dart";
 
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AmpOperationCommandMsg.dart";
+import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
+import "../utils/Pair.dart";
 import "../widgets/CustomImageButton.dart";
 import "UpdatableView.dart";
 
@@ -34,20 +36,20 @@ class VolumeControlAmpView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final List<AmpOperationCommandMsg> cmd = [
-            AmpOperationCommandMsg.output(AmpOperationCommand.AMTTG),
-            AmpOperationCommandMsg.output(AmpOperationCommand.MVLDOWN),
-            AmpOperationCommandMsg.output(AmpOperationCommand.MVLUP)
+        final List<Pair<AmpOperationCommandMsg, MasterVolumeCmd>> cmd = [
+            Pair(AmpOperationCommandMsg.output(AmpOperationCommand.AMTTG), MasterVolumeCmd.MUTE),
+            Pair(AmpOperationCommandMsg.output(AmpOperationCommand.MVLDOWN), MasterVolumeCmd.DOWN),
+            Pair(AmpOperationCommandMsg.output(AmpOperationCommand.MVLUP), MasterVolumeCmd.UP)
         ];
 
         final List<Widget> buttons = [];
         cmd.forEach((cmd)
         {
             buttons.add(CustomImageButton.normal(
-                cmd.getValue.icon!,
-                cmd.getValue.description,
+                cmd.item1.getValue.icon!,
+                cmd.item1.getValue.description,
                 onPressed: ()
-                => stateManager.sendMessage(cmd),
+                => stateManager.changeMasterVolume(viewContext.configuration.audioControl, cmd.item2),
                 isEnabled: state.isConnected,
             ));
         });

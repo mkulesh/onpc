@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2025 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -50,6 +50,7 @@ import "iscp/messages/FriendlyNameMsg.dart";
 import "iscp/messages/OperationCommandMsg.dart";
 import "iscp/messages/ReceiverInformationMsg.dart";
 import "iscp/messages/TimeInfoMsg.dart";
+import "iscp/state/SoundControlState.dart";
 import "utils/CompatUtils.dart";
 import "utils/Convert.dart";
 import "utils/Logging.dart";
@@ -740,10 +741,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
                 _processGlobalShortcut(call.method, par);
                 break;
             case Platform.VOLUME_UP:
-                _stateManager.changeMasterVolume(_configuration.audioControl, 0);
+                _stateManager.changeMasterVolume(_configuration.audioControl, MasterVolumeCmd.UP);
                 break;
             case Platform.VOLUME_DOWN:
-                _stateManager.changeMasterVolume(_configuration.audioControl, 1);
+                _stateManager.changeMasterVolume(_configuration.audioControl, MasterVolumeCmd.DOWN);
                 break;
             case Platform.NETWORK_STATE_CHANGE:
                 _processNetworkStateChange(par);
@@ -764,17 +765,17 @@ class MusicControllerAppState extends State<MusicControllerApp>
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_up"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume up");
-            _stateManager.changeMasterVolume(_configuration.audioControl, 0);
+            _stateManager.changeMasterVolume(_configuration.audioControl, MasterVolumeCmd.UP);
         }
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_down"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume down");
-            _stateManager.changeMasterVolume(_configuration.audioControl, 1);
+            _stateManager.changeMasterVolume(_configuration.audioControl, MasterVolumeCmd.DOWN);
         }
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_mute"))
         {
             Logging.info(this.widget, "Call from platform: " + method + "(" + par + ") -> volume mute");
-            _stateManager.changeMasterVolume(_configuration.audioControl, 2);
+            _stateManager.changeMasterVolume(_configuration.audioControl, MasterVolumeCmd.MUTE);
         }
         else if (par == _configuration.appSettings.getKeyboardShortcut("ks_volume_trdn"))
         {

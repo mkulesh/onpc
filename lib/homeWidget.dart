@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -147,7 +147,7 @@ Future<void> _widgetPlaybackPlay() async
     _sendOperationCommand(OperationCommand.PLAY);
 }
 
-void _sendMasterVolumeCommand(int cmd) async
+void _sendMasterVolumeCommand(MasterVolumeCmd cmd) async
 {
     Logging.info(_stateManager, "send widget command: " + cmd.toString());
     WidgetsFlutterBinding.ensureInitialized();
@@ -189,19 +189,19 @@ void _sendMasterVolumeCommand(int cmd) async
 @pragma("vm:entry-point")
 Future<void> _widgetPlaybackVolumeUp() async
 {
-    _sendMasterVolumeCommand(0);
+    _sendMasterVolumeCommand(MasterVolumeCmd.UP);
 }
 
 @pragma("vm:entry-point")
 Future<void> _widgetPlaybackVolumeDown() async
 {
-    _sendMasterVolumeCommand(1);
+    _sendMasterVolumeCommand(MasterVolumeCmd.DOWN);
 }
 
 @pragma("vm:entry-point")
 Future<void> _widgetPlaybackVolumeOff() async
 {
-    _sendMasterVolumeCommand(2);
+    _sendMasterVolumeCommand(MasterVolumeCmd.MUTE);
 }
 
 void registerWidgetPlaybackCallback(MethodChannel methodChannel) async

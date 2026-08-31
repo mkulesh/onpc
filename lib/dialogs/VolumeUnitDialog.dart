@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import '../config/CfgAudioControl.dart';
 import '../config/Configuration.dart';
 import '../constants/Dimens.dart';
-import '../constants/Drawables.dart';
 import '../constants/Strings.dart';
 import '../widgets/CustomCheckbox.dart';
 import '../widgets/CustomDialogEditField.dart';
@@ -119,7 +118,7 @@ class _VolumeUnitDialogState extends State<VolumeUnitDialog>
         );
 
         final Widget dialog = AlertDialog(
-            title: CustomDialogTitle(Strings.pref_volume_unit, Drawables.pref_volume_unit),
+            title: CustomDialogTitle(Strings.pref_volume_unit, null),
             contentPadding: DialogDimens.contentPadding,
             content: SingleChildScrollView(
                 scrollDirection: Axis.vertical,

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2023 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -33,7 +33,7 @@ class CommandHelper
 
     CommandHelper(this.state, this._messageChannel);
 
-    void changeMasterVolume(final CfgAudioControl audioControl, int cmd)
+    void changeMasterVolume(final CfgAudioControl audioControl, MasterVolumeCmd cmd)
     {
         hasImpactOnMediaList = false;
         final SoundControlType soundControl = SoundControlState.soundControlType(audioControl, state.getActiveZone);
@@ -50,7 +50,7 @@ class CommandHelper
                         AudioMutingMsg.toggle(state.getActiveZone,
                             state.soundControlState.audioMuting, state.protoType)
                     ];
-                    return sendMessage(cmds[cmd]);
+                    return sendMessage(cmds[cmd.index]);
                 }
             case SoundControlType.RI_AMP:
                 {
@@ -59,7 +59,7 @@ class CommandHelper
                         AmpOperationCommandMsg.output(AmpOperationCommand.MVLDOWN),
                         AmpOperationCommandMsg.output(AmpOperationCommand.AMTTG)
                     ];
-                    return sendMessage(cmds[cmd]);
+                    return sendMessage(cmds[cmd.index]);
                 }
             default:
             // Nothing to do

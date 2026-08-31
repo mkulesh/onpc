@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2024 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -64,7 +64,7 @@ class TrackCoverView extends UpdatableView
             case "audio-mute":
                 final SoundControlType soundControl = SoundControlState.soundControlType(configuration.audioControl, state.getActiveZone);
                 tooltip = (soundControl == SoundControlType.RI_AMP) ? Strings.amp_cmd_audio_muting_toggle : Strings.audio_muting_toggle;
-                onPressed = () => stateManager.changeMasterVolume(configuration.audioControl, 2);
+                onPressed = () => stateManager.changeMasterVolume(configuration.audioControl, MasterVolumeCmd.MUTE);
                 break;
         }
 

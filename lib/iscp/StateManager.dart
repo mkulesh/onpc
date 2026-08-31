@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2025 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -26,6 +26,7 @@ import "../iscp/CommandHelper.dart";
 import "../iscp/scripts/HandleDcpDuplicates.dart";
 import "../iscp/scripts/MessageScript.dart";
 import "../iscp/state/ScripsState.dart";
+import "../iscp/state/SoundControlState.dart";
 import "../utils/CompatUtils.dart";
 import "../utils/Logging.dart";
 import "../utils/Platform.dart";
@@ -936,7 +937,7 @@ class StateManager
         }
     }
 
-    void changeMasterVolume(final CfgAudioControl audioControl, int cmd)
+    void changeMasterVolume(final CfgAudioControl audioControl, MasterVolumeCmd cmd)
     {
         final CommandHelper helper = CommandHelper(_state, _messageChannel);
         helper.changeMasterVolume(audioControl, cmd);

@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2019-2025 by Mikhail Kulesh
+ * Copyright (C) 2019-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -43,6 +43,13 @@ enum SoundControlType
     DEVICE_BTN_ABOVE_SLIDER,
     RI_AMP,
     NONE
+}
+
+enum MasterVolumeCmd
+{
+    UP,
+    DOWN,
+    MUTE
 }
 
 class SoundControlState
