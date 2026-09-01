@@ -940,14 +940,16 @@ class StateManager
     void changeMasterVolume(final CfgAudioControl audioControl, MasterVolumeCmd cmd)
     {
         MessageChannel targetChannel = _messageChannel;
+        int zone = _state.getActiveZone;
         _multiroomChannels.values.forEach((c) {
             if (SoundControlState.isNetworkAmplifier(audioControl, c))
             {
                 targetChannel = c;
+                zone = State.DEFAULT_ACTIVE_ZONE;
             }
         });
         final CommandHelper helper = CommandHelper(_state, targetChannel);
-        helper.changeMasterVolume(audioControl, cmd);
+        helper.changeMasterVolume(audioControl, zone, cmd);
     }
 
     void triggerStateEvent(String event)

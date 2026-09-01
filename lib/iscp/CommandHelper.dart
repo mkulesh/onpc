@@ -33,7 +33,7 @@ class CommandHelper
 
     CommandHelper(this.state, this._messageChannel);
 
-    void changeMasterVolume(final CfgAudioControl audioControl, MasterVolumeCmd cmd)
+    void changeMasterVolume(final CfgAudioControl audioControl, int zone, MasterVolumeCmd cmd)
     {
         hasImpactOnMediaList = false;
         final SoundControlType soundControl = SoundControlState.soundControlType(audioControl);
@@ -46,9 +46,9 @@ class CommandHelper
             case SoundControlType.NET_AMP:
                 {
                     final List<ISCPMessage> cmds = [
-                        MasterVolumeMsg.output(state.getActiveZone, MasterVolume.UP),
-                        MasterVolumeMsg.output(state.getActiveZone, MasterVolume.DOWN),
-                        AudioMutingMsg.toggle(state.getActiveZone,
+                        MasterVolumeMsg.output(zone, MasterVolume.UP),
+                        MasterVolumeMsg.output(zone, MasterVolume.DOWN),
+                        AudioMutingMsg.toggle(zone,
                             state.soundControlState.audioMuting, _messageChannel.getProtoType)
                     ];
                     return sendMessage(cmds[cmd.index]);

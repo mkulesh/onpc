@@ -151,7 +151,7 @@ void _sendMasterVolumeCommand(MasterVolumeCmd cmd) async
 {
     Logging.info(_stateManager, "send widget command: " + cmd.toString());
     WidgetsFlutterBinding.ensureInitialized();
-    await _stateManager.readConfiguration();
+    await _stateManager.readConfiguration(audioControlCmd: true);
     final CfgAudioControl audioControl = _stateManager.configuration!.audioControl;
     _stateManager.start(
         (MessageChannel channel) // On initial state
@@ -163,7 +163,7 @@ void _sendMasterVolumeCommand(MasterVolumeCmd cmd) async
             {
                 // For RI we can send command immediately
                 final CommandHelper helper = CommandHelper(_stateManager.state, channel);
-                helper.changeMasterVolume(audioControl, cmd);
+                helper.changeMasterVolume(audioControl, _stateManager.state.getActiveZone, cmd);
                 _stateManager.stop();
             }
             else
@@ -178,7 +178,7 @@ void _sendMasterVolumeCommand(MasterVolumeCmd cmd) async
             if (msg is AudioMutingMsg)
             {
                 final CommandHelper helper = CommandHelper(_stateManager.state, channel);
-                helper.changeMasterVolume(audioControl, cmd);
+                helper.changeMasterVolume(audioControl, _stateManager.state.getActiveZone, cmd);
                 _stateManager.stop();
             }
             return false;

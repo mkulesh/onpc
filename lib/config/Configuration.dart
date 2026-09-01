@@ -20,7 +20,9 @@ import "../iscp/ConnectionIf.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/EnumParameterMsg.dart";
 import "../iscp/messages/InputSelectorMsg.dart";
+import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
+import "../iscp/state/SoundControlState.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
@@ -194,15 +196,22 @@ class Configuration extends CfgModule
         riCommands.read();
     }
 
-    void readHomeWidgetCfg()
+    void readHomeWidgetCfg(bool audioControlCmd)
     {
         Logging.info(this, "Reading home widget configuration...");
-
-        // Connection options
-        _deviceName = getString(SERVER_NAME, doLog: true);
-        _devicePort = getInt(SERVER_PORT, doLog: true);
-        _activeZone = getInt(ACTIVE_ZONE, doLog: true);
         audioControl.read();
+        if (audioControlCmd && SoundControlState.soundControlType(audioControl) == SoundControlType.NET_AMP)
+        {
+            _deviceName = audioControl.soundControlHost;
+            _devicePort = audioControl.soundControlPort;
+            _activeZone = ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE;
+        }
+        else
+        {
+            _deviceName = getString(SERVER_NAME, doLog: true);
+            _devicePort = getInt(SERVER_PORT, doLog: true);
+            _activeZone = getInt(ACTIVE_ZONE, doLog: true);
+        }
     }
 
     void saveDevice(final String device, final int port) async

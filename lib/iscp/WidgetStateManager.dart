@@ -46,11 +46,11 @@ class WidgetStateManager
 
     WidgetStateManager(this._autoCloseDelay);
 
-    Future<bool> readConfiguration() async
+    Future<bool> readConfiguration({bool audioControlCmd = false}) async
     {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         configuration = Configuration(prefs);
-        configuration?.readHomeWidgetCfg();
+        configuration?.readHomeWidgetCfg(audioControlCmd);
         return Future.value(true);
     }
 
