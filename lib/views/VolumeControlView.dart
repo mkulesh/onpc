@@ -41,8 +41,7 @@ class VolumeControlView extends UpdatableView
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
     {
-        final SoundControlType soundControl = SoundControlState.soundControlType(
-            configuration.audioControl, state.getActiveZone);
+        final SoundControlType soundControl = SoundControlState.soundControlType(configuration.audioControl);
 
         switch (soundControl)
         {

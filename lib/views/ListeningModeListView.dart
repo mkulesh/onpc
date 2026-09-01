@@ -41,8 +41,7 @@ class ListeningModeListView extends UpdatableView
     {
         Logging.logRebuild(this);
 
-        final SoundControlType soundControl = SoundControlState.soundControlType(
-            configuration.audioControl, state.getActiveZone);
+        final SoundControlType soundControl = SoundControlState.soundControlType(configuration.audioControl);
 
         if (![SoundControlType.DEVICE_BUTTONS,
               SoundControlType.DEVICE_SLIDER,

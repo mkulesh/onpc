@@ -159,7 +159,7 @@ void _sendMasterVolumeCommand(MasterVolumeCmd cmd) async
             final String msgCode = AudioMutingMsg.ZONE_COMMANDS[_stateManager.state.getActiveZone];
             channel.addAllowedMessage(msgCode);
             channel.sendQueries([msgCode]);
-            if (SoundControlState.soundControlType(audioControl, _stateManager.configuration!.activeZone) == SoundControlType.RI_AMP)
+            if (SoundControlState.soundControlType(audioControl) == SoundControlType.RI_AMP)
             {
                 // For RI we can send command immediately
                 final CommandHelper helper = CommandHelper(_stateManager.state, channel);

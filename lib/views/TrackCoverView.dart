@@ -62,7 +62,7 @@ class TrackCoverView extends UpdatableView
                 onPressed = () => stateManager.sendMessage(StateManager.DISPLAY_MSG);
                 break;
             case "audio-mute":
-                final SoundControlType soundControl = SoundControlState.soundControlType(configuration.audioControl, state.getActiveZone);
+                final SoundControlType soundControl = SoundControlState.soundControlType(configuration.audioControl);
                 tooltip = (soundControl == SoundControlType.RI_AMP) ? Strings.amp_cmd_audio_muting_toggle : Strings.audio_muting_toggle;
                 onPressed = () => stateManager.changeMasterVolume(configuration.audioControl, MasterVolumeCmd.MUTE);
                 break;

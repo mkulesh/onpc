@@ -36,7 +36,7 @@ class CommandHelper
     void changeMasterVolume(final CfgAudioControl audioControl, MasterVolumeCmd cmd)
     {
         hasImpactOnMediaList = false;
-        final SoundControlType soundControl = SoundControlState.soundControlType(audioControl, state.getActiveZone);
+        final SoundControlType soundControl = SoundControlState.soundControlType(audioControl);
         switch (soundControl)
         {
             case SoundControlType.DEVICE_BUTTONS:

@@ -417,12 +417,13 @@ class SoundControlState
             ListeningMode.MODE_DCP_PURE_DIRECT
         ].contains(_listeningMode.key);
 
-    static SoundControlType soundControlType(final CfgAudioControl audioControl, int zone)
+    static SoundControlType soundControlType(final CfgAudioControl audioControl)
     {
         switch (audioControl.soundControl)
         {
             case "auto":
-                return (audioControl.zoneVolumeMax(zone) == 0) ? SoundControlType.RI_AMP : SoundControlType.DEVICE_SLIDER;
+                return (audioControl.zoneVolumeMax(ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE) == 0) ?
+                    SoundControlType.RI_AMP : SoundControlType.DEVICE_SLIDER;
             case "device":
                 return SoundControlType.DEVICE_BUTTONS;
             case "device-slider":
@@ -440,14 +441,13 @@ class SoundControlState
         }
     }
 
+    static bool isNetworkAmplifierMode(final CfgAudioControl audioControl)
+    => soundControlType(audioControl) == SoundControlType.NET_AMP;
+
     static bool isNetworkAmplifier(final CfgAudioControl audioControl, final ConnectionIf device)
-    {
-        if (soundControlType(audioControl, ReceiverInformationMsg.DEFAULT_ACTIVE_ZONE) == SoundControlType.NET_AMP)
-        {
-            return device.getHost == audioControl.soundControlHost && device.getPort == audioControl.soundControlPort;
-        }
-        return false;
-    }
+    => isNetworkAmplifierMode(audioControl)
+        && device.getHost == audioControl.soundControlHost
+        && device.getPort == audioControl.soundControlPort;
 
     int getVolumeMax(final Zone? zoneInfo)
     {
