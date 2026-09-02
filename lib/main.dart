@@ -401,7 +401,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
                                 _stateManager.getConnection(), _stateManager.manualAlias, null);
                         }
                         _configuration.setReceiverInformation(_viewContext.stateManager);
-                        _applyConfiguration(informPlatform: false, updScripts: false);
+                        _applyConfiguration(informPlatform: false, updScripts: false, modelDepParameter: false);
                         // startSearch calls multiroomState.updateFavorites
                         _stateManager.startSearch(limited: true);
                     }
@@ -611,7 +611,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         }
     }
 
-    void _applyConfiguration({bool informPlatform = false, bool updScripts = false})
+    void _applyConfiguration({bool informPlatform = false, bool updScripts = false, bool modelDepParameter = true})
     {
         // Update logging
         Logging.logSize = _configuration.developerMode ? Logging.DEFAULT_LOG_SIZE : 0;
@@ -629,7 +629,10 @@ class MusicControllerAppState extends State<MusicControllerApp>
 
         // Inform state manager about configuration change
         _stateManager.keepPlaybackMode = _index < _tabs.length && _tabs[_index] == AppTabs.LISTEN;
-        _stateManager.state.soundControlState.forceAudioControl = _configuration.audioControl.isForceAudioControl;
+        if (modelDepParameter)
+        {
+            _stateManager.state.soundControlState.applyConfiguration(_configuration.audioControl);
+        }
 
         // Inform platform code about configuration change.
         // Depending on new setting, app may be restarted by platform code here

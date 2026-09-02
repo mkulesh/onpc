@@ -17,8 +17,10 @@ import "dart:math";
 import "package:sprintf/sprintf.dart";
 
 import "../../config/CfgAudioControl.dart";
+import "../../utils/Convert.dart";
 import "../../utils/Logging.dart";
 import "../ConnectionIf.dart";
+import "../ISCPMessage.dart";
 import "../messages/AllChannelEqualizerMsg.dart";
 import "../messages/AllChannelLevelMsg.dart";
 import "../messages/AllChannelMsg.dart";
@@ -58,6 +60,7 @@ class SoundControlState
     static const double DEF_VOL_MAX = 82.0;
     static const bool EQUALIZER_ALWAYS_AVAILABLE = false;
     static const bool CHANNEL_LEVEL_ALWAYS_AVAILABLE = false;
+    static const List<String> NETWORK_AMPS_MSG = [ AudioMutingMsg.CODE ];
 
     // Audio muting
     late EnumItem<AudioMuting> _audioMuting;
@@ -153,15 +156,21 @@ class SoundControlState
     // Force audio control
     bool _forceAudioControl = false;
 
-    set forceAudioControl(bool value)
+    // Network amplifier
+    String _networkAmplifier = ConnectionIf.EMPTY_HOST;
+
+    void applyConfiguration(CfgAudioControl audioControl)
     {
-        _forceAudioControl = value;
-        if (value)
+        _forceAudioControl = audioControl.isForceAudioControl;
+        if (_forceAudioControl)
         {
             _volumeLevel = _volumeLevel == MasterVolumeMsg.NO_LEVEL ? 0 : _volumeLevel;
             _bassLevel = _bassLevel == ToneCommandMsg.NO_LEVEL ? 0 : _bassLevel;
             _trebleLevel = _trebleLevel == ToneCommandMsg.NO_LEVEL ? 0 : _trebleLevel;
         }
+        _networkAmplifier = isNetworkAmplifierMode(audioControl) ?
+            Convert.ipToString(audioControl.soundControlHost, audioControl.soundControlPort.toString()) : ConnectionIf.EMPTY_HOST;
+        Logging.info(this, "Set network amplifier: " + _networkAmplifier);
     }
 
     // Audio balance
@@ -448,6 +457,15 @@ class SoundControlState
     => isNetworkAmplifierMode(audioControl)
         && device.getHost == audioControl.soundControlHost
         && device.getPort == audioControl.soundControlPort;
+
+    bool processNetworkAmpMsg(final ISCPMessage msg)
+    => SoundControlState.NETWORK_AMPS_MSG.contains(msg.getCode)
+        && msg.getHostAndPort == _networkAmplifier;
+
+    bool ignoreNetworkAmpMsg(final ISCPMessage msg)
+    => SoundControlState.NETWORK_AMPS_MSG.contains(msg.getCode)
+        && _networkAmplifier != ConnectionIf.EMPTY_HOST
+        && msg.getHostAndPort != _networkAmplifier;
 
     int getVolumeMax(final Zone? zoneInfo)
     {
