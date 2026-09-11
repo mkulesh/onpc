@@ -17,7 +17,6 @@ import "package:collection/collection.dart";
 import "../../utils/Logging.dart";
 import "../ConnectionIf.dart";
 import "../ISCPMessage.dart";
-import "../messages/AudioMutingMsg.dart";
 import "../messages/BroadcastResponseMsg.dart";
 import "../messages/EnumParameterMsg.dart";
 import "../messages/FriendlyNameMsg.dart";
@@ -115,19 +114,13 @@ class MultiroomState
     static const List<String> MESSAGE_SCOPE = [
         FriendlyNameMsg.CODE,
         MultiroomDeviceInformationMsg.CODE,
-        MultiroomChannelSettingMsg.CODE,
-        AudioMutingMsg.CODE
-    ];
-
-    static const List<String> MESSAGE_SCOPE_DCP = [
-      FriendlyNameMsg.CODE,
-      AudioMutingMsg.CODE
+        MultiroomChannelSettingMsg.CODE
     ];
 
     List<String> getQueries(ConnectionIf connection, ProtoType protoType)
     {
         Logging.info(this, "Requesting data for connection " + connection.getHostAndPort + "...");
-        return protoType == ProtoType.DCP ? MESSAGE_SCOPE_DCP : MESSAGE_SCOPE;
+        return protoType == ProtoType.DCP ? [FriendlyNameMsg.CODE] : MESSAGE_SCOPE;
     }
 
     // Update logic

@@ -14,11 +14,8 @@
 
 import "package:flutter/material.dart";
 
-import "../config/Configuration.dart";
 import "../iscp/StateManager.dart";
 import "../iscp/messages/AmpOperationCommandMsg.dart";
-import "../iscp/messages/AudioMutingMsg.dart";
-import "../iscp/messages/PowerStatusMsg.dart";
 import "../iscp/state/SoundControlState.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
@@ -29,15 +26,10 @@ import "UpdatableView.dart";
 class VolumeControlAmpView extends UpdatableView
 {
     static const List<String> UPDATE_TRIGGERS = [
-        StateManager.CONNECTION_EVENT,
-        Configuration.CONFIGURATION_EVENT,
-        PowerStatusMsg.CODE,
-        AudioMutingMsg.CODE
+        StateManager.CONNECTION_EVENT
     ];
 
-    final SoundControlType _soundControlType;
-
-    VolumeControlAmpView(final ViewContext viewContext, this._soundControlType) : super(viewContext, UPDATE_TRIGGERS);
+    VolumeControlAmpView(final ViewContext viewContext) : super(viewContext, UPDATE_TRIGGERS);
 
     @override
     Widget createView(BuildContext context, VoidCallback updateCallback)
@@ -53,16 +45,12 @@ class VolumeControlAmpView extends UpdatableView
         final List<Widget> buttons = [];
         cmd.forEach((cmd)
         {
-            final bool isSelected = _soundControlType == SoundControlType.NET_AMP
-                && cmd.item2 == MasterVolumeCmd.MUTE
-                && state.isOn && state.soundControlState.audioMuting.key == AudioMuting.ON;
             buttons.add(CustomImageButton.normal(
                 cmd.item1.getValue.icon!,
                 cmd.item1.getValue.description,
                 onPressed: ()
                 => stateManager.changeMasterVolume(viewContext.configuration.audioControl, cmd.item2),
                 isEnabled: state.isConnected,
-                isSelected: isSelected
             ));
         });
 

@@ -383,18 +383,13 @@ class StateManager
 
     String? _processIscpMessage(ISCPMessage msg)
     {
-        if (state.soundControlState.ignoreNetworkAmpMsg(msg))
-        {
-            return null;
-        }
-
         if (![TimeInfoMsg.CODE, JacketArtMsg.CODE].contains(msg.getCode))
         {
             Logging.info(this, "-> processing message: " + msg.toString());
         }
 
         final String? multiroomChange = state.multiroomState.process(msg);
-        if (!isSourceHost(msg) && !state.soundControlState.processNetworkAmpMsg(msg))
+        if (!isSourceHost(msg))
         {
             return multiroomChange;
         }
@@ -613,18 +608,13 @@ class StateManager
 
     String? _processDcpMessage(ISCPMessage msg)
     {
-        if (state.soundControlState.ignoreNetworkAmpMsg(msg))
-        {
-            return null;
-        }
-
         if (![TimeInfoMsg.CODE, JacketArtMsg.CODE, DcpReceiverInformationMsg.CODE].contains(msg.getCode))
         {
             Logging.info(this, "-> processing DCP message: " + msg.toString());
         }
 
         final String? multiroomChange = state.multiroomState.process(msg);
-        if (!isSourceHost(msg) && !state.soundControlState.processNetworkAmpMsg(msg))
+        if (!isSourceHost(msg))
         {
             return multiroomChange;
         }

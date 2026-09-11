@@ -52,7 +52,7 @@ class VolumeControlView extends UpdatableView
                 return UpdatableWidget(child: VolumeControlDeviceView(viewContext, soundControl));
             case SoundControlType.RI_AMP:
             case SoundControlType.NET_AMP:
-                return UpdatableWidget(child: VolumeControlAmpView(viewContext, soundControl));
+                return UpdatableWidget(child: VolumeControlAmpView(viewContext));
             default:
                 return SizedBox.shrink();
         }
