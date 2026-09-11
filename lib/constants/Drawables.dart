@@ -40,6 +40,8 @@ class Drawables
     // Buttons
     static const String menu_power_standby = BUTTONS_PATH + "menu_power_standby.svg";
     static const String cd_eject = BUTTONS_PATH + "cd_eject.svg";
+    static const String cd_disc_f = BUTTONS_PATH + "cd_disc_f.svg";
+    static const String cd_disc_r = BUTTONS_PATH + "cd_disc_r.svg";
     static const String cmd_delete = BUTTONS_PATH + "cmd_delete.svg";
     static const String cmd_down = BUTTONS_PATH + "cmd_down.svg";
     static const String cmd_fast_backward = BUTTONS_PATH + "cmd_fast_backward.svg";

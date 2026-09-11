@@ -67,7 +67,7 @@ class RiCdControlView extends UpdatableView
                 _buildPlaybackRow(),
                 _buildNumberRow1(),
                 _buildNumberRow2(),
-                _buildNumberRow3()
+                _buildNumberRow3(cdModel)
             ]);
     }
 
@@ -153,15 +153,21 @@ class RiCdControlView extends UpdatableView
         );
     }
 
-    Widget _buildNumberRow3()
+    Widget _buildNumberRow3(String cdModel)
     {
+        final List<Widget> children = [
+            _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_GREATER_10)),
+            _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.CLEAR)),
+        ];
+        if (cdModel.toUpperCase() == "DX-C390")
+        {
+            children.add(_buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.DISC_R)));
+            children.add(_buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.DISC_F)));
+        }
         return Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.NUMBER_GREATER_10)),
-                _buildImgBtn(CdPlayerOperationCommandMsg.output(CdPlayerOperationCommand.CLEAR))
-            ],
+            children: children,
         );
     }
 

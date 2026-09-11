@@ -2,8 +2,8 @@
 <riCommands>
     <device type="AMPLIFIER" model="">
         <cmd code="PWRTG"             hex="0x0004"/>
-        <cmd code="SLIDOWN"           hex=""/>
-        <cmd code="SLIUP"             hex=""/>
+        <cmd code="SLIDOWN"           hex="0x00D6"/>
+        <cmd code="SLIUP"             hex="0x00D5"/>
         <cmd code="AMTTG"             hex="0x0005"/>
         <cmd code="MVLDOWN"           hex="0x0003"/>
         <cmd code="MVLUP"             hex="0x0002"/>
@@ -30,6 +30,8 @@
         <cmd code="NUMBER_0"          hex="0x0F0E"/>
         <cmd code="NUMBER_GREATER_10" hex="0x0F0F"/>
         <cmd code="CLEAR"             hex="0x0F08"/>
+        <cmd code="DISC_F"            hex="0x0F5C"/>
+        <cmd code="DISC_R"            hex="0x0F5F"/>
     </device>
     <device type="MD_PLAYER" model="">
         <cmd code="POWER"             hex="0x0804"/>
