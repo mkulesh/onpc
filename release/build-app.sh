@@ -25,6 +25,8 @@
 #
 # Requirements:
 #   - 'flutter' must be in PATH variable
+#   - For Flutter, use the same JDK as for the Gradle:
+#     flutter config --jdk-dir="<Path to Gradle JDK>"
 #   - Call 'git fetch' in the Flutter directory so that the local Flutter
 #     repository gets all the new info from Github
 #   - Platform specific requirements:
