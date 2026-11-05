@@ -31,6 +31,8 @@
 #     repository gets all the new info from Github
 #   - Platform specific requirements:
 #     -- Android: 'adb' (Android Debug Bridge) is required for the --install flag
+#        Gradle: add gradle.properties file in GRADLE_USER_HOME with following content
+#           org.gradle.java.home=<Path to Gradle JDK>
 #     -- iOS: 'ios-deploy' (via brew) is required for the --install flag:
 #        brew install ios-deploy
 #     -- Linux: Install additional packages:
