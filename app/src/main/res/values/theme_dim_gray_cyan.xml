@@ -16,7 +16,7 @@
 
     <style name="BaseThemeDimGrayCyan" parent="AppBaseThemeDark">
         <item name="colorPrimary">@color/material_grey_800</item>
-        <item name="colorPrimaryDark">@color/background_material_dark</item>
+        <item name="colorPrimaryDark">@color/material_grey_800</item>
         <item name="colorAccent">#0097A7</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorSecondary">@color/material_grey_600</item>

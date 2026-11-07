@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -417,8 +417,25 @@ class MainNavigationDrawer
         if (m.getActionView() != null && m.getActionView() instanceof LinearLayout)
         {
             final LinearLayout l = (LinearLayout) m.getActionView();
-            ((AppCompatImageView) l.findViewWithTag("ICON")).setImageResource(iconId);
-            ((AppCompatTextView) l.findViewWithTag("TEXT")).setText(title);
+            final AppCompatImageView icon = l.findViewWithTag("ICON");
+            final AppCompatTextView text = l.findViewWithTag("TEXT");
+
+            icon.setImageResource(iconId);
+            text.setText(title);
+
+            if (m.isChecked())
+            {
+                text.setTypeface(null, android.graphics.Typeface.BOLD);
+                text.setTextColor(Utils.getThemeColorAttr(activity, R.attr.colorAccent));
+                Utils.setImageViewColorAttr(activity, icon, R.attr.colorAccent);
+            }
+            else
+            {
+                text.setTypeface(null, android.graphics.Typeface.NORMAL);
+                text.setTextColor(Utils.getThemeColorAttr(activity, android.R.attr.textColor));
+                Utils.setImageViewColorAttr(activity, icon, android.R.attr.textColorSecondary);
+            }
+
             final AppCompatImageButton editBtn = l.findViewWithTag("EDIT");
             if (editListener != null)
             {
