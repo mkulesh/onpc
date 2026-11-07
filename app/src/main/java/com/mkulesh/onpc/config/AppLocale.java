@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -42,23 +42,34 @@ public final class AppLocale
         {
             final String prefFile = context.getPackageName() + "_preferences";
             final SharedPreferences pref = context.getSharedPreferences(prefFile, Context.MODE_PRIVATE);
-            final String languageCode = getStringPref(pref,
-                    com.mkulesh.onpc.config.CfgAppSettings.APP_LANGUAGE,
-                    "system");
+            final String languageCode = getStringPref(pref, CfgAppSettings.APP_LANGUAGE, "system");
 
             if (languageCode.equals("system"))
             {
-                return new Locale(Locale.getDefault().getLanguage());
+                return getLocale(Locale.getDefault().getLanguage(), "");
             }
 
             String[] array = languageCode.split("-r", -1);
             if (array.length == 1)
             {
-                return new Locale(array[0]);
+                return getLocale(array[0], "");
             }
             else
             {
-                return new Locale(array[0], array[1]);
+                return getLocale(array[0], array[1]);
+            }
+        }
+
+        @SuppressWarnings("deprecation")
+        private static Locale getLocale(final String language, String country)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            {
+                return new Locale.Builder().setLanguage(language).setRegion(country).build();
+            }
+            else
+            {
+                return new Locale(language, country);
             }
         }
 
