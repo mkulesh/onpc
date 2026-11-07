@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2023 by Mikhail Kulesh
+ * Copyright (C) 2018-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -260,12 +260,6 @@ abstract public class BaseFragment extends Fragment
                 collectButtons((LinearLayout) v, out);
             }
         }
-    }
-
-    public boolean onBackPressed()
-    {
-        // No default processing for Back button
-        return false;
     }
 
     @SuppressWarnings("WeakerAccess")

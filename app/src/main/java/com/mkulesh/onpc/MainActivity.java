@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -27,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.mkulesh.onpc.config.AppLocale;
@@ -48,6 +47,7 @@ import com.mkulesh.onpc.iscp.scripts.AutoPower;
 import com.mkulesh.onpc.iscp.scripts.MessageScript;
 import com.mkulesh.onpc.iscp.scripts.MessageScriptIf;
 import com.mkulesh.onpc.iscp.scripts.RequestListeningMode;
+import com.mkulesh.onpc.utils.ExitConfirm;
 import com.mkulesh.onpc.utils.Logging;
 import com.mkulesh.onpc.utils.Utils;
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     private ConnectionState connectionState;
     private final StateHolder stateHolder = new StateHolder();
     private DeviceList deviceList;
-    private Toast exitToast = null;
+    private ExitConfirm exitConfirm = null;
     private MainNavigationDrawer navigationDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private String versionName = null;
@@ -120,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             Logging.info(this, "Starting application");
             versionName = null;
         }
+
+        exitConfirm = new ExitConfirm(true, this);
+        getOnBackPressedDispatcher().addCallback(this, exitConfirm);
 
         Logging.info(this, "App can start on-top of the lock screen: " + configuration.isShowWhenLocked());
         if (configuration.isShowWhenLocked())
@@ -369,48 +372,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         else
         {
             getStateManager().sendMessage(cmdMsg);
-        }
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        if (configuration.isBackAsReturn())
-        {
-            final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
-            if (f != null && f.onBackPressed())
-            {
-                return;
-            }
-        }
-        if (!configuration.isExitConfirm())
-        {
-            finish();
-        }
-        else if (Utils.isToastVisible(exitToast))
-        {
-            exitToast.cancel();
-            exitToast = null;
-            finish();
-        }
-        else
-        {
-            exitToast = Toast.makeText(this, R.string.action_exit_confirm, Toast.LENGTH_LONG);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            {
-                exitToast.addCallback(new Toast.Callback()
-                {
-                    @Override
-                    public void onToastHidden()
-                    {
-                        exitToast = null;
-                    }
-                });
-            }
-            if (exitToast != null)
-            {
-                exitToast.show();
-            }
         }
     }
 
