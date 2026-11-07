@@ -3,15 +3,16 @@ apply plugin: 'com.android.application'
 android {
     namespace 'com.mkulesh.onpc'
 
-    compileSdkVersion 35
-    buildToolsVersion "35.0.0"
+    compileSdkVersion 36
+    buildToolsVersion "36.0.0"
     defaultConfig {
         applicationId "com.mkulesh.onpc"
         minSdkVersion 14
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 51
         versionName '1.38'
         base.archivesName = "onpc-v" + versionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -34,13 +35,11 @@ android {
 }
 
 dependencies {
-    // Change Locale not work after migrate to androidx.appcompat:appcompat:1.2.0
-    // https://stackoverflow.com/questions/55265834/change-locale-not-work-after-migrate-to-androidx
-    // Custom locale can not be set for older Android version.
-    // Keep androidx.appcompat:appcompat:1.1.0 in order to avoid this problem
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.preference:preference:1.2.1'
 
     implementation 'org.apache.commons:commons-text:1.9'
     implementation 'com.jayway.jsonpath:json-path:2.8.0'

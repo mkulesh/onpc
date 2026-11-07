@@ -1,6 +1,6 @@
 /*
  * Enhanced Music Controller
- * Copyright (C) 2018-2024 by Mikhail Kulesh
+ * Copyright (C) 2018-2026 by Mikhail Kulesh
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the License,
@@ -67,6 +67,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class Utils
@@ -87,14 +88,7 @@ public class Utils
     @SuppressWarnings("deprecation")
     public static Drawable getDrawable(Context context, int icon)
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            return context.getResources().getDrawable(icon, context.getTheme());
-        }
-        else
-        {
-            return context.getResources().getDrawable(icon);
-        }
+        return ResourcesCompat.getDrawable(context.getResources(), icon, context.getTheme());
     }
 
     public static byte[] streamToByteArray(InputStream stream) throws IOException
