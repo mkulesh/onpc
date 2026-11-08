@@ -262,6 +262,12 @@ abstract public class BaseFragment extends Fragment
         }
     }
 
+    public boolean onBackPressed()
+    {
+        // No default processing for Back button
+        return false;
+    }
+    
     @SuppressWarnings("WeakerAccess")
     @NonNull
     protected String getStringValue(@StringRes int descriptionId)

@@ -823,4 +823,14 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
             f.update(getStateManager().getState(), null);
         }
     }
+
+    public boolean isBackAsReturn()
+    {
+        if (configuration.isBackAsReturn())
+        {
+            final BaseFragment f = (BaseFragment) (pagerAdapter.getRegisteredFragment(viewPager.getCurrentItem()));
+            return f != null && f.onBackPressed();
+        }
+        return false;
+    }
 }

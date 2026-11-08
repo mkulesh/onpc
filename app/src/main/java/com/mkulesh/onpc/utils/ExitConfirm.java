@@ -17,19 +17,19 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
 
+import com.mkulesh.onpc.MainActivity;
 import com.mkulesh.onpc.R;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 public class ExitConfirm extends OnBackPressedCallback
 {
     private static final String EXIT_CONFIRM = "exit_confirm";
     private Toast exitToast = null;
-    final AppCompatActivity activity;
+    final MainActivity activity;
 
-    public ExitConfirm(boolean enabled, final AppCompatActivity activity)
+    public ExitConfirm(boolean enabled, final MainActivity activity)
     {
         super(enabled);
         this.activity = activity;
@@ -40,6 +40,10 @@ public class ExitConfirm extends OnBackPressedCallback
     {
         Logging.info(this, "handleOnBackPressed called");
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        if (activity.isBackAsReturn())
+        {
+            return;
+        }
         if (!preferences.getBoolean(EXIT_CONFIRM, false))
         {
             activity.finish();
