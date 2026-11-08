@@ -35,7 +35,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Enhanced AVR Controller: listen to music properly!</p>
-    <p>Copyright © 2018-2025 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2026 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>This app allows remote control of a Network Player or a Network A/V Receiver via the local network.
        The app supports Onkyo/Pioneer/Integra released in April 2016 or later and Denon/Marantz with build-in HEOS technology.
        Its two most popular features are music playback and sound profile management.</p>

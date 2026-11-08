@@ -31,7 +31,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Verbesserter AVR-Controller: Musik richtig hören!</p>
-    <p>Copyright © 2018-2025 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2026 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Diese App ermöglicht die Fernsteuerung eines Netzwerkplayers oder eines Netzwerk-A/V-Receivers über das lokale Netzwerk.
        Die App unterstützt Onkyo/Pioneer/Integra, die im April 2016 oder später veröffentlicht wurden, und Denon/Marantz mit integrierter HEOS-Technologie.
        Die beiden beliebtesten Funktionen sind Abspielsteuerung und Klangprofil Auswahl.</p>

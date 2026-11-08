@@ -31,7 +31,7 @@
 
     <string name="about_text"><![CDATA[
     <p>Contrôleur AVR amélioré: Ecoutez votre musique correctement!</p>
-    <p>Copyright © 2018-2025 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
+    <p>Copyright © 2018-2026 by <b>Mikhail Kulesh, Alexander Gomanyuk</b></p>
     <p>Cette application permet le contrôle à distance d\'un lecteur réseau ou d\'un récepteur réseau A/V via le réseau local.
        L\'application prend en charge Onkyo/Pioneer/Integra sorti en avril 2016 ou plus tard et Denon/Marantz avec la technologie HEOS intégrée.
        Ses deux principales fonctions sont la commande de la musique et la gestion des profils audios.</p>
