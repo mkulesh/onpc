@@ -28,6 +28,7 @@
         <item name="alertDialogTheme">@style/CustomMaterialAlertDialogTheme</item>
         <item name="preferenceTheme">@style/AppPreferenceStyle</item>
         <item name="checkboxStyle">@style/AppCheckboxStyle</item>
+        <item name="android:textColorLink">?attr/colorAccent</item>
     </style>
 
     <style name="BaseThemeDark" parent="Theme.Material3.Dark.NoActionBar">
@@ -44,6 +45,7 @@
         <item name="alertDialogTheme">@style/CustomMaterialAlertDialogTheme</item>
         <item name="preferenceTheme">@style/AppPreferenceStyle</item>
         <item name="checkboxStyle">@style/AppCheckboxStyle</item>
+        <item name="android:textColorLink">?attr/colorAccent</item>
     </style>
 
     <style name="AppBaseThemeLight" parent="BaseThemeLight">
@@ -202,17 +204,15 @@
 
     <!-- Custom Material Alert Dialog Button Styles -->
 
-    <style name="CustomMaterialAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <style name="CustomMaterialAlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
         <item name="buttonBarPositiveButtonStyle">@style/AlertDialogButtonStyle</item>
         <item name="buttonBarNegativeButtonStyle">@style/AlertDialogButtonStyle</item>
         <item name="buttonBarNeutralButtonStyle">@style/AlertDialogButtonStyle</item>
     </style>
 
-    <style name="AlertDialogButtonStyle" parent="Widget.Material3.Button.TextButton.Dialog">
+    <style name="AlertDialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingLeft">8dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:textColor">?android:attr/textColor</item>
         <item name="android:background">?attr/selectableItemBackground</item>
