@@ -14,7 +14,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BaseThemeLight" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="BaseThemeLight" parent="Theme.Material3.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowBackground">@color/background_material_light</item>
         <item name="themeActivityToolBar">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>

@@ -21,6 +21,7 @@ import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -30,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,6 +70,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class Utils
@@ -615,5 +618,19 @@ public class Utils
             // Handle exceptions here
         }
         return tContents;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void tuneStatusBar(@NonNull final Window window)
+    {
+        // Enable edge-to-edge layout and set the status bar to transparent
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
+            WindowCompat.setDecorFitsSystemWindows(window, false);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM)
+            {
+                window.setStatusBarColor(Color.TRANSPARENT);
+            }
+        }
     }
 }

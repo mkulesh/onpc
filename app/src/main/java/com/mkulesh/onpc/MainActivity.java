@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         startRequestCode = 0;
 
         super.onCreate(savedInstanceState);
+        Utils.tuneStatusBar(getWindow());
 
         orientation = getResources().getConfiguration().orientation;
         try
