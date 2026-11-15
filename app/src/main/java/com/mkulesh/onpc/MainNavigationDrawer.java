@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.mkulesh.onpc.config.Configuration;
-import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.fragments.Dialogs;
 import com.mkulesh.onpc.iscp.ConnectionIf;
 import com.mkulesh.onpc.iscp.ConnectionState;
@@ -110,7 +109,7 @@ class MainNavigationDrawer
             navigationDevice(menuItem.getOrder());
             break;
         case R.id.drawer_app_settings:
-            activity.startActivityForResult(new Intent(activity, PreferencesMain.class), MainActivity.SETTINGS_ACTIVITY_REQID);
+            activity.launchSettings();
             break;
         case R.id.drawer_about:
             final Dialogs dl = new Dialogs(activity);

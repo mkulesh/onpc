@@ -32,6 +32,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.mkulesh.onpc.config.AppLocale;
 import com.mkulesh.onpc.config.CfgAppSettings;
 import com.mkulesh.onpc.config.Configuration;
+import com.mkulesh.onpc.config.PreferencesMain;
 import com.mkulesh.onpc.fragments.BaseFragment;
 import com.mkulesh.onpc.fragments.Dialogs;
 import com.mkulesh.onpc.iscp.ConnectionIf;
@@ -56,6 +57,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -92,6 +95,20 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
     // Solution: save and restore the receiver information in
     // onSaveInstanceState/onRestoreInstanceState
     private String savedReceiverInformation = null;
+
+    private final ActivityResultLauncher<Intent> settingsLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result ->
+            {
+                startRequestCode = SETTINGS_ACTIVITY_REQID;
+                restartActivity();
+            }
+    );
+
+    public void launchSettings()
+    {
+        settingsLauncher.launch(new Intent(this, PreferencesMain.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -373,17 +390,6 @@ public class MainActivity extends AppCompatActivity implements StateManager.Stat
         else
         {
             getStateManager().sendMessage(cmdMsg);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SETTINGS_ACTIVITY_REQID)
-        {
-            startRequestCode = requestCode;
-            restartActivity();
         }
     }
 

@@ -36,6 +36,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import static com.mkulesh.onpc.config.CfgAppSettings.Tabs;
 
+@SuppressWarnings("deprecation")
 class MainPagerAdapter extends FragmentStatePagerAdapter
 {
     private final Context context;
