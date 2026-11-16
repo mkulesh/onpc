@@ -14,12 +14,15 @@
 
 import '../../utils/Logging.dart';
 import '../messages/DcpMediaContainerMsg.dart';
+import '../messages/EnumParameterMsg.dart';
+import '../messages/ServiceType.dart';
 
 class MediaDownloadCtrl
 {
     // Total target number of media items, when media list is
     // downloaded in several blocks like for huge Denon media lists
     int _total = -1;
+    bool _ignoreTotal = false;
 
     int get total
     => _total;
@@ -30,12 +33,15 @@ class MediaDownloadCtrl
     void clear()
     {
         _total = -1;
+        _ignoreTotal = false;
         _downloaded = -1;
     }
 
-    void start(DcpMediaContainerMsg msg)
+    void start(DcpMediaContainerMsg msg, EnumItem<ServiceType> _serviceType)
     {
         _total = msg.getCount();
+        // #376: Quick media list filter does not work on the top of TuneIn service
+        _ignoreTotal = _serviceType.key == ServiceType.DCP_TUNEIN && _total == 0;
         _downloaded = 0;
     }
 
@@ -44,6 +50,10 @@ class MediaDownloadCtrl
         if (_total != msg.getCount())
         {
             _total = msg.getCount();
+            if (_ignoreTotal && _total > 0)
+            {
+                _ignoreTotal = false;
+            }
             Logging.info(this, "Changed total number of items: " + _total.toString());
         }
     }
@@ -55,5 +65,5 @@ class MediaDownloadCtrl
     }
 
     bool get downloadFinished
-    => _total == _downloaded;
+    => _ignoreTotal || _total == _downloaded;
 }

@@ -625,7 +625,7 @@ class MediaListState
             _numberOfLayers = _dcpMediaPath.length;
             _mediaListSid = msg.getSid();
             _mediaListCid = msg.getCid();
-            downloadCtrl.start(msg);
+            downloadCtrl.start(msg, _serviceType);
             if (msg.getBrowseType() == BrowseType.SEARCH_RESULT && msg.getSearchStr().isNotEmpty)
             {
                 _titleBar = Strings.medialist_search + ": " + msg.getSearchStr();
