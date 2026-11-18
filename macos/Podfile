@@ -1,4 +1,4 @@
-platform :osx, '10.14'
+platform :osx, '12.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -38,13 +38,12 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
-    # --- Suppress warnings for libserialport ---
-    if target.name == 'libserialport'
-      target.build_configurations.each do |config|
-        # Suppress "implicit conversion loses integer precision" specifically
-        config.build_settings['GCC_WARN_64_TO_32_BIT_CONVERSION'] = 'NO'
-        # Fix the deployment target warning
-        config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.14'
+    target.build_configurations.each do |config|
+      # Force deployment target to 12.0 for all pods
+      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '12.0'
+      # --- Suppress warnings for libserialport ---
+      if target.name == 'libserialport'
+        config.build_settings['GCC_WARN_INHIBIT_ALL_WARNINGS'] = 'YES'
       end
     end
   end
