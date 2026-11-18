@@ -73,7 +73,7 @@ class BaseAppTheme
             focusColor: focusColor,
             hoverColor: focusColor,
 
-            bottomAppBarTheme: BottomAppBarTheme(
+            bottomAppBarTheme: BottomAppBarThemeData(
                 color: textColorAppBar
             ),
 
@@ -89,7 +89,7 @@ class BaseAppTheme
                 elevation: ActivityDimens.elevation,
             ),
 
-            tabBarTheme: TabBarTheme(
+            tabBarTheme: TabBarThemeData(
                 labelColor: textColorAppBar,
                 labelStyle: mainStyle.copyWith(fontSize: ActivityDimens.secondaryFontSize),
                 unselectedLabelColor: textColorAppBar.withAlpha(175),
@@ -106,7 +106,7 @@ class BaseAppTheme
                 elevation: ActivityDimens.elevation
             ),
 
-            dialogTheme: DialogTheme(
+            dialogTheme: DialogThemeData(
                 backgroundColor: brightness == Brightness.dark ? primaryColor : backgroundColor,
                 surfaceTintColor: Colors.transparent,
                 elevation: ActivityDimens.elevation

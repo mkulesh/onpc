@@ -1,7 +1,14 @@
 include: package:lints/recommended.yaml
 
 analyzer:
-  exclude: [res]
+  exclude:
+    - res
+    - build/**
+    - android/**
+    - ios/**
+    - windows/**
+    - macos/**
+    - linux/**
   errors:
     avoid_function_literals_in_foreach_calls: ignore
     constant_identifier_names: ignore

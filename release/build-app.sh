@@ -196,10 +196,10 @@ move-remote-bundle() {
 # Android Build Method
 build-android() {
     echo "Building Android application..."
-    prepare-build "3.29.0" "android.apk" "mobile" "$@"
-    flutter build apk --release
+    prepare-build "3.47.9" "android.apk" "mobile" "$@"
+    flutter build apk --release --android-skip-build-dependency-validation --split-per-abi
 
-    move-bundle "$(find build/app/outputs/flutter-apk -maxdepth 1 -name "app-release.apk" | head -n 1)"
+    move-bundle "$(find build/app/outputs/flutter-apk -maxdepth 1 -name "app-arm64-v8a-release.apk" | head -n 1)"
 
     # Install if requested
     if [ "$INSTALL_TO_DEVICE" = true ]; then
@@ -217,7 +217,7 @@ build-android() {
 # iOS Build Method
 build-ios() {
     echo "Building iOS application..."
-    prepare-build "3.29.0" "ios.ipa" "mobile" "$@"
+    prepare-build "3.47.9" "ios.ipa" "mobile" "$@"
     if [ "$BUILD_FOR_STORE" = true ]; then
         echo "Building for Store (creating .app/.xcarchive)..."
         flutter build ios --release
@@ -241,7 +241,7 @@ build-ios() {
 # Linux Build Method
 build-linux() {
     echo "Building Linux application..."
-    prepare-build "3.29.0" "linux-x86_64.zip" "desktop" "$@"
+    prepare-build "3.47.9" "linux-x86_64.zip" "desktop" "$@"
 
     # Remove the old build
     ONPC_DIR_NAME="$ONPC_RELEASE_DIR/${ONPC_APP_NAME%.*}"
@@ -329,7 +329,7 @@ EOF
 # macOS Build Method
 build-macos() {
     echo "Building macOS application..."
-    prepare-build "3.29.0" "macos.dmg" "desktop" "$@"
+    prepare-build "3.47.9" "macos.dmg" "desktop" "$@"
     flutter build macos --release
 
     # Locate the generated .app bundle dynamically
@@ -395,7 +395,7 @@ build-macos() {
 # Windows Build Method
 build-windows() {
     echo "Building Windows application..."
-    prepare-build "3.29.0" "windows-x86_64.msix" "desktop" "$@"
+    prepare-build "3.47.9" "windows-x86_64.msix" "desktop" "$@"
     flutter build windows --release
 
     # Create MSIX
