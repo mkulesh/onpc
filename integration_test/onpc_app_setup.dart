@@ -55,7 +55,7 @@ class OnpcAppSetup {
       await tu.changeParameter("App language", "English");
 
       // Audio control
-      await tu.changeParameter("Sound control", "Automatic");
+      await tu.changeParameter("Sound control", "Automatic", pressOk: true);
       await tu.changeParameter("Master volume unit", "Relative (dB)", pressOk: true, scrollTo: "Developer options");
 
       // RI-USB
