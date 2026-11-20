@@ -36,7 +36,7 @@
 #     -- iOS: 'ios-deploy' (via brew) is required for the --install flag:
 #        brew install ios-deploy
 #     -- Linux: Install additional packages:
-#        dnf install clang cmake ninja-build gtk3-devel xz-devel
+#        dnf install clang cmake ninja-build gtk3-devel xz-devel egl-utils
 #     -- macOS: 'create-dmg' (via brew) is required to generate the installer image:
 #        brew install create-dmg
 #        If "Not authorized to send Apple events to Finder" appears:
