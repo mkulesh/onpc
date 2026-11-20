@@ -8,13 +8,15 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 test_mac() {
     local FLUTTER_ARGS="$1"
+    CFG_FILE_MACOS="$HOME/Library/Containers/com.mkulesh.onpc/Data/Library/Preferences/com.mkulesh.onpc.plist"
+    CFG_FILE_SAVED="./release/config/Library/Containers/com.mkulesh.onpc/Data/Library/Preferences"
+
     echo "Staring test on macOS in directory $(pwd)"
 
     rm -f "$HOME"/Library/Containers/com.mkulesh.onpc/Data/*.log
 
     # Only remove configuration if 'setup' is requested or no args are present (defaulting to all)
     if [[ -z "$FLUTTER_ARGS" ]] || [[ "$FLUTTER_ARGS" == *"setup"* ]]; then
-        CFG_FILE_MACOS="$HOME/Library/Containers/com.mkulesh.onpc/Data/Library/Preferences/com.mkulesh.onpc.plist"
         if [ -f "$CFG_FILE_MACOS" ]; then
             rm "$CFG_FILE_MACOS"
             echo "Deleted configuration file: $CFG_FILE_MACOS"
@@ -32,6 +34,8 @@ test_mac() {
     done
     echo "Moving application logs"
     mv "$HOME"/Library/Containers/com.mkulesh.onpc/Data/release-test.log release
+    echo "Copying configuration file"
+    cp "$CFG_FILE_MACOS" "$CFG_FILE_SAVED"
 }
 
 main() {

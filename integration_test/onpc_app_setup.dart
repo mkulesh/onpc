@@ -420,7 +420,7 @@ class OnpcAppSetup {
 
       // Favourite tracks
       final Pair<String, String> FAVOURITES = Pair<String, String>("The Dancer", "Deezer Favourites");
-      await tu.navigateToMedia(["My Music", "Favourite tracks"], ensureAfter: () => find.text("Lady In Black"));
+      await tu.navigateToMedia(["My Music", "Favourite tracks"], ensureAfter: () => find.text("Guardian of the Night"));
       await tu.contextMenu(FAVOURITES.item1, "Create shortcut");
 
       // Deezer Playlist

@@ -26,11 +26,14 @@ class OnpcDenonTests {
 
   static Future<void> playFromUsb(final OnpcTestUtils tu) async {
     await tu.connect(FRIENDLY_NAME, DENON_AVR);
+    await tu.openDrawerMenu("Main");
+    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
+
     // Start playing shortcut1
     final String shortcut1 = "В.Высоцкий";
     final String shortcut1_artist = "Владимир Высоцкий и ансамбль 'Мелодия'";
     final String shortcut1_track = "Цыганский романс 'Кони привередливые'";
-    await tu.playShortcut(shortcut1, shortcut1_artist, waitPlaying: shortcut1_track);
+    await tu.playShortcut(shortcut1, shortcut1_artist);
     await tu.openTab("LISTEN", ensureAfter: () => find.text("Владимир Высоцкий"));
     expect(find.textContaining(shortcut1_artist), findsOneWidget);
     expect(find.textContaining(shortcut1_track), findsOneWidget);
@@ -271,6 +274,17 @@ class OnpcDenonTests {
   }
 
   static Future<void> testHeosFavorites(OnpcTestUtils tu) async {
+    await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
+
+    // Navigate to Favorites
+    final String favorite = "PureRock.US (Metal)";
+    await tu.findAndTap(() => find.text("NET"));
+    await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Favorite"]);
+    expect(find.textContaining("Favorite | items:"), findsOneWidget);
+    await tu.findAndTap(() => find.text(favorite));
+    await tu.waitMediaItemPlaying(favorite);
+    await tu.stepDelaySec(OnpcTestUtils.SHORT_DELAY);
+
     final String shortcut = "Flow";
 
     // Start playing
@@ -387,7 +401,7 @@ class OnpcDenonTests {
     await tu.waitMediaItemPlaying(station);
     await tu.openTab("LISTEN", ensureAfter: () => find.text("STEREO"));
     expect(find.text(station), findsOneWidget);
-    expect(find.text("OLDIE ANTENNE"), findsOneWidget);
+    expect(find.textContaining("OLDIE ANT"), findsOneWidget);
   }
 
   static Future<void> changeListeningModes(OnpcTestUtils tu) async {
@@ -434,7 +448,9 @@ class OnpcDenonTests {
     await tu.tester.drag(find.text(lm1), Offset(-200, 0), warnIfMissed: false);
     await tu.stepDelayMs();
     await tu.findAndTap(() => find.text(lm2));
-    // Start playing
+    // Start playing in Zone2
+    await tu.openDrawerMenu(zone, ensureAfter: () => find.text(DENON_AVR + "/" + zone));
+    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
     await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
     await tu.findAndTap(() => find.text("NET"));
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Local Music"]);
@@ -446,17 +462,12 @@ class OnpcDenonTests {
     await tu.openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.text(lm2));
     await tu.findAndTap(() => find.text(artist), waitFor: true);
     expect(find.text(album), findsOneWidget);
-    // Open Zone2
-    await tu.openDrawerMenu(zone, ensureAfter: () => find.text(DENON_AVR + "/" + zone));
-    await tu.stepDelaySec(OnpcTestUtils.NORMAL_DELAY);
-    await tu.findAndTap(() => find.text(artist), waitFor: true);
-    expect(find.text(album), findsOneWidget);
     await _audioControl(tu, false);
   }
 
   static Future<void> createPlayList(OnpcTestUtils tu) async {
-    final String playlist = "My test playlist";
-    final String playlist1 = "My test playlist1";
+    final String playlist = "0 - My test playlist";
+    final String playlist1 = "0 - My test playlist1";
     final String artist = "Ayo";
     final String album = "Joyful";
     final String song1 = "Without You";

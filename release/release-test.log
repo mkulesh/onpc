@@ -1,7 +1,7 @@
-Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date: 2026-03-01 11:38:35.373716
+Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test date: 2026-11-20 18:54:19.162961
 [START - Initial Search]
     Tap: widget with text "192.168.1.80:60128"
-    Result: PASSED in 7 seconds
+    Result: PASSED in 17 seconds
 [END - Initial Search]
 [START - About Screen]
     [START - Open driver menu: About]
@@ -35,6 +35,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Ensure item in list: Sound control
         Tap: widget with text "Sound control"
         Tap: widget with text containing Automatic
+        Tap: widget with text "OK"
     [END - Change parameter: Sound control]
     [START - Change parameter: Master volume unit]
         Ensure item in list: Master volume unit
@@ -45,7 +46,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
     [START - Change parameter: Use USB-RI interface]
         Ensure item in list: Use USB-RI interface
         Tap: widget with text "Use USB-RI interface"
-        Tap: widget with text containing OnkioRI FT231X
+        Tap: widget with text containing OnkyoRI FT231X
     [END - Change parameter: Use USB-RI interface]
     [START - Change parameter: Album's cover click behaviour]
         Ensure item in list: Album's cover click behaviour
@@ -53,7 +54,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with text containing Audio muting
     [END - Change parameter: Album's cover click behaviour]
     Open previous screen
-    Result: PASSED in 23 seconds
+    Result: PASSED in 25 seconds
 [END - Change Basic Settings]
 [START - Change Tab Layout]
     [START - Open driver menu: Tab layout]
@@ -229,7 +230,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
             Tap: widget with text "Main"
         [END - Open driver menu: Main]
     [END - Rename zone[1] to To Onkyo]
-    Result: PASSED in 138 seconds
+    Result: PASSED in 142 seconds
 [END - Initial Setup of Denon AVR]
 [START - Building Favourites for Denon AVR]
     [START - Open tab: SHORTCUTS]
@@ -495,7 +496,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with text "Delete"
     [END - Open context menu: 5 - 93.80 MHz]
     Tap: widget with text "Deezer Classic Rock", delay = 5
-    Result: PASSED in 197 seconds
+    Result: PASSED in 200 seconds
 [END - Building Favourites for Denon AVR]
 [START - Initial Setup of Onkyo Box]
     [START - Save connection: My Onkyo Box/192.168.1.81]
@@ -607,7 +608,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         [END - Test slider: Main:]
         Tap: widget with text "OK"
     [END - Set maximum volume]
-    Result: PASSED in 84 seconds
+    Result: PASSED in 87 seconds
 [END - Initial Setup of Onkyo Box]
 [START - Initial Setup of Onkyo Player]
     [START - Save connection: My Onkyo Player/192.168.1.80]
@@ -621,6 +622,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Setting text: "My Onkyo Player", number of fields = 3, field index = 2
         Tap: widget with text "OK", delay = 5
     [END - Save connection: My Onkyo Player/192.168.1.80]
+    Tap: widget with widget matching predicate
     [START - Change inputs]
         [START - Open settings: Input selectors]
             [START - Open driver menu: Settings]
@@ -722,7 +724,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Open previous screen
         Open previous screen
     [END - Change listening modes]
-    Result: PASSED in 78 seconds
+    Result: PASSED in 82 seconds
 [END - Initial Setup of Onkyo Player]
 [START - Building Favourites for Onkyo Player]
     [START - Open tab: SHORTCUTS]
@@ -972,7 +974,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with text "OK"
     [END - Rename shortcuts]
     Tap: widget with text "Franz Ferdinand on DLNA", delay = 5
-    Result: PASSED in 223 seconds
+    Result: PASSED in 231 seconds
 [END - Building Favourites for Onkyo Player]
 [START - Set Onkyo RI devices]
     [START - Open tab: RI]
@@ -1063,7 +1065,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 69 seconds
+    Result: PASSED in 70 seconds
 [END - Onkyo: Play from USB]
 [START - Onkyo: Play from Queue]
     [START - Open tab: MEDIA]
@@ -1127,7 +1129,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
     Tap: widget with text "Track menu"
     Tap: widget with type "ListTile" that are ancestors of widget with text "Remove from My Playlists"
     Tap: widget with text "OK"
-    Result: PASSED in 61 seconds
+    Result: PASSED in 62 seconds
 [END - Onkyo: Play from Deezer]
 [START - Onkyo: Play from DAB]
     [START - Play shortcut: DAB]
@@ -1219,12 +1221,15 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Open application drawer
         Tap: widget with text "My Denon AVR", delay = 5
     [END - Connect to: My Denon AVR]
+    [START - Open driver menu: Main]
+        Open application drawer
+        Tap: widget with text "Main"
+    [END - Open driver menu: Main]
     [START - Play shortcut: В.Высоцкий]
         [START - Open tab: SHORTCUTS]
             Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
         [END - Open tab: SHORTCUTS]
         Tap: widget with text "В.Высоцкий"
-        Waiting "Цыганский романс 'Кони привередливые'" is playing...
     [END - Play shortcut: В.Высоцкий]
     [START - Open tab: LISTEN]
         Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
@@ -1287,7 +1292,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 78 seconds
+    Result: PASSED in 92 seconds
 [END - Denon: Play from USB]
 [START - Denon: Audio Control for main zone]
     Tap: widget with widget matching predicate
@@ -1364,6 +1369,17 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
     Result: PASSED in 45 seconds
 [END - Denon: Play from Queue]
 [START - Denon: Test HEOS favorites]
+    [START - Open tab: MEDIA]
+        Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
+    [END - Open tab: MEDIA]
+    Tap: widget with text "NET"
+    [START - Navigate to media]
+        Path: [_MEDIA_LIST_TOP_LAYER, Favorite]
+        Tap: widget with widget matching predicate
+        Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite", delay = 0
+    [END - Navigate to media]
+    Tap: widget with text "PureRock.US (Metal)"
+    Waiting "PureRock.US (Metal)" is playing...
     [START - Play shortcut: Flow]
         [START - Open tab: SHORTCUTS]
             Tap: widget with type "Tab" that are ancestors of widget with text "SHORTCUTS"
@@ -1389,7 +1405,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with widget matching predicate
         Tap: widget with type "ListTile" that are ancestors of widget with text "Favorite", delay = 0
     [END - Navigate to media]
-    Result: PASSED in 17 seconds
+    Result: PASSED in 27 seconds
 [END - Denon: Test HEOS favorites]
 [START - Denon: Play from Deezer]
     [START - Navigate to media]
@@ -1408,7 +1424,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 19 seconds
+    Result: PASSED in 21 seconds
 [END - Denon: Play from Deezer]
 [START - Denon: Hide empty items]
     [START - Open tab: MEDIA]
@@ -1434,7 +1450,7 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
     [END - Open context menu: Muse]
     Initial number of items: 9
     Final number of items: 3
-    Result: PASSED in 24 seconds
+    Result: PASSED in 30 seconds
 [END - Denon: Hide empty items]
 [START - Denon: Change listening modes]
     [START - Change listening mode]
@@ -1552,6 +1568,10 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
         Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
     [END - Open tab: LISTEN]
     Tap: widget with text "ALL ZONE STEREO"
+    [START - Open driver menu: To Onkyo]
+        Open application drawer
+        Tap: widget with text "To Onkyo"
+    [END - Open driver menu: To Onkyo]
     [START - Open tab: MEDIA]
         Tap: widget with type "Tab" that are ancestors of widget with text "MEDIA"
     [END - Open tab: MEDIA]
@@ -1576,11 +1596,6 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
     [START - Open tab: LISTEN]
         Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
     [END - Open tab: LISTEN]
-    Tap: widget with text "Metallica"
-    [START - Open driver menu: To Onkyo]
-        Open application drawer
-        Tap: widget with text "To Onkyo"
-    [END - Open driver menu: To Onkyo]
     Tap: widget with text "Metallica"
     Tap: widget with widget matching predicate
     [START - Test slider: Balance:]
@@ -1642,39 +1657,39 @@ Test platform: macos/Version 26.3 (Build 25D125), app version 2.15.3, test date:
     [END - Navigate to media]
     Tap: widget with text "Ayo - Without You"
     Tap: widget with widget matching predicate
-    Setting text: "My test playlist", number of fields = 1, field index = 0
+    Setting text: "0 - My test playlist", number of fields = 1, field index = 0
     Tap: widget with text "OK"
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Play List]
         Tap: widget with widget matching predicate
         Tap: widget with type "ListTile" that are ancestors of widget with text "Play List", delay = 0
     [END - Navigate to media]
-    Tap: widget with text "My test playlist"
+    Tap: widget with text "0 - My test playlist"
     Tap: widget with text "Ayo - Letter By Letter"
-    Tap: widget with text "My test playlist | items: 12"
-    [START - Open context menu: My test playlist]
-        Tap: widget with text "My test playlist"
+    Tap: widget with text "0 - My test playlist | items: 12"
+    [START - Open context menu: 0 - My test playlist]
+        Tap: widget with text "0 - My test playlist"
         Tap: widget with text "Rename playlist"
-    [END - Open context menu: My test playlist]
-    Setting text: "My test playlist1", number of fields = 1, field index = 0
+    [END - Open context menu: 0 - My test playlist]
+    Setting text: "0 - My test playlist1", number of fields = 1, field index = 0
     Tap: widget with text "OK"
-    Tap: widget with text "My test playlist1"
+    Tap: widget with text "0 - My test playlist1"
     Tap: widget with text "Ayo - Without You"
-    Tap: widget with text "My test playlist1 | items: 12"
-    [START - Open context menu: My test playlist1]
-        Tap: widget with text "My test playlist1"
+    Tap: widget with text "0 - My test playlist1 | items: 12"
+    [START - Open context menu: 0 - My test playlist1]
+        Tap: widget with text "0 - My test playlist1"
         Tap: widget with text "Delete playlist"
-    [END - Open context menu: My test playlist1]
+    [END - Open context menu: 0 - My test playlist1]
     [START - Navigate to media]
         Path: [_MEDIA_LIST_TOP_LAYER, Play List]
         Tap: widget with widget matching predicate
         Tap: widget with type "ListTile" that are ancestors of widget with text "Play List", delay = 0
     [END - Navigate to media]
-    Result: PASSED in 51 seconds
+    Result: PASSED in 54 seconds
 [END - Denon: Create playlist]
 [START - Summary]
     Executed 30 procedures
-    Total duration: 26 minutes
+    Total duration: 27 minutes
     PASSED: 30
     FAILED: []
 [END - Summary]
