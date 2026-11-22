@@ -55,6 +55,21 @@ test_linux() {
     cp "$CFG_FILE_LINUX" "$CFG_FILE_SAVED"
 }
 
+test_windows() {
+    local FLUTTER_ARGS="$1"
+    local APPDATA_DIR="${APPDATA:-$HOME/AppData/Roaming}"
+    APPDATA_DIR="${APPDATA_DIR//\\//}"
+    CFG_FILE_WINDOWS="${APPDATA_DIR}/Mikhail Kulesh/Music Control/shared_preferences.json"
+    CFG_FILE_SAVED="./release/config/Users/family/AppData/Roaming/Mikhail Kulesh/Music Control"
+    rm -f release-test.log
+    run_session "windows" "$CFG_FILE_WINDOWS" "$FLUTTER_ARGS"
+    echo "Moving application logs"
+    mv release-test.log release
+    echo "Copying configuration file"
+    mkdir -p "$CFG_FILE_SAVED"
+    cp "$CFG_FILE_WINDOWS" "$CFG_FILE_SAVED"
+}
+
 main() {
     clear
     cd "${SCRIPT_DIR}"
@@ -93,6 +108,8 @@ main() {
         test_mac "$TEST_ARGS"
     elif [[ "$(uname)" == "Linux" ]]; then
         test_linux "$TEST_ARGS"
+    elif [[ "$(uname)" == MINGW64* ]]; then
+        test_windows "$TEST_ARGS"
     else
         echo "Error: Unsupported operating system $(uname)"
         exit 1
