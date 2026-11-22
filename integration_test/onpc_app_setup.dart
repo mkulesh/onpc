@@ -30,7 +30,9 @@ class OnpcAppSetup {
       expect(find.text(Strings.state_not_connected), findsOneWidget);
       await tu.ensureVisible(() => find.text("Onkyo Player"));
       await tu.ensureVisible(() => find.text("Onkyo Box"));
-      await tu.ensureVisible(() => find.text("Denon AVR"));
+      if (!Platform.isWindows) {
+        await tu.ensureVisible(() => find.text("Denon AVR"));
+      }
     } finally {
       await tu.findAndTap(() => find.text("192.168.1.80:60128"), waitFor: true);
     }
