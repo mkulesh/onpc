@@ -91,7 +91,7 @@ class _AudioControlDialogState extends State<AudioControlDialog>
                 {
                     btn = Container(
                         decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(color: td.indicatorColor, width: 2.0))),
+                            border: Border(bottom: BorderSide(color: td.tabBarTheme.indicatorColor!, width: 2.0))),
                         child: btn);
                 }
                 buttons.add(btn);

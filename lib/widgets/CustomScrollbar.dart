@@ -42,7 +42,7 @@ class CustomScrollbar extends StatelessWidget
         else
         {
             // Android/Windows/Web: Use Material Scrollbar with local Theme
-            final Color indicatorColor = Theme.of(context).indicatorColor;
+            final Color indicatorColor = Theme.of(context).tabBarTheme.indicatorColor!;
             return ScrollbarTheme(
                 data: ScrollbarThemeData(
                     trackVisibility: const WidgetStatePropertyAll(false),

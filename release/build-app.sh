@@ -29,6 +29,8 @@
 #     flutter config --jdk-dir="<Path to Gradle JDK>"
 #   - Call 'git fetch' in the Flutter directory so that the local Flutter
 #     repository gets all the new info from Github
+#   - To disable "Currently on an unknown channel" warning: edit file flutter/bin/cache/flutter.version.json
+#     and set "channel": "stable"
 #   - Platform specific requirements:
 #     -- Android: 'adb' (Android Debug Bridge) is required for the --install flag
 #        Gradle: add gradle.properties file in GRADLE_USER_HOME with following content

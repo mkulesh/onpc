@@ -69,7 +69,6 @@ class BaseAppTheme
             scaffoldBackgroundColor: backgroundColor,
             dividerColor: disabledColor,
             disabledColor: disabledColor,
-            indicatorColor: accentColor,
             focusColor: focusColor,
             hoverColor: focusColor,
 

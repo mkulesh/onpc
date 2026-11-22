@@ -86,7 +86,7 @@ class ShortcutsView extends UpdatableView
             tab = CustomScrollbar(
                 child: ReorderableListView(
                     primary: true,
-                    onReorder: _onReorder,
+                    onReorderItem: _onReorder,
                     reverse: false,
                     scrollDirection: Axis.vertical,
                     children: rows
@@ -153,10 +153,7 @@ class ShortcutsView extends UpdatableView
 
     void _onReorder(int oldIndex, int newIndex)
     {
-        if (newIndex > oldIndex)
-        {
-            newIndex -= 1;
-        }
+        Logging.info(this, "oldIndex=" + oldIndex.toString() + ", newIndex=" + newIndex.toString());
         if (oldIndex < _shortcutIds.length && newIndex < _shortcutIds.length)
         {
             configuration.favoriteShortcuts.reorder(_shortcutIds[oldIndex], _shortcutIds[newIndex]);

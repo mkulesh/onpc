@@ -300,7 +300,7 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
         return CustomScrollbar(
             controller: _scrollController,
             child: ReorderableListView(
-                onReorder: _onReorder,
+                onReorderItem: _onReorder,
                 header: header,
                 reverse: false,
                 padding: ActivityDimens.noPadding,
@@ -313,10 +313,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
 
     void _onReorder(int oldIndex, int newIndex)
     {
-        if (newIndex > oldIndex)
-        {
-            newIndex -= 1;
-        }
         if (oldIndex < _playQueueIds.length && newIndex < _playQueueIds.length)
         {
             setState(()

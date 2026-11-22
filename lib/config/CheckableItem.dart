@@ -48,10 +48,6 @@ class CheckableItem
 
     static void reorder(final CfgModule configuration, final String parameter, final List<CheckableItem> items, int oldIndex, int newIndex)
     {
-        if (newIndex > oldIndex)
-        {
-            newIndex -= 1;
-        }
         final CheckableItem item = items.removeAt(oldIndex);
         items.insert(newIndex, item);
         CheckableItem.writeToPreference(configuration, parameter, items);
@@ -158,7 +154,7 @@ class CheckableItem
         return CustomScrollbar(
             child: ReorderableListView(
                 primary: primary,
-                onReorder: onReorder,
+                onReorderItem: onReorder,
                 reverse: false,
                 scrollController: scrollController,
                 scrollDirection: Axis.vertical,
