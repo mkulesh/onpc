@@ -144,7 +144,7 @@ class CfgRiCommands extends CfgModule
             Logging.info(this, "Available USB ports:");
             _ports.forEach((p) => Logging.info(this, "  " + p.toString()));
         }
-        on Exception catch (e)
+        catch (e)
         {
             Logging.info(this, "can not read serial ports: " + e.toString());
         }
@@ -160,7 +160,7 @@ class CfgRiCommands extends CfgModule
                 _devices.forEach((d) => d.printInfo());
             });
         }
-        on Exception catch (e)
+        catch (e)
         {
             Logging.info(this, "can not read USB-RI commands: " + e.toString());
         }

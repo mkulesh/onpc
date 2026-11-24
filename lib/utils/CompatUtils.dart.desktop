@@ -47,12 +47,19 @@ class SerialPortWrapper
     static List<Pair<String, String>> getPorts()
     {
         final List<Pair<String, String>> _ports = [];
-        for (final String name in SerialPort.availablePorts)
+        try
         {
-            final SerialPort sp = SerialPort(name);
-            final Pair<String, String> port = Pair(name, sp.description?? Strings.dashed_string);
-            _ports.add(port);
-            sp.dispose();
+            for (final String name in SerialPort.availablePorts)
+            {
+                final SerialPort sp = SerialPort(name);
+                final Pair<String, String> port = Pair(name, sp.description?? Strings.dashed_string);
+                _ports.add(port);
+                sp.dispose();
+            }
+        }
+        catch (e)
+        {
+            Logging.info(SerialPortWrapper, "can not get available serial ports: " + e.toString());
         }
         return _ports;
     }
@@ -136,13 +143,28 @@ class WindowManagerWrapper with WindowListener
     void restoreWindow() async
     {
         Logging.info(this, "Restore window size and position");
-        await windowManager.ensureInitialized();
-        await windowManager.waitUntilReadyToShow().then((_) async
+        try
         {
+            await windowManager.ensureInitialized();
+            await windowManager.waitUntilReadyToShow();
             await windowManager.setSize(_configuration.appSettings.windowSize());
             await windowManager.setPosition(_configuration.appSettings.windowOffset());
-            await windowManager.show();
-        });
+        }
+        catch (e)
+        {
+            Logging.info(this, "can not restore window size/position: " + e.toString());
+        }
+        finally
+        {
+            try
+            {
+                await windowManager.show();
+            }
+            catch (e)
+            {
+                Logging.info(this, "can not show window: " + e.toString());
+            }
+        }
     }
 
     void initState()
