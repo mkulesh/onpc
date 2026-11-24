@@ -451,6 +451,19 @@ class OnpcTestUtils extends OnpcGuiActions {
     endMethod();
   }
 
+  Future<void> swipeListeningMode(String s, {bool swipeLeft = false, bool swipeRight = false}) async {
+    startMethod("Swipe listening mode: " + s);
+    if (swipeLeft) {
+      await tester.drag(find.text(s), Offset(200, 0), warnIfMissed: false);
+      await stepDelayMs();
+    }
+    if (swipeRight) {
+      await tester.drag(find.text(s), Offset(-200, 0), warnIfMissed: false);
+      await stepDelayMs();
+    }
+    endMethod();
+  }
+
   Future<void> changeListeningMode(String input, String mode, bool isToneCtrl) async {
     startMethod("Change listening mode");
     await openTab("LISTEN", swipeLeft: true, ensureAfter: () => find.text(mode.toUpperCase()));

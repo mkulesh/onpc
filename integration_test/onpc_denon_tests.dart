@@ -38,6 +38,10 @@ class OnpcDenonTests {
     expect(find.textContaining(shortcut1_artist), findsOneWidget);
     expect(find.textContaining(shortcut1_track), findsOneWidget);
 
+    // Ensure Stereo mode
+    await tu.swipeListeningMode("DIRECT", swipeLeft: true);
+    await tu.findAndTap(() => find.text("STEREO"), delay: OnpcTestUtils.NORMAL_DELAY);
+
     // Navigate to USB
     await tu.openTab("MEDIA", ensureAfter: () => find.text("NET"));
     await tu.findAndTap(() => find.text("NET"));
@@ -108,7 +112,6 @@ class OnpcDenonTests {
     expect(find.text("24/27"), findsOneWidget);
 
     // Audio info dialog
-    await tu.findAndTap(() => find.text("Stereo".toUpperCase()), delay: OnpcTestUtils.NORMAL_DELAY);
     await tu.ensureAvInfo("MP3 44.1 kHz", "Stereo");
   }
 
