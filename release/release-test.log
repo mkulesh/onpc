@@ -1,7 +1,7 @@
-Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test date: 2026-11-20 18:54:19.162961
+Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test date: 2026-11-24 09:36:29.594864
 [START - Initial Search]
     Tap: widget with text "192.168.1.80:60128"
-    Result: PASSED in 17 seconds
+    Result: PASSED in 5 seconds
 [END - Initial Search]
 [START - About Screen]
     [START - Open driver menu: About]
@@ -230,7 +230,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
             Tap: widget with text "Main"
         [END - Open driver menu: Main]
     [END - Rename zone[1] to To Onkyo]
-    Result: PASSED in 142 seconds
+    Result: PASSED in 140 seconds
 [END - Initial Setup of Denon AVR]
 [START - Building Favourites for Denon AVR]
     [START - Open tab: SHORTCUTS]
@@ -496,7 +496,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
         Tap: widget with text "Delete"
     [END - Open context menu: 5 - 93.80 MHz]
     Tap: widget with text "Deezer Classic Rock", delay = 5
-    Result: PASSED in 200 seconds
+    Result: PASSED in 203 seconds
 [END - Building Favourites for Denon AVR]
 [START - Initial Setup of Onkyo Box]
     [START - Save connection: My Onkyo Box/192.168.1.81]
@@ -608,7 +608,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
         [END - Test slider: Main:]
         Tap: widget with text "OK"
     [END - Set maximum volume]
-    Result: PASSED in 87 seconds
+    Result: PASSED in 86 seconds
 [END - Initial Setup of Onkyo Box]
 [START - Initial Setup of Onkyo Player]
     [START - Save connection: My Onkyo Player/192.168.1.80]
@@ -974,7 +974,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
         Tap: widget with text "OK"
     [END - Rename shortcuts]
     Tap: widget with text "Franz Ferdinand on DLNA", delay = 5
-    Result: PASSED in 231 seconds
+    Result: PASSED in 364 seconds
 [END - Building Favourites for Onkyo Player]
 [START - Set Onkyo RI devices]
     [START - Open tab: RI]
@@ -1084,7 +1084,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
         Tap: widget with text "Remove all"
     [END - Open context menu: 07-Dogs On Leads.flac]
     Tap: widget with text "Play Queue | items: 0"
-    Result: PASSED in 44 seconds
+    Result: PASSED in 45 seconds
 [END - Onkyo: Play from Queue]
 [START - Onkyo: Play from Deezer]
     [START - Play shortcut: В.Высоцкий]
@@ -1129,7 +1129,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
     Tap: widget with text "Track menu"
     Tap: widget with type "ListTile" that are ancestors of widget with text "Remove from My Playlists"
     Tap: widget with text "OK"
-    Result: PASSED in 62 seconds
+    Result: PASSED in 61 seconds
 [END - Onkyo: Play from Deezer]
 [START - Onkyo: Play from DAB]
     [START - Play shortcut: DAB]
@@ -1292,7 +1292,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
         Tap: widget with widget matching predicate
         Tap: widget with text "OK"
     [END - Ensure Audio/Video info]
-    Result: PASSED in 92 seconds
+    Result: PASSED in 94 seconds
 [END - Denon: Play from USB]
 [START - Denon: Audio Control for main zone]
     Tap: widget with widget matching predicate
@@ -1304,16 +1304,15 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
         Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
     [END - Test slider: Master volume:]
     [START - Test slider: Bass:]
-        Move slider: min = 0.0, max = 12.0, value = 6.0
-        Move slider: min = 0.0, max = 12.0, value = 2.0
+        Move slider: min = 0.0, max = 12.0, value = 7.0
+        Move slider: min = 0.0, max = 12.0, value = 3.0
         Move slider: min = 0.0, max = 12.0, value = 0.0
         Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
         Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
     [END - Test slider: Bass:]
     [START - Test slider: Treble:]
-        Move slider: min = 0.0, max = 12.0, value = 9.0
-        Move slider: min = 0.0, max = 12.0, value = 5.0
-        Move slider: min = 0.0, max = 12.0, value = 1.0
+        Move slider: min = 0.0, max = 12.0, value = 6.0
+        Move slider: min = 0.0, max = 12.0, value = 2.0
         Move slider: min = 0.0, max = 12.0, value = 0.0
         Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 1
         Tap: 2 widgets with type "CustomTextButton" descending from widgets with the given widget (CustomProgressBar), index 0
@@ -1338,7 +1337,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
     Tap: widget with widget matching predicate
     Tap: widget with widget matching predicate
     Tap: widget with text "OK"
-    Result: PASSED in 57 seconds
+    Result: PASSED in 54 seconds
 [END - Denon: Audio Control for main zone]
 [START - Denon: Play from Queue]
     [START - Open tab: MEDIA]
@@ -1450,7 +1449,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
     [END - Open context menu: Muse]
     Initial number of items: 9
     Final number of items: 3
-    Result: PASSED in 30 seconds
+    Result: PASSED in 29 seconds
 [END - Denon: Hide empty items]
 [START - Denon: Change listening modes]
     [START - Change listening mode]
@@ -1529,7 +1528,7 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
     [START - Open tab: LISTEN]
         Tap: widget with type "Tab" that are ancestors of widget with text "LISTEN"
     [END - Open tab: LISTEN]
-    Result: PASSED in 36 seconds
+    Result: PASSED in 37 seconds
 [END - Denon: Play from DAB]
 [START - Denon: Device settings]
     [START - Open tab: DEVICE]
@@ -1685,11 +1684,11 @@ Test platform: macos/Version 27.2.1 (Build 26B131), app version 2.15.4, test dat
         Tap: widget with widget matching predicate
         Tap: widget with type "ListTile" that are ancestors of widget with text "Play List", delay = 0
     [END - Navigate to media]
-    Result: PASSED in 54 seconds
+    Result: PASSED in 52 seconds
 [END - Denon: Create playlist]
 [START - Summary]
     Executed 30 procedures
-    Total duration: 27 minutes
+    Total duration: 29 minutes
     PASSED: 30
     FAILED: []
 [END - Summary]
