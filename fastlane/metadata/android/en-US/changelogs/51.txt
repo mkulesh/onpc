@@ -1,0 +1,2 @@
+• Add Android themed (monochrome) icon
+• The app is adapted for Android 16
