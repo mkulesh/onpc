@@ -434,7 +434,7 @@ class OnpcTestUtils extends OnpcGuiActions {
     endMethod();
   }
 
-  Future<void> openSearchDialog(int type, String search) async {
+  Future<void> openSearchDialog(int type, String search, {bool ensureTarget = true}) async {
     startMethod("Search dialog");
     await findAndTap(() => find.byTooltip("Search"), ensureAfter: () => find.text("OK"));
     expect(find.text("Search"), findsOneWidget);
@@ -446,8 +446,11 @@ class OnpcTestUtils extends OnpcGuiActions {
     expect(fab, findsNWidgets(3));
     await findAndTap(() => fab.at(type));
     await setText(1, 0, search);
-    await findAndTap(() => find.text("OK"), ensureAfter: () => find.textContaining("Search: " + search + " | items:"));
-    await ensureVisibleInList(search, find.byType(ListView), () => find.text(search), Offset(0, -300));
+    await findAndTap(() => find.text("OK"), ensureAfter: () => find.textContaining(
+        RegExp(r'Search: ' + RegExp.escape(search) + r' \| items:[^/]*$')));
+    if (ensureTarget) {
+      await ensureVisibleInList(search, find.byType(ListView), () => find.text(search), Offset(0, -300));
+    }
     endMethod();
   }
 

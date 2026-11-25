@@ -343,7 +343,9 @@ class OnpcDenonTests {
     // Search artist
     final String artist = "Muse";
     await tu.navigateToMedia([OnpcTestUtils.TOP_LAYER, "Deezer"]);
-    await tu.openSearchDialog(0, artist);
+    await tu.openSearchDialog(0, artist, ensureTarget: false);
+    await tu.openTab("LISTEN"); // A workaroung for blocked medialist_filter
+    await tu.openTab("MEDIA");
 
     // Filter artist
     await tu.findAndTap(() => find.byTooltip(Strings.medialist_filter));
