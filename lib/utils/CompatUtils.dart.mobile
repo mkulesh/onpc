@@ -63,6 +63,11 @@ class WindowManagerWrapper
         // empty
     }
 
+    void updateBrightness() async
+    {
+        // empty
+    }
+
     void initState()
     {
         // empty

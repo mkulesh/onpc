@@ -21,8 +21,10 @@ import "package:window_manager/window_manager.dart";
 
 import "../config/Configuration.dart";
 import "../constants/Strings.dart";
+import "../constants/Themes.dart";
 import "Logging.dart";
 import "Pair.dart";
+import "Platform.dart";
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior
 {
@@ -142,7 +144,7 @@ class WindowManagerWrapper with WindowListener
 
     void restoreWindow() async
     {
-        Logging.info(this, "Restore window size and position");
+        Logging.info(this, "Restore window size, position and brightness");
         try
         {
             await windowManager.ensureInitialized();
@@ -163,6 +165,27 @@ class WindowManagerWrapper with WindowListener
             catch (e)
             {
                 Logging.info(this, "can not show window: " + e.toString());
+            }
+        }
+        updateBrightness();
+    }
+
+    void updateBrightness() async
+    {
+        if (Platform.isDesktop)
+        {
+            try
+            {
+                final ThemeData td = BaseAppTheme.getThemeData(
+                    _configuration.appSettings.theme,
+                    _configuration.appSettings.language,
+                    _configuration.appSettings.textSize
+                );
+                await windowManager.setBrightness(td.brightness);
+            }
+            catch (e)
+            {
+                Logging.info(this, "can not update window brightness: " + e.toString());
             }
         }
     }

@@ -79,6 +79,7 @@ class _PreferencesMainState extends State<PreferencesMain> with ProtoTypeMix
                 setState(()
                 {
                     _configuration.appSettings.theme = val;
+                    _configuration.windowManager.updateBrightness();
                 });
             }));
 

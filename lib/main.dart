@@ -81,9 +81,6 @@ void main() async
     final Configuration configuration = Configuration(prefs);
     configuration.read();
 
-    final WindowManagerWrapper windowManager = WindowManagerWrapper(configuration);
-    windowManager.restoreWindow();
-
     final StateManager stateManager = StateManager(configuration.favoriteConnections.getDevices);
     final ViewContext viewContext = ViewContext(configuration, stateManager, StreamController.broadcast());
 
@@ -100,7 +97,7 @@ void main() async
         debugShowCheckedModeBanner: Logging.isDebugBanner,
         title: Strings.app_short_name,
         theme: viewContext.getThemeData(),
-        home: MusicControllerApp(windowManager, viewContext),
+        home: MusicControllerApp(viewContext),
         localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales)
         {
             if (locale != null)
@@ -124,17 +121,16 @@ void main() async
 
 class MusicControllerApp extends StatefulWidget
 {
-    final WindowManagerWrapper _windowManager;
     final ViewContext _viewContext;
 
     ViewContext get viewContext
     => _viewContext;
 
-    MusicControllerApp(this._windowManager, this._viewContext, {Key? key}) : super(key: key);
+    MusicControllerApp(this._viewContext, {Key? key}) : super(key: key);
 
     @override
     MusicControllerAppState createState()
-    => MusicControllerAppState(_windowManager, _viewContext);
+    => MusicControllerAppState(_viewContext);
 }
 
 enum ConnectionState
@@ -149,7 +145,6 @@ enum ConnectionState
 class MusicControllerAppState extends State<MusicControllerApp>
     with WidgetsBindingObserver, TickerProviderStateMixin
 {
-    final WindowManagerWrapper _windowManager;
     final ViewContext _viewContext;
     final List<AppTabs> _tabs = [];
     TabController? _tabController;
@@ -170,7 +165,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     // early callbacks of platform_method_channel
     bool _isResumed = false;
 
-    MusicControllerAppState(this._windowManager, this._viewContext);
+    MusicControllerAppState(this._viewContext);
 
     Configuration get _configuration
     => _viewContext.configuration;
@@ -182,7 +177,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
     void initState()
     {
         super.initState();
-        _windowManager.initState();
+        _configuration.windowManager.initState();
         BackButtonInterceptor.add(_onBackPressed);
 
         _applyConfiguration(informPlatform: false, updScripts: false);
@@ -215,7 +210,7 @@ class MusicControllerAppState extends State<MusicControllerApp>
         _viewContext.updateNotifier.close();
         _tabController?.dispose();
         BackButtonInterceptor.remove(_onBackPressed);
-        _windowManager.dispose();
+        _configuration.windowManager.dispose();
         super.dispose();
     }
 

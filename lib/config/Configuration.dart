@@ -23,6 +23,7 @@ import "../iscp/messages/InputSelectorMsg.dart";
 import "../iscp/messages/ReceiverInformationMsg.dart";
 import "../iscp/state/ReceiverInformation.dart";
 import "../iscp/state/SoundControlState.dart";
+import "../utils/CompatUtils.dart";
 import "../utils/Convert.dart";
 import "../utils/Logging.dart";
 import "../utils/Pair.dart";
@@ -152,6 +153,7 @@ class Configuration extends CfgModule
     late CfgFavoriteConnections favoriteConnections;
     late CfgFavoriteShortcuts favoriteShortcuts;
     late CfgRiCommands riCommands;
+    late WindowManagerWrapper windowManager;
 
     Configuration(final SharedPreferences preferences) : super(preferences)
     {
@@ -161,6 +163,7 @@ class Configuration extends CfgModule
         favoriteConnections = CfgFavoriteConnections(preferences);
         favoriteShortcuts = CfgFavoriteShortcuts(preferences);
         riCommands = CfgRiCommands(preferences);
+        windowManager = WindowManagerWrapper(this);
         Logging.info(this, "Application started: " + appVersion + ", OS: " + Platform.operatingSystem);
     }
 
@@ -194,6 +197,7 @@ class Configuration extends CfgModule
         favoriteConnections.read();
         favoriteShortcuts.read();
         riCommands.read();
+        windowManager.restoreWindow();
     }
 
     void readHomeWidgetCfg(bool audioControlCmd)
