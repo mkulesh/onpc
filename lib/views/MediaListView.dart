@@ -111,7 +111,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
     final MediaListSorter _mediaListSorter = MediaListSorter();
     late TextEditingController _mediaFilterController;
     late MediaListContextMenu _mediaListContextMenu;
-    static bool _isFilterFocused = false;
 
     _MediaListViewState(final ViewContext _viewContext, final List<String> _updateTriggers) : super(_viewContext, _updateTriggers);
 
@@ -601,15 +600,9 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                 => stateManager.sendMessage(stateManager.getReturnMessage(), waitingForData: true));
         }
 
-        final bool toFocus = state.mediaFilterVisible && !_isFilterFocused;
-        if (toFocus)
-        {
-            _isFilterFocused = true;
-        }
-
         final Widget field = !state.mediaFilterVisible ? title :
         CustomTextField(_mediaFilterController,
-            isFocused: toFocus,
+            isFocused: true,
             isBorder: false,
             onChanged: (v)
             {
@@ -677,7 +670,6 @@ class _MediaListViewState extends WidgetStreamState<MediaListView>
                     setState(()
                     {
                         state.toggleMediaFilter();
-                        _isFilterFocused = false;
                     });
                 }));
         }
